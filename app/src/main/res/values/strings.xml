@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">RikingCalendar</string>
+    <string name="calendar">Calendar</string>
+    <string name="add_schedule">add schedule</string>
+    <string name="status_output">Status Output…</string>
+
+
+    <string name="drawer_open">Menu open</string>
+    <string name="drawer_close">Menu closed</string>
+    <string name="hello_world">Custom drawer implementation for Material design apps.\n\nMade by <b>Heinrich Reimer</b></string>
+    <string name="hello_world2">Example of using <i>DrawerFrameLayout</i> for the drawer.\nThis drawer has a custom max width of 250dp.\n\nCheck out the sample code on GitHub!</string>
+    <string name="hello_world3">Example of using <i>DrawerActivity</i> for the drawer.\nThis drawer shows theming and has a custom <i>Toolbar</i> set.\n\nVery simple ;)</string>
+    <string name="action_github">GitHub</string>
+    <string name="lorem_ipsum_short" translatable="false">Travel</string>
+    <string name="lorem_ipsum_medium" translatable="false">Around the world</string>
+    <string name="lorem_ipsum_long" translatable="false">It is fantastic if we can travel around.</string>
+
+    <string name="drawer_frame_layout">DrawerFrameLayout</string>
+    <string name="drawer_activity">DrawerActivity</string>
+</resources>
