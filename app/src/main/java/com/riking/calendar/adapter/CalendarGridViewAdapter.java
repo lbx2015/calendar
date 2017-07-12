@@ -46,7 +46,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     private String currentDay = "";
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
-    private int currentFlag = -1; // 用于标记当天
+    public int currentFlag = -1; // 用于标记当天
     private int[] schDateTagFlag = null; // 存储当月所有的日程日期
 
     private String showYear = ""; // 用于在头部显示的年份

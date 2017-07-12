@@ -15,6 +15,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -124,6 +125,10 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
         mNotificationManager.notify(1, mBuilder.build());
     }
 
+    public void onClickToday(View v) {
+        enterCurrentMonth();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,6 +205,33 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
+    }
+
+    private void enterCurrentMonth() {
+        if (calV.currentFlag > 0) {
+            //do nothing if already in current month.
+            return;
+        }
+        addGridView(); // 添加一个gridView
+        //current month
+        calV = new CalendarGridViewAdapter(this, this.getResources(), 0, 0, year_c, month_c, day_c);
+        gridView.setAdapter(calV);
+        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
+        flipper.addView(gridView, 1);
+        Log.d("zzw", jumpMonth + "jumpMonth + month_c" + (jumpMonth + month_c));
+        if (jumpMonth > 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_out));
+            flipper.showPrevious();
+        } else if (jumpMonth < 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_out));
+            flipper.showNext();
+        }
+        //restore the jumpMonth and jumpYear to zero
+        jumpMonth = 0;
+        jumpYear = 0;
+        flipper.removeViewAt(0);
     }
 
     /**
