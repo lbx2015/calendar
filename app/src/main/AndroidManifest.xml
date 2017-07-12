@@ -27,7 +27,7 @@
         <activity android:name=".activity.RealmIntroActivity" />
         <activity
             android:name=".activity.NoActionBarActivity"
-            android:theme="@style/AppTheme3"
+            android:theme="@style/AppThemeNoActionBar"
             tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
