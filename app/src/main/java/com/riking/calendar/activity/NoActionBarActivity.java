@@ -15,6 +15,8 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -39,14 +41,20 @@ import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
+import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
+import com.riking.calendar.realm.model.Reminder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import io.realm.Realm;
 
 public class NoActionBarActivity extends com.heinrichreimersoftware.materialdrawer.DrawerActivity implements View.OnClickListener {
 
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
+    RecyclerView recyclerView;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -74,6 +82,7 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
      * 下个月
      */
     private ImageView nextMonth;
+    private Realm realm;
 
     public NoActionBarActivity() {
 
@@ -205,6 +214,24 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
+        //insert  to realm
+        // All writes must be wrapped in a transaction to facilitate safe multi threading
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                // Add a person
+                Reminder person = realm.createObject(Reminder.class);
+                person.time = new Date();
+                person.title = "Don't forget to clock off";
+            }
+        });
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        List<Reminder> reminders = realm.where(Reminder.class).findAll();
+        recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
     }
 
     private void enterCurrentMonth() {
