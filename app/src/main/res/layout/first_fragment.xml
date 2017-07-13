@@ -11,15 +11,15 @@
         android:background="?attr/colorPrimary"
         android:orientation="horizontal">
 
-<!--
-        <ImageView
-            android:id="@+id/prevMonth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/prev_month" />
--->
+        <!--
+                <ImageView
+                    android:id="@+id/prevMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/prev_month" />
+        -->
 
         <TextView
             android:id="@+id/currentMonth"
@@ -32,13 +32,13 @@
             android:textColor="#177ed6"
             android:textSize="18dp" />
 
-    <!--    <ImageView
-            android:id="@+id/nextMonth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/next_month" />-->
+        <!--    <ImageView
+                android:id="@+id/nextMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/next_month" />-->
     </LinearLayout>
 
     <LinearLayout
@@ -88,4 +88,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
 </LinearLayout>

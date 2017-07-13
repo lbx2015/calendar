@@ -30,12 +30,9 @@ public class CommonTabActivity extends AppCompatActivity {
         }
 
         mDecorView = getWindow().getDecorView();
-
         /** indicator圆角色块 */
         mTabLayout_8 = ViewFindUtils.find(mDecorView, R.id.tl_8);
-
         mTabLayout_8.setTabData(mTabEntities);
-
         mTabLayout_8.setCurrentTab(2);
     }
 }

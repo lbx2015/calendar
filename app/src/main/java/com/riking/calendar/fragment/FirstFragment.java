@@ -3,9 +3,15 @@ package com.riking.calendar.fragment;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -15,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
@@ -27,9 +34,14 @@ import android.widget.ViewFlipper;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
+import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
+import com.riking.calendar.realm.model.Reminder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -50,6 +62,8 @@ public class FirstFragment extends Fragment {
     //current day
     private int day_c = 0;
     private String currentDate = "";
+    RecyclerView recyclerView;
+    Realm realm;
     /**
      * 每次添加gridview到viewflipper中时给的标记
      */
@@ -90,7 +104,26 @@ public class FirstFragment extends Fragment {
         gridView.setAdapter(calV);
         flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
+        //insert  to realm
+        // All writes must be wrapped in a transaction to facilitate safe multi threading
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                // Add a person
+                Reminder person = realm.createObject(Reminder.class);
+                person.time = new Date();
+                person.title = "Don't forget to clock off";
+            }
+        });
 
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
+        List<Reminder> reminders = realm.where(Reminder.class).findAll();
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(a,LinearLayout.VERTICAL));
+        recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
         return v;
     }
 

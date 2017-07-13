@@ -1,13 +1,16 @@
 package com.riking.calendar.activity;
 
-import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -46,6 +49,20 @@ public class ViewPagerActivity extends FragmentActivity {
         mTabLayout_8 = ViewFindUtils.find(mDecorView, R.id.tl_8);
         mTabLayout_8.setTabData(mTabEntities);
         mTabLayout_8.setCurrentTab(2);
+
+
+        Window window = getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        }
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
