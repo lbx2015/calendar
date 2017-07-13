@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import io.realm.RealmModel;
-import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
@@ -12,7 +11,8 @@ import io.realm.annotations.RealmClass;
  * Created by zw.zhang on 2017/7/13.
  */
 
-public class Vocation extends RealmObject {
+@RealmClass
+public class Vocation implements RealmModel {
     @PrimaryKey
     public String id = UUID.randomUUID().toString();
     public Date date;
