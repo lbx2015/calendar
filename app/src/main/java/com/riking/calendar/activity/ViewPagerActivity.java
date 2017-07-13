@@ -45,7 +45,6 @@ public class ViewPagerActivity extends FragmentActivity {
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -90,7 +89,7 @@ public class ViewPagerActivity extends FragmentActivity {
 
 // finally change the color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorRed));
         }
     }
 
