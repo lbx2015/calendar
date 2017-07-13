@@ -35,6 +35,9 @@
         </activity>
         <activity android:name=".activity.DrawerActivity" />
         <activity android:name=".activity.ViewPagerActivity" />
+        <activity
+            android:theme="@style/AppThemeNoActionBar"
+            android:name=".activity.CommonTabActivity" />
 
         <service
             android:name=".service.AlarmService"

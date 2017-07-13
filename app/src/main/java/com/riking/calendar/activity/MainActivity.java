@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int MENU_ITEM_DRAWER = 5;
     private static final int MENU_ITEM_ALARM = 6;
     private static final int MENU_ITEM_VIEWPAGER = 7;
+    private static final int MENU_TAB_LAYOUT = 8;
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
     private GestureDetector gestureDetector = null;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menu.add(Menu.NONE, MENU_ITEM_DRAWER, Menu.NONE, "drawer");
         menu.add(Menu.NONE, MENU_ITEM_ALARM, Menu.NONE, "alarm");
         menu.add(Menu.NONE, MENU_ITEM_VIEWPAGER, Menu.NONE, "viewpager");
+        menu.add(Menu.NONE, MENU_TAB_LAYOUT, Menu.NONE, "tablayout");
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -189,6 +191,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case MENU_ITEM_VIEWPAGER: {
                 startActivity(new Intent(this, ViewPagerActivity.class));
+                break;
+            }
+            case MENU_TAB_LAYOUT: {
+                startActivity(new Intent(this, CommonTabActivity.class));
             }
         }
         return super.onOptionsItemSelected(item);
