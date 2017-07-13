@@ -15,6 +15,8 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -231,6 +233,8 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         List<Reminder> reminders = realm.where(Reminder.class).findAll();
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
     }
 
