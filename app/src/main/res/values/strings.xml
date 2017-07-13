@@ -17,4 +17,10 @@
 
     <string name="drawer_frame_layout">DrawerFrameLayout</string>
     <string name="drawer_activity">DrawerActivity</string>
+    <string name="date">Date</string>
+    <string name="country">Country</string>
+    <string name="currency">Currency</string>
+    <string name="vocation">Vocation</string>
+    <string name="reminder">Reminder</string>
+    <string name="personal">Personal</string>
 </resources>

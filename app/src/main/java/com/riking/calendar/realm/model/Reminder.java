@@ -3,6 +3,7 @@ package com.riking.calendar.realm.model;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by zw.zhang on 2017/7/12.

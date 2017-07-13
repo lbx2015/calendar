@@ -106,7 +106,7 @@ public class ViewPagerActivity extends FragmentActivity {
                 case 0:
                     return new FirstFragment();
                 case 1:
-                    return SecondFragment.newInstance("SecondFragment, Instance 1");
+                    return new SecondFragment();
                 case 2:
                     return ThirdFragment.newInstance("ThirdFragment, Instance 1");
                 case 3:

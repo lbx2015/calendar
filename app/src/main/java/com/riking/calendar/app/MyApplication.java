@@ -15,7 +15,9 @@ public class MyApplication extends Application {
         super.onCreate();
         // Initialize Realm. Should only be done once when the application starts.
         Realm.init(this);
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
         Realm.setDefaultConfiguration(realmConfiguration);
     }
 }
