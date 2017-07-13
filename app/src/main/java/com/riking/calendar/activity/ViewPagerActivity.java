@@ -28,6 +28,7 @@ import java.util.ArrayList;
  */
 
 public class ViewPagerActivity extends FragmentActivity {
+    MyPagerAdapter adapter;
     private String[] mTitles = {"工作台", "节假日", "提醒", "个人中心"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private View mDecorView;
@@ -38,7 +39,8 @@ public class ViewPagerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewpager);
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
 
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], 0, 0));

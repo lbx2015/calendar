@@ -3,11 +3,9 @@ package com.riking.calendar.fragment;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,12 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +49,8 @@ public class FirstFragment extends Fragment {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
     Activity a;
+    RecyclerView recyclerView;
+    Realm realm;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -62,8 +62,14 @@ public class FirstFragment extends Fragment {
     //current day
     private int day_c = 0;
     private String currentDate = "";
-    RecyclerView recyclerView;
-    Realm realm;
+    /**
+     * 上个月
+     */
+    private ImageView prevMonth;
+    /**
+     * 下个月
+     */
+    private ImageView nextMonth;
     /**
      * 每次添加gridview到viewflipper中时给的标记
      */
@@ -72,6 +78,27 @@ public class FirstFragment extends Fragment {
      * 当前的年月，现在日历顶端
      */
     private TextView currentMonth;
+
+    private void setListener() {
+        View.OnClickListener c = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                switch (v.getId()) {
+                    case R.id.nextMonth: // 下一个月
+                        enterNextMonth(gvFlag);
+                        break;
+                    case R.id.prevMonth: // 上一个月
+                        enterPrevMonth(gvFlag);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        prevMonth.setOnClickListener(c);
+        nextMonth.setOnClickListener(c);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,13 +115,48 @@ public class FirstFragment extends Fragment {
         a.setTitle(R.string.calendar);
     }
 
+    public void enterCurrentMonth() {
+        if (calV.currentFlag > 0) {
+            //do nothing if already in current month.
+            return;
+        }
+        addGridView(); // 添加一个gridView
+        //current month
+        calV = new CalendarGridViewAdapter(a, a.getResources(), 0, 0, year_c, month_c, day_c);
+        gridView.setAdapter(calV);
+        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
+        flipper.addView(gridView, 1);
+        Log.d("zzw", jumpMonth + "jumpMonth + month_c" + (jumpMonth + month_c));
+        if (jumpMonth > 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_out));
+            flipper.showPrevious();
+        } else if (jumpMonth < 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_out));
+            flipper.showNext();
+        }
+        //restore the jumpMonth and jumpYear to zero
+        jumpMonth = 0;
+        jumpYear = 0;
+        flipper.removeViewAt(0);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("zzw", this + " onCreateView");
         View v = inflater.inflate(R.layout.first_fragment, container, false);
-
+        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
+        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
+        setListener();
         currentMonth = (TextView) v.findViewById(R.id.currentMonth);
+        TextView todayButton = (TextView) v.findViewById(R.id.today_button);
+        todayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enterCurrentMonth();
+            }
+        });
 
         gestureDetector = new GestureDetector(a, new FirstFragment.MyGestureListener());
         flipper = (ViewFlipper) v.findViewById(R.id.flipper);
@@ -122,7 +184,7 @@ public class FirstFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         List<Reminder> reminders = realm.where(Reminder.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(a,LinearLayout.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
         return v;
     }
