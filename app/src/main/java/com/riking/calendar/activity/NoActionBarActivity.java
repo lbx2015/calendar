@@ -8,17 +8,24 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
@@ -36,14 +43,20 @@ import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
+import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
+import com.riking.calendar.realm.model.Reminder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import io.realm.Realm;
 
 public class NoActionBarActivity extends com.heinrichreimersoftware.materialdrawer.DrawerActivity implements View.OnClickListener {
 
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
+    RecyclerView recyclerView;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -71,6 +84,7 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
      * 下个月
      */
     private ImageView nextMonth;
+    private Realm realm;
 
     public NoActionBarActivity() {
 
@@ -120,6 +134,10 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
         mNotificationManager.notify(1, mBuilder.build());
+    }
+
+    public void onClickToday(View v) {
+        enterCurrentMonth();
     }
 
     @Override
@@ -185,6 +203,66 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
                 .setName(getString(R.string.lorem_ipsum_short))
                 .setDescription(getString(R.string.lorem_ipsum_medium))
         );
+
+        Window window = getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        }
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
+        //insert  to realm
+        // All writes must be wrapped in a transaction to facilitate safe multi threading
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                // Add a person
+                Reminder person = realm.createObject(Reminder.class);
+                person.time = new Date();
+                person.title = "Don't forget to clock off";
+            }
+        });
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        List<Reminder> reminders = realm.where(Reminder.class).findAll();
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayout.VERTICAL));
+        recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
+    }
+
+    private void enterCurrentMonth() {
+        if (calV.currentFlag > 0) {
+            //do nothing if already in current month.
+            return;
+        }
+        addGridView(); // 添加一个gridView
+        //current month
+        calV = new CalendarGridViewAdapter(this, this.getResources(), 0, 0, year_c, month_c, day_c);
+        gridView.setAdapter(calV);
+        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
+        flipper.addView(gridView, 1);
+        Log.d("zzw", jumpMonth + "jumpMonth + month_c" + (jumpMonth + month_c));
+        if (jumpMonth > 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_out));
+            flipper.showPrevious();
+        } else if (jumpMonth < 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_out));
+            flipper.showNext();
+        }
+        //restore the jumpMonth and jumpYear to zero
+        jumpMonth = 0;
+        jumpYear = 0;
+        flipper.removeViewAt(0);
     }
 
     /**
