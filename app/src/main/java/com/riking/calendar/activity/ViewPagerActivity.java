@@ -14,6 +14,7 @@ import android.view.WindowManager;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FirstFragment;
 import com.riking.calendar.fragment.SecondFragment;
@@ -32,15 +33,31 @@ public class ViewPagerActivity extends FragmentActivity {
     private String[] mTitles = {"工作台", "节假日", "提醒", "个人中心"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private View mDecorView;
-    private CommonTabLayout mTabLayout_8;
+    private CommonTabLayout bottomTabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewpager);
-        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+        final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                bottomTabs.setCurrentTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], 0, 0));
@@ -48,9 +65,19 @@ public class ViewPagerActivity extends FragmentActivity {
 
         mDecorView = getWindow().getDecorView();
         /** indicator圆角色块 */
-        mTabLayout_8 = ViewFindUtils.find(mDecorView, R.id.tl_8);
-        mTabLayout_8.setTabData(mTabEntities);
-        mTabLayout_8.setCurrentTab(2);
+        bottomTabs = ViewFindUtils.find(mDecorView, R.id.tl_8);
+        bottomTabs.setTabData(mTabEntities);
+        bottomTabs.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                pager.setCurrentItem(position);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
 
 
         Window window = getWindow();
