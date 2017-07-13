@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
@@ -172,8 +173,11 @@ public class FirstFragment extends Fragment {
             // 将gridview中的触摸事件回传给gestureDetector
 
             public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
+                ViewParent parent = v.getParent();
+                // or get a reference to the ViewPager and cast it to ViewParent
+                parent.requestDisallowInterceptTouchEvent(true);
                 return FirstFragment.this.gestureDetector.onTouchEvent(event);
+                //consume the touch event to enable the month change
             }
         });
 
