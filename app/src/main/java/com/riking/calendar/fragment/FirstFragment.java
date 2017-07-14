@@ -1,6 +1,5 @@
 package com.riking.calendar.fragment;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -31,9 +30,12 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
+import com.riking.calendar.listener.HideShowScrollListener;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,7 +50,7 @@ import io.realm.Realm;
 public class FirstFragment extends Fragment {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
-    Activity a;
+    ViewPagerActivity a;
     RecyclerView recyclerView;
     Realm realm;
     private GestureDetector gestureDetector = null;
@@ -103,7 +105,7 @@ public class FirstFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        a = getActivity();
+        a = (ViewPagerActivity) getActivity();
         Log.d("zzw", this + " onCreate");
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
@@ -186,6 +188,32 @@ public class FirstFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
+
+        recyclerView.addOnScrollListener(new HideShowScrollListener() {
+            int marginBottom = (int) ZR.convertDpToPx(a, 48);
+
+            @Override
+            public void onHide() {
+                flipper.setVisibility(View.VISIBLE);
+                a.bottomTabs.setVisibility(View.GONE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+                params.setMargins(0, 0, 0, 0);
+                recyclerView.setLayoutParams(params);
+                recyclerView.invalidate();
+            }
+
+            @Override
+            public void onShow() {
+                flipper.setVisibility(View.GONE);
+                a.bottomTabs.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                params.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                params.setMargins(0, 0, 0, marginBottom);
+                recyclerView.setLayoutParams(params);
+                recyclerView.invalidate();
+            }
+        });
         return v;
     }
 
