@@ -33,7 +33,7 @@ public class ViewPagerActivity extends FragmentActivity {
     private String[] mTitles = {"工作台", "节假日", "提醒", "个人中心"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private View mDecorView;
-    private CommonTabLayout bottomTabs;
+    public CommonTabLayout bottomTabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
