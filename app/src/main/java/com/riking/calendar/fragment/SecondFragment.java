@@ -1,13 +1,11 @@
 package com.riking.calendar.fragment;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.listener.HideShowScrollListener;
 import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.util.ViewFindUtils;
+import com.riking.calendar.util.ZR;
 
 import java.util.Date;
 import java.util.List;
@@ -35,18 +34,14 @@ public class SecondFragment extends Fragment {
     Realm realm;
     ViewPagerActivity a;
 
-    public static int convertDpToPixel(float dp) {
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return Math.round(px);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         a = (ViewPagerActivity) getActivity();
         View v = inflater.inflate(R.layout.second_fragment, container, false);
         recyclerView = ViewFindUtils.find(v, R.id.recycler_view);
         recyclerView.addOnScrollListener(new HideShowScrollListener() {
+            int marginBottom = (int) ZR.convertDpToPx(a, 48);
+
             @Override
             public void onHide() {
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
@@ -59,7 +54,7 @@ public class SecondFragment extends Fragment {
             @Override
             public void onShow() {
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-                params.setMargins(0, 0, 0, SecondFragment.convertDpToPixel(48));
+                params.setMargins(0, 0, 0, marginBottom);
                 recyclerView.setLayoutParams(params);
                 recyclerView.invalidate();
                 a.bottomTabs.setVisibility(View.VISIBLE);
