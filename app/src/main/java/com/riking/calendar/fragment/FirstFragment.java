@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -188,7 +189,7 @@ public class FirstFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
-
+/*
         recyclerView.addOnScrollListener(new HideShowScrollListener() {
             int marginBottom = (int) ZR.convertDpToPx(a, 48);
 
@@ -213,7 +214,7 @@ public class FirstFragment extends Fragment {
                 recyclerView.setLayoutParams(params);
                 recyclerView.invalidate();
             }
-        });
+        });*/
         return v;
     }
 

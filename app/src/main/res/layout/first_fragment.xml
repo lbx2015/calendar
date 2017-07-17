@@ -1,103 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="48dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main.appbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorAccent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/prevMonth"
-            android:layout_width="0dp"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/prev_month" />
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-        <TextView
-            android:id="@+id/currentMonth"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:text="2014年6月"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorAccent"
+                android:orientation="horizontal"
+                app:layout_collapseMode="pin">
 
-        <TextView
-            android:id="@+id/today_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="今" />
+                <ImageView
+                    android:id="@+id/prevMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/prev_month" />
 
-        <ImageView
-            android:id="@+id/nextMonth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/next_month" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/currentMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="2014年6月"
+                    android:textColor="@android:color/white"
+                    android:textSize="18dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="#ffffffff">
+                <TextView
+                    android:id="@+id/today_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="今" />
 
-        <TextView
-            style="@style/weekName"
-            android:text="日"
-            android:textColor="#177ed6" />
+                <ImageView
+                    android:id="@+id/nextMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/next_month" />
+            </LinearLayout>
 
-        <TextView
-            style="@style/weekName"
-            android:text="一" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="#ffffffff"
+                app:layout_collapseMode="pin">
 
-        <TextView
-            style="@style/weekName"
-            android:text="二" />
+                <TextView
+                    style="@style/weekName"
+                    android:text="日"
+                    android:textColor="#177ed6" />
 
-        <TextView
-            style="@style/weekName"
-            android:text="三" />
+                <TextView
+                    style="@style/weekName"
+                    android:text="一" />
 
-        <TextView
-            style="@style/weekName"
-            android:text="四" />
+                <TextView
+                    style="@style/weekName"
+                    android:text="二" />
 
-        <TextView
-            style="@style/weekName"
-            android:text="五" />
+                <TextView
+                    style="@style/weekName"
+                    android:text="三" />
 
-        <TextView
-            style="@style/weekName"
-            android:text="六"
-            android:textColor="#177ed6" />
-    </LinearLayout>
+                <TextView
+                    style="@style/weekName"
+                    android:text="四" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/two_dp"
-        android:background="#ff8091a8" />
+                <TextView
+                    style="@style/weekName"
+                    android:text="五" />
 
-    <ViewFlipper
-        android:id="@+id/flipper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/weekName"
+                    android:text="六"
+                    android:textColor="#177ed6" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/two_dp"
+                android:background="#ff8091a8"
+                app:layout_collapseMode="parallax" />
+
+            <ViewFlipper
+                android:id="@+id/flipper"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        android:scrollbars="vertical" />
-</LinearLayout>
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</android.support.design.widget.CoordinatorLayout>
