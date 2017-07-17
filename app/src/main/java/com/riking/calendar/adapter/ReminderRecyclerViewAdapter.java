@@ -37,10 +37,9 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Reminder r = reminders.get(position);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
 
-        holder.time.setText(simpleDateFormat.format(r.time));
-        holder.title.setText(r.title);
+        holder.time.setText(simpleDateFormat.format(r.time) + "      " + r.title);
     }
 
     @Override
@@ -50,11 +49,10 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, time;
+        public TextView time;
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
             time = (TextView) view.findViewById(R.id.time);
         }
     }
