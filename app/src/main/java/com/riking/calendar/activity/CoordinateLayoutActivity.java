@@ -1,21 +1,22 @@
 package com.riking.calendar.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
@@ -29,33 +30,24 @@ import android.widget.ViewFlipper;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
-import com.riking.calendar.service.AlarmService;
+import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
+import com.riking.calendar.realm.model.Reminder;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import io.realm.Realm;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final int MENU_ITEM_SCHEDULER = 1;
-    private static final int MENU_ITEM_RETROFIT_ACTIVITY = 2;
-    private static final int MENU_ITEM_REALM = 3;
-    private static final int MENU_ITEM_NO_ACTIONBAR = 4;
-    private static final int MENU_ITEM_DRAWER = 5;
-    private static final int MENU_ITEM_ALARM = 6;
-    private static final int MENU_ITEM_VIEWPAGER = 7;
-    private static final int MENU_TAB_LAYOUT = 8;
-    private static final int MENU_COORDINATE_LAYOUT = 9;
+/**
+ * Created by zw.zhang on 2017/7/17.
+ */
+
+public class CoordinateLayoutActivity extends AppCompatActivity {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
+    RecyclerView recyclerView;
+    Realm realm;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -68,14 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int day_c = 0;
     private String currentDate = "";
     /**
-     * 每次添加gridview到viewflipper中时给的标记
-     */
-    private int gvFlag = 0;
-    /**
-     * 当前的年月，现在日历顶端
-     */
-    private TextView currentMonth;
-    /**
      * 上个月
      */
     private ImageView prevMonth;
@@ -83,22 +67,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 下个月
      */
     private ImageView nextMonth;
-    private Callback callback = new Callback() {
-        @Override
-        public void onFailure(Call call, IOException e) {
-            Log.d("zzw", "failure----" + e.getMessage());
-        }
+    /**
+     * 每次添加gridview到viewflipper中时给的标记
+     */
+    private int gvFlag = 0;
+    /**
+     * 当前的年月，现在日历顶端
+     */
+    private TextView currentMonth;
 
-        @Override
-        public void onResponse(Call call, Response response) throws IOException {
-            Log.d("zzw", "success----");
-            showmessage(response.body().string());
+    public static void start(Context c) {
+        c.startActivity(new Intent(c, CoordinateLayoutActivity.class));
+    }
 
-        }
-    };
+    private void setListener() {
+        View.OnClickListener c = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                switch (v.getId()) {
+                    case R.id.nextMonth: // 下一个月
+                        enterNextMonth(gvFlag);
+                        break;
+                    case R.id.prevMonth: // 上一个月
+                        enterPrevMonth(gvFlag);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        prevMonth.setOnClickListener(c);
+        nextMonth.setOnClickListener(c);
+    }
 
-    public MainActivity() {
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_simple_coordinator);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
         currentDate = sdf.format(date); // 当期日期
@@ -106,125 +112,105 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         month_c = Integer.parseInt(currentDate.split("-")[1]);
         day_c = Integer.parseInt(currentDate.split("-")[2]);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, MENU_ITEM_SCHEDULER, Menu.NONE, R.string.add_schedule);
-        menu.add(Menu.NONE, MENU_ITEM_RETROFIT_ACTIVITY, Menu.NONE, "retro fit activity");
-        menu.add(Menu.NONE, MENU_ITEM_REALM, Menu.NONE, "realm example");
-        menu.add(Menu.NONE, MENU_ITEM_NO_ACTIONBAR, Menu.NONE, "no action bar activity");
-        menu.add(Menu.NONE, MENU_ITEM_DRAWER, Menu.NONE, "drawer");
-        menu.add(Menu.NONE, MENU_ITEM_ALARM, Menu.NONE, "alarm");
-        menu.add(Menu.NONE, MENU_ITEM_VIEWPAGER, Menu.NONE, "viewpager");
-        menu.add(Menu.NONE, MENU_TAB_LAYOUT, Menu.NONE, "tablayout");
-        menu.add(Menu.NONE, MENU_COORDINATE_LAYOUT, Menu.NONE, "coordinateLayout");
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public void simplePostClick(View view) {
-        RequestBody requestBody = new FormBody.Builder().add("name", "jay").add("sex", "ç?").build();
-        Request request = new Request.Builder().url("http://jeff-pluto-1874.iteye.com/blog/869710").addHeader("welcome", "helloworld").post(requestBody).build();
-//        okHttpClient.newCall(request).enqueue(callback);
-
-    }
-
-    public void showmessage(final String string) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case MENU_ITEM_SCHEDULER: {
-                Log.d("zzw", "selected");
-                Request request = new Request.Builder()
-                        .url("http://jeff-pluto-1874.iteye.com/blog/869710")
-                        .build();
-                OkHttpClient okHttpClient = new OkHttpClient();
-                okHttpClient.newCall(request).enqueue(callback);
-                break;
-            }
-            case MENU_ITEM_RETROFIT_ACTIVITY: {
-                startActivity(new Intent(this, RetrofitActivity.class));
-                break;
-            }
-
-            case MENU_ITEM_REALM: {
-                startActivity(new Intent(this, RealmIntroActivity.class));
-                break;
-            }
-
-            case MENU_ITEM_NO_ACTIONBAR: {
-                startActivity(new Intent(this, NoActionBarActivity.class));
-                break;
-            }
-            case MENU_ITEM_DRAWER: {
-                startActivity(new Intent(this, DrawerActivity.class));
-                break;
-            }
-            case MENU_ITEM_ALARM: {
-                Intent intent = new Intent(this, AlarmService.class);
-                PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
-                AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarm.cancel(pintent);
-//                alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 5000, pintent);
-                Calendar c = Calendar.getInstance();
-                c.set(Calendar.YEAR, c.get(Calendar.YEAR));
-                c.set(Calendar.MONTH, c.get(Calendar.MONTH));
-                c.set(Calendar.DATE, c.get(Calendar.DATE));
-                c.set(Calendar.HOUR, c.get(Calendar.HOUR));
-                c.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
-                c.set(Calendar.SECOND, c.get(Calendar.SECOND) + 10);
-                Log.d("zzw", "System.currentTimeMillis()" + System.currentTimeMillis());
-                Log.d("zzw", "c.getTimeMillis()" + c.getTimeInMillis());
-                alarm.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pintent);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-                Toast.makeText(this, "alarm scheduled at " + sdf.format(c.getTime()), Toast.LENGTH_LONG).show();
-                break;
-            }
-            case MENU_ITEM_VIEWPAGER: {
-                startActivity(new Intent(this, ViewPagerActivity.class));
-                break;
-            }
-            case MENU_TAB_LAYOUT: {
-                startActivity(new Intent(this, CommonTabActivity.class));
-                break;
-            }
-            case MENU_COORDINATE_LAYOUT: {
-                startActivity(new Intent(this, CoordinateLayoutActivity.class));
-                break;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         setTitle(R.string.calendar);
-        currentMonth = (TextView) findViewById(R.id.currentMonth);
+    }
+
+    public void enterCurrentMonth() {
+        if (calV.currentFlag > 0) {
+            //do nothing if already in current month.
+            return;
+        }
+        addGridView(); // 添加一个gridView
+        //current month
+        calV = new CalendarGridViewAdapter(this, getResources(), 0, 0, year_c, month_c, day_c);
+        gridView.setAdapter(calV);
+        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
+        flipper.addView(gridView, 1);
+        Log.d("zzw", jumpMonth + "jumpMonth + month_c" + (jumpMonth + month_c));
+        if (jumpMonth > 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_out));
+            flipper.showPrevious();
+        } else if (jumpMonth < 0) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_in));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_out));
+            flipper.showNext();
+        }
+        //restore the jumpMonth and jumpYear to zero
+        jumpMonth = 0;
+        jumpYear = 0;
+        flipper.removeViewAt(0);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         prevMonth = (ImageView) findViewById(R.id.prevMonth);
         nextMonth = (ImageView) findViewById(R.id.nextMonth);
         setListener();
+        currentMonth = (TextView) findViewById(R.id.currentMonth);
+        TextView todayButton = (TextView) findViewById(R.id.today_button);
+        todayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enterCurrentMonth();
+            }
+        });
 
-        gestureDetector = new GestureDetector(this, new MyGestureListener());
+        gestureDetector = new GestureDetector(this, new CoordinateLayoutActivity.MyGestureListener());
         flipper = (ViewFlipper) findViewById(R.id.flipper);
         flipper.removeAllViews();
-        calV = new CalendarGridViewAdapter(this, getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         addGridView();
         gridView.setAdapter(calV);
         flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
+        //insert  to realm
+        // All writes must be wrapped in a transaction to facilitate safe multi threading
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                // Add a person
+                Reminder person = realm.createObject(Reminder.class);
+                person.time = new Date();
+                person.title = "Don't forget to clock off";
+            }
+        });
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        List<Reminder> reminders = realm.where(Reminder.class).findAll();
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+        recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
+/*
+        recyclerView.addOnScrollListener(new HideShowScrollListener() {
+            int marginBottom = (int) ZR.convertDpToPx(this, 48);
+
+            @Override
+            public void onHide() {
+                flipper.setVisibility(View.VISIBLE);
+                a.bottomTabs.setVisibility(View.GONE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+                params.setMargins(0, 0, 0, 0);
+                recyclerView.setLayoutParams(params);
+                recyclerView.invalidate();
+            }
+
+            @Override
+            public void onShow() {
+                flipper.setVisibility(View.GONE);
+                CoordinateLayoutActivity.this.bottomTabs.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                params.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                params.setMargins(0, 0, 0, marginBottom);
+                recyclerView.setLayoutParams(params);
+                recyclerView.invalidate();
+            }
+        });*/
     }
 
     /**
@@ -306,8 +292,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 将gridview中的触摸事件回传给gestureDetector
 
             public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
-                return MainActivity.this.gestureDetector.onTouchEvent(event);
+                ViewParent parent = v.getParent();
+                // or get a reference to the ViewPager and cast it to ViewParent
+                parent.requestDisallowInterceptTouchEvent(true);
+                return CoordinateLayoutActivity.this.gestureDetector.onTouchEvent(event);
+                //consume the touch event to enable the month change
             }
         });
 
@@ -326,33 +315,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // //这一天的阴历
                     String scheduleYear = calV.getShowYear();
                     String scheduleMonth = calV.getShowMonth();
-                    Toast.makeText(MainActivity.this, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CoordinateLayoutActivity.this, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
                     // Toast.LENGTH_SHORT).show();z
                 }
             }
         });
         gridView.setLayoutParams(params);
-    }
-
-    private void setListener() {
-        prevMonth.setOnClickListener(this);
-        nextMonth.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        // TODO Auto-generated method stub
-        switch (v.getId()) {
-            case R.id.nextMonth: // 下一个月
-                enterNextMonth(gvFlag);
-                break;
-            case R.id.prevMonth: // 上一个月
-                enterPrevMonth(gvFlag);
-                break;
-            default:
-                break;
-        }
     }
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -371,4 +340,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     }
+
 }

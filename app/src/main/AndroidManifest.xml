@@ -36,8 +36,11 @@
         <activity android:name=".activity.DrawerActivity" />
         <activity android:name=".activity.ViewPagerActivity" />
         <activity
-            android:theme="@style/AppThemeNoActionBar"
-            android:name=".activity.CommonTabActivity" />
+            android:name=".activity.CoordinateLayoutActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.CommonTabActivity"
+            android:theme="@style/AppThemeNoActionBar" />
 
         <service
             android:name=".service.AlarmService"
