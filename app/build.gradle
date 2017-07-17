@@ -56,4 +56,6 @@ dependencies {
 
     compile project(':drawerLibrary')
     compile project(':FlycoTabLayout_Lib')
+
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 }

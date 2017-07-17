@@ -29,11 +29,11 @@ import java.util.ArrayList;
  */
 
 public class ViewPagerActivity extends FragmentActivity {
+    public CommonTabLayout bottomTabs;
     MyPagerAdapter adapter;
     private String[] mTitles = {"工作台", "节假日", "提醒", "个人中心"};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private View mDecorView;
-    public CommonTabLayout bottomTabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,17 +102,16 @@ public class ViewPagerActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int pos) {
             switch (pos) {
-
                 case 0:
                     return new FirstFragment();
                 case 1:
                     return new SecondFragment();
                 case 2:
-                    return ThirdFragment.newInstance("ThirdFragment, Instance 1");
+                    return new ThirdFragment();
                 case 3:
-                    return ThirdFragment.newInstance("ThirdFragment, Instance 2");
+                    return new ThirdFragment();
                 default:
-                    return ThirdFragment.newInstance("ThirdFragment, Default");
+                    return new ThirdFragment();
             }
         }
 
