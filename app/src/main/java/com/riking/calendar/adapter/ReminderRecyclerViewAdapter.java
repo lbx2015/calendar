@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.realm.model.Reminder;
-import com.riking.calendar.util.LunarCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
  */
 
 public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRecyclerViewAdapter.MyViewHolder> {
-    LunarCalendar lunarCalendar = new LunarCalendar();
     private List<Reminder> reminders;
 
     public ReminderRecyclerViewAdapter(List<Reminder> r) {
@@ -38,8 +36,7 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Reminder r = reminders.get(position);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
-
-        holder.time.setText(simpleDateFormat.format(r.time) + "      " + r.title);
+        holder.row.setText(simpleDateFormat.format(r.time) + "      " + r.title);
     }
 
     @Override
@@ -49,11 +46,11 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView time;
+        public TextView row;
 
         public MyViewHolder(View view) {
             super(view);
-            time = (TextView) view.findViewById(R.id.time);
+            row = (TextView) view.findViewById(R.id.time);
         }
     }
 }
