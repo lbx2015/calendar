@@ -86,4 +86,10 @@ public class SecondFragment extends Fragment {
         recyclerView.setAdapter(new VocationRecyclerViewAdapter(vocations));
         return v;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        realm.close();
+    }
 }
