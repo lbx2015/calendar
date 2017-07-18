@@ -36,12 +36,11 @@
                 android:textColor="@android:color/white"
                 android:visibility="gone" />
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
-                android:text="@string/add"
-                android:textColor="@android:color/white" />
+                android:src="@drawable/ic_add_black_24dp" />
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
 
