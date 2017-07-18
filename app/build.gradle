@@ -18,8 +18,8 @@ android {
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.riking.calendar"
-        minSdkVersion 20
-        targetSdkVersion 20
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

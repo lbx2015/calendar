@@ -23,4 +23,7 @@
     <string name="vocation">Vocation</string>
     <string name="reminder">Reminder</string>
     <string name="personal">Personal</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="add" />
 </resources>

@@ -21,7 +21,6 @@ public class ThirdFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.third_fragment, container, false);
-
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         MyPagerAdapter mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
@@ -40,7 +39,6 @@ public class ThirdFragment extends Fragment {
         public int getCount() {
             return 2;//页卡数
         }
-
 
         @Override
         public Fragment getItem(int position) {
