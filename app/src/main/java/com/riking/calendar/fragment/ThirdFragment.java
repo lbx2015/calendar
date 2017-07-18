@@ -15,16 +15,59 @@ import com.riking.calendar.R;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class ThirdFragment extends Fragment {
+public class ThirdFragment extends Fragment implements View.OnClickListener {
     private ViewPager mViewPager;
+    private View add;
+    private View cancel;
+    private View done;
+    private View title;
+
+    private MyPagerAdapter mAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.third_fragment, container, false);
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
-        MyPagerAdapter mAdapter = new MyPagerAdapter(getChildFragmentManager());
+        mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
+        add = v.findViewById(R.id.add);
+        cancel = v.findViewById(R.id.cancel);
+        done = v.findViewById(R.id.done);
+        title = v.findViewById(R.id.title);
+        add.setOnClickListener(this);
         return v;
+    }
+
+
+    public void onClick(View v) {
+        int position = mViewPager.getCurrentItem();
+        switch (v.getId()) {
+            case R.id.add: {
+                if (position == 0) {
+                    ReminderFragment f = (ReminderFragment) mAdapter.getItem(mViewPager.getCurrentItem());
+                    if (cancel != null)
+                        cancel.setVisibility(View.VISIBLE);
+                    if (done != null)
+                        done.setVisibility(View.VISIBLE);
+                    if (add != null)
+                        add.setVisibility(View.GONE);
+                }
+                break;
+            }
+            case R.id.cancel: {
+                done.setVisibility(View.GONE);
+                cancel.setVisibility(View.GONE);
+                add.setVisibility(View.VISIBLE);
+                break;
+            }
+            case R.id.done: {
+                done.setVisibility(View.GONE);
+                cancel.setVisibility(View.GONE);
+                add.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
     }
 
 
