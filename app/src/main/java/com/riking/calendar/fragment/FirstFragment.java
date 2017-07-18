@@ -173,15 +173,15 @@ public class FirstFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // Add a person
-                Reminder person = realm.createObject(Reminder.class);
-                person.time = new Date();
-                person.title = "Don't forget to clock off";
-            }
-        });
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                // Add a person
+//                Reminder person = realm.createObject(Reminder.class);
+//                person.time = new Date();
+//                person.title = "Don't forget to clock off";
+//            }
+//        });
 
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
@@ -327,6 +327,12 @@ public class FirstFragment extends Fragment {
             }
         });
         gridView.setLayoutParams(params);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        realm.close();
     }
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
