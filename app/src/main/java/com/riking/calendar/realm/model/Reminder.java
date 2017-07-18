@@ -14,4 +14,6 @@ public class Reminder extends RealmObject {
     public String title;
     //the time of the reminder
     public Date time;
+    //This is just a flag to determine whether this event is import
+    public boolean isImport;
 }
