@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -34,9 +33,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
-import com.riking.calendar.listener.HideShowScrollListener;
 import com.riking.calendar.realm.model.Reminder;
-import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -173,15 +170,15 @@ public class FirstFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                // Add a person
-//                Reminder person = realm.createObject(Reminder.class);
-//                person.row = new Date();
-//                person.title = "Don't forget to clock off";
-//            }
-//        });
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                // Add a person
+                Reminder person = realm.createObject(Reminder.class);
+                person.time = new Date();
+                person.title = "Don't forget to clock off";
+            }
+        });
 
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
