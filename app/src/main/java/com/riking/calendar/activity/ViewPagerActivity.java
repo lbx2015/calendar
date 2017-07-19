@@ -17,6 +17,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FirstFragment;
+import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.SecondFragment;
 import com.riking.calendar.fragment.ThirdFragment;
 import com.riking.calendar.pojo.TabEntity;
@@ -109,7 +110,7 @@ public class ViewPagerActivity extends FragmentActivity {
                 case 2:
                     return new ThirdFragment();
                 case 3:
-                    return new ThirdFragment();
+                    return new FourthFragment();
                 default:
                     return new ThirdFragment();
             }
