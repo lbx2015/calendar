@@ -90,7 +90,7 @@ public class ViewPagerActivity extends FragmentActivity {
 
 // finally change the color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorRed));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
     }
 

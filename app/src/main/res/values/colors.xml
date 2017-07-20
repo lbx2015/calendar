@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ee0000</color>
-    <color name="colorPrimaryDark">#ff0000</color>
-    <color name="colorAccent">#ff0000</color>
-    <color name="colorRed">#5D4037</color>
-    <!-- Brown 500 -->
-    <color name="color_primary">#795548</color>
-    <!-- Brown 700 -->
-    <color name="color_primary_dark">#5D4037</color>
-    <!-- Deep Orange A400 -->
+    <color name="colorPrimary">#1b82d2</color>
+    <color name="colorPrimaryDark">#1b82d2</color>
     <color name="color_accent">#FF3D00</color>
 
     <!-- Teal 600 -->
