@@ -41,6 +41,7 @@
         <activity
             android:name=".activity.CommonTabActivity"
             android:theme="@style/AppThemeNoActionBar" />
+        <activity android:name=".activity.CustomBehaviorActivity"/>
 
         <service
             android:name=".service.AlarmService"
