@@ -20,7 +20,8 @@
             android:layout_margin="8dp"
             android:clickable="true"
             android:src="@drawable/cat_wide_2"
-            app:layout_behavior="com.riking.calendar.behavior.ShrinkBehavior" />
+            app:layout_behavior="com.riking.calendar.behavior.RotateBehavior
+" />
     </android.support.design.widget.CoordinatorLayout>
 
 
