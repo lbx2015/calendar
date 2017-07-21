@@ -18,6 +18,6 @@ public class ToDoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.to_do_fragment,container,false);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return v;
     }
 }

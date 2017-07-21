@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.ViewPagerActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeNoTitle">
             <intent-filter>
@@ -34,14 +34,14 @@
                 android:value=".activity.MainActivity" />
         </activity>
         <activity android:name=".activity.DrawerActivity" />
-        <activity android:name=".activity.ViewPagerActivity" />
+        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.CoordinateLayoutActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.CommonTabActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".activity.CustomBehaviorActivity"/>
+        <activity android:name=".activity.CustomBehaviorActivity" />
 
         <service
             android:name=".service.AlarmService"
