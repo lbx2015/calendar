@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
+import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
 import com.riking.calendar.realm.model.Reminder;
 
@@ -45,7 +46,7 @@ public class ReminderFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         List<Reminder> reminders = realm.where(Reminder.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
+        recyclerView.setAdapter(new ReminderAdapter(reminders));
     }
 }
