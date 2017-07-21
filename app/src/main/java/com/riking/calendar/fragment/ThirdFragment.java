@@ -113,9 +113,9 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "提醒";
+                    return getString(R.string.reminder);
                 case 1:
-                    return "代办";
+                    return getString(R.string.to_do);
             }
 
             return null;
