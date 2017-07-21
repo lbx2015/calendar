@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.flyco.tablayout.SlidingTabLayout;
 import com.riking.calendar.R;
 
 /**
@@ -36,6 +37,10 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
         done = v.findViewById(R.id.done);
         title = v.findViewById(R.id.title);
         add.setOnClickListener(this);
+
+        //adding view pager to the slidingTabLayout
+        SlidingTabLayout topTabLayout = (SlidingTabLayout) v.findViewById(R.id.top_tab_layout);
+        topTabLayout.setViewPager(mViewPager);
         return v;
     }
 

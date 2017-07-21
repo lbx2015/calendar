@@ -4,12 +4,13 @@
     <color name="colorPrimaryDark">#1b82d2</color>
     <color name="color_accent">#FF3D00</color>
 
-    <!-- Teal 600 -->
-    <color name="color_primary_3">#00897B</color>
-    <!-- Teal 800 -->
-    <color name="color_primary_dark_3">#00695C</color>
-    <!-- Cyan A200 -->
-    <color name="color_accent_3">#18FFFF</color>
+    <!--selected page tab -->
+    <color name="color_29a1f7">#29a1f7</color>
+    <!--unselected page tab -->
+    <color name="color_323232">#323232</color>
+    <!--background color-->
+    <color name="color_background_f2f2f2">#f2f2f2</color>
+    <color name="divider_color_d9d9d9">#d9d9d9</color>
     <!-- Blue Grey 800 -->
     <color name="window_background_3">#263238</color>
     <!-- White 100% -->
