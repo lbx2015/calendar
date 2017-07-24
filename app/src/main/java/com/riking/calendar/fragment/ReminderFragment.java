@@ -49,4 +49,10 @@ public class ReminderFragment extends Fragment {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderAdapter(reminders));
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        realm.close();
+    }
 }

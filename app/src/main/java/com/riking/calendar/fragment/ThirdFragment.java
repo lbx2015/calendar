@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AddRemindActivity;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -49,7 +51,7 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
         int position = mViewPager.getCurrentItem();
         switch (v.getId()) {
             case R.id.add: {
-                if (position == 0) {
+          /*      if (position == 0) {
                     ReminderFragment f = (ReminderFragment) mAdapter.getItem(mViewPager.getCurrentItem());
                     if (cancel != null)
                         cancel.setVisibility(View.VISIBLE);
@@ -57,7 +59,8 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
                         done.setVisibility(View.VISIBLE);
                     if (add != null)
                         add.setVisibility(View.GONE);
-                }
+                }*/
+                startActivity(new Intent(getActivity(), AddRemindActivity.class));
                 break;
             }
             case R.id.cancel: {
