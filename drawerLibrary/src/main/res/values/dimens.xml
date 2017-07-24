@@ -24,6 +24,7 @@
 
 <resources>
 
+    <dimen name="normal_text_size">14dp</dimen>
     <dimen name="md_baseline">16dp</dimen>
     <dimen name="md_baseline_content">72dp</dimen>
 

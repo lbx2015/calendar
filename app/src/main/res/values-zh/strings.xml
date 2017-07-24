@@ -5,4 +5,5 @@
     <string name="add">添加</string>
     <string name="to_do">待办</string>
     <string name="today">今天</string>
+    <string name="input_rememinds">请输入提醒内容</string>
 </resources>

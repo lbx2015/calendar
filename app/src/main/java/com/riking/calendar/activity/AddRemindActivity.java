@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.flyco.tablayout.SlidingTabLayout;
@@ -22,6 +23,7 @@ public class AddRemindActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_remind);
         viewPager = (ViewPager) findViewById(R.id.pager);
