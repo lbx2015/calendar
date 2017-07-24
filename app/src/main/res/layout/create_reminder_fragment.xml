@@ -8,9 +8,15 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="3.3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/input_text_background"
         android:hint="@string/input_rememinds"
+        android:paddingBottom="3dp"
+        android:paddingLeft="3dp"
+        android:paddingTop="3dp"
         android:textColorHint="@color/color_background_b6b6b6"
-        android:textSize="@dimen/normal_text_size"
-        android:background="@drawable/input_text_background"/>
+        android:textSize="@dimen/normal_text_size" />
 
 </LinearLayout>

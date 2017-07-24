@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class ViewPagerActivity extends FragmentActivity {
     public CommonTabLayout bottomTabs;
     MyPagerAdapter adapter;
-    private String[] mTitles = {"工作台", "节假日", "提醒", "个人中心"};
+    private String[] mTitles;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private View mDecorView;
 
@@ -58,6 +58,8 @@ public class ViewPagerActivity extends FragmentActivity {
 
             }
         });
+
+        mTitles = getResources().getStringArray(R.array.subTittles);
 
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], 0, 0));

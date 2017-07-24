@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RikingCalendar</string>
     <string name="calendar">Calendar</string>
-    <string name="add_schedule">add schedule</string>
+    <string name="add_schedule">Add schedule</string>
     <string name="status_output">Status Output…</string>
 
 
@@ -29,4 +29,12 @@
     <string name="add">Add</string>
     <string name="today">Today</string>
     <string name="input_rememinds">Please input reminder title</string>
+
+    <string-array name="subTittles">
+        <item>Job</item>
+        <item>Vocation</item>
+        <item>Remind</item>
+        <item>Info</item>
+
+    </string-array>
 </resources>

@@ -6,4 +6,11 @@
     <string name="to_do">待办</string>
     <string name="today">今天</string>
     <string name="input_rememinds">请输入提醒内容</string>
+    <string name="add_schedule">新建日程</string>
+    <string-array name="subTittles">
+        <item>工作台</item>
+        <item>节假日</item>
+        <item>提醒</item>
+        <item>个人中心</item>
+    </string-array>
 </resources>
