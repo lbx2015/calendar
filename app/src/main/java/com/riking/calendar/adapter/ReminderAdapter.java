@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.realm.model.Reminder;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +40,12 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
         holder.time.setText(simpleDateFormat.format(r.time));
         holder.title.setText(r.title);
+
+        //set a different color for the future reminders.
+        if (r.time.compareTo(new Date()) > 0) {
+            holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_29a1f7));
+            holder.title.setTextColor(ContextCompat.getColor(holder.title.getContext(), R.color.color_323232));
+        }
     }
 
     @Override
