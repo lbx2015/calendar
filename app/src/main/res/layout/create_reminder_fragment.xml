@@ -26,8 +26,8 @@
 
         <ImageView
             android:id="@+id/reminder_clock"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:paddingRight="10dp"
             android:src="@drawable/remind_time_clock" />
@@ -76,8 +76,8 @@
 
         <ImageView
             android:id="@+id/all_day_clock"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:paddingRight="10dp"
             android:src="@drawable/all_day_clock" />
@@ -108,8 +108,8 @@
 
         <ImageView
             android:id="@+id/reminder_repeat"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:paddingRight="10dp"
             android:src="@drawable/repeat" />
