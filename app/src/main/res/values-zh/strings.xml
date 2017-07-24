@@ -7,6 +7,7 @@
     <string name="today">今天</string>
     <string name="input_rememinds">请输入提醒内容</string>
     <string name="add_schedule">新建日程</string>
+    <string name="please_select_remind_time">请选择提醒时间</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>
