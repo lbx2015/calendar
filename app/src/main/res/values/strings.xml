@@ -30,6 +30,7 @@
     <string name="today">Today</string>
     <string name="input_rememinds">Please input reminder title</string>
     <string name="please_select_remind_time">Please select remind time</string>
+    <string name="all_day">All day</string>
 
     <string-array name="subTittles">
         <item>Job</item>
