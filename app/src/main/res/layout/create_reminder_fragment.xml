@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_background_f2f2f2"
     android:orientation="vertical">
 
@@ -33,7 +34,7 @@
             android:src="@drawable/remind_time_clock" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/select_remind_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

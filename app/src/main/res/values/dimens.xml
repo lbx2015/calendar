@@ -5,4 +5,11 @@
     <dimen name="two_dp">2dp</dimen>
     <dimen name="page_tab_height">48dp</dimen>
     <dimen name="normal_font_size_18">18sp</dimen>
+    <!--通用尺寸-->
+    <!--General sizes-->
+    <dimen name="WheelItemSpace">8dp</dimen>
+    <dimen name="WheelPadding">8dp</dimen>
+    <dimen name="WheelTextSize">20sp</dimen>
+
+    <dimen name="WheelLabelTextSize">12sp</dimen>
 </resources>
