@@ -26,7 +26,7 @@ public class WheelDayPicker extends WheelCurvedPicker {
 
     private List<String> days = new ArrayList<>();
 
-    private int day = C.get(Calendar.DAY_OF_MONTH), month = C.get(Calendar.MONTH) + 1,
+    public int day = C.get(Calendar.DAY_OF_MONTH), month = C.get(Calendar.MONTH) + 1,
             year = C.get(Calendar.YEAR);
     private int maxDay;
 

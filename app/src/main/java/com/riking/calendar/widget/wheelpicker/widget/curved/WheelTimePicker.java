@@ -31,7 +31,7 @@ public class WheelTimePicker extends LinearLayout implements IWheelPicker, IDigi
 
     protected AbstractWheelPicker.OnWheelChangeListener listener;
 
-    protected String hour, minute;
+    public String hour, minute;
     protected int labelColor = 0xFF000000;
     protected int stateHour, stateMinute;
 

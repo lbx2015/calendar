@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_background_f2f2f2"
     android:orientation="vertical">
 
@@ -19,6 +18,7 @@
         android:textSize="@dimen/normal_text_size" />
 
     <RelativeLayout
+        android:id="@+id/select_remind_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -34,7 +34,6 @@
             android:src="@drawable/remind_time_clock" />
 
         <TextView
-            android:id="@+id/select_remind_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -43,20 +42,20 @@
             android:textColor="@color/color_323232" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/select_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@+id/select_time"
+            android:layout_toStartOf="@+id/select_time_narrow"
             android:text="2017-07-19 19:00"
             android:textColor="@color/color_323232" />
 
         <ImageView
-            android:id="@id/select_time"
+            android:id="@id/select_time_narrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignBottom="@+id/textView2"
+            android:layout_alignBottom="@id/select_time"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.widget.wheelpicker.core.AbstractWheelPicker;
@@ -26,10 +27,10 @@ import java.util.List;
 public class WheelPopWindow extends PopupWindow implements AbstractWheelPicker.OnWheelChangeListener {
     private static final String TAG_SUBMIT = "submit";
     private static final String TAG_CANCEL = "cancel";
-    WheelDatePicker wheelDatePicker;
-    WheelTimePicker wheelTimePicker;
+    public WheelDatePicker wheelDatePicker;
+    public WheelTimePicker wheelTimePicker;
     private View rootView;
-    private View btnSubmit, btnCancel;
+    public View btnSubmit, btnCancel;
     private List<String> mData;
     private WheelCurvedPicker mPicker;
     private WheelCurvedPicker mPicker2;
@@ -47,6 +48,8 @@ public class WheelPopWindow extends PopupWindow implements AbstractWheelPicker.O
         rootView = mLayoutInflater.inflate(R.layout.pw_wheel, null);
         wheelDatePicker = (WheelDatePicker) rootView.findViewById(R.id.date_picker);
         wheelTimePicker = (WheelTimePicker) rootView.findViewById(R.id.time_picker);
+        btnSubmit = rootView.findViewById(R.id.btnSubmit);
+        btnCancel = rootView.findViewById(R.id.btnCancel);
         setContentView(rootView);
 
     }

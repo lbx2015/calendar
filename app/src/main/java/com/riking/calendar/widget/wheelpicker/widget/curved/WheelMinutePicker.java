@@ -27,7 +27,7 @@ public class WheelMinutePicker extends WheelCurvedPicker implements IDigital {
 
     private List<String> minutes = MINUTES_DIGITAL_SINGLE;
 
-    private int minute;
+    public int minute;
 
     public WheelMinutePicker(Context context) {
         super(context);

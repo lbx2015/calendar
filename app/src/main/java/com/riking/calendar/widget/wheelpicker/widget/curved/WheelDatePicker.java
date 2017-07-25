@@ -29,13 +29,13 @@ import java.util.List;
  * @version 1.0.0 beta
  */
 public class WheelDatePicker extends LinearLayout implements IWheelPicker {
-    protected WheelYearPicker pickerYear;
-    protected WheelMonthPicker pickerMonth;
-    protected WheelDayPicker pickerDay;
+    public WheelYearPicker pickerYear;
+    public WheelMonthPicker pickerMonth;
+    public WheelDayPicker pickerDay;
 
     protected AbstractWheelPicker.OnWheelChangeListener listener;
 
-    protected String year, month, day;
+    public String year, month, day;
     protected int labelColor = 0xFF000000;
     protected int stateYear, stateMonth, stateDay;
 
