@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>aml</title>
+<link type="include" href="/common/depcss.html" />
+</head>
+<body>
+	{@"common/header.html"}
+	<div class="mainContent" id="mainContent">
+		<div class="wrap">
+			<div class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title" id="layui-tab">
+					<li class="layui-this">待办汇总</li>
+					<li>大额交易报送</li>
+					<li>可疑交易报送</li>
+				</ul>
+				<div class="crumbs">
+					<ul class="layui-breadcrumb layui-nav" lay-filter="">
+						<li><a href="javascript:void(0)"><cite id="first-item">反洗钱</cite></a></li>
+						<li class="layui-nav-item"><a href="javascript:"><cite
+								id="second-item">监测与分析</cite></a>
+							<dl class="layui-nav-child" id="second-items">
+								<dd>
+									<a href="javascript:" data-url="/exhibition.html">待办汇总</a>
+								</dd>
+								<dd>
+									<a href="javascript:" data-url="/riskDataReport.html">可疑分析报告</a>
+								</dd>
+								<dd>
+									<a href="javascript:" data-url="/suspiciousTrans.html">可疑分析处理</a>
+								</dd>
+							</dl></li>
+						<li><a href="javascript:void(0)"><cite id="third-item">待办汇总</cite></a>
+						</li>
+					</ul>
+				</div>
+				<div class="quick-menu">
+					<span class="layui-breadcrumb" lay-separator="|"> <a
+						href="javascript:" data-url="/exhibition.html">待办汇总</a> <a
+						href="javascript:" data-url="/bigAmount.html">大额数据报送</a> <a
+						href="javascript:" data-url="/suspiciousManage.html">可疑交易报送</a> <a
+						href="javascript:" data-url="/riskDataReport.html">可疑分析报告</a>
+					</span>
+				</div>
+				<div class="layui-tab-content" style="height: auto">
+					<div class="layui-tab-item layui-show">
+						<div class="iframeCont">
+							<iframe frameborder="0" width="100%" height="100%"
+								id="exhibition" marginheight="0" marginwidth="0" scrolling="no"
+								src="exhibition.html"> </iframe>
+						</div>
+					</div>
+					<div class="layui-tab-item">
+						<div class="iframeCont">
+							<iframe frameborder="0" width="100%" height="100%" id="tab2"
+								marginheight="0" marginwidth="0" scrolling="no"
+								src="bigAmount.html"> </iframe>
+						</div>
+					</div>
+					<div class="layui-tab-item">
+						<div class="iframeCont">
+							<iframe frameborder="0" width="100%" height="100%" id="tab3"
+								marginheight="0" marginwidth="0" scrolling="no"
+								src="suspiciousManage.html"> </iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{@"common/footer.html"}
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+	startInit(document.getElementById('exhibition'), 560);
+	startInit(document.getElementById('tab2'), 560);
+	startInit(document.getElementById('tab3'), 560);
+
+	$(window)
+			.scroll(
+					function() {
+						if ($(window).scrollTop() > 100) {
+							document.getElementsByTagName("iframe")[0].contentWindow.TmplUtils
+									.rollingDown();
+						} else {
+							document.getElementsByTagName("iframe")[0].contentWindow.TmplUtils
+									.roll();
+						}
+					});
+	$(function() {
+		$("header .nav-left .layui-nav-item").mouseover(
+				function() {
+					$(this).children(".layui-nav-child").css("left",
+							$(this).offset().left);
+				})
+		$(".layui-nav-child li a").click(function() {
+			View.open($(this).data("url"));
+			$("#layui-tab .layui-this").html($(this).html());
+			$(".layui-nav-item dl").removeClass("layui-show");
+		});
+		$(".quick-menu a")
+				.click(
+						function() {
+							View.open($(this).data("url"));
+							var htmla = $($(this).prop("outerHTML"));
+							htmla.children("span").remove();
+							$("#layui-tab .layui-this").html(htmla.text());
+							$(".layui-nav-item dl").removeClass("layui-show");
+							setTimeout(function() {
+								$("#layui-tab .layui-this").children("span")
+										.remove();
+							}, 10);
+
+							var className = $(this).attr("class");
+							var item = $(".layui-nav-child").children(':first');
+							if (className == "factor") {
+								var first = item.children(':first').children(
+										":first");
+								$("#second-item").html(first.text());
+								var fir = $(this).text();
+								$("#third-item").html(
+										fir.substring(0, fir.length - 1));
+								$("#second-items").children("dd").remove();
+								var a = $("#khpj").children("li");
+								$.each(a, function(index, elem) {
+									$("#second-items").append(
+											"<dd>" + elem.innerHTML + "</dd>");
+								});
+							} else if (className == "rule") {
+								var first = item.children(':first').next()
+										.children(":first");
+								$("#second-item").html(first.text());
+								var fir = $(this).text();
+								$("#third-item").html(
+										fir.substring(0, fir.length - 1));
+								$("#second-items").children("dd").remove();
+								var a = $("#gzyq").children("li");
+								$.each(a, function(index, elem) {
+									$("#second-items").append(
+											"<dd>" + elem.innerHTML + "</dd>");
+								});
+							} else if (className == "report") {
+								var first = item.children(':first').next()
+										.next().children(":first");
+								$("#second-item").html(first.text());
+								var fir = $(this).text();
+								$("#third-item").html(
+										fir.substring(0, fir.length - 1));
+								$("#second-items").children("dd").remove();
+								var a = $("#jcfx").children("li");
+								$.each(a, function(index, elem) {
+									$("#second-items").append(
+											"<dd>" + elem.innerHTML + "</dd>");
+								});
+							} else {
+								var first = item.children(':last').children(
+										":first");
+								$("#second-item").html(first.text());
+								$("#third-item").html($(this).text());
+								$("#second-items").children("dd").remove();
+								var a = $("#jcfx").children("li");
+								$.each(a, function(index, elem) {
+									$("#second-items").append(
+											"<dd>" + elem.innerHTML + "</dd>");
+								});
+							}
+							$("#second-items").children("dd").children("a")
+									.click(
+											function() {
+												View.open($(this).data("url"));
+												$("#layui-tab .layui-this")
+														.html($(this).html());
+												$(".layui-nav-item dl")
+														.removeClass(
+																"layui-show");
+												$("#third-item").html(
+														$(this).text());
+											});
+						});
+		$("#second-items").children("dd").children("a").click(function() {
+			View.open($(this).data("url"));
+			var text = $(this).contents().filter(function() {
+				return this.nodeType === 3;
+			}).text();
+			$("#layui-tab .layui-this").html(text);
+			$("#third-item").html(text);
+			$(".layui-nav-item dl").removeClass("layui-show");
+		});
+	});
+	startInit(document.getElementById("exhibition"), 560);
+	startInit(document.getElementById("tab2"), 560);
+	startInit(document.getElementById("tab3"), 560);
+	$(function() {
+		$("header .nav-left .layui-nav-item").mouseover(
+				function() {
+					$(this).children(".layui-nav-child").css("left",
+							$(this).offset().left);
+				});
+		$(".layui-nav-child li a").click(function() {
+			View.open($(this).data("url"));
+			$("#layui-tab .layui-this").html($(this).html());
+			$(".layui-nav-item dl").removeClass("layui-show");
+		});
+		$(".quick-menu a").click(function() {
+			View.open($(this).data("url"));
+			$("#layui-tab .layui-this").html($(this).html());
+			$(".layui-nav-item dl").removeClass("layui-show");
+		});
+	});
+
+	$(document).ready(function() {
+		$(".layui-nav ul").children("li").bind("click", function() {
+			var first = $("#layui-nav-item > a:first-child").text();
+			$("#first-item").html(first);
+			var p = $(this).parent(this).siblings().text();
+			$("#second-item").html(p);
+			var third = $(this).text();
+			$("#third-item").html(third);
+
+			var a = $(this).parent("ul").children("li");
+			$("#second-items").children("dd").remove();
+			$.each(a, function(index, elem) {
+				$("#second-items").append("<dd>" + elem.innerHTML + "</dd>");
+			});
+
+			$("#second-items").children("dd").children("a").click(function() {
+				$(".layui-show iframe").attr("src", Const.ctx+$(this).data("url"));
+				$("#layui-tab .layui-this").html($(this).html());
+				$(".layui-nav-item dl").removeClass("layui-show");
+				$("#third-item").html($(this).text());
+			});
+		});
+	});
+</script>
+
+</html>

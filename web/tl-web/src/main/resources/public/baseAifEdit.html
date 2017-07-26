@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>dialog2</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+<link rel="stylesheet" type="text/css" href="{=ctx}/css/ystep.css" />
+</head>
+<body class="iframeBody">
+	<div class="formbox layui-form add-formbox">
+		<div class="_tmpl" data-url="edit.html" data-attr="baseAif.json"
+			data-bind="editOnBind" data-param=""></div>
+		<div class="layui-btn-div" id="layui-btn-fixed">
+			<div class="ystep4" id="flowsheet"></div>
+			<div id="commounts" class="txt-c" style="display:none;">
+				不通过理由：<span id = "commount" style="color:red"></span>
+			</div>
+			<span id="wf_btns">
+				<button class="layui-btn bgc1 layui-btn-mini" lay-submit
+					lay-filter="edit" id="submit">确定</button>
+			</span>
+			<button class="layui-btn layui-btn-primary layui-btn-mini"
+				onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+		</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
+<script>
+$(document).ready(function() {
+	$("#submit").click(function() {
+		if (TmplUtils.check('edit')) {
+			edit();
+		}
+	});
+});
+Work.onSendEventBefore(function(jobEvent, job) {
+	if(jobEvent.event=='RECROD_SAVE'){
+		if(TmplUtils.check('edit')){
+		}else{
+			return null;
+		}
+	}
+	var baseAif =  Utils.formToObj("edit");
+	View.info(baseAif);
+	jobEvent.targetJson = JSON.stringify(baseAif);
+	var et = job.getEvent(jobEvent.event);
+	if (et && et.commentsRequired === true) {
+		var opts = {"title":"请填写不通过原因"}; 
+		// opts 对象可以不传。有默认值
+		FlowHelper.openCommentsBox(opts,function(comments) {
+			jobEvent.comments = comments;
+			jobEvent.targetJson = JSON.stringify(baseAif);
+			Work.sendJobEvent(jobEvent); //触发事件
+		});
+		return null;//返回空,工作流事件不会触发
+	}
+	return jobEvent;
+});
+
+Work.onSendEventAfter(function(result, job) {
+	View.info("job :{jobId} result：{success} ".format(result));
+	//View.info(result.data);
+	if (result.success) {
+		TmplUtils.showMsgSuccess('编辑成功');
+	}
+	if(!!result.data){
+		if(result.data == "State has changed"||result.data == "操作失败"){
+			TmplUtils.showMsgFail('操作失败');
+		}
+		return;
+	}
+	parent.View.fireEvent("TB_DATA_CHANGE", {
+		"window" : window.name
+	});
+});
+//var id = window.location.hash.replace("#", "");
+var id = View.getQStr('id');
+var state = View.getQStr('state');
+	function editOnBind(attrs, param) {
+		tmpl = this;
+		tmpl.bind(function(callback) {
+			var _this = this;
+			if (id) {
+				var url = Const.apiUrl + "/baseAifs/get";
+				var _this = this;
+				View.get(url, "id=" + id, function(resp) {
+					var data = {};
+					if (resp) {
+						data.data = resp;
+					}
+					//默认展开分组 ，不配置默认展开第一个分组
+					data.showGroup = "base";
+					data.editable = state;
+					callback.call(_this, data);
+					TmplUtils.editOnLoad();
+				}, function() {
+					TmplUtils.showMsgFail('账户信息获取失败');
+				});
+			} else {
+				var data = {};
+				data.showGroup = "base";
+				callback.call(_this, data);
+				TmplUtils.editOnLoad();
+			}
+		});
+		tmpl.onFinish(function(data) {
+			var cls = [ "", "layui-btn-normal" ];
+			var job = Work.getJob(data.data);
+			var _html = job.getEventsHtml(cls);
+			$("#wf_btns").html(_html);
+			job.createFlowsheet($("#flowsheet"), function(job) {
+				View.info("ok");
+				if(job.curJobState!="PRE_APPROVE"&&data.data.aptp=="02"){
+					$("#commounts").css('display','block');
+				}
+				var status=[];
+				for(var i=0;i<job.jobStates.length;i++){
+					if(job.jobStates[i].state=="PRE_APPROVE"){
+						status.push(job.jobStates[i]);
+					}
+				}
+				if(status.length>0){
+					$("#commount").html(status[status.length-1].comments);
+				}
+			});
+		});
+	}
+	//编辑保存
+	function edit() {
+		var baseAif = Utils.formToObj("edit");
+		var url = Const.apiUrl + "/baseAifs/addOrUpdate";
+		View.post(url, baseAif, function(resp) {
+			TmplUtils.showMsgSuccess('编辑成功');
+			parent.View.fireEvent("TB_DATA_CHANGE", {
+				"window" : window.name
+			});
+		}, function(code) {
+			TmplUtils.showMsgFail('编辑失败');
+		});
+	}
+</script>
+</html>

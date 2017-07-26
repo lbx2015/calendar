@@ -1,0 +1,761 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>dialog2</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+<link rel="stylesheet" type="text/css" href="{=ctx}/css/ystep.css" />
+</head>
+<body class="iframeBody">
+	<div class="formbox layui-form add-formbox">
+		<div class="_tmpl" data-url="edit.html" data-attr="bigAmount.json"
+			data-bind="editOnBind" data-param=""></div>
+		<div class="layui-btn-div" id="layui-btn-fixed">
+			<div class="ystep4" id="flowsheet"></div>
+			<div id="commounts" class="txt-c" style="display:none;">
+				不通过理由：<span id = "commount" style="color:red"></span>
+			</div>
+			<div class="txt-c">
+				<span id="wf_btns">
+					<button class="layui-btn bgc1 layui-btn-mini" lay-submit
+						lay-filter="edit" id="submit" onclick = "checkC();">确定</button>
+				</span>
+				<button class="layui-btn layui-btn-primary layui-btn-mini"
+					onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+			</div>
+		</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
+<script>
+String.prototype.endWith=function(endStr){
+	  var d=this.length-endStr.length;
+	  return (d>=0&&this.lastIndexOf(endStr)==d)
+}
+
+var bigAmount;
+Work.onSendEventBefore(function(jobEvent, job) {
+	View.info("onSendEventBefore");
+	//审核不修改保存数据
+	if(jobEvent.event!="VERIFY_PASS"&&jobEvent.event!="VERIFY_NOT_PASS"){
+	    bigAmount =  Utils.formToObj("edit");
+		if(!!bigAmount.tstm){
+			bigAmount.tstm = getUTCDateStr(bigAmount.tstm);
+		}
+		if(!!bigAmount.tstp){
+			bigAmount.tstp = bigAmount.tstp.replace(/,/g,"");
+		}
+		if(!!bigAmount.trcd){
+			bigAmount.trcd = bigAmount.trcd.replace(/,/g,"");
+		}
+		if(!!bigAmount.cfrc){
+			bigAmount.cfrc = bigAmount.cfrc.replace(/,/g,"");
+		}
+	    jobEvent.targetJson = JSON.stringify(bigAmount); 
+	}
+	var et = job.getEvent(jobEvent.event);
+	if (et && et.commentsRequired === true) {//jobEvent.event=="VERIFY_NOT_PASS"
+		var opts = {"title":"请填写不通过原因"}; 
+		// opts 对象可以不传。有默认值
+		FlowHelper.openCommentsBox(opts,function(comments) {
+		    jobEvent.comments = comments;
+			Work.sendJobEvent(jobEvent); //触发事件
+		});
+		return null;//返回空,工作流事件不会触发
+	}
+	return jobEvent;
+});
+var reason;
+Work.onSendEventAfter(function(result, job) {
+	View.info("job :{jobId} result：{success} ".format(result));
+	//View.info(result.data);
+	if (result.success) {
+		TmplUtils.showMsgSuccess('编辑成功');
+	}
+	if(!!result.data){
+		reason =result.data;
+		openReason(result.data,true);
+		return;
+	}
+	parent.View.fireEvent("TB_DATA_CHANGE", {
+		"window" : window.name
+	});
+});
+
+	var id = View.getQStr('id');
+	var state = View.getQStr('state');
+	var isShow = false;
+	function editOnBind(attrs, param) {
+		tmpl = this;
+		tmpl.bind(function(callback) {
+			var _this = this;
+			if (id) {
+				if (state == "copy") {
+					var url = Const.apiUrl + "/bigamount/getes";
+					state = "1";
+				} else {
+					var url = Const.apiUrl + "/bigamount/get";
+				}
+				View.get(url, "id=" + id, function(resp) {
+					var data = {};
+					data.attrs = attrs.attrs;
+					if (resp) {
+						data.data = resp;
+					}
+					if(state=="show"){
+						state ="2";
+						isShow = true;
+					}else if(state=="change"){
+						state = "1";
+						data.data.bwzt='';
+						data.data.reportType='';
+					}
+					data.editable = state;
+					data.showGroup = "reportInfo,transInfo";
+					callback.call(_this, data);
+					$($(".layui-colla-title")[0]).append("<span>报告机构编码: " + data.data.ricd
+									+ "</span><span>报告金融机构网点代码: "+ data.data.finc + "</span>");
+					TmplUtils.editOnLoad();
+				}, function() {
+					TmplUtils.showMsgFail('信息获取失败');
+				});
+			} else {
+				var url = Const.apiUrl + "/bigamount/getInit";
+				View.get(url,"", function(resp) {
+					var data = {};
+					if (resp) {
+						data.data = resp;
+					}
+					data.attrs = attrs.attrs;
+					data.groups = attrs.groups;
+					data.checkClick = "check";
+					data.saveClick = "edit";
+					callback.call(_this, data);
+					TmplUtils.editOnLoad();
+					//客户号后自动查询客户信息
+					$("input[name='ctid']").bind("focus",function(){
+						if(this.oninput === null){
+							$(this).bind("input",lazyStrChange);
+						}else if(_this.onpropertychange === null){
+							$(this).bind("propertychange",lazyStrChange);
+						}
+					});
+					//账户自动补录
+					$("input[name='ctac']").bind("focus",function(){
+						if(this.oninput === null){
+							$(this).bind("input",lazyStrChange);
+						}else if(_this.onpropertychange === null){
+							$(this).bind("propertychange",lazyStrChange);
+						}
+					});
+					//交易对手信息自动补录
+					$("input[name='tcac']").bind("focus",function(){
+						if(this.oninput === null){
+							$(this).bind("input",lazyStrChange);
+						}else if(_this.onpropertychange === null){
+							$(this).bind("propertychange",lazyStrChange);
+						}
+					});
+				}, function() {
+					TmplUtils.showMsgFail('信息获取失败');
+				});
+			}
+		});
+		tmpl.onFinish(function(data) {
+			//$("select[name='reportType']").attr("disabled",true);
+			var cls = [ "", "layui-btn-normal" ];
+			// delete data.data.job
+			var job = Work.getJob(data.data);
+			//非复制和添加状态
+			if(!!job){
+				//查看状态
+				if(isShow){
+					$('#submit').hide();
+				}else{
+					var _html = job.getEventsHtml(cls);
+					$("#wf_btns").html(_html);
+				}
+				job.createFlowsheet($("#flowsheet"), function(job) {
+					View.info("ok");
+					if(job.curJobState!="PRE_VERIFY"&&data.data.aptp=="02"){
+						$("#commounts").css('display','block');
+					}
+					var status=[];
+					for(var i=0;i<job.jobStates.length;i++){
+						if(job.jobStates[i].state=="PRE_VERIFY"){
+							status.push(job.jobStates[i]);
+						}
+					}
+					if(status.length>0){
+						$("#commount").html(status[status.length-1].comments);
+					}
+				});
+			}
+			var enumInput = $("input[data-type='lazyEnum']");
+			for(var i=0;i<enumInput.length;i++){
+				lazyEnumEach(enumInput[i],data);
+			}
+			//$(enumInput).each(lazyEnumEach(this));
+		});
+	}
+	
+	
+	function lazyEnumEach(self,data){
+		var _this = self;
+		var $ul = $(_this).next().next();
+		var _hidden = $(self).next();
+		var _name = $(self).next().attr("name");
+		
+		if(_name.endWith("0")){
+			var name = _name.substring(0,_name.indexOf("-"));
+			var _key = data.data[name];
+			if(_key){
+				var keys = _key.split(",");
+				
+				var param = {"table":"T_AML_SUSPICIOUS","field":"COUNTRY","key":keys[0]};
+				View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+					$(_this).val(data.valu);
+					$(_hidden).val(data.ke);
+				});
+				
+				if("CHN" != keys[0] && "Z01" != keys[0] && "Z02" != keys[0] && "Z03" != keys[0]&&keys[0]){
+					if(keys[0].indexOf("@")>-1){
+						$($(_this).parent().next().find("input")[0]).attr("disabled","false");
+						$($(_this).parent().next().find("input")[0]).val("");
+						$($(_this).parent().next().find("input")[1]).val("");
+					}else{
+						$($(_this).parent().next().find("input")[0]).attr("disabled","false");
+						$($(_this).parent().next().find("input")[0]).val("000000");
+						$($(_this).parent().next().find("input")[1]).val("000000");
+					}
+				}else{
+				    if(keys[1]){
+                        var param = {"table":"T_BASE_AREA","field":"FIRC","key":keys[1]};
+                        View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+                            if(data.ke && data.valu){
+                                $($(_this).parent().next().find("input")[0]).val(data.ke + "-" + data.valu);
+                                $($(_this).parent().next().find("input")[1]).val(data.ke);
+							}
+                        });
+					}
+				}
+			}
+		}
+		
+		$ul.hide();
+		$(_this).bind("focus",function(){
+			if(_this.oninput === null){
+				$(_this).bind("input",inputChange);
+			}else if(_this.onpropertychange === null){
+				$(_this).bind("propertychange",inputChange);
+			}
+		});
+	}
+	
+	document.onclick = function(){
+		var uls = $("input[data-type='lazyEnum']").next().next();
+		$(uls).each(function(){
+			if(!$(this).is(":hidden")){
+				$(this).prev().val("");
+				$(this).prev().prev().val("");
+				$(this).empty();
+				$(this).hide();
+			}
+		});
+		var uls_2 = $("input[data-type='lazyString']").next();
+		$(uls_2).each(function(){
+			if(!$(this).is(":hidden")){
+				$(this).empty();
+				$(this).hide();
+			}
+		});
+	}
+	
+	function inputChange(event){
+		var _this = event.currentTarget;
+		var _hidden = $(_this).next();
+		var $ul = $(_this).next().next();
+		
+		var url = $(_this).attr("data-url");
+		var _nameNum = _hidden.attr("name").match(/\-\|\-(\S*)/)[1];
+		
+		_hidden.val("");	
+		if(_nameNum == 0){
+			$($(_this).parent().next().find("input")[0]).val("");
+			$($(_this).parent().next().find("input")[1]).val("");
+		}else{
+			var key = $($(_this).parent().prev().find("input")[1]).val();
+			if(key != ""){
+				url += "?key=" + key;
+			}else{
+				return;
+			}
+		}
+		if($(_this).val() == ''){
+			$ul.hide();
+			return;
+		}
+		
+		View.get(Const.apiUrl + url,{"keyword":$(this).val()},function(data){
+			if(data.length > 0){
+				$ul.empty();
+				$(data).each(function(){
+					var $li = $("<li key='{0}'>{1}</li>".format(this.key,this.value));
+					
+					$li.click(function(e){
+						if(_this.onpropertychange === null){
+							$(_this).unbind("propertychange");
+						}
+						e = e == undefined ? window.event:e;
+						var curTarget = e.currentTarget == undefined ? e.srcElement : e.currentTarget;
+						var key = $(curTarget).attr("key");
+						if(_nameNum == 0){
+							if("CHN" != key && "Z01" != key && "Z02" != key && "Z03" != key){
+								$($(_this).parent().next().find("input")[0]).attr("disabled",true);
+								if(key.indexOf("@")>-1){
+									$($(_this).parent().next().find("input")[0]).val("");
+									$($(_this).parent().next().find("input")[1]).val("");
+								}else{
+									$($(_this).parent().next().find("input")[0]).val("000000");
+									$($(_this).parent().next().find("input")[1]).val("000000");
+								}
+							}else{
+								$($(_this).parent().next().find("input")[0]).removeAttr("disabled");;
+							}
+						}
+						$(_this).next().val(key);
+						$(_this).val($(curTarget).text());
+						$ul.empty();
+						$ul.hide();
+					}).mousemove(function(e){
+						$(e.currentTarget).css("background","#08c");
+					}).mouseout(function(e){
+						$(e.currentTarget).css("background","none");
+					});
+					$ul.append($li);
+				});
+				$ul.show();
+			}else{
+				$ul.empty();
+				$ul.hide();
+			}
+		});
+	}
+	
+	function lazyStrChange(event){
+		var _this = event.currentTarget;
+		var $ul = $(_this).next();
+		var url = $(_this).attr("data-url");
+		if($(_this).val() == ''){
+			$ul.hide();
+			return;
+		}
+		View.get(Const.apiUrl + url,{"keyword":$(this).val()},function(data){
+			if(data.length > 0){
+				$ul.empty();
+				$(data).each(function(){
+					var $li = $("<li key='{0}'>{1}</li>".format(this.key,this.value));
+					$li.click(function(e){
+						if(_this.onpropertychange === null){
+							$(_this).unbind("propertychange");
+						}
+						e = e == undefined ? window.event:e;
+						var curTarget = e.currentTarget == undefined ? e.srcElement : e.currentTarget;
+						$(_this).val($(curTarget).text());
+						$ul.empty();
+						$ul.hide(); 
+						var keys = $(curTarget).attr("key").split(',');
+						if($(_this).attr('name')=='ctid'){
+							findCustemer(keys[0],keys[1]);
+						}else if($(_this).attr('name')=='ctac'){
+							findCtac(keys[1]);
+						}else if($(_this).attr('name')=='tcac'){
+							findOppoInfo(keys[1]);
+						}
+					}).mousemove(function(e){
+						$(e.currentTarget).css("background","#08c");
+					}).mouseout(function(e){
+						$(e.currentTarget).css("background","none");
+					});
+					$ul.append($li);
+				});
+				$ul.show();
+			}else{
+				$ul.empty();
+				$ul.hide();
+			}
+		});
+	}
+
+	//暂存
+	function tempSave() {
+		bigAmount =  Utils.formToObj("edit");
+		url = Const.apiUrl + "/bigamount/tempSave";
+		View.post(url, bigAmount, function(resp) {
+			TmplUtils.showMsgSuccess('操作成功');
+			parent.View.fireEvent("TB_DATA_CHANGE", {
+				"window" : window.name
+			});
+		}, function(code) {
+			TmplUtils.showMsgFail('操作失败');
+		});
+	}
+
+	//校验
+	function checkC() {
+		bigAmount =  Utils.formToObj("edit");
+		if(!!bigAmount.tstm){
+			bigAmount.tstm = getUTCDateStr(bigAmount.tstm);
+		}
+		var editForms = $("form[name=edit]");
+		var url = Const.apiUrl + "/bigamount/check";
+		View.post(url, bigAmount,function(resp) {
+					var data;
+					if (resp.reason != null) {
+						data = resp.reason;
+						reason = resp.reason;
+					}
+					if (!data) {
+						save(bigAmount);
+						editForms.find(".yzts").removeClass("yzts");
+					} else {
+						openReason(data,true);
+					}
+				}, function(code) {
+					TmplUtils.showMsgFail('操作失败');
+				});
+	}
+	
+	
+	function save(bigAmount){
+		url = Const.apiUrl + "/bigamount/addOrUpdate";
+		View.post(url, bigAmount, function(resp) {
+			TmplUtils.showMsgSuccess('操作成功');
+			parent.tbTmpl.refresh("pindex="
+					+ (parent.TmplUtils.currPage - 1) + "&pcount="
+					+ parent.TmplUtils.pageSize
+					+ parent.TmplUtils.searchParam);
+			parent.previewTmpl.refresh();
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+		}, function(code) {
+			TmplUtils.showMsgFail('操作失败');
+		});
+	}
+
+	
+	 TmplUtils.onEunmLinkChanged(null,function(enumObj){
+		 //linkenum查询后修改操作
+		 var names = $(enumObj).attr("name").split("-|-");
+		 var _name ='';
+		 if($(enumObj).attr("name").indexOf("tstp-|-0")>-1){
+			 if($(enumObj).val()!='00'){
+				_name = names[0]+"-|-"+2;
+				 $("select[name='"+ _name+ "']").empty();
+				 $("select[name='"+ _name+ "']").append("<option value='--##--'>--请选择--</option>");
+			 }
+			 $("select[name='"+ names[0]+"-|-"+1+ "']").val('--##--');
+			 $("select[name='"+ names[0]+"-|-"+2+ "']").val('--##--');
+		 }else if($(enumObj).attr("name").indexOf("tstp-|-1")>-1){
+			 _name = names[0]+"-|-"+2;
+			$("select[name='"+ _name+ "']").val("--##--"); 
+		 }
+		 layui.form().render();
+		 openReason(reason,false);
+	 });
+	 
+	 
+	 var form = layui.form();
+	  form.on("select(bwzt)", function(data){
+		  if(data.value=="xzbw"||data.value=="cwhz"){
+			  $("select[name='reportType']").val("N");
+		  }else if(data.value=="scbw"||data.value=="sjsc"||data.value=="khsc"||data.value=="tzsc"){
+			  $("select[name='reportType']").val("D");
+		  }else{
+			  $("select[name='reportType']").val("C");
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	  
+	  
+	function openReason(resp,flag){
+		var ht ='';
+		if(!!resp&&resp.indexOf(":")>-1){
+			var editForms = $("form[name=edit]");
+			var data = resp.split(",");
+			editForms.find(".yzts").removeClass("yzts");
+			/* parent.tbTmpl.refresh("pindex="
+					+ (parent.TmplUtils.currPage - 1) + "&pcount="
+					+ parent.TmplUtils.pageSize
+					+ parent.TmplUtils.searchParam);
+			parent.previewTmpl.refresh(); */
+			var count = 0;
+			for ( var i in data) {
+				var name = data[i].split(":")[0];
+				var need = data[i].split(":")[1];
+				if(!!need){
+					count++;
+					ht += "<p>" + count + "、" + need + "</p>";
+				}
+				var obj = document.getElementsByName(name);
+				if(obj.length<=0){
+					obj = $("input[name^='"+name+"']").parent();
+					if(obj.length<=0){
+						obj = $("select[name^='"+name+"']").parent();
+					}
+				}
+				//group展开
+				if($(obj)){
+					$(obj).closest(".layui-colla-content").addClass("layui-show");
+				}else{
+					obj.closest(".layui-colla-content").addClass("layui-show");
+				}
+				//错误tips
+				yzTips(data[i].split(":")[0], obj[0], need);
+			}
+		}
+		if(flag){
+			if(resp.indexOf("State has changed")>-1){
+				TmplUtils.showMsgFail("状态已经发生改变，操作失败");
+			}else if(resp.indexOf(":")>-1){
+				top.layer.open({
+					content : ht,
+					btn : [ '关闭' ],
+					yes : function(index, layero) {
+						top.layer.closeAll();
+					},
+					cancel : function() {
+					}
+				});
+			}else{
+				TmplUtils.showMsgFail(resp);
+			}
+		}
+	}
+	
+	function showTips(obj, need) {
+		obj.focus(function() {
+			$(".layui-layer-tips").hide();
+			layer.tips(need, this, {
+				tips : [ 2, '#f00' ],
+				time : 1000000
+			});
+		});
+		obj.blur(function() {
+			$(".layui-layer-tips").hide();
+			$(".layui-layer-tips").attr("showtime", 3000);
+		});
+	}
+	function yzTips(name, obj, need) {
+		if (obj.tagName == "SELECT") {
+			$(obj).parent().find("input").addClass('yzts');
+			showTips($(obj).parent().find("input"), need);
+		} else if(obj.tagName == "INPUT"){
+			$(obj).addClass('yzts');
+			showTips($(obj), need);
+		}else if(obj.tagName == "TEXTAREA"){
+			$(obj).addClass('yzts');
+			showTips($(obj), need);
+		}else if(obj.tagName == "UL"){
+			$(obj).parent().addClass('yzts');
+			showTips($(obj).parent().next().find("input"), need);
+		}else{
+			if($(obj).attr("class")=="layui-input-inline"){
+				$(obj).addClass('yzts');
+				showTips($(obj).find('input'), need);
+			}else{
+				$(obj).parent().addClass('yzts');
+				showTips($(obj).parent().find('input'), need);
+			}
+		}
+	}
+	
+	//查询客户信息
+	function findCustemer(id,ctid){
+		var url = "/baseCorpCusts/findOne";
+		View.get(url,"id="+id+"&ctid="+ctid,function(resp){
+			if(!!resp.id){
+				autoEdit(resp);
+			}else{
+				findIndvCust(id,ctid);
+			}
+		});
+	}
+	function findIndvCust(id,ctid){
+		var url = "/baseIndvCusts/findOne";
+		View.get(url,"id="+id+"&ctid="+ctid,function(resp){
+			autoEdit(resp);
+		});
+	}
+	//客户账户信息
+	function findCtac(ctac){
+		var url = "/baseAifs/findOne";
+		View.get(url,"ctac="+ctac,function(resp){
+			autoEdit(resp);
+		});
+	}
+	//对手信息
+	function findOppoInfo(tcac){
+		var url= "/bigamount/findOne";
+		View.get(url,"tcac="+tcac,function(resp){
+			autoEdit(resp);
+		});
+	}
+	//自动输入
+	function autoEdit(resp){
+		var val ='';
+		//将有映射关系的字段清空
+		for ( var p in resp ){ 
+			if(p=='cfrc'){
+				$("input[data-prop='cfrc']").val('');
+				$("input[name*='cfrc']").val('');
+			}else if($("input[glprop*="+p+"]").length>0){
+				$("input[glprop*="+p+"]").val("");
+			}else if($("select[glprop*="+p+"]").length>0){
+				$("select[glprop*="+p+"]").val("--##--");
+			}
+		}
+		//将有映射关系的字段在有值的情况下，重新赋值
+		for ( var p in resp ){ 
+			var type = $("input[glprop*="+p+"]").attr("data-type");
+			if(!!type&&type.indexOf("date")>-1){
+				if(resp[p])
+				val = new Date(resp[p]).format("yyyy-MM-dd");
+			}else if(p=="cfrc"){
+				val = resp[p];
+				var data= {data:{}};
+				data.data.cfrc = val.substr(0,3)+","+val.substr(3,6);
+				var enumInput = $("input[data-prop='cfrc']");
+				for(var i=0;i<enumInput.length;i++){
+					lazyEnumEach(enumInput[i],data);
+				}
+				continue;
+			}else{
+				val = resp[p];
+			}
+			if($("input[glprop*="+p+"]").length>0&&!$("input[glprop*="+p+"]").val()){
+				$("input[glprop*="+p+"]").val(val);
+			}else if($("select[glprop*="+p+"]").length>0&&$("select[glprop*="+p+"]").val()=='--##--'){
+				$("select[glprop*="+p+"]").val(val);
+			}
+		}
+		layui.form().render();
+		openReason(reason,false);
+	}
+	//监听@N@I@E事件
+	form.on("select(citp)", function(data){
+		  if(data.value.indexOf('@')>-1){
+			$("input[name='ctid']").val(data.value);
+			$("input[textarea='oitp1']").val(data.value);
+			$("input[name='ctid']").attr("disabled",true);
+			$("textarea[name='oitp1']").attr("disabled",true);
+		  }else{
+			  $("input[name='ctid']").attr("disabled",false);
+			  $("textarea[name='oitp1']").attr("disabled",false);
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	
+	form.on("select(rpmt)", function(data){
+		  if(data.value.indexOf('@')>-1){
+			$("input[name='rpmn']").val(data.value);
+			$("input[name='rpmn']").attr("disabled",true);
+		  }else{
+			  $("input[name='rpmn']").attr("disabled",false);
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	form.on("select(octt)", function(data){
+		  if(data.value.indexOf('@')>-1){
+			$("input[name='ocec']").val(data.value);
+			$("input[name='ooct']").val(data.value);
+			$("input[name='ocec']").attr("disabled",true);
+			$("textarea[name='ooct']").attr("disabled",true);
+		  }else{
+			  $("input[name='ocec']").attr("disabled",false);
+			  $("textarea[name='ooct']").attr("disabled",false);
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	
+	form.on("select(tcat)", function(data){
+		  if(data.value.indexOf('@')>-1){
+			$("input[name='tcac']").val(data.value);
+			$("input[name='tcac']").attr("disabled",true);
+		  }else{
+			  $("input[name='tcac']").attr("disabled",false);
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	
+	form.on("select(catp)", function(data){
+		  if(data.value.indexOf('@')>-1){
+			$("input[name='ctac']").val(data.value);
+			$("input[name='ctac']").attr("disabled",true);
+		  }else{
+			  $("input[name='ctac']").attr("disabled",false);
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	
+	form.on("select(tcit)", function(data){
+		  if(data.value.indexOf('@')>-1){
+			$("input[name='tcid']").val(data.value);
+			$("input[name='oitp3']").val(data.value);
+			$("input[name='tcid']").attr("disabled",true);
+			$("textarea[name='oitp3']").attr("disabled",true);
+		  }else{
+			  $("input[name='tcid']").attr("disabled",false);
+			  $("textarea[name='oitp3']").attr("disabled",false);
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	
+	form.on("select(tbit)", function(data){
+		  if(data.value.indexOf('@')>-1){
+			$("input[name='tbid']").val(data.value);
+			$("input[name='oitp2']").val(data.value);
+			$("input[name='tbid']").attr("disabled",true);
+			$("textarea[name='oitp2']").attr("disabled",true);
+		  }else{
+			  $("input[name='tbid']").attr("disabled",false);
+			  $("textarea[name='oitp2']").attr("disabled",false);
+		  }
+		  layui.form().render();
+		  openReason(reason,false);
+	  });
+	
+	//将标准时间转成UTC时间字符串
+	function getUTCDateStr(dateStr){
+		var date = new Date(Date.parse(dateStr.replace(/-/g,"/")));
+	    var y =  date.getUTCFullYear();
+	    var M = date.getUTCMonth()+1 ;
+	    var d = date.getUTCDate();
+	    var h= date.getUTCHours();
+	    if(h<10){
+	    	h ='0'+h;
+	    }
+	    var m = date.getUTCMinutes();
+	    if(m<10){
+	    	m ='0'+m;
+	    }
+	    var s = date.getUTCSeconds();
+	    if(s<10){
+	    	s= '0'+s;
+	    }
+	    return y+"-"+M+"-"+d+"T"+h+":"+m+":"+s+".000-0000";
+	}
+</script>
+</html>

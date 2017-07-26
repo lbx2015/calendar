@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>回执导入</title>
+<link type="include" href="/common/depcss.html" />
+</head>
+<body class="iframeBody">
+	<div class="content">
+		<div class="layui-elem-field">
+			<div class="group-button FL">
+						<button
+					class="layui-btn layui-btn-normal layui-btn-small modal-full fun_ addmore_"
+					id="addMore-data" onclick="addMore()">
+					<i class="layui-icon">&#xe608;</i>导入回执
+				</button>
+			</div>
+			<div class="_tmpl" data-url="filterCriteria.html"
+				data-attr="baseReceipt.json" data-bind="filterCriteriaOnBind"
+				data-param=""></div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="contentLeft layui-form">
+			<div class="_tmpl" data-url="table.html" id="table" data-attr="baseReceipt.json"
+				data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
+		</div>
+		<div class="contentRight">
+			<div class="_tmpl" data-url="preview.html"
+				data-attr="baseReceipt.json" data-bind="previewOnBind" data-param=""></div>
+		</div>
+		<div style="clear: both"></div>
+		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="baseReceipt.json"
+			data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+	$(function() {
+		$("#add-data").click(function() {
+			layer.open({
+				type : 2,
+				title : '添加数据',
+				shadeClose : true,
+				shade : false,
+				maxmin : false, //开启最大化最小化按钮
+				area : [ '100%', 'auto' ],
+				offset : '0px',
+				move : false,
+				content : 'bigAmountEdit.html' //iframe的url
+			});
+			parent.startInit(document.getElementsByTagName("iframe")[0], 560);
+		});
+
+		var form = layui.form();
+		//监听提交
+		form.on('submit', function(data) {
+			return false;
+		});
+	});
+</script>
+<script>
+	var form = layui.form(), layer = layui.layer;
+	//全选
+	form.on('checkbox(allChoose)', function(data) {
+		var child = $(data.elem).parents('table').find(
+				'tbody input[type="checkbox"]');
+		child.each(function(index, item) {
+			item.checked = data.elem.checked;
+		});
+		form.render('checkbox');
+	});
+	var item = {};
+	var tbTmpl;
+	function tbOnBind(attrs, param) {
+		tmpl = this;
+		tbTmpl = tmpl;
+		var data = {};
+		tmpl.bind(function(callback) {
+			var url = Const.apiUrl + "/Receipt/getMore";
+			var _this = this;
+			View.get(url, param, function(resp) {
+				if (resp) {
+					//这边做了修改
+					data.data = resp;
+					TmplUtils.totalPages = data.data.totalPages;
+				}
+				//是否需要全选checkbox
+				data.hasCheckbox = true;
+				data.hasOperation = true;
+				//操作按钮
+				data.operationWidth = 10;
+				//tr的点击事件绑定，该方法会传入id 参数
+				data.tdBeforeFill = function(obj) {
+					if(!obj.item || !obj.item.oldId){
+						return obj.html;
+					}
+					if (obj.row >= 2) {
+						if (obj.item.hzState != "02") {
+							if (obj.col == 2) {
+								return "<a class='layui-btn layui-btn-mini layui-btn-normal fun_ deal_' href='javascript:;' onclick=edit("
+								+"'"+ obj.item.bwmc+ "'" +","
+								+ "'" + obj.item.oldId +"'"
+								+ ")>操作 </a>"
+							}
+						}
+					}
+					return obj.html;
+				}
+				data.trClick = "bindPro";
+				callback.call(_this, data);
+				if (TmplUtils.pageTmpl.refresh) {
+					TmplUtils.pageTmpl.refresh();
+				}
+				TmplUtils.tableOnLoad();
+			}, function(code) {
+				TmplUtils.showMsgFail('查询出错');
+			});
+		});
+	}
+
+	//查询条件绑定
+	function filterCriteriaOnBind(attrs, param) {
+		tmpl = this;
+		var _this = this;
+		tmpl.bind(function(callback) {
+			var data = {};
+			data.searchClick = "search";
+			callback.call(_this, data);
+			TmplUtils.filterCriteriaOnLoad();
+		});
+	}
+	
+	  function search(){
+	        TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+	        tbTmpl.refresh("pindex=0"+"&pcount="+ TmplUtils.pageSize +TmplUtils.searchParam);
+	        TmplUtils.currPage = 1;
+	        TmplUtils.closePreview();
+	    }
+	//表格单元格点击事件
+	function bindPro(item) {
+		if (!TmplUtils.isEditing) {
+			this.item = item;
+			previewTmpl.refresh();
+		}
+	}
+	
+	var previewTmpl;
+	function previewOnBind(attrs, param) {
+		tmpl = this;
+		previewTmpl = tmpl;
+		if (!item) {
+			return;
+		}
+		tmpl.bind(function(callback) {
+			var data = {};
+			//是否可编辑
+			data.canEdit = true;
+			data.data = item;
+			//绑定点击事件
+			data.saveClick = "save";
+			data.saveClick = "edit";
+			callback.call(this, data);
+			TmplUtils.previewOnLoad();
+			var xgnr = document.getElementsByName("xgnr")[0].value;
+			xgnr=xgnr.replace(/；/g,"\r\n");
+			//var xgnr = item.xgnr;
+			//$("textarea[name='xgnr']").value=xgnr;
+			document.getElementsByName("xgnr")[0].value =xgnr;
+		});
+	}
+	
+	//弹出添加iframe
+	function edit(state,id) {
+		debugger;
+		 state=state.substring(1,3);
+		if (state=='BH'){
+			state = "2";
+			View.get(Const.apiUrl + "/bigamount/get",'id='+id,function(resp){
+				if(resp.job.curJobState=='PRE_RECROD'||resp.job.curJobState=="PRE_SUBMIT"){
+					state = "1";
+				}
+				var url = "bigAmountEdit.html?state="+ state + "&id="+ id ;
+	    	 	var title =  "数据处理";
+	    	 	View.openDialog(url, title);
+			},function(code){});
+		 }else{
+			state = "2";
+			View.get(Const.apiUrl +"/suspiciouss/get",'id='+id,function(resp){
+				if(resp.job.curJobState=='PRE_RECROD'||resp.job.curJobState=="PRE_SUBMIT"){
+					state = "1";
+				}
+				var url = "suspiciousEdit.html?state="+ state + "&id="+ id ;
+	    		var title =  "数据处理";
+		    	View.openDialog(url, title);
+			}, function() {
+				TmplUtils.showMsgFail('信息获取失败');
+			});
+		} 
+	}
+	
+	function addMore() {
+		layer.open({
+			type : 2,
+			title : '导入回执',
+            shadeClose: true,
+            shade: false,
+            maxmin: false, //开启最大化最小化按钮
+            area: ['100%', 'auto'],
+            offset: '0px',
+            move: false,
+			content : 'feedBackXMLImportAdd.html'
+		});
+        parent.startInit(document.getElementsByTagName("iframe")[0], 560);
+	}
+</script>
+</html>

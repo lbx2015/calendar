@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>客户分析报告</title>
+<link type="include" href="/common/depcss.html" />
+</head>
+<body>
+	<div class="content">
+		<div class="layui-elem-field">
+			<div class="layui-input-inline" style="margin-left: 0;">
+				<input class="layui-input" placeholder="客户号" id="LAY_customer_s">
+			</div>
+			<div class="layui-input-inline" style="margin-left: 0;">
+
+				<input class="layui-input" placeholder="开始日期" id="LAY_demorange_s">
+			</div>
+			<div class="layui-input-inline">
+						<input class="layui-input" placeholder="截止日期" id="LAY_demorange_e">
+					</div>
+			<div class="layui-input-inline">
+				<button class="layui-btn" id="echarts_s" onclick="option('')">查询</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="viewBox">
+			<div id="distCustomer" class="FL panel"></div>
+			<div id="distCapital" class="FR panel"></div>
+			<div id="tranMethod" class="FL panel"></div>
+			<div id="suspDistribution" class="FR panel"></div>
+		</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/echarts/echarts.min.js"></script>
+<!-- <script type="text/javascript" src="{=ctx}/echarts/world.js"></script> -->
+<script type="text/javascript" src="{=ctx}/js/util/eChartUtils.js"></script>
+<script>
+layui.use('laydate', function() {
+	var laydate = layui.laydate;
+	var start = {
+		max : '2099-06-16 23:59:59',
+		istoday : true,
+	};
+	var end = {
+			//min : laydate.now(),
+			max : '2099-06-16 23:59:59',
+			istoday : true,
+			choose : function(datas) {
+				start.max = datas; //结束日选好后，重置开始日的最大日期
+			}
+		};
+
+		document.getElementById('LAY_demorange_s').onclick = function() {
+			start.elem = this;
+			laydate(start);
+		}
+		document.getElementById('LAY_demorange_e').onclick = function() {
+			end.elem = this
+			laydate(end);
+		}
+});
+	$(document).ready(function() {
+		var param = '';
+		var url = document.URL
+		var split = url.split("?");
+		if (split.length != 1) {
+			var params = split[1].split("&");
+			if(params.length>1){
+			var csnm = params[0].split("=")[1];
+			var start = params[1].split("=")[1];
+			var end = params[2].split("=")[1];
+			$("#LAY_customer_s").attr("value",csnm);
+			$("#LAY_demorange_s").attr("value",start);
+			$("#LAY_demorange_e").attr("value",end);
+			param = {
+				"tcid" : csnm,
+				"start" : start,
+				"end" : end
+			};	
+			}else{
+				return;
+			}
+		}
+		option(param);
+	});
+    $(function () {
+        var url = "/businessDay/get";
+        View.get(url,"date="+getSysDate()+"&count=1",function (data) {
+            if(data && data.length > 0){
+                $("#LAY_demorange_s").val(Utils.getDate(data[0]));
+                $("#LAY_demorange_e").val(Utils.getDate(data[data.length-1]));
+            }
+        },function () {
+            TmplUtils.showMsgFail("时间获取失败");
+        })
+    });
+	//获取时间
+	function getSysDate() {
+        var myDate = new Date(new Date().getTime()-24*60*60*1000);
+        return Utils.getDate(myDate);
+	}
+</script>
+<script>
+	//构造param
+	function check(){
+		var csnm = document.getElementById('LAY_customer_s').value;
+	    var	start = document.getElementById('LAY_demorange_s').value;
+		var end = document.getElementById('LAY_demorange_e').value;
+		if(csnm.length == 0){
+			TmplUtils.showMsgFail("请输入客户号");
+			return false;
+		}
+		if(start.length == 0){
+			TmplUtils.showMsgFail("请输入开始时间");
+			return false;
+		}if(end.length == 0){
+			TmplUtils.showMsgFail("请输入结束时间");
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+
+	function option(param) {
+		var csnm = document.getElementById('LAY_customer_s').value;
+	    var	start = document.getElementById('LAY_demorange_s').value;
+		var end = document.getElementById('LAY_demorange_e').value;
+		if (param != '') {
+		} else {
+			if(check()){var param = {
+					"tcid" : csnm,
+					"start" :start,
+					"end" : end
+				};}else{
+					return false;
+				}
+			
+		}
+		tu4Bind(param);
+		tu5Bind(param);
+		tu6Bind(param);
+		tu7Bind(param);
+	}
+
+	function tu4Bind(param) {
+		var url = Const.apiUrl + "/customerDataReport/counterpartyArea";
+		View.get(url, param, function(resp) {
+			var xAxisData = [];
+			var seriesData = [];
+			var seriesList = [];
+			var series = {};
+			var titleT4 = {
+				text : '客户地区分布',
+				subtext : param.date,
+				x : 'center'
+			};
+			for (var i = 0; i < resp.length; i++) {
+				if(!resp[i].str){
+					resp[i].str='未知地区';
+				}
+				xAxisData.push(resp[i].str);
+				seriesData.push(resp[i].num1);
+			}
+			series.name = "交易数量";
+			series.data = seriesData;
+			seriesList.push(series);
+			EChartUtils.juxingChart("distCustomer", titleT4, xAxisData,
+					seriesList);
+		}, function(code) {
+			layer.msg('查询出错', {
+				icon : 5
+			});
+		});
+	}
+	//可疑交易方式
+	function tu5Bind(param) {
+		var url = Const.apiUrl + "/customerDataReport/customerTradeWay";
+		View.get(url, param, function(resp) {
+			var titleT5 = {
+				text : '交易方式分布圈',
+				subtext : param.date,
+				x : 'center'
+			};
+			var names = [];
+			var seriesData = [];
+			for (var i = 0; i < resp.length; i++) {
+				if(!resp[i].str){
+					resp[i].str='无交易方式';
+				}
+				names.push(resp[i].str);
+				var data = {};
+				data.name = resp[i].str;
+				data.value = resp[i].num1;
+				seriesData.push(data);
+			}
+			var series = {};
+			series.data = seriesData;
+			series.radius = [ '40%', "60%" ];
+			var seriesList = [];
+			seriesList.push(series);
+			EChartUtils.pieChart("distCapital", titleT5, names, seriesList);
+		}, function(code) {
+			layer.msg('查询出错', {
+				icon : 5
+			});
+		});
+	}
+
+	//图六 资金流向
+	function tu6Bind(param) {
+		var url = Const.apiUrl + "/customerDataReport/customerFundFlows";
+		View.get(url, param, function(resp) {
+			var titleT6 = {
+				text : '资金流向分布',
+				subtext : param.date,
+				x : 'center'
+			};
+			var names = [];
+			var seriesData = [];
+			for (var i = 0; i < resp.length; i++) {
+				if(!resp[i].str){
+					resp[i].str='未填写资金流向';
+				}
+				names.push(resp[i].str);
+				var data = {};
+				data.name = resp[i].str;
+				data.value = resp[i].num1;
+				seriesData.push(data);
+			}
+			var series = {};
+			series.data = seriesData;
+			series.radius = [ '20%', "50%" ];
+			var seriesList = [];
+			seriesList.push(series);
+			EChartUtils
+					.pieChart("tranMethod", titleT6, names, seriesList);
+		}, function(code) {
+			layer.msg('查询出错', {
+				icon : 5
+			});
+		});
+	}
+
+	//图七可疑规则分布
+	function tu7Bind(param) {
+		var url = Const.apiUrl + "/customerDataReport/customerRule";
+		View.get(url, param, function(resp) {
+			var titleT6 = {
+				text : '可疑规则分布',
+				subtext : param.date,
+				x : 'center'
+			};
+			var names = [];
+			var seriesData = [];
+			for (var i = 0; i < resp.length; i++) {
+				names.push(resp[i].ctid);
+				var data = {};
+				data.name = resp[i].ctid;
+				data.value = resp[i].num1;
+				seriesData.push(data);
+			}
+			var series = {};
+			series.data = seriesData;
+			series.radius = [ '30%', "60%" ];
+			var seriesList = [];
+			seriesList.push(series);
+			var chart = EChartUtils.pieChart("suspDistribution", titleT6, names,
+					seriesList);
+		}, function(code) {
+			layer.msg('查询出错', {
+				icon : 5
+			});
+		});
+	}
+</script>
+</html>

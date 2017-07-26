@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>客户评级编辑页面</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+</head>
+<body class="iframeBody">
+	<div class="formbox layui-form add-formbox">
+		<div class="_tmpl" data-url="edit.html" data-attr="customer.json"
+			data-bind="editOnBind" data-param=""></div>
+		<div class="layui-btn-div">
+			<a class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit"
+				href="javascript:if(TmplUtils.check('edit')){edit();}">确定</a>
+			<!-- <button class="layui-btn layui-btn-mini layui-btn-normal" onclick="check()">校验</button> -->
+			<a class="layui-btn layui-btn-primary layui-btn-mini"
+				onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</a>
+		</div>
+	</div>
+	<link type="include" href="/common/depjs.html" />
+	<script>
+
+</script>
+</body>
+</html>
+<script>
+	var id = window.location.hash.replace("#","");
+    function editOnBind(attrs,param){
+        tmpl = this;
+        tmpl.bind(function (callback) {
+            var _this = this;
+            if(id){
+                var url = Const.apiUrl+"/customer/get";
+                var _this = this;
+                View.get(url,"id="+id,function (resp) {
+                    var data={};
+                    if(resp){
+                        data.data = resp;
+                    }
+                    data.enums = attrs.enums;
+                    if(!data.enums[attrs.table]){
+                        data.enums[attrs.table] = [];
+                      }
+                    var url=Const.apiUrl+"/customer/getRisk";
+                    View.get(url,"id="+id,function(resp){  
+                     	for(var i=0;i<resp.length;i++){
+                           	data.enums[attrs.table].push(resp[i]);
+                        } 
+                     	data.checkClick = "check";
+                        data.saveClick = "edit";
+                        callback.call(_this, data);
+                        TmplUtils.editOnLoad();
+                        },function(code){
+                              TmplUtils.showMsgFail('查询出错');
+                       }); 
+                },function(){
+                    TmplUtils.showMsgFail('客户信息获取失败');
+				});
+			}else{
+                var data={};
+                callback.call(_this, data);
+                TmplUtils.editOnLoad();
+            }
+        })
+    }
+
+    function check() {
+    }
+    //编辑保存
+    function edit() {
+       	var customer = Utils.formToObj("edit");
+		var url = Const.apiUrl+"/customer/addOrUpdate";
+        View.post(url,customer,function(resp){
+            
+			parent.tbTmpl.refresh("pindex="+(parent.TmplUtils.currPage-1)+"&pcount="+parent.TmplUtils.pageSize+parent.TmplUtils.searchParam);
+			parent.previewTmpl.refresh();
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+			TmplUtils.showMsgSuccess('编辑成功');
+		},function(code){
+            TmplUtils.showMsgFail('编辑失败');
+		});
+	}
+</script>

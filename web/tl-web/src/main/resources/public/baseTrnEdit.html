@@ -1,0 +1,352 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>dialog2</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+<link rel="stylesheet" type="text/css" href="{=ctx}/css/ystep.css" />
+</head>
+<body class="iframeBody">
+	<div class="formbox layui-form add-formbox">
+		<div class="_tmpl" data-url="edit.html" data-attr="baseTrn.json"
+			data-bind="editOnBind" data-param=""></div>
+		<div class="layui-btn-div" id="layui-btn-fixed">
+			<div class="ystep4" id="flowsheet"></div>
+			<div id="commounts" class="txt-c" style="display:none;">
+				不通过理由：<span id = "commount" style="color:red"></span>
+			</div>
+			<span id="wf_btns">
+				<button class="layui-btn bgc1 layui-btn-mini" lay-submit
+					lay-filter="edit" id="submit">确定</button>
+			</span>
+			<button class="layui-btn layui-btn-primary layui-btn-mini"
+				onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+		</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
+<script>
+ $(document).ready(function() {
+	$("#submit").click(function() {
+		if (TmplUtils.check('edit')) {
+			edit();
+		}
+	});
+}); 
+	//var id = window.location.hash.replace("#", "");
+	var id  = View.getQStr('id');
+	var state = View.getQStr('state');
+	Work.onSendEventBefore(function(jobEvent, job) {
+		if(jobEvent.event=='RECROD_SAVE'){
+			if(TmplUtils.check('edit')){
+			}else{
+				return null;
+			}
+		}
+		View.info("onSendEventBefore");
+		var obj =  Utils.formToObj("edit");
+		/* if(!!obj.jyrq){
+			obj.jyrq =getUTCDateStr(obj.jyrq);
+		} */
+        jobEvent.targetJson = JSON.stringify(obj);
+    	var et = job.getEvent(jobEvent.event);
+        if (et && et.commentsRequired === true) {
+			var opts = {"title":"请填写不通过原因"}; 
+			// opts 对象可以不传。有默认值
+			FlowHelper.openCommentsBox(opts,function(comments) {
+				jobEvent.comments = comments;
+				jobEvent.targetJson = JSON.stringify(obj);
+				Work.sendJobEvent(jobEvent); //触发事件
+			});
+			return null;//返回空,工作流事件不会触发
+		}
+		if(jobEvent.event=="UPDATE"){
+        	update();
+        	return null;
+        }else{
+        	if(jobEvent.event=="RECROD_SAVE"){
+        		if(!TmplUtils.check('edit')){
+        			return null;
+        		}
+        	}
+        	return jobEvent
+        }
+		
+	});
+
+	Work.onSendEventAfter(function(result, job) {
+		View.info("job :{jobId} result：{success} ".format(result));
+		View.info(result);
+		if (result.success) {
+			TmplUtils.showMsgSuccess('编辑成功');
+		}
+		if(!!result.data){
+			if(result.data == "State has changed"||result.data == "操作失败"){
+				TmplUtils.showMsgFail('操作失败');
+			}
+			return;
+		}
+		parent.View.fireEvent("TB_DATA_CHANGE", {
+			"window" : window.name
+		});
+	});
+
+	
+	function editOnBind(attrs, param) {
+		tmpl = this;
+		tmpl.onFinish(function(data) {
+			var enumInput = $("input[data-type='lazyEnum']");
+			for(var i=0;i<enumInput.length;i++){
+				lazyEnumEach(enumInput[i],data);
+			}
+			
+			var cls = [ "", "layui-btn-normal" ];
+			var job = Work.getJob(data.data);
+			if(!!job){
+				var _html = job.getEventsHtml(cls);
+				$("#wf_btns").html(_html);
+				job.createFlowsheet($("#flowsheet"), function(job) {
+					View.info("ok");
+					if(job.curJobState!="PRE_APPROVE"&&data.data.aptp=="02"){
+						$("#commounts").css('display','block');
+					}
+					var status=[];
+					for(var i=0;i<job.jobStates.length;i++){
+						if(job.jobStates[i].state=="PRE_APPROVE"){
+							status.push(job.jobStates[i]);
+						}
+					}
+					if(status.length>0){
+						$("#commount").html(status[status.length-1].comments);
+					}
+				});
+			}
+	
+		});
+		tmpl.bind(function(callback) {
+			var _this = this;
+			if (id) {
+				var url = Const.apiUrl + "/baseTrns/get";
+				var _this = this;
+				View.get(url, "id=" + id, function(resp) {
+					var data = {};
+					if (resp) {
+						data.data = resp;
+					}
+					//默认展开分组 ，不配置默认展开第一个分组
+					data.editable = state;
+					data.showGroup = "base";
+					callback.call(_this, data);
+					TmplUtils.editOnLoad();
+				}, function() {
+					TmplUtils.showMsgFail('交易信息获取失败');
+				});
+			} else {
+				var data = {};
+				data.showGroup = "base";
+				callback.call(_this, data);
+				TmplUtils.editOnLoad();
+			/* 	setTimeout(function(){
+					callback.call(_this, data);
+					TmplUtils.editOnLoad();
+				},500); */
+				
+			}
+		});
+		
+	}
+
+	function lazyEnumEach(self,data){
+		var _this = self;
+		var $ul = $(_this).next().next();
+		var _hidden = $(self).next();
+		var _name = $(self).next().attr("name");
+		
+		if(_name.indexOf("0")>-1){
+			var name = _name.substring(0,_name.indexOf("-"));
+			var _key = data.data[name];
+			if(_key){
+				var keys = _key.split(",");
+				
+				var param = {"table":"T_AML_SUSPICIOUS","field":"COUNTRY","key":keys[0]};
+				View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+					$(_this).val(data.valu);
+					$(_hidden).val(data.ke);
+				});
+				
+				if("CHN" != keys[0] && "Z01" != keys[0] && "Z02" != keys[0] && "Z03" != keys[0]&&keys[0]){
+					if(keys[0].indexOf("@")>-1){
+						$($(_this).parent().next().find("input")[0]).attr("disabled","false");
+						$($(_this).parent().next().find("input")[0]).val("");
+						$($(_this).parent().next().find("input")[1]).val("");
+					}else{
+						$($(_this).parent().next().find("input")[0]).attr("disabled","false");
+						$($(_this).parent().next().find("input")[0]).val("000000");
+						$($(_this).parent().next().find("input")[1]).val("000000");
+					}
+				}else{
+				    if(keys[1]){
+                        var param = {"table":"T_BASE_AREA","field":"FIRC","key":keys[1]};
+                        View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+                            if(data.ke && data.valu){
+                                $($(_this).parent().next().find("input")[0]).val(data.ke + "-" + data.valu);
+                                $($(_this).parent().next().find("input")[1]).val(data.ke);
+							}
+                        });
+					}
+				}
+			}
+		}
+		
+		$ul.hide();
+		$(_this).bind("focus",function(){
+			if(_this.oninput === null){
+				$(_this).bind("input",inputChange);
+			}else if(_this.onpropertychange === null){
+				$(_this).bind("propertychange",inputChange);
+			}
+		});
+	}
+	
+	document.onclick = function(){
+		var uls = $("input[data-type='lazyEnum']").next().next();
+		$(uls).each(function(){
+			if(!$(this).is(":hidden")){
+				$(this).prev().val("");
+				$(this).prev().prev().val("");
+				$(this).empty();
+				$(this).hide();
+			}
+		});
+	}
+	
+	function inputChange(event){
+		var _this = event.currentTarget;
+		var _hidden = $(_this).next();
+		var $ul = $(_this).next().next();
+		
+		var url = $(_this).attr("data-url");
+		var _nameNum = _hidden.attr("name").match(/\-\|\-(\S*)/)[1];
+		
+		_hidden.val("");	
+		if(_nameNum == 0){
+			$($(_this).parent().next().find("input")[0]).val("");
+			$($(_this).parent().next().find("input")[1]).val("");
+		}else{
+			var key = $($(_this).parent().prev().find("input")[1]).val();
+			if(key != ""){
+				url += "?key=" + key;
+			}else{
+				return;
+			}
+		}
+		if($(_this).val() == ''){
+			$ul.hide();
+			return;
+		}
+		
+		View.get(Const.apiUrl + url,{"keyword":$(this).val()},function(data){
+			if(data.length > 0){
+				$ul.empty();
+				$(data).each(function(){
+					var $li = $("<li key='{0}'>{1}</li>".format(this.key,this.value));
+					
+					$li.click(function(e){
+						if(_this.onpropertychange === null){
+							$(_this).unbind("propertychange");
+						}
+						e = e == undefined ? window.event:e;
+						var curTarget = e.currentTarget == undefined ? e.srcElement : e.currentTarget;
+						var key = $(curTarget).attr("key");
+						if(_nameNum == 0){
+							if("CHN" != key && "Z01" != key && "Z02" != key && "Z03" != key){
+								$($(_this).parent().next().find("input")[0]).attr("disabled",true);
+								if(key.indexOf("@")>-1){
+									$($(_this).parent().next().find("input")[0]).val("");
+									$($(_this).parent().next().find("input")[1]).val("");
+								}else{
+									$($(_this).parent().next().find("input")[0]).val("000000");
+									$($(_this).parent().next().find("input")[1]).val("000000");
+								}
+							}else{
+								$($(_this).parent().next().find("input")[0]).removeAttr("disabled");;
+							}
+						}
+						$(_this).next().val(key);
+						$(_this).val($(curTarget).text());
+						$ul.empty();
+						$ul.hide();
+					}).mousemove(function(e){
+						$(e.currentTarget).css("background","#08c");
+					}).mouseout(function(e){
+						$(e.currentTarget).css("background","none");
+					});
+					$ul.append($li);
+				});
+				$ul.show();
+			}else{
+				$ul.empty();
+				$ul.hide();
+			}
+		});
+	}
+	
+	//编辑保存
+	function edit() {
+		var baseTrn = Utils.formToObj("edit");
+		/* if(!!baseTrn.jyrq){
+			baseTrn.jyrq =getUTCDateStr(baseTrn.jyrq);
+		} */
+		var url = "/baseTrns/addOrUpdate";1
+		View.post(url, baseTrn, function(resp) {
+			
+			TmplUtils.showMsgSuccess('编辑成功');
+			
+			parent.View.fireEvent("TB_DATA_CHANGE", {
+				"window" : window.name
+			});
+			
+		}, function(code) {
+			TmplUtils.showMsgFail('编辑失败');
+		});
+	}
+	
+	function update() {
+		var baseTrn = Utils.formToObj("edit");
+		var url ="/baseTrns/update";
+		View.post(url, baseTrn, function(resp) {
+			TmplUtils.showMsgSuccess('编辑成功');
+			parent.View.fireEvent("TB_DATA_CHANGE", {
+				"window" : window.name
+			});
+			
+		}, function(code) {
+			TmplUtils.showMsgFail('编辑失败');
+		});
+	}
+/* 	function getUTCDateStr(dateStr){
+		var date = new Date(Date.parse(dateStr.replace(/-/g,"/")));
+	    var y =  date.getUTCFullYear();
+	    var M = date.getUTCMonth()+1;
+	    var d = date.getUTCDate();
+	    var h= date.getUTCHours();
+	    if(h<10){
+	    	h ='0'+h;
+	    }
+	    var m = date.getUTCMinutes();
+	    if(m<10){
+	    	m ='0'+m;
+	    }
+	    var s = date.getUTCSeconds();
+	    if(s<10){
+	    	s= '0'+s;
+	    }
+	    return y+"-"+M+"-"+d+"T"+h+":"+m+":"+s+".000-0000";
+	} */
+</script>
+</html>

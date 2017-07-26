@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>规则引擎</title>
+    <link type="include" href="/common/depcss.html" />
+    <style>
+        .layui-layer.layui-layer-iframe{
+            overflow: hidden;
+        }
+        .layui-layer-iframe .layui-layer-title{
+            border:0px;
+            border-bottom:1px solid #e2e2e2;
+        }
+        .layui-layer-iframe .layui-layer-content{
+            border:0px;
+            border-bottom:1px solid #e2e2e2;
+            margin:0px;
+        }
+    </style>
+</head>
+
+<body class="iframeBody">
+<div class="content" style="padding:0;margin:0;">
+    <div class="layui-elem-field">
+        <div class="_tmpl" data-url="filterCriteria.html" data-attr="amlRuleEngineSelect.json"  data-bind="filterCriteriaOnBind" data-param=""></div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="contentLeft layui-form">
+        <div class="_tmpl" data-url="table.html" id="table" data-attr="amlRuleEngineSelect.json"  data-bind="tableOnBind" data-param="pindex=0&pcount=10"></div>
+    </div>
+    <div style="clear: both">
+    </div>
+    <div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="amlRuleEngineSelect.json" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+
+    <div class="contentLeft layui-form">
+        <div class="_tmpl" data-url="table.html" id="tableScore" data-attr="amlRuleEngineScore.json"  data-bind="tableScoreOnBind" data-param="pindex=0&pcount=1000"></div>
+    </div>
+    <div style="clear: both">
+    </div>
+</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+    $(function () {
+        $("#add-data").click(function () {
+            layer.open({
+                type: 2,
+                title: '添加数据',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['100%', '100%'],
+                content: 'editBlackWhite.html' //iframe的url
+            });
+        });
+        var form = layui.form();
+        //监听提交
+        form.on('submit', function (data) {
+            return false;
+        });
+    });
+</script>
+<script>
+    var tranFeaturesId = Tool.getQStr("id");
+    var approved = Tool.getQStr("approved");
+   
+    var form = layui.form(), layer = layui.layer;
+    //全选
+    form.on('checkbox(allChoose)', function (data) {
+        var child = $(data.elem).parents('table').find(
+            'tbody input[type="checkbox"]');
+        child.each(function (index, item) {
+            item.checked = data.elem.checked;
+        });
+        form.render('checkbox');
+    });
+</script>
+<script>
+    var tbTmplAll;
+    var tbTmpl;
+    function forbbit(id) {
+    }
+    //所有规则table加载
+    function tableOnBind(attrs,param){
+        tmpl = this;
+        tbTmplAll = tmpl;
+        tmpl.bind(function(callback) {
+            var url = Const.apiUrl+"/amlRuleEngine/getMoreForConfig";
+            var _this = this;
+          if(tranFeaturesId){
+                param.tranFeaturesId = tranFeaturesId;
+            } 
+            View.get(url,param,function(resp){
+                var data={};
+                if(resp){
+                    data.data = resp;
+                    TmplUtils.totalPages = data.data.totalPages;
+                }
+                //是否需要全选checkbox
+               // data.hasCheckbox = true;
+                data.hasOperation = true;
+                //操作按钮
+                if(!approved || approved==0){
+                    data.operations = [ {
+                        value : "选择",
+                        onclick : "select",
+                        'class':"layui-btn layui-btn-mini layui-btn-normal fun_ select_"
+                    } ];
+                }
+                data.operationWidth = 3;
+                data.tdLeftWidth = [ 30, 20, 20];
+                callback.call(_this, data);
+                if(TmplUtils.pageTmpl.refresh){
+                    TmplUtils.pageTmpl.refresh();
+                }
+                TmplUtils.tableOnLoad();
+            },function(code) {
+                TmplUtils.showMsgFail('查询出错');
+            });
+        });
+    }
+    
+    function tableScoreOnBind(attrs,param){
+        tmpl = this;
+        tbTmpl = tmpl;
+        tmpl.bind(function(callback) {
+            var url = Const.apiUrl+"/amlRuleEngine/getScoreMore";
+            var _this = this;
+            if(tranFeaturesId){
+             param.tranFeaturesId = tranFeaturesId;
+             param.pcount  =1000;
+             } 
+            View.get(url,param,function(resp){
+                var data={};
+                if(resp){
+                    data.data = resp;
+                }
+                //是否需要全选checkbox
+               // data.hasCheckbox = true;
+                data.hasOperation = true;
+                //操作按钮
+                if(!approved || approved==0){
+                    data.operations = [ {
+                        value : "移除",
+                        onclick : "delConfig",
+                        'class':"layui-btn layui-btn-mini layui-btn-danger fun_ remove_"
+                    } ];
+                }
+                data.operationWidth = 3;
+                data.tdLeftWidth = [ 30, 20, 20];
+                callback.call(_this, data);
+                TmplUtils.tableOnLoad();
+            },function(code) {
+                TmplUtils.showMsgFail('查询出错');
+            });
+        });
+    }
+
+    //查询条件绑定
+    function filterCriteriaOnBind(attrs,param){
+        tmpl = this;
+        var _this = this;
+        tmpl.bind(function (callback) {
+            var data={};
+            data.attrs = attrs.attrs;
+            data.searchClick = "search";
+            callback.call(_this, data);
+            TmplUtils.filterCriteriaOnLoad();
+        });
+    }
+    //查询
+    function search(){
+        TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+        tbTmplAll.refresh("pindex=0"+"&pcount="+ TmplUtils.pageSize +TmplUtils.searchParam);
+        TmplUtils.closePreview();
+    }
+    //选择
+    function select(id) {
+    	View.openDialog('ruleScoreConfig.html?id='+id+"&tranFeaturesId="+tranFeaturesId,"分数设置",{ area: ['100%', '100%']});
+    }
+    //删除
+    function delConfig(id){
+    	TmplUtils.showConfirm('您确定此次删除操作吗？', '确定', '取消', function() {
+    		var url = Const.apiUrl+"/amlRuleEngine/delScoreConfig";
+    		View.get(url,"id="+id,function(resp){
+    			TmplUtils.showMsgSuccess('删除成功');
+    			tbTmplAll.refresh("pindex=" + (TmplUtils.currPage - 1)
+    					+ "&pcount=" + TmplUtils.pageSize
+    					+ TmplUtils.searchParam);
+    			tbTmpl.refresh();
+    			parent.tbTmpl.refresh("pindex="+ (parent.TmplUtils.currPage - 1) 
+    					+ "&pcount="+ parent.TmplUtils.pageSize + parent.TmplUtils.searchParam);
+    		},function(){});
+    	}, function() {
+		});
+    }
+</script>
+</html>

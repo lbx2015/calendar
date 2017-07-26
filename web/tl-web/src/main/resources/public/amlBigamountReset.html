@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>可疑报文重发</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+</head>
+<body class="iframeBody">
+	<div class="content">
+		<div class="layui-elem-field">
+			<div class="group-button FL">
+			<button class="layui-btn layui-btn-small  ajax-all fun_ reset_"
+					id="resetBtn" onclick="reset();" >
+					 重置
+				</button>
+				<button class="layui-btn layui-btn-small layui-btn-normal ajax-all fun_ reportagain_"
+					id="reportAgainBtn" onclick="reportAgain();" >
+					 重发
+				</button>
+				<button class="layui-btn layui-btn-small layui-btn-danger ajax-all fun_ addstorage_"
+					id="addStorageBtn" onclick="addStorage();">
+					 入库
+				</button>
+			</div>
+			<div class="_tmpl" data-url="filterCriteria.html"
+				data-attr="amlResetReport.json" data-bind="filterCriteriaOnBind"
+				data-param=""></div> 
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		 <div class="contentLeft layui-form">
+			<div class="_tmpl" id="table" data-url="table.html"
+				data-attr="bigAmount.json" data-bind="tbOnBind"
+				data-param="pindex=0&pcount=10"></div>
+		</div>
+		<div class="contentRight">
+			<div class="_tmpl" data-url="preview.html" data-attr="bigAmount.json"
+				data-bind="previewOnBind" data-param=""></div>
+		</div>
+		<div style="clear: both"></div>
+		 <div class="_tmpl" data-depend="table" data-url="pages.html"
+			data-attr="bigAmount.json" data-bind="TmplUtils.pagesOnBind"
+			data-param=""></div>  
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+	$(function() {
+		var form = layui.form();
+		form.on('submit', function(data) {
+			return false;
+		});
+	});
+</script>
+<script>
+var item;
+var tbTmpl;
+var firstLoad = true;
+var date = Utils.getDate(new Date().getTime()-86400000);
+   function tbOnBind(attrs,param){
+        tmpl = this;
+        tbTmpl = tmpl;
+        tmpl.bind(function(callback) {
+            var url = Const.apiUrl+"/bigamount/getMores";
+            var _this = this;
+            if (!!firstLoad) {
+            	var url_day = "/businessDay/get";
+                View.get(url_day,"date="+date+"&count=1",function (data) {
+                	var bigAmount={};
+                    if(data && data.length > 0){
+                    	bigAmount.rpdt = Utils.getDate(data[0]);
+                    	 $("input[name=rpdt]").val(bigAmount.rpdt);
+                    }
+					var url1 = Const.apiUrl + "/bigamount/getSubmit";
+		  	    	View.post(url1,bigAmount,function(resp){
+		  				$("select[name=nowSubmitBatch]").html("");
+		 				if(resp==''){
+		 					$("select[name=nowSubmitBatch]").append("<option value='--##--'>--请选择--</option>");
+		 				}else{
+		  				 	for(var i in resp) {
+		  					 	$("select[name=nowSubmitBatch]").append("<option value='"+resp[i]+"'>"+resp[i]+"</option>");
+		  				    }
+		  				 	$("select[name=nowSubmitBatch] option:first").prop('selected','selected');
+		 				}
+		  				layui.form().render();
+		  				param = "&rpdt="+bigAmount.rpdt
+		  						+"&nowSubmitBatch="+$($("select[name=nowSubmitBatch]")[0]).val();
+						TmplUtils.searchParam=param;
+		  				 View.get(url,param,function(resp){
+		  	                var data={};
+		  					data.operationWidth = 4;
+		  	                //表格显示列数
+		  	                data.cellLeftCount = 6;
+		  	                data.cellRightCount = 3;
+		  	                data.tdLeftWidth = [ 6, 6, 6,20,12,6];
+		  	                data.tdRightWidth = [ 8, 14, 10 ];
+		  	                if(resp){
+		  	                    data.data = resp;
+		  	                    TmplUtils.totalPages = data.data.totalPages;
+		  	                  	TmplUtils.totalCount = data.data.totalElements;
+		  	                }
+		  	                data.hasOperation = true;
+		  	                data.operations=[{value:"查看",onclick:"edit",'class' : "layui-btn layui-btn-mini layui-btn-normal"}];
+		  	                data.trClick = "bindPro";
+		  	                //操作按钮
+		  	                callback.call(_this, data);
+		  	                TmplUtils.pageTmpl.refresh();
+		  	                TmplUtils.tableOnLoad();
+		  				},function(code) {
+		  	               TmplUtils.showMsgFail('查询出错');
+		  	            });
+		  	    	},function(code){
+		  	    		 TmplUtils.showMsgFail('查询出错');
+		  	    	 });
+                },function(code){
+	  	    		 TmplUtils.showMsgFail('查询出错');
+	  	    	 });
+				firstLoad = false;
+				return;
+			}
+            View.get(url,param,function(resp){
+                var data={};
+				data.operationWidth = 4;
+				 data.cellLeftCount = 6;
+	                data.cellRightCount = 3;
+	                data.tdLeftWidth = [ 6, 6, 6,20,12,6];
+	                data.tdRightWidth = [ 8, 14, 10 ];
+                if(resp){
+                    data.data = resp;
+                    TmplUtils.totalPages = data.data.totalPages;
+                }
+                data.hasOperation = true;
+                data.operations=[{value:"查看",onclick:"edit",'class' : "layui-btn layui-btn-mini layui-btn-normal"}];
+                data.trClick = "bindPro";
+                //操作按钮
+                callback.call(_this, data);
+                TmplUtils.pageTmpl.refresh();
+                TmplUtils.tableOnLoad();
+			},function(code) {
+               TmplUtils.showMsgFail('查询出错');
+            });
+        });
+    } 
+	//表格单元格点击事件
+	 function bindPro(item) {
+		if (!TmplUtils.isEditing) {
+			this.item = item;
+			previewTmpl.refresh();
+		}
+	} 
+
+	//预览绑定
+	var previewTmpl;
+	function previewOnBind(attrs, param) {
+		tmpl = this;
+		previewTmpl = tmpl;
+		if (!item) {
+			return;
+		}
+		tmpl.bind(function(callback) {
+					var url = Const.apiUrl + "/bigamount/get";
+					var data = {};
+					//是否可编辑
+					data.canEdit = true;
+					data.data = item;
+					data.canEdit = false;
+					//绑定点击事件
+					data.checkClick = "check";
+					data.saveClick = "save";
+					callback.call(this, data);
+					TmplUtils.previewOnLoad();
+				});
+	} 
+    //查询条件绑定
+       function filterCriteriaOnBind(attrs,param){
+        tmpl = this;
+        var _this = this;
+        tmpl.bind(function (callback) {
+            var data={};
+           	data.searchClick = "search";
+            data.dateChangeCall = "choosed";
+            callback.call(_this, data);
+            TmplUtils.filterCriteriaOnLoad();
+            $("input").each(function(){
+                if($(this).data("type") && $(this).data("type") && $(this).data("type") == "date"){
+                    $(this).bind("input propertychange",function () {
+                        if($(this).val().length == 8 && $(this).val().indexOf("-") == -1){
+                            $(this).val($(this).val().substr(0,4)+"-"+$(this).val().substr(4,2) + "-"+$(this).val().substr(6,2));
+                        }
+                        if($(this).val().length==10){
+                        	var bigAmount = {};
+                            bigAmount.rpdt = $(this).val();
+                            submitChange(bigAmount);
+                        }
+                    });
+                }
+            });
+            
+        });
+    } 
+    
+    function choosed(){
+	   	var bigAmount = Utils.formToObj("filterCriteria");
+	   	submitChange(bigAmount);
+    }  
+    function submitChange(bigAmount){
+      	 var url = Const.apiUrl + "/bigamount/getSubmit";
+  	    	View.post(url,bigAmount,function(resp){
+  				$("select[name=nowSubmitBatch]").html("");
+  				$("select[name=nowSubmitBatch]").append("<option value='--##--'>--请选择--</option>");
+  				$("select[name=nowSubmitBatch]").val("--##--");
+  				 for(var i in resp) {
+  					 $("select[name=nowSubmitBatch]").append("<option value='"+resp[i]+"'>"+resp[i]+"</option>");
+  				 }
+  				layui.form().render();
+  	    	},function(code){
+  	    		 TmplUtils.showMsgFail('操作失败');
+  	    });
+       }
+      
+      
+      
+  //查询
+     function search() {
+    	 var bigAmount = Utils.formToObj("filterCriteria");
+    	 if(!bigAmount.rpdt){
+    		 TmplUtils.showMsgFail('请选择一个交易日期');
+    		 return;
+    	 }
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tbTmpl.refresh("pindex=0" + "&pcount=" + TmplUtils.pageSize
+				+ TmplUtils.searchParam);
+		TmplUtils.closePreview();
+	} 
+     
+  
+ 	function edit(id) {
+ 		var url  = "bigAmountEdit.html?state=show" + "&id="+ id;
+		var title =  "数据处理";
+		View.openDialog(url,title);
+	}
+   	
+     function reset(){
+    	 TmplUtils.showConfirm('您确定重置该批次报文吗？', '确定', '取消', function() {
+    		 var bigAmount = Utils.formToObj("filterCriteria");
+    		 if(!bigAmount.nowSubmitBatch||!bigAmount.rpdt){
+        		 TmplUtils.showMsgFail('条件不足，请输入完整的条件');
+        		 return;
+        	 }
+    		 var url = Const.apiUrl + "/bigamount/reset";
+	   		 View.post(url, bigAmount, function(resp) {
+	   			if(resp==0){
+	   			 	TmplUtils.showMsgSuccess('重置成功');
+	    		 }else{
+	    			 TmplUtils.showMsgFail(resp+'条记录重置失败');
+	    		 }
+	    		 submitChange(bigAmount);
+				 tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+							+ "&pcount=" + TmplUtils.pageSize
+							+ TmplUtils.searchParam);
+	    		 },function() {
+	 				TmplUtils.showMsgFail('重置失败');
+	 			},30000);
+	   		 }, function() {
+	 			});
+     }
+	
+     function reportAgain(){
+    	 TmplUtils.showConfirm('您确定重发该批次报文吗？', '确定', '取消', function() {
+    		 var bigAmount = Utils.formToObj("filterCriteria");
+        	 if(!bigAmount.nowSubmitBatch||!bigAmount.rpdt){
+        		 TmplUtils.showMsgFail('条件不足，请输入完整的条件');
+        		 return;
+        	 }
+    		 var url = Const.apiUrl + "/bigamount/reportAgain";
+    	 View.post(url, bigAmount, function(resp) {
+    		 if(resp==0){
+    			 TmplUtils.showMsgSuccess('重发成功');
+    		 }else{
+    			 TmplUtils.showMsgFail(resp+'条记录重发失败');
+    		 }
+    		 submitChange(bigAmount);
+			 tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+    		 },function(code) {
+ 				TmplUtils.showMsgFail('重发失败');
+ 			},30000);
+    	 }, function() {
+ 			});
+     }
+     function addStorage(){
+    	 TmplUtils.showConfirm('您确定入库该批次报文吗？', '确定', '取消', function() {
+    		 var bigAmount = Utils.formToObj("filterCriteria");
+    		 if(!bigAmount.nowSubmitBatch||!bigAmount.rpdt){
+        		 TmplUtils.showMsgFail('条件不足，请输入完整的条件');
+        		 return;
+        	 }
+    		 var url = Const.apiUrl + "/bigamount/addStorageMore";
+    	 View.post(url, bigAmount, function(resp) {
+    		 if(resp==0){
+    			 TmplUtils.showMsgSuccess('入库成功');
+    		 }else{
+    			 TmplUtils.showMsgFail(resp+'条记录入库失败');
+    		 }
+    		 submitChange(bigAmount);
+			 tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+    		 },function(code) {
+ 				TmplUtils.showMsgFail('入库失败');
+ 			},30000);
+    	 }, function() {
+ 			});
+     }
+</script>
+</html>

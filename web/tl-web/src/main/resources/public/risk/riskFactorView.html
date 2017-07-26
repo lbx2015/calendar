@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>riskFactor</title>
+<link type="include" href="/common/depjs.html" />
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+</head>
+<body>
+	<div class="formbox layui-form add-formbox">
+		<div class="_tmpl" data-url="edit.html" data-attr="riskFactor.json"
+			data-bind="editOnBind" data-param=""></div>
+		<div class="layui-btn-div">
+			<button class="layui-btn bgc1 layui-btn-mini" lay-submit
+					lay-filter="edit" id="submit">确定</button>
+			<button class="layui-btn layui-btn-primary layui-btn-mini"
+				onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+		</div>
+	</div>
+</body>
+<script>
+$(document).ready(function() {
+	$("#submit").click(function() {
+		if (TmplUtils.check('edit')) {
+			edit();
+		} 
+	});
+});
+	var id = window.location.hash.replace("#", "");
+	function editOnBind(attrs, param) {
+		tmpl = this;
+		tmpl.bind(function(callback) {
+			var _this = this;
+			if (id) {
+				var url = Const.apiUrl + "/riskFactor/get";
+				var _this = this;
+				View.get(url, "id=" + id, function(resp) {
+					var data = {};
+					data.attrs = attrs.attrs;
+					data.groups = attrs.groups;
+					data.table = attrs.table;
+					data.enums = attrs.enums;
+					if (resp) {
+						data.data = resp;
+					}
+
+					var url_1 = Const.apiUrl
+							+ "/riskFactor/getParentFactorCode";
+					View.get(url_1, "", function(resp) {
+						for (var i = 0; i < resp.length; i++) {
+							data.enums[data.table].push(resp[i]);
+						}
+						data.checkClick = "check";
+						data.saveClick = "edit";
+						callback.call(_this, data);
+						TmplUtils.editOnLoad();
+					}, function(code) {
+						TmplUtils.showMsgFail('查询出错');
+					});
+
+				}, function() {
+					TmplUtils.showMsgFail('信息获取失败');
+				});
+			} else {
+				var data = {};
+				data.checkClick = "check";
+				data.saveClick = "edit";
+				data.attrs = attrs.attrs;
+				data.table = attrs.table;
+				data.enums = attrs.enums;
+				data.groups = attrs.groups;
+				var url_1 = Const.apiUrl + "/riskFactor/getParentFactorCode";
+				View.get(url_1, "", function(resp) {
+					for (var i = 0; i < resp.length; i++) {
+						data.enums[data.table].push(resp[i]);
+					}
+					callback.call(_this, data);
+					TmplUtils.editOnLoad();
+				}, function(code) {
+					TmplUtils.showMsgFail('查询出错');
+				});
+
+			}
+		})
+	}
+	//var riskFactor = {};
+	/* function check() {
+		var editForms = $("form[name=edit]");
+		editForms.each(function() {
+			$.extend(riskFactor, Utils.formToObj($(this).attr('id')))
+		});
+		if (riskFactor.factorName.trim() == "") {
+			TmplUtils.showMsgFail('风险2级不能为空');
+			return false;
+		} else if(riskFactor.weights.trim() == ""){
+			TmplUtils.showMsgFail('权重不能为空');
+			return false;
+		}else {
+			TmplUtils.showMsgSuccess('校验成功');
+			return true;
+		}
+	} */
+	//编辑保存
+	function edit() {/* 
+		if (!check()) {
+			return;
+		} */
+		var riskFactor = Utils.formToObj("edit");
+		var url = Const.apiUrl + "/riskFactor/addOrUpdate";
+		View.post(url, riskFactor, function(resp) {
+			TmplUtils.showMsgSuccess('编辑成功');
+			parent.tbTmpl.refresh("pindex=" + (parent.currPage - 1)
+					+ "&pcount=" + 500 + parent.searchParam);
+			//parent.previewTmpl.refresh();
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+		}, function(code) {
+			TmplUtils.showMsgFail('编辑失败');
+		});
+	}
+</script>
+</html>
