@@ -17,8 +17,9 @@
             android:layout_height="34dp"
             android:background="@android:color/transparent"
             android:gravity="center"
+            android:textSize="@dimen/normal_font_size_18"
             android:text="@string/cancel"
-            android:textColor="#000" />
+            android:textColor="@color/color_29a1f7" />
 
         <Button
             android:id="@+id/btnSubmit"
@@ -27,8 +28,9 @@
             android:layout_alignParentRight="true"
             android:background="@android:color/transparent"
             android:gravity="center"
+            android:textSize="@dimen/normal_font_size_18"
             android:text="@android:string/ok"
-            android:textColor="#000" />
+            android:textColor="@color/color_29a1f7" />
     </RelativeLayout>
 
     <View

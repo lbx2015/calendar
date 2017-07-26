@@ -9,6 +9,7 @@
     <string name="add_schedule">新建日程</string>
     <string name="please_select_remind_time">请选择提醒时间</string>
     <string name="all_day">全天</string>
+    <string name="please_select_remind_way">请选择提醒方式</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>

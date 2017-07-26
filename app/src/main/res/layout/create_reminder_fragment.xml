@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/reminder_repeat"
-            android:text="@string/please_select_remind_time"
+            android:text="@string/please_select_remind_way"
             android:textColor="@color/color_323232" />
 
 

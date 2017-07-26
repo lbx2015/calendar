@@ -7,9 +7,9 @@
     <dimen name="normal_font_size_18">18sp</dimen>
     <!--通用尺寸-->
     <!--General sizes-->
-    <dimen name="WheelItemSpace">8dp</dimen>
-    <dimen name="WheelPadding">8dp</dimen>
+    <dimen name="WheelItemSpace">12dp</dimen>
+    <dimen name="WheelPadding">12dp</dimen>
     <dimen name="WheelTextSize">20sp</dimen>
 
-    <dimen name="WheelLabelTextSize">12sp</dimen>
+    <dimen name="WheelLabelTextSize">14sp</dimen>
 </resources>
