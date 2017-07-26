@@ -46,7 +46,7 @@
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.RemindKindActivity"
+            android:name=".activity.RemindWayActivity"
             android:theme="@style/AppThemeNoActionBar" />
 
         <service

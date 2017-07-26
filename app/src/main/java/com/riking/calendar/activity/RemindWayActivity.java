@@ -11,7 +11,7 @@ import com.riking.calendar.R;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class RemindKindActivity extends AppCompatActivity {
+public class RemindWayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");

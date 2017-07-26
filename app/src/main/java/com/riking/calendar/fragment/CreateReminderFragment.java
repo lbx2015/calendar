@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.RemindKindActivity;
+import com.riking.calendar.activity.RemindWayActivity;
 import com.riking.calendar.widget.dialog.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
@@ -84,7 +84,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 break;
             }
             case R.id.reminder_repeat: {
-                startActivity(new Intent(getActivity(), RemindKindActivity.class));
+                startActivity(new Intent(getActivity(), RemindWayActivity.class));
                 break;
             }
         }
