@@ -16,6 +16,6 @@ public class RemindKindActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_remind);
+        setContentView(R.layout.activity_remind_kind);
     }
 }
