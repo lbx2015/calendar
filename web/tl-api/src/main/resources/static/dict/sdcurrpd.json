@@ -1,0 +1,47 @@
+{
+	"table":"sdcurrpd",
+	"editable":"1",
+	"moduleKey":"528df2302264425aaacf3c3fc5006c4c",
+	"groups":[{
+		"prop":"base",
+		"alias":"基本信息"
+	}],
+	"attrs": [
+		{
+			"prop": "currency",
+			"alias": "币种",
+			"type": "enum",
+			"enum_search":"1",
+			"dict_key": "T_MODEL_AML_CORPTRN.BZ",
+			"query": "1",
+			"query_order": "1",
+			"group":"base",
+			"verify":"required"
+		},
+		{
+			"prop": "rate",
+			"alias": "汇率",
+			"type": "money",
+			"digit":"4",
+			"group":"base",
+			"verify":"required"
+		},
+		{
+			"prop": "method",
+			"alias": "算法",
+			"type": "enum",
+			"dict_key":"T_SDCURRPD_METHED.METHED",
+			"group":"base",
+			"verify":"required"
+		},
+		{
+			"prop": "rateDate",
+			"alias": "汇率日期",
+			"type": "date",
+			"query": "1",
+			"query_order": "2",
+			"group":"base",
+			"verify":"required"
+		}
+	]
+}

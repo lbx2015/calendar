@@ -1,0 +1,55 @@
+{
+	"table":"T_AML_SUSPICIOUS_FILTER",
+	"editable":"1",
+	"moduleKey":"29868404c586428b8fb05d3b8d373b70",
+	"groups":[
+	{
+		"prop":"base",
+		"alias":"基本信息"
+	}],
+	"attrs": [
+		{
+			"prop": "job.curJobState",
+			"alias": "数据状态",
+			"type":"enum",
+			"enum_search":"1",
+			"dict_key": "WORKFLOW.1001",
+			"query": "1",
+			"query_order": "5"
+		},
+		{
+			"prop": "tosc",
+			"alias": "疑似涉罪类型",
+			"type": "enum",
+			"enum_search":"1",
+			"enum_url": "/crimeType/getAllCode",
+			"query": "1",
+			"query_order": "6"
+		},
+		{
+			"prop": "ticd",
+			"alias": "业务标示号",
+			"type": "string",
+			"query": "1",
+			"query_order": "7",
+			"verify": "required",
+			"group":"transaction"
+		},
+		{
+			"prop": "starts",
+			"alias": "开始日期",
+			"type": "date",
+			"query": "1",
+			"query_order": "1",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "ends",
+			"alias": "结束日期",
+			"type": "date",
+			"query": "1",
+			"query_order": "2",
+			"hidden":"table,edit,preview"
+		}
+	]
+}

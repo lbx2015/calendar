@@ -1,0 +1,474 @@
+{
+	"table": "T_BASE_TRN",
+	"editable": "1",
+	"moduleKey": "6f221516269f492d8b38fb3d73f7f803",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基本信息"
+		},
+		{
+			"prop": "oppoInfo",
+			"alias": "交易对手信息"
+		},
+		{
+			"prop": "agency",
+			"alias": "代办人信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "starts",
+			"alias": "开始日期",
+			"type": "date",
+			"query": "1",
+			"query_order": "1",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "ends",
+			"alias": "结束日期",
+			"type": "date",
+			"query": "1",
+			"query_order": "2",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "job.curJobState",
+			"alias": "数据状态",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "WORKFLOW.1002",
+			"group": "base",
+			"hidden": "edit,preview"
+		},
+		{
+			"prop": "ywbh",
+			"alias": "业务编号",
+			"type": "string",
+			"query": "1",
+			"query_order": "3",
+			"group": "base"
+		},
+		{
+			"prop": "khbh",
+			"alias": "客户编号",
+			"type": "string",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "zh",
+			"alias": "账号",
+			"type": "string",
+			"query": "1",
+			"query_order": "4",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "bz",
+			"alias": "币种",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_MODEL_AML_CORPTRN.BZ",
+			"group": "base",
+			"verify": "required",
+			"hidden": "table"
+		},
+		{
+			"prop": "jyje",
+			"alias": "交易金额",
+			"type": "money",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "jydsmc",
+			"alias": "交易对手名称",
+			"type": "string",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jyrq",
+			"alias": "交易日期",
+			"type": "date",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "jylsh",
+			"alias": "交易流水号",
+			"type": "string",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "fhdm",
+			"alias": "分行代码",
+			"type": "string",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "zhfl",
+			"alias": "账户分类",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_BASE_TRN.zhfl",
+			"group": "base"
+		},
+		{
+			"prop": "jdbj",
+			"alias": "借贷标记",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_BASE_TRN.jdbj",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "sxrq",
+			"alias": "生效日期",
+			"type": "date",
+			"group": "base",
+			"verify": "required"
+		},
+		{
+			"prop": "ysjyje",
+			"alias": "原始交易金额（未扣费）",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "mjje",
+			"alias": "美金金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "cplx",
+			"alias": "产品类型",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "jybm",
+			"alias": "交易编码",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_SUSPICIOUS.TSCT",
+			"group": "base"
+		},
+		{
+			"prop": "jyms",
+			"alias": "交易描述",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "sfkfpphlx",
+			"alias": "收付款方匹配号类型",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_SUSPICIOUS.pphlx",
+			"group": "base"
+		},
+		{
+			"prop": "sfkfpph",
+			"alias": "收付款方匹配号",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "jyfs",
+			"alias": "交易方式",
+			"type": "enumLink",
+			"enum_search": "1",
+			"enum_urls": "/modelPropdict/getTstpF,/modelPropdict/getTstpS,/modelPropdict/getTstpT",
+			"group": "base"
+		},
+		{
+			"prop": "zjyt",
+			"alias": "资金用途",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "fgtjyfs",
+			"alias": "非柜台交易方式",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_BIGAMOUNT.OCIT",
+			"group": "base"
+		},
+		{
+			"prop": "fgtjyfssbdm",
+			"alias": "非柜台交易方式的设备代码",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "yhyzfjgzjdywbm",
+			"alias": "银行与支付机构之间的业务交易编码",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "jyxxbz1",
+			"alias": "交易信息备注1",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "jyxxbz2",
+			"alias": "交易信息备注2",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "jrjgykhdgx",
+			"alias": "金融机构与客户的关系",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_BIGAMOUNT.RLFC",
+			"group": "base"
+		},
+		{
+			"prop": "jyfsd",
+			"alias": "交易发生地",
+			"type": "lazyEnum",
+			"enum_search": "1",
+			"enum_urls": "/modelPropdict/getAddF,/modelPropdict/getAddS",
+			"group": "base"
+		},
+		{
+			"prop": "jydsyhjgdm",
+			"alias": "交易对手银行机构代码",
+			"type": "string",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydsyhmc",
+			"alias": "交易对手银行名称",
+			"type": "string",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydswdlx",
+			"alias": "交易对手网点类型",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_BIGAMOUNT.CFCT",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydsyhgjdm",
+			"alias": "交易对手银行国家代码",
+			"enum_search": "1",
+			"type": "enum",
+			"dict_key": "T_AML_SUSPICIOUS.COUNTRY",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydszjlx",
+			"alias": "交易对手身份证件/证明文件类型",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_BIGAMOUNT.CITP",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydszjhm",
+			"alias": "交易对手身份证件/证明文件号码",
+			"type": "string",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydszhlx",
+			"alias": "交易对手账户类型",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_BIGAMOUNT.TCAT",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydsgjdm",
+			"alias": "交易对手国家代码",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_SUSPICIOUS.COUNTRY",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydszh",
+			"alias": "交易对手账号",
+			"type": "string",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "jydslx",
+			"alias": "交易对手类型",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_BASE_TRN.jydslx",
+			"group": "oppoInfo"
+		},
+		{
+			"prop": "dbrzjlx",
+			"alias": "代办人证件类型",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_AML_BIGAMOUNT.CITP",
+			"group": "agency"
+		},
+		{
+			"prop": "dbrzjhm",
+			"alias": "代办人证件号码",
+			"type": "string",
+			"group": "agency"
+		},
+		{
+			"prop": "dbrmc",
+			"alias": "代办人名称",
+			"type": "string",
+			"group": "agency"
+		},
+		{
+			"prop": "dbrgj",
+			"alias": "代办人国家",
+			"type": "enum",
+			"dict_key": "T_AML_SUSPICIOUS.COUNTRY",
+			"group": "agency"
+		},
+		{
+			"prop": "zffs",
+			"alias": "支付方式",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_BASE_TRN.zffs",
+			"group": "base"
+		},
+		{
+			"prop": "bhkfje",
+			"alias": "本行扣费金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "dshkfje",
+			"alias": "对手行扣费金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "dshkfje",
+			"alias": "对手行扣费金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "fxrt",
+			"alias": "换汇或购汇或结汇汇率",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "fxacod",
+			"alias": "人民币账号或外币账号",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "ysbz",
+			"alias": "原始币种",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_MODEL_AML_CORPTRN.BZ",
+			"group": "base"
+		},
+		{
+			"prop": "ybje",
+			"alias": "原币金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "ghjhje",
+			"alias": "购汇或结汇金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "xhje",
+			"alias": "现汇金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "qtzh",
+			"alias": "其他账号",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "qyje",
+			"alias": "其他金额",
+			"type": "money",
+			"group": "base"
+		},
+		{
+			"prop": "bopbj",
+			"alias": "BOP标识",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "amlbj",
+			"alias": "反洗钱标识",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "jwjnbj",
+			"alias": "JWJN标识",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "job.jobId",
+			"alias": "工作流Id",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "enabled",
+			"alias": "有效标志",
+			"type": "int",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "delState",
+			"alias": "刪除标志",
+			"type": "int",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "confirmStatus",
+			"alias": "审核状态",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "jgbm",
+			"alias": "机构编码",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		}
+	]
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %-5p - %m%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
+		<Logger name="org.apache.coyote.http11.Http11NioProtocol"
+			level="warn" />
+		<Logger name="org.apache.tomcat.util.net.NioSelectorPool"
+			level="warn" />
+		<Logger name="org.hibernate.validator.internal.util.Version"
+			level="warn" />
+		<Logger name="org.springframework" level="warn" />
+		<Logger name="com.github" level="info" />
+		<Root level="debug">
+			<AppenderRef ref="Console" level="info" />
+		</Root>
+	</Loggers>
+</Configuration> 

@@ -1,0 +1,93 @@
+{
+	"table": "T_BASE_RECEIPT",
+	"editable":"1",
+  	"moduleKey":"555f3b9e9d964f51a5fe8586380b5741",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基本信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "hzState",
+			"alias": "回执状态",
+			"type": "enum",
+			"enum_search":"1",
+			"query": "1",
+			"query_order": "1",
+			"dict_key": "T_BASE_RECEIPT.hzState",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "hzlx",
+			"alias": "回执类型",
+			"type": "string",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "bwmc",
+			"alias": "原报文名称",
+			"type": "string",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "oldcrcd",
+			"alias": "原特征代码",
+			"type": "string",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "oldcsnm",
+			"alias": "原客户号",
+			"type": "string",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "oldtstm",
+			"alias": "原交易时间",
+			"type": "date",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "oldticd",
+			"alias": "原业务标识号",
+			"type": "string",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "hzmc",
+			"alias": "回执名称",
+			"type": "string",
+			"group": "base",
+			"hidden":"preview"
+		},
+		{
+			"prop": "xgnr",
+			"alias": "需要修改内容",
+			"type": "text",
+			"group": "base"
+		},
+		{
+			"prop": "hzsj",
+			"alias": "回执导入时间",
+			"type": "datetime",
+			"group": "base",
+			"hidden":"preview"
+		},	
+		{
+			"prop": "oldId",
+			"alias": "原报文id",
+			"type": "string",
+			"group": "base",
+			"hidden":"table,preview"
+		}
+	]
+}

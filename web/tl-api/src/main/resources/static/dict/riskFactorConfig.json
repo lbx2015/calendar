@@ -1,0 +1,46 @@
+{
+	"table":"T_BASE_KYC_RISKFACTORCONFIG",
+	"groups":[{
+		"prop":"base",
+		"alias":"风险因子设置"
+	}],
+	"attrs":[
+		{	
+		"prop":"factorCodeName",
+		"alias":"风险因素",
+		"type":"string",
+		"query":"1",
+		"query_order":"1",
+		"desc":"风险因子名称",
+		"group":"base",
+		"verify":"required"
+		}
+		,{	
+		"prop":"factorCode",
+		"alias":"风险code",
+		"type":"string",
+		"group":"base",
+		"hidden":"table,edit,preview"
+		}
+		,{	
+		"prop":"factorCodeValue",
+		"alias":"风险code",
+		"type":"string",
+		"group":"base",
+		"hidden":"table,edit,preview"
+		}
+		,
+		{
+		"prop":"score",
+		"alias":"分数",
+		"type":"enum",
+		"query":"1",
+		"dict_key": "T_BASE_KYC_RISKFACTORCONFIG.SCORE",
+		"query_order":"2",
+		"desc":"风险因子分数",
+		"group":"base",
+		"verify":"required"
+		}
+		
+	]
+}

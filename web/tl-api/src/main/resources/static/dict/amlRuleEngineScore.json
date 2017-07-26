@@ -1,0 +1,46 @@
+{
+  "table":"T_AML_RULEENGINE",
+  "groups":[{
+    "prop":"base",
+    "alias":"规则基本信息"
+  }],
+  "attrs": [
+    {
+      "prop": "ruleName",
+      "alias": "规则名称",
+      "type": "string",
+      "query": "1",
+      "query_order": "1",
+      "group":"base"
+    },
+    {
+      "prop": "ruleNo",
+      "alias": "规则编号",
+      "type": "string",
+      "query": "1",
+      "query_order": "2",
+      "group":"base"
+    },
+    {
+      "prop": "score",
+      "alias": "分值",
+      "verify":"required,number",
+      "type": "int",
+      "group":"base"
+    },
+    {
+      "prop": "ruleEngineId",
+      "alias": "规则id",
+      "type": "int",
+      "hidden": "edit,preview,table",
+      "group":"base"
+    },
+    {
+      "prop": "tranFeaturesId",
+      "alias": "交易特征id",
+      "type": "int",
+      "hidden": "edit,preview,table",
+      "group":"base"
+    }
+  ]
+}

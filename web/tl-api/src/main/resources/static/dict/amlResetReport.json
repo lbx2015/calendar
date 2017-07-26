@@ -1,0 +1,21 @@
+{
+	"table": "T_AML_BIGAMOUNT",
+	"groups":[],
+	"attrs":[
+		{
+			"prop": "rpdt",
+			"alias": "采集时间",
+			"type": "date",
+			"query": "1",
+			"query_order": "2"
+		},
+		{
+			"prop": "nowSubmitBatch",
+			"alias": "报送批次",
+			"query": "1",
+			"query_order": "3",
+			"type": "enum",
+			"enum_search":"1"
+		}
+	]
+}

@@ -1,0 +1,41 @@
+{
+	"table": "T_BASE_ZIPFILE",
+	"editable":"1",
+	"moduleKey":"9763739b2d87433bb04f2de8dd9f0331",
+	"groups":[{
+		"prop" : "base",
+		"alias" : "基础信息"
+	}],
+	"attrs":[
+		{
+			"prop": "name",
+			"alias": "文件名称",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "type",
+			"alias": "文件类型",
+			"type":"enum",
+			"enum_search":"1",
+			"dict_key": "ZIP_FILE.TYPE",
+			"query": "1",
+			"query_order": "2",
+			"group": "base"
+		},
+		{
+			"prop": "submitBatch",
+			"alias": "报送批次",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "creatTime",
+			"alias": "导出时间",
+			"type": "date",
+			"query": "1",
+			"query_order": "1",
+			"group": "base"
+		}
+	]
+}

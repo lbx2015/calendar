@@ -1,0 +1,183 @@
+{
+	"table":"T_AML_RULEENGINE",
+	"groups":[{
+		"prop":"base",
+		"alias":"规则基本信息"
+	},{
+		"prop":"family",
+		"alias":"表达式中文/代码信息"
+	}],
+	"attrs": [
+		{
+			"prop": "ruleName",
+			"alias": "规则名称",
+			"type": "string",
+			"query": "1",
+			"query_order": "1",
+			"group":"base"
+		},
+		{
+			"prop": "ruleNo",
+			"alias": "规则编号",
+			"type": "string",
+			"query": "1",
+			"query_order": "2",
+			"group":"base"
+		},
+		{
+			"prop": "enabled",
+			"alias": "使用状态",
+			"type": "enum",
+			"query": "1",
+			"query_order": "3",
+			"group":"base"
+		},
+		{
+			"prop": "type",
+			"alias": "采集类型",
+			"type": "enum",
+			"group":"base"
+		},
+		{
+			"prop": "approved",
+			"alias": "审核状态",
+			"type": "enum",
+			"dict_key": "T_AML_RULEENGINE.APPROVED",
+			"hidden":"edit,preview"
+		},
+		{
+			"prop": "dateCreate",
+			"alias": "创建时间",
+			"type": "date",
+			"query": "1",
+			"query_order": "5",
+			"group":"base"
+		},
+		{
+			"prop": "personCreate",
+			"alias": "创建人",
+			"type": "string",
+			"query": "1",
+			"query_order": "6",
+			"group":"base"
+		},
+		{
+			"prop": "dateModify",
+			"alias": "修改时间",
+			"type": "date",
+			"query": "1",
+			"query_order": "7",
+			"group":"base"
+		},
+		{
+			"prop": "personModify",
+			"alias": "修改人",
+			"type": "string",
+			"query": "1",
+			"query_order": "8",
+			"group":"base"
+		},
+		{
+			"prop": "ruleExpressName",
+			"alias": "表达式中文",
+			"type": "string",
+			"query": "1",
+			"query_order": "7",
+			"group":"base",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "ruleExpressCoder",
+			"alias": "表达式实际代码",
+			"type": "string",
+			"query": "1",
+			"query_order": "8",
+			"group":"base",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "dateRange",
+			"alias": "交易区间",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "debitCount",
+			"alias": "收入笔数",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "creditCount",
+			"alias": "支出笔数",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "debitCountCondition",
+			"alias": "收入笔数条件",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "creditCountCondition",
+			"alias": "支出笔数条件",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "debitAmount",
+			"alias": "收入总金额",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "creditAmount",
+			"alias": "支出总金额",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "debitAmountCondition",
+			"alias": "收入总金额条件",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "creditAmountCondition",
+			"alias": "支出总金额条件",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "debitCreditPercent",
+			"alias": "收入支出比",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "debitCreditPercentCondition",
+			"alias": "收入支出比条件",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "creditDebitPercent",
+			"alias": "支出收入比",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "creditDebitPercentCondition",
+			"alias": "支出收入比条件",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "continuousDays",
+			"alias": "连续天数",
+			"type": "string",
+			"hidden":"table,edit,preview"
+		}
+	]
+}

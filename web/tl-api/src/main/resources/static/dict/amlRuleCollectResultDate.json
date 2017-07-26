@@ -1,0 +1,28 @@
+{
+	"table":"T_BASE_KYC_JOBINFO",
+	"groups":[{
+		"prop":"base",
+		"alias":"采集信息"
+	}],
+	"attrs": [
+		{
+			"prop": "status",
+			"alias": "处理状态",
+			"type": "enum",
+			"dict_key": "T_BASE_KYC_JOBINFO.STATUS",
+			"group":"base"
+		},
+		{
+			"prop": "collectDate",
+			"alias": "采集时间",
+			"type": "date",
+			"group":"base"
+		},
+		{
+			"prop": "result",
+			"alias": "处理结果",
+			"type": "string",
+			"group":"base"
+		}
+	]
+}
