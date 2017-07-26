@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.RemindKindActivity;
 import com.riking.calendar.widget.dialog.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     private TimePickerDialog pickerDialog;
     private View selectRemindTime;
     private TextView remindTime;
+    private View repeat;
 
     @Nullable
     @Override
@@ -36,6 +39,8 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
 //        popWindow.btnSubmit.setOnsetOnClickListenerClickListener(this);
 //        popWindow.btnCancel.(this);
         remindTime = (TextView) v.findViewById(R.id.select_time);
+        repeat = v.findViewById(R.id.reminder_repeat);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
@@ -48,6 +53,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         selectRemindTime.setOnClickListener(this);
         pickerDialog.btnSubmit.setOnClickListener(this);
         pickerDialog.btnCancel.setOnClickListener(this);
+        repeat.setOnClickListener(this);
         return v;
     }
 
@@ -75,6 +81,10 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
             }
             case R.id.btnCancel: {
                 pickerDialog.dismiss();
+                break;
+            }
+            case R.id.reminder_repeat: {
+                startActivity(new Intent(getActivity(), RemindKindActivity.class));
                 break;
             }
         }

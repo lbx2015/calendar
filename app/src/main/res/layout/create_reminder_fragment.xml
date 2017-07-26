@@ -119,8 +119,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/reminder_repeat"
-            android:text="@string/please_select_remind_way"
+            android:layout_toEndOf="@id/reminder_repeat"
+            android:text="@string/remind_repeat_way"
             android:textColor="@color/color_323232" />
 
 
