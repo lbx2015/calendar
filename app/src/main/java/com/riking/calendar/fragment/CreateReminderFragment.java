@@ -52,11 +52,6 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.select_remind_time: {
                 Log.d("zzw", "click the remind.");
-                if (popWindow.isShowing()) {
-                    Log.d("zzw", "pop window is showing.");
-                    popWindow.dismiss();
-                    return;
-                }
                 popWindow.showAtLocation(selectRemindTime, Gravity.BOTTOM, 0, 0);
                 break;
             }

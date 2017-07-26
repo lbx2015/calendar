@@ -1,7 +1,9 @@
 package com.riking.calendar.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +43,11 @@ public class WheelPopWindow extends PopupWindow implements AbstractWheelPicker.O
         mData = data;
         this.setWidth(ViewGroup.LayoutParams.FILL_PARENT);
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        this.setBackgroundDrawable(new BitmapDrawable());
-        this.setOutsideTouchable(true);
+        // Closes the popup window when touch outside.
+        setOutsideTouchable(true);
+        setFocusable(true);
+        // Removes default background. Fix the issue when clicking the anchor the pop up view hide and show again.
+        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.setAnimationStyle(R.style.timepopwindow_anim_style);
         LayoutInflater mLayoutInflater = LayoutInflater.from(context);
         rootView = mLayoutInflater.inflate(R.layout.pw_wheel, null);
