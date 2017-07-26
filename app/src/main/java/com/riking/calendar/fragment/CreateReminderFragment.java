@@ -33,8 +33,8 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         View v = inflater.inflate(R.layout.create_reminder_fragment, container, false);
 //        popWindow = new WheelPopWindow(getContext());
         selectRemindTime = v.findViewById(R.id.select_remind_time);
-//        popWindow.btnSubmit.setOnClickListener(this);
-//        popWindow.btnCancel.setOnClickListener(this);
+//        popWindow.btnSubmit.setOnsetOnClickListenerClickListener(this);
+//        popWindow.btnCancel.(this);
         remindTime = (TextView) v.findViewById(R.id.select_time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Calendar c = Calendar.getInstance();
