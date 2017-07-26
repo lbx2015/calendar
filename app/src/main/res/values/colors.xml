@@ -3,7 +3,7 @@
     <color name="colorPrimary">#1b82d2</color>
     <color name="colorPrimaryDark">#1b82d2</color>
     <color name="color_accent">#FF3D00</color>
-
+    <color name="color_translucent">#99000000</color>
     <!--selected page tab -->
     <color name="color_29a1f7">#29a1f7</color>
     <!--unselected page tab -->

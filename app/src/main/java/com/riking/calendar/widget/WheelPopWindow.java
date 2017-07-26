@@ -1,12 +1,16 @@
 package com.riking.calendar.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.BottomSheetDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -41,16 +45,17 @@ public class WheelPopWindow extends PopupWindow implements AbstractWheelPicker.O
     public WheelPopWindow(Context context, List<String> data) {
         super(context);
         mData = data;
-        this.setWidth(ViewGroup.LayoutParams.FILL_PARENT);
-        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         // Closes the popup window when touch outside.
         setOutsideTouchable(true);
         setFocusable(true);
-        // Removes default background. Fix the issue when clicking the anchor the pop up view hide and show again.
-        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         this.setAnimationStyle(R.style.timepopwindow_anim_style);
         LayoutInflater mLayoutInflater = LayoutInflater.from(context);
         rootView = mLayoutInflater.inflate(R.layout.pw_wheel, null);
+        // Removes default background. Fix the issue when clicking the anchor the pop up view hide and show again.
+        setBackgroundDrawable(new ColorDrawable(rootView.getResources().getColor(R.color.color_translucent)));
         wheelDatePicker = (WheelDatePicker) rootView.findViewById(R.id.date_picker);
         wheelTimePicker = (WheelTimePicker) rootView.findViewById(R.id.time_picker);
         btnSubmit = rootView.findViewById(R.id.btnSubmit);
@@ -58,6 +63,7 @@ public class WheelPopWindow extends PopupWindow implements AbstractWheelPicker.O
         setContentView(rootView);
 
     }
+
 
     public WheelPopWindow(Context context) {
         this(context, null);

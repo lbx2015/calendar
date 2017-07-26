@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.widget.WheelPopWindow;
+import com.riking.calendar.widget.dialog.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,7 +22,8 @@ import java.util.Date;
 
 public class CreateReminderFragment extends Fragment implements View.OnClickListener {
 
-    private WheelPopWindow popWindow;
+    //    private WheelPopWindow popWindow;
+    private TimePickerDialog pickerDialog;
     private View selectRemindTime;
     private TextView remindTime;
 
@@ -31,11 +31,10 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.create_reminder_fragment, container, false);
-        popWindow = new WheelPopWindow(getContext());
+//        popWindow = new WheelPopWindow(getContext());
         selectRemindTime = v.findViewById(R.id.select_remind_time);
-        selectRemindTime.setOnClickListener(this);
-        popWindow.btnSubmit.setOnClickListener(this);
-        popWindow.btnCancel.setOnClickListener(this);
+//        popWindow.btnSubmit.setOnClickListener(this);
+//        popWindow.btnCancel.setOnClickListener(this);
         remindTime = (TextView) v.findViewById(R.id.select_time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Calendar c = Calendar.getInstance();
@@ -44,6 +43,11 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         c.set(Calendar.HOUR, c.get(Calendar.HOUR) + 2);
         c.set(Calendar.MINUTE, 0);
         remindTime.setText(sdf.format(c.getTime()));
+
+        pickerDialog = new TimePickerDialog(getContext());
+        selectRemindTime.setOnClickListener(this);
+        pickerDialog.btnSubmit.setOnClickListener(this);
+        pickerDialog.btnCancel.setOnClickListener(this);
         return v;
     }
 
@@ -52,24 +56,25 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.select_remind_time: {
                 Log.d("zzw", "click the remind.");
-                popWindow.showAtLocation(selectRemindTime, Gravity.BOTTOM, 0, 0);
+//                popWindow.showAtLocation(selectRemindTime, Gravity.BOTTOM, 0, 0);
+                pickerDialog.show();
                 break;
             }
             case R.id.btnSubmit: {
                 Calendar c = Calendar.getInstance();
-                c.set(Calendar.YEAR, Integer.parseInt(popWindow.wheelDatePicker.year));
-                c.set(Calendar.MONTH, Integer.parseInt(popWindow.wheelDatePicker.month) - 1);
-                c.set(Calendar.DATE, Integer.parseInt(popWindow.wheelDatePicker.day) - 1);
-                c.set(Calendar.HOUR, Integer.parseInt(popWindow.wheelTimePicker.hour));
-                c.set(Calendar.MINUTE, Integer.parseInt(popWindow.wheelTimePicker.minute));
+                c.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
+                c.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
+                c.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day) - 1);
+                c.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
+                c.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 remindTime.setText(sdf.format(c.getTime()));
-                popWindow.dismiss();
+                pickerDialog.dismiss();
                 break;
             }
             case R.id.btnCancel: {
-                popWindow.dismiss();
+                pickerDialog.dismiss();
                 break;
             }
         }
