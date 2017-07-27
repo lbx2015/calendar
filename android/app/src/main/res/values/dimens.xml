@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="two_dp">2dp</dimen>
     <dimen name="page_tab_height">48dp</dimen>
+    <dimen name="image_height_40dp">40dp</dimen>
     <dimen name="normal_font_size_18">18sp</dimen>
     <!--通用尺寸-->
     <!--General sizes-->
