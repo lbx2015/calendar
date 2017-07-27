@@ -43,7 +43,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/divider_color_d9d9d9" />
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/not_remind_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,10 +51,9 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/no_remind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            android:layout_alignParentLeft="true"
             android:padding="10dp"
             android:text="@string/no_remind"
             android:textColor="@color/color_323232"
@@ -62,13 +61,15 @@
 
         <ImageView
             android:id="@+id/no_remind_confirm"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="end"
+            android:layout_width="@dimen/image_height_40dp"
+            android:layout_height="@dimen/image_height_40dp"
+            android:layout_alignParentRight="true"
             android:padding="10dp"
-            android:src="@drawable/confirm" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -82,7 +83,6 @@
         android:background="@android:color/white"
         android:padding="10dp">
 
-
         <TextView
             android:id="@+id/remind_on_intergral_clock"
             android:layout_width="wrap_content"
@@ -95,11 +95,12 @@
 
         <ImageView
             android:id="@+id/remind_on_intergral_clock_confirm"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="end"
+            android:layout_width="@dimen/image_height_40dp"
+            android:layout_height="@dimen/image_height_40dp"
+            android:layout_gravity="center_vertical|end"
             android:padding="10dp"
-            android:src="@drawable/confirm" />
+            android:src="@drawable/confirm"
+            android:visibility="visible" />
 
     </FrameLayout>
 
@@ -126,18 +127,26 @@
 
         <ImageView
             android:id="@+id/remind_accurate_confirm"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="end"
+            android:layout_width="@dimen/image_height_40dp"
+            android:layout_height="@dimen/image_height_40dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="10dp"
             android:src="@drawable/confirm"
             android:visibility="gone" />
     </FrameLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_color_d9d9d9" />
+
     <com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker
         android:id="@+id/minute_picker"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@android:color/white"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp" />
 
 </LinearLayout>

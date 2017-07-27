@@ -16,6 +16,6 @@ public class RemindRepeatActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remind_kind);
+        setContentView(R.layout.activity_remind_repeat);
     }
 }
