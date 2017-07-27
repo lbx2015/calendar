@@ -35,6 +35,7 @@
     <string name="remind_repeat_way">Repeat</string>
     <string name="no_remind">Not remind</string>
     <string name="remind_accurate">Remind accurately</string>
+    <string name="remind_custom">Custom</string>
 
     <string-array name="subTittles">
         <item>Job</item>
