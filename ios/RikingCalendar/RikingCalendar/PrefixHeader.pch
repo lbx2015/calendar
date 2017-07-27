@@ -1,0 +1,48 @@
+//
+//  PrefixHeader.pch
+//  RikingCalendar
+//
+//  Created by jinglun liang on 2017/7/17.
+//  Copyright © 2017年 liangjinglun. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+
+
+#import "RikingCalendar-Swift.h"
+
+#import <IQKeyboardManagerSwift/IQKeyboardManagerSwift-Swift.h>
+
+#import "Utils.h"
+
+#import "GlobalDefine.h"
+
+#import "UIImage+ColorFix.h"
+
+
+//字体大小管理
+#import "RKTextFont.h"
+//颜色管理
+#import "RKColorDefine.h"
+//主题管理
+#import "ThemeManager.h"
+#import "UIView+Theme.h"
+
+#import "UIColor+Hex.h"
+#import "UIImage+ColorFix.h"
+
+#import "AFNWorkingTool.h"
+
+#import "MBManager.h"
+
+#import "MBProgressHUD.h"
+
+#import "Masonry.h"
+
+#endif /* PrefixHeader_pch */

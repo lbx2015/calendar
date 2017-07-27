@@ -1,0 +1,6 @@
+framework module Pods_RikingCalendarTests {
+  umbrella header "Pods-RikingCalendarTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
