@@ -30,7 +30,7 @@ public class DeptController {
 	
 	@ApiOperation(value = "得到<单个>部门信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public Resp get_(@RequestParam("id") Long id) {
+	public Resp get_(@RequestParam("id") String id) {
 		Dept dept = deptRepo.findOne(id);
 		return new Resp(dept, CodeDef.SUCCESS);
 	}

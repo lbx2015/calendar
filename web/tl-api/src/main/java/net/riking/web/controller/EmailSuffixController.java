@@ -37,7 +37,7 @@ public class EmailSuffixController {
 	
 	@ApiOperation(value = "得到<单个>邮箱后缀", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public Resp get_(@RequestParam("id") Long id) {
+	public Resp get_(@RequestParam("id") String id) {
 		EmailSuffix emailSuffix = emailSuffixRepo.findOne(id);
 		return new Resp(emailSuffix, CodeDef.SUCCESS);
 	}

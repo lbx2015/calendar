@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import net.riking.entity.model.EmailSuffix;
 
 @Repository
-public interface EmailSuffixRepo extends JpaRepository<EmailSuffix, Long>, JpaSpecificationExecutor<EmailSuffix>{
+public interface EmailSuffixRepo extends JpaRepository<EmailSuffix, String>, JpaSpecificationExecutor<EmailSuffix>{
 
 	@Transactional
 	@Modifying

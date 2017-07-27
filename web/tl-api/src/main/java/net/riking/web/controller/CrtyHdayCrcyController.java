@@ -37,7 +37,7 @@ public class CrtyHdayCrcyController {
 	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public Resp get_(@RequestParam("id") Long id) {
+	public Resp get_(@RequestParam("id") String id) {
 		CrtyHdayCrcy crtyHdayCrcy = crtyHdayCrcyRepo.findOne(id);
 		return new Resp(crtyHdayCrcy, CodeDef.SUCCESS);
 	}

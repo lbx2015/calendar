@@ -29,7 +29,7 @@ public class AppUserController {
 	
 	@ApiOperation(value = "得到<单个>用户信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public Resp get_(@RequestParam("id") Long id) {
+	public Resp get_(@RequestParam("id") String id) {
 		AppUser appUser = appUserRepo.findOne(id);
 		return new Resp(appUser, CodeDef.SUCCESS);
 	}
