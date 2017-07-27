@@ -33,6 +33,7 @@
     <string name="all_day">All day</string>
     <string name="please_select_remind_way">Remind way</string>
     <string name="remind_repeat_way">Repeat</string>
+    <string name="no_remind">Not remind</string>
 
     <string-array name="subTittles">
         <item>Job</item>
