@@ -44,11 +44,11 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <FrameLayout
+        android:id="@+id/not_remind_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:padding="10dp">
-
 
         <TextView
             android:id="@+id/no_remind"
@@ -76,6 +76,7 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <FrameLayout
+        android:id="@+id/remind_accurate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -98,8 +99,7 @@
             android:layout_height="18dp"
             android:layout_gravity="end"
             android:padding="10dp"
-            android:src="@drawable/confirm"
-            android:visibility="gone" />
+            android:src="@drawable/confirm" />
 
     </FrameLayout>
 
@@ -109,7 +109,7 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <FrameLayout
-        android:id="@+id/remind_accurate"
+        android:id="@+id/custom_remind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -133,5 +133,11 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    <com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker
+        android:id="@+id/minute_picker"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_weight="1"
+        android:background="@android:color/white" />
 
 </LinearLayout>
