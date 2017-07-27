@@ -17,6 +17,6 @@ public interface EmailSuffixRepo extends JpaRepository<EmailSuffix, String>, Jpa
 
 	@Transactional
 	@Modifying
-	@Query("delete from EmailSuffix d where d.id in ?1")
+	@Query("update EmailSuffix set deleteState = '0'  where id in ?1")
 	int deleteByIds(Set<String> ids);
 }

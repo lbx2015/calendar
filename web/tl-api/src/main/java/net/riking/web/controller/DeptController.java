@@ -1,7 +1,9 @@
 package net.riking.web.controller;
 
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -39,14 +41,30 @@ public class DeptController {
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute Dept dept){
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
+		if(StringUtils.isEmpty(dept.getDeleteState())){
+			dept.setDeleteState("1");
+		}
 		Example<Dept> example = Example.of(dept, ExampleMatcher.matchingAll());
 		Page<Dept> page = deptRepo.findAll(example,pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "得到<所有>部门信息", notes = "GET")
+	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
+	public Resp getAll_(){
+		Dept dept = new Dept();
+		dept.setDeleteState("1");
+		Example<Dept> example = Example.of(dept, ExampleMatcher.matchingAll());
+		List<Dept> list = deptRepo.findAll(example);
+		return new Resp(list, CodeDef.SUCCESS);
+	}
+	
 	@ApiOperation(value = "添加或者更新部门信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
 	public Resp addOrUpdate_(@RequestBody Dept dept) {
+		if(StringUtils.isEmpty(dept.getId())||StringUtils.isEmpty(dept.getDeleteState())){
+			dept.setDeleteState("1");
+		}
 		Dept save = deptRepo.save(dept);
 		return new Resp(save, CodeDef.SUCCESS);
 	}

@@ -26,12 +26,12 @@ public class ExcelToList {
 
 		BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
 		PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-
 		for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
 			XSSFSheet sheetAt = xssfWorkbook.getSheetAt(numSheet);
 			for (int i = 1; i <= sheetAt.getLastRowNum(); i++) {
 				XSSFRow row = sheetAt.getRow(i);
 				T obj = clazz.newInstance();
+				PropertyDescriptor deleteState = null;
 				for (int j = 0; j < fields.length; j++) {
 					for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
 						if (fields[j].equals(propertyDescriptor.getName())) {
@@ -39,7 +39,13 @@ public class ExcelToList {
 							propertyDescriptor.getWriteMethod().invoke(obj, o);
 							break;
 						}
+						if ("deleteState".equals(propertyDescriptor.getName())&&deleteState==null) {
+							deleteState = propertyDescriptor;
+						}
 					}
+				}
+				if (deleteState!=null) {
+					deleteState.getWriteMethod().invoke(obj,"1");
 				}
 				list.add(obj);
 			}

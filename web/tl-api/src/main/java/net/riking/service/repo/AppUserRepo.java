@@ -16,6 +16,6 @@ import net.riking.entity.model.AppUser;
 public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser>{
 	@Transactional
 	@Modifying
-	@Query("delete from AppUser u where u.id in ?1")
+	@Query("update AppUser set deleteState = '0'  where id in ?1")
 	public int deleteByIds(Set<String> ids);
 }

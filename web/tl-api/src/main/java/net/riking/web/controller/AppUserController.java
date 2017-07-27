@@ -2,6 +2,7 @@ package net.riking.web.controller;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -38,6 +39,9 @@ public class AppUserController {
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute AppUser appUser){
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
+		if(StringUtils.isEmpty(appUser.getDeleteState())){
+			appUser.setDeleteState("1");
+		}
 		Example<AppUser> example = Example.of(appUser, ExampleMatcher.matchingAll());
 		Page<AppUser> page = appUserRepo.findAll(example,pageable);
 		return new Resp(page, CodeDef.SUCCESS);
@@ -46,6 +50,9 @@ public class AppUserController {
 	@ApiOperation(value = "添加或者更新用户信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
 	public Resp addOrUpdate_(@RequestBody AppUser appUser) {
+		if(StringUtils.isEmpty(appUser.getId())||StringUtils.isEmpty(appUser.getDeleteState())){
+			appUser.setDeleteState("1");
+		}
 		AppUser save = appUserRepo.save(appUser);
 		return new Resp(save, CodeDef.SUCCESS);
 	}

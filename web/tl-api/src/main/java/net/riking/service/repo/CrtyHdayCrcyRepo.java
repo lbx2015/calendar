@@ -16,6 +16,6 @@ import net.riking.entity.model.CrtyHdayCrcy;
 public interface CrtyHdayCrcyRepo extends JpaRepository<CrtyHdayCrcy, String>, JpaSpecificationExecutor<CrtyHdayCrcy>{
 	@Transactional
 	@Modifying
-	@Query("delete from CrtyHdayCrcy c where c.id in ?1")
+	@Query("update CrtyHdayCrcy set deleteState = '0'  where id in ?1")
 	public int deleteByIds(Set<String> ids);
 }
