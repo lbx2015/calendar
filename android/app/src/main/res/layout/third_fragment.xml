@@ -1,0 +1,73 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main.appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/done"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/reminder"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/ic_add_black_24dp" />
+        </FrameLayout>
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/top_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/page_tab_height"
+            android:background="@android:color/white"
+            app:tl_divider_color="@color/divider_color_d9d9d9"
+            app:tl_divider_width="1.3dp"
+            app:tl_indicator_color="@color/color_29a1f7"
+            app:tl_indicator_height="4dp"
+            app:tl_indicator_width_equal_title="false"
+            app:tl_tab_space_equal="true"
+            app:tl_textSelectColor="@color/color_29a1f7"
+            app:tl_textUnselectColor="@color/color_323232"
+            app:tl_textsize="14sp"
+            app:tl_underline_color="@color/divider_color_d9d9d9"
+            app:tl_underline_height="1dp" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v4.view.ViewPager>
+</android.support.design.widget.CoordinatorLayout>

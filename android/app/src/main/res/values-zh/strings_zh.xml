@@ -1,0 +1,8 @@
+<resources>
+    <string name="date">阳历日期</string>
+    <string name="vocation">节假日</string>
+    <string name="reminder">提醒</string>
+    <string name="personal">个人中心</string>
+    <string name="country">国家</string>
+    <string name="currency">货币</string>
+</resources>
