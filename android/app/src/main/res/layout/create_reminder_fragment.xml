@@ -100,6 +100,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/way_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -115,7 +116,6 @@
             android:src="@drawable/remind" />
 
         <TextView
-            android:id="@+id/text_way"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -126,7 +126,6 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignBottom="@+id/text_way"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
@@ -134,6 +133,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/repeat_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -149,7 +149,6 @@
             android:src="@drawable/repeat" />
 
         <TextView
-            android:id="@+id/repeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -162,7 +161,6 @@
             android:id="@+id/repeat_clock"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignBottom="@+id/repeat"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
