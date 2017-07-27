@@ -12,6 +12,8 @@
     <string name="please_select_remind_way">提醒方式</string>
     <string name="remind_repeat_way">重复</string>
     <string name="no_remind">不提醒</string>
+    <string name="remind_way" />
+    <string name="remind_accurate">整点提醒</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>

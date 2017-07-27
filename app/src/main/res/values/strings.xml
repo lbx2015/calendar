@@ -34,6 +34,7 @@
     <string name="please_select_remind_way">Remind way</string>
     <string name="remind_repeat_way">Repeat</string>
     <string name="no_remind">Not remind</string>
+    <string name="remind_accurate">Remind accurately</string>
 
     <string-array name="subTittles">
         <item>Job</item>
