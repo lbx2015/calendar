@@ -143,8 +143,10 @@
     <com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker
         android:id="@+id/minute_picker"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@android:color/white"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp" />
 
 </LinearLayout>
