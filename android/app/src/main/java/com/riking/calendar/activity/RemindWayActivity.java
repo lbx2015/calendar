@@ -15,10 +15,6 @@ import com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker;
 public class RemindWayActivity extends AppCompatActivity implements View.OnClickListener {
     WheelMinutePicker wmp;
     View minutePickerItem;
-    private View backButton;
-    private View notRemind;
-    private View remindAccurately;
-    private View customRemind;
     private View notRemindImage;
     private View accurateRemindImage;
     private View customRemindImage;
@@ -28,15 +24,17 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remind_kind);
         wmp = (WheelMinutePicker) findViewById(R.id.minute_picker);
-        backButton = findViewById(R.id.back);
-        notRemind = findViewById(R.id.not_remind_item);
-        remindAccurately = findViewById(R.id.remind_accurate_item);
-        customRemind = findViewById(R.id.custom_remind_item);
+        View backButton = findViewById(R.id.back);
+        View notRemind = findViewById(R.id.not_remind_item);
+        View remindAccurately = findViewById(R.id.remind_accurate_item);
+        View customRemind = findViewById(R.id.custom_remind_item);
         notRemindImage = findViewById(R.id.no_remind_confirm);
         accurateRemindImage = findViewById(R.id.remind_on_intergral_clock_confirm);
         customRemindImage = findViewById(R.id.remind_accurate_confirm);
         minutePickerItem = findViewById(R.id.minute_picker_item);
 
+        //set on click listeners
+        backButton.setOnClickListener(this);
         notRemind.setOnClickListener(this);
         remindAccurately.setOnClickListener(this);
         customRemind.setOnClickListener(this);
