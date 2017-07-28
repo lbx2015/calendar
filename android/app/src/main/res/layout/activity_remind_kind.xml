@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background_f2f2f2"
@@ -140,13 +141,40 @@
         android:layout_height="1dp"
         android:background="@color/divider_color_d9d9d9" />
 
-    <com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker
-        android:id="@+id/minute_picker"
+    <com.riking.calendar.widget.MinutePickRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:background="@android:color/white"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/ahead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/minute_picker"
+            android:text="提前"
+            android:textColor="@color/color_323232"
+            android:textSize="@dimen/normal_font_size_18" />
+
+        <com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker
+            android:id="@+id/minute_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="20dp"
+            app:wheel_item_space="@dimen/normal_font_size_18" />
+
+        <TextView
+            android:id="@+id/minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/minute_picker"
+            android:text="分"
+            android:textColor="@color/color_323232"
+            android:textSize="@dimen/normal_font_size_18" />
+    </com.riking.calendar.widget.MinutePickRelativeLayout>
 
 </LinearLayout>
