@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 import net.riking.entity.model.Dept;
 
 @Repository
-public interface DeptRepo extends JpaRepository<Dept, Long>, JpaSpecificationExecutor<Dept>{
+public interface DeptRepo extends JpaRepository<Dept, String>, JpaSpecificationExecutor<Dept>{
 	@Transactional
 	@Modifying
-	@Query("delete from Dept d where d.id in ?1")
+	@Query("update Dept set deleteState = '0' where id in ?1")
 	int deleteByIds(Set<String> ids);
 }

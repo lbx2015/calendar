@@ -20,7 +20,7 @@ import net.riking.entity.BaseEntity;
 public class AppUser extends BaseEntity {
 //用户表
 	@Id
-	@Column(name = "Id", length = 36)
+	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
@@ -56,16 +56,21 @@ public class AppUser extends BaseEntity {
 	
 	//0-禁用    1-启用
 	@Comment("用户状态")
-	@Column(name = "status")
-	private Integer status;
+	@Column(name = "enabled")
+	private String enabled;
 	
 	@Comment("备注信息")
 	@Column(name = "remark", length = 500)
 	private String remark;
 	
+	//0-删除状态   1-未删除状态
+	@Comment("删除标记")
+	@Column(name = "delete_state")
+	private String deleteState;
+	
 	@Comment("部门ID")
 	@Column(name = "dept_id")
-	private Integer deptId;
+	private String deptId;
 
 	public String getId() {
 		return id;
@@ -131,12 +136,20 @@ public class AppUser extends BaseEntity {
 		this.passWord = passWord;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public String getEnabled() {
+		return enabled;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setEnabled(String enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getDeleteState() {
+		return deleteState;
+	}
+
+	public void setDeleteState(String deleteState) {
+		this.deleteState = deleteState;
 	}
 
 	public String getRemark() {
@@ -147,11 +160,11 @@ public class AppUser extends BaseEntity {
 		this.remark = remark;
 	}
 
-	public Integer getDeptId() {
+	public String getDeptId() {
 		return deptId;
 	}
 
-	public void setDeptId(Integer deptId) {
+	public void setDeptId(String deptId) {
 		this.deptId = deptId;
 	}
 

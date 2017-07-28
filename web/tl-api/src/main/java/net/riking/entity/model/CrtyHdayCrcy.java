@@ -20,7 +20,7 @@ import net.riking.entity.BaseEntity;
 public class CrtyHdayCrcy extends BaseEntity {
 //各国节假日币种表
 	@Id
-	@Column(name = "Id", length = 36)
+	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
@@ -49,6 +49,11 @@ public class CrtyHdayCrcy extends BaseEntity {
 	@Comment("备注信息")
 	@Column(name = "remark", length = 500)
 	private String remark;
+	
+	//0-删除状态   1-未删除状态
+	@Comment("删除标记")
+	@Column(name = "delete_state")
+	private String deleteState;
 
 	public String getId() {
 		return id;
@@ -104,6 +109,14 @@ public class CrtyHdayCrcy extends BaseEntity {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getDeleteState() {
+		return deleteState;
+	}
+
+	public void setDeleteState(String deleteState) {
+		this.deleteState = deleteState;
 	}
 	
 	

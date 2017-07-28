@@ -36,6 +36,16 @@
     <string name="no_remind">Not remind</string>
     <string name="remind_accurate">Remind accurately</string>
     <string name="remind_custom">Custom</string>
+    <string name="no_repeat">No repeat</string>
+    <string name="per_monday">Per Monday</string>
+    <string name="per_tuesday">Per Tuesday</string>
+    <string name="per_wednesday">Per Wednesday</string>
+    <string name="per_thursday">Per Thursday</string>
+    <string name="per_friday">Per Friday</string>
+    <string name="per_saturday">Per Saturday</string>
+    <string name="per_sunday">Per Sunday</string>
+    <string name="repeat_on_working_day">Repeat on working day</string>
+    <string name="repeat_on_holiday_item">Repeat on holiday</string>
 
     <string-array name="subTittles">
         <item>Job</item>

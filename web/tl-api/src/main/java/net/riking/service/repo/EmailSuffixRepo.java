@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository;
 import net.riking.entity.model.EmailSuffix;
 
 @Repository
-public interface EmailSuffixRepo extends JpaRepository<EmailSuffix, Long>, JpaSpecificationExecutor<EmailSuffix>{
+public interface EmailSuffixRepo extends JpaRepository<EmailSuffix, String>, JpaSpecificationExecutor<EmailSuffix>{
 
 	@Transactional
 	@Modifying
-	@Query("delete from EmailSuffix d where d.id in ?1")
+	@Query("update EmailSuffix set deleteState = '0'  where id in ?1")
 	int deleteByIds(Set<String> ids);
 }

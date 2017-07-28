@@ -1,12 +1,12 @@
 package net.riking.web.controller;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -37,7 +37,7 @@ public class CrtyHdayCrcyController {
 	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public Resp get_(@RequestParam("id") Long id) {
+	public Resp get_(@RequestParam("id") String id) {
 		CrtyHdayCrcy crtyHdayCrcy = crtyHdayCrcyRepo.findOne(id);
 		return new Resp(crtyHdayCrcy, CodeDef.SUCCESS);
 	}
@@ -46,6 +46,9 @@ public class CrtyHdayCrcyController {
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute CrtyHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
+		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
+			crtyHdayCrcy.setDeleteState("1");
+		}
 		Example<CrtyHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
 		Page<CrtyHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
 		return new Resp(page, CodeDef.SUCCESS);
@@ -54,6 +57,9 @@ public class CrtyHdayCrcyController {
 	@ApiOperation(value = "添加或者更新各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
 	public Resp addOrUpdate_(@RequestBody CrtyHdayCrcy crtyHdayCrcy) {
+		if(StringUtils.isEmpty(crtyHdayCrcy.getId())||StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
+			crtyHdayCrcy.setDeleteState("1");
+		}
 		CrtyHdayCrcy save = crtyHdayCrcyRepo.save(crtyHdayCrcy);
 		return new Resp(save, CodeDef.SUCCESS);
 	}

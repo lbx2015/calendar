@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -37,7 +38,7 @@ public class EmailSuffixController {
 	
 	@ApiOperation(value = "得到<单个>邮箱后缀", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public Resp get_(@RequestParam("id") Long id) {
+	public Resp get_(@RequestParam("id") String id) {
 		EmailSuffix emailSuffix = emailSuffixRepo.findOne(id);
 		return new Resp(emailSuffix, CodeDef.SUCCESS);
 	}
@@ -46,6 +47,9 @@ public class EmailSuffixController {
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute EmailSuffix emailSuffix){
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
+		if(StringUtils.isEmpty(emailSuffix.getDeleteState())){
+			emailSuffix.setDeleteState("1");
+		}
 		Example<EmailSuffix> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
 		Page<EmailSuffix> page = emailSuffixRepo.findAll(example,pageable);
 		return new Resp(page, CodeDef.SUCCESS);
@@ -54,13 +58,19 @@ public class EmailSuffixController {
 	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "GET")
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
 	public Resp getAll_(){
-		List<EmailSuffix> list = emailSuffixRepo.findAll();
+		EmailSuffix emailSuffix = new EmailSuffix();
+		emailSuffix.setDeleteState("1");
+		Example<EmailSuffix> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
+		List<EmailSuffix> list = emailSuffixRepo.findAll(example);
 		return new Resp(list, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "添加或者更新邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
 	public Resp addOrUpdate_(@RequestBody EmailSuffix emailSuffix) {
+		if(StringUtils.isEmpty(emailSuffix.getId())||StringUtils.isEmpty(emailSuffix.getDeleteState())){
+			emailSuffix.setDeleteState("1");
+		}
 		EmailSuffix save = emailSuffixRepo.save(emailSuffix);
 		return new Resp(save, CodeDef.SUCCESS);
 	}

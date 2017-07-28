@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background_f2f2f2"
@@ -43,7 +44,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/divider_color_d9d9d9" />
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/not_remind_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,10 +52,9 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/no_remind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            android:layout_alignParentLeft="true"
             android:padding="10dp"
             android:text="@string/no_remind"
             android:textColor="@color/color_323232"
@@ -62,13 +62,15 @@
 
         <ImageView
             android:id="@+id/no_remind_confirm"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="end"
+            android:layout_width="@dimen/image_height_40dp"
+            android:layout_height="@dimen/image_height_40dp"
+            android:layout_alignParentRight="true"
             android:padding="10dp"
-            android:src="@drawable/confirm" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -76,12 +78,11 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <FrameLayout
-        android:id="@+id/remind_accurate"
+        android:id="@+id/remind_accurate_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:padding="10dp">
-
 
         <TextView
             android:id="@+id/remind_on_intergral_clock"
@@ -95,11 +96,12 @@
 
         <ImageView
             android:id="@+id/remind_on_intergral_clock_confirm"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="end"
+            android:layout_width="@dimen/image_height_40dp"
+            android:layout_height="@dimen/image_height_40dp"
+            android:layout_gravity="center_vertical|end"
             android:padding="10dp"
-            android:src="@drawable/confirm" />
+            android:src="@drawable/confirm"
+            android:visibility="visible" />
 
     </FrameLayout>
 
@@ -109,7 +111,7 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <FrameLayout
-        android:id="@+id/custom_remind"
+        android:id="@+id/custom_remind_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -126,18 +128,55 @@
 
         <ImageView
             android:id="@+id/remind_accurate_confirm"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="end"
+            android:layout_width="@dimen/image_height_40dp"
+            android:layout_height="@dimen/image_height_40dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="10dp"
             android:src="@drawable/confirm"
             android:visibility="gone" />
     </FrameLayout>
 
-    <com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker
-        android:id="@+id/minute_picker"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:layout_height="1dp"
+        android:background="@color/divider_color_d9d9d9" />
+
+    <com.riking.calendar.widget.MinutePickRelativeLayout
+        android:id="@+id/minute_picker_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/ahead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/minute_picker"
+            android:text="提前"
+            android:textColor="@color/color_323232"
+            android:textSize="@dimen/normal_font_size_18" />
+
+        <com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker
+            android:id="@+id/minute_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="20dp"
+            app:wheel_item_space="@dimen/normal_font_size_18" />
+
+        <TextView
+            android:id="@+id/minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/minute_picker"
+            android:text="分"
+            android:textColor="@color/color_323232"
+            android:textSize="@dimen/normal_font_size_18" />
+    </com.riking.calendar.widget.MinutePickRelativeLayout>
 
 </LinearLayout>
