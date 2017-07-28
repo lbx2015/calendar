@@ -78,7 +78,7 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <FrameLayout
-        android:id="@+id/remind_accurate"
+        android:id="@+id/remind_accurate_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -111,7 +111,7 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <FrameLayout
-        android:id="@+id/custom_remind"
+        android:id="@+id/custom_remind_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -142,11 +142,13 @@
         android:background="@color/divider_color_d9d9d9" />
 
     <com.riking.calendar.widget.MinutePickRelativeLayout
+        android:id="@+id/minute_picker_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:background="@android:color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/ahead"
@@ -164,7 +166,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:padding="20dp"
-            android:visibility="gone"
             app:wheel_item_space="@dimen/normal_font_size_18" />
 
         <TextView
