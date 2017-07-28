@@ -18,6 +18,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import net.riking.entity.model.ReportList;
+
 public class ExcelToList {
 
 	public static <T> List<T> readXlsx(InputStream is, String[] fields, Class<T> clazz) throws Exception {
@@ -82,8 +84,18 @@ public class ExcelToList {
 		return list;
 	}
 
+	public static List<ReportList> readReportListXlsx(InputStream is, String fileName) throws Exception {
+		return null;
+
+	}
+
+	public static List<ReportList> readReportListXls(InputStream is, String fileName) throws Exception {
+		return null;
+
+	}
+
 	private static String getValue(XSSFCell xssfRow) {
-		if (xssfRow==null) {
+		if (xssfRow == null) {
 			return null;
 		}
 		if (xssfRow.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
@@ -108,7 +120,7 @@ public class ExcelToList {
 			return Double.valueOf(hssfCell.getNumericCellValue()).intValue() + "";
 		} else if (hssfCell.getCellType() == Cell.CELL_TYPE_STRING) {
 			return String.valueOf(hssfCell.getStringCellValue());
-		}else if (hssfCell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+		} else if (hssfCell.getCellType() == Cell.CELL_TYPE_FORMULA) {
 			return String.valueOf(hssfCell.getNumericCellValue());
 		} else {
 			return String.valueOf(hssfCell.getStringCellValue());
