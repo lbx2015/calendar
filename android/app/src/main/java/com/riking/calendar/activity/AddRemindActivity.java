@@ -8,18 +8,26 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
+import com.riking.calendar.realm.model.Reminder;
+
+import io.realm.Realm;
 
 /**
  * Created by zw.zhang on 2017/7/24.
  */
 
 public class AddRemindActivity extends AppCompatActivity {
+    MyPagerAdapter pagerAdapter;
+    CreateReminderFragment reminderFragment;
+    CreateToDoFragment toDoFragment;
     private ViewPager viewPager;
+    private Realm realm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,10 +35,42 @@ public class AddRemindActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_remind);
         viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
         //adding view pager to the slidingTabLayout
         SlidingTabLayout topTabLayout = (SlidingTabLayout) findViewById(R.id.top_tab_layout);
         topTabLayout.setViewPager(viewPager);
+    }
+
+    public void onClickCancel(View v) {
+        onBackPressed();
+    }
+
+    public void onClickConfirm(View v) {
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
+
+
+        //insert  to realm
+        // All writes must be wrapped in a transaction to facilitate safe multi threading
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                //remind fragment
+                if (viewPager.getCurrentItem() == 0) {
+                    // Add a person
+                    Reminder reminder = realm.createObject(Reminder.class);
+                    reminder.time = reminderFragment.time.getTime();
+                    reminder.title = reminderFragment.remindTitle.getText().toString();
+                }
+                //to do fragment
+                else {
+
+                }
+            }
+        });
+
+        onBackPressed();
     }
 
 
@@ -50,9 +90,11 @@ public class AddRemindActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new CreateReminderFragment();
+                    reminderFragment = new CreateReminderFragment();
+                    return reminderFragment;
                 case 1:
-                    return new CreateToDoFragment();
+                    toDoFragment = new CreateToDoFragment();
+                    return toDoFragment;
             }
             return null;
         }
