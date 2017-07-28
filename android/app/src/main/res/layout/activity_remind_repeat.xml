@@ -64,7 +64,7 @@
                 android:textSize="18sp" />
 
             <ImageView
-                android:id="@+id/no_remind_confirm"
+                android:id="@+id/no_repeat_confirm"
                 android:layout_width="@dimen/image_height_30dp"
                 android:layout_height="@dimen/image_height_30dp"
                 android:layout_alignParentRight="true"
