@@ -1,0 +1,67 @@
+{
+	"table": "T_APP_USER",
+	"groups":[{
+		"prop":"base",
+		"alias":"基础信息"
+	}],
+	"attrs":[
+		{
+			"prop": "name",
+			"alias": "用户名称",
+			"type": "string",
+			"query": "1",
+			"group":"base",
+			"query_order": "2"
+		},
+		{
+			"prop": "sex",
+			"alias": "用户性别",
+			"group":"base",
+			"query": "1",
+			"query_order": "3",
+			"type": "enum",
+			"dict_key": "APPUSER.SEX",
+			"enum_search":"1"
+		},
+		{
+			"prop": "birthday",
+			"group":"base",
+			"alias": "用户生日",
+			"type": "date"
+		},
+		{
+			"prop": "email",
+			"alias": "用户邮箱",
+			"group":"base",
+			"type": "string"
+		},
+		{
+			"prop": "telephone",
+			"alias": "用户电话",
+			"group":"base",
+			"type": "string"
+		},
+		{
+			"prop": "address",
+			"alias": "用户地址",
+			"group":"base",
+			"type" : "lazyEnum",
+      		"enum_search":"1",
+      		"enum_urls":"/modelPropdict/getAddF,/modelPropdict/getAddS"
+		},
+		{
+			"prop": "enabled",
+			"alias": "用户状态",
+			"group":"base",
+			"type" : "enum",
+      		"enum_search":"1",
+      		"dict_key": "APPUSER.ENabled"
+		},
+		{
+			"prop": "remark",
+			"alias": "备注信息",
+			"group":"base",
+			"type" : "text"
+		}
+	]
+}

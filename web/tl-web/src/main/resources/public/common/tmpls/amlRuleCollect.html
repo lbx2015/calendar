@@ -1,0 +1,36 @@
+<script type="text/tmpl">
+<table class="layui-table lay-even lay-tab-left" style="width: 100%;">
+	{{#  layui.each(d.attrs, function(index, attr){ }}
+		<tr>
+			<td>
+				{{= attr.alias }}
+			</td>
+			<td>
+				  {{#   if(attr.type == "date"){ }}
+                           {{= Utils.getDate(d.data[attr.prop]) }}
+          		  {{#
+                       }else if(attr.type == "enum"){  }}
+				{{# var value = ""; }}
+              	{{# if(attr.dict_key){ }}
+                    {{# value = TmplUtils.__getEnumVal(d.enums,attr.dict_key.split('.')[0],attr.dict_key.split('.')[1],d.data[attr.prop]) }}
+                	{{# if(value == '异常中止'){ }}
+					<span style='color:red;'>
+					{{# TmplUtils.showMsgFail("异常中止,采集失败");}}
+					{{= value}}
+					</span>
+					{{# }else{ }}
+{{= value}}
+{{# } }}
+				{{# }else{ }}
+                    {{= TmplUtils.__getEnumVal(d.enums,d.table,attr.prop,d.data[attr.prop]) }}
+                {{# } }}
+            {{#
+                       }else{
+            }}
+                           {{= d.data[attr.prop] }}
+            {{# } }}
+			</td>
+		</tr>
+	{{# }) }}
+</table>
+</script>

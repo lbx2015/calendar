@@ -1,0 +1,49 @@
+{
+	"table": "T_CRTY_HDAY_CRCY",
+	"groups":[{
+		"prop":"base",
+		"alias":"基础信息"
+	}],
+	"attrs":[
+		{
+			"prop": "icon",
+			"alias": "国旗图片url",
+			"group":"base",
+			"type": "string"
+		},
+		{
+			"prop": "ctryName",
+			"alias": "国家/地区名称",
+			"group":"base",
+			"query": "1",
+			"query_order": "1",
+			"type": "string"
+		},
+		{
+			"prop": "hdayName",
+			"alias": "节假日名称",
+			"group":"base",
+			"type": "string"
+		},
+		{
+			"prop": "hdayDate",
+			"alias": "节假日时间",
+			"group":"base",
+			"type": "date"
+		},
+		{
+			"prop": "crcy",
+			"alias": "币种",
+			"group":"base",
+			"type": "enum",
+			"dict_key": "CRTYHDAYCRCY.CRCY",
+			"enum_search":"1"
+		},
+		{
+			"prop": "remark",
+			"alias": "备注信息",
+			"group":"base",
+			"type" : "text"
+		}
+	]
+}
