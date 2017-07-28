@@ -100,6 +100,40 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/way_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/way_of_remind"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:paddingRight="10dp"
+            android:src="@drawable/remind" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/way_of_remind"
+            android:text="@string/please_select_remind_way"
+            android:textColor="@color/color_323232" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="9dp"
+            android:src="@drawable/next_step" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/repeat_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -115,7 +149,6 @@
             android:src="@drawable/repeat" />
 
         <TextView
-            android:id="@+id/repeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -128,7 +161,6 @@
             android:id="@+id/repeat_clock"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignBottom="@+id/repeat"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
