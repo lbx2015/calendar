@@ -12,8 +12,6 @@ import com.riking.calendar.R;
  */
 
 public class RemindRepeatActivity extends AppCompatActivity implements View.OnClickListener {
-    private View backButton;
-
     //image of confirm
     private View noRepeatImage;
     private View mondayImage;
@@ -52,7 +50,10 @@ public class RemindRepeatActivity extends AppCompatActivity implements View.OnCl
         workDayImage = findViewById(R.id.repeat_on_working_day_confirm);
         holidayImage = findViewById(R.id.repeat_on_holiday_item_confirm);
 
+        View backButton = findViewById(R.id.back);
+
         //set click listeners
+        backButton.setOnClickListener(this);
         notRepeat.setOnClickListener(this);
         perMonday.setOnClickListener(this);
         perTuesday.setOnClickListener(this);
