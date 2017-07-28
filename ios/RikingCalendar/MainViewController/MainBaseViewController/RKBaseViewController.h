@@ -90,6 +90,21 @@
  */
 - (UILabel *)createLabelFrame:(CGRect)frame text:(NSString *)text font:(UIFont *)font textColor:(UIColor*)color textAlignment:(NSTextAlignment)textAlignment;
 
+
+
+
+
+/**
+ 快速设置阴影(固定值)
+
+ @param view view
+ */
+- (void)setViewShadowWithView:(UIView *)view;
+
+/**
+ 设置阴影
+ */
+- (void)setViewShadowWithView:(UIView *)view shadowOffset:(CGSize)offset shadowOpacity:(CGFloat)shadowOpacity shadowRadius:(CGFloat)shadowRadius shadowColor:(NSString *)colorName;
 /**
  网络请求数据
  

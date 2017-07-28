@@ -24,6 +24,8 @@
 		<string>#29a1f7</string>
 		<key>lightText_color</key>
 		<string>#929292</string>
+		<key>whiteColor</key>
+		<string>#FFFFFF</string>
 		<key>receipe_text</key>
 		<real>4294967295</real>
 	</dict>

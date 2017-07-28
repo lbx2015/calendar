@@ -26,13 +26,13 @@
 -(UITableView *)dataTabView
 {
     if (!_dataTabView) {
-        _dataTabView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-64) style:UITableViewStylePlain];
+        _dataTabView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-64) style:UITableViewStyleGrouped];
 
         _dataTabView.delegate = self;
         _dataTabView.dataSource = self;
         _dataTabView.showsVerticalScrollIndicator = NO;
         _dataTabView.showsHorizontalScrollIndicator = NO;
-        _dataTabView.backgroundColor = [UIColor redColor];
+        _dataTabView.backgroundColor = [UIColor clearColor];
         if ([ _dataTabView respondsToSelector:@selector(setSeparatorInset:)]) {
             [_dataTabView   setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         }
@@ -98,6 +98,15 @@
     return 49;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 0.0001;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    
+    return 0.0001;
+}
+
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -123,6 +132,10 @@
 {
     
 }
+
+
+
+
 
 
 

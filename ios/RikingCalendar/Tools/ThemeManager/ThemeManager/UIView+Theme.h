@@ -18,6 +18,9 @@ extern NSString *kThemeTabBarBarTintColor;
 extern NSString *kThemeTabBarTintColor;
 
 
+//阴影
+extern NSString *kThemeViewShadowColor;
+
 extern NSString *kThemeColor01;
 extern NSString *kThemeColor02;
 extern NSString *kThemeColor03;

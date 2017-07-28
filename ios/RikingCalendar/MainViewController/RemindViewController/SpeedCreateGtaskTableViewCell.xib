@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="SpeedCreateGtaskTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jkA-Wm-lVr" customClass="IQTextView" customModule="IQKeyboardManagerSwift">
+                        <rect key="frame" x="5" y="5" width="237" height="44.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imN-Vl-F0k">
+                        <rect key="frame" x="247" y="15.5" width="50" height="23.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="pUX-W8-mKQ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <state key="normal" title="创建"/>
+                    </button>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="快速创建" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jfh-IL-bER">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="54.5"/>
+                        <color key="backgroundColor" red="0.58736172519999996" green="1" blue="0.42872188970000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottomMargin" secondItem="imN-Vl-F0k" secondAttribute="bottom" constant="7.5" id="DJr-bz-kDC"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="imN-Vl-F0k" secondAttribute="trailing" constant="15" id="DUa-Cn-nia"/>
+                    <constraint firstItem="jfh-IL-bER" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="GXj-0E-dQx"/>
+                    <constraint firstAttribute="bottom" secondItem="jfh-IL-bER" secondAttribute="bottom" id="KLH-G3-Zcm"/>
+                    <constraint firstItem="jkA-Wm-lVr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="NWb-H6-IhA"/>
+                    <constraint firstItem="imN-Vl-F0k" firstAttribute="leading" secondItem="jkA-Wm-lVr" secondAttribute="trailing" constant="5" id="PTE-aP-l1i"/>
+                    <constraint firstAttribute="trailing" secondItem="jfh-IL-bER" secondAttribute="trailing" id="Vaq-8E-V5l"/>
+                    <constraint firstItem="imN-Vl-F0k" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="7.5" id="eKF-xH-tT9"/>
+                    <constraint firstAttribute="bottom" secondItem="jkA-Wm-lVr" secondAttribute="bottom" constant="5" id="fmo-fL-oP5"/>
+                    <constraint firstItem="jkA-Wm-lVr" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="qS2-cS-iab"/>
+                    <constraint firstItem="jfh-IL-bER" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="zHp-Bl-xLp"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="SpeedCreateBtn" destination="imN-Vl-F0k" id="3ol-wU-9DI"/>
+                <outlet property="SpeedTextView" destination="jkA-Wm-lVr" id="Qqa-nh-BW6"/>
+                <outlet property="speedCreateGtaskLabel" destination="jfh-IL-bER" id="PUG-g4-ohf"/>
+            </connections>
+            <point key="canvasLocation" x="35" y="53.5"/>
+        </tableViewCell>
+    </objects>
+</document>

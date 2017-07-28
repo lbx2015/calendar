@@ -111,4 +111,5 @@
  */
 + (UIColor*)mostColor:(UIImage*)image;
 
+
 @end

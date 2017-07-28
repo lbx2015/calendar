@@ -362,7 +362,7 @@
         UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [rightBtn setTag:i];
         [rightBtn setTitle:titleName forState:UIControlStateNormal];
-        [rightBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [rightBtn.titleLabel setFont:[UIFont systemFontOfSize:17]];
         [rightBtn setFrame:CGRectMake(0, 0, 18*[titleName length], 44)];
         [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [rightBtn setBackgroundColor:[UIColor clearColor]];
@@ -498,6 +498,25 @@
     label.textAlignment = textAlignment;
     return label;
 }
+
+
+- (void)setViewShadowWithView:(UIView *)view shadowOffset:(CGSize)offset shadowOpacity:(CGFloat)shadowOpacity shadowRadius:(CGFloat)shadowRadius shadowColor:(NSString *)colorName{
+    view.layer.shadowOffset = offset;
+    view.layer.shadowOpacity = shadowOpacity;
+    view.layer.shadowRadius = shadowRadius;
+    view.themeMap = @{kThemeViewShadowColor : colorName};
+}
+
+- (void)setViewShadowWithView:(UIView *)view{
+    
+    view.layer.shadowOffset =CGSizeMake(0, 1);
+    view.layer.shadowOpacity = 0.8;
+    view.layer.shadowRadius = 4;
+    view.themeMap = @{kThemeMapKeyColorName : setwhiteColor, kThemeViewShadowColor : line_lightgrey_color};
+    
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

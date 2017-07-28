@@ -72,6 +72,8 @@
 //根据RGB 获取自定义颜色
 #define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 
+#define RGBA(r,g,b,a) ([UIColor colorWithRed:(r / 255.0) green:(g / 255.0) blue:(b / 255.0) alpha:a])
+
 //按钮的tag值
 #define BtnTag 10000
 

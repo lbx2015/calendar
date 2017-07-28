@@ -75,6 +75,14 @@
 		8321D4971F1C58E500CBEEBC /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D45F1F1C58E500CBEEBC /* ThemeManager.m */; };
 		8321D4981F1C58E500CBEEBC /* UIView+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4611F1C58E500CBEEBC /* UIView+Theme.m */; };
 		8321D4991F1C58E500CBEEBC /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4631F1C58E500CBEEBC /* Utils.m */; };
+		836B06AC1F29D7120054DE46 /* ReminderDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06AB1F29D7120054DE46 /* ReminderDatePickerView.m */; };
+		836B06AE1F29D8130054DE46 /* ReminderDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836B06AD1F29D8130054DE46 /* ReminderDatePickerView.xib */; };
+		836B06B11F2AE2610054DE46 /* ReminderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06B01F2AE2610054DE46 /* ReminderListViewController.m */; };
+		836B06B41F2AE27B0054DE46 /* GtaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06B31F2AE27B0054DE46 /* GtaskListViewController.m */; };
+		836B06B81F2B31530054DE46 /* GtaskListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06B61F2B31530054DE46 /* GtaskListTableViewCell.m */; };
+		836B06B91F2B31530054DE46 /* GtaskListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836B06B71F2B31530054DE46 /* GtaskListTableViewCell.xib */; };
+		836B06BD1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06BB1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m */; };
+		836B06BE1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836B06BC1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib */; };
 		8371B05F1F2863F000DA7465 /* NSDate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B0591F2863F000DA7465 /* NSDate+Extension.m */; };
 		8371B0601F2863F000DA7465 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B05B1F2863F000DA7465 /* UIView+Extension.m */; };
 		8371B0611F2863F000DA7465 /* WSDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B05D1F2863F000DA7465 /* WSDatePickerView.m */; };
@@ -254,6 +262,19 @@
 		8321D4621F1C58E500CBEEBC /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		8321D4631F1C58E500CBEEBC /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		8337BDA11F1C5FBB00709471 /* RKTextFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RKTextFont.h; sourceTree = "<group>"; };
+		836B06AA1F29D7120054DE46 /* ReminderDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderDatePickerView.h; sourceTree = "<group>"; };
+		836B06AB1F29D7120054DE46 /* ReminderDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderDatePickerView.m; sourceTree = "<group>"; };
+		836B06AD1F29D8130054DE46 /* ReminderDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderDatePickerView.xib; sourceTree = "<group>"; };
+		836B06AF1F2AE2610054DE46 /* ReminderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderListViewController.h; sourceTree = "<group>"; };
+		836B06B01F2AE2610054DE46 /* ReminderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderListViewController.m; sourceTree = "<group>"; };
+		836B06B21F2AE27B0054DE46 /* GtaskListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskListViewController.h; sourceTree = "<group>"; };
+		836B06B31F2AE27B0054DE46 /* GtaskListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskListViewController.m; sourceTree = "<group>"; };
+		836B06B51F2B31530054DE46 /* GtaskListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskListTableViewCell.h; sourceTree = "<group>"; };
+		836B06B61F2B31530054DE46 /* GtaskListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskListTableViewCell.m; sourceTree = "<group>"; };
+		836B06B71F2B31530054DE46 /* GtaskListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GtaskListTableViewCell.xib; sourceTree = "<group>"; };
+		836B06BA1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeedCreateGtaskTableViewCell.h; sourceTree = "<group>"; };
+		836B06BB1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeedCreateGtaskTableViewCell.m; sourceTree = "<group>"; };
+		836B06BC1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpeedCreateGtaskTableViewCell.xib; sourceTree = "<group>"; };
 		8371B0581F2863F000DA7465 /* NSDate+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Extension.h"; sourceTree = "<group>"; };
 		8371B0591F2863F000DA7465 /* NSDate+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Extension.m"; sourceTree = "<group>"; };
 		8371B05A1F2863F000DA7465 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
@@ -345,7 +366,8 @@
 		830119B11F20569800DBAF80 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				836B06A51F29892C0054DE46 /* Model */,
+				836B06A71F2997EC0054DE46 /* ClassesModel */,
+				836B06A81F2997EC0054DE46 /* ClassesViews */,
 				830119B21F2056CF00DBAF80 /* AddReminderController.h */,
 				830119B31F2056CF00DBAF80 /* AddReminderController.m */,
 				830119B51F20596E00DBAF80 /* ReminderViewController.h */,
@@ -540,6 +562,16 @@
 			children = (
 				8321D3FB1F1C58E500CBEEBC /* RemindViewController.h */,
 				8321D3FC1F1C58E500CBEEBC /* RemindViewController.m */,
+				836B06B21F2AE27B0054DE46 /* GtaskListViewController.h */,
+				836B06B31F2AE27B0054DE46 /* GtaskListViewController.m */,
+				836B06B51F2B31530054DE46 /* GtaskListTableViewCell.h */,
+				836B06B61F2B31530054DE46 /* GtaskListTableViewCell.m */,
+				836B06B71F2B31530054DE46 /* GtaskListTableViewCell.xib */,
+				836B06BA1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.h */,
+				836B06BB1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m */,
+				836B06BC1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib */,
+				836B06AF1F2AE2610054DE46 /* ReminderListViewController.h */,
+				836B06B01F2AE2610054DE46 /* ReminderListViewController.m */,
 				830119B11F20569800DBAF80 /* Controller */,
 			);
 			path = RemindViewController;
@@ -746,16 +778,34 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		836B06A51F29892C0054DE46 /* Model */ = {
+		836B06A71F2997EC0054DE46 /* ClassesModel */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = Model;
+			path = ClassesModel;
+			sourceTree = "<group>";
+		};
+		836B06A81F2997EC0054DE46 /* ClassesViews */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ClassesViews;
+			sourceTree = "<group>";
+		};
+		836B06A91F29D6D80054DE46 /* ReminderDatePickerView */ = {
+			isa = PBXGroup;
+			children = (
+				836B06AA1F29D7120054DE46 /* ReminderDatePickerView.h */,
+				836B06AB1F29D7120054DE46 /* ReminderDatePickerView.m */,
+				836B06AD1F29D8130054DE46 /* ReminderDatePickerView.xib */,
+			);
+			path = ReminderDatePickerView;
 			sourceTree = "<group>";
 		};
 		8371B0561F2863F000DA7465 /* ClassesView */ = {
 			isa = PBXGroup;
 			children = (
+				836B06A91F29D6D80054DE46 /* ReminderDatePickerView */,
 				8371B0571F2863F000DA7465 /* WSDaePickerView */,
 			);
 			path = ClassesView;
@@ -923,12 +973,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				836B06AE1F29D8130054DE46 /* ReminderDatePickerView.xib in Resources */,
 				8315A5D41F18AE40003BECDA /* LaunchScreen.storyboard in Resources */,
 				8371B0621F2863F000DA7465 /* WSDatePickerView.xib in Resources */,
 				8315A5D11F18AE40003BECDA /* Assets.xcassets in Resources */,
 				8321D48B1F1C58E500CBEEBC /* MJRefresh.bundle in Resources */,
 				83F080B61F25EC1D00CC7359 /* GtasksViewController.xib in Resources */,
+				836B06BE1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib in Resources */,
 				83D72FD71F1CA1FE001C1275 /* res in Resources */,
+				836B06B91F2B31530054DE46 /* GtaskListTableViewCell.xib in Resources */,
 				8315A5CF1F18AE40003BECDA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1098,6 +1151,7 @@
 				8321D4941F1C58E500CBEEBC /* DeallocBlockExecutor.m in Sources */,
 				8321D4951F1C58E500CBEEBC /* NSObject+DeallocBlock.m in Sources */,
 				8321D46D1F1C58E500CBEEBC /* RKBaseScrollview.m in Sources */,
+				836B06AC1F29D7120054DE46 /* ReminderDatePickerView.m in Sources */,
 				8321D46E1F1C58E500CBEEBC /* RKBaseViewController.m in Sources */,
 				8321D4831F1C58E500CBEEBC /* MJRefreshAutoNormalFooter.m in Sources */,
 				8321D4681F1C58E500CBEEBC /* UIImage+ColorFix.m in Sources */,
@@ -1116,10 +1170,12 @@
 				8321D4701F1C58E500CBEEBC /* PersonViewController.m in Sources */,
 				83D72FD51F1C9E6C001C1275 /* UITabBarItem+Theme.m in Sources */,
 				83D72FF31F1E074B001C1275 /* MBProgressHUD.m in Sources */,
+				836B06B11F2AE2610054DE46 /* ReminderListViewController.m in Sources */,
 				83D72FEC1F1E0671001C1275 /* INSPECTIONSessionWrapperOperation.m in Sources */,
 				8315A5CC1F18AE40003BECDA /* ViewController.m in Sources */,
 				8321D4811F1C58E500CBEEBC /* MJRefreshHeader.m in Sources */,
 				8321D4761F1C58E500CBEEBC /* MJFoundation.m in Sources */,
+				836B06B81F2B31530054DE46 /* GtaskListTableViewCell.m in Sources */,
 				8321D48E1F1C58E500CBEEBC /* UIScrollView+MJRefresh.m in Sources */,
 				8321D47D1F1C58E500CBEEBC /* MJRefreshAutoFooter.m in Sources */,
 				8315A5C91F18AE40003BECDA /* AppDelegate.m in Sources */,
@@ -1147,10 +1203,12 @@
 				8321D4781F1C58E500CBEEBC /* MJType.m in Sources */,
 				830119C11F207B1A00DBAF80 /* MYSegmentView.m in Sources */,
 				8315A5C61F18AE40003BECDA /* main.m in Sources */,
+				836B06BD1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m in Sources */,
 				83D72FF21F1E074B001C1275 /* MBManager.m in Sources */,
 				8321D4971F1C58E500CBEEBC /* ThemeManager.m in Sources */,
 				8371B0611F2863F000DA7465 /* WSDatePickerView.m in Sources */,
 				8321D4801F1C58E500CBEEBC /* MJRefreshFooter.m in Sources */,
+				836B06B41F2AE27B0054DE46 /* GtaskListViewController.m in Sources */,
 				8321D4741F1C58E500CBEEBC /* YPTabItem.m in Sources */,
 				8371B05F1F2863F000DA7465 /* NSDate+Extension.m in Sources */,
 				8321D4721F1C58E500CBEEBC /* YPTabBar.m in Sources */,
