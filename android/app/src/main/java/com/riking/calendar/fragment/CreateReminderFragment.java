@@ -95,6 +95,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
             }
             case R.id.repeat_item: {
                 startActivity(new Intent(getActivity(), RemindRepeatActivity.class));
+                break;
             }
         }
     }

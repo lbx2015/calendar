@@ -48,6 +48,9 @@
         <activity
             android:name=".activity.RemindWayActivity"
             android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.RemindRepeatActivity"
+            android:theme="@style/AppThemeNoActionBar" />
 
         <service
             android:name=".service.AlarmService"

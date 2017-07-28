@@ -14,7 +14,6 @@ import com.riking.calendar.R;
 public class RemindRepeatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remind_repeat);
     }
