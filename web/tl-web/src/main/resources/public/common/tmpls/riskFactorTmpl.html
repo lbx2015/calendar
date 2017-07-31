@@ -1,0 +1,347 @@
+<script type="text/tmpl">
+{{# if(d.attrs.length <= Const.cellLeftCount + 1){ }}
+    <table class="layui-table lay-even lay-tab-left" style="min-height: 450px; width: 100%;">
+{{# }else{ }}
+    <table class="layui-table lay-even lay-tab-left" style="min-height: 450px;">
+{{# } }}
+        <colgroup>
+{{#
+    var row = 1;
+    var col = 0;
+    var obj = {};
+    obj.row = row;
+    obj.col = col;
+    var remaining = 100;
+    var operationWidth = 15;
+    if(d.operationWidth){
+        operationWidth = d.operationWidth;
+    }
+    if(d.hasCheckbox){ }}
+    {{# if(d.hasOperation){
+        remaining = remaining-5-operationWidth;
+    }}
+        <col width="5%">
+        <col width="{{operationWidth}}%">
+    {{# }else{
+        remaining = remaining-5;
+    }}
+        <col width="5%">
+    {{# } }}
+{{# }else{ }}
+    {{# if(d.hasOperation){
+        remaining = remaining-operationWidth;
+    }}
+        <col width="{{operationWidth}}%">
+    {{# } }}
+{{# } }}
+{{# if(d.attrs.length > Const.cellLeftCount + 1){
+    var colWidth = remaining/Const.cellLeftCount;
+    for(var i=0 ; i<Const.cellLeftCount; i++){ }}
+        <col width="{{=colWidth}}%">
+    {{# } }}
+{{# }else{
+    var colWidth = remaining/d.attrs.length;
+    for(var i=0 ; i<d.attrs.length; i++){ }}
+        <col width="{{=colWidth}}%">
+    {{# } }}
+{{# } }}
+        </colgroup>
+        <thead>
+            <tr>
+ {{# if(d.hasCheckbox){
+   col++;
+   obj.col = col;
+ }}
+ {{# if(d.tdBeforeFill){
+        obj.html = '<input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose">';
+ }}
+       <th>{{ d.tdBeforeFill(obj) }}</th>
+ {{# }else{ }}
+       <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+ {{# } }}
+ {{# } }}
+ {{# if(d.hasOperation){
+    col++;
+    obj.col = col;
+ }}
+      {{# if(d.tdBeforeFill){
+            obj.html = '操作';
+       }}
+            <th>{{ d.tdBeforeFill(obj) }}</th>
+       {{# }else{ }}
+            <th>操作</th>
+       {{# } }}
+ {{# } }}
+                 {{#
+                  var i = 0;
+                  layui.each(d.attrs, function(index, item){
+                    if((i< Const.cellLeftCount && d.attrs.length > Const.cellLeftCount + 1)||d.attrs.length <= Const.cellLeftCount + 1){
+                        i++;
+                        col++;
+                        obj.col = col;
+                    }}
+                    <th>
+                         {{# if(d.tdBeforeFill){
+                            obj.html = item.alias;
+                         }}
+                             {{ d.tdBeforeFill(obj) }}
+                         {{# }else{ }}
+                            {{= item.alias }}
+                         {{# } }}
+                    </th>
+                {{#  } }); }}
+            </tr>
+        </thead>
+        <tbody>
+            {{#
+            layui.each(d.data.content, function(index, item){
+                col = 0;
+                row++;
+                obj.row = row;
+                obj.col = col;
+                obj.item = item;
+            }}
+               {{# if(item && d.trClick){ }}
+               <tr onclick='{{d.trClick}}({{ JSON.stringify(item) }} )'>
+               {{# }else{ }}
+               <tr>
+               {{# } }}
+               {{# if(d.hasCheckbox){
+                col++;
+                obj.col = col;
+               }}
+                    {{# if(d.tdBeforeFill){
+                        obj.html = "<input type='checkbox' data-id='"+ item.id +"' name='tdCheckbox' lay-skin='primary' />";
+                    }}
+                        <td> {{ d.tdBeforeFill(obj) }} </td>
+                     {{# }else{ }}
+                        <td><input type="checkbox" data-id="{{= item.id }}" name="tdCheckbox" lay-skin="primary"></td>
+                     {{# } }}
+               {{# } }}
+               {{# if(d.hasOperation){
+                    col++;
+                    obj.col = col;
+                }}
+                {{# if(d.tdBeforeFill){
+                    obj.html="";
+                    layui.each(d.operations, function(index, operation){
+                        obj.html = obj.html + "<a href='javascript:;' onclick='"+ operation.onclick +"("+ item.id +")'>"+ operation.value +"</a> ";
+                    });
+                }}
+                 <td> {{ d.tdBeforeFill(obj) }} </td>
+                {{# }else{ }}
+                <td class="operate">
+                {{#  layui.each(d.operations, function(index, operation){ }}
+                    <a href="javascript:;" onclick="{{= operation.onclick+'('+item.id+')' }}">{{= operation.value }}
+                    </a>
+                {{# }); }}
+                </td>
+                {{# } }}
+                {{# } }}
+            {{#
+                var i = 0;
+                layui.each(d.attrs, function(index, attr){
+                     if((i< Const.cellLeftCount && d.attrs.length > Const.cellLeftCount + 1)||d.attrs.length <= Const.cellLeftCount + 1){
+                     i++;
+                     col++;
+                     obj.col = col;
+                     obj.prop=attr.prop;
+            }}
+            {{# if(d.trClick){ }}
+                <td onclick="TmplUtils.__tablePreviewSwitch({{ item.id }})">
+            {{# }else{ }}
+                <td>
+            {{# } }}
+            {{#        if(attr.type == "date"){
+            }}
+                {{# if(d.tdBeforeFill){
+                    obj.html = Utils.getDate(item[attr.prop]);
+                 }}
+                    {{ d.tdBeforeFill(obj) }}
+                {{# }else{ }}
+                           {{= Utils.getDate(item[attr.prop]) }}
+                {{# } }}
+            {{#
+                       }else if(attr.type == "enum"){
+            }}
+                {{# if(d.tdBeforeFill){
+                    if(attr.dict_key){
+                        obj.html = TmplUtils.__getEnumVal(d.enums,attr.dict_key.split('.')[0],attr.dict_key.split('.')[1],item[attr.prop]);
+                    }else{
+                        obj.html = TmplUtils.__getEnumVal(d.enums,d.table,attr.prop,item[attr.prop]);
+                    }
+                 }}
+                    {{ d.tdBeforeFill(obj) }}
+                {{# }else{ }}
+                {{# if(attr.dict_key){ }}
+                    {{= TmplUtils.__getEnumVal(d.enums,attr.dict_key.split('.')[0],attr.dict_key.split('.')[1],item[attr.prop]) }}
+                {{# }else{ }}
+                    {{= TmplUtils.__getEnumVal(d.enums,d.table,attr.prop,item[attr.prop]) }}
+                {{# } }}
+                {{# } }}
+            {{#
+                       }else{
+            }}
+                {{# if(d.tdBeforeFill){
+                    obj.html = item[attr.prop];
+                }}
+                 {{ d.tdBeforeFill(obj) }}
+                {{# }else{ }}
+                     {{= item[attr.prop] }}
+                {{# } }}
+            {{# } }}
+                 </td>
+            {{#     } }); }}
+              </tr>
+            {{#  }); }}
+
+            {{#
+
+                if(d.data.content.length <  TmplUtils.pageSize ){
+                    for(var i = 0 ;i <  TmplUtils.pageSize-d.data.content.length ; i++){
+                       }}
+                        <tr>
+
+            {{#
+                        for(var j=0; j< Const.cellLeftCount+2;j++){
+
+            }}
+                            <td></td>
+            {{#
+                        }
+             }}
+                        </tr>
+            {{#
+                    }
+                }
+            }}
+    </tbody>
+</table>
+{{# if(d.attrs.length > Const.cellLeftCount+1){ }}
+<table class="layui-table lay-even lay-tab-right" id="layui-table-tr" style="min-height: 450px;">
+    <colgroup>
+        <col width="50%">
+        <col width="50%">
+    </colgroup>
+    <thead>
+        <tr>
+             {{#
+            var row2 = 1;
+            var col2 = col;
+            obj.row = row2;
+            obj.col = col2;
+            obj.prop = "";
+             var j = 0;
+              layui.each(d.attrs, function(index, item){
+                j++;
+                if(j>Const.cellLeftCount && j<=(Const.cellLeftCount + Const.cellRightCount)){
+                    col2++;
+                    obj.col = col2;
+                }}
+                <th>
+                {{# if(d.tdBeforeFill){
+                    obj.html = item.alias;
+                }}
+                   {{= d.tdBeforeFill(obj) }}
+                {{# }else{ }}
+                   {{= item.alias }}
+                {{# } }}
+                </th>
+            {{#  } }); }}
+        </tr>
+    </thead>
+     <tbody>
+            {{#
+            layui.each(d.data.content, function(index, item){
+                row2 ++;
+                col2 = col;
+                obj.col = col2;
+                obj.row = row2;
+                obj.item = item;
+            }}
+               {{# if(item && d.trClick){ }}
+               <tr onclick='{{d.trClick}}({{ JSON.stringify(item) }} )'>
+               {{# }else{ }}
+               <tr>
+               {{# } }}
+            {{#
+                var i = 0;
+                layui.each(d.attrs, function(index, attr){
+                      i++;
+                     obj.prop=attr.prop;
+                     if(i>Const.cellLeftCount && i<=(Const.cellLeftCount + Const.cellRightCount)){
+                      col2++;
+                      obj.col = col2;
+            }}
+                         {{# if(d.trClick){ }}
+                            <td onclick="TmplUtils.__tablePreviewSwitch({{ item.id }})">
+                        {{# }else{ }}
+                            <td>
+                        {{# } }}
+            {{#        if(attr.type == "date"){
+            }}
+                            {{# if(d.tdBeforeFill){
+                                obj.html = Utils.getDate(item[attr.prop]);
+                            }}
+                                {{ d.tdBeforeFill(obj) }}
+                           {{# }else{ }}
+                                {{= Utils.getDate(item[attr.prop]) }}
+                           {{# } }}
+            {{#
+                       }else if(attr.type == "enum"){
+            }}
+                       {{# if(d.tdBeforeFill){
+                            if(attr.dict_key){
+                                obj.html = TmplUtils.__getEnumVal(d.enums,attr.dict_key.split('.')[0],attr.dict_key.split('.')[1],item[attr.prop]);
+                            }else{
+                                obj.html = TmplUtils.__getEnumVal(d.enums,d.table,attr.prop,item[attr.prop]);
+                            }
+                       }}
+                            {{ d.tdBeforeFill(obj) }}
+                      {{# }else{ }}
+                            {{# if(attr.dict_key){ }}
+                                {{= TmplUtils.__getEnumVal(d.enums,attr.dict_key.split('.')[0],attr.dict_key.split('.')[1],item[attr.prop]) }}
+                            {{# }else{ }}
+                                {{= TmplUtils.__getEnumVal(d.enums,d.table,attr.prop,item[attr.prop]) }}
+                            {{# } }}
+                      {{# } }}
+            {{#
+                       }else{
+            }}
+                       {{# if(d.tdBeforeFill){
+                                obj.html = item[attr.prop];
+                        }}
+                       {{ d.tdBeforeFill(obj) }}
+                        {{# }else{ }}
+                             {{= item[attr.prop] }}
+                        {{# } }}
+            {{# } }}
+                 </td>
+            {{#     } }); }}
+              </tr>
+            {{#  }); }}
+
+            {{#
+
+                if(d.data.content.length <  TmplUtils.pageSize){
+                    for(var i = 0 ;i <  TmplUtils.pageSize-d.data.content.length ; i++){
+                       }}
+                        <tr>
+
+            {{#
+                        for(var j=0; j< Const.cellRightCount;j++){
+
+            }}
+                            <td></td>
+            {{#
+                        }
+             }}
+                        </tr>
+            {{#
+                    }
+                }
+            }}
+    </tbody>
+</table>
+{{# } }}
+</script>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>dialog2</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+<link rel="stylesheet" type="text/css" href="{=ctx}/css/ystep.css" />
+</head>
+<body class="iframeBody">
+	<div class="formbox layui-form add-formbox">
+		<div class="_tmpl" data-url="edit.html" data-attr="employee.json"
+			data-bind="editOnBind" data-param=""></div>
+		<div class="layui-btn-div" id="layui-btn-fixed">
+			<div class="ystep4" id="flowsheet"></div>
+			<div class="txt-c">
+				<button class="layui-btn bgc1 layui-btn-mini" lay-submit
+						lay-filter="edit" id="submit">确定</button>
+				<span id="wf_btns">
+
+				</span>
+				<button class="layui-btn layui-btn-primary layui-btn-mini"
+					onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+			</div>
+		</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
+<script>
+	$(document).ready(function() {
+		//使用方式跟独立组件完全一样
+
+		$("#submit").click(function() {
+			if (TmplUtils.check('edit')) {
+				edit();
+			}
+		});
+	});
+
+	Work.onSendEventBefore(function(jobEvent, job) {
+		View.info("onSendEventBefore");
+		jobEvent.nextStateOwner = "某某1";
+		jobEvent.comments = "xxxxx";
+		//jobEvent.targetJson = {};
+		return jobEvent;
+	});
+
+	Work.onSendEventAfter(function(result, job) {
+		View.info("job :{jobId} result：{success} ".format(result));
+		//View.info(result.data);
+		if (result.success) {
+			TmplUtils.showMsgSuccess('编辑成功');
+		}
+
+		parent.View.fireEvent("TB_DATA_CHANGE", {
+			"window" : window.name
+		});
+	});
+
+	var id = window.location.hash.replace("#", "");
+	function editOnBind(attrs, param) {
+		tmpl = this;
+		tmpl.bind(function(callback) {
+			var _this = this;
+			if (id) {
+				var url = Const.apiUrl + "/employees/get";
+				var _this = this;
+				View.get(url, "id=" + id, function(resp) {
+					var data = {};
+					if (resp) {
+						data.data = resp;
+					}
+					//默认展开分组 ，不配置默认展开第一个分组
+					data.showGroup = "family,base";
+					//全部不可编辑
+					//data.editable = 2;
+					callback.call(_this, data);
+					TmplUtils.editOnLoad();
+				}, function() {
+					TmplUtils.showMsgFail('员工信息获取失败');
+				});
+			} else {
+				var data = {};
+				data.showGroup = "family,base";
+                //data.editable = 2;
+				callback.call(_this, data);
+				TmplUtils.editOnLoad();
+			}
+		});
+	/*	tmpl.onFinish(function(data) {
+			var cls = [ "", "layui-btn-normal" ];
+			var job = Work.getJob(data.data);
+			var _html = job.getEventsHtml(cls);
+			$("#wf_btns").html(_html);
+
+			job.createFlowsheet($("#flowsheet"), function(job) {
+				View.info("ok");
+			});
+		});*/
+	}
+
+	//自定义前段校验规则，可以多个
+	TmplUtils.verify.desc = function(value) {
+		if (value.length < 5) {
+			return '描述至少得5个字符啊';
+		}
+	}
+
+	function check() {
+	}
+	//编辑保存
+	function edit() {
+		var employee = Utils.formToObj("edit");
+		//alert(JSON.stringify(employee));
+		var url = Const.apiUrl + "/employees/addOrUpdate";
+		View.post(url, employee, function(resp) {
+			TmplUtils.showMsgSuccess('编辑成功');
+			parent.View.fireEvent("TB_DATA_CHANGE", {
+				"window" : window.name
+			});
+		}, function(code) {
+			TmplUtils.showMsgFail('编辑失败');
+		});
+	}
+</script>
+</html>
