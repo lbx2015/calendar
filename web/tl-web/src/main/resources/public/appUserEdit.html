@@ -21,6 +21,11 @@
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
+String.prototype.endWith=function(endStr){
+	  var d=this.length-endStr.length;
+	  return (d>=0&&this.lastIndexOf(endStr)==d)
+}
+
     $(document).ready(function() {
         $("#submit").click(function() {
             if (TmplUtils.check('edit')) {
@@ -58,6 +63,13 @@
                 TmplUtils.editOnLoad();
             }
         });
+        tmpl.onFinish(function(data) {
+			var enumInput = $("input[data-type='lazyEnum']");
+			for(var i=0;i<enumInput.length;i++){
+				lazyEnumEach(enumInput[i],data);
+			}
+			//$(enumInput).each(lazyEnumEach(this));
+		});
     }
     //编辑保存
     function edit() {
@@ -76,6 +88,114 @@
             TmplUtils.showMsgFail('编辑失败');
         });
     }
+    
+	function lazyEnumEach(self,data){
+		var _this = self;
+		var $ul = $(_this).next().next();
+		var _hidden = $(self).next();
+		var _name = $(self).next().attr("name");
+		
+		if(_name.endWith("0")){
+			var name = _name.substring(0,_name.indexOf("-"));
+			var _key = data.data[name];
+			if(_key){
+				var keys = _key.split(",");
+				
+				var param = {"table":"T_APP_USER","field":"SF","key":keys[0]};
+				View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+					$(_this).val(data.valu);
+					$(_hidden).val(data.ke);
+				});
+				if(keys[0]&&keys[1]){
+                    var param = {"table":"T_APP_USER","field":keys[0],"key":keys[1]};
+                    View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+                        if(data.ke && data.valu){
+                            $($(_this).parent().next().find("input")[0]).val(data.valu);
+                            $($(_this).parent().next().find("input")[1]).val(data.ke);
+							}
+                    });
+				}
+			}
+		}
+		
+		$ul.hide();
+		$(_this).bind("focus",function(){
+			if(_this.oninput === null){
+				$(_this).bind("input",inputChange);
+			}else if(_this.onpropertychange === null){
+				$(_this).bind("propertychange",inputChange);
+			}
+		});
+	}
+	
+	document.onclick = function(){
+		var uls = $("input[data-type='lazyEnum']").next().next();
+		$(uls).each(function(){
+			if(!$(this).is(":hidden")){
+				$(this).prev().val("");
+				$(this).prev().prev().val("");
+				$(this).empty();
+				$(this).hide();
+			}
+		});
+	}
+	
+	function inputChange(event){
+		var _this = event.currentTarget;
+		var _hidden = $(_this).next();
+		var $ul = $(_this).next().next();
+		
+		var url = $(_this).attr("data-url");
+		var _nameNum = _hidden.attr("name").match(/\-\|\-(\S*)/)[1];
+		
+		_hidden.val("");	
+		if(_nameNum == 0){
+			$($(_this).parent().next().find("input")[0]).val("");
+			$($(_this).parent().next().find("input")[1]).val("");
+		}else{
+			var key = $($(_this).parent().prev().find("input")[1]).val();
+			if(key != ""){
+				url += "?key=" + key;
+			}else{
+				return;
+			}
+		}
+		if($(_this).val() == ''){
+			$ul.hide();
+			return;
+		}
+		
+		View.get(Const.apiUrl + url,{"keyword":$(this).val()},function(data){
+			if(data.length > 0){
+				$ul.empty();
+				$(data).each(function(){
+					var $li = $("<li key='{0}'>{1}</li>".format(this.key,this.value));
+					
+					$li.click(function(e){
+						if(_this.onpropertychange === null){
+							$(_this).unbind("propertychange");
+						}
+						e = e == undefined ? window.event:e;
+						var curTarget = e.currentTarget == undefined ? e.srcElement : e.currentTarget;
+						var key = $(curTarget).attr("key");
+						$(_this).next().val(key);
+						$(_this).val($(curTarget).text());
+						$ul.empty();
+						$ul.hide();
+					}).mousemove(function(e){
+						$(e.currentTarget).css("background","#08c");
+					}).mouseout(function(e){
+						$(e.currentTarget).css("background","none");
+					});
+					$ul.append($li);
+				});
+				$ul.show();
+			}else{
+				$ul.empty();
+				$ul.hide();
+			}
+		});
+	}
 </script>
 
 </html>

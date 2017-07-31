@@ -1,7 +1,6 @@
 package net.riking.web.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.riking.config.CodeDef;
 import net.riking.core.entity.EnumCustom;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
@@ -59,7 +59,7 @@ public class ModelPropDictController {
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
 		Set<String> set = new HashSet<String>();
-		set.add("");
+		set.add("SF");
 		List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 		for (ModelPropDict dict : list) {
 			if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
@@ -81,27 +81,52 @@ public class ModelPropDictController {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
 		if (StringUtils.isEmpty(key)) {
 			Set<String> set = new HashSet<String>();
-			set.add("");
+			set.add(key);
 			List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 			for (ModelPropDict dict : list) {
-				EnumCustom enumCustom = new EnumCustom();
-				enumCustom.setKey(dict.getKe());
-				enumCustom.setValue(dict.getKe() + "-" + dict.getValu());
-				enumCustom.setProp(prop);
-				enumKeyValues.add(enumCustom);
+				boolean flag = false;
+				if (keyword.contains("-")) {
+					String[] keys = keyword.split("-");
+					if (dict.getKe().startsWith(keys[0])
+							|| dict.getValu().toLowerCase().contains(keys[1].toLowerCase())) {
+						flag = true;
+					}
+				} else if (dict.getKe().startsWith(keyword)
+						|| dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
+					flag = true;
+				}
+				if (flag) {
+					EnumCustom enumCustom = new EnumCustom();
+					enumCustom.setKey(dict.getKe());
+					enumCustom.setValue(dict.getKe() + "-" + dict.getValu());
+					enumCustom.setProp(prop);
+					enumKeyValues.add(enumCustom);
+				}
 			}
 		} else {
 			Set<String> set = new HashSet<String>();
 			set.add(key);
 			List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 			for (ModelPropDict dict : list) {
-				EnumCustom enumCustom = new EnumCustom();
-				enumCustom.setKey(dict.getKe());
-				enumCustom.setValue(dict.getKe() + "-" + dict.getValu());
-				enumCustom.setProp(prop);
-				enumKeyValues.add(enumCustom);
+				if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
+					EnumCustom enumCustom = new EnumCustom();
+					enumCustom.setKey(dict.getKe());
+					enumCustom.setValue(dict.getValu());
+					enumCustom.setProp(prop);
+					enumKeyValues.add(enumCustom);
+				}
 			}
 		}
 		return new Resp(enumKeyValues);
+	}
+	
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	public Resp get(@RequestParam(value = "table") String table, @RequestParam(value = "field") String field,
+			@RequestParam(value = "key") String key) {
+		ModelPropDict dict = dataDictService.getDict(table, field, key);
+		if(dict!=null){
+			return new Resp(dict).setCode(CodeDef.SUCCESS);
+		}
+		return new Resp().setCode(CodeDef.SUCCESS);
 	}
 }
