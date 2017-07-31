@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         if (r.isDone) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
+            holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
         holder.task = r;
@@ -80,9 +82,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                                 public void execute(Realm realm) {
                                     if (task.isDone) {
                                         done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
+                                        title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                                         realm.where(Task.class).equalTo("id", task.id).findFirst().isDone = false;
                                     } else {
                                         done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
+                                        title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                                         realm.where(Task.class).equalTo("id", task.id).findFirst().isDone = true;
                                     }
                                 }

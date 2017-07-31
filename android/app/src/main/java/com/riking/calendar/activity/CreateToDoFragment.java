@@ -104,13 +104,13 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
                 break;
             }
             case R.id.important: {
-                isImportant = true;
+                isImportant = false;
                 important.setVisibility(View.GONE);
                 notImportant.setVisibility(View.VISIBLE);
                 break;
             }
             case R.id.not_important: {
-                isImportant = false;
+                isImportant = true;
                 notImportant.setVisibility(View.GONE);
                 important.setVisibility(View.VISIBLE);
                 break;

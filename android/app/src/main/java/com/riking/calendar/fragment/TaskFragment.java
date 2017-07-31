@@ -1,8 +1,10 @@
 package com.riking.calendar.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,11 +30,10 @@ public class TaskFragment extends Fragment {
     public Realm realm;
     RecyclerView recyclerView;
     ViewPagerActivity a;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.to_do_fragment, container, false);
+        View v = inflater.inflate(R.layout.task_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
         setRecyclerView(v);
         return v;
@@ -60,4 +61,5 @@ public class TaskFragment extends Fragment {
         super.onDestroyView();
         realm.close();
     }
+
 }
