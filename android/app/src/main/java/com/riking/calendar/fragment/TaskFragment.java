@@ -57,7 +57,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void scrollDown() {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
-                if (viewHolder != null && viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE)) {
+                if ((viewHolder == null) || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
 //                    root.animate().translationY(checkHistoryButton.getHeight()).setDuration(400);
                     checkHistoryButton.setVisibility(View.VISIBLE);
                 }

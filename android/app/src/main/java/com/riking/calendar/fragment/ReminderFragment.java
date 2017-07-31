@@ -54,7 +54,7 @@ public class ReminderFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
                 Log.d("zzw", "scroll down");
                 Log.d("zzw", "scroll down" + " first item visibility: " + viewHolder.itemView.getVisibility());
-                if (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE)) {
+                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
                     checkHistoryButton.setVisibility(View.VISIBLE);
                 }
             }
