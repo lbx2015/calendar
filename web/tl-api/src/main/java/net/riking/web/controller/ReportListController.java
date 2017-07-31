@@ -72,12 +72,13 @@ public class ReportListController {
 		String fileName = mFile.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
 		List<ReportList> list = null;
+		String[] fields ={"reportName","reportCode","reportBrief","reportOrganization","reportFrequency","reportStyle","reportUnit","reportRound","reportCurrency","moduleType","downloadUrl"} ; 
 		try {
 			InputStream is = mFile.getInputStream();
 			if (suffix.equals("xlsx")) {
-				list = ExcelToList.readReportListXlsx(is, fileName);
+				list = ExcelToList.readXlsx(is, fields, ReportList.class);
 			} else {
-				list = ExcelToList.readReportListXls(is, fileName);
+				list = ExcelToList.readXls(is, fields, ReportList.class);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

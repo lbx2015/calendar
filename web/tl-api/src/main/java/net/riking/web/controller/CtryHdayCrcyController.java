@@ -23,47 +23,49 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
-import net.riking.entity.model.CrtyHdayCrcy;
-import net.riking.service.repo.CrtyHdayCrcyRepo;
+import net.riking.entity.model.CtryHdayCrcy;
+import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ExcelToList;
 
 @RestController
-@RequestMapping(value = "/crtyHdayCrcy")
-public class CrtyHdayCrcyController {
+@RequestMapping(value = "/ctryHdayCrcy")
+public class CtryHdayCrcyController {
 	@Autowired
-	CrtyHdayCrcyRepo crtyHdayCrcyRepo;
+	CtryHdayCrcyRepo crtyHdayCrcyRepo;
 	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
-		CrtyHdayCrcy crtyHdayCrcy = crtyHdayCrcyRepo.findOne(id);
+		CtryHdayCrcy crtyHdayCrcy = crtyHdayCrcyRepo.findOne(id);
 		return new Resp(crtyHdayCrcy, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute CrtyHdayCrcy crtyHdayCrcy){
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute CtryHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
 			crtyHdayCrcy.setDeleteState("1");
 		}
-		Example<CrtyHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
-		Page<CrtyHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
+		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
+		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "添加或者更新各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
-	public Resp addOrUpdate_(@RequestBody CrtyHdayCrcy crtyHdayCrcy) {
+	public Resp addOrUpdate_(@RequestBody CtryHdayCrcy crtyHdayCrcy) {
 		if(StringUtils.isEmpty(crtyHdayCrcy.getId())||StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
 			crtyHdayCrcy.setDeleteState("1");
 		}
-		CrtyHdayCrcy save = crtyHdayCrcyRepo.save(crtyHdayCrcy);
+		CtryHdayCrcy save = crtyHdayCrcyRepo.save(crtyHdayCrcy);
 		return new Resp(save, CodeDef.SUCCESS);
 	}
 	
+	@AuthPass
 	@ApiOperation(value = "批量添加各国节假日币种信息", notes = "POST")
 	@RequestMapping(value = "/addMore", method = RequestMethod.POST)
 	public Resp addMore_(HttpServletRequest request) {
@@ -71,14 +73,14 @@ public class CrtyHdayCrcyController {
 		MultipartFile mFile = multipartRequest.getFile("fileName");
 		String fileName = mFile.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-		List<CrtyHdayCrcy> list =null;
+		List<CtryHdayCrcy> list =null;
 		try {
 			InputStream is = mFile.getInputStream();
 			String[] fields = { "icon", "ctryName", "hdayName", "hdayDate", "crcy", "remark" };
 			if (suffix.equals("xlsx")) {
-				list = ExcelToList.readXlsx(is, fields, CrtyHdayCrcy.class);
+				list = ExcelToList.readXlsx(is, fields, CtryHdayCrcy.class);
 			} else {
-				list = ExcelToList.readXls(is, fields, CrtyHdayCrcy.class);
+				list = ExcelToList.readXls(is, fields, CtryHdayCrcy.class);
 			}
 		}  catch (Exception e) {
 			e.printStackTrace();
@@ -86,7 +88,7 @@ public class CrtyHdayCrcyController {
 		}
 		
 		if(list!=null && list.size()>0){
-			List<CrtyHdayCrcy> rs = crtyHdayCrcyRepo.save(list);
+			List<CtryHdayCrcy> rs = crtyHdayCrcyRepo.save(list);
 			return new Resp(rs, CodeDef.SUCCESS);
 		}else{
 			return new Resp(CodeDef.ERROR);

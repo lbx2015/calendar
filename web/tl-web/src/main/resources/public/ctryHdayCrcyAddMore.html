@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>各国节假日币种批量导入</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="include" href="/common/depcss.html" />
+</head>
+
+<body>
+    <div class="formbox layui-form " style="padding: 70px 0 20px;">
+        <div id="tb2">
+            <form class="layui-input-inline" target="layui-upload-iframe" method="post" key="set-mine" id="addMore" enctype="multipart/form-data" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">excel路径：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="upfile" id="upfile" readonly="true " autocomplete="off" class="layui-input" />
+                    </div>
+                    <div class="layui-box layui-upload-button">
+                        <input type="file" name="fileName" id="fileName" lay-type="file" class="layui-upload-file" onchange="upfile.value=this.value" />
+                        <span class="layui-upload-icon"><i class="layui-icon"></i>上传文件</span>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-top:15px;">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-inline">
+                        <a href="" class="layui-btn layui-btn-normal" id="downLoad"><i class="layui-icon">&#xe601;</i>下载excel表格模板</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-btn-div">
+            <a class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" href="javascript:importData()">上传</a>
+            <a class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">返回</a>
+        </div>
+    </div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/js/jquery/jquery.form.js"></script>
+<script type="text/javascript">
+    var tmpl = null;
+    $(document).ready(function() {
+		$("#downLoad").attr("href", Const.apiUrl + "/excelModel/各国节假日币种.xlsx");
+    });
+
+    function checkData() {
+        var fileDir = $("#fileName").val();
+        var suffix = fileDir.substr(fileDir.lastIndexOf("."));
+        if ("" == fileDir) {
+            alert("选择需要导入的Excel文件！");
+            return false;
+        }
+        if (".xls" != suffix && ".xlsx" != suffix) {
+            alert("选择Excel格式的文件导入！");
+            return false;
+        }
+        return true;
+    }
+
+    function importData() {
+        if (!checkData()) {
+            return;
+        }
+        var addMoreUrl = Const.apiUrl + "/ctryHdayCrcy/addMore";
+        $("#addMore").attr("action", addMoreUrl);
+        $('#addMore').ajaxSubmit({
+            type: 'post',
+            url: addMoreUrl,
+            dataType: 'json',
+            success: function(resp) {
+                if (typeof resp_data != "object") {
+                    TmplUtils.showMsgFail("导入失败");
+                } else {
+                    TmplUtils.showMsgSuccess('导入成功');
+                    parent.tbTmpl.refresh("pindex=" +
+                        (parent.TmplUtils.currPage - 1) +
+                        "&pcount=" + TmplUtils.pageSize +
+                        TmplUtils.searchParam);
+                    parent.previewTmpl.refresh();
+                    var index = parent.layer
+                        .getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);
+                }
+            },
+            error: function(code) {
+                TmplUtils.showMsgFail('导入失败');
+            }
+        });
+    }
+</script>
+
+</html>

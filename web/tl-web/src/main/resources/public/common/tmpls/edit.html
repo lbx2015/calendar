@@ -330,6 +330,37 @@
             {{#  } } }}
         </div>
     </div>
+{{# }else if(attr.type == "strAndEnum"){ }}
+    <label class="layui-form-label" data-desc="{{= attr.desc }}">{{ attr.alias }}</label>
+        <div class="layui-input-inline">
+{{#
+            var enumUrls = attr.enum_urls.split(',');
+            var values = [];
+            if(propValue){
+                values = propValue.split("@");
+            }
+            for(var k=0;k< enumUrls.length;k++){ }}
+			 {{#  if(!enumUrls[k]){ }}
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+                <input type="input" name="{{=attr.prop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=values[0]}}" autocomplete="off" placeholder="" class="layui-input _tip" disabled>@
+          {{#  }else{ }}
+               <input type="input" name="{{=attr.prop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=values[0]}}" autocomplete="off" placeholder="" class="layui-input _tip" >@
+          {{# } }}
+			{{#  }else{ }}
+		 {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+               <select name="{{=attr.prop}}-|-{{k}}"  data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop}}-|-{{k}}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" {{# if(1==attr.enum_search){ }} lay-search {{# } }} data-enumurl="{{ enumUrls[k]}}" disabled data-key="{{values[k]}}" data-enumparam="{{attr.enum_param}}">
+          {{#  }else{ }}
+               <select name="{{=attr.prop}}-|-{{k}}" data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop}}-|-{{k}}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" {{# if(1==attr.enum_search){ }} lay-search {{# } }} data-enumurl="{{ enumUrls[k] }}" data-key="{{values[k]}}" data-enumparam="{{attr.enum_param}}">
+          {{# } }}
+           <option value="--##--">--请选择--</option>
+           </select>
+ 		  {{# } }}
+		  {{# } }}
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
 {{# }else if(attr.type == "password"){ }}
     <label class="layui-form-label" data-desc="{{= attr.desc }}">{{ attr.alias }}</label>
         <div class="layui-input-inline">

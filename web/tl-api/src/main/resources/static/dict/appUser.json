@@ -20,7 +20,7 @@
 			"query": "1",
 			"query_order": "3",
 			"type": "enum",
-			"dict_key": "APPUSER.SEX",
+			"dict_key": "T_APP_USER.SEX",
 			"enum_search":"1"
 		},
 		{
@@ -30,16 +30,26 @@
 			"type": "date"
 		},
 		{
-			"prop": "email",
-			"alias": "用户邮箱",
-			"group":"base",
-			"type": "string"
-		},
-		{
 			"prop": "telephone",
 			"alias": "用户电话",
 			"group":"base",
 			"type": "string"
+		},
+		{
+			"prop": "dept",
+			"alias": "用户部门",
+			"group":"base",
+			"type": "enum",
+			"enum_search":"1",
+			"dict_key":"T_APP_USER.DEPT"
+		},
+		{
+			"prop": "email",
+			"alias": "用户邮箱",
+			"group":"base",
+			"type": "strAndEnum",
+			"enum_search":"1",
+      		"enum_urls":",/modelPropdict/getEmailSuffix"
 		},
 		{
 			"prop": "address",
@@ -55,7 +65,7 @@
 			"group":"base",
 			"type" : "enum",
       		"enum_search":"1",
-      		"dict_key": "APPUSER.ENabled"
+      		"dict_key": "T_APP_USER.ENABLED"
 		},
 		{
 			"prop": "remark",

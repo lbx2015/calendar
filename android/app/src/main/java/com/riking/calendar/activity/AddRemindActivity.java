@@ -66,10 +66,10 @@ public class AddRemindActivity extends AppCompatActivity {
                     reminder.time = reminderFragment.time.getTime();
                     reminder.title = reminderFragment.remindTitle.getText().toString();
                 }
-                //to do fragment
+                //task fragment
                 else {
                     Task task = realm.createObject(Task.class, UUID.randomUUID().toString());
-                    task.isImport = taskFragment.needToRemind;
+                    task.isImport = taskFragment.isImportant;
                     if (taskFragment.needToRemind) {
                         task.time = taskFragment.calendar.getTime();
                     }

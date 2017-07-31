@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>app用户修改添加页面</title>
+    <title>邮箱后缀修改添加页面</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -12,7 +12,7 @@
 
 <body class="iframeBody">
     <div class="formbox layui-form add-formbox">
-        <div class="_tmpl" data-url="edit.html" data-attr="appUser.json" data-bind="editOnBind" data-param=""></div>
+        <div class="_tmpl" data-url="edit.html" data-attr="emailSuffix.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
             <button class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" id="submit">确定</button>
             <button class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
@@ -37,7 +37,7 @@
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/appUser/get";
+                var url = Const.apiUrl + "/emailSuffix/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -61,10 +61,9 @@
     }
     //编辑保存
     function edit() {
-        var appUser = Utils.formToObj("edit");
-        appUser.email = appUser.email.split(",")[0]+"@"+appUser.email.split(",")[1];
-        var url = Const.apiUrl + "/appUser/addOrUpdate";
-        View.post(url, appUser, function(resp) {
+        var emailSuffix = Utils.formToObj("edit");
+        var url = Const.apiUrl + "/emailSuffix/addOrUpdate";
+        View.post(url, emailSuffix, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
         	    + "&pcount=" + parent.TmplUtils.pageSize 
