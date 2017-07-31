@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.view.CustomLinearLayout;
 
 import java.util.List;
 
@@ -28,13 +30,35 @@ public class ReminderFragment extends Fragment {
     RecyclerView recyclerView;
     Realm realm;
     ViewPagerActivity a;
+    CustomLinearLayout root;
+    View checkHistoryButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.reminder_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
+        root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
+        checkHistoryButton = v.findViewById(R.id.check_task_history);
         setRecyclerView(v);
+        root.onDraggingListener = new CustomLinearLayout.OnDraggingListener() {
+            @Override
+            public void scrollUp() {
+                if (checkHistoryButton.getVisibility() == View.VISIBLE) {
+                    checkHistoryButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void scrollDown() {
+                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
+                Log.d("zzw", "scroll down");
+                Log.d("zzw", "scroll down" + " first item visibility: " + viewHolder.itemView.getVisibility());
+                if (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE)) {
+                    checkHistoryButton.setVisibility(View.VISIBLE);
+                }
+            }
+        };
         return v;
     }
 
