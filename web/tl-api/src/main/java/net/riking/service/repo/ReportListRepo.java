@@ -15,7 +15,7 @@ import net.riking.entity.model.ReportList;
 @Repository
 public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSpecificationExecutor<ReportList> {
 
-	@Query(" from ReportList r where r.reportId = ?1 and deleteState = '1'  ")
+	@Query(" from ReportList  where Id in ?1 and deleteState = '1'  ")
 	List<ReportList> findbyReoprtId(Set<String> reoprtId);
 	
 	@Transactional

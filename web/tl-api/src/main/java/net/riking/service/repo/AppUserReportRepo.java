@@ -11,6 +11,6 @@ import net.riking.entity.model.AppUserReportRel;
 @Repository
 public interface AppUserReportRepo  extends JpaRepository<AppUserReportRel, String>, JpaSpecificationExecutor<AppUserReportRel> {
 	
-	@Query("select reportId from AppUserReport u where u.appUserId = ?1 and deleteState= '1' and enabled = '1' ")
+	@Query("select reportId from AppUserReportRel u where u.appUserId = ?1 and deleteState= '1' ")
 	Set<String> findbyAppUserId(String appUserId);
 }
