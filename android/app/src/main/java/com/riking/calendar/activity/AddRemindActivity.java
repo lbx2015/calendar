@@ -73,7 +73,7 @@ public class AddRemindActivity extends AppCompatActivity {
                     if (taskFragment.needToRemind) {
                         task.time = taskFragment.calendar.getTime();
                     }
-                    task.title = taskFragment.title;
+                    task.title = taskFragment.title.getText().toString();
                 }
             }
         });

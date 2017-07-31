@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
     public boolean needToRemind;
     //whether the task is an important task
     public boolean isImportant;
-    public String title;
+    public EditText title;
     //time
     public Calendar calendar;
 
@@ -45,6 +46,7 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
         aSwitch = (Switch) v.findViewById(R.id.simpleSwitch);
         notImportant = (ImageView) v.findViewById(R.id.not_important);
         important = (ImageView) v.findViewById(R.id.important);
+        title = (EditText) v.findViewById(R.id.title);
 
         pickerDialog = new TimePickerDialog(getContext());
         pickerDialog.btnSubmit.setOnClickListener(this);

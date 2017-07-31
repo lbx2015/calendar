@@ -1,49 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/color_background_f2f2f2">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="4dp">
+        android:background="@color/color_background_f2f2f2"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_height="1dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/divider_color_d9d9d9" />
 
-            <ImageView
-                android:id="@+id/person_photo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/cat_wide_2" />
-
-            <TextView
-                android:id="@+id/person_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/person_photo"
-                android:text="john"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/person_age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/person_name"
-                android:layout_toRightOf="@+id/person_photo"
-                android:text="18" />
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

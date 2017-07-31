@@ -1,5 +1,6 @@
 package com.riking.calendar.realm.model;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class Task extends RealmObject {
     @PrimaryKey
     public String id = UUID.randomUUID().toString();
     //The title of the reminder
+    @NonNull
     public String title;
     //the row of the reminder
     public Date time;
