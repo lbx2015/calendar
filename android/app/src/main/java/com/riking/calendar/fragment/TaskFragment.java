@@ -25,8 +25,8 @@ import io.realm.RealmChangeListener;
  */
 
 public class TaskFragment extends Fragment {
+    public Realm realm;
     RecyclerView recyclerView;
-    Realm realm;
     ViewPagerActivity a;
 
     @Nullable
@@ -45,7 +45,7 @@ public class TaskFragment extends Fragment {
         List<Task> tasks = realm.where(Task.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        recyclerView.setAdapter(new TaskAdapter(tasks));
+        recyclerView.setAdapter(new TaskAdapter(tasks, this));
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
