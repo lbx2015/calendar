@@ -8,6 +8,9 @@
 
 #import "RemindViewController.h"
 #import "AddReminderController.h"
+#import "ReminderListViewController.h"
+#import "GtaskListViewController.h"
+#import "MYSegmentView.h"
 @interface RemindViewController ()
 
 @end
@@ -19,6 +22,8 @@
     // Do any additional setup after loading the view.
     
     [self setRightButton:@[@"navigationBar_itemIcon_add"]];
+    
+    [self createMainView];
 }
 
 - (void)doRightAction:(UIButton *)sender{
@@ -28,6 +33,24 @@
     [self.navigationController pushViewController:addReminder animated:YES];
     
 }
+
+- (void)createMainView{
+    
+    
+    ReminderListViewController *reminderVC = [[ReminderListViewController alloc]init];
+    GtaskListViewController *gtasksVC = [[GtaskListViewController alloc]init];
+    
+    NSArray *controllers=@[reminderVC,gtasksVC];
+    NSArray *titleArray =@[@"提醒",@"待办"];
+    
+    MYSegmentView * rcs=[[MYSegmentView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-64-49) controllers:controllers titleArray:titleArray ParentController:self lineWidth:kScreenWidth/2 lineHeight:2.];
+    
+    [self.view addSubview:rcs];
+    
+    
+    
+}
+
 
 
 - (void)didReceiveMemoryWarning {

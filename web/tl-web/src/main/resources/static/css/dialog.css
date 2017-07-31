@@ -1,0 +1,104 @@
+@charset "utf-8";
+
+/*修改密码*/
+.modify-pw-box{
+    padding: 30px 50px 30px 10px;
+}
+.modify-pw-box  .layui-btn-div{
+    margin-top: 40px;
+    text-align:center;
+}
+.modify-pw-box  .layui-btn-div a{
+    margin: 0 15px;
+}
+.ruleEngineBox {
+
+}
+.ruleEngineBox .layui-form-select dl dd{
+    line-height: 24px;
+}
+.ruleEngineBox .select-control{
+    display: block;
+    width: 100%;
+    height: 85px;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.ruleEngineBox .layui-w1{
+    width: 18%;
+}
+.ruleEngineBox  .layui-textarea{
+    min-height: 85px;
+}
+.ruleEngineBox .layui-w2{
+    margin: 0 10px;
+}
+.ruleEngineBox .layui-w3{
+    width: 70%;
+    margin-right: 5px;
+}
+.ruleEngineBox .layui-btn{
+	min-width: 70px;
+	margin: 5px 0;
+}
+.ruleEngineBox  .apply_create{
+    height: 85px;
+    width: 9%;
+    margin-left: 10px;
+}
+.ruleEngineBox  .apply_add{
+    height: 85px;
+    width: 50px;
+    margin-left: 10px;
+}
+.ruleEngineBox .formb2{
+    margin-bottom: 0px;
+}
+.ruleEngineBox .formb2 .layui-inline{
+	margin-bottom: 10px;
+}
+.ruleEngineBox .formb2  label{
+    width: 150px;
+    height: 21px;
+    line-height: 21px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px 15px;
+    font-size: 12px;
+}
+.ruleEngineBox .formb2 .layui-inline input,.ruleEngineBox .formb2 .layui-inline select{
+	width:150px;
+	height: 21px;
+    line-height: 21px;
+    font-size:12px;
+	
+}
+.ruleEngineBox .formb2 .layui-form-select dl{
+	top:22px;
+}
+.ruleEngineBox .formb2 .layui-input-inline{
+    margin-right: 10px;
+}
+.ruleEngineBox  .layui-collapse{
+    border: 0px;
+}
+
+.commentText{
+	width:500px;
+	line-height: 24px;
+	padding:5px;
+	margin:0 auto;
+	text-align: center;
+}

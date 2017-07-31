@@ -7,7 +7,7 @@
 //
 
 #import "GtasksViewController.h"
-
+#import "WSDatePickerView.h"
 @interface GtasksViewController ()
 
 
@@ -50,11 +50,7 @@
     self.textViewBgView.layer.cornerRadius = 5;
     self.textViewBgView.layer.borderWidth = 1;
     self.textViewBgView.layer.borderColor = dt_line_color.CGColor;
-    [self setShadowWithUIview:self.textViewBgView];
-//    self.textViewBgView.layer.shadowOffset =CGSizeMake(0, 1);
-//    self.textViewBgView.layer.shadowOpacity = 0.8;
-//    self.textViewBgView.layer.shadowRadius = 4;
-//    self.textViewBgView.layer.shadowColor = dt_line_color.CGColor;
+    [self setViewShadowWithView:self.textViewBgView];
     
     self.gtasksTextView.delegate = self;
     self.gtasksTextView.placeholder = @"请输入待办内容";
@@ -74,20 +70,21 @@
     
     
     //是否开启待办提醒
-    [self setShadowWithUIview:self.importantReminderTimeBgView];
+    [self setViewShadowWithView: self.importantReminderTimeBgView];
     
     self.gtasksReminderLabel.textColor = dt_text_main_color;
+    self.gtasksReminderLabel.themeMap = @{kThemeMapKeyColorName : normalText_main_color};
     self.gtasksReminderLabel.font = threeClassTextFont;
     self.gtasksReminderLabel.text = @"待办提醒";
     
     self.improtantReminderTime.text = [Utils getCurrentTimeWithTimeFormat:@"yyyy年MM月dd日 HH:mm"];
     self.improtantReminderTime.textColor = dt_text_main_color;
     self.improtantReminderTime.font = threeClassTextFont;
-    self.improtantReminderTime.backgroundColor = [UIColor whiteColor];
-    
+    self.improtantReminderTime.backgroundColor = [UIColor orangeColor];
+    self.improtantReminderTime.userInteractionEnabled = YES;
+    [self.improtantReminderTime addGestureRecognizer: [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTime)]];
     
     self.gtaskSwich.onTintColor = dt_app_main_color;
-    
     [self.gtaskSwich addTarget:self action:@selector(openGtasksReminder:) forControlEvents:UIControlEventValueChanged];
     
     
@@ -130,12 +127,24 @@
     
 }
 
-- (void)setShadowWithUIview:(UIView *)view{
-    view.layer.shadowOffset =CGSizeMake(0, 1);
-    view.layer.shadowOpacity = 0.8;
-    view.layer.shadowRadius = 4;
-    view.layer.shadowColor = dt_line_color.CGColor;
+
+- (void)tapTime{
+    RKLog(@"请选择时间");
+    WSDatePickerView *datepicker = [[WSDatePickerView alloc] init];
+    datepicker.isShouWeek = YES;
+    
+    NSString *chooseTime = self.improtantReminderTime.text;
+    
+    datepicker.scrollToDate =  [[NSDate date:chooseTime WithFormat:@"yyyy年MM月dd日 HH:mm"] dateWithFormatter:@"yyyy-MM-dd HH:mm"];
+    
+    [datepicker setDateStyle:DateStyleShowYearMonthDayHourMinute CompleteBlock:^(NSDate *startDate) {
+        NSString *date = [startDate stringWithFormat:@"yyyy年MM月dd日 HH:mm"];
+        NSLog(@"时间： %@",date);
+        self.improtantReminderTime.text = date;
+    }];
+    [datepicker show];
 }
+
 
 
 - (void)textViewDidChange:(UITextView *)textView

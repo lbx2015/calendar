@@ -321,18 +321,18 @@ typedef void(^doneBlock)(NSDate *);
             if (component==0) {
                 title = _yearArray[row%_yearArray.count];
                 _chooseYear = title;
-                NSLog(@"%@",_chooseYear);
+//                NSLog(@"%@",_chooseYear);
                 
             }
             if (component==1) {
                 title = _monthArray[row%_monthArray.count];
                 _chooseMonth = title;
-                 NSLog(@"%@",_chooseMonth);
+//                 NSLog(@"%@",_chooseMonth);
             }
             if (component==2) {
                 _chooseDay = _dayArray[row%_dayArray.count];
                 NSString *chooseDate = [NSString stringWithFormat:@"%@%@%@",_chooseYear,_chooseMonth,_chooseDay];
-                NSLog(@"%@",chooseDate);
+//                NSLog(@"%@",chooseDate);
                 NSString *todayDate = [self transformDate:[NSDate date] formatterStr:@"yyyy年MM月dd日"];
                 if ([chooseDate isEqualToString:todayDate]) {
                     title = @"今天";

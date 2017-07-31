@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>dialog2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="include" href="/common/depcss.html" />
+</head>
+
+<body class="iframeBody">
+    <div class="formbox layui-form add-formbox">
+        <div class="_tmpl" data-url="edit.html" data-attr="appUser.json" data-bind="editOnBind" data-param=""></div>
+        <div class="layui-btn-div" id="layui-btn-fixed">
+            <button class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" id="submit">确定</button>
+            <button class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+        </div>
+    </div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#submit").click(function() {
+            if (TmplUtils.check('edit')) {
+                edit();
+            }
+        });
+    });
+
+    //var id = window.location.hash.replace("#", "");
+    var id = View.getQStr('id');
+
+    function editOnBind(attrs, param) {
+        tmpl = this;
+        tmpl.bind(function(callback) {
+            var _this = this;
+            if (id) {
+                var url = Const.apiUrl + "/appUser/get";
+                var _this = this;
+                View.get(url, "id=" + id, function(resp) {
+                    var data = {};
+                    if (resp) {
+                        data.data = resp;
+                    }
+                    //默认展开分组 ，不配置默认展开第一个分组
+                    data.showGroup = "base";
+                    data.editable = state;
+                    callback.call(_this, data);
+                    TmplUtils.editOnLoad();
+                }, function() {
+                    TmplUtils.showMsgFail('信息获取失败');
+                });
+            } else {
+                var data = {};
+                data.showGroup = "base";
+                callback.call(_this, data);
+                TmplUtils.editOnLoad();
+            }
+        });
+    }
+    //编辑保存
+    function edit() {
+        var baseAif = Utils.formToObj("edit");
+        var url = Const.apiUrl + "/appUser/addOrUpdate";
+        View.post(url, baseAif, function(resp) {
+            TmplUtils.showMsgSuccess('编辑成功');
+            parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
+        	    + "&pcount=" + parent.TmplUtils.pageSize 
+                + parent.TmplUtils.searchParam);
+            parent.previewTmpl.refresh();
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);
+        }, function(code) {
+            TmplUtils.showMsgFail('编辑失败');
+        });
+    }
+</script>
+
+</html>

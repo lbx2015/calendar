@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FMDB.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>FSCalendar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,22 +62,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>203EABD542ACD1A6FDD83B11E4DC0CBB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>22B47A0D61F1490C0240196DD0CC8132</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>311D6557636F6F39706D9EA79C730AA3</key>
+		<key>251BAD17812F7EBF6532EACF66F941C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AA7FBA231DD64D8D6BC872E46640593A</key>
+		<key>38EACF867BDE63FE1266C63912695EF9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>59C6D00E62020CC69F5CD14F73AB240E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7406F2466C0B512C367BEE7220B05E66</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,7 +112,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DF455680C382870683555FE076974DA6</key>
+		<key>D6CA2974D74524FBA588A31A663836F9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

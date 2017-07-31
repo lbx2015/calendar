@@ -1,0 +1,35 @@
+{
+	"table": "T_MODEL_PROP_DICT",
+	"groups":[{
+		"prop":"base",
+		"alias":"基础信息"
+	}],
+	"attrs":[
+		{
+			"prop": "clazz",
+			"alias": "表名",
+			"group":"base",
+			"type": "string"
+		},
+		{
+			"prop": "field",
+			"alias": "属性",
+			"group":"base",
+			"query": "1",
+			"query_order": "1",
+			"type": "string"
+		},
+		{
+			"prop": "ke",
+			"alias": "键",
+			"group":"base",
+			"type": "string"
+		},
+		{
+			"prop": "valu",
+			"alias": "值",
+			"group":"base",
+			"type": "string"
+		}
+	]
+}

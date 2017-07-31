@@ -19,6 +19,9 @@ NSString *kThemeNavigationTitleTextColor    = @"kThemeNavigationTitleTextColor";
 NSString *kThemeTabBarBarTintColor          = @"kThemeTabBarBarTintColor";
 NSString *kThemeTabBarTintColor             = @"kThemeTabBarTintColor";
 
+//设置阴影
+NSString *kThemeViewShadowColor             = @"kThemeViewShadowColor";
+
 
 NSString *kThemeColor01                     = @"kThemeColor01";
 NSString *kThemeColor02                     = @"kThemeColor02";
@@ -197,6 +200,12 @@ static void *kUIView_DeallocHelper;
         if (map[kThemeMapKeyColorName]) {
             self.backgroundColor = TColor(map[kThemeMapKeyColorName]);
         }
+        
+        if (map[kThemeViewShadowColor]) {
+            
+            self.layer.shadowColor = TColor(map[kThemeViewShadowColor]).CGColor;
+        }
+        
     }
 }
 

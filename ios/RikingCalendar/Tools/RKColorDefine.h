@@ -9,6 +9,7 @@
 #ifndef RKColorDefine_h
 #define RKColorDefine_h
 
+
 #define app_main_color                  @"app_main_color"
 
 #define tabbar_title_color              @"tabbar_title_color"
@@ -31,6 +32,7 @@
 
 #define lightText_color                 @"lightText_color"
 
+#define setwhiteColor                   @"whiteColor"
 
 
 

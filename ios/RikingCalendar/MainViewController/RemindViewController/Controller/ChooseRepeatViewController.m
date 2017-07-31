@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong)NSMutableArray *repeatArray;
 
+@property (nonatomic,strong)UIButton *selectBtn;
+
 @end
 
 @implementation ChooseRepeatViewController
@@ -19,7 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.title = @"重复时间";
+    [self setRightButtonWithTitle:@[@"确定"]];
     [self initData];
     [self initUI];
     
@@ -50,32 +53,115 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
-    if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID"];
-    }
-    
-    //为了防止重用
-    for (UIView *view in cell.contentView.subviews) {
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.textColor = dt_text_main_color;
+    titleLabel.font = threeClassTextFont;
+    [cell.contentView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        [view removeFromSuperview];
+        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 15, 0, 58));
+        
+    }];
+    
+    titleLabel.text = self.repeatArray[indexPath.row];
+    
+    
+    
+    
+    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sureBtn setImage:[UIImage imageNamed:@"chooseTime_sure"] forState:UIControlStateSelected];
+    [sureBtn addTarget:self action:@selector(chooseTime:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:sureBtn];
+    
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.top.bottom.equalTo(cell.contentView).offset(0);
+        make.right.equalTo(cell.contentView).offset(-15);
+        make.width.mas_equalTo(28);
+        
+    }];
+    
+    sureBtn.tag = indexPath.row;
+    
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSArray *arr = [self.dataTabView indexPathsForVisibleRows];
+    for (NSIndexPath *indexPath01 in arr)
+    {
+        //根据索引，获取cell 然后就可以做你想做的事情啦
+        UITableViewCell *cell = [self.dataTabView cellForRowAtIndexPath:indexPath01];
+        //我这里要隐藏cell 的图片
+        for (UIView *view in cell.contentView.subviews) {
+            
+            if ([view isKindOfClass:[UIButton class]]) {
+                
+                UIButton *button = (UIButton *)view;
+                
+                if (indexPath.row == button.tag) {
+                     button.selected = !button.selected;
+                }
+               
+                if (indexPath.row == 0 || indexPath.row  == 8 || indexPath.row == 9) {
+                    if (button.tag != indexPath.row ) {
+                        button.selected = NO;
+                    }
+                }
+                else
+                {
+                    if (button.tag == 0 || button.tag == 8 || button.tag == 9) {
+                        button.selected = NO;
+                    }
+                }
+                
+            }
+        }
     }
     
     
-    UILabel *titleLabel
-    
-    
-    
-    
-    return cell;
-    
 }
+
+
+- (void)chooseTime:(UIButton *)sender{
+    
+    sender.selected = !sender.selected;
+    NSArray *arr = [self.dataTabView indexPathsForVisibleRows];
+    for (NSIndexPath *indexPath in arr)
+    {
+        //根据索引，获取cell 然后就可以做你想做的事情啦
+        UITableViewCell *cell = [self.dataTabView cellForRowAtIndexPath:indexPath];
+        //我这里要隐藏cell 的图片
+        for (UIView *view in cell.contentView.subviews) {
+            
+            if ([view isKindOfClass:[UIButton class]]) {
+                
+                UIButton *button = (UIButton *)view;
+                
+                if (sender.tag == 0 || sender.tag == 8 || sender.tag == 9) {
+                    if (button.tag != sender.tag) {
+                        button.selected = NO;
+                    }
+                }
+                else
+                {
+                    if (button.tag == 0 || button.tag == 8 || button.tag == 9) {
+                        button.selected = NO;
+                    }
+                }
+                
+               
+            }
+        }
+    }
+}
+
+
+
 
 
 

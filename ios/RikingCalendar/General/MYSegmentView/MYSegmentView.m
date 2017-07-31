@@ -8,6 +8,8 @@
 
 #import "MYSegmentView.h"
 
+#define segmentViewHight      45
+
 @implementation MYSegmentView
 
 - (instancetype)initWithFrame:(CGRect)frame controllers:(NSArray *)controllers titleArray:(NSArray *)titleArray ParentController:(UIViewController *)parentC  lineWidth:(float)lineW lineHeight:(float)lineH
@@ -19,10 +21,10 @@
         self.controllers=controllers;
         self.nameArray=titleArray;
         
-        self.segmentView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, 45)];
+        self.segmentView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, segmentViewHight)];
         self.segmentView.tag=50;
         [self addSubview:self.segmentView];
-        self.segmentScrollV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 45, frame.size.width, frame.size.height -45)];
+        self.segmentScrollV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, segmentViewHight, frame.size.width, frame.size.height - segmentViewHight)];
         self.segmentScrollV.contentSize=CGSizeMake(frame.size.width*self.controllers.count, 0);
         self.segmentScrollV.delegate=self;
         self.segmentScrollV.showsHorizontalScrollIndicator=NO;
@@ -35,14 +37,14 @@
         {
             UIViewController * contr=self.controllers[i];
             [self.segmentScrollV addSubview:contr.view];
-            contr.view.frame=CGRectMake(i*frame.size.width, 0, frame.size.width,frame.size.height);
+            contr.view.frame=CGRectMake(i*frame.size.width, 0, frame.size.width,frame.size.height - segmentViewHight);
             [parentC addChildViewController:contr];
             [contr didMoveToParentViewController:parentC];
         }
         for (int i=0;i<self.controllers.count;i++)
         {
             UIButton * btn=[ UIButton buttonWithType:UIButtonTypeCustom];
-            btn.frame=CGRectMake(i*(frame.size.width/self.controllers.count), 0, (frame.size.width-(self.controllers.count-1))/self.controllers.count, 41);
+            btn.frame=CGRectMake(i*(frame.size.width/self.controllers.count), 0, (frame.size.width-(self.controllers.count-1))/self.controllers.count, segmentViewHight-0.5);
             btn.tag=i;
             [btn setTitle:self.nameArray[i] forState:(UIControlStateNormal)];
             [btn setTitleColor:[UIColor hex_colorWithHex:@"#323232"] forState:(UIControlStateNormal)];
@@ -65,11 +67,11 @@
             [self.segmentView addSubview:btn];
         }
         
-        self.down=[[UILabel alloc]initWithFrame:CGRectMake(0, 40, frame.size.width, 0.5)];
+        self.down=[[UILabel alloc]initWithFrame:CGRectMake(0, segmentViewHight - 0.5, frame.size.width, 0.5)];
         self.down.backgroundColor = [UIColor lightGrayColor];
         [self.segmentView addSubview:self.down];
         
-        self.line=[[UILabel alloc]initWithFrame:CGRectMake((avgWidth-lineW)/2,41-lineH, lineW, lineH)];
+        self.line=[[UILabel alloc]initWithFrame:CGRectMake((avgWidth-lineW)/2,segmentViewHight - lineH, lineW, lineH)];
         self.line.backgroundColor = [UIColor hex_colorWithHex:@"29A1F7"];
         self.line.tag=100;
         [self.segmentView addSubview:self.line];
@@ -78,6 +80,7 @@
     
     return self;
 }
+
 
 - (void)Click:(UIButton*)sender
 {

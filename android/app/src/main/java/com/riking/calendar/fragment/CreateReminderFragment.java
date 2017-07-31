@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -24,7 +25,9 @@ import java.util.Date;
  */
 
 public class CreateReminderFragment extends Fragment implements View.OnClickListener {
-
+    //time
+    public Calendar time;
+    public EditText remindTitle;
     //    private WheelPopWindow popWindow;
     private TimePickerDialog pickerDialog;
     private View selectRemindTime;
@@ -38,6 +41,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.create_reminder_fragment, container, false);
+        remindTitle = (EditText) v.findViewById(R.id.remind_title);
 //        popWindow = new WheelPopWindow(getContext());
         selectRemindTime = v.findViewById(R.id.select_remind_time);
 //        popWindow.btnSubmit.setOnsetOnClickListenerClickListener(this);
@@ -48,12 +52,12 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         way.setOnClickListener(this);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
+        time = Calendar.getInstance();
+        time.setTime(new Date());
         //set the default time to be 2 hours later comparing current time.
-        c.set(Calendar.HOUR, c.get(Calendar.HOUR) + 2);
-        c.set(Calendar.MINUTE, 0);
-        remindTime.setText(sdf.format(c.getTime()));
+        time.set(Calendar.HOUR, time.get(Calendar.HOUR) + 2);
+        time.set(Calendar.MINUTE, 0);
+        remindTime.setText(sdf.format(time.getTime()));
 
         pickerDialog = new TimePickerDialog(getContext());
         selectRemindTime.setOnClickListener(this);
@@ -73,15 +77,14 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 break;
             }
             case R.id.btnSubmit: {
-                Calendar c = Calendar.getInstance();
-                c.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
-                c.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
-                c.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day) - 1);
-                c.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
-                c.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
+                time.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
+                time.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
+                time.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day) - 1);
+                time.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
+                time.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                remindTime.setText(sdf.format(c.getTime()));
+                remindTime.setText(sdf.format(time.getTime()));
                 pickerDialog.dismiss();
                 break;
             }

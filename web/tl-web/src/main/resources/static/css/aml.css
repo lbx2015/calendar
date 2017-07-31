@@ -1,0 +1,220 @@
+@charset "utf-8";
+
+.add-formbox  .layui-inline .layui-inline-checkbox{
+	float: left;
+	min-width: 740px;
+	max-width: 80%;
+}
+.add-formbox  .layui-inline .layui-inline-checkbox .layui-form-checkbox[lay-skin=primary]{
+	margin-top: 5px;
+    margin-right: 5px;
+    width: 240px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.add-formbox  .layui-inline .layui-inline-checkbox .layui-form-checkbox[lay-skin=primary] i{
+	float: left;
+	width: 14px;
+    line-height: 14px;
+}
+.add-formbox  .layui-inline .layui-inline-checkbox .layui-form-checkbox[lay-skin=primary] span{
+	float:none;
+	font-size: 12px;
+}
+.layui-elem-field .dateInput input{
+	height:30px;
+	line-height: 30px;
+}
+.ruleEngineBox .layui-input-rel{
+	display: inline-block;
+    position: relative;
+    width:150px;
+}
+.ruleEngineBox .layui-input-rel input{
+	width:100%;
+	padding-right:10px;
+}
+
+.layui-screening{
+	position: relative;
+	display: inline-block;
+    vertical-align: middle;
+    margin-right:5px;
+}
+.layui-screening ul{
+	position: absolute;
+    top: 26px;
+    left: 0;
+    width: 100%;
+    max-height: 260px;
+    overflow: auto;
+    border: 1px solid #e6e6e6;
+    background-color: #fff;
+    border-radius: 2px;
+    z-index:99;
+    
+}
+.layui-screening ul li{
+	padding-left:10px;
+	line-height:25px;
+	font-size:12px;
+}
+.layui-screening ul li:hover{
+	 color: #fff;
+}
+.formbox .multipleString{
+	position:absolute;
+	left:190px;
+	top:0;
+	display:block;
+	width:25px;
+	height:25px;
+	line-height:28px;
+	border-left: 1px solid #e6e6e6;
+	text-align:center;
+	cursor:pointer;
+}
+.formbox .multipleStringInfo{
+	position:relative;
+	margin:5px 0;
+}  
+
+.formbox .addGjinfo{
+	margin-top:10px;
+}
+.formbox .addGjbox .layui-icon{
+	display:none;
+	cursor:pointer;
+}
+.formbox .addGjbox ul li{
+	position:relative;
+	padding-left:10px;
+}
+.formbox .addGjbox ul li input{
+	border:0;
+}
+.formbox .addGjbox ul li .layui-icon{
+	position: absolute;
+    top: 1px;
+    left: -6px;
+}
+.formbox .addGjbox ul li:hover .layui-icon{
+	display:inline-block;
+}
+.formbox .addGjbtn{
+	display:inline-block;
+	margin-left:5px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.formbox .addGjbtn .layui-icon{
+	 font-size: 24px;
+    vertical-align: middle;
+	
+}
+
+/*--规则录入--*/
+.formbox .layui-form-select{
+	display: inline-block;
+}
+.layui-form.layui-form-style  .layui-form-item .layui-input-inline{
+	width:410px;
+}
+.layui-form.layui-form-style  .layui-form-item .layui-input-inline{
+	width:270px;
+}
+.layui-form.layui-form-style .layui-form-select{
+	width:30%;
+}
+.layui-form.layui-form-style .layui-form-label{
+	width:100px;
+}
+.layui-form.layui-form-style .layui-form-select .layui-input{
+	width:100%;
+}
+.layui-form.layui-form-style .layui-input{
+	width:60%;
+	display: inline-block;
+}
+.layui-form.layui-form-style  .layui-form-item{
+	margin-bottom:0px;
+}
+.layui-form.layui-form-style  .layui-inline{
+	min-width:auto;
+	width:410px;
+	padding-left:0;
+}
+ .layui-form.layui-form-style .layui-inline-w{
+	width:72px;
+ }
+ .layui-form.layui-form-style .layui-inline-w .layui-form-select{
+	width:100%;
+ }
+.layui-form.layui-form-style .sqlName{
+	margin-bottom:25px;
+}
+
+.layui-form.layui-form-style .sqlName .layui-form-item .layui-input-inline{
+	width:380px;
+	margin-left:30px;
+}
+
+.layui-form.layui-form-style .sqlName .layui-input{
+	width:270px;
+}
+.layui-form.layui-form-style .sqlName  .layui-inline{
+	margin-bottom:0px;
+}
+.layui-form.layui-form-style .sqlName .layui-btn-mini{
+	min-width:50px;
+	height:25px;
+	line-height: 25px;
+}
+.layui-form.layui-form-style {
+	padding:10px 0 20px;
+}
+.layui-form-style .layui-checkbox-all .layui-form-checkbox{
+	padding: 5px 10px 15px 0px;
+}
+/*--规则录入--*/
+
+.addGjinfo .identifier{
+	right:16px;
+}
+ .layui-form.layui-form-style .blackPropsDiv{
+	float:left;
+}
+ .layui-form.layui-form-style .blackPropsDiv .layui-form-select{
+	width:150px;
+	margin-right:10px;
+}
+
+.gz-formbox  .layui-inline .layui-inline-checkbox .layui-form-checkbox[lay-skin=primary]{
+	width: auto;
+    min-width: 400px;
+}
+.de-formbox  .layui-inline .layui-inline-checkbox .layui-form-checkbox[lay-skin="primary"]{
+  	width:auto;
+  	min-width:440px;
+}
+.content .viewTable{
+	position:absolute;
+	right:0px;
+	float:right;
+	width:40px;
+}
+.content  table.viewTable th,.content  table.viewTable td {
+	padding: 0px 10px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 12px;
+	overflow: hidden;
+	overflow:hidden;
+	white-space:nowrap;
+	-ms-text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+	text-overflow:ellipsis;
+	word-wrap:normal;
+}

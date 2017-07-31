@@ -9,7 +9,7 @@
 #import "ReminderViewController.h"
 #import "WSDatePickerView.h"
 #import "ChooseRepeatViewController.h"
-
+#import "ReminderDatePickerView.h"
 
 #define MAX_LIMIT_NUMS      10000000
 
@@ -41,11 +41,7 @@
     self.textViewBg.layer.cornerRadius = 5;
     self.textViewBg.layer.borderWidth = 1;
     self.textViewBg.layer.borderColor = [UIColor hex_colorWithHex:@"#d9d9d9"].CGColor;
-    self.textViewBg.layer.shadowOffset =CGSizeMake(0, 1);
-    self.textViewBg.layer.shadowOpacity = 0.8;
-    self.textViewBg.layer.shadowRadius = 4;
-    self.textViewBg.layer.shadowColor =[UIColor hex_colorWithHex:@"#d9d9d9"].CGColor;
-    self.textViewBg.backgroundColor = [UIColor whiteColor];
+    [self setViewShadowWithView:self.textViewBg];
     [self.view addSubview:self.textViewBg];
     
     __weak typeof (self) weakSelf = self;
@@ -72,7 +68,6 @@
     self.reminderTxetView.placeholder = @"输入提醒内容";
     self.reminderTxetView.font = threeClassTextFont;
     self.reminderTxetView.delegate = self;
-    [self.reminderTxetView.layer setBorderColor:[[UIColor blackColor] CGColor]];
     [self.textViewBg addSubview:self.reminderTxetView];
     
     [self.reminderTxetView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -84,11 +79,7 @@
     
     
     self.chooseTime = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.textViewBg.frame)+15, kScreenWidth, 100.5)];
-    self.chooseTime.layer.shadowOffset =CGSizeMake(0, 1);
-    self.chooseTime.layer.shadowOpacity = 0.8;
-    self.chooseTime.layer.shadowRadius = 4;
-    self.chooseTime.layer.shadowColor =[UIColor hex_colorWithHex:@"#d9d9d9"].CGColor;
-    self.chooseTime.backgroundColor = [UIColor whiteColor];
+    [self setViewShadowWithView:self.chooseTime];
     [self.view addSubview:self.chooseTime];
     
     //    //提醒时间
@@ -210,59 +201,122 @@
     
     
     //是否重复
-    UIView *isRepeatView = [[UIView alloc]init];
-    isRepeatView.layer.shadowOffset =CGSizeMake(0, 1);
-    isRepeatView.layer.shadowOpacity = 0.8;
-    isRepeatView.layer.shadowRadius = 4;
-    isRepeatView.layer.shadowColor =[UIColor hex_colorWithHex:@"#d9d9d9"].CGColor;
-    isRepeatView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:isRepeatView];
+    //背景
+    UIView *repeatView = [[UIView alloc]init];
+    [self setViewShadowWithView:repeatView];
+    [self.view addSubview:repeatView];
     
-    UIButton *repeatBtn = [self createButtonFrame:CGRectMake(0, 0, 0, 0) normalImage:@"programme_ repeat" selectImage:nil isBackgroundImage:NO title:nil target:self action:@selector(chooseRepeat)];
-    [isRepeatView addSubview:repeatBtn];
+
+    //提醒方式图片
+    UIButton *reminderBtn = [self createButtonFrame:CGRectMake(15, 0, 29, spaceHeight) normalImage:@"programme_chooseTime" selectImage:nil isBackgroundImage:NO title:nil target:self action:@selector(reminderTime)];
+    [repeatView addSubview:reminderBtn];
     
     
-    UILabel *repeatBtnLabel = [self createLabelFrame:CGRectMake(CGRectGetMaxX(btn.frame)+15, 0, kScreenWidth-CGRectGetMaxX(btn.frame)-15-25, spaceHeight) text:@"不重复" font:threeClassTextFont textColor:[UIColor hex_colorWithHex:@"#323232"] textAlignment:NSTextAlignmentLeft];
+    //提醒时间
+    UILabel *reminderLabel = [self createLabelFrame:CGRectMake(0, 0, 20, 30) text:@"提醒方式" font:threeClassTextFont textColor:[UIColor hex_colorWithHex:@"#323232"] textAlignment:NSTextAlignmentLeft];
+    reminderLabel.userInteractionEnabled = YES;
+    [reminderLabel addGestureRecognizer: [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reminderTime)]];
+    [repeatView addSubview:reminderLabel];
+    
+    //向右箭头
+    UIButton *reminderNextBtn = [self createButtonFrame:CGRectMake(0, 0, 30, 30) normalImage:@"btn_normalImage_next" selectImage:nil isBackgroundImage:NO title:nil target:self action:nil];
+    [repeatView addSubview:reminderNextBtn];
+    
+    
+    //分割线
+    UIView *reminderLineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 1)];
+    reminderLineView.themeMap = @{kThemeMapKeyColorName : line_lightgrey_color};
+    [repeatView addSubview:reminderLineView];
+    
+    
+    UIButton *repeatBtn = [self createButtonFrame:CGRectMake(0, 0, 20, 30) normalImage:@"programme_ repeat" selectImage:nil isBackgroundImage:NO title:nil target:self action:@selector(chooseRepeat)];
+    [repeatView addSubview:repeatBtn];
+    
+    
+    UILabel *repeatBtnLabel = [self createLabelFrame:CGRectMake(0, 0, 0, 0) text:@"不重复" font:threeClassTextFont textColor:[UIColor hex_colorWithHex:@"#323232"] textAlignment:NSTextAlignmentLeft];
     repeatBtnLabel.userInteractionEnabled = YES;
     [repeatBtnLabel addGestureRecognizer: [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(chooseRepeat)]];
-    [isRepeatView addSubview:repeatBtnLabel];
+    [repeatView addSubview:repeatBtnLabel];
     
     UIButton *btn02 = [self createButtonFrame:CGRectMake(CGRectGetMaxX(self.chooseTimeBtn.frame)+5, 0, kScreenWidth-15-9, spaceHeight) normalImage:@"btn_normalImage_next" selectImage:nil isBackgroundImage:NO title:nil target:self action:@selector(chooseRepeat)];
-    [isRepeatView addSubview:btn02];
+    [repeatView addSubview:btn02];
     
-    [isRepeatView mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    [repeatView mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.left.equalTo(weakSelf.view).offset(0);
         make.top.equalTo(weakSelf.chooseTime.mas_bottom).offset(15);
-        make.right.equalTo(weakSelf.view).offset(0);
+        
+        //        //设置宽度(1)
+        //        make.left.equalTo(weakSelf.view).offset(0);
+        //        make.right.equalTo(weakSelf.view).offset(0);
+        //        //设置宽度(2)
+        //        make.width.equalTo(weakSelf.view).multipliedBy(0);
+        //设置宽度(3)
+        make.width.equalTo(weakSelf.view);
+        
+        make.height.mas_equalTo(100.5);
+        
+    }];
+    
+    
+    [reminderBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(repeatView).offset(15);
+        make.top.equalTo(repeatView).offset(0);
+        make.width.mas_equalTo(reminderBtn.imageView.image.size.width);
         make.height.mas_equalTo(spaceHeight);
+    }];
+    
+    [reminderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.equalTo(reminderBtn.mas_right).offset(15);
+        make.top.equalTo(repeatView).offset(0);
+        make.right.mas_equalTo(-24);
+        make.height.mas_equalTo(spaceHeight);
+        
+    }];
+    
+    [reminderNextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.top.equalTo(repeatView).offset(0);
+        make.right.equalTo(repeatView).offset(-15);
+        make.height.mas_equalTo(spaceHeight);
+        make.width.mas_equalTo(reminderNextBtn.imageView.image.size.width);
+    }];
+    
+    
+    [reminderLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.top.equalTo(repeatView).offset(spaceHeight);
+        make.left.equalTo(reminderBtn.mas_right).offset(15);
+        make.right.equalTo(repeatView).offset(0);
+        make.height.mas_equalTo(0.5);
         
     }];
     
     
     [repeatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.left.equalTo(isRepeatView).offset(15);
-        make.top.equalTo(isRepeatView).offset(0);
-        make.width.mas_equalTo(allDayBtn.imageView.image.size.width);
+        make.left.equalTo(repeatView).offset(15);
+        make.top.equalTo(reminderLineView).offset(0);
+        make.width.mas_equalTo(repeatBtn.imageView.image.size.width);
         make.height.mas_equalTo(spaceHeight);
         
     }];
     
     [repeatBtnLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.top.equalTo(isRepeatView).offset(0);
+        make.top.equalTo(reminderLineView).offset(0);
         make.left.equalTo(repeatBtn.mas_right).offset(15);
         make.height.mas_equalTo(spaceHeight);
-        make.right.equalTo(isRepeatView).offset(-24);
+        make.right.equalTo(repeatView).offset(-24);
         
     }];
     
     
     [btn02 mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.top.equalTo(isRepeatView).offset(0);
-        make.right.equalTo(isRepeatView).offset(-15);
+        make.top.equalTo(reminderLineView).offset(0);
+        make.right.equalTo(repeatView).offset(-15);
         make.height.mas_equalTo(spaceHeight);
         make.width.mas_equalTo(btn02.imageView.image.size.width);
     }];
@@ -293,9 +347,24 @@
 }
 
 
+- (void)reminderTime{
+    
+    RKLog(@"提醒方式");
+    
+    ReminderDatePickerView *reminderVC = [[ReminderDatePickerView alloc]init];
+    
+    [reminderVC setDateStyle:ReminderStyleShowMinute CompleteBlock:^(NSString *time) {
+       
+        
+    }];
+    
+    [reminderVC show];
+    
+    
+}
+
 - (void)chooseRepeat{
     RKLog(@"是否重复");
-    
     ChooseRepeatViewController *vc = [[ChooseRepeatViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
