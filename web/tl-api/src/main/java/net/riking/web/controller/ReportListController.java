@@ -29,7 +29,7 @@ import net.riking.service.repo.ReportListRepo;
 import net.riking.util.ExcelToList;
 
 @RestController
-@RequestMapping(value = "/ReportLis")
+@RequestMapping(value = "/ReportList")
 public class ReportListController {
 	@Autowired
 	ReportListRepo reportListRepo;
