@@ -1,10 +1,8 @@
 package com.riking.calendar.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +28,7 @@ public class TaskFragment extends Fragment {
     public Realm realm;
     RecyclerView recyclerView;
     ViewPagerActivity a;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +42,8 @@ public class TaskFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         realm = Realm.getDefaultInstance();
-        List<Task> tasks = realm.where(Task.class).findAll();
+        //only show the not complete tasks
+        List<Task> tasks = realm.where(Task.class).equalTo("isDone", false).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
