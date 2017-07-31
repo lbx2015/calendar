@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
     private TimePickerDialog pickerDialog;
     private TextView remindTime;
     private Switch aSwitch;
+    private ImageView notImportant;
+    private ImageView important;
 
     @Nullable
     @Override
@@ -32,11 +35,15 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
         View v = inflater.inflate(R.layout.create_to_do_fragment, container, false);
         remindTime = (TextView) v.findViewById(R.id.remind_time);
         aSwitch = (Switch) v.findViewById(R.id.simpleSwitch);
+        notImportant = (ImageView) v.findViewById(R.id.not_important);
+        important = (ImageView) v.findViewById(R.id.important);
 
         pickerDialog = new TimePickerDialog(getContext());
         pickerDialog.btnSubmit.setOnClickListener(this);
         pickerDialog.btnCancel.setOnClickListener(this);
         remindTime.setOnClickListener(this);
+        notImportant.setOnClickListener(this);
+        important.setOnClickListener(this);
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -85,6 +92,17 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
                 pickerDialog.dismiss();
                 break;
             }
+            case R.id.important: {
+                important.setVisibility(View.GONE);
+                notImportant.setVisibility(View.VISIBLE);
+                break;
+            }
+            case R.id.not_important: {
+                notImportant.setVisibility(View.GONE);
+                important.setVisibility(View.VISIBLE);
+                break;
+            }
+
         }
     }
 }

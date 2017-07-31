@@ -25,6 +25,7 @@
     <string name="per_sunday">每周日</string>
     <string name="repeat_on_working_day">法定工作日重复（智能跳过节假日）</string>
     <string name="repeat_on_holiday_item">法定节假日重复（智能跳过工作日）</string>
+    <string name="important">重要</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>
