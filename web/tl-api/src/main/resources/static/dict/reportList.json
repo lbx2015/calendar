@@ -74,7 +74,7 @@
 			"type" : "text"
 		},
 		{
-			"prop": "reportRule",
+			"prop": "downloadUrl",
 			"alias": "报表模板下载地址",
 			"group":"base",
 			"type" : "string"

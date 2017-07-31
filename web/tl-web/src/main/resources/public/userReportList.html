@@ -10,25 +10,9 @@
 	<div class="content">
 		<div class="layui-elem-field">
 			<div class="group-button FL">
-				<button class="layui-btn layui-btn-small layui-btn-danger ajax-all"
-					id="deleteBtn" onclick="del()">
-					<i class="layui-icon">&#xe640;</i> 删除
-				</button>
-				<button
-					class="layui-btn layui-btn-normal layui-btn-small modal-full"
-					id="add-data">
-					<i class="layui-icon">&#xe608;</i> 添加
-				</button>
-				<button
-					class="layui-btn layui-btn-normal layui-btn-small modal-full fun_ addmore_"
-					id="addMore-data" onclick="addMore()">
-					<i class="layui-icon">&#xe608;</i>批量导入
-				</button>
 			</div>
-			<div class="_tmpl" data-url="filterCriteria.html"
-				data-attr="reportList.json" data-bind="filterCriteriaOnBind"
-				data-param=""></div>
-			<div class="clear"></div>
+			<div class="clear">
+			<button class="layui-btn layui-btn-normal modal-full" lay-submit lay-filter="search" onclick="" >查询</button></div>
 		</div>
 		<div class="clear"></div>
 		<div class="contentLeft layui-form">
@@ -47,12 +31,6 @@
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
-	$(function() {
-		$("#add-data").click(function() {
-		    var url  = "reportListEdit.html";
-			var title =  "添加数据";
-			View.openDialog(url,title);
-		});
 
 		var form = layui.form();
 		//监听提交，设置为不刷新页面
@@ -231,21 +209,6 @@
 		}, function() {
 
 		});
-	}
-	
-	function addMore() {
-		layer.open({
-			type : 2,
-			title : '报表批量导入',
-			shadeClose : true,
-			shade : false,
-			maxmin : false, //开启最大化最小化按钮
-			area : [ '100%', 'auto' ],
-			offset : '0px',
-			move : false,
-			content : 'repportListAddMore.html'
-		});
-		parent.startInit(document.getElementsByTagName("iframe")[0], 560);
 	}
 </script>
 </html>

@@ -38,7 +38,7 @@
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/ReportList/get";
+                var url = Const.apiUrl + "/reportList/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -47,7 +47,6 @@
                     }
                     //默认展开分组 ，不配置默认展开第一个分组
                     data.showGroup = "base";
-                    data.editable = state;
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
                 }, function() {
@@ -63,9 +62,9 @@
     }
     //编辑保存
     function edit() {
-        var baseAif = Utils.formToObj("edit");
-        var url = Const.apiUrl + "/ReportList/save";
-        View.post(url, baseAif, function(resp) {
+        var reportList = Utils.formToObj("edit");
+        var url = Const.apiUrl + "/reportList/save";
+        View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
         	    + "&pcount=" + parent.TmplUtils.pageSize 

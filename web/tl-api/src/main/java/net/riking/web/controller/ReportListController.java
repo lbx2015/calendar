@@ -29,7 +29,7 @@ import net.riking.service.repo.ReportListRepo;
 import net.riking.util.ExcelToList;
 
 @RestController
-@RequestMapping(value = "/ReportList")
+@RequestMapping(value = "/reportList")
 public class ReportListController {
 	@Autowired
 	ReportListRepo reportListRepo;
@@ -47,6 +47,7 @@ public class ReportListController {
 	@ApiOperation(value = "得到<全部>报表信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute ReportList reportList){
+		reportList.setDeleteState("1");
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		Example<ReportList> example = Example.of(reportList, ExampleMatcher.matchingAll());
 		Page<ReportList> page = reportListRepo.findAll(example,pageable);
@@ -55,7 +56,10 @@ public class ReportListController {
 	
 	@ApiOperation(value = "新增修改一条报表数据", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Resp save( @ModelAttribute ReportList reportList){
+	public Resp save( @RequestBody ReportList reportList){
+		if (reportList.getId()==null) {
+			reportList.setDeleteState("1");
+		}
 		ReportList pReportList = reportListRepo.save(reportList);
 		return new Resp(pReportList, CodeDef.SUCCESS);
 	}
@@ -78,6 +82,7 @@ public class ReportListController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		reportListRepo.save(list);
 		return new Resp(list.size(), CodeDef.SUCCESS);
 	}
 	
