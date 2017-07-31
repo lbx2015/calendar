@@ -13,7 +13,7 @@ import com.riking.calendar.R;
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class ToDoFragment extends Fragment {
+public class TaskFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

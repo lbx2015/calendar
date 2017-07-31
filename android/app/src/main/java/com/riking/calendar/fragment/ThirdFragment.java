@@ -97,7 +97,7 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
                 case 0:
                     return new ReminderFragment();
                 case 1:
-                    return new ToDoFragment();
+                    return new TaskFragment();
             }
             return null;
         }
