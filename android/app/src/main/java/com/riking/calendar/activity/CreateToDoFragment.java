@@ -23,6 +23,14 @@ import java.util.Date;
  */
 
 public class CreateToDoFragment extends Fragment implements View.OnClickListener {
+    //whether the task need to remind at a specific time
+    public boolean needToRemind;
+    //whether the task is an important task
+    public boolean isImportant;
+    public String title;
+    //time
+    public Calendar calendar;
+
     private TimePickerDialog pickerDialog;
     private TextView remindTime;
     private Switch aSwitch;
@@ -47,19 +55,21 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
+        calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
         //set the default time to be 2 hours later comparing current time.
-        c.set(Calendar.HOUR, c.get(Calendar.HOUR) + 2);
-        c.set(Calendar.MINUTE, 0);
-        remindTime.setText(sdf.format(c.getTime()));
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 2);
+        calendar.set(Calendar.MINUTE, 0);
+        remindTime.setText(sdf.format(calendar.getTime()));
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    needToRemind = true;
                     remindTime.setVisibility(View.VISIBLE);
                 } else {
+                    needToRemind = false;
                     remindTime.setVisibility(View.GONE);
                 }
             }
@@ -76,15 +86,14 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
                 break;
             }
             case R.id.btnSubmit: {
-                Calendar c = Calendar.getInstance();
-                c.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
-                c.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
-                c.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day) - 1);
-                c.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
-                c.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
+                calendar.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
+                calendar.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
+                calendar.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day) - 1);
+                calendar.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
+                calendar.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                remindTime.setText(sdf.format(c.getTime()));
+                remindTime.setText(sdf.format(calendar.getTime()));
                 pickerDialog.dismiss();
                 break;
             }
@@ -93,16 +102,17 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
                 break;
             }
             case R.id.important: {
+                isImportant = true;
                 important.setVisibility(View.GONE);
                 notImportant.setVisibility(View.VISIBLE);
                 break;
             }
             case R.id.not_important: {
+                isImportant = false;
                 notImportant.setVisibility(View.GONE);
                 important.setVisibility(View.VISIBLE);
                 break;
             }
-
         }
     }
 }

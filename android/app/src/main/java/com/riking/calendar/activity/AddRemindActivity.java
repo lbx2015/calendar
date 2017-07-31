@@ -15,6 +15,9 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.realm.model.Task;
+
+import java.util.UUID;
 
 import io.realm.Realm;
 
@@ -25,7 +28,7 @@ import io.realm.Realm;
 public class AddRemindActivity extends AppCompatActivity {
     MyPagerAdapter pagerAdapter;
     CreateReminderFragment reminderFragment;
-    CreateToDoFragment toDoFragment;
+    CreateToDoFragment taskFragment;
     private ViewPager viewPager;
     private Realm realm;
 
@@ -65,7 +68,12 @@ public class AddRemindActivity extends AppCompatActivity {
                 }
                 //to do fragment
                 else {
-
+                    Task task = realm.createObject(Task.class, UUID.randomUUID().toString());
+                    task.isImport = taskFragment.needToRemind;
+                    if (taskFragment.needToRemind) {
+                        task.time = taskFragment.calendar.getTime();
+                    }
+                    task.title = taskFragment.title;
                 }
             }
         });
@@ -93,8 +101,8 @@ public class AddRemindActivity extends AppCompatActivity {
                     reminderFragment = new CreateReminderFragment();
                     return reminderFragment;
                 case 1:
-                    toDoFragment = new CreateToDoFragment();
-                    return toDoFragment;
+                    taskFragment = new CreateToDoFragment();
+                    return taskFragment;
             }
             return null;
         }
