@@ -233,19 +233,10 @@
 		});
 	}
 	
-	function addMore() {
-		layer.open({
-			type : 2,
-			title : '报表批量导入',
-			shadeClose : true,
-			shade : false,
-			maxmin : false, //开启最大化最小化按钮
-			area : [ '100%', 'auto' ],
-			offset : '0px',
-			move : false,
-			content : 'repportListAddMore.html'
-		});
-		parent.startInit(document.getElementsByTagName("iframe")[0], 560);
-	}
+    function addMore(){
+		var url = "reportListAddMore.html";
+        var title = "批量添加";
+        View.openDialog(url, title);
+    }
 </script>
 </html>

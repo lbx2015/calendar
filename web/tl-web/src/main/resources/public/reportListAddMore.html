@@ -1,107 +1,91 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>报表配置批量导入</title>
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1">
-<link type="include" href="/common/depcss.html" />
+    <meta charset="utf-8">
+    <title>报表批量导入</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="include" href="/common/depcss.html" />
 </head>
+
 <body>
-	<div class="formbox layui-form " style="padding: 50px 0 20px;">
-		<div id="tb2"></div>
-		<div class="layui-btn-div">
-			<a class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit"
-				href="javascript:javascript:importData()">上传</a>
-			<a class="layui-btn layui-btn-primary layui-btn-mini"
-				onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">返回</a>
-		</div>
-	</div>
-	<script id="lab2" type="text/tmpl">
-<form class="layui-input-inline" id="addMore" enctype="multipart/form-data"  action="">
-	<div class="layui-form-item">
-		<label class="layui-form-label">文件路径：</label>
-		<div class="layui-input-inline">
-			<input type="text" name="upfile" id="upfile"  readonly= "true " autocomplete="off" class="layui-input">
-            <div class="layui-box layui-upload-button" style="margin-top:15px;">
-<form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data" action="">
-<input type="file" name="file" id="file" lay-type="file" class="layui-upload-file" 
-onchange="upfile.value=this.value"></form><span class="layui-upload-icon"><i class="layui-icon"></i>上传文件</span></div>
-		</div>
+    <div class="formbox layui-form " style="padding: 70px 0 20px;">
+        <div id="tb2">
+            <form class="layui-input-inline" target="layui-upload-iframe" method="post" key="set-mine" id="addMore" enctype="multipart/form-data" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">excel路径：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="upfile" id="upfile" readonly="true " autocomplete="off" class="layui-input" />
+                    </div>
+                    <div class="layui-box layui-upload-button">
+                        <input type="file" name="file" id="file" lay-type="file" class="layui-upload-file" onchange="upfile.value=this.value" />
+                        <span class="layui-upload-icon"><i class="layui-icon"></i>上传文件</span>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-top:15px;">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-inline">
+                        <a href="" class="layui-btn layui-btn-normal" id="downLoad"><i class="layui-icon">&#xe601;</i>下载excel表格模板</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-btn-div">
+            <a class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" href="javascript:importData()">上传</a>
+            <a class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">返回</a>
+        </div>
     </div>
-</form>
-</script>
 </body>
 <link type="include" href="/common/depjs.html" />
-<script type="text/javascript" src="{=ctx}/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="{=ctx}/js/jquery/jquery.form.js"></script>
 <script type="text/javascript">
-	var tmpl = null;
-	$(document).ready(function() {
-		var tp = new View.Tmpl({
-			"container" : $("#tb2"),
-			"tmpl" : $("#lab2").html()
-		});
-		tp.onload(function(attrs, param) {
-			View.info(attrs); //blackWhiteList.json 中的属性对象
-			View.info(param); //param 参数转的json对象
-			var data = {};
-			tp.bind(function(callback) {
-				callback.call(this, data);
-			});
-		}, "index=1");
-		tp.refresh("index=2");
-	});
+    var tmpl = null;
+    $(document).ready(function() {
+		$("#downLoad").attr("href", Const.apiUrl + "/excelModel/reportList.xlsx");
+    });
 
-	function checkData() {
-		var fileDir = $("#bw").val();
-		var suffix = fileDir.substr(fileDir.lastIndexOf("."));
-		if ("" == fileDir) {
-			alert("选择需要导入的Excel文件！");
-			return false;
-		}
-		if (".xls" != suffix && ".xlsx" != suffix && ".XLS" != suffix&& ".XLSX" != suffix) {
-			alert("选择Excel格式的文件导入！");
-			return false;
-		}
-		return true;
-	}
+    function checkData() {
+        var fileDir = $("#file").val();
+        var suffix = fileDir.substr(fileDir.lastIndexOf("."));
+        if ("" == fileDir) {
+            alert("选择需要导入的Excel文件！");
+            return false;
+        }
+        if (".xls" != suffix && ".xlsx" != suffix) {
+            alert("选择Excel格式的文件导入！");
+            return false;
+        }
+        return true;
+    }
 
-	function importData() {
-		if (!checkData()) {
-			return;
-		}
-		$('#addMore').ajaxSubmit(
-						{
-							type : 'post',
-							url : Const.apiUrl + "/reportList/saveMore",
-							dataType : 'json',
-							data:$("#addMore").serialize(),
-							success : function(resp) {
-								if (resp.code == 200) {
-									TmplUtils.showMsgSuccess(resp._data);
-									parent.tbTmpl.refresh("pindex="
-											+ (parent.TmplUtils.currPage - 1)
-											+ "&pcount=" + parent.TmplUtils.pageSize
-											+ parent.TmplUtils.searchParam);
-									parent.previewTmpl.refresh();
-									var index = parent.layer
-											.getFrameIndex(window.name); //获取窗口索引
-									parent.layer.close(index);
-								} else{
-									if(!!resp._data){
-										TmplUtils.showMsgFail(resp._data);
-									}else{
-										TmplUtils.showMsgFail("导入失败");
-									}
-								}
-							},
-							error : function(code) {
-								TmplUtils.showMsgFail('导入失败');
-							}
-						});
-	}
+    function importData() {
+        if (!checkData()) {
+            return;
+        }
+        var addMoreUrl = Const.apiUrl + "/reportList/saveMore";
+        $("#addMore").attr("action", addMoreUrl);
+        $('#addMore').ajaxSubmit({
+            type: 'post',
+            url: addMoreUrl,
+            dataType: 'json',
+            success: function(resp) {
+            	if(resp._date='2'){
+                    TmplUtils.showMsgSuccess('导入成功');
+                    parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) +"&pcount=" + TmplUtils.pageSize + TmplUtils.searchParam);
+                    parent.previewTmpl.refresh();
+                    var index = parent.layer
+                        .getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);
+            	}else{
+                    TmplUtils.showMsgFail('导入失败');
+            	}
+            },
+            error: function(code) {
+            }
+        });
+    }
 </script>
+
 </html>

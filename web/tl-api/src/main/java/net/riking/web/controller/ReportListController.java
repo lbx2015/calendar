@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.ReportList;
@@ -63,7 +64,7 @@ public class ReportListController {
 		ReportList pReportList = reportListRepo.save(reportList);
 		return new Resp(pReportList, CodeDef.SUCCESS);
 	}
-	
+	@AuthPass
 	@ApiOperation(value = "新增多条报表数据", notes = "POST")
 	@RequestMapping(value = "/saveMore", method = RequestMethod.POST)
 	public Resp saveMore( HttpServletRequest request){
@@ -83,8 +84,15 @@ public class ReportListController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		String result = "1" ;
+		if (list.size()>0) {
+			for (int i = 0; i < list.size(); i++) {
+				list.get(i).setDeleteState("1");
+			}
+			result = "2";
+		}
 		reportListRepo.save(list);
-		return new Resp(list.size(), CodeDef.SUCCESS);
+		return new Resp(result, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "批量删除用户信息", notes = "POST")
