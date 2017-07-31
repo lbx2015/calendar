@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>app用户list页面</title>
+    <title>各国节假日币种list页面</title>
     <link type="include" href="/common/depcss.html" />
 </head>
 
@@ -17,16 +17,19 @@
                 <button class="layui-btn layui-btn-normal layui-btn-small modal-full" id="add-data">
 					<i class="layui-icon">&#xe608;</i> 添加
 				</button>
+				<button class="layui-btn layui-btn-normal layui-btn-small modal-full" onclick="addMore()" >
+					<i class="layui-icon">&#xe608;</i> 批量添加
+				</button>
             </div>
-            <div class="_tmpl" data-url="filterCriteria.html" data-attr="appUser.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+            <div class="_tmpl" data-url="filterCriteria.html" data-attr="ctryHdayCrcy.json" data-bind="filterCriteriaOnBind" data-param=""></div>
             <div class="clear"></div>
         </div>
         <div class="clear"></div>
         <div class="contentLeft layui-form">
-            <div class="_tmpl" data-url="table.html" id="table" data-attr="appUser.json" data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
+            <div class="_tmpl" data-url="table.html" id="table" data-attr="ctryHdayCrcy.json" data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
         </div>
         <div class="contentRight">
-            <div class="_tmpl" data-url="preview.html" data-attr="appUser.json" data-bind="previewOnBind" data-param=""></div>
+            <div class="_tmpl" data-url="preview.html" data-attr="ctryHdayCrcy.json" data-bind="previewOnBind" data-param=""></div>
         </div>
         <div style="clear: both"></div>
         <div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
@@ -36,7 +39,7 @@
 <script>
     $(function() {
         $("#add-data").click(function() {
-            var url = "appUserEdit.html";
+            var url = "ctryHdayCrcyEdit.html";
             var title = "添加数据";
             View.openDialog(url, title);
         });
@@ -74,7 +77,7 @@
         tbTmpl = tmpl;
 
         var _bind = function(callback) {
-            var url = Const.apiUrl + "/appUser/getMore";
+            var url = Const.apiUrl + "/ctryHdayCrcy/getMore";
             var _this = this;
             var _succ = function(resp) {
                 var data = {};
@@ -93,7 +96,7 @@
                      "class": "layui-btn layui-btn-mini layui-btn-normal"
                  }]; */
                 //tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
-                //data.trClick = "bindPro";
+               // data.trClick = "bindPro";
                 //表格显示列数
                 /* data.cellLeftCount = 4;
                  data.cellRightCount = 3;*/
@@ -111,12 +114,7 @@
                     //col 当前列数 从1开始
                     if (obj.row > 1 && obj.col == 2) {
                         obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
-                        obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='passwordReset(" + "\"" + obj.item.id + "\"" + ");'>重置密码</button>";
-                        if (obj.item.enabled == "0") { //禁用
-                            return obj.html + "<button class='layui-btn layui-btn-mini' onclick='enable(" + "\"" + obj.item.id + "\"" + ");'>启用</button>";
-                        } else {
-                            return obj.html + "<button class='layui-btn layui-btn-danger layui-btn-mini' onclick='unEnable(" + "\"" + obj.item.id + "\"" + ");'>禁用</button>";
-                        }
+                    	return obj.html;
                     }
                     return obj.html;
                 }
@@ -154,7 +152,7 @@
             return;
         }
         tmpl.bind(function(callback) {
-            var url = Const.apiUrl + "/appUser/get";
+            var url = Const.apiUrl + "/ctryHdayCrcy/get";
             var data = {};
             //是否可编辑
             data.canEdit = true;
@@ -188,46 +186,15 @@
     }
     //弹出添加iframe
     function edit(id) {
-        var url = "appUserEdit.html?id=" + id;
+        var url = "ctryHdayCrcyEdit.html?id=" + id;
         var title = "数据处理";
         View.openDialog(url, title);
     }
 
-    function enable(id) {
-        TmplUtils.showConfirm('您确定启用该用户吗？', '确定', '取消', function() {
-            var url = Const.apiUrl + "/appUser/enable";
-            View.get(url, "id=" + id, function(resp) {
-                TmplUtils.showMsgSuccess('启用成功');
-                tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                    TmplUtils.pageSize + TmplUtils.searchParam);
-                TmplUtils.closePreview();
-            }, function(code) {
-                TmplUtils.showMsgFail('启用失败');
-            });
-        }, function() {
 
-        });
-    }
-
-    function unEnable(id) {
-        TmplUtils.showConfirm('您确定禁用该用户吗？', '确定', '取消', function() {
-            var url = Const.apiUrl + "/appUser/unEnable";
-            View.get(url, "id=" + id, function(resp) {
-                TmplUtils.showMsgSuccess('禁用成功');
-                tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                    TmplUtils.pageSize + TmplUtils.searchParam);
-                TmplUtils.closePreview();
-            }, function(code) {
-                TmplUtils.showMsgFail('禁用失败');
-            });
-        }, function() {
-
-        });
-    }
     //保存
     function save() {
-
-        var url = Const.apiUrl + "/appUser/addOrUpdate";
+        var url = Const.apiUrl + "/ctryHdayCrcy/addOrUpdate";
         var employee = Utils.formToObj("preview");
         View.post(url, employee, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
@@ -249,7 +216,7 @@
                     ids.push($(this).data("id"));
                 }
             });
-            var url = Const.apiUrl + "/appUser/delMore"
+            var url = Const.apiUrl + "/ctryHdayCrcy/delMore"
             View.post(url, ids, function(resp) {
                 TmplUtils.showMsgSuccess("删除成功");
                 tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) +
@@ -263,22 +230,11 @@
         });
     }
     
-   function passwordReset(id){
-       TmplUtils.showConfirm('您确定重置该用户密码吗？', '确定', '取消', function() {
-           var url = Const.apiUrl + "/appUser/passwordReset";
-           View.get(url, "id=" + id, function(resp) {
-               TmplUtils.showMsgSuccess('重置成功');
-               tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                   TmplUtils.pageSize + TmplUtils.searchParam);
-               TmplUtils.closePreview();
-           }, function(code) {
-               TmplUtils.showMsgFail('重置失败');
-           });
-       }, function() {
-
-       });
-   }
-   
+    function addMore(){
+		var url = "ctryHdayCrcyAddMore.html";
+		var title = "批量添加";
+		View.openDialog(url, title);
+	}
 </script>
 
 </html>

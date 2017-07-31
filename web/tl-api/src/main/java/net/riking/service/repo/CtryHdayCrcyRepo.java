@@ -10,13 +10,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.EmailSuffix;
+import net.riking.entity.model.CtryHdayCrcy;
 
 @Repository
-public interface EmailSuffixRepo extends JpaRepository<EmailSuffix, String>, JpaSpecificationExecutor<EmailSuffix>{
-
+public interface CtryHdayCrcyRepo extends JpaRepository<CtryHdayCrcy, String>, JpaSpecificationExecutor<CtryHdayCrcy>{
 	@Transactional
 	@Modifying
-	@Query("update EmailSuffix set deleteState = '0'  where id in ?1")
-	int deleteByIds(Set<String> ids);
+	@Query("update CtryHdayCrcy set deleteState = '0'  where id in ?1")
+	public int deleteByIds(Set<String> ids);
 }

@@ -17,5 +17,21 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	@Transactional
 	@Modifying
 	@Query("update AppUser set deleteState = '0'  where id in ?1")
-	public int deleteByIds(Set<String> ids);
+	int deleteByIds(Set<String> ids);
+	
+	@Transactional
+	@Modifying
+	@Query("update AppUser set enabled = '1'  where id = ?1")
+	int enable(String id);
+	
+	@Transactional
+	@Modifying
+	@Query("update AppUser set enabled = '0'  where id = ?1")
+	int unEnable(String id);
+	
+	@Transactional
+	@Modifying
+	@Query("update AppUser set passWord = '123456'  where id = ?1")
+	int passwordReset(String id);
+	
 }

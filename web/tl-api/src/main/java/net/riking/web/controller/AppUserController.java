@@ -57,6 +57,27 @@ public class AppUserController {
 		return new Resp(save, CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "启用用户信息", notes = "GET")
+	@RequestMapping(value = "/enable", method = RequestMethod.GET)
+	public Resp enable_(@RequestParam String id) {
+		 int rs = appUserRepo.enable(id);
+		return new Resp(rs, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "禁用用户信息", notes = "GET")
+	@RequestMapping(value = "/unEnable", method = RequestMethod.GET)
+	public Resp unEnable_(@RequestParam String id) {
+		 int rs = appUserRepo.unEnable(id);
+		return new Resp(rs, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "禁用用户信息", notes = "GET")
+	@RequestMapping(value = "/passwordReset", method = RequestMethod.GET)
+	public Resp passwordReset_(@RequestParam String id) {
+		 int rs = appUserRepo.passwordReset(id);
+		return new Resp(rs, CodeDef.SUCCESS);
+	}
+	
 	@ApiOperation(value = "批量删除用户信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore(@RequestBody Set<String> ids) {

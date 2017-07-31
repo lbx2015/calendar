@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -23,58 +22,58 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
+import net.riking.core.entity.model.ModelPropDict;
+import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.entity.PageQuery;
-import net.riking.entity.model.CrtyHdayCrcy;
-import net.riking.entity.model.EmailSuffix;
-import net.riking.service.repo.EmailSuffixRepo;
 import net.riking.util.ExcelToList;
 
 @RestController
 @RequestMapping(value = "/emailSuffix")
 public class EmailSuffixController {
 	@Autowired
-	EmailSuffixRepo emailSuffixRepo;
+	ModelPropdictRepo modelPropdictRepo;
 	
 	@ApiOperation(value = "得到<单个>邮箱后缀", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public Resp get_(@RequestParam("id") String id) {
-		EmailSuffix emailSuffix = emailSuffixRepo.findOne(id);
+	public Resp get_(@RequestParam("id") Long id) {
+		ModelPropDict emailSuffix = modelPropdictRepo.findOne(id);
 		return new Resp(emailSuffix, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到<批量>邮箱后缀", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute EmailSuffix emailSuffix){
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute ModelPropDict emailSuffix){
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		if(StringUtils.isEmpty(emailSuffix.getDeleteState())){
-			emailSuffix.setDeleteState("1");
-		}
-		Example<EmailSuffix> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
-		Page<EmailSuffix> page = emailSuffixRepo.findAll(example,pageable);
+		emailSuffix.setClazz("T_APP_USER");
+		emailSuffix.setField("EMAILSUFFIX");
+		Example<ModelPropDict> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
+		Page<ModelPropDict> page = modelPropdictRepo.findAll(example,pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "GET")
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
 	public Resp getAll_(){
-		EmailSuffix emailSuffix = new EmailSuffix();
-		emailSuffix.setDeleteState("1");
-		Example<EmailSuffix> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
-		List<EmailSuffix> list = emailSuffixRepo.findAll(example);
+		ModelPropDict emailSuffix = new ModelPropDict();
+		emailSuffix.setClazz("T_APP_USER");
+		emailSuffix.setField("EMAILSUFFIX");
+		Example<ModelPropDict> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
+		List<ModelPropDict> list = modelPropdictRepo.findAll(example);
 		return new Resp(list, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "添加或者更新邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
-	public Resp addOrUpdate_(@RequestBody EmailSuffix emailSuffix) {
-		if(StringUtils.isEmpty(emailSuffix.getId())||StringUtils.isEmpty(emailSuffix.getDeleteState())){
-			emailSuffix.setDeleteState("1");
-		}
-		EmailSuffix save = emailSuffixRepo.save(emailSuffix);
+	public Resp addOrUpdate_(@RequestBody ModelPropDict emailSuffix) {
+		emailSuffix.setClazz("T_APP_USER");
+		emailSuffix.setField("EMAILSUFFIX");
+		ModelPropDict save = modelPropdictRepo.save(emailSuffix);
 		return new Resp(save, CodeDef.SUCCESS);
 	}
 	
+	@AuthPass
 	@ApiOperation(value = "批量添加邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/addMore", method = RequestMethod.POST)
 	public Resp addMore_(HttpServletRequest request) {
@@ -82,14 +81,14 @@ public class EmailSuffixController {
 		MultipartFile mFile = multipartRequest.getFile("fileName");
 		String fileName = mFile.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-		List<EmailSuffix> list =null;
+		List<ModelPropDict> list =null;
 		try {
 			InputStream is = mFile.getInputStream();
-			String[] fields = { "suffix" };
+			String[] fields = { "ke","valu" };
 			if (suffix.equals("xlsx")) {
-				list = ExcelToList.readXlsx(is, fields, EmailSuffix.class);
+				list = ExcelToList.readXlsx(is, fields, ModelPropDict.class);
 			} else {
-				list = ExcelToList.readXls(is, fields, EmailSuffix.class);
+				list = ExcelToList.readXls(is, fields, ModelPropDict.class);
 			}
 		}  catch (Exception e) {
 			e.printStackTrace();
@@ -97,7 +96,11 @@ public class EmailSuffixController {
 		}
 		
 		if(list!=null && list.size()>0){
-			List<EmailSuffix> rs = emailSuffixRepo.save(list);
+			for (ModelPropDict dict : list) {
+				dict.setClazz("T_APP_USER");
+				dict.setField("EMAILSUFFIX");
+			}
+			List<ModelPropDict> rs = modelPropdictRepo.save(list);
 			return new Resp(rs, CodeDef.SUCCESS);
 		}else{
 			return new Resp(CodeDef.ERROR);
@@ -106,10 +109,10 @@ public class EmailSuffixController {
 	
 	@ApiOperation(value = "批量删除邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore(@RequestBody Set<String> ids) {
+	public Resp delMore(@RequestBody Set<Long> ids) {
 		int rs = 0;
 		if(ids.size()>0){
-			rs = emailSuffixRepo.deleteByIds(ids);
+			rs = modelPropdictRepo.deleteByIdIn(ids);
 		}
 		if(rs>0){
 			return new Resp().setCode(CodeDef.SUCCESS);

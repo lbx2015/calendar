@@ -11,13 +11,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
 @Entity
 @Table(name = "t_ctry_hday_crcy")
-public class CrtyHdayCrcy extends BaseEntity {
+public class CtryHdayCrcy extends BaseEntity {
 //各国节假日币种表
 	@Id
 	@Column(name = "Id", length = 32)
@@ -39,6 +40,7 @@ public class CrtyHdayCrcy extends BaseEntity {
 	
 	@Comment("节假日时间")
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "hday_date")
 	private Date hdayDate;
 	

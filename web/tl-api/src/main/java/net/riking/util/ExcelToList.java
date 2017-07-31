@@ -6,6 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -13,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,13 +24,16 @@ import net.riking.entity.model.ReportList;
 
 public class ExcelToList {
 
-	public static <T> List<T> readXlsx(InputStream is, String[] fields, Class<T> clazz) throws Exception {
+	public static <T> List<T> readXlsx(InputStream is, String[] fields,
+			Class<T> clazz) throws Exception {
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
 		List<T> list = new ArrayList<T>();
 
 		BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
-		PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-		for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
+		PropertyDescriptor[] propertyDescriptors = beanInfo
+				.getPropertyDescriptors();
+		for (int numSheet = 0; numSheet < xssfWorkbook
+				.getNumberOfSheets(); numSheet++) {
 			XSSFSheet sheetAt = xssfWorkbook.getSheetAt(numSheet);
 			for (int i = 1; i <= sheetAt.getLastRowNum(); i++) {
 				XSSFRow row = sheetAt.getRow(i);
@@ -41,13 +46,14 @@ public class ExcelToList {
 							propertyDescriptor.getWriteMethod().invoke(obj, o);
 							break;
 						}
-						if ("deleteState".equals(propertyDescriptor.getName())&&deleteState==null) {
+						if ("deleteState".equals(propertyDescriptor.getName())
+								&& deleteState == null) {
 							deleteState = propertyDescriptor;
 						}
 					}
 				}
-				if (deleteState!=null) {
-					deleteState.getWriteMethod().invoke(obj,"1");
+				if (deleteState != null) {
+					deleteState.getWriteMethod().invoke(obj, "1");
 				}
 				list.add(obj);
 			}
@@ -64,12 +70,15 @@ public class ExcelToList {
 	 * @return
 	 * @throws IOException
 	 */
-	public static <T> List<T> readXls(InputStream is, String[] fields, Class<T> clazz) throws Exception {
+	public static <T> List<T> readXls(InputStream is, String[] fields,
+			Class<T> clazz) throws Exception {
 		HSSFWorkbook xssfWorkbook = new HSSFWorkbook(is);
 		List<T> list = new ArrayList<T>();
 		BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
-		PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-		for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
+		PropertyDescriptor[] propertyDescriptors = beanInfo
+				.getPropertyDescriptors();
+		for (int numSheet = 0; numSheet < xssfWorkbook
+				.getNumberOfSheets(); numSheet++) {
 			HSSFSheet sheetAt = xssfWorkbook.getSheetAt(numSheet);
 			for (int i = 1; i <= sheetAt.getLastRowNum(); i++) {
 				HSSFRow row = sheetAt.getRow(i);
@@ -90,24 +99,32 @@ public class ExcelToList {
 		return list;
 	}
 
-	public static List<ReportList> readReportListXlsx(InputStream is, String fileName) throws Exception {
+	public static List<ReportList> readReportListXlsx(InputStream is,
+			String fileName) throws Exception {
 		return null;
 
 	}
 
-	public static List<ReportList> readReportListXls(InputStream is, String fileName) throws Exception {
+	public static List<ReportList> readReportListXls(InputStream is,
+			String fileName) throws Exception {
 		return null;
 
 	}
 
-	private static String getValue(XSSFCell xssfRow) {
+	private static Object getValue(XSSFCell xssfRow) {
 		if (xssfRow == null) {
 			return null;
 		}
 		if (xssfRow.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
 			return String.valueOf(xssfRow.getBooleanCellValue());
 		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-			return Double.valueOf(xssfRow.getNumericCellValue()).intValue() + "";
+			if (DateUtil.isCellDateFormatted(xssfRow)) {
+				// 用于转化为日期格式
+				Date d = xssfRow.getDateCellValue();
+				return d;
+			} else {
+				return Double.valueOf(xssfRow.getNumericCellValue()).intValue() + "";
+			}
 		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_STRING) {
 			return String.valueOf(xssfRow.getStringCellValue());
 		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_BLANK) {
@@ -119,11 +136,18 @@ public class ExcelToList {
 		}
 	}
 
-	private static String getValue(HSSFCell hssfCell) {
+	private static Object getValue(HSSFCell hssfCell) {
 		if (hssfCell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
 			return String.valueOf(hssfCell.getBooleanCellValue());
 		} else if (hssfCell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-			return Double.valueOf(hssfCell.getNumericCellValue()).intValue() + "";
+			if (DateUtil.isCellDateFormatted(hssfCell)) {
+				// 用于转化为日期格式
+				Date d = hssfCell.getDateCellValue();
+				return d;
+			} else {
+				return Double.valueOf(hssfCell.getNumericCellValue()).intValue() + "";
+			}
+			
 		} else if (hssfCell.getCellType() == Cell.CELL_TYPE_STRING) {
 			return String.valueOf(hssfCell.getStringCellValue());
 		} else if (hssfCell.getCellType() == Cell.CELL_TYPE_FORMULA) {

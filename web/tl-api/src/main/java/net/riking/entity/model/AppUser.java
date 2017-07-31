@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
@@ -35,6 +36,7 @@ public class AppUser extends BaseEntity {
 	
 	@Comment("用户生日")
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "birthday")
 	private Date birthday;
 	
@@ -69,8 +71,8 @@ public class AppUser extends BaseEntity {
 	private String deleteState;
 	
 	@Comment("部门ID")
-	@Column(name = "dept_id")
-	private String deptId;
+	@Column(name = "dept")
+	private String dept;
 
 	public String getId() {
 		return id;
@@ -160,12 +162,12 @@ public class AppUser extends BaseEntity {
 		this.remark = remark;
 	}
 
-	public String getDeptId() {
-		return deptId;
+	public String getDept() {
+		return dept;
 	}
 
-	public void setDeptId(String deptId) {
-		this.deptId = deptId;
+	public void setDept(String dept) {
+		this.dept = dept;
 	}
 
 	@Override

@@ -9,20 +9,22 @@
 			"prop": "clazz",
 			"alias": "表名",
 			"group":"base",
+			"hidden":"table,preview,edit",
 			"type": "string"
 		},
 		{
 			"prop": "field",
 			"alias": "属性",
+			"hidden":"table,preview,edit",
 			"group":"base",
-			"query": "1",
-			"query_order": "1",
 			"type": "string"
 		},
 		{
 			"prop": "ke",
 			"alias": "键",
 			"group":"base",
+			"query": "1",
+			"query_order": "1",
 			"type": "string"
 		},
 		{

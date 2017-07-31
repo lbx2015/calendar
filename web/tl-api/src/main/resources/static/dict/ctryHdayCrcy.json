@@ -1,5 +1,5 @@
 {
-	"table": "T_CRTY_HDAY_CRCY",
+	"table": "T_CTRY_HDAY_CRCY",
 	"groups":[{
 		"prop":"base",
 		"alias":"基础信息"
@@ -17,18 +17,24 @@
 			"group":"base",
 			"query": "1",
 			"query_order": "1",
-			"type": "string"
+			"type": "enum",
+			"dict_key": "T_CTRY_HDAY_CRCY.CTRY",
+			"enum_search":"1"
 		},
 		{
 			"prop": "hdayName",
 			"alias": "节假日名称",
 			"group":"base",
+			"query": "1",
+			"query_order": "2",
 			"type": "string"
 		},
 		{
 			"prop": "hdayDate",
 			"alias": "节假日时间",
 			"group":"base",
+			"query": "1",
+			"query_order": "3",
 			"type": "date"
 		},
 		{
@@ -36,7 +42,7 @@
 			"alias": "币种",
 			"group":"base",
 			"type": "enum",
-			"dict_key": "CRTYHDAYCRCY.CRCY",
+			"dict_key": "T_CTRY_HDAY_CRCY.CRCY",
 			"enum_search":"1"
 		},
 		{
