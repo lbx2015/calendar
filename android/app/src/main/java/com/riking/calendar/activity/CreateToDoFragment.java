@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -22,9 +24,19 @@ import java.util.Date;
  */
 
 public class CreateToDoFragment extends Fragment implements View.OnClickListener {
+    //whether the task need to remind at a specific time
+    public boolean needToRemind;
+    //whether the task is an important task
+    public boolean isImportant;
+    public EditText title;
+    //time
+    public Calendar calendar;
+
     private TimePickerDialog pickerDialog;
     private TextView remindTime;
     private Switch aSwitch;
+    private ImageView notImportant;
+    private ImageView important;
 
     @Nullable
     @Override
@@ -32,27 +44,34 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
         View v = inflater.inflate(R.layout.create_to_do_fragment, container, false);
         remindTime = (TextView) v.findViewById(R.id.remind_time);
         aSwitch = (Switch) v.findViewById(R.id.simpleSwitch);
+        notImportant = (ImageView) v.findViewById(R.id.not_important);
+        important = (ImageView) v.findViewById(R.id.important);
+        title = (EditText) v.findViewById(R.id.title);
 
         pickerDialog = new TimePickerDialog(getContext());
         pickerDialog.btnSubmit.setOnClickListener(this);
         pickerDialog.btnCancel.setOnClickListener(this);
         remindTime.setOnClickListener(this);
+        notImportant.setOnClickListener(this);
+        important.setOnClickListener(this);
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
+        calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
         //set the default time to be 2 hours later comparing current time.
-        c.set(Calendar.HOUR, c.get(Calendar.HOUR) + 2);
-        c.set(Calendar.MINUTE, 0);
-        remindTime.setText(sdf.format(c.getTime()));
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 2);
+        calendar.set(Calendar.MINUTE, 0);
+        remindTime.setText(sdf.format(calendar.getTime()));
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    needToRemind = true;
                     remindTime.setVisibility(View.VISIBLE);
                 } else {
+                    needToRemind = false;
                     remindTime.setVisibility(View.GONE);
                 }
             }
@@ -69,20 +88,31 @@ public class CreateToDoFragment extends Fragment implements View.OnClickListener
                 break;
             }
             case R.id.btnSubmit: {
-                Calendar c = Calendar.getInstance();
-                c.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
-                c.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
-                c.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day) - 1);
-                c.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
-                c.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
+                calendar.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
+                calendar.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
+                calendar.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day) - 1);
+                calendar.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
+                calendar.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                remindTime.setText(sdf.format(c.getTime()));
+                remindTime.setText(sdf.format(calendar.getTime()));
                 pickerDialog.dismiss();
                 break;
             }
             case R.id.btnCancel: {
                 pickerDialog.dismiss();
+                break;
+            }
+            case R.id.important: {
+                isImportant = false;
+                important.setVisibility(View.GONE);
+                notImportant.setVisibility(View.VISIBLE);
+                break;
+            }
+            case R.id.not_important: {
+                isImportant = true;
+                notImportant.setVisibility(View.GONE);
+                important.setVisibility(View.VISIBLE);
                 break;
             }
         }

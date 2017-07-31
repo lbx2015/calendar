@@ -216,7 +216,7 @@ public class FourthFragment extends Fragment {
                 case 0:
                     return new ReminderFragment();
                 case 1:
-                    return new ToDoFragment();
+                    return new TaskFragment();
             }
             return null;
         }

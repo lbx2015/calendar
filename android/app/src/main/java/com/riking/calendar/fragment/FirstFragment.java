@@ -38,6 +38,7 @@ import com.riking.calendar.realm.model.Reminder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import io.realm.Realm;
 
@@ -174,7 +175,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void execute(Realm realm) {
                 // Add a person
-                Reminder person = realm.createObject(Reminder.class);
+                Reminder person = realm.createObject(Reminder.class, UUID.randomUUID().toString());
                 person.time = new Date(2017,6,24,12,12);
                 person.title = "Don't forget to clock off";
             }

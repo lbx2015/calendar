@@ -71,9 +71,9 @@ public class ReportList extends BaseEntity {
 	@Column(name = "reportRule", length = 32)
 	private Clob reportRule;
 
-	// 报表所属模块，频度标识（外键）
-	@Column(name = "module_Id", length = 3)
-	private String moduleTypeId;
+	// 报表所属模块，频度标识
+	@Column(name = "moduleType", length = 3)
+	private String moduleType;
 
 	// 报表模板下载地址
 	@Column(name = "downloadUrl", length = 128)
@@ -187,12 +187,14 @@ public class ReportList extends BaseEntity {
 		this.reportRule = reportRule;
 	}
 
-	public String getModuleTypeId() {
-		return moduleTypeId;
+	
+
+	public String getModuleType() {
+		return moduleType;
 	}
 
-	public void setModuleTypeId(String moduleTypeId) {
-		this.moduleTypeId = moduleTypeId;
+	public void setModuleType(String moduleType) {
+		this.moduleType = moduleType;
 	}
 
 	public String getDownloadUrl() {
@@ -209,7 +211,7 @@ public class ReportList extends BaseEntity {
 				+ reportBrief + ", reportOrganization=" + reportOrganization + ", reportFrequency=" + reportFrequency
 				+ ", reportStyle=" + reportStyle + ", reportUnit=" + reportUnit + ", reportRound=" + reportRound
 				+ ", reportCurrency=" + reportCurrency + ", reportNote=" + reportNote + ", reportRule=" + reportRule
-				+ ", moduleTypeId=" + moduleTypeId + ", downloadUrl=" + downloadUrl + "]";
+				+ ", moduleType=" + moduleType + ", downloadUrl=" + downloadUrl + ", deleteState=" + deleteState + "]";
 	}
 
 }
