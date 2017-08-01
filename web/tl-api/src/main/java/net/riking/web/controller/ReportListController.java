@@ -67,7 +67,7 @@ public class ReportListController {
 	
 	@ApiOperation(value = "得到用户报表信息", notes = "GET")
 	@RequestMapping(value = "/getUserReport", method = RequestMethod.GET)
-	public Resp getUserReport(@ModelAttribute PageQuery query, @ModelAttribute ReportList reportList){
+	public Resp getUserReport_(@ModelAttribute PageQuery query, @ModelAttribute ReportList reportList){
 		Set<String>  reportIds = appUserReportRepo.findbyAppUserId(reportList.getId());
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		Specification<ReportList> s1 = new Specification<ReportList>() {
@@ -88,7 +88,7 @@ public class ReportListController {
 	
 	@ApiOperation(value = "新增/修改一条报表数据", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Resp save( @RequestBody ReportList reportList){
+	public Resp save_( @RequestBody ReportList reportList){
 		if (reportList.getId()==null) {
 			reportList.setDeleteState("1");
 		}
@@ -98,7 +98,7 @@ public class ReportListController {
 	@AuthPass
 	@ApiOperation(value = "新增多条报表数据", notes = "POST")
 	@RequestMapping(value = "/saveMore", method = RequestMethod.POST)
-	public Resp saveMore( HttpServletRequest request){
+	public Resp saveMore_( HttpServletRequest request){
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		MultipartFile mFile = multipartRequest.getFile("file");
 		String fileName = mFile.getOriginalFilename();
@@ -128,7 +128,7 @@ public class ReportListController {
 	
 	@ApiOperation(value = "批量删除用户信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore(@RequestBody Set<String> ids) {
+	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
 		if(ids.size()>0){
 			rs = reportListRepo.deleteById(ids);
