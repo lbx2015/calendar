@@ -9,13 +9,13 @@
 			"prop": "clazz",
 			"alias": "表名",
 			"group":"base",
-			"hidden":"table,preview,edit",
+			"hidden":"edit",
 			"type": "string"
 		},
 		{
 			"prop": "field",
 			"alias": "属性",
-			"hidden":"table,preview,edit",
+			"hidden":"edit",
 			"group":"base",
 			"type": "string"
 		},

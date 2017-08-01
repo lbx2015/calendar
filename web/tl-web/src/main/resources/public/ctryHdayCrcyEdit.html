@@ -61,6 +61,7 @@
     //编辑保存
     function edit() {
         var crtyHdayCrcy = Utils.formToObj("edit");
+        crtyHdayCrcy.icon = "/icon/"+crtyHdayCrcy.crcy+".png";
         var url = Const.apiUrl + "/ctryHdayCrcy/addOrUpdate";
         View.post(url, crtyHdayCrcy, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');

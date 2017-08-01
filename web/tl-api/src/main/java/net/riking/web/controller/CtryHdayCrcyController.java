@@ -84,7 +84,7 @@ public class CtryHdayCrcyController {
 		List<CtryHdayCrcy> list =null;
 		try {
 			InputStream is = mFile.getInputStream();
-			String[] fields = { "icon", "ctryName", "hdayName", "hdayDate", "crcy", "remark" };
+			String[] fields = {"ctryName", "hdayName", "hdayDate", "crcy", "remark" };
 			if (suffix.equals("xlsx")) {
 				list = ExcelToList.readXlsx(is, fields, CtryHdayCrcy.class);
 			} else {
@@ -94,10 +94,16 @@ public class CtryHdayCrcyController {
 			e.printStackTrace();
 			return new Resp(CodeDef.ERROR);
 		}
-		
 		if(list!=null && list.size()>0){
+			for (CtryHdayCrcy ctryHdayCrcy : list) {
+				ctryHdayCrcy.setIcon("\\icon\\"+ctryHdayCrcy.getCrcy()+ ".png");
+			}
 			List<CtryHdayCrcy> rs = crtyHdayCrcyRepo.save(list);
-			return new Resp(rs, CodeDef.SUCCESS);
+			if(rs.size()>0){
+				return new Resp(true, CodeDef.SUCCESS);
+			}else{
+				return new Resp(CodeDef.ERROR);
+			}
 		}else{
 			return new Resp(CodeDef.ERROR);
 		}

@@ -71,9 +71,7 @@
             url: addMoreUrl,
             dataType: 'json',
             success: function(resp) {
-                if (typeof resp_data != "object") {
-                    TmplUtils.showMsgFail("导入失败");
-                } else {
+                if (resp._data == "true") {
                     TmplUtils.showMsgSuccess('导入成功');
                     parent.tbTmpl.refresh("pindex=" +
                         (parent.TmplUtils.currPage - 1) +
@@ -83,6 +81,8 @@
                     var index = parent.layer
                         .getFrameIndex(window.name); //获取窗口索引
                     parent.layer.close(index);
+                } else {
+                    TmplUtils.showMsgFail("导入失败");
                 }
             },
             error: function(code) {
