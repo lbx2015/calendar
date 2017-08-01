@@ -19,25 +19,20 @@
 					id="add-data">
 					<i class="layui-icon">&#xe608;</i> 添加
 				</button>
-				<button
-					class="layui-btn layui-btn-normal layui-btn-small modal-full fun_ addmore_"
-					id="addMore-data" onclick="addMore()">
-					<i class="layui-icon">&#xe608;</i>批量导入
-				</button>
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html"
-				data-attr="reportList.json" data-bind="filterCriteriaOnBind"
+				data-attr="appVersion.json" data-bind="filterCriteriaOnBind"
 				data-param=""></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
 		<div class="contentLeft layui-form">
 			<div class="_tmpl" data-url="table.html" id="table"
-				data-attr="reportList.json" data-bind="tbOnBind"
+				data-attr="appVersion.json" data-bind="tbOnBind"
 				data-param="pindex=0&pcount=10"></div>
 		</div>
 		<div class="contentRight">
-			<div class="_tmpl" data-url="preview.html" data-attr="reportList.json"
+			<div class="_tmpl" data-url="preview.html" data-attr="appVersion.json"
 				data-bind="previewOnBind" data-param=""></div>
 		</div>
 		<div style="clear: both"></div>
@@ -49,7 +44,7 @@
 <script>
 	$(function() {
 		$("#add-data").click(function() {
-		    var url  = "reportListEdit.html";
+		    var url  = "appVersionEdit.html";
 			var title =  "添加数据";
 			View.openDialog(url,title);
 		});
@@ -87,7 +82,7 @@
 		tbTmpl = tmpl;
 
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/reportList/getMore";
+			var url = Const.apiUrl + "/appVersion/getMore";
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
@@ -155,7 +150,7 @@
 			return;
 		}
 		tmpl.bind(function(callback) {
-			var url = Const.apiUrl + "/reportList/get";
+			var url = Const.apiUrl + "/appVersion/get";
 			var data = {};
 			//是否可编辑
 			data.canEdit = true;
@@ -189,14 +184,14 @@
 	}
 	//弹出添加iframe
 	function edit(id) {
-	    var url  = "reportListEdit.html?id="+ id;
+	    var url  = "appVersionEdit.html?id="+ id;
 		var title =  "数据处理";
 		View.openDialog(url,title);
 	}
 
 	//保存
 	function save() {
-		var url = Const.apiUrl + "/reportList/save";
+		var url = Const.apiUrl + "/appVersion/save";
 		var employee = Utils.formToObj("preview");
 		View.post(url, employee, function(resp) {
 			TmplUtils.showMsgSuccess('编辑成功');
@@ -218,7 +213,7 @@
 					ids.push($(this).data("id"));
 				}
 			});
-			var url = Const.apiUrl + "/reportList/delMore"
+			var url = Const.apiUrl + "/appVersion/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -231,11 +226,5 @@
 
 		});
 	}
-	
-    function addMore(){
-		var url = "reportListAddMore.html";
-        var title = "批量添加";
-        View.openDialog(url, title);
-    }
 </script>
 </html>

@@ -1,0 +1,40 @@
+{
+	"table": "T_WEB_VERSION",
+	"groups":[{
+		"prop":"base",
+		"alias":"基础信息"
+	}],
+	"attrs":[
+		{
+			"prop": "versionNumber",
+			"alias": "Web版本号",
+			"type": "string",
+			"group":"base"
+		},
+		{
+			"prop": "sqlVersionNumber",
+			"alias": "数据库脚本版本号",
+			"group":"base",
+			"type": "string"
+		},
+		{
+			"prop": "renewalTime",
+			"group":"base",
+			"alias": "跟新时间",
+			"type": "date"
+		},
+		{
+			"prop": "versionNote",
+			"alias": "版本说明",
+			"group":"base",
+			"type": "text"
+		},
+		{
+			"prop": "deleteState",
+			"alias": "删除状态  ",
+			"group":"base",
+			"type" : "text",
+      		"hidden":"table,edit,preview"
+		}
+	]
+}

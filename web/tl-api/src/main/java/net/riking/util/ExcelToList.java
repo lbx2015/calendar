@@ -99,18 +99,70 @@ public class ExcelToList {
 		return list;
 	}
 
-	public static List<ReportList> readReportListXlsx(InputStream is,
-			String fileName) throws Exception {
-		return null;
+/*	public static List<ReportList> readReportListXlsx(InputStream is, String fileName) throws Exception {
+		List<ReportList> list = new ArrayList<>();
+		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
+		for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
+			XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(numSheet);
+			if (xssfSheet == null) {
+				continue;
+			}
+			// Read the Row
+			for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
+				XSSFRow xssfRow = xssfSheet.getRow(rowNum);
+				if (xssfRow != null) {
+					ReportList reportList = new ReportList();
+					reportList.setReportName(getValue(xssfRow.getCell(1)));
+					reportList.setReportCode(getValue(xssfRow.getCell(2)));
+					reportList.setReportBrief(getValue(xssfRow.getCell(3)));
+					reportList.setReportOrganization(getValue(xssfRow.getCell(4)));
+					reportList.setReportFrequency(getValue(xssfRow.getCell(5)));
+					reportList.setReportStyle(getValue(xssfRow.getCell(6)));
+					reportList.setReportUnit(getValue(xssfRow.getCell(7)));
+					reportList.setReportRound(getValue(xssfRow.getCell(8)));
+					reportList.setReportCurrency(getValue(xssfRow.getCell(9)));
+					reportList.setModuleType(getValue(xssfRow.getCell(10)));
+					reportList.setDownloadUrl(getValue(xssfRow.getCell(11)));
+					list.add(reportList);
+				}
+			}
+		}
+		is.close();
+		return list;
+		}
 
+	public static List<ReportList> readReportListXls(InputStream is, String fileName) throws Exception {
+		List<ReportList> list = new ArrayList<>();
+		HSSFWorkbook xssfWorkbook = new HSSFWorkbook(is);
+		for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
+			HSSFSheet xssfSheet = xssfWorkbook.getSheetAt(numSheet);
+			if (xssfSheet == null) {
+				continue;
+			}
+			// Read the Row
+			for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
+				HSSFRow xssfRow = xssfSheet.getRow(rowNum);
+				if (xssfRow != null) {
+					ReportList reportList = new ReportList();
+					reportList.setReportName(getValue(xssfRow.getCell(1)));
+					reportList.setReportCode(getValue(xssfRow.getCell(2)));
+					reportList.setReportBrief(getValue(xssfRow.getCell(3)));
+					reportList.setReportOrganization(getValue(xssfRow.getCell(4)));
+					reportList.setReportFrequency(getValue(xssfRow.getCell(5)));
+					reportList.setReportStyle(getValue(xssfRow.getCell(6)));
+					reportList.setReportUnit(getValue(xssfRow.getCell(7)));
+					reportList.setReportRound(getValue(xssfRow.getCell(8)));
+					reportList.setReportCurrency(getValue(xssfRow.getCell(9)));
+					reportList.setModuleType(getValue(xssfRow.getCell(10)));
+					reportList.setDownloadUrl(getValue(xssfRow.getCell(11)));
+					list.add(reportList);
+				}
+			}
+		}
+		is.close();
+		return list;
 	}
-
-	public static List<ReportList> readReportListXls(InputStream is,
-			String fileName) throws Exception {
-		return null;
-
-	}
-
+*/
 	private static Object getValue(XSSFCell xssfRow) {
 		if (xssfRow == null) {
 			return null;

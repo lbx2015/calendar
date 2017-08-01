@@ -12,7 +12,7 @@
 
 <body class="iframeBody">
     <div class="formbox layui-form add-formbox">
-        <div class="_tmpl" data-url="edit.html" data-attr="reportList.json" data-bind="editOnBind" data-param=""></div>
+        <div class="_tmpl" data-url="edit.html" data-attr="webVersion.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
             <button class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" id="submit">确定</button>
             <button class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
@@ -38,7 +38,7 @@
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/reportList/get";
+                var url = Const.apiUrl + "/WebVersion/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -63,7 +63,7 @@
     //编辑保存
     function edit() {
         var reportList = Utils.formToObj("edit");
-        var url = Const.apiUrl + "/reportList/save";
+        var url = Const.apiUrl + "/WebVersion/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 

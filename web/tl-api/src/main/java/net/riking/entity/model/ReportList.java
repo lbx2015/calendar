@@ -1,7 +1,5 @@
 package net.riking.entity.model;
 
-import java.sql.Clob;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,8 +52,8 @@ public class ReportList extends BaseEntity {
 	private String reportUnit;
 
 	// 四舍五入要求
-	@Column(name = "reportRound")
-	private Integer reportRound;
+	@Column(name = "reportRound", length = 32)
+	private String reportRound;
 
 	// 填报币种
 	@Column(name = "reportCurrency", length = 32)
@@ -64,12 +62,12 @@ public class ReportList extends BaseEntity {
 	// 报表说明
 	@Lob
 	@Column(name = "reportNote")
-	private Clob reportNote;
+	private String reportNote;
 
 	// 报表规则
 	@Lob
 	@Column(name = "reportRule", length = 32)
-	private Clob reportRule;
+	private String reportRule;
 
 	// 报表所属模块，频度标识
 	@Column(name = "moduleType", length = 3)
@@ -79,10 +77,10 @@ public class ReportList extends BaseEntity {
 	@Column(name = "downloadUrl", length = 128)
 	private String downloadUrl;
 
-	// 删除状态    0删除 1显示
+	// 删除状态 0删除 1显示
 	@Column(name = "delete_state", length = 2)
 	private String deleteState;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -155,11 +153,11 @@ public class ReportList extends BaseEntity {
 		this.reportUnit = reportUnit;
 	}
 
-	public Integer getReportRound() {
+	public String getReportRound() {
 		return reportRound;
 	}
 
-	public void setReportRound(Integer reportRound) {
+	public void setReportRound(String reportRound) {
 		this.reportRound = reportRound;
 	}
 
@@ -171,23 +169,21 @@ public class ReportList extends BaseEntity {
 		this.reportCurrency = reportCurrency;
 	}
 
-	public Clob getReportNote() {
+	public String getReportNote() {
 		return reportNote;
 	}
 
-	public void setReportNote(Clob reportNote) {
+	public void setReportNote(String reportNote) {
 		this.reportNote = reportNote;
 	}
 
-	public Clob getReportRule() {
+	public String getReportRule() {
 		return reportRule;
 	}
 
-	public void setReportRule(Clob reportRule) {
+	public void setReportRule(String reportRule) {
 		this.reportRule = reportRule;
 	}
-
-	
 
 	public String getModuleType() {
 		return moduleType;

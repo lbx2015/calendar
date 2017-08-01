@@ -1,0 +1,42 @@
+{
+	"table": "T_APP_VERSION",
+	"groups":[{
+		"prop":"base",
+		"alias":"基础信息"
+	}],
+	"attrs":[
+		{
+			"prop": "versionNumber",
+			"alias": "app版本号",
+			"type": "string",
+			"group":"base"
+		},
+		{
+			"prop": "forces",
+			"alias": "是否强制更新",
+			"group":"base",
+			"type": "enum",
+			"dict_key": "T_COMMON.JUDGE",
+			"enum_search":"1"
+		},
+		{
+			"prop": "renewalTime",
+			"group":"base",
+			"alias": "跟新时间",
+			"type": "date"
+		},
+		{
+			"prop": "versionNote",
+			"alias": "版本说明",
+			"group":"base",
+			"type": "text"
+		},
+		{
+			"prop": "deleteState",
+			"alias": "删除状态  ",
+			"group":"base",
+			"type" : "text",
+      		"hidden":"table,edit,preview"
+		}
+	]
+}

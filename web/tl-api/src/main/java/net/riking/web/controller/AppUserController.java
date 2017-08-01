@@ -80,7 +80,7 @@ public class AppUserController {
 	
 	@ApiOperation(value = "批量删除用户信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore(@RequestBody Set<String> ids) {
+	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
 		if(ids.size()>0){
 			rs = appUserRepo.deleteByIds(ids);
