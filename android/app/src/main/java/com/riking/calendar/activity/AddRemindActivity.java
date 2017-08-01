@@ -62,7 +62,7 @@ public class AddRemindActivity extends AppCompatActivity {
                 //remind fragment
                 if (viewPager.getCurrentItem() == 0) {
                     // Add a person
-                    Reminder reminder = realm.createObject(Reminder.class);
+                    Reminder reminder = realm.createObject(Reminder.class, UUID.randomUUID().toString());
                     reminder.time = reminderFragment.time.getTime();
                     reminder.title = reminderFragment.remindTitle.getText().toString();
                 }

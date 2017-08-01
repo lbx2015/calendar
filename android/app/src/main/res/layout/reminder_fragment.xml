@@ -4,11 +4,20 @@
     android:layout_height="match_parent"
     android:background="@color/color_background_f2f2f2">
 
-    <LinearLayout
+    <com.riking.calendar.view.CustomLinearLayout
+        android:id="@+id/custom_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_background_f2f2f2"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/check_task_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="查看历史记录"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/today_title"
@@ -33,6 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_818181" />
-    </LinearLayout>
+    </com.riking.calendar.view.CustomLinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
