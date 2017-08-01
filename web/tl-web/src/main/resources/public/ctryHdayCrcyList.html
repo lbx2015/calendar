@@ -20,6 +20,9 @@
 				<button class="layui-btn layui-btn-normal layui-btn-small modal-full" onclick="addMore()" >
 					<i class="layui-icon">&#xe608;</i> 批量添加
 				</button>
+				<button class="layui-btn layui-btn-normal layui-btn-small modal-full" onclick="uploadIcon()" >
+					<i class="layui-icon">&#xe608;</i> 上传icon
+				</button>
             </div>
             <div class="_tmpl" data-url="filterCriteria.html" data-attr="ctryHdayCrcy.json" data-bind="filterCriteriaOnBind" data-param=""></div>
             <div class="clear"></div>
@@ -96,7 +99,7 @@
                      "class": "layui-btn layui-btn-mini layui-btn-normal"
                  }]; */
                 //tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
-               // data.trClick = "bindPro";
+                data.trClick = "bindPro";
                 //表格显示列数
                 /* data.cellLeftCount = 4;
                  data.cellRightCount = 3;*/
@@ -114,6 +117,10 @@
                     //col 当前列数 从1开始
                     if (obj.row > 1 && obj.col == 2) {
                         obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
+                    	return obj.html;
+                    }
+                    if (obj.prop == "icon") {
+                        obj.html = "<img src='"+Const.apiUrl + obj.item.icon + "'  alt='"+ obj.item.ctryName+"' height='40' width='50'  />";
                     	return obj.html;
                     }
                     return obj.html;
@@ -155,7 +162,7 @@
             var url = Const.apiUrl + "/ctryHdayCrcy/get";
             var data = {};
             //是否可编辑
-            data.canEdit = true;
+            //data.canEdit = true;
             data.data = item;
             //绑定点击事件
             data.checkClick = "check";
@@ -235,6 +242,13 @@
 		var title = "批量添加";
 		View.openDialog(url, title);
 	}
+    
+    function uploadIcon(){
+		var url = "iconUpload.html";
+		var title = "上传icon";
+		View.openDialog(url, title);
+    }
+    
 </script>
 
 </html>

@@ -1,12 +1,18 @@
 package net.riking.web.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.DefaultEditorKit.CopyAction;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -35,6 +41,8 @@ import net.riking.util.ExcelToList;
 public class CtryHdayCrcyController {
 	@Autowired
 	CtryHdayCrcyRepo crtyHdayCrcyRepo;
+	
+	public static String  TL_STATIC_ICON_PATH = "static/icon/";
 	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -93,6 +101,57 @@ public class CtryHdayCrcyController {
 		}else{
 			return new Resp(CodeDef.ERROR);
 		}
+	}
+	
+	@AuthPass
+	@ApiOperation(value = "上传国家图片资源", notes = "POST")
+	@RequestMapping(value = "/uploadIcon", method = RequestMethod.POST)
+	public Resp uploadIcon_(HttpServletRequest request) {
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile mFile = multipartRequest.getFile("fileName");
+		InputStream is = null;
+		FileOutputStream fos = null;
+		try {
+			is = mFile.getInputStream();
+			String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH;
+			fos = new FileOutputStream(path + mFile.getOriginalFilename());
+			int len = 0;
+			byte[] buf = new byte[1024*1024];
+			while((len = is.read(buf))>-1){
+				fos.write(buf, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Resp(false,CodeDef.ERROR);
+		}finally {
+			try {
+				if(fos!=null){
+					fos.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				return new Resp(false,CodeDef.ERROR);
+			}
+		}
+		return new Resp(true,CodeDef.SUCCESS);
+	}
+	
+	private  boolean upload(InputStream is) throws Exception{
+		FileOutputStream fos = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			
+			
+		}
+		return true;
 	}
 	
 	@ApiOperation(value = "批量删除各国节假日信息", notes = "POST")

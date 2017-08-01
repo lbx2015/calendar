@@ -96,7 +96,7 @@
                      "class": "layui-btn layui-btn-mini layui-btn-normal"
                  }];
                 //tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
-                //data.trClick = "bindPro";
+                data.trClick = "bindPro";
                 //表格显示列数
                 /* data.cellLeftCount = 4;
                  data.cellRightCount = 3;*/
@@ -141,7 +141,7 @@
             var url = Const.apiUrl + "/appUser/get";
             var data = {};
             //是否可编辑
-            data.canEdit = true;
+            //data.canEdit = true;
             data.data = item;
             //绑定点击事件
             data.checkClick = "check";
