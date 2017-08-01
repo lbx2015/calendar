@@ -7,7 +7,28 @@
 	"attrs":[
 		{
 			"prop": "name",
-			"alias": "用户名称",
+			"alias": "用户昵称",
+			"type": "string",
+			"group":"base"
+		},
+		{
+			"prop": "realName",
+			"alias": "真实姓名",
+			"type": "string",
+			"query": "1",
+			"group":"base",
+			"query_order": "1"
+		},
+		{
+			"prop": "IDType",
+			"alias": "证件类型",
+			"type": "enum",
+			"enum_search":"1",
+			"dict_key":"T_APP_USER.IDTYPE"
+		},
+		{
+			"prop": "IDCode",
+			"alias": "证件号码",
 			"type": "string",
 			"query": "1",
 			"group":"base",
@@ -64,6 +85,7 @@
 			"alias": "用户状态",
 			"group":"base",
 			"type" : "enum",
+			"edit_block":"1",
       		"enum_search":"1",
       		"dict_key": "T_APP_USER.ENABLED"
 		},
