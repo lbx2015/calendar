@@ -21,10 +21,17 @@
         android:layout_marginTop="30dp"
         android:background="@color/divider_color_d9d9d9" />
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="48dp"
-        android:scrollbars="vertical" />
+        android:layout_marginBottom="48dp">
+
+        <com.tubb.smrv.SwipeMenuRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </com.riking.calendar.view.CustomLinearLayout>

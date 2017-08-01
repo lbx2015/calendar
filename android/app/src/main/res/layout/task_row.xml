@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tubb.smrv.SwipeHorizontalMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sml="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sml"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="horizontal"
-    android:paddingLeft="10dp">
+    android:paddingLeft="10dp"
+    sml:sml_auto_open_percent="0.2"
+    sml:sml_scroller_duration="250"
+    sml:sml_scroller_interpolator="@android:anim/bounce_interpolator">
 
     <RelativeLayout
-        android:id="@+id/task_item"
+        android:id="@+id/smContentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -46,7 +51,13 @@
             android:background="@color/divider_color_d9d9d9" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@id/smMenuViewLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <FrameLayout
+        android:id="@+id/smMenuViewRight"
         android:layout_width="140dp"
         android:layout_height="match_parent">
 
@@ -73,4 +84,4 @@
             android:textSize="18sp" />
     </FrameLayout>
 
-</LinearLayout>
+</com.tubb.smrv.SwipeHorizontalMenuLayout>

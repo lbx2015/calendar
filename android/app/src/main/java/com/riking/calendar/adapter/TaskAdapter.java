@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.TaskFragment;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.realm.model.Task;
+import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         Task r = tasks.get(position);
         holder.title.setText(r.title);
         if (r.isImport) {
@@ -53,6 +55,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         }
 
         holder.task = r;
+
+        holder.tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("zzw", "on clicked tv***************");
+                Toast.makeText(holder.done.getContext(),"clicked",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        holder.iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("zzw", " on clicked iv **************");
+                Toast.makeText(holder.done.getContext(),"clicke",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        holder.sml.setSwipeEnable(true);
     }
 
     @Override
@@ -74,6 +94,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         public TextView tv;
         public TextView iv;
+        SwipeHorizontalMenuLayout sml;
 
         public MyViewHolder(View view) {
             super(view);
@@ -82,6 +103,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             important = (ImageView) view.findViewById(R.id.image_star);
             tv = (TextView) view.findViewById(R.id.tv_text);
             iv = (TextView) view.findViewById(R.id.tv_edit);
+            sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 
             done.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -3,6 +3,7 @@ package com.riking.calendar.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,12 +36,15 @@ public class TaskFragment extends Fragment {
     ViewPagerActivity a;
     CustomLinearLayout root;
     View checkHistoryButton;
+    protected SwipeRefreshLayout swipeRefreshLayout;
+    TaskAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.task_fragment, container, false);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         checkHistoryButton = v.findViewById(R.id.check_task_history);
         a = (ViewPagerActivity) getActivity();
         setRecyclerView(v);
@@ -76,7 +80,7 @@ public class TaskFragment extends Fragment {
         List<Task> tasks = realm.where(Task.class).equalTo("isDone", false).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        TaskAdapter adapter = new TaskAdapter(tasks, this);
+        adapter = new TaskAdapter(tasks, this);
         recyclerView.setAdapter(adapter);
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
@@ -110,12 +114,12 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        //先实例化Callback
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        //用Callback构造ItemtouchHelper
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        //调用ItemTouchHelper的attachToRecyclerView方法建立联系
-        touchHelper.attachToRecyclerView(recyclerView);
+//        //先实例化Callback
+//        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+//        //用Callback构造ItemtouchHelper
+//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+//        //调用ItemTouchHelper的attachToRecyclerView方法建立联系
+//        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
