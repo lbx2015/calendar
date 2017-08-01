@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.TaskFragment;
+import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.realm.model.Task;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import io.realm.Realm;
  * Created by zw.zhang on 2017/7/12.
  */
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
     TaskFragment fragment;
     private List<Task> tasks;
 
@@ -60,17 +61,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         return tasks.size();
     }
 
+    @Override
+    public void onItemDissmiss(int position) {
+
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView done;
         public ImageView important;
         public Task task;
 
+        public TextView tv;
+        public TextView iv;
+
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             done = (ImageView) view.findViewById(R.id.done);
             important = (ImageView) view.findViewById(R.id.image_star);
+            tv = (TextView) view.findViewById(R.id.tv_text);
+            iv = (TextView) view.findViewById(R.id.tv_edit);
 
             done.setOnClickListener(new View.OnClickListener() {
                 @Override

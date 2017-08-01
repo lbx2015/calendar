@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.TaskAdapter;
+import com.riking.calendar.helper.SimpleItemTouchHelperCallback;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.view.CustomLinearLayout;
 
@@ -74,7 +76,8 @@ public class TaskFragment extends Fragment {
         List<Task> tasks = realm.where(Task.class).equalTo("isDone", false).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        recyclerView.setAdapter(new TaskAdapter(tasks, this));
+        TaskAdapter adapter = new TaskAdapter(tasks, this);
+        recyclerView.setAdapter(adapter);
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
@@ -106,6 +109,13 @@ public class TaskFragment extends Fragment {
                 return false;
             }
         });
+
+        //先实例化Callback
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        //用Callback构造ItemtouchHelper
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        //调用ItemTouchHelper的attachToRecyclerView方法建立联系
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
