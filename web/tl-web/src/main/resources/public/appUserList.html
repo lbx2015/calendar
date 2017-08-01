@@ -112,6 +112,7 @@
                     if (obj.row > 1 && obj.col == 2) {
                         obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
                         obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='passwordReset(" + "\"" + obj.item.id + "\"" + ");'>重置密码</button>";
+                        obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='report(" + "\"" + obj.item.id + "\"" + ");'>查看报表</button>";
                         if (obj.item.enabled == "0") { //禁用
                             return obj.html + "<button class='layui-btn layui-btn-mini' onclick='enable(" + "\"" + obj.item.id + "\"" + ");'>启用</button>";
                         } else {
@@ -209,6 +210,12 @@
         });
     }
 
+    function report(id){
+    	var url = "userReportList.html?id="+id;
+        var title = "所属报表";
+        View.openDialog(url, title);
+    }
+    
     function unEnable(id) {
         TmplUtils.showConfirm('您确定禁用该用户吗？', '确定', '取消', function() {
             var url = Const.apiUrl + "/appUser/unEnable";

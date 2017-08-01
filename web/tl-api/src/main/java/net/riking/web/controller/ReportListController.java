@@ -1,9 +1,14 @@
 package net.riking.web.controller;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,8 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +33,7 @@ import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.ReportList;
+import net.riking.service.repo.AppUserReportRepo;
 import net.riking.service.repo.ReportListRepo;
 import net.riking.util.ExcelToList;
 
@@ -34,6 +42,8 @@ import net.riking.util.ExcelToList;
 public class ReportListController {
 	@Autowired
 	ReportListRepo reportListRepo;
+	@Autowired
+	AppUserReportRepo appUserReportRepo;
 	
 	// 规则: 查,删 操作接口使用RequestMethod.GET，失败情况可以重复请求
 		// 增，改使用RequestMethod.POST，不能重复请求
@@ -55,7 +65,28 @@ public class ReportListController {
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "新增修改一条报表数据", notes = "POST")
+	@ApiOperation(value = "得到用户报表信息", notes = "GET")
+	@RequestMapping(value = "/getUserReport", method = RequestMethod.GET)
+	public Resp getUserReport(@ModelAttribute PageQuery query, @ModelAttribute ReportList reportList){
+		Set<String>  reportIds = appUserReportRepo.findbyAppUserId(reportList.getId());
+		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
+		Specification<ReportList> s1 = new Specification<ReportList>() {
+			@Override
+			public Predicate toPredicate(Root<ReportList> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();
+				list.add(cb.equal((root.get("deleteState").as(String.class)),"1"));
+				if (reportIds.size()>0) {
+					list.add(root.get("id").as(String.class).in(reportIds));
+				}
+				Predicate[] p = new Predicate[list.size()];
+				return cb.and(list.toArray(p));
+			}
+		};
+		Page<ReportList> page = reportListRepo.findAll(Specifications.where(s1), pageable);
+		return new Resp(page);
+	}
+	
+	@ApiOperation(value = "新增/修改一条报表数据", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Resp save( @RequestBody ReportList reportList){
 		if (reportList.getId()==null) {
