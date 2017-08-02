@@ -71,7 +71,7 @@ public class AddRemindActivity extends AppCompatActivity {
                     Task task = realm.createObject(Task.class, UUID.randomUUID().toString());
                     task.isImport = taskFragment.isImportant;
                     if (taskFragment.needToRemind) {
-                        task.time = taskFragment.calendar.getTime();
+                        task.remindTime = taskFragment.calendar.getTime();
                     }
                     task.title = taskFragment.title.getText().toString();
                 }

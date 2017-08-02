@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.Date;
 import java.util.UUID;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -20,8 +21,10 @@ public class Task extends RealmObject {
     @NonNull
     public String title;
     //the row of the reminder
-    public Date time;
+    public Date remindTime;
     //This is just a flag to determine whether this event is import
     public boolean isImport;
     public boolean isDone;
+    //'2016-07-31'
+    public Date completeDay;
 }

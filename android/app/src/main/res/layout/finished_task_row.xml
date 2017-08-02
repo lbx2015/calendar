@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tubb.smrv.SwipeHorizontalMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sml="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sml"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    sml:sml_auto_open_percent="0.2"
+    sml:sml_scroller_duration="250"
+    sml:sml_scroller_interpolator="@android:anim/bounce_interpolator">
+
+    <RelativeLayout
+        android:id="@+id/smContentView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            sml:cardCornerRadius="3dp"
+            sml:cardElevation="4dp"
+            sml:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/nested_recyclerview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/completed_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="bottom|right"
+                    android:padding="10dp"
+                    android:text="2007-01-22" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@id/smMenuViewLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:id="@+id/smMenuViewRight"
+        android:layout_width="140dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:background="#f33213"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </FrameLayout>
+
+</com.tubb.smrv.SwipeHorizontalMenuLayout>
