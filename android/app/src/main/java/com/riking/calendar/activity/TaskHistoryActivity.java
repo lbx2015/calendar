@@ -84,7 +84,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
             Log.d("zzw", "position: " + position + " key " + titles.get(position));
             holder.completedDate.setText("完成于" + titles.get(position));
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.completedDate.getContext()));
-            holder.recyclerView.setAdapter(new CompletedTaskAdapter(daysWithTasks.get(position)));
+            holder.recyclerView.setAdapter(new CompletedTaskAdapter(realm,daysWithTasks.get(position)));
         }
 
         @Override
@@ -92,6 +92,12 @@ public class TaskHistoryActivity extends AppCompatActivity {
             Log.d("zzw", "daysWithTasks.size() : " + daysWithTasks.size());
             return daysWithTasks.size();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
