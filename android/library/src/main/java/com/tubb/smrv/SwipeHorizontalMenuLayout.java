@@ -85,7 +85,7 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
                         && Math.abs(disX) > mScaledTouchSlop
                         && Math.abs(disX) > Math.abs(disY)) {
                     ViewParent parent = getParent();
-                    if(parent!= null){
+                    if (parent != null) {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
                     mDragging = true;
@@ -112,7 +112,7 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
                 break;
             case MotionEvent.ACTION_UP:
                 ViewParent parent = getParent();
-                if(parent!= null){
+                if (parent != null) {
                     parent.requestDisallowInterceptTouchEvent(false);
                 }
                 dx = (int) (mDownX - ev.getX());
@@ -272,7 +272,9 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
     }
 
     public void smoothCloseMenu(int duration) {
-        mCurrentSwiper.autoCloseMenu(mScroller, getScrollX(), duration);
+        if (mCurrentSwiper != null) {
+            mCurrentSwiper.autoCloseMenu(mScroller, getScrollX(), duration);
+        }
         invalidate();
     }
 
@@ -311,12 +313,12 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
         }
     }
 
-    public void setSwipeEnable(boolean swipeEnable) {
-        this.swipeEnable = swipeEnable;
-    }
-
     public boolean isSwipeEnable() {
         return swipeEnable;
+    }
+
+    public void setSwipeEnable(boolean swipeEnable) {
+        this.swipeEnable = swipeEnable;
     }
 
     public void setSwipeListener(SwipeSwitchListener swipeSwitchListener) {

@@ -42,8 +42,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Task r = tasks.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final Task r = tasks.get(position);
         holder.title.setText(r.title);
         if (r.isImport) {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
@@ -59,8 +59,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         holder.tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("zzw", "on clicked tv***************");
-                Toast.makeText(holder.done.getContext(),"clicked",Toast.LENGTH_LONG).show();
+                notifyItemRemoved(position);
+                holder.sml.smoothCloseMenu();
+                fragment.realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.where(Task.class).equalTo("id", r.id).findFirst().deleteFromRealm();
+                    }
+                });
+                Toast.makeText(holder.done.getContext(), "deleted", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -68,7 +75,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             @Override
             public void onClick(View v) {
                 Log.d("zzw", " on clicked iv **************");
-                Toast.makeText(holder.done.getContext(),"clicke",Toast.LENGTH_LONG).show();
             }
         });
 

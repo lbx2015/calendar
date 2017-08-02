@@ -7,17 +7,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.TaskAdapter;
-import com.riking.calendar.helper.SimpleItemTouchHelperCallback;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.view.CustomLinearLayout;
 
@@ -32,11 +31,11 @@ import io.realm.RealmChangeListener;
 
 public class TaskFragment extends Fragment {
     public Realm realm;
+    protected SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     ViewPagerActivity a;
     CustomLinearLayout root;
     View checkHistoryButton;
-    protected SwipeRefreshLayout swipeRefreshLayout;
     TaskAdapter adapter;
 
     @Nullable
@@ -45,6 +44,13 @@ public class TaskFragment extends Fragment {
         View v = inflater.inflate(R.layout.task_fragment, container, false);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         checkHistoryButton = v.findViewById(R.id.check_task_history);
         a = (ViewPagerActivity) getActivity();
         setRecyclerView(v);
