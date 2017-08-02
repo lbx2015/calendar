@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="horizontal"
-    android:paddingLeft="10dp"
     sml:sml_auto_open_percent="0.2"
     sml:sml_scroller_duration="250"
     sml:sml_scroller_interpolator="@android:anim/bounce_interpolator">
@@ -15,14 +14,14 @@
         android:id="@+id/smContentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="10dp">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/done"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
+            android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@drawable/not_done" />
 
