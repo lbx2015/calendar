@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.realm.model.Task;
@@ -75,6 +77,14 @@ public class TaskFragment extends Fragment {
                 }
             }
         };
+
+        checkHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open the task history page
+                startActivity(new Intent(getContext(), TaskHistoryActivity.class));
+            }
+        });
         return v;
     }
 
