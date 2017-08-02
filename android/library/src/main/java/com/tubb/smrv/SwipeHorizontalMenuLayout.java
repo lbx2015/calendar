@@ -50,7 +50,7 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
                 isIntercepted = false;
                 // menu view opened and click on content view,
                 // we just close the menu view and intercept the up event
-                if (isMenuOpen()
+                if (mCurrentSwiper != null && isMenuOpen()
                         && mCurrentSwiper.isClickOnContentView(this, ev.getX())) {
                     smoothCloseMenu();
                     isIntercepted = true;
