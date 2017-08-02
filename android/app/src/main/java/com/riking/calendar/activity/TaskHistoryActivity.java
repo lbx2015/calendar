@@ -17,6 +17,7 @@ import com.riking.calendar.realm.model.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -44,10 +45,17 @@ public class TaskHistoryActivity extends AppCompatActivity {
 
         LinkedHashMap<String, List<Task>> daysWithTasks = new LinkedHashMap<>();
         int size = tasks.size();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        int currentyear = new Date().getYear();
+        String key;
         for (int i = 0; i < size; i++) {
             Task t = tasks.get(i);
-            String key = simpleDateFormat.format(t.completeDay).toLowerCase();
+            if (t.completeDay.getYear() != currentyear) {
+                key = yearDateFormat.format(t.completeDay).toLowerCase();
+            } else {
+                key = simpleDateFormat.format(t.completeDay).toLowerCase();
+            }
             Log.d("zzw", "date format: " + key);
             if (!daysWithTasks.containsKey(key)) {
                 daysWithTasks.put(key, new ArrayList<Task>());
@@ -60,6 +68,12 @@ public class TaskHistoryActivity extends AppCompatActivity {
 
     public void onClickBack(View view) {
         onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 
     public class TaskHistoryAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -84,7 +98,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
             Log.d("zzw", "position: " + position + " key " + titles.get(position));
             holder.completedDate.setText("完成于" + titles.get(position));
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.completedDate.getContext()));
-            holder.recyclerView.setAdapter(new CompletedTaskAdapter(realm,daysWithTasks.get(position)));
+            holder.recyclerView.setAdapter(new CompletedTaskAdapter(realm, daysWithTasks.get(position)));
         }
 
         @Override
@@ -92,12 +106,6 @@ public class TaskHistoryActivity extends AppCompatActivity {
             Log.d("zzw", "daysWithTasks.size() : " + daysWithTasks.size());
             return daysWithTasks.size();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realm.close();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

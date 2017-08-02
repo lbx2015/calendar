@@ -90,10 +90,8 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
         public TextView tv;
         public int position;
         SwipeHorizontalMenuLayout sml;
-        private List<Task> tasks;
         public MyViewHolder(final List<Task> tasks, View view) {
             super(view);
-            this.tasks = tasks;
             title = (TextView) view.findViewById(R.id.title);
             done = (ImageView) view.findViewById(R.id.done);
             important = (ImageView) view.findViewById(R.id.image_star);
