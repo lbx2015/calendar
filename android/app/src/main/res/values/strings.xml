@@ -22,6 +22,7 @@
     <string name="currency">Currency</string>
     <string name="vocation">Vocation</string>
     <string name="reminder">Reminder</string>
+    <string name="completed_task">Completed Tasks</string>
     <string name="to_do">To Do</string>
     <string name="personal">Personal</string>
     <string name="done">Done</string>

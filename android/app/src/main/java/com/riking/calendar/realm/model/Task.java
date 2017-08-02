@@ -27,4 +27,6 @@ public class Task extends RealmObject {
     public boolean isDone;
     //'2016-07-31'
     public Date completeDay;
+    public Date createTime;
+    public boolean isReminded;
 }

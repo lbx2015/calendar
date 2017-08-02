@@ -47,12 +47,17 @@ public class TaskHistoryActivity extends AppCompatActivity {
         int size = tasks.size();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
         SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
-        int currentyear = new Date().getYear();
+        Date date = new Date();
+        int currentYear = date.getYear();
+        int currentDay = date.getDay();
         String key;
         for (int i = 0; i < size; i++) {
             Task t = tasks.get(i);
-            if (t.completeDay.getYear() != currentyear) {
+
+            if (t.completeDay.getYear() != currentYear) {
                 key = yearDateFormat.format(t.completeDay).toLowerCase();
+            } else if (currentDay - t.completeDay.getDate() == 1) {
+                key = "完成于昨天";
             } else {
                 key = simpleDateFormat.format(t.completeDay).toLowerCase();
             }
