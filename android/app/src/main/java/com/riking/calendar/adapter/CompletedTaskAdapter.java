@@ -31,7 +31,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.task_row, parent, false);
+                .inflate(R.layout.completed_task_row, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -65,13 +65,6 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
             }
         });
 
-        holder.iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("zzw", " on clicked iv **************");
-            }
-        });
-
         holder.sml.setSwipeEnable(true);
     }
 
@@ -93,7 +86,6 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
         public Task task;
 
         public TextView tv;
-        public TextView iv;
         SwipeHorizontalMenuLayout sml;
 
         public MyViewHolder(View view) {
@@ -102,7 +94,6 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
             done = (ImageView) view.findViewById(R.id.done);
             important = (ImageView) view.findViewById(R.id.image_star);
             tv = (TextView) view.findViewById(R.id.tv_text);
-            iv = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
         }
     }
