@@ -8,11 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
@@ -22,6 +25,8 @@ import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.view.CustomLinearLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -39,12 +44,64 @@ public class TaskFragment extends Fragment {
     CustomLinearLayout root;
     View checkHistoryButton;
     TaskAdapter adapter;
+    View quickAddButton;
+    View quickAddFrameLayout;
+    EditText quickAddEditor;
+    View quickAddConfirmButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.task_fragment, container, false);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
+        quickAddButton = v.findViewById(R.id.quick_add_button);
+        quickAddFrameLayout = v.findViewById(R.id.quick_add_frame_layout);
+        quickAddEditor = (EditText) v.findViewById(R.id.quick_add_editer);
+        quickAddConfirmButton = v.findViewById(R.id.quick_add_confirm_button);
+
+        quickAddEditor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                quickAddConfirmButton.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        quickAddConfirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                        Task task = realm.createObject(Task.class, simpleDateFormat.format(new Date()));
+                        task.title = quickAddEditor.getText().toString();
+                    }
+                });
+                quickAddEditor.setText(null);
+                quickAddConfirmButton.setVisibility(View.GONE);
+                quickAddFrameLayout.setVisibility(View.GONE);
+                quickAddButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        quickAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickAddButton.setVisibility(View.GONE);
+                quickAddFrameLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

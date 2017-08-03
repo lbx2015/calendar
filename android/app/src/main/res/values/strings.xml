@@ -48,6 +48,8 @@
     <string name="repeat_on_working_day">Repeat on working day</string>
     <string name="repeat_on_holiday_item">Repeat on holiday</string>
     <string name="important">Important</string>
+    <string name="quick_add">Quick Add</string>
+    <string name="create">Create</string>
 
     <string-array name="subTittles">
         <item>Job</item>
