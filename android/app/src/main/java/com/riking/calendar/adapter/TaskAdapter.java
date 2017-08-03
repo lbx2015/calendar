@@ -50,18 +50,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         final Task r = tasks.get(position);
         holder.title.setText(r.title);
         Log.d("zzw","need to remind " + r.isReminded);
-        if (r.isReminded) {
+        if (r.isReminded ==1) {
             holder.remindTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(r.remindTime));
         } else {
             holder.remindTime.setText(null);
         }
-        if (r.isImport) {
+        if (r.isImport==1) {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
         } else {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
         }
 
-        if (r.isDone) {
+        if (r.isDone==1) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
@@ -94,7 +94,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 i.putExtra("task_title", r.title);
                 i.putExtra("is_import", r.isImport);
                 i.putExtra("is_remind", r.isReminded);
-                if (r.isReminded) {
+                if (r.isReminded==1) {
                     i.putExtra("remind_time", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(r.remindTime));
                 }
                 holder.sml.smoothCloseMenu();
@@ -145,17 +145,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                                 @Override
                                 public void execute(Realm realm) {
                                     Task t;
-                                    if (task.isDone) {
+                                    if (task.isDone==1) {
                                         done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
                                         title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                                         t = realm.where(Task.class).equalTo("id", task.id).findFirst();
-                                        t.isDone = false;
+                                        t.isDone = 0;
                                         t.completeDay = null;
                                     } else {
                                         done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
                                         title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                                         t = realm.where(Task.class).equalTo("id", task.id).findFirst();
-                                        t.isDone = true;
+                                        t.isDone = 1;
                                         t.completeDay = new Date();
                                     }
                                 }
@@ -171,12 +171,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                             (new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    if (task.isImport) {
+                                    if (task.isImport==1) {
                                         important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
-                                        realm.where(Task.class).equalTo("id", task.id).findFirst().isImport = false;
+                                        realm.where(Task.class).equalTo("id", task.id).findFirst().isImport = 0;
                                     } else {
                                         important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
-                                        realm.where(Task.class).equalTo("id", task.id).findFirst().isImport = true;
+                                        realm.where(Task.class).equalTo("id", task.id).findFirst().isImport = 1;
                                     }
                                 }
                             });

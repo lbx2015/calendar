@@ -17,6 +17,8 @@ import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -63,15 +65,19 @@ public class AddRemindActivity extends AppCompatActivity {
                 if (viewPager.getCurrentItem() == 0) {
                     // Add a person
                     Reminder reminder = realm.createObject(Reminder.class, UUID.randomUUID().toString());
-                    reminder.time = reminderFragment.time.getTime();
+                    SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("yyyyMMdd");
+                    reminder.day = dayFormat.format(reminderFragment.time.getTime());
+                    reminder.time = timeFormat.format(reminderFragment.time.getTime());
                     reminder.title = reminderFragment.remindTitle.getText().toString();
                 }
                 //task fragment
                 else {
                     Task task = realm.createObject(Task.class, UUID.randomUUID().toString());
                     task.isImport = taskFragment.isImportant;
+                    task.createTime = new Date();
                     if (taskFragment.needToRemind) {
-                        task.isReminded = true;
+                        task.isReminded = 1;
                         task.remindTime = taskFragment.calendar.getTime();
                     }
                     task.title = taskFragment.title.getText().toString();

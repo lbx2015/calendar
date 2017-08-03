@@ -183,18 +183,18 @@ public class CoordinateLayoutActivity extends AppCompatActivity {
         flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
         // Create the Realm instance
-        realm = Realm.getDefaultInstance();
-        //insert  to realm
-        // All writes must be wrapped in a transaction to facilitate safe multi threading
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // Add a person
-                Reminder person = realm.createObject(Reminder.class);
-                person.time = new Date();
-                person.title = "Don't forget to clock off";
-            }
-        });
+//        realm = Realm.getDefaultInstance();
+//        //insert  to realm
+//        // All writes must be wrapped in a transaction to facilitate safe multi threading
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                // Add a person
+//                Reminder person = realm.createObject(Reminder.class);
+//                person.time = new Date();
+//                person.title = "Don't forget to clock off";
+//            }
+//        });
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

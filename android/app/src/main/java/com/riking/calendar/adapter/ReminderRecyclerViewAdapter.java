@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.realm.model.Reminder;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -35,8 +34,9 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Reminder r = reminders.get(position);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
-        holder.row.setText(simpleDateFormat.format(r.time) + "      " + r.title);
+        String HH = r.time.substring(2);
+        String mm = r.time.substring(0, 2);
+        holder.row.setText(HH + ":" + mm + "      " + r.title);
     }
 
     @Override

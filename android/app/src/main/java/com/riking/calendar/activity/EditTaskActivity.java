@@ -11,6 +11,8 @@ import android.view.View;
 import com.riking.calendar.R;
 import com.riking.calendar.realm.model.Task;
 
+import java.util.Date;
+
 import io.realm.Realm;
 
 /**
@@ -20,7 +22,7 @@ import io.realm.Realm;
 public class EditTaskActivity extends AppCompatActivity {
     CreateTaskFragment taskFragment;
     String title;
-    boolean isImport;
+    byte isImport;
     boolean isRemind;
     String remindTime;
     private Realm realm;
@@ -36,7 +38,7 @@ public class EditTaskActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("task_id");
         title = bundle.getString("task_title");
-        isImport = bundle.getBoolean("is_import");
+        isImport = bundle.getByte("is_import");
         isRemind = bundle.getBoolean("is_remind");
         remindTime = bundle.getString("remind_time");
     }
@@ -78,8 +80,9 @@ public class EditTaskActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 Task task = realm.where(Task.class).equalTo("id", id).findFirst();
                 task.isImport = taskFragment.isImportant;
+                task.createTime = new Date();
                 if (taskFragment.needToRemind) {
-                    task.isReminded = true;
+                    task.isReminded = 1;
                     task.remindTime = taskFragment.calendar.getTime();
                 }
                 task.title = taskFragment.title.getText().toString();

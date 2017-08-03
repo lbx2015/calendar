@@ -28,7 +28,7 @@ public class CreateTaskFragment extends Fragment implements View.OnClickListener
     //whether the task need to remind at a specific time
     public boolean needToRemind;
     //whether the task is an important task
-    public boolean isImportant;
+    public byte isImportant;
     public EditText title;
     //time
     public Calendar calendar;
@@ -105,13 +105,13 @@ public class CreateTaskFragment extends Fragment implements View.OnClickListener
                 break;
             }
             case R.id.important: {
-                isImportant = false;
+                isImportant = 0;
                 important.setVisibility(View.GONE);
                 notImportant.setVisibility(View.VISIBLE);
                 break;
             }
             case R.id.not_important: {
-                isImportant = true;
+                isImportant = 1;
                 notImportant.setVisibility(View.GONE);
                 important.setVisibility(View.VISIBLE);
                 break;
