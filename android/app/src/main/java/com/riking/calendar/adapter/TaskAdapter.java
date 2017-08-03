@@ -17,9 +17,9 @@ import com.riking.calendar.realm.model.Task;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.Date;
-import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by zw.zhang on 2017/7/12.
@@ -27,9 +27,9 @@ import io.realm.Realm;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
     TaskFragment fragment;
-    private List<Task> tasks;
+    private RealmResults<Task> tasks;
 
-    public TaskAdapter(List<Task> r, TaskFragment fragment) {
+    public TaskAdapter(RealmResults<Task> r, TaskFragment fragment) {
         this.tasks = r;
         this.fragment = fragment;
     }
@@ -48,11 +48,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         holder.title.setText(r.title);
         if (r.isImport) {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
+        } else {
+            holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
         }
 
         if (r.isDone) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
+            holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
         holder.task = r;

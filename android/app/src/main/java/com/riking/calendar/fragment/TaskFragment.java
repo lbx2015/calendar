@@ -31,6 +31,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -83,8 +84,13 @@ public class TaskFragment extends Fragment {
                     @Override
                     public void execute(Realm realm) {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                        Task task = realm.createObject(Task.class, simpleDateFormat.format(new Date()));
+                        Date date = new Date();
+                        Task task = realm.createObject(Task.class, simpleDateFormat.format(date));
                         task.title = quickAddEditor.getText().toString();
+                        task.createTime =date;
+                        task.isDone=false;
+                        task.isReminded=false;
+                        task.isImport = false;
                     }
                 });
                 quickAddEditor.setText(null);
@@ -150,7 +156,7 @@ public class TaskFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         realm = Realm.getDefaultInstance();
         //only show the not complete tasks
-        List<Task> tasks = realm.where(Task.class).equalTo("isDone", false).findAll();
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo("isDone", false).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         adapter = new TaskAdapter(tasks, this);
