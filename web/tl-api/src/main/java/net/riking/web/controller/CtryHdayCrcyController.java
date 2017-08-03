@@ -104,9 +104,6 @@ public class CtryHdayCrcyController {
 			return new Resp(CodeDef.ERROR);
 		}
 		if(list!=null && list.size()>0){
-			for (CtryHdayCrcy ctryHdayCrcy : list) {
-				ctryHdayCrcy.setIcon("\\icon\\"+ctryHdayCrcy.getCrcy()+ ".png");
-			}
 			List<CtryHdayCrcy> rs = crtyHdayCrcyRepo.save(list);
 			if(rs.size()>0){
 				return new Resp(true, CodeDef.SUCCESS);

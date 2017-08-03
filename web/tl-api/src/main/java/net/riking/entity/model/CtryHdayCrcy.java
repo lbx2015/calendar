@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.PageQuery;
-import net.riking.entity.BaseEntity;
 
 @Entity
 @Table(name = "t_ctry_hday_crcy")
@@ -27,9 +26,6 @@ public class CtryHdayCrcy extends PageQuery {
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
 	
-	@Comment("国旗图片url")
-	@Column(name = "icon", length = 64)
-	private String icon;
 	
 	@Comment("国家/地区名称")
 	@Column(name = "ctry_name", length = 32)
@@ -66,13 +62,6 @@ public class CtryHdayCrcy extends PageQuery {
 		this.id = id;
 	}
 
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
 
 	public String getCtryName() {
 		return ctryName;
