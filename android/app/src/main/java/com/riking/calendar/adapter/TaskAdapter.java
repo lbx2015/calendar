@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,11 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.fragment.TaskFragment;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.realm.model.Task;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import io.realm.Realm;
@@ -62,7 +65,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         holder.task = r;
 
-        holder.tv.setOnClickListener(new View.OnClickListener() {
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 notifyItemRemoved(position);
@@ -77,10 +80,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             }
         });
 
-        holder.iv.setOnClickListener(new View.OnClickListener() {
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("zzw", " on clicked iv **************");
+                Intent i = new Intent(v.getContext(), EditTaskActivity.class);
+                i.putExtra("task_id", r.id);
+                i.putExtra("task_title", r.title);
+                i.putExtra("is_import", r.isImport);
+                i.putExtra("is_remind", r.isReminded);
+                if (r.isReminded) {
+                    i.putExtra("remind_time", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(r.remindTime));
+                }
+                holder.sml.smoothCloseMenu();
+                v.getContext().startActivity(i);
             }
         });
 
@@ -104,8 +116,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public ImageView important;
         public Task task;
 
-        public TextView tv;
-        public TextView iv;
+        public TextView deleteButton;
+        public TextView editButton;
         SwipeHorizontalMenuLayout sml;
 
         public MyViewHolder(View view) {
@@ -113,8 +125,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             title = (TextView) view.findViewById(R.id.title);
             done = (ImageView) view.findViewById(R.id.done);
             important = (ImageView) view.findViewById(R.id.image_star);
-            tv = (TextView) view.findViewById(R.id.tv_text);
-            iv = (TextView) view.findViewById(R.id.tv_edit);
+            deleteButton = (TextView) view.findViewById(R.id.tv_text);
+            editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 
             done.setOnClickListener(new View.OnClickListener() {

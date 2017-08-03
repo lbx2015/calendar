@@ -27,7 +27,6 @@ import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;

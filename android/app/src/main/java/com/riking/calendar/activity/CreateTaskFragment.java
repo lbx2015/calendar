@@ -33,8 +33,8 @@ public class CreateTaskFragment extends Fragment implements View.OnClickListener
     public Calendar calendar;
 
     private TimePickerDialog pickerDialog;
-    private TextView remindTime;
-    private Switch aSwitch;
+    public TextView remindTime;
+    public Switch aSwitch;
     private ImageView notImportant;
     private ImageView important;
 
