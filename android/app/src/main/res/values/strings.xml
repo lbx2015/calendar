@@ -22,7 +22,8 @@
     <string name="currency">Currency</string>
     <string name="vocation">Vocation</string>
     <string name="reminder">Reminder</string>
-    <string name="to_do">To Do</string>
+    <string name="completed_task">Completed Tasks</string>
+    <string name="to_do">Task</string>
     <string name="personal">Personal</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
@@ -47,6 +48,8 @@
     <string name="repeat_on_working_day">Repeat on working day</string>
     <string name="repeat_on_holiday_item">Repeat on holiday</string>
     <string name="important">Important</string>
+    <string name="quick_add">Quick Add</string>
+    <string name="create">Create</string>
 
     <string-array name="subTittles">
         <item>Job</item>

@@ -22,7 +22,8 @@
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"
+            android:src="@drawable/not_done" />
 
         <TextView
             android:id="@+id/title"
@@ -36,18 +37,11 @@
             android:id="@+id/image_star"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_alignBottom="@id/select_time"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp" />
-
-        <TextView
-            android:id="@+id/remind_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/done"
-            android:textColor="@color/color_323232" />
+            android:layout_marginEnd="9dp"
+            android:src="@drawable/not_important" />
 
         <View
             android:layout_width="match_parent"
@@ -65,17 +59,6 @@
         android:id="@+id/smMenuViewRight"
         android:layout_width="140dp"
         android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tv_edit"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start|center_vertical"
-            android:background="@color/colorPrimary"
-            android:gravity="center"
-            android:text="编辑"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_text"

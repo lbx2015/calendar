@@ -28,7 +28,7 @@ import io.realm.Realm;
 public class AddRemindActivity extends AppCompatActivity {
     MyPagerAdapter pagerAdapter;
     CreateReminderFragment reminderFragment;
-    CreateToDoFragment taskFragment;
+    CreateTaskFragment taskFragment;
     private ViewPager viewPager;
     private Realm realm;
 
@@ -71,7 +71,8 @@ public class AddRemindActivity extends AppCompatActivity {
                     Task task = realm.createObject(Task.class, UUID.randomUUID().toString());
                     task.isImport = taskFragment.isImportant;
                     if (taskFragment.needToRemind) {
-                        task.time = taskFragment.calendar.getTime();
+                        task.isReminded = true;
+                        task.remindTime = taskFragment.calendar.getTime();
                     }
                     task.title = taskFragment.title.getText().toString();
                 }
@@ -101,7 +102,7 @@ public class AddRemindActivity extends AppCompatActivity {
                     reminderFragment = new CreateReminderFragment();
                     return reminderFragment;
                 case 1:
-                    taskFragment = new CreateToDoFragment();
+                    taskFragment = new CreateTaskFragment();
                     return taskFragment;
             }
             return null;
