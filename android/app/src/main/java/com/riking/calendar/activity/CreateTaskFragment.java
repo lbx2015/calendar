@@ -23,7 +23,7 @@ import java.util.Date;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class CreateToDoFragment extends Fragment implements View.OnClickListener {
+public class CreateTaskFragment extends Fragment implements View.OnClickListener {
     //whether the task need to remind at a specific time
     public boolean needToRemind;
     //whether the task is an important task
