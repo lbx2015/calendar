@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -62,7 +61,7 @@ public class CtryHdayCrcyController {
 	}
 	
 	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "POST")
-	@RequestMapping(value = "/getMoreP", method = RequestMethod.POST)
+	@RequestMapping(value = "/getMorePost", method = RequestMethod.POST)
 	public Resp getMore(@RequestBody CtryHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(), crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
 		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
