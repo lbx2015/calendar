@@ -63,6 +63,18 @@ public class CtryHdayCrcyController {
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "POST")
+	@RequestMapping(value = "/getMoreP", method = RequestMethod.POST)
+	public Resp getMore(@RequestBody CtryHdayCrcy crtyHdayCrcy){
+		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(), crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
+		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
+			crtyHdayCrcy.setDeleteState("1");
+		}
+		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
+		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
+		return new Resp(page, CodeDef.SUCCESS);
+	}
+	
 	@ApiOperation(value = "添加或者更新各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
 	public Resp addOrUpdate_(@RequestBody CtryHdayCrcy crtyHdayCrcy) {

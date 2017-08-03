@@ -14,11 +14,12 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.PageQuery;
 import net.riking.entity.BaseEntity;
 
 @Entity
 @Table(name = "t_ctry_hday_crcy")
-public class CtryHdayCrcy extends BaseEntity {
+public class CtryHdayCrcy extends PageQuery {
 //各国节假日币种表
 	@Id
 	@Column(name = "Id", length = 32)

@@ -58,6 +58,12 @@
 			"type": "string"
 		},
 		{
+			"prop": "mac",
+			"alias": "手机序列号",
+			"group":"base",
+			"type": "string"
+		},
+		{
 			"prop": "dept",
 			"alias": "用户部门",
 			"group":"base",

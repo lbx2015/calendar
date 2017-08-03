@@ -53,8 +53,8 @@ public class EmailSuffixController {
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "GET")
-	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
+	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "POST")
+	@RequestMapping(value = "/getAll", method = RequestMethod.POST)
 	public Resp getAll_(){
 		ModelPropDict emailSuffix = new ModelPropDict();
 		emailSuffix.setClazz("T_APP_USER");
