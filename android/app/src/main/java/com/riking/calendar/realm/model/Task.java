@@ -1,12 +1,12 @@
 package com.riking.calendar.realm.model;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.UUID;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -16,9 +16,11 @@ import io.realm.annotations.PrimaryKey;
 
 public class Task extends RealmObject {
     @PrimaryKey
+    @SerializedName("todo_id")
     public String id = UUID.randomUUID().toString();
     //The title of the reminder
     @NonNull
+    @SerializedName("content")
     public String title;
     //the row of the reminder
     public Date remindTime;
