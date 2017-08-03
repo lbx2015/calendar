@@ -49,6 +49,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Task r = tasks.get(position);
         holder.title.setText(r.title);
+        Log.d("zzw","need to remind " + r.isReminded);
+        if (r.isReminded) {
+            holder.remindTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(r.remindTime));
+        } else {
+            holder.remindTime.setText(null);
+        }
         if (r.isImport) {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
         } else {
@@ -101,7 +107,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        Log.d("zzw", this + " getItemCount:" + tasks.size());
         return tasks.size();
     }
 
@@ -118,6 +123,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         public TextView deleteButton;
         public TextView editButton;
+        public TextView remindTime;
         SwipeHorizontalMenuLayout sml;
 
         public MyViewHolder(View view) {
@@ -128,6 +134,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             deleteButton = (TextView) view.findViewById(R.id.tv_text);
             editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
+            remindTime = (TextView) view.findViewById(R.id.remind_time);
 
             done.setOnClickListener(new View.OnClickListener() {
                 @Override

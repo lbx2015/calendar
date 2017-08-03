@@ -3,6 +3,7 @@ package com.riking.calendar.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,9 @@ public class CreateTaskFragment extends Fragment implements View.OnClickListener
     public EditText title;
     //time
     public Calendar calendar;
-
-    private TimePickerDialog pickerDialog;
     public TextView remindTime;
     public Switch aSwitch;
+    private TimePickerDialog pickerDialog;
     private ImageView notImportant;
     private ImageView important;
 
@@ -67,6 +67,7 @@ public class CreateTaskFragment extends Fragment implements View.OnClickListener
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("zzw", "isChecked: " + isChecked);
                 if (isChecked) {
                     needToRemind = true;
                     remindTime.setVisibility(View.VISIBLE);

@@ -36,10 +36,18 @@
             android:id="@+id/image_star"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignBottom="@id/select_time"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp"/>
+            android:layout_marginEnd="9dp" />
+
+        <TextView
+            android:id="@+id/remind_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/done"
+            android:textColor="@color/color_323232" />
 
         <View
             android:layout_width="match_parent"

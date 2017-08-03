@@ -79,6 +79,7 @@ public class EditTaskActivity extends AppCompatActivity {
                 Task task = realm.where(Task.class).equalTo("id", id).findFirst();
                 task.isImport = taskFragment.isImportant;
                 if (taskFragment.needToRemind) {
+                    task.isReminded = true;
                     task.remindTime = taskFragment.calendar.getTime();
                 }
                 task.title = taskFragment.title.getText().toString();
