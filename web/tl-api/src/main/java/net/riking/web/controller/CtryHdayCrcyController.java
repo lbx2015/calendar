@@ -1,18 +1,16 @@
 package net.riking.web.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
+import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.DefaultEditorKit.CopyAction;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -132,6 +130,10 @@ public class CtryHdayCrcyController {
 		try {
 			is = mFile.getInputStream();
 			String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH;
+			File dir = new File(path);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
 			fos = new FileOutputStream(path + mFile.getOriginalFilename());
 			int len = 0;
 			byte[] buf = new byte[1024*1024];
@@ -155,21 +157,6 @@ public class CtryHdayCrcyController {
 			}
 		}
 		return new Resp(true,CodeDef.SUCCESS);
-	}
-	
-	private  boolean upload(InputStream is) throws Exception{
-		FileOutputStream fos = null;
-		try {
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}finally {
-			
-			
-		}
-		return true;
 	}
 	
 	@ApiOperation(value = "批量删除各国节假日信息", notes = "POST")

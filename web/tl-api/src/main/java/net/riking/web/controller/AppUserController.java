@@ -1,5 +1,6 @@
 package net.riking.web.controller;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -90,6 +91,19 @@ public class AppUserController {
 		}else{
 			return new Resp().setCode(CodeDef.ERROR);
 		}
+	}
+	
+	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
+	@RequestMapping(value = "/IsChangeMac", method = RequestMethod.POST)
+	public Resp IsChangeMac_(@RequestBody AppUser appUser) {
+		AppUser appUser2 = appUserRepo.findOne(appUser.getId());
+		String mac = appUser.getMac();
+		if(appUser2!=null && !appUser2.getMac().equals(mac)){
+			appUser2.setMac(mac);
+			appUserRepo.save(appUser2);
+			return new Resp(true,CodeDef.SUCCESS);
+		}
+		return new Resp(false,CodeDef.SUCCESS);
 	}
 	
 }
