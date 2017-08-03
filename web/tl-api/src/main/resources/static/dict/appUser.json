@@ -20,14 +20,15 @@
 			"query_order": "1"
 		},
 		{
-			"prop": "IDType",
+			"prop": "idType",
 			"alias": "证件类型",
+			"group":"base",
 			"type": "enum",
 			"enum_search":"1",
 			"dict_key":"T_APP_USER.IDTYPE"
 		},
 		{
-			"prop": "IDCode",
+			"prop": "idCode",
 			"alias": "证件号码",
 			"type": "string",
 			"query": "1",

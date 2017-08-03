@@ -35,12 +35,12 @@ public class AppUser extends BaseEntity {
 	private String realName;
 	
 	@Comment("证件类型")
-	@Column(name = "ID_type", length = 3)
-	private String IDType;
+	@Column(name = "id_type", length = 4)
+	private String idType;
 	
 	@Comment("证件号码")
-	@Column(name = "ID_code", length = 32)
-	private String IDCode;
+	@Column(name = "id_code", length = 32)
+	private String idCode;
 	
 	@Comment("用户性别")
 	@Column(name = "sex")
@@ -110,20 +110,21 @@ public class AppUser extends BaseEntity {
 		this.realName = realName;
 	}
 
-	public String getIDType() {
-		return IDType;
+
+	public String getIdType() {
+		return idType;
 	}
 
-	public void setIDType(String iDType) {
-		IDType = iDType;
+	public void setIdType(String idType) {
+		this.idType = idType;
 	}
 
-	public String getIDCode() {
-		return IDCode;
+	public String getIdCode() {
+		return idCode;
 	}
 
-	public void setIDCode(String iDCode) {
-		IDCode = iDCode;
+	public void setIdCode(String idCode) {
+		this.idCode = idCode;
 	}
 
 	public Integer getSex() {

@@ -9,6 +9,7 @@
 			"prop": "icon",
 			"alias": "国旗图片url",
 			"group":"base",
+			"hidden":"preview,edit",
 			"type": "imgUrl"
 		},
 		{

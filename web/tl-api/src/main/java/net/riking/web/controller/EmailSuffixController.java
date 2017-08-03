@@ -101,7 +101,11 @@ public class EmailSuffixController {
 				dict.setField("EMAILSUFFIX");
 			}
 			List<ModelPropDict> rs = modelPropdictRepo.save(list);
-			return new Resp(rs, CodeDef.SUCCESS);
+			if(rs.size()>0){
+				return new Resp(true, CodeDef.SUCCESS);
+			}else{
+				return new Resp(CodeDef.ERROR);
+			}
 		}else{
 			return new Resp(CodeDef.ERROR);
 		}

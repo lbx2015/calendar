@@ -8,24 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.TaskFragment;
+import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.realm.model.Task;
+import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
-import java.util.List;
+import java.util.Date;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by zw.zhang on 2017/7/12.
  */
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
     TaskFragment fragment;
-    private List<Task> tasks;
+    private RealmResults<Task> tasks;
 
-    public TaskAdapter(List<Task> r, TaskFragment fragment) {
+    public TaskAdapter(RealmResults<Task> r, TaskFragment fragment) {
         this.tasks = r;
         this.fragment = fragment;
     }
@@ -39,19 +43,48 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Task r = tasks.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final Task r = tasks.get(position);
         holder.title.setText(r.title);
         if (r.isImport) {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
+        } else {
+            holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
         }
 
         if (r.isDone) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
+            holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
         holder.task = r;
+
+        holder.tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notifyItemRemoved(position);
+                holder.sml.smoothCloseMenu();
+                fragment.realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.where(Task.class).equalTo("id", r.id).findFirst().deleteFromRealm();
+                    }
+                });
+                Toast.makeText(holder.done.getContext(), "deleted", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        holder.iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("zzw", " on clicked iv **************");
+            }
+        });
+
+        holder.sml.setSwipeEnable(true);
     }
 
     @Override
@@ -60,17 +93,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         return tasks.size();
     }
 
+    @Override
+    public void onItemDissmiss(int position) {
+
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView done;
         public ImageView important;
         public Task task;
 
+        public TextView tv;
+        public TextView iv;
+        SwipeHorizontalMenuLayout sml;
+
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             done = (ImageView) view.findViewById(R.id.done);
             important = (ImageView) view.findViewById(R.id.image_star);
+            tv = (TextView) view.findViewById(R.id.tv_text);
+            iv = (TextView) view.findViewById(R.id.tv_edit);
+            sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 
             done.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,14 +125,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                             (new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
+                                    Task t;
                                     if (task.isDone) {
                                         done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
                                         title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                                        realm.where(Task.class).equalTo("id", task.id).findFirst().isDone = false;
+                                        t = realm.where(Task.class).equalTo("id", task.id).findFirst();
+                                        t.isDone = false;
+                                        t.completeDay = null;
                                     } else {
                                         done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
                                         title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                                        realm.where(Task.class).equalTo("id", task.id).findFirst().isDone = true;
+                                        t = realm.where(Task.class).equalTo("id", task.id).findFirst();
+                                        t.isDone = true;
+                                        t.completeDay = new Date();
                                     }
                                 }
                             });

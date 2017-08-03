@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tubb.smrv.SwipeHorizontalMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sml="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sml"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    android:paddingLeft="10dp">
+    android:orientation="horizontal"
+    sml:sml_auto_open_percent="0.2"
+    sml:sml_scroller_duration="250"
+    sml:sml_scroller_interpolator="@android:anim/bounce_interpolator">
 
     <RelativeLayout
-        android:id="@+id/task_item"
+        android:id="@+id/smContentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="10dp">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/done"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
+            android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@drawable/not_done" />
 
@@ -38,11 +42,45 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
             android:src="@drawable/not_important" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_color_d9d9d9" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider_color_d9d9d9" />
+    <TextView
+        android:id="@id/smMenuViewLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/smMenuViewRight"
+        android:layout_width="140dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_edit"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|center_vertical"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="编辑"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:background="#f33213"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </FrameLayout>
+
+</com.tubb.smrv.SwipeHorizontalMenuLayout>
