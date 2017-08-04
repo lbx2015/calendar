@@ -30,6 +30,9 @@
     <string name="create">创建</string>
     <string name="me">我</string>
     <string name="not_register">未登录\n点击登录</string>
+    <string name="set">设置</string>
+    <string name="review">求好评</string>
+    <string name="about">关于</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>
