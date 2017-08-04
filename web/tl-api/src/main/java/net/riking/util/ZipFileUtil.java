@@ -1,7 +1,6 @@
 package net.riking.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +16,6 @@ public class ZipFileUtil {
 		parseZip(new File(src), desc);
 	}
 
-	@SuppressWarnings({"resource", "rawtypes"})
 	public static void parseZip(File zipFile, String descDir)
 			throws IOException {
 		File pathFile = new File(descDir);
@@ -27,40 +25,44 @@ public class ZipFileUtil {
 		InputStream in = null;
 		OutputStream out = null;
 		ZipFile zip = null;
-		zip = new ZipFile(zipFile, Charset.forName("GBK"));
-		Enumeration entries = zip.entries();
-		while (entries.hasMoreElements()) {
-			ZipEntry entry = (ZipEntry) entries.nextElement();
-			String zipEntryName = entry.getName();
-			zipEntryName = zipEntryName
-					.substring(zipEntryName.lastIndexOf("/"));
-			in = zip.getInputStream(entry);
-			String outPath = (descDir + zipEntryName).replaceAll("\\*", "/");
-			// 判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压
-			if (new File(outPath).isDirectory()) {
-				continue;
-			}
-			out = new FileOutputStream(outPath);
-			byte[] buf1 = new byte[1024];
-			int len;
-			while ((len = in.read(buf1)) > 0) {
-				out.write(buf1, 0, len);
-			}
-			in.close();
-			out.close();
-		}
-		zip.close();
-		zipFile.delete();
-	}
-
-	public static void main(String[] args) {
 		try {
-			parseZip(
-					"D:\\git\\tl\\web\\tl-api\\target\\classes\\static\\icon\\后台_切图.zip",
-					"D:\\国家icon\\xxxxx");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			zip = new ZipFile(zipFile, Charset.forName("GBK"));
+			Enumeration<?> entries = zip.entries();
+			while (entries.hasMoreElements()) {
+				ZipEntry entry = (ZipEntry) entries.nextElement();
+				String zipEntryName = entry.getName();
+				zipEntryName = zipEntryName
+						.substring(zipEntryName.lastIndexOf("/"));
+				in = zip.getInputStream(entry);
+				String outPath = (descDir + zipEntryName).replaceAll("\\*", "/");
+				// 判断文件全路径是否为文件夹,如果是,不需要解压
+				if (new File(outPath).isDirectory()) {
+					continue;
+				}
+				out = new FileOutputStream(outPath);
+				byte[] buf1 = new byte[1024];
+				int len;
+				while ((len = in.read(buf1)) > 0) {
+					out.write(buf1, 0, len);
+				}
+				//释放资源
+				in.close();
+				out.close();
+			}
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}finally {
+			//释放资源
+            if(null != zip){  
+            	zip.close();  
+            	zip = null;  
+            }  
+            if (null != in) {  
+                in.close();  
+            }  
+            if (null != out) {  
+            	out.close();  
+            }  
+        }  
 	}
 }
