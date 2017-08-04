@@ -14,7 +14,7 @@ import net.riking.entity.PageQuery;
 
 @Comment("报表信息")
 @Entity
-@Table(name = "T_Report_List")
+@Table(name = "T_report_list")
 public class ReportList extends PageQuery {
 
 	@Id
@@ -24,57 +24,57 @@ public class ReportList extends PageQuery {
 	private String id;
 
 	// 报表名称
-	@Column(name = "reportName", length = 32)
+	@Column(name = "report_name", length = 32)
 	private String reportName;
 
 	// 报表编号
-	@Column(name = "reportCode", length = 32)
+	@Column(name = "report_code", length = 32)
 	private String reportCode;
 
 	// 报表简介
-	@Column(name = "reportBrief", length = 256)
+	@Column(name = "report_brief", length = 256)
 	private String reportBrief;
 
 	// 填报机构
-	@Column(name = "reportOrganization", length = 32)
+	@Column(name = "report_organization", length = 32)
 	private String reportOrganization;
 
 	// 报送口径、频度及时间
-	@Column(name = "reportFrequency", length = 32)
+	@Column(name = "report_frequency", length = 32)
 	private String reportFrequency;
 
 	// 报送方式
-	@Column(name = "reportStyle", length = 32)
+	@Column(name = "report_style", length = 32)
 	private String reportStyle;
 
 	// 数据单位
-	@Column(name = "reportUnit", length = 2)
+	@Column(name = "report_unit", length = 2)
 	private String reportUnit;
 
 	// 四舍五入要求
-	@Column(name = "reportRound", length = 32)
+	@Column(name = "report_round", length = 32)
 	private String reportRound;
 
 	// 填报币种
-	@Column(name = "reportCurrency", length = 32)
+	@Column(name = "report_currency", length = 32)
 	private String reportCurrency;
 
 	// 报表说明
 	@Lob
-	@Column(name = "reportNote")
+	@Column(name = "report_note")
 	private String reportNote;
 
 	// 报表规则
 	@Lob
-	@Column(name = "reportRule", length = 32)
+	@Column(name = "report_rule", length = 32)
 	private String reportRule;
 
 	// 报表所属模块，频度标识
-	@Column(name = "moduleType", length = 3)
+	@Column(name = "module_type", length = 3)
 	private String moduleType;
 
 	// 报表模板下载地址
-	@Column(name = "downloadUrl", length = 128)
+	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
 
 	// 删除状态 0删除 1显示

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +44,7 @@ public class SynchronousController {
 	
 	@ApiOperation(value = "同步app提醒信息", notes = "POST")
 	@RequestMapping(value = "/synchronousReminds", method = RequestMethod.POST)
-	public Resp synchronousReminds(@ModelAttribute List<Remind> reminds) {
+	public Resp synchronousReminds(@RequestBody List<Remind> reminds) {
 		List<Remind> remindSave = new ArrayList<>(); 
 		List<Remind> remindDele = new  ArrayList<>();
 		for (int i = 0; i < reminds.size(); i++) {
@@ -59,8 +60,8 @@ public class SynchronousController {
 	}
 	
 	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
-	@RequestMapping(value = "/synchronousReminds", method = RequestMethod.POST)
-	public Resp synchronousRemindHis(@ModelAttribute List<RemindHis> remindHis) {
+	@RequestMapping(value = "/synchronousRemindHis", method = RequestMethod.POST)
+	public Resp synchronousRemindHis(@RequestBody List<RemindHis> remindHis) {
 		List<RemindHis> remindHisSave = new ArrayList<>(); 
 		List<RemindHis> remindHisDele = new  ArrayList<>();
 		for (int i = 0; i < remindHis.size(); i++) {
@@ -77,7 +78,7 @@ public class SynchronousController {
 	
 	@ApiOperation(value = "同步app代办信息", notes = "POST")
 	@RequestMapping(value = "/synchronousTodos", method = RequestMethod.POST)
-	public Resp synchronousTodos(@ModelAttribute List<Todo> todos) {
+	public Resp synchronousTodos(@RequestBody List<Todo> todos) {
 		List<Todo> todoSave = new ArrayList<>(); 
 		List<Todo> todoDele = new  ArrayList<>();
 		for (int i = 0; i < todos.size(); i++) {

@@ -9,11 +9,11 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import net.riking.entity.BaseEntity;
+import net.riking.entity.PageQuery;
 
 @Entity
 @Table(name = "t_remind_his")
-public class RemindHis extends BaseEntity {
+public class RemindHis extends PageQuery {
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
