@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
@@ -89,6 +90,10 @@ public class AppUser extends BaseEntity {
 	@Comment("手机地址")
 	@Column(name = "mac")
 	private String mac;
+	
+	//验证码
+	@Transient
+	private String valiCode;
 
 	public String getId() {
 		return id;
@@ -218,6 +223,14 @@ public class AppUser extends BaseEntity {
 
 	public void setMac(String mac) {
 		this.mac = mac;
+	}
+
+	public String getValiCode() {
+		return valiCode;
+	}
+
+	public void setValiCode(String valiCode) {
+		this.valiCode = valiCode;
 	}
 
 	@Override
