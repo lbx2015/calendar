@@ -405,6 +405,23 @@ var tableTdConfig = TmplUtils._getTableTdConfig(d);
                     }}
                      {{ d.tdBeforeFill(obj) }}
                     {{# } }}
+             {{#      }else if(attr.type == "lazyEnum"){
+                    var enumUrls = attr.enum_urls.split(',');
+                    var values = [];
+                    obj.html = "";
+                    }}
+
+                    {{#
+                        for(var k=0;k< enumUrls.length;k++){
+                         obj.html += '<span class="_lazyEnum" data-enumurl="'+enumUrls[k]+ '" data-enumparam="'+attr.enum_param+  '" data-key="'+propValue+'" data-prop="'+attr.prop+ '_'+k+'"></span>';
+                        if(!d.tdBeforeFill){
+                    }}
+                            <span class="_lazyEnum" data-enumurl="{{enumUrls[k]}}" data-enumparam="{{attr.enum_param}}" data-key="{{propValue}}" data-prop="{{attr.prop}}_{{k}}"></span>
+                    {{# } }
+                     if(d.tdBeforeFill){
+                    }}
+                     {{ d.tdBeforeFill(obj) }}
+                    {{# } }}
                 {{#      }else if(attr.type == "money"){
                 }}
                             {{# if(d.tdBeforeFill){

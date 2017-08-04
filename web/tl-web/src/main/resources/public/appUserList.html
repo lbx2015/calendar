@@ -98,8 +98,8 @@
                 /* data.cellLeftCount = 4;
                  data.cellRightCount = 3;*/
                 //表格各列显示比例
-                /*data.tdLeftWidth = [ 10, 20, 30, 10 ];
-                data.tdRightWidth = [ 30, 20, 50 ];*/
+               /*  data.tdLeftWidth = [ 10, 20, 30, 10 ];
+                data.tdRightWidth = [ 10, 100, 10 ]; */
 
                 //如果要修改表格内容 ，无需修改的忽略此项
                 data.tdBeforeFill = function(obj) {
@@ -122,7 +122,7 @@
                     return obj.html;
                 }
                 //操作栏的宽度
-                data.operationWidth = 20;
+                data.operationWidth = 10;
                 callback.call(_this, data);
                 if (TmplUtils.pageTmpl.refresh) {
                     TmplUtils.pageTmpl.refresh();

@@ -46,6 +46,14 @@
 			"enum_search":"1"
 		},
 		{
+			"prop": "address",
+			"alias": "用户地址",
+			"group":"base",
+			"type" : "lazyEnum",
+      		"enum_search":"1",
+      		"enum_urls":"/modelPropdict/getAddF,/modelPropdict/getAddS"
+		},
+		{
 			"prop": "birthday",
 			"group":"base",
 			"alias": "用户生日",
@@ -78,14 +86,6 @@
 			"type": "strAndEnum",
 			"enum_search":"1",
       		"enum_urls":",/modelPropdict/getEmailSuffix"
-		},
-		{
-			"prop": "address",
-			"alias": "用户地址",
-			"group":"base",
-			"type" : "lazyEnum",
-      		"enum_search":"1",
-      		"enum_urls":"/modelPropdict/getAddF,/modelPropdict/getAddS"
 		},
 		{
 			"prop": "enabled",
