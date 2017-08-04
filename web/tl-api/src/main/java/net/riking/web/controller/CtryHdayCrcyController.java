@@ -119,13 +119,14 @@ public class CtryHdayCrcyController {
 	@ApiOperation(value = "上传国家图片资源", notes = "POST")
 	@RequestMapping(value = "/uploadIcon", method = RequestMethod.POST)
 	public Resp uploadIcon_(HttpServletRequest request) {
+		String phoneType = request.getParameter("phoneType");
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		MultipartFile mFile = multipartRequest.getFile("fileName");
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH;
+			String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH +phoneType+"/";
 			File dir = new File(path);
 			if(!dir.exists()){
 				dir.mkdirs();

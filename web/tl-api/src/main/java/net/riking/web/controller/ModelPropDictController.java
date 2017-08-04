@@ -129,4 +129,12 @@ public class ModelPropDictController {
 		}
 		return new Resp().setCode(CodeDef.SUCCESS);
 	}
+	
+	@RequestMapping(value = "/getPhoneType", method = RequestMethod.GET)
+	public Resp getPhoneType() throws Exception {
+		Set<String> set = new HashSet<String>();
+		set.add("PHONETYPE");
+		List<ModelPropDict> list = dataDictService.getDictsByFields("T_CTRY_HDAY_CRCY", set);
+		return new Resp(list);
+	}
 }
