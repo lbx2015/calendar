@@ -32,6 +32,7 @@ import net.riking.entity.PageQuery;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ExcelToList;
+import net.riking.util.ZipFileUtil;
 
 @RestController
 @RequestMapping(value = "/ctryHdayCrcy")
@@ -57,6 +58,8 @@ public class CtryHdayCrcyController {
 		}
 		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
 		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
+		//将压缩包解压
+		this.getIcon();
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
@@ -167,6 +170,34 @@ public class CtryHdayCrcyController {
 			return new Resp().setCode(CodeDef.SUCCESS);
 		}else{
 			return new Resp().setCode(CodeDef.ERROR);
+		}
+	}
+	
+	private void getIcon(){
+		String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH;
+		File dir = new File(path);
+		parseIconZip(dir);
+	}
+	
+	private void parseIconZip(File dir){
+		if(!dir.exists()){
+			return;
+		}
+		File[] files = dir.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			if(files[i].isDirectory()){
+				parseIconZip(files[i]);
+				continue;
+			}
+			String suffix = files[i].getName().substring(files[i].getName().lastIndexOf(".")).toUpperCase();
+			if(suffix.equals(".ZIP")){
+				try {
+					ZipFileUtil.parseZip(files[i],files[i].getParent());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
 		}
 	}
 }
