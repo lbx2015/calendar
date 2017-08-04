@@ -20,8 +20,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import net.riking.entity.model.ReportList;
-
 public class ExcelToList {
 
 	public static <T> List<T> readXlsx(InputStream is, String[] fields,

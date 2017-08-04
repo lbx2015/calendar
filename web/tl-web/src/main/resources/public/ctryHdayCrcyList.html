@@ -120,7 +120,8 @@
                     	return obj.html;
                     }
                     if (obj.prop == "icon") {
-                        obj.html = "<img src='"+Const.apiUrl + obj.item.icon + "'  alt='"+ obj.item.ctryName+"' height='40' width='50'  />";
+                		var icon = "/icon/"+obj.item.crcy+".png";
+                        obj.html = "<img src='"+Const.apiUrl + icon + "'  alt='"+ obj.item.crcy+"' height='40' width='50'  />";
                     	return obj.html;
                     }
                     return obj.html;

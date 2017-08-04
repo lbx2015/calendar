@@ -1,7 +1,6 @@
 package net.riking.web.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,10 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.DefaultEditorKit.CopyAction;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -63,6 +60,18 @@ public class CtryHdayCrcyController {
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "POST")
+	@RequestMapping(value = "/getMorePost", method = RequestMethod.POST)
+	public Resp getMore(@RequestBody CtryHdayCrcy crtyHdayCrcy){
+		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(), crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
+		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
+			crtyHdayCrcy.setDeleteState("1");
+		}
+		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
+		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
+		return new Resp(page, CodeDef.SUCCESS);
+	}
+	
 	@ApiOperation(value = "添加或者更新各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
 	public Resp addOrUpdate_(@RequestBody CtryHdayCrcy crtyHdayCrcy) {
@@ -95,9 +104,6 @@ public class CtryHdayCrcyController {
 			return new Resp(CodeDef.ERROR);
 		}
 		if(list!=null && list.size()>0){
-			for (CtryHdayCrcy ctryHdayCrcy : list) {
-				ctryHdayCrcy.setIcon("\\icon\\"+ctryHdayCrcy.getCrcy()+ ".png");
-			}
 			List<CtryHdayCrcy> rs = crtyHdayCrcyRepo.save(list);
 			if(rs.size()>0){
 				return new Resp(true, CodeDef.SUCCESS);
@@ -120,6 +126,10 @@ public class CtryHdayCrcyController {
 		try {
 			is = mFile.getInputStream();
 			String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH;
+			File dir = new File(path);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
 			fos = new FileOutputStream(path + mFile.getOriginalFilename());
 			int len = 0;
 			byte[] buf = new byte[1024*1024];
@@ -143,21 +153,6 @@ public class CtryHdayCrcyController {
 			}
 		}
 		return new Resp(true,CodeDef.SUCCESS);
-	}
-	
-	private  boolean upload(InputStream is) throws Exception{
-		FileOutputStream fos = null;
-		try {
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}finally {
-			
-			
-		}
-		return true;
 	}
 	
 	@ApiOperation(value = "批量删除各国节假日信息", notes = "POST")

@@ -82,9 +82,13 @@ public class AppUser extends BaseEntity {
 	@Column(name = "delete_state")
 	private String deleteState;
 	
-	@Comment("部门ID")
+	@Comment("部门")
 	@Column(name = "dept")
 	private String dept;
+	
+	@Comment("手机地址")
+	@Column(name = "mac")
+	private String mac;
 
 	public String getId() {
 		return id;
@@ -205,6 +209,15 @@ public class AppUser extends BaseEntity {
 
 	public void setDept(String dept) {
 		this.dept = dept;
+	}
+	
+
+	public String getMac() {
+		return mac;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
 	}
 
 	@Override

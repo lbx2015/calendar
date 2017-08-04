@@ -225,7 +225,11 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
             public void execute(Realm realm) {
                 // Add a person
                 Reminder person = realm.createObject(Reminder.class);
-                person.time = new Date();
+                SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+                SimpleDateFormat timeFormat = new SimpleDateFormat("yyyyMMdd");
+                Date time = new Date();
+                person.day = dayFormat.format(time.getTime());
+                person.time = timeFormat.format(time.getTime());
                 person.title = "Don't forget to clock off";
             }
         });
@@ -234,7 +238,7 @@ public class NoActionBarActivity extends com.heinrichreimersoftware.materialdraw
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         List<Reminder> reminders = realm.where(Reminder.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayout.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
     }
 

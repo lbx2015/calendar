@@ -45,7 +45,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.completed_task_row, parent, false);
-        return new MyViewHolder(   tasks,itemView);
+        return new MyViewHolder(tasks, itemView);
     }
 
     @Override
@@ -57,13 +57,17 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
 //        }
         holder.position = position;
         holder.title.setText(r.title);
-        if (r.isImport) {
-            holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
+        if (r.isImport == 1) {
+        } else {
+            holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
         }
 
-        if (r.isDone) {
+        if (r.isDone == 1) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
+            holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
         holder.task = r;
@@ -90,6 +94,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
         public TextView tv;
         public int position;
         SwipeHorizontalMenuLayout sml;
+
         public MyViewHolder(final List<Task> tasks, View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);

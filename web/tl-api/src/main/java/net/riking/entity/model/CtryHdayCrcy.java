@@ -14,11 +14,11 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseEntity;
+import net.riking.core.entity.PageQuery;
 
 @Entity
 @Table(name = "t_ctry_hday_crcy")
-public class CtryHdayCrcy extends BaseEntity {
+public class CtryHdayCrcy extends PageQuery {
 //各国节假日币种表
 	@Id
 	@Column(name = "Id", length = 32)
@@ -26,9 +26,6 @@ public class CtryHdayCrcy extends BaseEntity {
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
 	
-	@Comment("国旗图片url")
-	@Column(name = "icon", length = 64)
-	private String icon;
 	
 	@Comment("国家/地区名称")
 	@Column(name = "ctry_name", length = 32)
@@ -65,13 +62,6 @@ public class CtryHdayCrcy extends BaseEntity {
 		this.id = id;
 	}
 
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
 
 	public String getCtryName() {
 		return ctryName;

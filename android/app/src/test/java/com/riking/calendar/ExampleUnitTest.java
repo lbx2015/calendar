@@ -26,7 +26,8 @@ public class ExampleUnitTest {
         Task t = new Task();
         t.createTime = new Date();
 //        Gson gson = new Gson();
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HHmm").create();;
+        Gson gson = new GsonBuilder().setDateFormat("yyyyMMddHHmm").create();
+        ;
         System.out.print(gson.toJson(t));
     }
 }

@@ -171,15 +171,15 @@ public class FirstFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // Add a person
-                Reminder person = realm.createObject(Reminder.class, UUID.randomUUID().toString());
-                person.time = new Date(2017,6,24,12,12);
-                person.title = "Don't forget to clock off";
-            }
-        });
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                // Add a person
+//                Reminder person = realm.createObject(Reminder.class, UUID.randomUUID().toString());
+//                person.time = new Date(2017,6,24,12,12);
+//                person.title = "Don't forget to clock off";
+//            }
+//        });
 
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
