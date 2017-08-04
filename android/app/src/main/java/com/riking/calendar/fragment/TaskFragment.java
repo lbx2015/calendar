@@ -87,9 +87,9 @@ public class TaskFragment extends Fragment {
                         Task task = realm.createObject(Task.class, simpleDateFormat.format(date));
                         task.title = quickAddEditor.getText().toString();
                         task.createTime =date;
-                        task.isDone=false;
-                        task.isReminded=false;
-                        task.isImport = false;
+                        task.isDone=0;
+                        task.isReminded=0;
+                        task.isImport = 0;
                     }
                 });
                 quickAddEditor.setText(null);
@@ -155,7 +155,7 @@ public class TaskFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         realm = Realm.getDefaultInstance();
         //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo("isDone", false).findAll();
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo("isDone", 0).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         adapter = new TaskAdapter(tasks, this);
