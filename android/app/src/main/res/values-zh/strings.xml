@@ -28,6 +28,8 @@
     <string name="important">重要</string>
     <string name="quick_add">快速添加</string>
     <string name="create">创建</string>
+    <string name="me">我</string>
+    <string name="not_register">未登录\n点击登录</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>
