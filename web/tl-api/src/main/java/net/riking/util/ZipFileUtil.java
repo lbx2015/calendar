@@ -53,16 +53,18 @@ public class ZipFileUtil {
 			e.printStackTrace();
 		}finally {
 			//释放资源
-            if(null != zip){  
-            	zip.close();  
-            	zip = null;  
-            }  
             if (null != in) {  
                 in.close();  
             }  
             if (null != out) {  
             	out.close();  
-            }  
+            }
+            if(null != zip){  
+            	zip.close();  
+            	zip = null;  
+            } 
+            //删除压缩包
+            zipFile.delete();
         }  
 	}
 }
