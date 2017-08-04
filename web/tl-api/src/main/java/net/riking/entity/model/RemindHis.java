@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -34,6 +35,19 @@ public class RemindHis extends BaseEntity {
 	// 提醒日期
 	@Column(name = "str_date", length = 8)
 	private String strDate;
+	
+	@Transient
+	private int deleteState;
+	
+	
+
+	public int getDeleteState() {
+		return deleteState;
+	}
+
+	public void setDeleteState(int deleteState) {
+		this.deleteState = deleteState;
+	}
 
 	public String getId() {
 		return id;

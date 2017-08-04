@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "t_todo")
@@ -43,6 +44,18 @@ public class Todo {
 	// 完成时间（yyyyMMddHHmm）
 	@Column(name = "complete_date", length = 12)
 	private String completeDate;
+	
+	@Transient
+	private int deleteState;
+	
+
+	public int getDeleteState() {
+		return deleteState;
+	}
+
+	public void setDeleteState(int deleteState) {
+		this.deleteState = deleteState;
+	}
 
 	public String getTodo_Id() {
 		return todo_Id;

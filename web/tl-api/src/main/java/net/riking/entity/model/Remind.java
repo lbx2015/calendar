@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -58,6 +59,9 @@ public class Remind extends BaseEntity {
 	// 当前星期数（0,6）
 	@Column(name = "curr_week", length = 1)
 	private int currWeek;
+	
+	@Transient
+	private int deleteState;
 
 	public String getId() {
 		return id;
@@ -145,6 +149,14 @@ public class Remind extends BaseEntity {
 
 	public void setCurrWeek(int currWeek) {
 		this.currWeek = currWeek;
+	}
+
+	public int getDeleteState() {
+		return deleteState;
+	}
+
+	public void setDeleteState(int deleteState) {
+		this.deleteState = deleteState;
 	}
 	
 	
