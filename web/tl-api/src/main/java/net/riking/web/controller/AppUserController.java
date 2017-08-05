@@ -24,7 +24,7 @@ import net.riking.service.repo.AppUserRepo;
 /****
  * 
  * @author you.fei
- *web端用户操作
+ *web端app用户操作
  */
 @RestController
 @RequestMapping(value = "/appUser")

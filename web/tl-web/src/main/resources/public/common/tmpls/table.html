@@ -130,7 +130,7 @@ var tableTdConfig = TmplUtils._getTableTdConfig(d);
                      obj.prop=attr.prop;
             }}
             {{# if(d.trClick){ }}
-                <td onclick="TmplUtils.__tablePreviewSwitch({{ item.id }})">
+                <td onclick="TmplUtils.__tablePreviewSwitch('{{ item.id }}')">
             {{# }else{ }}
                 <td>
             {{# } }}
@@ -333,7 +333,7 @@ var tableTdConfig = TmplUtils._getTableTdConfig(d);
                       obj.col = col2;
             }}
                          {{# if(d.trClick){ }}
-                            <td onclick="TmplUtils.__tablePreviewSwitch({{ item.id }})">
+                            <td onclick="TmplUtils.__tablePreviewSwitch('{{ item.id }}')">
                         {{# }else{ }}
                             <td>
                         {{# } }}
