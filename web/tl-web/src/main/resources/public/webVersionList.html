@@ -82,7 +82,7 @@
 		tbTmpl = tmpl;
 
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/WebVersion/getMore";
+			var url = Const.apiUrl + "/webVersion/getMore";
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
@@ -96,6 +96,7 @@
 				data.hasOperation = true;
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
+				   data.trClick = "bindPro";
 				//表格显示列数
                /* data.cellLeftCount = 4;
                 data.cellRightCount = 3;*/
@@ -150,10 +151,10 @@
 			return;
 		}
 		tmpl.bind(function(callback) {
-			var url = Const.apiUrl + "/WebVersion/get";
+			var url = Const.apiUrl + "/webVersion/get";
 			var data = {};
 			//是否可编辑
-			data.canEdit = true;
+			//data.canEdit = true;
 			data.data = item;
 			//绑定点击事件
 			data.checkClick = "check";
@@ -184,14 +185,14 @@
 	}
 	//弹出添加iframe
 	function edit(id) {
-	    var url  = "reportListEdit.html?id="+ id;
+	    var url  = "webVersionEdit.html?id="+ id;
 		var title =  "数据处理";
 		View.openDialog(url,title);
 	}
 
 	//保存
 	function save() {
-		var url = Const.apiUrl + "/WebVersion/save";
+		var url = Const.apiUrl + "/webVersion/save";
 		var employee = Utils.formToObj("preview");
 		View.post(url, employee, function(resp) {
 			TmplUtils.showMsgSuccess('编辑成功');
@@ -213,7 +214,7 @@
 					ids.push($(this).data("id"));
 				}
 			});
-			var url = Const.apiUrl + "/WebVersion/delMore"
+			var url = Const.apiUrl + "/webVersion/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)

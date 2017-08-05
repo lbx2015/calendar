@@ -61,6 +61,18 @@
     <string name="more">More</string>
     <string name="quick_remark_code">QR code</string>
     <string name="user_image">Avarta</string>
+    <string name="first_week_day">FirstWeekDay</string>
+    <string name="sundday">Sunday</string>
+    <string name="whole_day_event_time">Whole Day Event Time</string>
+    <string name="remind_voice">Remind Voice</string>
+    <string name="default_remind">Default</string>
+    <string name="bind_phone">Bind Phone</string>
+    <string name="binded">Binded</string>
+    <string name="bind_wechat">Bind Wechat</string>
+    <string name="not_binded">Not Binded</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="no_need_to_clear">No need to clear</string>
+    <string name="login_out">Login out</string>
 
     <string-array name="subTittles">
         <item>Job</item>

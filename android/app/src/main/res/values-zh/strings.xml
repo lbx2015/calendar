@@ -39,6 +39,18 @@
     <string name="more">更多</string>
     <string name="quick_remark_code">二维码</string>
     <string name="user_image">头像</string>
+    <string name="first_week_day">周首日</string>
+    <string name="sundday">周日</string>
+    <string name="whole_day_event_time">全天事件提醒时间</string>
+    <string name="remind_voice">提醒铃声</string>
+    <string name="default_remind">默认</string>
+    <string name="bind_phone">绑定手机</string>
+    <string name="binded">已绑定</string>
+    <string name="bind_wechat">绑定微信</string>
+    <string name="not_binded">未绑定</string>
+    <string name="clear_cache">清理缓存</string>
+    <string name="no_need_to_clear">无需清理</string>
+    <string name="login_out">退出登录</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>
