@@ -21,7 +21,7 @@ import redis.clients.util.SafeEncoder;
 public class JedisUtil {
 //	private Logger log = Logger.getLogger(this.getClass());    
     /**缓存生存时间 */  
-    private final int expire = 60000;  
+    private static int expire = 60000;  
     /** 操作Key的方法 */  
     public Keys KEYS;  
     /** 对存储结构为String类型的操作 */  
@@ -59,7 +59,8 @@ public class JedisUtil {
                    10000,JRedisPoolConfig.REDIS_PASSWORD);    */  
              
            //redis未设置了密码：  
-          jedisPool = new JedisPool(config, redisConfig.getIp(), redisConfig.getPort());   
+          jedisPool = new JedisPool(config, redisConfig.getIp(), redisConfig.getPort());
+          expire = redisConfig.getExpire();
       }  
       
     private JedisPool getPool() {    
