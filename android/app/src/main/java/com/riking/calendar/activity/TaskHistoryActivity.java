@@ -41,7 +41,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
         mPrimaryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         realm = Realm.getDefaultInstance();
-        List<Task> tasks = realm.where(Task.class).equalTo("isDone", true).findAllSorted("completeDay", Sort.ASCENDING);
+        List<Task> tasks = realm.where(Task.class).equalTo("isDone", 1).findAllSorted("completeDay", Sort.ASCENDING);
 
         LinkedHashMap<String, List<Task>> daysWithTasks = new LinkedHashMap<>();
         int size = tasks.size();
