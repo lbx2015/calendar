@@ -21,10 +21,12 @@ import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
-/****
+/**
  * 
  * @author you.fei
- *web端app用户操作
+ * @version crateTime：2017年8月5日 下午4:34:09
+ * @used TODO
+ * web端app用户操作
  */
 @RestController
 @RequestMapping(value = "/appUser")

@@ -14,10 +14,12 @@ import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
-/****
+/**
  * 
  * @author you.fei
- *app邮箱后缀接口
+ * @version crateTime：2017年8月5日 下午4:31:37
+ * @used TODO
+ * app邮箱后缀接口
  */
 @RestController
 @RequestMapping(value = "/emailSuffixApp")
