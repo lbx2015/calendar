@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,10 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
+import net.riking.entity.model.BusinessDay;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
+import net.riking.service.repo.BusinessDayRepo;
 import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
 import net.riking.service.repo.TodoRepo;
@@ -31,6 +32,8 @@ public class SynchronousController {
 	RemindHisRepo remindHisRepo;
 	@Autowired
 	TodoRepo todoRepo;
+	@Autowired
+	BusinessDayRepo businessDayRepo;
 
 	@ApiOperation(value = "同步所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
@@ -38,8 +41,17 @@ public class SynchronousController {
 		List<Remind> reminds = remindRepo.findByUserId(userId);
 		List<RemindHis> remindHis = remindHisRepo.findByUserId(userId);
 		List<Todo> todos = todoRepo.findByUserId(userId);
-		SynResult result = new SynResult(reminds, remindHis, todos);
+		List<BusinessDay> businessDay = businessDayRepo.findAll();
+		SynResult result = new SynResult(reminds, remindHis, todos,businessDay);
 		return new Resp(result, CodeDef.SUCCESS);
+	}
+	
+	
+	@ApiOperation(value = "同步工作日信息", notes = "POST")
+	@RequestMapping(value = "/synchronousBusinessDay", method = RequestMethod.POST)
+	public Resp synchronousBusinessDay() {
+		List<BusinessDay> businessDay = businessDayRepo.findAll();
+		return new Resp(businessDay, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "同步app提醒信息", notes = "POST")
@@ -92,4 +104,6 @@ public class SynchronousController {
 		todoRepo.delete(todoDele);
 		return new Resp(0, CodeDef.SUCCESS);
 	}
+	
+	
 }

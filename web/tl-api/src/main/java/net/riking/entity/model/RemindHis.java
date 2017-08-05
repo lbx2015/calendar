@@ -14,6 +14,11 @@ import net.riking.entity.PageQuery;
 @Entity
 @Table(name = "t_remind_his")
 public class RemindHis extends PageQuery {
+
+	/**
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
+
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -35,11 +40,9 @@ public class RemindHis extends PageQuery {
 	// 提醒日期
 	@Column(name = "str_date", length = 8)
 	private String strDate;
-	
+
 	@Transient
 	private int deleteState;
-	
-	
 
 	public int getDeleteState() {
 		return deleteState;

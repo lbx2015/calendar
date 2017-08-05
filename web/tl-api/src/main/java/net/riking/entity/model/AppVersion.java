@@ -14,6 +14,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.entity.BaseEntity;
 
+/**
+ * @author Lucky.Liu on 2017/8/05.
+ */
+
 @Entity
 @Table(name = "t_app_version")
 public class AppVersion extends BaseEntity {

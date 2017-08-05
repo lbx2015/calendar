@@ -17,6 +17,10 @@ import net.riking.entity.PageQuery;
 @Table(name = "T_report_list")
 public class ReportList extends PageQuery {
 
+	/**
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
+	
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")

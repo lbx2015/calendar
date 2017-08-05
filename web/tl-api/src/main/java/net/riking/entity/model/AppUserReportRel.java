@@ -15,6 +15,10 @@ import org.hibernate.annotations.GenericGenerator;
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
+/**
+ * Created by Lucky.Liu on 2017/8/05.
+ */
+
 @Comment("用户报表")
 @Entity
 @Table(name = "T_appUser_report_rel")

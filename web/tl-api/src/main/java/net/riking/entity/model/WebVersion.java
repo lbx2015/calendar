@@ -20,6 +20,11 @@ import net.riking.entity.BaseEntity;
 @Entity
 @Table(name = "t_ewb_version")
 public class WebVersion extends BaseEntity {
+	
+	/**
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
+	
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")

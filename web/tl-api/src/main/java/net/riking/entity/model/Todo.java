@@ -9,6 +9,11 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "t_todo")
 public class Todo {
+	
+	/**代办事项实体类
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
+	
 	@Id
 	@Column(name = "todo_id", length = 17)
 	private String todo_Id;
