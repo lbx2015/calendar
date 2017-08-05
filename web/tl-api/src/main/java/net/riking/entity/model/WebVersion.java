@@ -18,8 +18,13 @@ import net.riking.entity.BaseEntity;
 
 @Comment("WEb版本")
 @Entity
-@Table(name = "T_WEB_Version")
+@Table(name = "t_ewb_version")
 public class WebVersion extends BaseEntity {
+	
+	/**
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
+	
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -27,21 +32,21 @@ public class WebVersion extends BaseEntity {
 	private String id;
 
 	// WEB版本号
-	@Column(name = "versionNumber", length = 32)
+	@Column(name = "version_number", length = 32)
 	private String versionNumber;
 
 	// 数据库脚本版本号
-	@Column(name = "sqlVersionNumber", length = 32)
+	@Column(name = "sql_version_number", length = 32)
 	private String sqlVersionNumber;
 
 	// 版本说明
-	@Column(name = "versionNote", length = 255)
+	@Column(name = "version_note", length = 255)
 	private String versionNote;
 
 	// 更新日期
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name = "renewalTime")
+	@Column(name = "renewal_time")
 	private Date renewalTime;
 	
 	// 删除状态 0删除 1显示

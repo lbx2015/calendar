@@ -28,7 +28,11 @@ import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.entity.PageQuery;
 import net.riking.util.ExcelToList;
-
+/****
+ * 
+ * @author you.fei
+ *web端邮箱操作
+ */
 @RestController
 @RequestMapping(value = "/emailSuffix")
 public class EmailSuffixController {

@@ -23,6 +23,7 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("################ TL-API Start ##################");
 		System.setProperty("spring.devtools.restart.enabled", "true");
 
 		SpringApplication.run(Application.class, args);

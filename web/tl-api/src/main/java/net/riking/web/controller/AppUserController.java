@@ -21,7 +21,11 @@ import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
-
+/****
+ * 
+ * @author you.fei
+ *web端app用户操作
+ */
 @RestController
 @RequestMapping(value = "/appUser")
 public class AppUserController {
@@ -90,19 +94,6 @@ public class AppUserController {
 		}else{
 			return new Resp().setCode(CodeDef.ERROR);
 		}
-	}
-	
-	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
-	@RequestMapping(value = "/IsChangeMac", method = RequestMethod.POST)
-	public Resp IsChangeMac_(@RequestBody AppUser appUser) {
-		AppUser appUser2 = appUserRepo.findOne(appUser.getId());
-		String mac = appUser.getMac();
-		if(appUser2!=null && !appUser2.getMac().equals(mac)){
-			appUser2.setMac(mac);
-			appUserRepo.save(appUser2);
-			return new Resp(true,CodeDef.SUCCESS);
-		}
-		return new Resp(false,CodeDef.SUCCESS);
 	}
 	
 }
