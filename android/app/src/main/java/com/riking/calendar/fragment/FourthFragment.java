@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 
 /**
@@ -21,6 +22,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fourth_fragment, container, false);
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
+        v.findViewById(R.id.set_layout).setOnClickListener(this);
         return v;
     }
 
@@ -29,6 +31,10 @@ public class FourthFragment extends Fragment implements OnClickListener {
         switch (v.getId()) {
             case R.id.my_photo_layout: {
                 startActivity(new Intent(getContext(), UserInfoActivity.class));
+                break;
+            }
+            case R.id.set_layout: {
+                startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
             }
         }
