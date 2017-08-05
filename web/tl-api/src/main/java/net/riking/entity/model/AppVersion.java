@@ -14,8 +14,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.entity.BaseEntity;
 
+/**
+ * @author Lucky.Liu on 2017/8/05.
+ */
+
 @Entity
-@Table(name = "T_APP_Version")
+@Table(name = "t_app_version")
 public class AppVersion extends BaseEntity {
 	@Id
 	@Column(name = "Id", length = 32)
@@ -24,16 +28,16 @@ public class AppVersion extends BaseEntity {
 	private String id;
 
 	// app版本号
-	@Column(name = "versionNumber", length = 32)
+	@Column(name = "version_number", length = 32)
 	private String versionNumber;
 
 	// 版本说明
-	@Column(name = "versionNote", length = 255)
+	@Column(name = "version_note", length = 255)
 	private String versionNote;
 
 	// 更新日期
 	@Temporal(TemporalType.DATE)
-	@Column(name = "renewalTime")
+	@Column(name = "renewal_time")
 	private Date renewalTime;
 
 	// 删除状态 0删除 1显示

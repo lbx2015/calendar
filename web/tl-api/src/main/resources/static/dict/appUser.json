@@ -51,7 +51,7 @@
 			"group":"base",
 			"type" : "lazyEnum",
       		"enum_search":"1",
-      		"enum_urls":"/modelPropdict/getAddF,/modelPropdict/getAddS"
+      		"enum_urls":"/modelPropDict/getAddF,/modelPropDict/getAddS"
 		},
 		{
 			"prop": "birthday",
@@ -85,7 +85,7 @@
 			"group":"base",
 			"type": "strAndEnum",
 			"enum_search":"1",
-      		"enum_urls":",/modelPropdict/getEmailSuffix"
+      		"enum_urls":",/modelPropDict/getEmailSuffix"
 		},
 		{
 			"prop": "enabled",
