@@ -102,13 +102,13 @@ String.prototype.endWith=function(endStr){
 				var keys = _key.split(",");
 				
 				var param = {"table":"T_APP_USER","field":"SF","key":keys[0]};
-				View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+				View.get(Const.apiUrl + "/modelPropDict/get",param,function(data){
 					$(_this).val(data.valu);
 					$(_hidden).val(data.ke);
 				});
 				if(keys[0]&&keys[1]){
                     var param = {"table":"T_APP_USER","field":keys[0],"key":keys[1]};
-                    View.get(Const.apiUrl + "/modelPropdict/get",param,function(data){
+                    View.get(Const.apiUrl + "/modelPropDict/get",param,function(data){
                         if(data.ke && data.valu){
                             $($(_this).parent().next().find("input")[0]).val(data.valu);
                             $($(_this).parent().next().find("input")[1]).val(data.ke);

@@ -1,4 +1,4 @@
-package net.riking.web.controller;
+package net.riking.web.appInterface;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,11 +23,11 @@ import net.riking.core.service.repo.ModelPropdictRepo;
 /****
  * 
  * @author you.fei
- *web端字典操作
+ *App数据字典接口
  */
 @RestController
-@RequestMapping(value = "/modelPropDict")
-public class ModelPropDictController {
+@RequestMapping(value = "/modelPropDictApp")
+public class ModelPropDictServer {
 	
 	@Autowired
 	ModelPropdictRepo modelPropdictRepo;
@@ -42,47 +42,28 @@ public class ModelPropDictController {
 		return new Resp(list);
 	}
 	
-	@RequestMapping(value = "/getEmailSuffix", method = RequestMethod.GET)
-	public Resp getEmailSuffix(@RequestParam(value = "prop", required = false) String prop){
-		HashSet<String> set = new HashSet<String>();
-		set.add("EMAILSUFFIX");
-		List<ModelPropDict> datas = modelPropdictRepo.getDatas("T_APP_USER",set);
-		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
-		for (ModelPropDict data : datas) {
-			EnumCustom enumCustom = new EnumCustom();
-			enumCustom.setKey(data.getKe());
-			enumCustom.setValue(data.getValu());
-			enumCustom.setProp(prop);
-			enumKeyValues.add(enumCustom);
-		}
-		return new Resp(enumKeyValues);
-	}
 	
-	@RequestMapping(value = "/getAddF", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAddF", method = RequestMethod.POST)
 	public Resp getAddF(@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword", required = false) String keyword) {
-		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
+		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		Set<String> set = new HashSet<String>();
 		set.add("SF");
 		List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 		for (ModelPropDict dict : list) {
 			if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
-				EnumCustom enumCustom = new EnumCustom();
-				enumCustom.setKey(dict.getKe());
-				enumCustom.setValue(dict.getValu());
-				enumCustom.setProp(prop);
-				enumKeyValues.add(enumCustom);
+				enumKeyValues.add(dict);
 			}
 		}
 
 		return new Resp(enumKeyValues);
 	}
 
-	@RequestMapping(value = "/getAddS", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAddS", method = RequestMethod.POST)
 	public Resp getAddS(@RequestParam(value = "key", required = false) String key,
 			@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword", required = false) String keyword) {
-		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
+		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		if (StringUtils.isEmpty(key)) {
 			Set<String> set = new HashSet<String>();
 			set.add(key);
@@ -100,11 +81,7 @@ public class ModelPropDictController {
 					flag = true;
 				}
 				if (flag) {
-					EnumCustom enumCustom = new EnumCustom();
-					enumCustom.setKey(dict.getKe());
-					enumCustom.setValue(dict.getKe() + "-" + dict.getValu());
-					enumCustom.setProp(prop);
-					enumKeyValues.add(enumCustom);
+					enumKeyValues.add(dict);
 				}
 			}
 		} else {
@@ -113,18 +90,14 @@ public class ModelPropDictController {
 			List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 			for (ModelPropDict dict : list) {
 				if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
-					EnumCustom enumCustom = new EnumCustom();
-					enumCustom.setKey(dict.getKe());
-					enumCustom.setValue(dict.getValu());
-					enumCustom.setProp(prop);
-					enumKeyValues.add(enumCustom);
+					enumKeyValues.add(dict);
 				}
 			}
 		}
 		return new Resp(enumKeyValues);
 	}
 	
-	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	@RequestMapping(value = "/get", method = RequestMethod.POST)
 	public Resp get(@RequestParam(value = "table") String table, @RequestParam(value = "field") String field,
 			@RequestParam(value = "key") String key) {
 		ModelPropDict dict = dataDictService.getDict(table, field, key);
@@ -132,13 +105,5 @@ public class ModelPropDictController {
 			return new Resp(dict).setCode(CodeDef.SUCCESS);
 		}
 		return new Resp().setCode(CodeDef.SUCCESS);
-	}
-	
-	@RequestMapping(value = "/getPhoneType", method = RequestMethod.GET)
-	public Resp getPhoneType() throws Exception {
-		Set<String> set = new HashSet<String>();
-		set.add("PHONETYPE");
-		List<ModelPropDict> list = dataDictService.getDictsByFields("T_CTRY_HDAY_CRCY", set);
-		return new Resp(list);
 	}
 }

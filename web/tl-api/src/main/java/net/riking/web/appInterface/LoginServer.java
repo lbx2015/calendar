@@ -20,7 +20,7 @@ import net.riking.service.repo.AppUserRepo;
  *用户登录操作
  */
 @RestController
-public class LoginController {
+public class LoginServer {
 
 	@Autowired
 	AppUserRepo appUserRepo;

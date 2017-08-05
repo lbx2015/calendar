@@ -70,7 +70,7 @@ $(document).ready(function() {
 	tp.onload(function() {
 		tp.bind(function(callback) {
 			var _this = this;
-			var url = "/modelPropdict/getPhoneType";
+			var url = "/modelPropDict/getPhoneType";
 			setTimeout(function(){
 			    View.get(url,'',function(resp){
 					callback.call(_this, resp);
