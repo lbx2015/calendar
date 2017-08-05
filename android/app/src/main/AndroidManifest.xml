@@ -60,6 +60,10 @@
         <activity
             android:name=".activity.UserInfoActivity"
             android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+
         <service
             android:name=".service.AlarmService"
             android:enabled="true"
