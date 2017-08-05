@@ -29,7 +29,7 @@
         app:cardUseCompatPadding="true">
 
         <RelativeLayout
-            android:id="@+id/smContentView"
+            android:id="@+id/my_photo_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white">

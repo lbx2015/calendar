@@ -55,6 +55,12 @@
     <string name="set">Set</string>
     <string name="review">Review</string>
     <string name="about">About</string>
+    <string name="name">Name</string>
+    <string name="depart">Department</string>
+    <string name="job_email">Job Email</string>
+    <string name="more">More</string>
+    <string name="quick_remark_code">QR code</string>
+    <string name="user_image">Avarta</string>
 
     <string-array name="subTittles">
         <item>Job</item>

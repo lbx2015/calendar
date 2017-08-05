@@ -33,6 +33,12 @@
     <string name="set">设置</string>
     <string name="review">求好评</string>
     <string name="about">关于</string>
+    <string name="name">名字</string>
+    <string name="depart">部门</string>
+    <string name="job_email">公司邮箱</string>
+    <string name="more">更多</string>
+    <string name="quick_remark_code">二维码</string>
+    <string name="user_image">头像</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>
