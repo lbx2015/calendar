@@ -15,9 +15,13 @@ import org.hibernate.annotations.GenericGenerator;
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
+/**
+ * Created by Lucky.Liu on 2017/8/05.
+ */
+
 @Comment("用户报表")
 @Entity
-@Table(name = "T_AppUser_Report_Rel")
+@Table(name = "T_appUser_report_rel")
 public class AppUserReportRel extends BaseEntity {
 
 	@Id
@@ -27,10 +31,10 @@ public class AppUserReportRel extends BaseEntity {
 	private String id;
 
 	// 用户ID
-	@Column(name = "appUser_Id", length = 32)
+	@Column(name = "appUser_id", length = 32)
 	private String appUserId;
 	// 报表ID
-	@Column(name = "report_Id", length = 32)
+	@Column(name = "report_id", length = 32)
 	private String reportId;
 	// 删除状态 0删除 1显示
 	@Column(name = "delete_state", length = 2)

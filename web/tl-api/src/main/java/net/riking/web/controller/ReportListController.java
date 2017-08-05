@@ -11,6 +11,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -138,5 +139,20 @@ public class ReportListController {
 		}else{
 			return new Resp().setCode(CodeDef.ERROR);
 		}
+	}
+	
+	@ApiOperation(value = "app获取所有的报表", notes = "GET")
+	@RequestMapping(value = "/getAllReport_", method = RequestMethod.GET)
+	public Resp getAllReport_(@RequestParam("pcount") Integer pcount,@RequestParam("pcount") Integer pindex) {
+		ReportList reportList =  new ReportList();
+		PageRequest pageable = new PageRequest(pcount, pindex,null);
+		if(StringUtils.isEmpty(reportList.getDeleteState())){
+			reportList.setDeleteState("1");
+		}
+		Example<ReportList> example = Example.of(reportList, ExampleMatcher.matchingAll());
+		Page<ReportList> page = reportListRepo.findAll(example,pageable);
+		int totalPages =  page.getTotalPages();
+		List<ReportList> reportLists = page.getContent();
+		return new Resp(page, CodeDef.SUCCESS);
 	}
 }

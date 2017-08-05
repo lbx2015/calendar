@@ -102,6 +102,7 @@
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
 				//表格显示列数
+				   data.trClick = "bindPro";
                /* data.cellLeftCount = 4;
                 data.cellRightCount = 3;*/
                 //表格各列显示比例
@@ -158,7 +159,7 @@
 			var url = Const.apiUrl + "/reportList/get";
 			var data = {};
 			//是否可编辑
-			data.canEdit = true;
+			//data.canEdit = true;
 			data.data = item;
 			//绑定点击事件
 			data.checkClick = "check";

@@ -38,7 +38,7 @@
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/WebVersion/get";
+                var url = Const.apiUrl + "/webVersion/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -63,7 +63,7 @@
     //编辑保存
     function edit() {
         var reportList = Utils.formToObj("edit");
-        var url = Const.apiUrl + "/WebVersion/save";
+        var url = Const.apiUrl + "/webVersion/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 

@@ -23,7 +23,7 @@ import net.riking.entity.model.WebVersion;
 import net.riking.service.repo.WebVersionRepo;
 
 @RestController
-@RequestMapping(value = "/WebVersion")
+@RequestMapping(value = "/webVersion")
 public class WebVersionController {
 	@Autowired
 	WebVersionRepo webVersionRepo;
