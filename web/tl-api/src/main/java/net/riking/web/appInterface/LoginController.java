@@ -1,4 +1,4 @@
-package net.riking.web.controller;
+package net.riking.web.appInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -14,8 +14,13 @@ import net.riking.core.entity.Resp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
 
+/***
+ * 
+ * @author you.fei
+ *用户登录操作
+ */
 @RestController
-public class LoggedController {
+public class LoginController {
 
 	@Autowired
 	AppUserRepo appUserRepo;

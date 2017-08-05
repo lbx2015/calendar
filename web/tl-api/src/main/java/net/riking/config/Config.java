@@ -22,44 +22,8 @@ public class Config {
 	private String baseInfoWorkId;
 	private String receipt;
 	private String summary;
-	//正确回执
-	private String correctReceipt;
-	//补正回执
-	private String modifyReceipt;
-	//错误回执
-	private String wrongReceipt;
-	//大额新增补正
-	private String bigAmountxzbz;
-	//可疑新增修改
-	private String supxzbz;
-
-	private String attachmentdir;
-	
-	//只导出大额
-	private String exportBig;
-	//只导出可疑
-	private String exportSusp;
-	//都导出
-	private String exportBoth;
-	//是否同步基础信息到原始表
-	private String snyc;
 	
 	
-	public String getSnyc() {
-		return snyc;
-	}
-
-	public void setSnyc(String snyc) {
-		this.snyc = snyc;
-	}
-
-	public String getAttachmentdir() {
-		return attachmentdir;
-	}
-
-	public void setAttachmentdir(String attachmentdir) {
-		this.attachmentdir = attachmentdir;
-	}
 
 	public String getCompany() {
 		return company;
@@ -93,71 +57,6 @@ public class Config {
 		this.receipt = receipt;
 	}
 
-	public String getCorrectReceipt() {
-		return correctReceipt;
-	}
-
-	public void setCorrectReceipt(String correctReceipt) {
-		this.correctReceipt = correctReceipt;
-	}
-
-	public String getModifyReceipt() {
-		return modifyReceipt;
-	}
-
-	public void setModifyReceipt(String modifyReceipt) {
-		this.modifyReceipt = modifyReceipt;
-	}
-
-	public String getWrongReceipt() {
-		return wrongReceipt;
-	}
-
-	public void setWrongReceipt(String wrongReceipt) {
-		this.wrongReceipt = wrongReceipt;
-	}
-
-	public String getBigAmountxzbz() {
-		return bigAmountxzbz;
-	}
-
-	public void setBigAmountxzbz(String bigAmountxzbz) {
-		this.bigAmountxzbz = bigAmountxzbz;
-	}
-
-	public String getSupxzbz() {
-		return supxzbz;
-	}
-
-	public void setSupxzbz(String supxzbz) {
-		this.supxzbz = supxzbz;
-	}
-	
-	
-
-	public String getExportBig() {
-		return exportBig;
-	}
-
-	public void setExportBig(String exportBig) {
-		this.exportBig = exportBig;
-	}
-
-	public String getExportSusp() {
-		return exportSusp;
-	}
-
-	public void setExportSusp(String exportSusp) {
-		this.exportSusp = exportSusp;
-	}
-
-	public String getExportBoth() {
-		return exportBoth;
-	}
-
-	public void setExportBoth(String exportBoth) {
-		this.exportBoth = exportBoth;
-	}
 
 	/**
 	 * 大额可疑工作流id

@@ -28,7 +28,9 @@
 			"group":"base",
 			"query": "1",
 			"query_order": "2",
-			"type": "string"
+			"type": "enum",
+			"dict_key": "T_CTRY_HDAY_CRCY.HDAY",
+			"enum_search":"1"
 		},
 		{
 			"prop": "hdayDate",
