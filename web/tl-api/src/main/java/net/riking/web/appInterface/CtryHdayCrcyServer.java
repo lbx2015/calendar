@@ -3,7 +3,6 @@ package net.riking.web.appInterface;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -23,15 +22,16 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
-import net.riking.core.service.repo.ModelPropdictRepo;
+import net.riking.core.service.DataDictService;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ZipFileUtil;
-/****
- * 
+/**
  * 
  * @author you.fei
- *app各国节假日币种接口
+ * @version crateTime：2017年8月5日 下午4:33:16
+ * @used TODO
+ * app各国节假日币种接口
  */
 @RestController
 @RequestMapping(value = "/ctryHdayCrcyApp")
@@ -40,7 +40,7 @@ public class CtryHdayCrcyServer {
 	CtryHdayCrcyRepo crtyHdayCrcyRepo;
 	
 	@Autowired
-	ModelPropdictRepo modelPropdictRepo;
+	DataDictService dataDictService;
 	
 	public static String  TL_STATIC_ICON_PATH = "static/icon/";
 	
@@ -71,18 +71,11 @@ public class CtryHdayCrcyServer {
 	public Resp getParam_() {
 		Map<String, List<ModelPropDict>> map = new HashMap<String,List<ModelPropDict>>();
 		//币种
-		HashSet<String> crcrSet = new HashSet<String>();
-		crcrSet.add("CRCY");
-		map.put("crcy",modelPropdictRepo.getDatas("T_CTRY_HDAY_CRCY", crcrSet));
+		map.put("crcy",dataDictService.getDicts("T_CTRY_HDAY_CRCY", "CRCY"));
 		//国家或地区
-		HashSet<String> ctrySet = new HashSet<String>();
-		crcrSet.add("CTRY");
-		map.put("ctry",modelPropdictRepo.getDatas("T_CTRY_HDAY_CRCY", ctrySet));
-		
+		map.put("ctry",dataDictService.getDicts("T_CTRY_HDAY_CRCY", "CTRY"));
 		//节假日
-		HashSet<String> hdaySet = new HashSet<String>();
-		crcrSet.add("HDAY");
-		map.put("hday",modelPropdictRepo.getDatas("T_CTRY_HDAY_CRCY", hdaySet));
+		map.put("hday",dataDictService.getDicts("T_CTRY_HDAY_CRCY", "HDAY"));
 		return new Resp(map, CodeDef.SUCCESS);
 	}
 	

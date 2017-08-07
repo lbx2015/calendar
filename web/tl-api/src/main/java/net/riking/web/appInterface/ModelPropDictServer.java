@@ -19,10 +19,12 @@ import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.DataDictService;
 import net.riking.core.service.repo.ModelPropdictRepo;
-/****
+/**
  * 
  * @author you.fei
- *App数据字典接口
+ * @version crateTime：2017年8月5日 下午4:33:43
+ * @used TODO
+ * App数据字典接口
  */
 @RestController
 @RequestMapping(value = "/modelPropDictApp")
@@ -44,7 +46,7 @@ public class ModelPropDictServer {
 	
 	@RequestMapping(value = "/getAddF", method = RequestMethod.POST)
 	public Resp getAddF(@RequestParam(value = "prop", required = false) String prop,
-			@RequestParam(value = "keyword", required = false) String keyword) {
+			@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		Set<String> set = new HashSet<String>();
 		set.add("SF");
@@ -61,7 +63,7 @@ public class ModelPropDictServer {
 	@RequestMapping(value = "/getAddS", method = RequestMethod.POST)
 	public Resp getAddS(@RequestParam(value = "key", required = false) String key,
 			@RequestParam(value = "prop", required = false) String prop,
-			@RequestParam(value = "keyword", required = false) String keyword) {
+			@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		if (StringUtils.isEmpty(key)) {
 			Set<String> set = new HashSet<String>();
