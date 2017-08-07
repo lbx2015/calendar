@@ -14,10 +14,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import net.riking.config.Config;
+import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.core.utils.IOUtils;
 import net.riking.core.workflow.Workflow;
 import net.riking.core.workflow.WorkflowMgr;
+import net.riking.service.repo.impl.SysDataServiceImpl;
+import net.riking.util.RedisUtil;
 
 @Component
 public class StartupListener implements ServletContextListener {
@@ -27,11 +30,15 @@ public class StartupListener implements ServletContextListener {
 	WorkflowMgr workflowMgr;
 	@Autowired
 	Config config;
+	@Autowired
+	RedisConfig redisConfig;
 
 	@Autowired
 	DataDictService dataDictService;
 	
-
+	@Autowired
+	SysDataServiceImpl sysDataServiceImpl;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -40,11 +47,14 @@ public class StartupListener implements ServletContextListener {
 
 		try {
 			initWorkflow(event);
+			RedisUtil.redisConfig = redisConfig;
+			RedisUtil.getInstall();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
-		dataDictService.init();
+//		dataDictService.init();
+		sysDataServiceImpl.initData();
 	}
 
 	
