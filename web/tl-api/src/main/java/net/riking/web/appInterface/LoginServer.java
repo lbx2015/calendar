@@ -13,11 +13,12 @@ import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
-
-/***
+/**
  * 
  * @author you.fei
- *用户登录操作
+ * @version crateTime：2017年8月5日 下午4:32:04
+ * @used TODO
+ * 用户登录操作
  */
 @RestController
 public class LoginServer {
@@ -51,9 +52,12 @@ public class LoginServer {
 	@ApiOperation(value = "校验验证码", notes = "POST")
 	@RequestMapping(value = "/checkValiCode", method = RequestMethod.POST)
 	public Resp checkValiCode_(@RequestBody AppUser appUser) {
+		if(user==null){
+			return new Resp(user, CodeDef.SUCCESS);
+		}
 		AppUser appUser2 = null;
-		if (user.getTelephone().equals(appUser.getTelephone())
-				&& user.getValiCode().equals(appUser.getValiCode())) {
+		if (appUser.getTelephone().equals(user.getTelephone())
+				&& appUser.getValiCode().equals(user.getValiCode())) {
 			Example<AppUser> example = Example.of(appUser,ExampleMatcher.matchingAll());
 			appUser2 = appUserRepo.findOne(example);
 			if (appUser2 == null) {
