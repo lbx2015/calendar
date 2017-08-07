@@ -28,10 +28,12 @@ import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.entity.PageQuery;
 import net.riking.util.ExcelToList;
-/****
+/**
  * 
  * @author you.fei
- *web端邮箱操作
+ * @version crateTime：2017年8月5日 下午4:34:42
+ * @used TODO
+ * web端邮箱操作
  */
 @RestController
 @RequestMapping(value = "/emailSuffix")

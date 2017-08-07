@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,27 +28,23 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
-import net.riking.core.entity.model.ModelPropDict;
-import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ExcelToList;
 import net.riking.util.ZipFileUtil;
-/****
- * 
+/**
  * 
  * @author you.fei
- *web端各国节假日币种操作
+ * @version crateTime：2017年8月5日 下午4:35:47
+ * @used TODO
+ * web端各国节假日币种操作
  */
 @RestController
 @RequestMapping(value = "/ctryHdayCrcy")
 public class CtryHdayCrcyController {
 	@Autowired
 	CtryHdayCrcyRepo crtyHdayCrcyRepo;
-	
-	@Autowired
-	ModelPropdictRepo modelPropdictRepo;
 	
 	public static String  TL_STATIC_ICON_PATH = "static/icon/";
 	
@@ -98,26 +91,6 @@ public class CtryHdayCrcyController {
 		}
 		CtryHdayCrcy save = crtyHdayCrcyRepo.save(crtyHdayCrcy);
 		return new Resp(save, CodeDef.SUCCESS);
-	}
-	
-	@ApiOperation(value = "手机端得到查询条件", notes = "POST")
-	@RequestMapping(value = "/getParam", method = RequestMethod.POST)
-	public Resp getParam_() {
-		Map<String, List<ModelPropDict>> map = new HashMap<String,List<ModelPropDict>>();
-		//币种
-		HashSet<String> crcrSet = new HashSet<String>();
-		crcrSet.add("CRCY");
-		map.put("crcy",modelPropdictRepo.getDatas("T_CTRY_HDAY_CRCY", crcrSet));
-		//国家或地区
-		HashSet<String> ctrySet = new HashSet<String>();
-		crcrSet.add("CTRY");
-		map.put("ctry",modelPropdictRepo.getDatas("T_CTRY_HDAY_CRCY", ctrySet));
-		
-		//节假日
-		HashSet<String> hdaySet = new HashSet<String>();
-		crcrSet.add("HDAY");
-		map.put("hday",modelPropdictRepo.getDatas("T_CTRY_HDAY_CRCY", hdaySet));
-		return new Resp(map, CodeDef.SUCCESS);
 	}
 	
 	@AuthPass

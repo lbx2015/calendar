@@ -22,9 +22,14 @@ import net.riking.entity.PageQuery;
 import net.riking.entity.model.WebVersion;
 import net.riking.service.repo.WebVersionRepo;
 
+/**web版本的维护
+ * @author Lucky.Liu on 2017/8/05.
+ */
 @RestController
 @RequestMapping(value = "/webVersion")
 public class WebVersionController {
+	
+
 	@Autowired
 	WebVersionRepo webVersionRepo;
 	
@@ -57,7 +62,7 @@ public class WebVersionController {
 		return new Resp(save, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "批量删除用户信息", notes = "POST")
+	@ApiOperation(value = "批量删除web版本信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore(@RequestBody Set<String> ids) {
 		int rs = 0;
