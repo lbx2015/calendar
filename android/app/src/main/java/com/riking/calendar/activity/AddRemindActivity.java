@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.flyco.tablayout.SlidingTabLayout;
+import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.pojo.ReminderModel;
@@ -123,10 +124,17 @@ public class AddRemindActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ResponseBody r = response.body();
-                String s;
+
 
                 try {
-                    Log.d("zzw", response.code() + "success " + r.source().readUtf8());
+                    String s = r.source().readUtf8();
+                    String s2 = s.replace("\\", "");
+                    int i = s2.indexOf("}");
+                    int l = s2.lastIndexOf("}");
+                    Gson gson = new Gson();
+                    ReminderModel m;
+                    m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
+                    Log.d("zzw", response.code() + " index of " + i + "" + l + "success " + m);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
