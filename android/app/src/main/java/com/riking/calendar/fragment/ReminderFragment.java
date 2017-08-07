@@ -10,13 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.ldf.calendar.Utils;
+import com.ldf.calendar.model.CalendarDate;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.view.CustomLinearLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
@@ -32,6 +37,8 @@ public class ReminderFragment extends Fragment {
     ViewPagerActivity a;
     CustomLinearLayout root;
     View checkHistoryButton;
+    TextView today;
+    View todayTitle;
 
     @Nullable
     @Override
@@ -40,6 +47,9 @@ public class ReminderFragment extends Fragment {
         a = (ViewPagerActivity) getActivity();
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
         checkHistoryButton = v.findViewById(R.id.check_task_history);
+        today = (TextView) v.findViewById(R.id.today_date);
+        todayTitle = v.findViewById(R.id.today_title);
+
         setRecyclerView(v);
         root.onDraggingListener = new CustomLinearLayout.OnDraggingListener() {
             @Override
@@ -52,11 +62,10 @@ public class ReminderFragment extends Fragment {
             @Override
             public void scrollDown() {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
-                Log.d("zzw", "scroll down");
                 Log.d("zzw", "scroll down" + " first item visibility: " + viewHolder.itemView.getVisibility());
-                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
+//                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
                     checkHistoryButton.setVisibility(View.VISIBLE);
-                }
+//                }
             }
         };
         return v;
@@ -66,6 +75,7 @@ public class ReminderFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         realm = Realm.getDefaultInstance();
+        Date date = new Date();
         List<Reminder> reminders = realm.where(Reminder.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
@@ -77,6 +87,17 @@ public class ReminderFragment extends Fragment {
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
+
+        if (reminders.size() > 0) {
+            todayTitle.setVisibility(View.VISIBLE);
+            today.setVisibility(View.VISIBLE);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
+            String message = sdf.format(date) + " " + Utils.getWeekdayPosition(date);
+            today.setText(message);
+        } else {
+            today.setVisibility(View.GONE);
+            todayTitle.setVisibility(View.GONE);
+        }
     }
 
     @Override
