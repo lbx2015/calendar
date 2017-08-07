@@ -1,4 +1,4 @@
-package net.riking.web.controller;
+package net.riking.web.appInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,13 @@ import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
 import net.riking.service.repo.TodoRepo;
 
+/**app和服务器的同步信息
+ * @author Lucky.Liu on 2017/8/05.
+ */
 @RestController
 @RequestMapping(value = "/synchronous")
 public class SynchronousController {
+
 	@Autowired
 	RemindRepo remindRepo;
 	@Autowired

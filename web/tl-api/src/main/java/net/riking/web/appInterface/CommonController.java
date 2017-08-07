@@ -1,4 +1,4 @@
-package net.riking.web.controller;
+package net.riking.web.appInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +12,10 @@ import net.riking.service.repo.AppVersionRepo;
 import net.riking.service.repo.ReportListRepo;
 import net.riking.service.repo.impl.GetDateServiceImpl;
 
+/**
+ * app的公用接口
+ * @author Lucky.Liu on 2017/8/05.
+ */
 @RestController
 @RequestMapping(value = "/common")
 public class CommonController {

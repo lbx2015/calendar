@@ -16,14 +16,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
+/***
+ * 
+ * @author lucky.liu
+ * @version crateTime：2017年8月5日 下午5:36:52
+ * @used TODO
+ */
 @Comment("WEb版本")
 @Entity
 @Table(name = "t_ewb_version")
 public class WebVersion extends BaseEntity {
-	
-	/**
-	 * @author Lucky.Liu on 2017/8/05.
-	 */
 	
 	@Id
 	@Column(name = "Id", length = 32)

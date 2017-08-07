@@ -13,6 +13,10 @@ import org.springframework.stereotype.Repository;
 import net.riking.entity.model.WebVersion;
 @Repository
 public interface WebVersionRepo extends JpaRepository<WebVersion, String>, JpaSpecificationExecutor<WebVersion> {
+	
+	/**
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
 	@Transactional
 	@Modifying
 	@Query(" update WebVersion set deleteState = '0' where id in ?1  ")

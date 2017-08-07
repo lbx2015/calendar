@@ -10,5 +10,9 @@ import net.riking.entity.model.RemindHis;
 
 @Repository
 public interface RemindHisRepo extends JpaRepository<RemindHis, String>, JpaSpecificationExecutor<RemindHis> {
+	
+	/**
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
 	List<RemindHis> findByUserId(String userId);
 }

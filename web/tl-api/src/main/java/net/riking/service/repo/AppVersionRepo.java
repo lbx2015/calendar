@@ -13,6 +13,11 @@ import org.springframework.stereotype.Repository;
 import net.riking.entity.model.AppVersion;
 @Repository
 public interface AppVersionRepo extends JpaRepository<AppVersion, String>, JpaSpecificationExecutor<AppVersion>{
+	
+	/**
+	 * @author Lucky.Liu on 2017/8/05.
+	 */
+	
 	@Transactional
 	@Modifying
 	@Query(" update AppVersion set deleteState = '0' where id in ?1  ")

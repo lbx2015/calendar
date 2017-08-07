@@ -1,4 +1,4 @@
-package net.riking.web.controller;
+package net.riking.web.appInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,14 @@ import net.riking.entity.model.ReportList;
 import net.riking.service.repo.AppUserReportRepo;
 import net.riking.service.repo.ReportListRepo;
 
+
+/**用户获取所属的报表信息
+ * @author Lucky.Liu on 2017/8/05.
+ */
 @RestController
 @RequestMapping(value = "/appUserReport")
 public class AppUserReportRelController {
+
 	@Autowired
 	AppUserReportRepo appUserReportRepo;
 	@Autowired

@@ -21,20 +21,25 @@ import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.AppVersion;
 import net.riking.service.repo.AppVersionRepo;
+/**app版本的维护
+ * @author Lucky.Liu on 2017/8/05.
+ */
 @RestController
 @RequestMapping(value = "/appVersion")
 public class AppVersionController {
+	
+
 	@Autowired
 	AppVersionRepo appVersionRepo;
 	
-	@ApiOperation(value = "得到单个Web版本信息", notes = "GET")
+	@ApiOperation(value = "得到单个app版本信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
 		AppVersion appVersion = appVersionRepo.findOne(id);
 		return new Resp(appVersion, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "得到所有的Web版本信息", notes = "GET")
+	@ApiOperation(value = "得到所有的app版本信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute AppVersion appVersion){
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
@@ -46,7 +51,7 @@ public class AppVersionController {
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "添加或者更新Web版本信息", notes = "POST")
+	@ApiOperation(value = "添加或者更新app版本信息", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Resp save_(@RequestBody AppVersion appVersion) {
 		if(StringUtils.isEmpty(appVersion.getId())||StringUtils.isEmpty(appVersion.getDeleteState())){
@@ -56,7 +61,7 @@ public class AppVersionController {
 		return new Resp(save, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "批量删除用户信息", notes = "POST")
+	@ApiOperation(value = "批量删除app版本信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
