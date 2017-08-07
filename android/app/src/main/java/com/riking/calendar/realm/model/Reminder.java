@@ -24,18 +24,23 @@ public class Reminder extends RealmObject {
     //the time of the reminder(HHmm)
     @SerializedName("start_time")
     public String time;
-    //o false 1 yes
+    //0,1,2,3
     @SerializedName("repeat_flag")
     public byte repeatFlag;
+    //o false 1 yes
     @SerializedName("is_allday")
     public byte isAllDay;
-    public byte isAccurate;
     @SerializedName("before_time")
-    public byte aheadTime;
-    //1,2,3,4,5,6,7,8,9
+    public int aheadTime;
+    //1...7
     @SerializedName("repeat_value")
     public String repeatWeek;
     //0-6
     @SerializedName("curr_week")
     public byte currentWeek;
+
+    @SerializedName("is_remind")
+    //0 no remind, 1 remind
+    public byte isRemind = 1;
+    public byte client_type = 2;
 }

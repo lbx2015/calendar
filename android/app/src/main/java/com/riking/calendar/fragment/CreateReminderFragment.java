@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -20,14 +22,26 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by zw.zhang on 2017/7/17.
  */
 
 public class CreateReminderFragment extends Fragment implements View.OnClickListener {
+
+    public static int REPEAT_ITEMS = 1;
+    public static int REMIND_WAY_ITEMS = 2;
     //time
     public Calendar time;
     public EditText remindTitle;
+    public byte repeatFlag;
+    public String repeatWeeks;
+    public byte isRemind;
+    public int aheadTime;
+    public byte isAllDay;
+
+    Switch allDaySwitch;
     //    private WheelPopWindow popWindow;
     private TimePickerDialog pickerDialog;
     private View selectRemindTime;
@@ -49,6 +63,8 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         remindTime = (TextView) v.findViewById(R.id.select_time);
         repeat = v.findViewById(R.id.repeat_item);
         way = v.findViewById(R.id.way_item);
+        allDaySwitch = (Switch) v.findViewById(R.id.simpleSwitch);
+
         way.setOnClickListener(this);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -64,6 +80,29 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         pickerDialog.btnSubmit.setOnClickListener(this);
         pickerDialog.btnCancel.setOnClickListener(this);
         repeat.setOnClickListener(this);
+        allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    isAllDay = 1;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    time = Calendar.getInstance();
+                    time.setTime(new Date());
+                    //set the default time to be 2 hours later comparing current time.
+                    time.set(Calendar.HOUR, 8);
+                    remindTime.setText(sdf.format(time.getTime()));
+                } else {
+                    isAllDay = 0;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    time = Calendar.getInstance();
+                    time.setTime(new Date());
+                    //set the default time to be 2 hours later comparing current time.
+                    time.set(Calendar.HOUR, time.get(Calendar.HOUR) + 2);
+                    time.set(Calendar.MINUTE, 0);
+                    remindTime.setText(sdf.format(time.getTime()));
+                }
+            }
+        });
         return v;
     }
 
@@ -97,7 +136,23 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 break;
             }
             case R.id.repeat_item: {
-                startActivity(new Intent(getActivity(), RemindRepeatActivity.class));
+                startActivityForResult(new Intent(getActivity(), RemindRepeatActivity.class), REPEAT_ITEMS);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Make sure the request was successful
+        if (resultCode == RESULT_OK) {
+            Bundle b = data.getExtras();
+            // Check which request we're responding to
+            if (requestCode == REPEAT_ITEMS) {
+                repeatFlag = b.getByte("repeatWay");
+                repeatWeeks = b.getString("repeatWeekDays");
+            } else if (requestCode == REMIND_WAY_ITEMS) {
+                isRemind = b.getByte("isRemind");
+                aheadTime = b.getInt("aheadOfTime");
             }
         }
     }

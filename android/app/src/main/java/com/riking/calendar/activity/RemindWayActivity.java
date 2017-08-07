@@ -1,11 +1,13 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.riking.calendar.R;
+import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker;
 
 /**
@@ -18,6 +20,8 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
     private View notRemindImage;
     private View accurateRemindImage;
     private View customRemindImage;
+    private byte isRemind;
+    private int aheadOfTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
         notRemind.setOnClickListener(this);
         remindAccurately.setOnClickListener(this);
         customRemind.setOnClickListener(this);
+        findViewById(R.id.done).setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +54,9 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
             }
             case R.id.not_remind_item: {
                 if (notRemindImage.getVisibility() == View.VISIBLE) break;
+
+                isRemind = 0;
+                aheadOfTime = 0;
                 notRemindImage.setVisibility(View.VISIBLE);
                 accurateRemindImage.setVisibility(View.GONE);
                 customRemindImage.setVisibility(View.GONE);
@@ -57,6 +65,9 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
             }
             case R.id.remind_accurate_item: {
                 if (accurateRemindImage.getVisibility() == View.VISIBLE) break;
+
+                isRemind = 1;
+                aheadOfTime = 0;
                 notRemindImage.setVisibility(View.GONE);
                 accurateRemindImage.setVisibility(View.VISIBLE);
                 customRemindImage.setVisibility(View.GONE);
@@ -65,11 +76,21 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
             }
             case R.id.custom_remind_item: {
                 if (customRemindImage.getVisibility() == View.VISIBLE) break;
+
+                isRemind = 1;
+                aheadOfTime = wmp.minute;
                 notRemindImage.setVisibility(View.GONE);
                 accurateRemindImage.setVisibility(View.GONE);
                 customRemindImage.setVisibility(View.VISIBLE);
                 minutePickerItem.setVisibility(View.VISIBLE);
                 break;
+            }
+            case R.id.done:{
+                Intent i = new Intent();
+                i.putExtra("isRemind", isRemind);//0,1
+                i.putExtra("aheadOfTime", aheadOfTime);
+                setResult(CreateReminderFragment.REMIND_WAY_ITEMS, i);
+                finish();
             }
         }
 

@@ -63,13 +63,19 @@ public class AddRemindActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 //remind fragment
                 if (viewPager.getCurrentItem() == 0) {
-                    // Add a person
-                    Reminder reminder = realm.createObject(Reminder.class, UUID.randomUUID().toString());
+                    // Add a remind
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                    Reminder reminder = realm.createObject(Reminder.class, sdf.format(new Date()));
                     SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
                     SimpleDateFormat timeFormat = new SimpleDateFormat("yyyyMMdd");
+                    reminder.title = reminderFragment.remindTitle.getText().toString();
                     reminder.day = dayFormat.format(reminderFragment.time.getTime());
                     reminder.time = timeFormat.format(reminderFragment.time.getTime());
-                    reminder.title = reminderFragment.remindTitle.getText().toString();
+                    reminder.repeatFlag = reminderFragment.repeatFlag;
+                    reminder.repeatWeek = reminderFragment.repeatWeeks;
+                    reminder.aheadTime = reminderFragment.aheadTime;
+                    reminder.isRemind = reminderFragment.isRemind;
+                    reminder.isAllDay = reminderFragment.isAllDay;
                 }
                 //task fragment
                 else {
