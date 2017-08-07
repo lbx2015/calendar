@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ldf.calendar.Utils;
-import com.ldf.calendar.model.CalendarDate;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
@@ -26,6 +25,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.Sort;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -64,7 +64,7 @@ public class ReminderFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
                 Log.d("zzw", "scroll down" + " first item visibility: " + viewHolder.itemView.getVisibility());
 //                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
-                    checkHistoryButton.setVisibility(View.VISIBLE);
+                checkHistoryButton.setVisibility(View.VISIBLE);
 //                }
             }
         };
@@ -76,7 +76,11 @@ public class ReminderFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         realm = Realm.getDefaultInstance();
         Date date = new Date();
-        List<Reminder> reminders = realm.where(Reminder.class).findAll();
+        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
+        Date d = new Date();
+        List<Reminder> reminders = realm.where(Reminder.class).equalTo("day", dayFormat.format(d))
+                .findAllSorted("time", Sort.ASCENDING);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderAdapter(reminders));

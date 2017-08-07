@@ -67,7 +67,6 @@ public class AddRemindActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
         final String id = sdf.format(new Date());
-        ;
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
         realm.executeTransaction(new Realm.Transaction() {
