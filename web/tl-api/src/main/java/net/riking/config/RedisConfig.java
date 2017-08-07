@@ -1,8 +1,7 @@
 package net.riking.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 /**
  * redis缓存配置
@@ -10,11 +9,10 @@ import org.springframework.context.annotation.PropertySource;
  * @version crateTime：2017年8月5日 下午5:06:01
  * @used TODO
  */
-@Configuration
-@PropertySource("classpath:redis.properties")
+@Component("redisConfig")
 @ConfigurationProperties(prefix = "sys.redis")
 public class RedisConfig {
-	
+
 	private String ip;
 	private int port;
 	//如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)
@@ -24,7 +22,7 @@ public class RedisConfig {
 	//表示当borrow(引入)一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException
 	private int maxWaitMillis;
 	//在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的
-	private int testOnBorrow;
+	private boolean testOnBorrow;
 	//缓存生存时间
 	private int expire;
 	
@@ -58,10 +56,10 @@ public class RedisConfig {
 	public void setMaxWaitMillis(int maxWaitMillis) {
 		this.maxWaitMillis = maxWaitMillis;
 	}
-	public int getTestOnBorrow() {
+	public boolean isTestOnBorrow() {
 		return testOnBorrow;
 	}
-	public void setTestOnBorrow(int testOnBorrow) {
+	public void setTestOnBorrow(boolean testOnBorrow) {
 		this.testOnBorrow = testOnBorrow;
 	}
 	public int getExpire() {
