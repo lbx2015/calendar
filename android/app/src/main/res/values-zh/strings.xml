@@ -51,6 +51,7 @@
     <string name="clear_cache">清理缓存</string>
     <string name="no_need_to_clear">无需清理</string>
     <string name="login_out">退出登录</string>
+    <string name="tomorrow">明天</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>

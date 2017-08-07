@@ -17,9 +17,11 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,12 +35,15 @@ import io.realm.Sort;
 
 public class ReminderFragment extends Fragment {
     RecyclerView recyclerView;
+    RecyclerView tomorrowRecyclerView;
     Realm realm;
     ViewPagerActivity a;
     CustomLinearLayout root;
     View checkHistoryButton;
     TextView today;
     View todayTitle;
+    TextView tomorrow;
+    TextView tomorrowTitle;
 
     @Nullable
     @Override
@@ -49,6 +54,8 @@ public class ReminderFragment extends Fragment {
         checkHistoryButton = v.findViewById(R.id.check_task_history);
         today = (TextView) v.findViewById(R.id.today_date);
         todayTitle = v.findViewById(R.id.today_title);
+        tomorrow = (TextView) v.findViewById(R.id.tomorrow_date);
+        tomorrowTitle = (TextView) v.findViewById(R.id.tomorrow_title);
 
         setRecyclerView(v);
         root.onDraggingListener = new CustomLinearLayout.OnDraggingListener() {
@@ -73,13 +80,28 @@ public class ReminderFragment extends Fragment {
 
     private void setRecyclerView(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(a));
+        tomorrowRecyclerView = (RecyclerView) v.findViewById(R.id.tomorrow_recycler_view);
+        tomorrowRecyclerView.setLayoutManager(new LinearLayoutManager(a));
+
         realm = Realm.getDefaultInstance();
         Date date = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int weekDay = c.get(Calendar.DAY_OF_WEEK);
+        if (weekDay == Calendar.SUNDAY) {
+            weekDay = 7;
+        } else {
+            weekDay--;
+        }
+
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
-        Date d = new Date();
-        List<Reminder> reminders = realm.where(Reminder.class).equalTo("day", dayFormat.format(d))
+        List<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+                .or().beginGroup()
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
+                .contains("repeatWeek", String.valueOf(weekDay))
+                .endGroup()
                 .findAllSorted("time", Sort.ASCENDING);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
@@ -89,6 +111,7 @@ public class ReminderFragment extends Fragment {
             public void onChange(Realm realm) {
                 //the data is changed.
                 recyclerView.getAdapter().notifyDataSetChanged();
+                tomorrowRecyclerView.getAdapter().notifyDataSetChanged();
             }
         });
 
@@ -101,6 +124,33 @@ public class ReminderFragment extends Fragment {
         } else {
             today.setVisibility(View.GONE);
             todayTitle.setVisibility(View.GONE);
+        }
+
+        //tomorrow
+        c.set(Calendar.DATE, c.get(Calendar.DATE) + 1);
+
+        weekDay++;
+        if (weekDay > 7) {
+            weekDay = 1;
+        }
+        //set tomorrow
+        List<Reminder> tomorrowReminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(c.getTime())).equalTo("repeatFlag", 0).endGroup()
+                .or().beginGroup()
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
+                .contains("repeatWeek", String.valueOf(weekDay))
+                .endGroup()
+                .findAllSorted("time", Sort.ASCENDING);
+        tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders));
+
+        if (reminders.size() > 0) {
+            tomorrowTitle.setVisibility(View.VISIBLE);
+            tomorrow.setVisibility(View.VISIBLE);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
+            String message = sdf.format(date) + " " + Utils.getWeekdayPosition(date);
+            tomorrow.setText(message);
+        } else {
+            tomorrow.setVisibility(View.GONE);
+            tomorrowTitle.setVisibility(View.GONE);
         }
     }
 
