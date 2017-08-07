@@ -51,7 +51,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
 
     @Override
     public int getItemCount() {
-        Log.d("zzw", this + " getItemCount:" + reminders.size());
         return reminders.size();
     }
 

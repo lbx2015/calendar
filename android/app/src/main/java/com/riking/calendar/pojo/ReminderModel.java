@@ -1,17 +1,16 @@
-package com.riking.calendar.realm.model;
+package com.riking.calendar.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.UUID;
 
-import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by zw.zhang on 2017/7/12.
+ * Created by zw.zhang on 2017/8/7.
  */
 
-public class Reminder extends RealmObject {
+public class ReminderModel {
     @PrimaryKey
     @SerializedName("reminderId")
     public String id = UUID.randomUUID().toString();
@@ -43,5 +42,26 @@ public class Reminder extends RealmObject {
     public byte deleteState;
     //0 no remind, 1 remind
     public byte isRemind = 1;
+
+    @Override
+    public String toString() {
+        return "ReminderModel{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", title='" + title + '\'' +
+                ", day='" + day + '\'' +
+                ", time='" + time + '\'' +
+                ", repeatFlag=" + repeatFlag +
+                ", isAllDay=" + isAllDay +
+                ", aheadTime=" + aheadTime +
+                ", endTime=" + endTime +
+                ", repeatWeek='" + repeatWeek + '\'' +
+                ", currentWeek=" + currentWeek +
+                ", deleteState=" + deleteState +
+                ", isRemind=" + isRemind +
+                ", clientType=" + clientType +
+                '}';
+    }
+
     public byte clientType = 2;
 }

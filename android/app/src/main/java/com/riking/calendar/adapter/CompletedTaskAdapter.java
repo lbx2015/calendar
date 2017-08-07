@@ -76,7 +76,6 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
 
     @Override
     public int getItemCount() {
-        Log.d("zzw", this + " getItemCount:" + tasks.size());
         return tasks.size();
     }
 

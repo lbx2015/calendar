@@ -8,15 +8,16 @@
     <EditText
         android:id="@+id/remind_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/input_text_background"
         android:hint="@string/input_rememinds"
         android:padding="10dp"
         android:textColorHint="@color/color_background_b6b6b6"
-        android:textSize="@dimen/normal_text_size" />
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:id="@+id/select_remind_time"

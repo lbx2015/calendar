@@ -1,5 +1,8 @@
 package com.riking.calendar.retrofit;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -18,11 +21,14 @@ public class   APIClient {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         retrofit = new Retrofit.Builder()
 //                .baseUrl("http://www.baidu.com")
-                .baseUrl("https://reqres.in")
-                .addConverterFactory(GsonConverterFactory.create())
+//                .baseUrl("https://reqres.in")
+                .baseUrl("http://172.16.64.85:8281/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .client(client)
                 .build();
 
