@@ -16,7 +16,7 @@ import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
 /**
- * Created by Lucky.Liu on 2017/8/05.
+ * @author Lucky.Liu on 2017/8/05.
  */
 
 @Comment("用户报表")

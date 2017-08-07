@@ -15,9 +15,11 @@ import org.hibernate.annotations.GenericGenerator;
 import net.riking.entity.BaseEntity;
 
 /**
- * @author Lucky.Liu on 2017/8/05.
+ * 
+ * @author lucky.liu
+ * @version crateTime：2017年8月5日 下午5:38:07
+ * @used TODO
  */
-
 @Entity
 @Table(name = "t_app_version")
 public class AppVersion extends BaseEntity {
