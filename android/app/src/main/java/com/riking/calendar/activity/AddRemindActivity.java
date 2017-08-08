@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.google.gson.Gson;
@@ -67,6 +68,13 @@ public class AddRemindActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
         final String id = sdf.format(new Date());
+
+        final String reminderTitle = reminderFragment.remindTitle.getText().toString();
+        if (reminderTitle == null || reminderTitle.trim().equals("")) {
+            Toast.makeText(this, "提醒内容不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
         realm.executeTransaction(new Realm.Transaction() {
@@ -78,14 +86,16 @@ public class AddRemindActivity extends AppCompatActivity {
                     final Reminder reminder = realm.createObject(Reminder.class, id);
                     SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
-                    reminder.title = reminderFragment.remindTitle.getText().toString();
-                    reminder.day = dayFormat.format(reminderFragment.time.getTime());
-                    reminder.time = timeFormat.format(reminderFragment.time.getTime());
+                    reminder.title = reminderTitle;
+                    Date reminderDate = reminderFragment.time.getTime();
+                    reminder.day = dayFormat.format(reminderDate);
+                    reminder.time = timeFormat.format(reminderDate);
                     reminder.repeatFlag = reminderFragment.repeatFlag;
                     reminder.repeatWeek = reminderFragment.repeatWeeks;
                     reminder.aheadTime = reminderFragment.aheadTime;
                     reminder.isRemind = reminderFragment.isRemind;
                     reminder.isAllDay = reminderFragment.isAllDay;
+                    reminder.reminderTime = reminderDate;
                 }
                 //task fragment
                 else {

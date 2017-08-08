@@ -9,6 +9,7 @@
         android:id="@+id/custom_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
         android:background="@color/color_background_f2f2f2"
         android:orientation="vertical">
 
@@ -86,6 +87,25 @@
                 android:textColor="@color/color_818181"
                 android:textSize="12sp" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/future_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/future"
+            android:textColor="@color/color_666666"
+            android:textSize="12sp" />
+
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/future_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:scrollbars="vertical" />
+
 
     </com.riking.calendar.view.CustomLinearLayout>
 

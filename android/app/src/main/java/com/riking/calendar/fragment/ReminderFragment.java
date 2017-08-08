@@ -27,6 +27,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 import io.realm.Sort;
 
 /**
@@ -36,6 +37,7 @@ import io.realm.Sort;
 public class ReminderFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView tomorrowRecyclerView;
+    RecyclerView futureRecyclerView;
     Realm realm;
     ViewPagerActivity a;
     CustomLinearLayout root;
@@ -44,6 +46,7 @@ public class ReminderFragment extends Fragment {
     View todayTitle;
     TextView tomorrow;
     TextView tomorrowTitle;
+    TextView futureTitle;
 
     @Nullable
     @Override
@@ -56,6 +59,7 @@ public class ReminderFragment extends Fragment {
         todayTitle = v.findViewById(R.id.today_title);
         tomorrow = (TextView) v.findViewById(R.id.tomorrow_date);
         tomorrowTitle = (TextView) v.findViewById(R.id.tomorrow_title);
+        futureTitle = (TextView) v.findViewById(R.id.future_title);
 
         setRecyclerView(v);
         root.onDraggingListener = new CustomLinearLayout.OnDraggingListener() {
@@ -85,11 +89,16 @@ public class ReminderFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a));
         tomorrowRecyclerView = (RecyclerView) v.findViewById(R.id.tomorrow_recycler_view);
         tomorrowRecyclerView.setLayoutManager(new LinearLayoutManager(a));
+        futureRecyclerView = (RecyclerView) v.findViewById(R.id.future_recycler_view);
+        futureRecyclerView.setLayoutManager(new LinearLayoutManager(a));
 
         realm = Realm.getDefaultInstance();
-        Date date = new Date();
-        Calendar c = Calendar.getInstance();
+        final Date date = new Date();
+        final Calendar c = Calendar.getInstance();
         c.setTime(date);
+        //tomorrow
+        c.set(Calendar.DATE, c.get(Calendar.DATE) + 1);
+
         int weekDay = c.get(Calendar.DAY_OF_WEEK);
         if (weekDay == Calendar.SUNDAY) {
             weekDay = 7;
@@ -99,7 +108,7 @@ public class ReminderFragment extends Fragment {
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
-        List<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+        RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
@@ -112,24 +121,45 @@ public class ReminderFragment extends Fragment {
             @Override
             public void onChange(Realm realm) {
                 //the data is changed.
-                recyclerView.getAdapter().notifyDataSetChanged();
-                tomorrowRecyclerView.getAdapter().notifyDataSetChanged();
+                RecyclerView.Adapter todayAdapter = recyclerView.getAdapter();
+                todayAdapter.notifyDataSetChanged();
+                RecyclerView.Adapter tomorrowAdapter = tomorrowRecyclerView.getAdapter();
+                tomorrowAdapter.notifyDataSetChanged();
+                RecyclerView.Adapter futureAdapter = futureRecyclerView.getAdapter();
+                futureAdapter.notifyDataSetChanged();
+
+                if (todayAdapter.getItemCount() > 0) {
+                    todayTitle.setVisibility(View.VISIBLE);
+                    today.setVisibility(View.VISIBLE);
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
+                    String message = sdf.format(date) + " " + Utils.getWeekdayPosition(date);
+                    today.setText(message);
+                } else {
+                    today.setVisibility(View.GONE);
+                    todayTitle.setVisibility(View.GONE);
+                }
+
+                if (tomorrowAdapter.getItemCount() > 0) {
+                    tomorrowTitle.setVisibility(View.VISIBLE);
+                    tomorrow.setVisibility(View.VISIBLE);
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
+                    String message = sdf.format(c.getTime()) + " " + Utils.getWeekdayPosition(c.getTime());
+                    tomorrow.setText(message);
+                } else {
+                    tomorrow.setVisibility(View.GONE);
+                    tomorrowTitle.setVisibility(View.GONE);
+                }
+
+                if (futureAdapter.getItemCount() > 0) {
+                    futureTitle.setVisibility(View.VISIBLE);
+                } else {
+                    futureTitle.setVisibility(View.GONE);
+                }
             }
         });
 
-        if (reminders.size() > 0) {
-            todayTitle.setVisibility(View.VISIBLE);
-            today.setVisibility(View.VISIBLE);
-            SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
-            String message = sdf.format(date) + " " + Utils.getWeekdayPosition(date);
-            today.setText(message);
-        } else {
-            today.setVisibility(View.GONE);
-            todayTitle.setVisibility(View.GONE);
-        }
 
-        //tomorrow
-        c.set(Calendar.DATE, c.get(Calendar.DATE) + 1);
+        updateToday(reminders, date);
 
         weekDay++;
         if (weekDay > 7) {
@@ -153,6 +183,35 @@ public class ReminderFragment extends Fragment {
         } else {
             tomorrow.setVisibility(View.GONE);
             tomorrowTitle.setVisibility(View.GONE);
+        }
+
+        //future reminders
+        List<Reminder> futureReminders = realm.where(Reminder.class).beginGroup().equalTo("repeatFlag", 0)
+                .greaterThan("reminderTime", c.getTime())
+                .endGroup().or()
+                .beginGroup()
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
+                .contains("repeatWeek", String.valueOf(weekDay))
+                .endGroup()
+                .findAllSorted("reminderTime", Sort.ASCENDING);
+        futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders));
+        if (futureReminders.size() > 0) {
+            futureTitle.setVisibility(View.VISIBLE);
+        } else {
+            futureTitle.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateToday(RealmResults<Reminder> reminders, Date date) {
+        if (reminders.size() > 0) {
+            todayTitle.setVisibility(View.VISIBLE);
+            today.setVisibility(View.VISIBLE);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
+            String message = sdf.format(date) + " " + Utils.getWeekdayPosition(date);
+            today.setText(message);
+        } else {
+            today.setVisibility(View.GONE);
+            todayTitle.setVisibility(View.GONE);
         }
     }
 

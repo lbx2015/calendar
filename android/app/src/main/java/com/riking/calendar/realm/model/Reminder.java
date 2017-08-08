@@ -1,7 +1,6 @@
 package com.riking.calendar.realm.model;
 
-import com.google.gson.annotations.SerializedName;
-
+import java.util.Date;
 import java.util.UUID;
 
 import io.realm.RealmObject;
@@ -21,6 +20,7 @@ public class Reminder extends RealmObject {
     public String day;
     //the time of the reminder(HHmm)
     public String time;
+    public Date reminderTime;
     //0,1,2,3
     public byte repeatFlag;
     //o false 1 yes
