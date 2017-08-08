@@ -120,10 +120,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public ImageView done;
         public ImageView important;
         public Task task;
+        public TextView remindTime;
 
         public TextView deleteButton;
         public TextView editButton;
-        public TextView remindTime;
         SwipeHorizontalMenuLayout sml;
 
         public MyViewHolder(View view) {
