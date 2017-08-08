@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -34,29 +35,29 @@ import net.riking.service.repo.RemindRepo;
  */
 @RestController
 @RequestMapping(value = "/reminHisApp")
-public class ReminHisController {
+public class ReminHisServer {
 
 	
 	@Autowired
 	RemindHisRepo remindHisRepo;
 	
 	@ApiOperation(value = "用户提醒历史新增/修改", notes = "POST")
-	@RequestMapping(value = "/save_", method = RequestMethod.POST)
-	public Resp save_(@ModelAttribute RemindHis remindHis){
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public Resp save(@RequestBody RemindHis remindHis){
 		remindHis = remindHisRepo.save(remindHis);
 		return new Resp(remindHis, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "批量删除提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore_(@RequestBody String id) {
+	public Resp delMore(@RequestParam("id") String id) {
 		remindHisRepo.delete(id);;
 			return new Resp().setCode(CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "app获取提醒历史信息", notes = "POST")
-	@RequestMapping(value = "/getAllReport_", method = RequestMethod.POST)
-	public Resp getAllReport_(@ModelAttribute RemindHis remindHis) {
+	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
+	public Resp getAllReport(@RequestBody RemindHis remindHis) {
 		PageRequest pageable = new PageRequest(remindHis.getPcount(), remindHis.getPindex(), null);
 		Example<RemindHis> example = Example.of(remindHis, ExampleMatcher.matchingAll());
 		Page<RemindHis> page = remindHisRepo.findAll(example, pageable);

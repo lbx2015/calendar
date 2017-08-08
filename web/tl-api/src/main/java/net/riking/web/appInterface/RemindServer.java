@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ import net.riking.service.repo.RemindRepo;
  */
 @RestController
 @RequestMapping(value = "/remindApp")
-public class RemindController {
+public class RemindServer {
 
 	@Autowired
 	RemindRepo remindRepo;
@@ -36,15 +37,10 @@ public class RemindController {
 	
 	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore_(@RequestBody String id) {
+	public Resp delMore_(@RequestParam("id") String id) {
 		remindRepo.delete(id);;
 			return new Resp().setCode(CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
-	@RequestMapping(value = "/getDay", method = RequestMethod.POST)
-	public Resp getDay(@RequestBody String id) {
-		remindRepo.delete(id);;
-			return new Resp().setCode(CodeDef.SUCCESS);
-	}
+
 }
