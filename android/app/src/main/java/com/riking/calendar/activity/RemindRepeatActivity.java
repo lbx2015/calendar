@@ -15,7 +15,12 @@ import java.util.ArrayList;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class  RemindRepeatActivity extends AppCompatActivity implements View.OnClickListener {
+public class RemindRepeatActivity extends AppCompatActivity implements View.OnClickListener {
+    //1...7
+    public String repeatWeek;
+    //0,1,2,3
+    public byte repeatFlag;
+
     //image of confirm
     private View noRepeatImage;
     private View mondayImage;
@@ -71,6 +76,82 @@ public class  RemindRepeatActivity extends AppCompatActivity implements View.OnC
         perWorkdays.setOnClickListener(this);
         perHolidays.setOnClickListener(this);
         findViewById(R.id.done).setOnClickListener(this);
+        Bundle bundle = getIntent().getExtras();
+        repeatFlag = bundle.getByte("repeat_flag");
+        repeatWeek = bundle.getString("repeat_week");
+        switch (repeatFlag) {
+            case 0: {
+                noRepeatImage.setVisibility(View.VISIBLE);
+                //hide others
+                mondayImage.setVisibility(View.GONE);
+                tuesdayImage.setVisibility(View.GONE);
+                wednesdayImage.setVisibility(View.GONE);
+                thursdayImge.setVisibility(View.GONE);
+                fridayImage.setVisibility(View.GONE);
+                saturdayImage.setVisibility(View.GONE);
+                sundayImage.setVisibility(View.GONE);
+                workDayImage.setVisibility(View.GONE);
+                holidayImage.setVisibility(View.GONE);
+                break;
+            }
+            case 1: {
+                workDayImage.setVisibility(View.VISIBLE);
+                mondayImage.setVisibility(View.GONE);
+                tuesdayImage.setVisibility(View.GONE);
+                wednesdayImage.setVisibility(View.GONE);
+                thursdayImge.setVisibility(View.GONE);
+                fridayImage.setVisibility(View.GONE);
+                saturdayImage.setVisibility(View.GONE);
+                sundayImage.setVisibility(View.GONE);
+                holidayImage.setVisibility(View.GONE);
+                break;
+            }
+            case 2: {
+                holidayImage.setVisibility(View.VISIBLE);
+                mondayImage.setVisibility(View.GONE);
+                tuesdayImage.setVisibility(View.GONE);
+                wednesdayImage.setVisibility(View.GONE);
+                thursdayImge.setVisibility(View.GONE);
+                fridayImage.setVisibility(View.GONE);
+                saturdayImage.setVisibility(View.GONE);
+                sundayImage.setVisibility(View.GONE);
+                workDayImage.setVisibility(View.GONE);
+                break;
+            }
+            case 3: {
+                if (repeatWeek == null) break;
+                noRepeatImage.setVisibility(View.GONE);
+                if (repeatWeek.contains("1")) {
+                    repeatWeekDays.add("1");
+                    mondayImage.setVisibility(View.VISIBLE);
+                }
+                if (repeatWeek.contains("2")) {
+                    repeatWeekDays.add("2");
+                    tuesdayImage.setVisibility(View.VISIBLE);
+                }
+                if (repeatWeek.contains("3")) {
+                    repeatWeekDays.add("3");
+                    wednesdayImage.setVisibility(View.VISIBLE);
+                }
+                if (repeatWeek.contains("4")) {
+                    repeatWeekDays.add("4");
+                    tuesdayImage.setVisibility(View.VISIBLE);
+                }
+                if (repeatWeek.contains("5")) {
+                    repeatWeekDays.add("5");
+                    fridayImage.setVisibility(View.VISIBLE);
+                }
+                if (repeatWeek.contains("6")) {
+                    repeatWeekDays.add("6");
+                    saturdayImage.setVisibility(View.VISIBLE);
+                }
+                if (repeatWeek.contains("7")) {
+                    repeatWeekDays.add("7");
+                    sundayImage.setVisibility(View.VISIBLE);
+                }
+                break;
+            }
+        }
     }
 
     @Override
@@ -224,6 +305,7 @@ public class  RemindRepeatActivity extends AppCompatActivity implements View.OnC
                     repeatWeekDays.clear();
                     workDayImage.setVisibility(View.VISIBLE);
                 }
+                noRepeatImage.setVisibility(View.GONE);
                 mondayImage.setVisibility(View.GONE);
                 tuesdayImage.setVisibility(View.GONE);
                 wednesdayImage.setVisibility(View.GONE);
@@ -242,6 +324,7 @@ public class  RemindRepeatActivity extends AppCompatActivity implements View.OnC
                     repeatWeekDays.clear();
                     holidayImage.setVisibility(View.VISIBLE);
                 }
+                noRepeatImage.setVisibility(View.GONE);
                 mondayImage.setVisibility(View.GONE);
                 tuesdayImage.setVisibility(View.GONE);
                 wednesdayImage.setVisibility(View.GONE);

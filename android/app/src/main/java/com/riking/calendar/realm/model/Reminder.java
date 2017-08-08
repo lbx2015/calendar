@@ -21,14 +21,14 @@ public class Reminder extends RealmObject {
     //the time of the reminder(HHmm)
     public String time;
     public Date reminderTime;
-    //0,1,2,3
-    public byte repeatFlag;
     //o false 1 yes
     public byte isAllDay;
     public int aheadTime;
     public int endTime;
     //1...7
     public String repeatWeek;
+    //0,1,2,3
+    public byte repeatFlag;
     //0-6
     public byte currentWeek;
     public byte deleteState;

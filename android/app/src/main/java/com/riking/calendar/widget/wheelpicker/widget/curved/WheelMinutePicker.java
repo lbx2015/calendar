@@ -49,8 +49,8 @@ public class WheelMinutePicker extends WheelCurvedPicker implements IDigital {
     }
 
     public void setCurrentMinute(int minute) {
-        minute = Math.max(minute, 1);
-        minute = Math.min(minute, 59);
+        minute = Math.max(minute, 0);
+        minute = Math.min(minute, 58);
         this.minute = minute;
         setItemIndex(minute);
     }
