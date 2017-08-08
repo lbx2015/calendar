@@ -38,7 +38,7 @@ public class ReminderFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView tomorrowRecyclerView;
     RecyclerView futureRecyclerView;
-    Realm realm;
+    public Realm realm;
     ViewPagerActivity a;
     CustomLinearLayout root;
     View checkHistoryButton;
@@ -116,7 +116,7 @@ public class ReminderFragment extends Fragment {
                 .findAllSorted("time", Sort.ASCENDING);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        recyclerView.setAdapter(new ReminderAdapter(reminders));
+        recyclerView.setAdapter(new ReminderAdapter(reminders, this));
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
@@ -172,7 +172,7 @@ public class ReminderFragment extends Fragment {
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
                 .findAllSorted("time", Sort.ASCENDING);
-        tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders));
+        tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, this));
 
         if (reminders.size() > 0) {
             tomorrowTitle.setVisibility(View.VISIBLE);
@@ -194,7 +194,7 @@ public class ReminderFragment extends Fragment {
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
                 .findAllSorted("reminderTime", Sort.ASCENDING);
-        futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders));
+        futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders, this));
         if (futureReminders.size() > 0) {
             futureTitle.setVisibility(View.VISIBLE);
         } else {
