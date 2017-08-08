@@ -20,7 +20,7 @@ import net.riking.util.JedisUtil;
 import net.riking.util.SerializeUtil;
 
 /***
- * 系统所有字典或常量数据接口
+ * 系统所有字典或常量数据接口实现
  * @author you.fei
  * @version crateTime：2017年8月5日 下午7:08:44
  * @used TODO
