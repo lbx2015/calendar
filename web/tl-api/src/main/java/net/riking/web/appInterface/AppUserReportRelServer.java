@@ -33,7 +33,7 @@ import net.riking.service.repo.ReportListRepo;
  */
 @RestController
 @RequestMapping(value = "/appUserReport")
-public class AppUserReportRelController {
+public class AppUserReportRelServer {
 
 	@Autowired
 	AppUserReportRepo appUserReportRepo;

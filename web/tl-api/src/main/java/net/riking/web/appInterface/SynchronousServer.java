@@ -28,7 +28,7 @@ import net.riking.service.repo.TodoRepo;
  */
 @RestController
 @RequestMapping(value = "/synchronous")
-public class SynchronousController {
+public class SynchronousServer {
 
 	@Autowired
 	RemindRepo remindRepo;

@@ -7,6 +7,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,15 +27,16 @@ import net.riking.service.repo.ReportListRepo;
  */
 @RestController
 @RequestMapping(value = "/reportListApp")
-public class AppReportListController {
+public class AppReportListServer {
 	@Autowired
 	ReportListRepo reportListRepo;
 	@Autowired
 	AppUserReportRepo appUserReportRepo;
 
 	@ApiOperation(value = "app获取所有的报表", notes = "POST")
-	@RequestMapping(value = "/getAllReport_", method = RequestMethod.POST)
-	public Resp getAllReport_(@ModelAttribute ReportList reportList) {
+	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
+	public Resp getAllReport(@RequestBody ReportList reportList) {
+		reportList.setDeleteState("1");
 		PageRequest pageable = new PageRequest(reportList.getPcount(), reportList.getPindex(), null);
 		if (StringUtils.isEmpty(reportList.getDeleteState())) {
 			reportList.setDeleteState("1");
