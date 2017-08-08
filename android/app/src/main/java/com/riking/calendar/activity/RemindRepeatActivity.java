@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class RemindRepeatActivity extends AppCompatActivity implements View.OnClickListener {
+public class  RemindRepeatActivity extends AppCompatActivity implements View.OnClickListener {
     //image of confirm
     private View noRepeatImage;
     private View mondayImage;

@@ -5,3 +5,5 @@ web/tl-web/.project
 web/tl-api/.project
 web/tl-web/.classpath
 *.classpath
+web/tl-api/target/
+web/tl-web/target/

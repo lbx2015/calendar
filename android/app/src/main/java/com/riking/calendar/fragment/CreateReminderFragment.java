@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.app.Activity.RESULT_FIRST_USER;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -144,7 +145,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Make sure the request was successful
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_FIRST_USER || resultCode == RESULT_OK) {
             Bundle b = data.getExtras();
             // Check which request we're responding to
             if (requestCode == REPEAT_ITEMS) {

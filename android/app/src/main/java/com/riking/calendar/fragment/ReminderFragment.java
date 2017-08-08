@@ -64,6 +64,7 @@ public class ReminderFragment extends Fragment {
                 if (checkHistoryButton.getVisibility() == View.VISIBLE) {
                     checkHistoryButton.setVisibility(View.GONE);
                 }
+                a.bottomTabs.setVisibility(View.GONE);
             }
 
             @Override
@@ -73,6 +74,7 @@ public class ReminderFragment extends Fragment {
 //                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
                 checkHistoryButton.setVisibility(View.VISIBLE);
 //                }
+                a.bottomTabs.setVisibility(View.VISIBLE);
             }
         };
         return v;
@@ -146,7 +148,7 @@ public class ReminderFragment extends Fragment {
             tomorrowTitle.setVisibility(View.VISIBLE);
             tomorrow.setVisibility(View.VISIBLE);
             SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
-            String message = sdf.format(date) + " " + Utils.getWeekdayPosition(date);
+            String message = sdf.format(c.getTime()) + " " + Utils.getWeekdayPosition(c.getTime());
             tomorrow.setText(message);
         } else {
             tomorrow.setVisibility(View.GONE);
