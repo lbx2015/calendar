@@ -1,7 +1,6 @@
 package net.riking.web.appInterface;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
-import net.riking.core.service.DataDictService;
 import net.riking.core.service.repo.ModelPropdictRepo;
+import net.riking.service.SysDataService;
 /**
  * 
  * @author you.fei
@@ -33,13 +32,15 @@ public class ModelPropDictServer {
 	@Autowired
 	ModelPropdictRepo modelPropdictRepo;
 	
+//	@Autowired
+//	DataDictService dataDictService;
 	@Autowired
-	DataDictService dataDictService;
+	SysDataService sysDataservice;
 	
 	@RequestMapping(value = "/{tableName}", method = RequestMethod.POST)
 	public Resp getModelAttrsInfo(@PathVariable(name = "tableName") String tableName, @RequestBody Set<String> fields)
 			throws Exception {
-		List<ModelPropDict> list = dataDictService.getDictsByFields(tableName, fields);
+		List<ModelPropDict> list = sysDataservice.getDictsByFields(tableName, fields);
 		return new Resp(list);
 	}
 	
@@ -48,9 +49,7 @@ public class ModelPropDictServer {
 	public Resp getAddF(@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
-		Set<String> set = new HashSet<String>();
-		set.add("SF");
-		List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
+		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "SF");
 		for (ModelPropDict dict : list) {
 			if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
 				enumKeyValues.add(dict);
@@ -65,10 +64,8 @@ public class ModelPropDictServer {
 			@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
+		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", key);
 		if (StringUtils.isEmpty(key)) {
-			Set<String> set = new HashSet<String>();
-			set.add(key);
-			List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 			for (ModelPropDict dict : list) {
 				boolean flag = false;
 				if (keyword.contains("-")) {
@@ -86,9 +83,6 @@ public class ModelPropDictServer {
 				}
 			}
 		} else {
-			Set<String> set = new HashSet<String>();
-			set.add(key);
-			List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 			for (ModelPropDict dict : list) {
 				if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
 					enumKeyValues.add(dict);
@@ -101,7 +95,7 @@ public class ModelPropDictServer {
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
 	public Resp get(@RequestParam(value = "table") String table, @RequestParam(value = "field") String field,
 			@RequestParam(value = "key") String key) {
-		ModelPropDict dict = dataDictService.getDict(table, field, key);
+		ModelPropDict dict = sysDataservice.getDict(table, field, key);
 		if(dict!=null){
 			return new Resp(dict).setCode(CodeDef.SUCCESS);
 		}

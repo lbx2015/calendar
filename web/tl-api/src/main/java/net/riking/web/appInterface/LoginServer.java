@@ -1,5 +1,7 @@
 package net.riking.web.appInterface;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -13,6 +15,7 @@ import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.web.filter.StartupListener;
 /**
  * 
  * @author you.fei
@@ -22,7 +25,8 @@ import net.riking.service.repo.AppUserRepo;
  */
 @RestController
 public class LoginServer {
-
+	
+	private static final Logger logger = LogManager.getLogger(StartupListener.class);
 	@Autowired
 	AppUserRepo appUserRepo;
 
@@ -46,7 +50,8 @@ public class LoginServer {
 	public Resp getValiCode_(@RequestBody AppUser appUser) {
 		user = appUser;
 		user.setValiCode("1234");
-		return new Resp();
+		logger.info("获取成功");
+		return new Resp("1234",CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "校验验证码", notes = "POST")
@@ -65,6 +70,7 @@ public class LoginServer {
 			}
 			
 		}
+		logger.info("登录成功");
 		return new Resp(appUser2, CodeDef.SUCCESS);
 	}
 

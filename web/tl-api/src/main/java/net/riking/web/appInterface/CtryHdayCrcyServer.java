@@ -22,8 +22,8 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
-import net.riking.core.service.DataDictService;
 import net.riking.entity.model.CtryHdayCrcy;
+import net.riking.service.SysDataService;
 import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ZipFileUtil;
 /**
@@ -39,8 +39,11 @@ public class CtryHdayCrcyServer {
 	@Autowired
 	CtryHdayCrcyRepo crtyHdayCrcyRepo;
 	
+//	@Autowired
+//	DataDictService dataDictService;
+	
 	@Autowired
-	DataDictService dataDictService;
+	SysDataService sysDataservice;
 	
 	public static String  TL_STATIC_ICON_PATH = "static/icon/";
 	
@@ -71,11 +74,11 @@ public class CtryHdayCrcyServer {
 	public Resp getParam_() {
 		Map<String, List<ModelPropDict>> map = new HashMap<String,List<ModelPropDict>>();
 		//币种
-		map.put("crcy",dataDictService.getDicts("T_CTRY_HDAY_CRCY", "CRCY"));
+		map.put("crcy",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "CRCY"));
 		//国家或地区
-		map.put("ctry",dataDictService.getDicts("T_CTRY_HDAY_CRCY", "CTRY"));
+		map.put("ctry",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "CTRY"));
 		//节假日
-		map.put("hday",dataDictService.getDicts("T_CTRY_HDAY_CRCY", "HDAY"));
+		map.put("hday",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "HDAY"));
 		return new Resp(map, CodeDef.SUCCESS);
 	}
 	

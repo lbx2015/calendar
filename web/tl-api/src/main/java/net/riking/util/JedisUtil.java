@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import net.riking.config.RedisConfig;
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.Jedis;
@@ -18,6 +21,7 @@ import redis.clients.util.SafeEncoder;
  * @version crateTime：2017年8月5日 下午4:23:10
  * @used TODO 
  */
+@Component("jedisUtil")
 public class JedisUtil {
 //	private Logger log = Logger.getLogger(this.getClass());    
     /**缓存生存时间 */  
@@ -33,16 +37,15 @@ public class JedisUtil {
     /** 对存储结构为HashMap类型的操作 */  
     public Hash HASH;  
     /** 对存储结构为Set(排序的)类型的操作 */  
-    public SortSet SORTSET;  
+    public SortSet SORTSET;
+    
     private static JedisPool jedisPool = null; 
-    private static RedisConfig redisConfig =  null;
-          
-    private JedisUtil() {     
-         
-    }   
-    static {
+    
+    @Autowired
+    RedisConfig  redisConfig;
+            
+    public void init() {
            JedisPoolConfig config = new JedisPoolConfig();
-           redisConfig = new RedisConfig();
            //控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；    
            //如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。    
            config.setMaxTotal(redisConfig.getMaxTotal());
@@ -52,7 +55,6 @@ public class JedisUtil {
            config.setMaxWaitMillis(redisConfig.getMaxWaitMillis());    
            //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；    
            config.setTestOnBorrow(redisConfig.isTestOnBorrow());
-             
            //redis如果设置了密码：  
            /*jedisPool = new JedisPool(config, JRedisPoolConfig.REDIS_IP,  
                    JRedisPoolConfig.REDIS_PORT, 
@@ -75,16 +77,6 @@ public class JedisUtil {
    }  
       
       
-    private static final JedisUtil jedisUtil = new JedisUtil();  
-      
-  
-   /** 
-    * 获取JedisUtil实例 
-    * @return 
-    */  
-   public static JedisUtil getInstance() {  
-       return jedisUtil;   
-   }  
  
    /** 
     * 回收jedis(放到finally中) 
@@ -1443,7 +1435,7 @@ public class JedisUtil {
        }  
    }   
      
-   public static void main(String[] args) {  
+/*   public static void main(String[] args) {  
        JedisUtil jedisUtil= JedisUtil.getInstance();
        JedisUtil.Strings strings=jedisUtil.new Strings();
        strings.set("nnn", "nnnn");   
@@ -1456,5 +1448,5 @@ public class JedisUtil {
          
        }  
        JedisUtil.getInstance().returnJedis(jedis);     
-   }  
+   }  */
 }
