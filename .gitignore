@@ -1,3 +1,7 @@
 android/app/build/
 *.iml
 android/build/
+web/tl-api/target/
+*.classpath
+*.project
+web/tl-web/target/

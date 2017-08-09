@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
-import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.fragment.ReminderFragment;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.widget.dialog.LookReminderDialog;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +29,7 @@ import io.realm.Realm;
 
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyViewHolder> {
     ReminderFragment fragment;
+
     private List<Reminder> reminders;
 
     public ReminderAdapter(List<Reminder> r, ReminderFragment fragment) {
@@ -94,6 +95,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         });
 
         holder.sml.setSwipeEnable(true);
+        holder.contentRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LookReminderDialog d =  new LookReminderDialog(v.getContext(), r,fragment);
+                d.show();
+            }
+        });
     }
 
     @Override
@@ -108,6 +116,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         public TextView deleteButton;
         public TextView editButton;
         SwipeHorizontalMenuLayout sml;
+        View contentRow;
 
         public MyViewHolder(View view) {
             super(view);
@@ -116,6 +125,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
             deleteButton = (TextView) view.findViewById(R.id.tv_text);
             editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
+            contentRow = view.findViewById(R.id.smContentView);
         }
     }
 }

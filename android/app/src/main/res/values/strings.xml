@@ -75,6 +75,8 @@
     <string name="login_out">Login out</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="future">Future</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 
     <string-array name="subTittles">
         <item>Job</item>
