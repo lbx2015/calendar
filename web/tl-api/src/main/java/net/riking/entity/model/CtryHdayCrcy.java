@@ -19,7 +19,8 @@ import net.riking.core.entity.PageQuery;
 @Entity
 @Table(name = "t_ctry_hday_crcy")
 public class CtryHdayCrcy extends PageQuery {
-//各国节假日币种表
+
+	//各国节假日币种表
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
