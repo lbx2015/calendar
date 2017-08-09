@@ -9,10 +9,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * 
- * @author lucky.liu
- * @version crateTime：2017年8月5日 下午5:38:35
- * @used TODO
+ * @author Lucky.Liu on 2017/8/05.
  */
 @Comment("日历")
 @Entity

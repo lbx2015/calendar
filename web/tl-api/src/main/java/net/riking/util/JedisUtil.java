@@ -54,7 +54,7 @@ public class JedisUtil {
            //表示当borrow(引入)一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException；    
            config.setMaxWaitMillis(redisConfig.getMaxWaitMillis());    
            //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；    
-           config.setTestOnBorrow(redisConfig.isTestOnBorrow());
+           config.setTestOnBorrow(redisConfig.getTestOnBorrow()==1?true:false);
            //redis如果设置了密码：  
            /*jedisPool = new JedisPool(config, JRedisPoolConfig.REDIS_IP,  
                    JRedisPoolConfig.REDIS_PORT, 
