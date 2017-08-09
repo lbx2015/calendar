@@ -30,7 +30,6 @@ import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.CtryHdayCrcy;
-import net.riking.service.SysDataService;
 import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ExcelToList;
 import net.riking.util.ZipFileUtil;
@@ -49,15 +48,11 @@ public class CtryHdayCrcyController {
 	
 	public static String  TL_STATIC_ICON_PATH = "static/icon/";
 	
-	@Autowired
-	SysDataService sysDataservice;
-	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
-		//CtryHdayCrcy ctryHdayCrcy = crtyHdayCrcyRepo.findOne(id);
-		CtryHdayCrcy ctryHdayCrcy = sysDataservice.getCtryHdayCrcy(id);
-		return new Resp(ctryHdayCrcy, CodeDef.SUCCESS);
+		CtryHdayCrcy crtyHdayCrcy = crtyHdayCrcyRepo.findOne(id);
+		return new Resp(crtyHdayCrcy, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "GET")
