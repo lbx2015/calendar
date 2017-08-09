@@ -12,12 +12,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.ReportList;
+/**
+ * 
+ * @author lucky.liu
+ * @version crateTime：2017年8月9日 上午10:33:38
+ * @used TODO
+ */
 @Repository
 public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSpecificationExecutor<ReportList> {
-	
-	/**
-	 * @author Lucky.Liu on 2017/8/05.
-	 */
+
 
 	@Query(" from ReportList  where Id in ?1 and deleteState = '1'  ")
 	List<ReportList> findbyReoprtId(Set<String> reoprtId);

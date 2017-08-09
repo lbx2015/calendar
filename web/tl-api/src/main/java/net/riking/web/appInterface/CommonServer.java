@@ -13,9 +13,9 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.entity.model.AppVersion;
+import net.riking.service.impl.GetDateServiceImpl;
 import net.riking.service.repo.AppVersionRepo;
 import net.riking.service.repo.ReportListRepo;
-import net.riking.service.repo.impl.GetDateServiceImpl;
 
 /**
  * app的公用接口
