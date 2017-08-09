@@ -28,4 +28,8 @@ public class RemindHistory extends RealmObject {
     //the time of the reminder(HHmm)
     @SerializedName("start_time")
     public String time;
+    //0 no remind, 1 remind
+    public byte isRemind = 1;
+    public byte client_type = 2;
+
 }

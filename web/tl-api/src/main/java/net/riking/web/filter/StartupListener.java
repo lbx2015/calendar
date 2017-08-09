@@ -18,10 +18,13 @@ import net.riking.core.service.DataDictService;
 import net.riking.core.utils.IOUtils;
 import net.riking.core.workflow.Workflow;
 import net.riking.core.workflow.WorkflowMgr;
+import net.riking.service.impl.SysDataServiceImpl;
+import net.riking.util.JedisUtil;
 
 @Component
 public class StartupListener implements ServletContextListener {
-	private static final Logger logger = LogManager.getLogger(StartupListener.class);
+	private static final Logger logger = LogManager
+			.getLogger(StartupListener.class);
 
 	@Autowired
 	WorkflowMgr workflowMgr;
@@ -30,7 +33,12 @@ public class StartupListener implements ServletContextListener {
 
 	@Autowired
 	DataDictService dataDictService;
+
+	@Autowired
+	SysDataServiceImpl sysDataServiceImpl;
 	
+	@Autowired
+	JedisUtil jedisUtil;
 
 	/**
 	 * {@inheritDoc}
@@ -45,17 +53,22 @@ public class StartupListener implements ServletContextListener {
 		}
 
 		dataDictService.init();
+		jedisUtil.init();
+		sysDataServiceImpl.initData();
 	}
 
-	
-	private void initWorkflow(ServletContextEvent event) throws InterruptedException {
-		InputStream tempIs = StartupListener.class.getResourceAsStream("/workflow.json");
+	private void initWorkflow(ServletContextEvent event)
+			throws InterruptedException {
+		InputStream tempIs = StartupListener.class
+				.getResourceAsStream("/workflow.json");
 		if (tempIs != null) {
 			try {
 				String str = IOUtils.readStreamAsString(tempIs, "utf-8");
 				workflowMgr.addWorkflows(str);
-				Workflow workflow = workflowMgr.getWorkflow(config.getAmlWorkId());
-				Workflow baseInfoWorkflow = workflowMgr.getWorkflow(config.getBaseInfoWorkId());
+				Workflow workflow = workflowMgr
+						.getWorkflow(config.getAmlWorkId());
+				Workflow baseInfoWorkflow = workflowMgr
+						.getWorkflow(config.getBaseInfoWorkId());
 				logger.info("--------------workflow init");
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();

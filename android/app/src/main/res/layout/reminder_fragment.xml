@@ -2,12 +2,14 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="48dp"
     android:background="@color/color_background_f2f2f2">
 
     <com.riking.calendar.view.CustomLinearLayout
         android:id="@+id/custom_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
         android:background="@color/color_background_f2f2f2"
         android:orientation="vertical">
 
@@ -23,25 +25,88 @@
             android:id="@+id/today_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3.3dp"
-            android:layout_marginLeft="13.3dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="15dp"
             android:text="@string/today"
-            android:textColor="@color/color_666666" />
+            android:textColor="@color/color_666666"
+            android:textSize="12sp" />
+
+
+        <com.tubb.smrv.SwipeMenuRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:background="@android:color/white">
+
+            <TextView
+                android:id="@+id/today_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="19dp"
+                android:textColor="@color/color_818181"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tomorrow_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/tomorrow"
+            android:textColor="@color/color_666666"
+            android:textSize="12sp" />
 
 
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/recycler_view"
+            android:id="@+id/tomorrow_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:background="@android:color/white">
+
+            <TextView
+                android:id="@+id/tomorrow_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="19dp"
+                android:textColor="@color/color_818181"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/future_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/future"
+            android:textColor="@color/color_666666"
+            android:textSize="12sp" />
+
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/future_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"
             android:scrollbars="vertical" />
 
-        <TextView
-            android:id="@+id/today_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_818181" />
+
     </com.riking.calendar.view.CustomLinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

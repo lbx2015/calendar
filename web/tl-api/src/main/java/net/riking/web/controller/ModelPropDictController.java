@@ -1,7 +1,6 @@
 package net.riking.web.controller;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,9 +45,7 @@ public class ModelPropDictController {
 	
 	@RequestMapping(value = "/getEmailSuffix", method = RequestMethod.GET)
 	public Resp getEmailSuffix(@RequestParam(value = "prop", required = false) String prop){
-		HashSet<String> set = new HashSet<String>();
-		set.add("EMAILSUFFIX");
-		List<ModelPropDict> datas = modelPropdictRepo.getDatas("T_APP_USER",set);
+		List<ModelPropDict> datas = dataDictService.getDicts("T_APP_USER","EMAILSUFFIX");
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
 		for (ModelPropDict data : datas) {
 			EnumCustom enumCustom = new EnumCustom();
@@ -64,9 +61,7 @@ public class ModelPropDictController {
 	public Resp getAddF(@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
-		Set<String> set = new HashSet<String>();
-		set.add("SF");
-		List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
+		List<ModelPropDict> list = dataDictService.getDicts("T_APP_USER", "SF");
 		for (ModelPropDict dict : list) {
 			if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
 				EnumCustom enumCustom = new EnumCustom();
@@ -85,10 +80,8 @@ public class ModelPropDictController {
 			@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
+		List<ModelPropDict> list = dataDictService.getDicts("T_APP_USER", key);
 		if (StringUtils.isEmpty(key)) {
-			Set<String> set = new HashSet<String>();
-			set.add(key);
-			List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 			for (ModelPropDict dict : list) {
 				boolean flag = false;
 				if (keyword.contains("-")) {
@@ -110,9 +103,6 @@ public class ModelPropDictController {
 				}
 			}
 		} else {
-			Set<String> set = new HashSet<String>();
-			set.add(key);
-			List<ModelPropDict> list = dataDictService.getDictsByFields("T_APP_USER", set);
 			for (ModelPropDict dict : list) {
 				if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())) {
 					EnumCustom enumCustom = new EnumCustom();
@@ -138,9 +128,7 @@ public class ModelPropDictController {
 	
 	@RequestMapping(value = "/getPhoneType", method = RequestMethod.GET)
 	public Resp getPhoneType() throws Exception {
-		Set<String> set = new HashSet<String>();
-		set.add("PHONETYPE");
-		List<ModelPropDict> list = dataDictService.getDictsByFields("T_CTRY_HDAY_CRCY", set);
+		List<ModelPropDict> list = dataDictService.getDicts("T_CTRY_HDAY_CRCY", "PHONETYPE");
 		return new Resp(list);
 	}
 }

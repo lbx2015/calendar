@@ -15,8 +15,8 @@ public class WheelMinutePicker extends WheelCurvedPicker implements IDigital {
     private static final List<String> MINUTES_DIGITAL_DOUBLE = new ArrayList<>();
 
     static {
-        for (int i = 0; i < 60; i++) MINUTES_DIGITAL_SINGLE.add(String.valueOf(i));
-        for (int i = 0; i < 60; i++) {
+        for (int i = 1; i < 60; i++) MINUTES_DIGITAL_SINGLE.add(String.valueOf(i));
+        for (int i = 1; i < 60; i++) {
             String num = String.valueOf(i);
             if (num.length() == 1) {
                 num = "0" + num;
@@ -25,9 +25,8 @@ public class WheelMinutePicker extends WheelCurvedPicker implements IDigital {
         }
     }
 
-    private List<String> minutes = MINUTES_DIGITAL_SINGLE;
-
     public int minute;
+    private List<String> minutes = MINUTES_DIGITAL_SINGLE;
 
     public WheelMinutePicker(Context context) {
         super(context);
@@ -51,7 +50,7 @@ public class WheelMinutePicker extends WheelCurvedPicker implements IDigital {
 
     public void setCurrentMinute(int minute) {
         minute = Math.max(minute, 0);
-        minute = Math.min(minute, 59);
+        minute = Math.min(minute, 58);
         this.minute = minute;
         setItemIndex(minute);
     }

@@ -8,15 +8,16 @@
     <EditText
         android:id="@+id/remind_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/input_text_background"
         android:hint="@string/input_rememinds"
         android:padding="10dp"
         android:textColorHint="@color/color_background_b6b6b6"
-        android:textSize="@dimen/normal_text_size" />
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:id="@+id/select_remind_time"
@@ -49,7 +50,6 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/select_time_narrow"
-            android:text="2017-07-19 19:00"
             android:textColor="@color/color_323232" />
 
         <ImageView

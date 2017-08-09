@@ -45,7 +45,6 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
 
     @Override
     public int getItemCount() {
-        Log.d("zzw", this + " getItemCount:" + vocationList.size());
         return vocationList.size();
     }
 

@@ -1,8 +1,10 @@
 package com.riking.calendar.retrofit;
 
 import com.riking.calendar.pojo.MultipleResource;
+import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
+import com.riking.calendar.realm.model.Reminder;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -35,4 +37,8 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("/api/users?")
     Call<UserList> doCreateUserWithField(@Field("name") String name, @Field("job") String job);
+
+
+    @POST("/remindApp/save")
+    Call<ResponseBody> createRemind(@Body ReminderModel reminder);
 }

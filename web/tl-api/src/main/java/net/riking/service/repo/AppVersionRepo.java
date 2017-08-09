@@ -1,5 +1,6 @@
 package net.riking.service.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -24,5 +25,5 @@ public interface AppVersionRepo extends JpaRepository<AppVersion, String>, JpaSp
 	int deleteById(Set<String> ids);
 	
 	
-	AppVersion findFirstByDeleteStateOrderByRenewalTime(String deletestate);
+	List<AppVersion> findFirstByDeleteStateOrderByRenewalTime(String deletestate);
 }

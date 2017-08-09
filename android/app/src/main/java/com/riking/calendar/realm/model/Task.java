@@ -38,5 +38,6 @@ public class Task extends RealmObject {
     public Date completeDay;
     @SerializedName("created_date")
     public Date createTime;
+    public byte client_type = 2;
 
 }
