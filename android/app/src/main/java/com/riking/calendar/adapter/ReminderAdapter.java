@@ -52,11 +52,15 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         String HH = r.time.substring(0, 2);
         holder.time.setText(HH + ":" + mm);
         holder.title.setText(r.title);
-
+        Date today = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         //set a different color for the future reminders.
-        if (DateUtil.get(r.day, r.time).compareTo(new Date()) > 0) {
+        if (DateUtil.get(r.day, r.time).compareTo(today) > 0 && r.day.equals(dateFormat.format(today))) {
             holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_29a1f7));
             holder.title.setTextColor(ContextCompat.getColor(holder.title.getContext(), R.color.color_323232));
+        } else {
+            holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_888888));
+            holder.title.setTextColor(ContextCompat.getColor(holder.title.getContext(), R.color.color_888888));
         }
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +102,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         holder.contentRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LookReminderDialog d =  new LookReminderDialog(v.getContext(), r,fragment);
+                LookReminderDialog d = new LookReminderDialog(v.getContext(), r, fragment);
                 d.show();
             }
         });
