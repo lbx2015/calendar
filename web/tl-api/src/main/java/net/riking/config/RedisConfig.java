@@ -22,7 +22,7 @@ public class RedisConfig {
 	//表示当borrow(引入)一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException
 	private int maxWaitMillis;
 	//在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的
-	private boolean testOnBorrow;
+	private Integer testOnBorrow;
 	//缓存生存时间
 	private int expire;
 	
@@ -56,10 +56,11 @@ public class RedisConfig {
 	public void setMaxWaitMillis(int maxWaitMillis) {
 		this.maxWaitMillis = maxWaitMillis;
 	}
-	public boolean isTestOnBorrow() {
+	
+	public Integer getTestOnBorrow() {
 		return testOnBorrow;
 	}
-	public void setTestOnBorrow(boolean testOnBorrow) {
+	public void setTestOnBorrow(Integer testOnBorrow) {
 		this.testOnBorrow = testOnBorrow;
 	}
 	public int getExpire() {

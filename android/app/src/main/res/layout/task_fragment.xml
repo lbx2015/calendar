@@ -61,7 +61,8 @@
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:text="@string/quick_add"
-                        android:textColor="@color/color_929292" />
+                        android:textColor="@color/color_929292"
+                        android:textSize="15sp" />
 
                     <RelativeLayout
                         android:id="@+id/quick_add_frame_layout"
@@ -74,15 +75,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@android:color/transparent"
-                            android:hint="@string/quick_add" />
+                            android:hint="@string/quick_add"
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/quick_add_confirm_button"
                             android:layout_width="50dp"
                             android:layout_height="30dp"
-                            android:layout_gravity="right|end"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
+                            android:layout_gravity="right|end"
                             android:layout_marginBottom="10dp"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/rounded_corner"

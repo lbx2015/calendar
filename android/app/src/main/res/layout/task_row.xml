@@ -13,16 +13,18 @@
     <RelativeLayout
         android:id="@+id/smContentView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:layout_height="52dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/done"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_alignParentLeft="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="19dp" />
 
         <TextView
             android:id="@+id/title"
@@ -38,7 +40,7 @@
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp" />
+            android:layout_marginRight="19dp" />
 
         <TextView
             android:id="@+id/remind_time"
@@ -52,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="54dp"
             android:background="@color/divider_color_d9d9d9" />
     </RelativeLayout>
 

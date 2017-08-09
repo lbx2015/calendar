@@ -43,6 +43,26 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
         remindAccurately.setOnClickListener(this);
         customRemind.setOnClickListener(this);
         findViewById(R.id.done).setOnClickListener(this);
+
+        Bundle bundle = getIntent().getExtras();
+        isRemind = bundle.getByte("is_remind");
+        aheadOfTime = bundle.getByte("ahead_time");
+        if (isRemind == 1) {
+            accurateRemindImage.setVisibility(View.VISIBLE);
+            notRemindImage.setVisibility(View.GONE);
+            customRemindImage.setVisibility(View.GONE);
+            minutePickerItem.setVisibility(View.GONE);
+        } else if (aheadOfTime > 0) {
+            notRemindImage.setVisibility(View.GONE);
+            accurateRemindImage.setVisibility(View.GONE);
+            customRemindImage.setVisibility(View.VISIBLE);
+            minutePickerItem.setVisibility(View.VISIBLE);
+        } else {
+            notRemindImage.setVisibility(View.VISIBLE);
+            accurateRemindImage.setVisibility(View.GONE);
+            customRemindImage.setVisibility(View.GONE);
+            minutePickerItem.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -54,7 +74,6 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
             }
             case R.id.not_remind_item: {
                 if (notRemindImage.getVisibility() == View.VISIBLE) break;
-
                 isRemind = 0;
                 aheadOfTime = 0;
                 notRemindImage.setVisibility(View.VISIBLE);
@@ -65,7 +84,6 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
             }
             case R.id.remind_accurate_item: {
                 if (accurateRemindImage.getVisibility() == View.VISIBLE) break;
-
                 isRemind = 1;
                 aheadOfTime = 0;
                 notRemindImage.setVisibility(View.GONE);
@@ -76,7 +94,8 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
             }
             case R.id.custom_remind_item: {
                 if (customRemindImage.getVisibility() == View.VISIBLE) break;
-
+                //back the init status
+                wmp.setCurrentMinute(aheadOfTime);
                 isRemind = 1;
                 aheadOfTime = wmp.minute;
                 notRemindImage.setVisibility(View.GONE);
@@ -85,7 +104,7 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
                 minutePickerItem.setVisibility(View.VISIBLE);
                 break;
             }
-            case R.id.done:{
+            case R.id.done: {
                 Intent i = new Intent();
                 i.putExtra("isRemind", isRemind);//0,1
                 i.putExtra("aheadOfTime", aheadOfTime);

@@ -13,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
 public class ReminderModel {
     @PrimaryKey
     @SerializedName("reminderId")
-    public String id = UUID.randomUUID().toString();
+    public String id;
     public String userId;
     //The title of the reminder
     @SerializedName("content")

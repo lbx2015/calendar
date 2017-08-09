@@ -91,7 +91,7 @@ public class AddRemindActivity extends AppCompatActivity {
                     reminder.day = dayFormat.format(reminderDate);
                     reminder.time = timeFormat.format(reminderDate);
                     reminder.repeatFlag = reminderFragment.repeatFlag;
-                    reminder.repeatWeek = reminderFragment.repeatWeeks;
+                    reminder.repeatWeek = reminderFragment.repeatWeek;
                     reminder.aheadTime = reminderFragment.aheadTime;
                     reminder.isRemind = reminderFragment.isRemind;
                     reminder.isAllDay = reminderFragment.isAllDay;
