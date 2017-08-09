@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.SysDataService;
+import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ZipFileUtil;
 /**
  * app各国节假日币种接口
@@ -32,8 +35,8 @@ import net.riking.util.ZipFileUtil;
 @RestController
 @RequestMapping(value = "/ctryHdayCrcyApp")
 public class CtryHdayCrcyServer {
-//	@Autowired
-//	CtryHdayCrcyRepo crtyHdayCrcyRepo;
+	@Autowired
+	CtryHdayCrcyRepo crtyHdayCrcyRepo;
 	
 //	@Autowired
 //	DataDictService dataDictService;
@@ -46,8 +49,8 @@ public class CtryHdayCrcyServer {
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
 	public Resp get_(@RequestParam("id") String id) {
-//		CtryHdayCrcy ctryHdayCrcy = crtyHdayCrcyRepo.findOne(id);
-		CtryHdayCrcy ctryHdayCrcy = sysDataservice.getCtryHdayCrcy(id);
+		CtryHdayCrcy ctryHdayCrcy = crtyHdayCrcyRepo.findOne(id);
+//		CtryHdayCrcy ctryHdayCrcy = sysDataservice.getCtryHdayCrcy(id);
 		return new Resp(ctryHdayCrcy, CodeDef.SUCCESS);
 	}
 	
@@ -55,14 +58,14 @@ public class CtryHdayCrcyServer {
 	@RequestMapping(value = "/getMore", method = RequestMethod.POST)
 	public Resp getMore(@RequestBody CtryHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(), crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
-//		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
-//			crtyHdayCrcy.setDeleteState("1");
-//		}
-//		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
-//		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
+		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
+			crtyHdayCrcy.setDeleteState("1");
+		}
+		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
+		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
 		
-		List<CtryHdayCrcy> list = sysDataservice.getMoreCtryHdayCrcy(crtyHdayCrcy);
-		Page<CtryHdayCrcy> page = new PageImpl<CtryHdayCrcy>(list,pageable,list.size());
+//		List<CtryHdayCrcy> list = sysDataservice.getMoreCtryHdayCrcy(crtyHdayCrcy);
+//		Page<CtryHdayCrcy> page = new PageImpl<CtryHdayCrcy>(list,pageable,list.size());
 		//将压缩包解压
 		this.getIcon();
 		return new Resp(page, CodeDef.SUCCESS);
