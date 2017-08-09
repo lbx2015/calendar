@@ -13,8 +13,8 @@ public interface SysDataService {
 	
 	public List<ModelPropDict> getDictsByFields(String table,Collection<String> fields);
 	
-	public CtryHdayCrcy getCtryHdayCrcy(String id);
-	
-	public List<CtryHdayCrcy> getMoreCtryHdayCrcy(CtryHdayCrcy chc);
+//	public CtryHdayCrcy getCtryHdayCrcy(String id);
+//	
+//	public List<CtryHdayCrcy> getMoreCtryHdayCrcy(CtryHdayCrcy chc);
 	
 }
