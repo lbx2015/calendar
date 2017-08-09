@@ -2,28 +2,26 @@ package net.riking.entity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import net.riking.entity.PageQuery;
 
+/**
+ * 
+ * @author lucky.liu
+ * @version crateTime：2017年8月9日 下午4:35:23
+ * @used TODO
+ */
 @Entity
 @Table(name = "t_remind_his")
 public class RemindHis extends PageQuery {
 
-	/**
-	 * @author Lucky.Liu on 2017/8/05.
-	 */
-
+	// 手机端时间戳：yyyyMMddHHmmssSSS
 	@Id
-	@Column(name = "Id", length = 32)
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@GeneratedValue(generator = "system-uuid")
-	private String id;
+	@Column(name = "remind_his_id", length = 17)
+	private String remindHisId;
 
 	// 用户Id
 	@Column(name = "user_id", length = 32)
@@ -41,8 +39,21 @@ public class RemindHis extends PageQuery {
 	@Column(name = "str_date", length = 8)
 	private String strDate;
 
+	// 同步标识app端数据状态
 	@Transient
 	private int deleteState;
+
+	// 客户端数据来源：1-IOS;2-Android;3-其它
+	@Column(name = "client_type", length = 1)
+	private String clientType;
+
+	public String getClientType() {
+		return clientType;
+	}
+
+	public void setClientType(String clientType) {
+		this.clientType = clientType;
+	}
 
 	public int getDeleteState() {
 		return deleteState;
@@ -52,12 +63,12 @@ public class RemindHis extends PageQuery {
 		this.deleteState = deleteState;
 	}
 
-	public String getId() {
-		return id;
+	public String getRemindHisId() {
+		return remindHisId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setRemindHisId(String remindHisId) {
+		this.remindHisId = remindHisId;
 	}
 
 	public String getUserId() {
@@ -94,8 +105,9 @@ public class RemindHis extends PageQuery {
 
 	@Override
 	public String toString() {
-		return "RemindHis [id=" + id + ", userId=" + userId + ", content=" + content + ", startTime=" + startTime
-				+ ", strDate=" + strDate + "]";
+		return "RemindHis [remindHisId=" + remindHisId + ", userId=" + userId + ", content=" + content + ", startTime="
+				+ startTime + ", strDate=" + strDate + ", deleteState=" + deleteState + ", clientType=" + clientType
+				+ "]";
 	}
 
 }

@@ -82,7 +82,7 @@ public class SecondFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         List<Vocation> vocations = realm.where(Vocation.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new VocationRecyclerViewAdapter(vocations));
         return v;
     }

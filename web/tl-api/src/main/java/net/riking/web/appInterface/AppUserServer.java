@@ -14,11 +14,10 @@ import net.riking.core.entity.Resp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
 /**
- * 
+ * app用户信息操作
  * @author you.fei
  * @version crateTime：2017年8月5日 下午4:31:03
  * @used TODO
- * app用户信息操作
  */
 @RestController
 @RequestMapping(value = "/appUserApp")
