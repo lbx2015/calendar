@@ -19,11 +19,10 @@ import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.service.SysDataService;
 /**
- * 
+ * App数据字典接口
  * @author you.fei
  * @version crateTime：2017年8月5日 下午4:33:43
  * @used TODO
- * App数据字典接口
  */
 @RestController
 @RequestMapping(value = "/modelPropDictApp")
