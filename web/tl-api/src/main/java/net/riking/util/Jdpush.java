@@ -22,9 +22,9 @@ public class Jdpush {
 
 	// demo App defined in resources/jpush-api.conf
 
-	public static final String TITLE = "申通快递";
-	public static final String ALERT = "祝大家新春快乐";
-	public static final String MSG_CONTENT = "申通快递祝新老客户新春快乐";
+	public static final String TITLE = "悦锦软件";
+	public static final String ALERT = "台历App";
+	public static final String MSG_CONTENT = "极光测试";
 	public static final String REGISTRATION_ID = "0900e8d85ef";
 	public static final String TAG = "tag_api";
 
@@ -33,7 +33,7 @@ public class Jdpush {
 	
 	public static void testSendPush(String appKey, String masterSecret) {
 		jpushClient = new JPushClient(masterSecret, appKey, 3);
-		PushPayload payload = buildPushObject_all_alias_alert();
+		PushPayload payload = buildPushObject_ios_tagAnd_alertWithExtrasAndMessage();
 		try {
 			System.out.println(payload.toString());
 			PushResult result = jpushClient.sendPush(payload);
@@ -88,6 +88,7 @@ public class Jdpush {
 				.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
 	}
 
+	//自定义消息
 	public static PushPayload buildPushObject_ios_audienceMore_messageWithExtras() {
 		return PushPayload.newBuilder().setPlatform(Platform.android_ios())
 				.setAudience(Audience.newBuilder().addAudienceTarget(AudienceTarget.tag("tag1", "tag2"))
