@@ -12,12 +12,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.AppVersion;
+/**
+ * 
+ * @author lucky.liu
+ * @version crateTime：2017年8月9日 上午10:32:54
+ * @used TODO
+ */
 @Repository
 public interface AppVersionRepo extends JpaRepository<AppVersion, String>, JpaSpecificationExecutor<AppVersion>{
 	
-	/**
-	 * @author Lucky.Liu on 2017/8/05.
-	 */
 	
 	@Transactional
 	@Modifying

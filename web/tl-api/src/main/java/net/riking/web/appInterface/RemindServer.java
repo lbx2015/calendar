@@ -1,5 +1,7 @@
 package net.riking.web.appInterface;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,17 +32,23 @@ public class RemindServer {
 	
 	@ApiOperation(value = "用户提醒新增/修改", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Resp save_(@RequestBody Remind remind){
+	public Resp save(@RequestBody Remind remind){
 		remind = remindRepo.save(remind);
 		return new Resp(remind, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore_(@RequestParam("id") String id) {
+	public Resp delMore(@RequestParam("id") String id) {
 		remindRepo.delete(id);;
 			return new Resp().setCode(CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "获取一天提醒信息", notes = "POST")
+	@RequestMapping(value = "/getDay", method = RequestMethod.POST)
+	public Resp getDay(@RequestParam("userId") String userId,@RequestParam("date") String date,@RequestParam("currWeek") String currWeek,@RequestParam("repeatFlag") Integer repeatFlag) {
+		List<Remind> reminds = remindRepo.findOneDay(userId, date, currWeek, repeatFlag);
+			return new Resp(reminds,CodeDef.SUCCESS);
+	}
 
 }

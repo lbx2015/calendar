@@ -289,8 +289,8 @@ public class FirstFragment extends Fragment {
         gridView.setGravity(Gravity.CENTER_VERTICAL);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         // 去除gridView边框
-        gridView.setVerticalSpacing(1);
-        gridView.setHorizontalSpacing(1);
+        gridView.setVerticalSpacing(0);
+        gridView.setHorizontalSpacing(0);
         gridView.setOnTouchListener(new View.OnTouchListener() {
             // 将gridview中的触摸事件回传给gestureDetector
 
