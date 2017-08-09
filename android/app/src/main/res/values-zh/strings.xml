@@ -53,6 +53,8 @@
     <string name="login_out">退出登录</string>
     <string name="tomorrow">明天</string>
     <string name="future">以后</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>

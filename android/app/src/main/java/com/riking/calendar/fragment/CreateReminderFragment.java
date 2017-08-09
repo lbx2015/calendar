@@ -166,7 +166,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                     time.set(Calendar.HOUR_OF_DAY, 8);
                     time.set(Calendar.MINUTE, 0);
                 } else {
-                    time.set(Calendar.HOUR, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
+                    time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
                     time.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
                 }
 
