@@ -6,9 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import net.riking.entity.PageQuery;
+
 @Entity
 @Table(name = "t_todo")
-public class Todo {
+public class Todo extends PageQuery{
 	
 	/**代办事项实体类
 	 * @author Lucky.Liu on 2017/8/05.
