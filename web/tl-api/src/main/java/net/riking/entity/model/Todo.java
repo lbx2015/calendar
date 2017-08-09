@@ -6,21 +6,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import net.riking.core.entity.PageQuery;
-
 @Entity
 @Table(name = "t_todo")
-public class Todo extends PageQuery {
-
-	/**
-	 * 代办事项实体类
-	 * 
+public class Todo {
+	
+	/**代办事项实体类
 	 * @author Lucky.Liu on 2017/8/05.
 	 */
-	// 手机端时间戳：yyyyMMddHHmmssSSS
+	
 	@Id
 	@Column(name = "todo_id", length = 17)
-	private String todoId;
+	private String todo_Id;
 
 	// 用户Id
 	@Column(name = "user_id", length = 32)
@@ -53,14 +49,10 @@ public class Todo extends PageQuery {
 	// 完成时间（yyyyMMddHHmm）
 	@Column(name = "complete_date", length = 12)
 	private String completeDate;
-
-	// 同步标识app端数据状态
+	
 	@Transient
 	private int deleteState;
-
-	// 客户端数据来源：1-IOS;2-Android;3-其它
-	@Column(name = "client_type", length = 1)
-	private String clientType;
+	
 
 	public int getDeleteState() {
 		return deleteState;
@@ -70,20 +62,12 @@ public class Todo extends PageQuery {
 		this.deleteState = deleteState;
 	}
 
-	public String getTodoId() {
-		return todoId;
+	public String getTodo_Id() {
+		return todo_Id;
 	}
 
-	public void setTodoId(String todoId) {
-		this.todoId = todoId;
-	}
-
-	public String getClientType() {
-		return clientType;
-	}
-
-	public void setClientType(String clientType) {
-		this.clientType = clientType;
+	public void setTodo_Id(String todo_Id) {
+		this.todo_Id = todo_Id;
 	}
 
 	public String getUserId() {
@@ -152,10 +136,10 @@ public class Todo extends PageQuery {
 
 	@Override
 	public String toString() {
-		return "Todo [todoId=" + todoId + ", userId=" + userId + ", content=" + content + ", isImportant=" + isImportant
-				+ ", isOpen=" + isOpen + ", strDate=" + strDate + ", appCreatedTime=" + appCreatedTime + ", isComplete="
-				+ isComplete + ", completeDate=" + completeDate + ", deleteState=" + deleteState + ", clientType="
-				+ clientType + "]";
+		return "Todo [todo_Id=" + todo_Id + ", userId=" + userId + ", content=" + content + ", isImportant="
+				+ isImportant + ", isOpen=" + isOpen + ", strDate=" + strDate + ", appCreatedTime=" + appCreatedTime
+				+ ", isComplete=" + isComplete + ", completeDate=" + completeDate + "]";
 	}
+	
 
 }
