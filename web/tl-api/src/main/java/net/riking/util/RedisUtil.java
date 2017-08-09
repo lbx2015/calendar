@@ -37,7 +37,6 @@ public class RedisUtil {
 		initialShardedPool();
 		shardedJedis = shardedJedisPool.getResource();
 		jedis = jedisPool.getResource();
-
 	}
 	
 	public static RedisUtil getInstall(){
@@ -273,6 +272,38 @@ public class RedisUtil {
 		byte[] in = getJedis().get(key.getBytes());
 		Map<String, T> map = (Map<String, T>) SerializeUtil.unserialize(in);
 		return map;
+	}
+	
+	/**
+	 * 设置 map
+	 * 
+	 * @param <T>
+	 * @param key
+	 * @param value
+	 */
+	public static <T> void setObject(String key, T t) {
+		try {
+			getJedis().set(key.getBytes(), SerializeUtil.serialize(t));
+		} catch (Exception e) {
+			logger.warn("Set key error : " + e);
+		}
+	}
+
+	/**
+	 * 获取list
+	 * 
+	 * @param <T>
+	 * @param key
+	 * @return list
+	 */
+	public static <T> T getObject(String key) {
+		String bKey = buildKey(key);
+		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
+			return null;
+		}
+		byte[] in = getJedis().get(key.getBytes());
+		T t = (T) SerializeUtil.unserialize(in);
+		return t;
 	}
 
 	/** #####################redis-API常用操作############################### */

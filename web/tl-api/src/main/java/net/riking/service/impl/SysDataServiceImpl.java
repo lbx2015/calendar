@@ -12,12 +12,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.core.utils.ExceptUtils;
 import net.riking.service.SysDataService;
-import net.riking.util.JedisUtil;
-import net.riking.util.SerializeUtil;
+import net.riking.util.RedisUtil;
 
 /***
  * 系统所有字典或常量数据接口实现
@@ -32,47 +32,55 @@ public class SysDataServiceImpl implements SysDataService {
 	@Autowired
 	ModelPropdictRepo modelPropdictRepo;
 	
-	@Autowired
-	JedisUtil jedisUtil;
-	
-	public static final String SYS_DICT = "DICT";
-	
+	/***
+	 * 字典所有数据初始化
+	 * @author zm.you
+	 * @version crateTime：2017年8月9日 下午5:18:28
+	 * @used TODO
+	 */
 	public void initData(){
 		Map<String, Map<String, List<ModelPropDict>>> map = findAllSysDict();
-		logger.info("initData=======================================================");
-		byte[] b = SerializeUtil.serialize(map);
-		JedisUtil.Strings strings=jedisUtil.new Strings();
-		strings.set(SerializeUtil.serialize(SYS_DICT), b);
+//		List<ModelPropDict> list = modelPropdictRepo.findAll();
+		logger.info("====================================================initData=======================================================");
+		
+		/* tableName和field组合 */
+		for(String tableName : map.keySet()){
+			Map<String, List<ModelPropDict>> clazzMap = map.get(tableName);
+			for(String field : clazzMap.keySet()){
+				List<ModelPropDict> dictList = clazzMap.get(field);
+				RedisUtil.getInstall().setList(tableName.toUpperCase()+":"+field.toUpperCase(), dictList);
+				
+				for(ModelPropDict data : dictList){
+					/* tableName和field和key组合 */
+					RedisUtil.getInstall().setObject(tableName.toUpperCase()+":"+field.toUpperCase()+":"+data.getKe().toUpperCase(), data);
+				}
+			}
+		}
+		
 	}
 	
-	public Map<String, Map<String, List<ModelPropDict>>> getModelPropDict(){
-		JedisUtil.Strings strings=jedisUtil.new Strings();
-		byte[] b = strings.get(SerializeUtil.serialize(SYS_DICT));
-		Map<String, Map<String, List<ModelPropDict>>> map = (Map<String, Map<String, List<ModelPropDict>>>)SerializeUtil.unserialize(b);
-		return map;
-	}
-	
-	
-	public Map<String, List<ModelPropDict>> getDicts(String table) {
-		if (StringUtils.isEmpty(table)) {
+
+	/***
+	 * 通过tableName和field获取字典
+	 * @author zm.you
+	 * @version crateTime：2017年8月9日 下午5:18:28
+	 * @used TODO
+	 */
+	@Override
+	public List<ModelPropDict> getDicts(String tableName, String field) {
+		if (StringUtils.isBlank(tableName) || StringUtils.isBlank(field)) {
 			return null;
 		}
-		return getModelPropDict().get(table.toUpperCase());
+		List<ModelPropDict> list = RedisUtil.getInstall().getList(tableName.toUpperCase()+":"+field.toUpperCase());
+		return list;
 	}
 	
-	@Override
-	public List<ModelPropDict> getDicts(String table, String field) {
-		try {
-			if (StringUtils.isEmpty(table) || StringUtils.isEmpty(field)) {
-				return null;
-			}
-			return getModelPropDict().get(table.toUpperCase()).get(field.toUpperCase());
-		} catch (Exception e) {
-			ExceptUtils.printStackTrace(e, table + "." + field);
-		}
-		return new ArrayList<ModelPropDict>();
-	}
-	
+	/***
+	 * 通过tableName和field和key获取某个字典对象
+	 * @author zm.you
+	 * @version crateTime：2017年8月9日 下午5:18:28
+	 * @used TODO
+	 */
 	@Override
 	public ModelPropDict getDict(String table, String field, String key) {
 		List<ModelPropDict> list = getDicts(table, field);
@@ -84,6 +92,12 @@ public class SysDataServiceImpl implements SysDataService {
 		return null;
 	}
 	
+	/***
+	 * 通过tableName和指定的field获取字典列表
+	 * @author zm.you
+	 * @version crateTime：2017年8月9日 下午5:18:28
+	 * @used TODO
+	 */
 	@Override
 	public List<ModelPropDict> getDictsByFields(String table,
 			Collection<String> fields) {
