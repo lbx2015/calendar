@@ -66,7 +66,7 @@ public class AppUserReportRelServer {
 	@RequestMapping(value = "/userAddReport", method = RequestMethod.POST)
 	public AppResp userAddReport_(@ModelAttribute String appUserId){
 		Set<String>  reportIds = appUserReportRepo.findbyAppUserId(appUserId);
-		List<ReportList> reportLists = reportListRepo.findbyReoprtId(reportIds);
+		List<ReportList> reportLists = reportListRepo.findByReoprtId(reportIds);
 		return new AppResp(reportLists, CodeDef.SUCCESS);
 	}
 	

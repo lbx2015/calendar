@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportList;
 /**
  * 
@@ -23,9 +24,10 @@ public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSp
 
 
 	@Query(" from ReportList  where Id in ?1 and deleteState = '1'  ")
-	List<ReportList> findbyReoprtId(Set<String> reoprtId);
+	List<ReportList> findByReoprtId(Set<String> reoprtId);
 	
-	List<ReportList> findbyDeleteState(String deleteState);
+	@Query("select new net.riking.entity.model.QueryReport(r.id,r.reportName,r.reportCode,r.moduleType) from ReportList r where r.deleteState='1' ")
+	List<QueryReport> findByDeleteState();
 	
 	@Transactional
 	@Modifying

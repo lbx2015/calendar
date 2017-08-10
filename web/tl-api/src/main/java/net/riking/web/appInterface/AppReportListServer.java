@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportList;
 import net.riking.service.repo.AppUserReportRepo;
 import net.riking.service.repo.ReportListRepo;
@@ -43,7 +44,7 @@ public class AppReportListServer {
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport() {
 		//Map<String, List<ReportList>> map = new HashMap<>();
-		List<ReportList>list =reportListRepo.findbyDeleteState("1");
+		List<QueryReport>list =reportListRepo.findByDeleteState();
 		
 		return new AppResp(list, CodeDef.SUCCESS);
 	}

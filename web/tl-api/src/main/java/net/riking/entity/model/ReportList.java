@@ -21,7 +21,7 @@ public class ReportList extends BaseEntity {
 	/**
 	 * @author Lucky.Liu on 2017/8/05.
 	 */
-	
+
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -41,11 +41,11 @@ public class ReportList extends BaseEntity {
 	private String reportBrief;
 
 	// 填报机构
-	@Column(name = "report_organization", length = 32)
+	@Column(name = "report_organization", length = 256)
 	private String reportOrganization;
 
 	// 报送口径、频度及时间
-	@Column(name = "report_frequency", length = 32)
+	@Column(name = "report_frequency", length = 256)
 	private String reportFrequency;
 
 	// 报送方式
@@ -61,7 +61,7 @@ public class ReportList extends BaseEntity {
 	private String reportRound;
 
 	// 填报币种
-	@Column(name = "report_currency", length = 32)
+	@Column(name = "report_currency", length = 512)
 	private String reportCurrency;
 
 	// 报表说明
@@ -81,6 +81,7 @@ public class ReportList extends BaseEntity {
 	// 报表模板下载地址
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
+
 
 	// 删除状态 0删除 1显示
 	@Column(name = "delete_state", length = 2)
