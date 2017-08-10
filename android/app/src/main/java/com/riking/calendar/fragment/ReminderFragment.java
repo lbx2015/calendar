@@ -113,7 +113,7 @@ public class ReminderFragment extends Fragment {
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
-                .findAllSorted("timeView", Sort.ASCENDING);
+                .findAllSorted("time", Sort.ASCENDING);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderAdapter(reminders, realm));
@@ -171,7 +171,7 @@ public class ReminderFragment extends Fragment {
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
-                .findAllSorted("timeView", Sort.ASCENDING);
+                .findAllSorted("time", Sort.ASCENDING);
         tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, realm));
 
         if (reminders.size() > 0) {
