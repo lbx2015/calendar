@@ -10,7 +10,8 @@ public class TestJG {
 	public static void main(String[] args) {
 		//Jdpush.testSendPush("f7ac0692d540d2a7e15613bb", "ae4b5cb2379495f2303019ff");
 		GetDateServiceImpl   Test = new GetDateServiceImpl();
-		Map<String, Set<String>> map = Test.getMounthWeek("201708");
+		String map = GetDateServiceImpl.getDayOfWeekByDate("201708011");
+		System.err.println(map);
 	}
 
 }
