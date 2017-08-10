@@ -2,20 +2,24 @@ package net.riking.entity.model;
 
 import java.util.List;
 
+/**
+ * 同步信息封装的类
+ * 
+ * @author lucky.liu
+ * @version crateTime：2017年8月10日 下午2:50:09
+ * @used TODO
+ */
 public class SynResult {
-	
-	/**同步信息封装的类
-	 * @author Lucky.Liu on 2017/8/05.
-	 */
 
-	private List<Remind> remind ;
-	private List<RemindHis> remindHis ;
-	private List<Todo> todo ;
+	private List<Remind> remind;
+	private List<RemindHis> remindHis;
+	private List<Todo> todo;
 	private List<BusinessDay> businessDay;
+
 	public SynResult() {
 	}
 
-	public SynResult(List<Remind> remind, List<RemindHis> remindHis, List<Todo> todo,List<BusinessDay> businessDay) {
+	public SynResult(List<Remind> remind, List<RemindHis> remindHis, List<Todo> todo, List<BusinessDay> businessDay) {
 		this.remind = remind;
 		this.remindHis = remindHis;
 		this.todo = todo;
@@ -53,6 +57,5 @@ public class SynResult {
 	public void setTodo(List<Todo> todo) {
 		this.todo = todo;
 	}
-	
-	
+
 }

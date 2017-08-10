@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
+import net.riking.entity.AppResp;
 import net.riking.entity.model.BusinessDay;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
@@ -41,26 +41,26 @@ public class SynchronousServer {
 
 	@ApiOperation(value = "同步所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
-	public Resp synchronousAll(@RequestParam("userId") String userId) {
+	public AppResp synchronousAll(@RequestParam("userId") String userId) {
 		List<Remind> reminds = remindRepo.findByUserId(userId);
 		List<RemindHis> remindHis = remindHisRepo.findByUserId(userId);
 		List<Todo> todos = todoRepo.findByUserId(userId);
 		List<BusinessDay> businessDay = businessDayRepo.findAll();
 		SynResult result = new SynResult(reminds, remindHis, todos,businessDay);
-		return new Resp(result, CodeDef.SUCCESS);
+		return new AppResp(result, CodeDef.SUCCESS);
 	}
 	
 	
 	@ApiOperation(value = "同步工作日信息", notes = "POST")
 	@RequestMapping(value = "/synchronousBusinessDay", method = RequestMethod.POST)
-	public Resp synchronousBusinessDay() {
+	public AppResp synchronousBusinessDay() {
 		List<BusinessDay> businessDay = businessDayRepo.findAll();
-		return new Resp(businessDay, CodeDef.SUCCESS);
+		return new AppResp(businessDay, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "同步app提醒信息", notes = "POST")
 	@RequestMapping(value = "/synchronousReminds", method = RequestMethod.POST)
-	public Resp synchronousReminds(@RequestBody List<Remind> reminds) {
+	public AppResp synchronousReminds(@RequestBody List<Remind> reminds) {
 		List<Remind> remindSave = new ArrayList<>(); 
 		List<Remind> remindDele = new  ArrayList<>();
 		for (int i = 0; i < reminds.size(); i++) {
@@ -72,12 +72,12 @@ public class SynchronousServer {
 		}
 		reminds = remindRepo.save(remindSave);
 		remindRepo.delete(remindDele);
-		return new Resp(0, CodeDef.SUCCESS);
+		return new AppResp(0, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/synchronousRemindHis", method = RequestMethod.POST)
-	public Resp synchronousRemindHis(@RequestBody List<RemindHis> remindHis) {
+	public AppResp synchronousRemindHis(@RequestBody List<RemindHis> remindHis) {
 		List<RemindHis> remindHisSave = new ArrayList<>(); 
 		List<RemindHis> remindHisDele = new  ArrayList<>();
 		for (int i = 0; i < remindHis.size(); i++) {
@@ -89,12 +89,12 @@ public class SynchronousServer {
 		}
 		remindHis = remindHisRepo.save(remindHisSave);
 		remindHisRepo.delete(remindHisDele);
-		return new Resp(0, CodeDef.SUCCESS);
+		return new AppResp(0, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "同步app代办信息", notes = "POST")
 	@RequestMapping(value = "/synchronousTodos", method = RequestMethod.POST)
-	public Resp synchronousTodos(@RequestBody List<Todo> todos) {
+	public AppResp synchronousTodos(@RequestBody List<Todo> todos) {
 		List<Todo> todoSave = new ArrayList<>(); 
 		List<Todo> todoDele = new  ArrayList<>();
 		for (int i = 0; i < todos.size(); i++) {
@@ -106,7 +106,7 @@ public class SynchronousServer {
 		}
 		todos = todoRepo.save(todoSave);
 		todoRepo.delete(todoDele);
-		return new Resp(0, CodeDef.SUCCESS);
+		return new AppResp(0, CodeDef.SUCCESS);
 	}
 	
 	

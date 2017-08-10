@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,12 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
-import net.riking.entity.model.Remind;
+import net.riking.entity.AppResp;
 import net.riking.entity.model.RemindHis;
-import net.riking.entity.model.ReportList;
 import net.riking.service.repo.RemindHisRepo;
-import net.riking.service.repo.RemindRepo;
 
 
 /**
@@ -43,21 +38,21 @@ public class ReminHisServer {
 	
 	@ApiOperation(value = "用户提醒历史新增/修改", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Resp save(@RequestBody RemindHis remindHis){
+	public AppResp save(@RequestBody RemindHis remindHis){
 		remindHis = remindHisRepo.save(remindHis);
-		return new Resp(remindHis, CodeDef.SUCCESS);
+		return new AppResp(remindHis, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "批量删除提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore(@RequestParam("id") String id) {
+	public AppResp delMore(@RequestParam("id") String id) {
 		remindHisRepo.delete(id);;
-			return new Resp().setCode(CodeDef.SUCCESS);
+			return new AppResp().setCode(CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "app获取提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public Resp getAllReport(@RequestBody RemindHis remindHis) {
+	public AppResp getAllReport(@RequestBody RemindHis remindHis) {
 		PageRequest pageable = new PageRequest(remindHis.getPcount(), remindHis.getPindex(), null);
 		Example<RemindHis> example = Example.of(remindHis, ExampleMatcher.matchingAll());
 		Page<RemindHis> page = remindHisRepo.findAll(example, pageable);
@@ -73,6 +68,6 @@ public class ReminHisServer {
 				  map.put(date,remindHiss);
 				}
 		}
-		return new Resp(page, CodeDef.SUCCESS);
+		return new AppResp(page, CodeDef.SUCCESS);
 	}
 }

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
+import net.riking.entity.AppResp;
 import net.riking.entity.model.ReportList;
 import net.riking.service.repo.AppUserReportRepo;
 import net.riking.service.repo.ReportListRepo;
@@ -43,7 +43,7 @@ public class AppUserReportRelServer {
 
 	@ApiOperation(value = "app获取用户下的报表", notes = "POST")
 	@RequestMapping(value = "/getUserRepor", method = RequestMethod.POST)
-	public Resp getUserReport(@RequestParam("appUserId") String appUserId,@RequestParam("pcount") Integer pcount,@RequestParam("pcount") Integer pindex){
+	public AppResp getUserReport(@RequestParam("appUserId") String appUserId,@RequestParam("pcount") Integer pcount,@RequestParam("pcount") Integer pindex){
 		Set<String>  reportIds = appUserReportRepo.findbyAppUserId(appUserId);
 		PageRequest pageable = new PageRequest(pindex, pcount, null);
 		Specification<ReportList> s1 = new Specification<ReportList>() {
@@ -59,15 +59,15 @@ public class AppUserReportRelServer {
 			}
 		};
 		Page<ReportList> page = reportListRepo.findAll(Specifications.where(s1), pageable);
-		return new Resp(page);
+		return new AppResp(page);
 	}
 	
 	@ApiOperation(value = "用户添加所属报表", notes = "POST")
 	@RequestMapping(value = "/userAddReport", method = RequestMethod.POST)
-	public Resp userAddReport_(@ModelAttribute String appUserId){
+	public AppResp userAddReport_(@ModelAttribute String appUserId){
 		Set<String>  reportIds = appUserReportRepo.findbyAppUserId(appUserId);
 		List<ReportList> reportLists = reportListRepo.findbyReoprtId(reportIds);
-		return new Resp(reportLists, CodeDef.SUCCESS);
+		return new AppResp(reportLists, CodeDef.SUCCESS);
 	}
 	
 	

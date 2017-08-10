@@ -2,8 +2,6 @@ package net.riking.web.appInterface;
 
 import java.util.List;
 
-import javax.validation.constraints.Null;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
+import net.riking.entity.AppResp;
 import net.riking.entity.model.AppVersion;
 import net.riking.service.impl.GetDateServiceImpl;
 import net.riking.service.repo.AppVersionRepo;
@@ -36,20 +34,20 @@ public class CommonServer {
 	
 	@ApiOperation(value = "获取系统时间", notes = "POST")
 	@RequestMapping(value = "/getDate", method = RequestMethod.POST)
-	public Resp getDate_() {
+	public AppResp getDate_() {
 		String date =  getDateService.getDate();
-		return new Resp(date, CodeDef.SUCCESS);
+		return new AppResp(date, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "获取系统版本", notes = "POST")
 	@RequestMapping(value = "/getappVersion", method = RequestMethod.POST)
-	public Resp getappVersion() {
+	public AppResp getappVersion() {
 		List<AppVersion> appVersion = appVersionRepo.findFirstByDeleteStateOrderByRenewalTime("1");
 		if (appVersion.size()>0) {
-	 		return new Resp(appVersion.get(0), CodeDef.SUCCESS);
+	 		return new AppResp(appVersion.get(0), CodeDef.SUCCESS);
 		}else {
 
-	 		return new Resp(null, CodeDef.SUCCESS);
+	 		return new AppResp(null, CodeDef.SUCCESS);
 		}
 	}
 	

@@ -1,14 +1,10 @@
 package net.riking.entity.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -36,9 +32,8 @@ public class AppVersion extends BaseEntity {
 	private String versionNote;
 
 	// 更新日期
-	@Temporal(TemporalType.DATE)
-	@Column(name = "renewal_time")
-	private Date renewalTime;
+	@Column(name = "renewal_time",length = 8)
+	private String renewalTime;
 
 	// 删除状态 0删除 1显示
 	@Column(name = "delete_state", length = 2)
@@ -71,11 +66,11 @@ public class AppVersion extends BaseEntity {
 		this.forces = forces;
 	}
 
-	public Date getRenewalTime() {
+	public String getRenewalTime() {
 		return renewalTime;
 	}
 
-	public void setRenewalTime(Date renewalTime) {
+	public void setRenewalTime(String renewalTime) {
 		this.renewalTime = renewalTime;
 	}
 
