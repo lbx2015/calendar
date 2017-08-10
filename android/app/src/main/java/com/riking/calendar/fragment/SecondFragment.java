@@ -15,6 +15,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.listener.HideShowScrollListener;
+import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.retrofit.APIClient;
@@ -117,6 +118,10 @@ public class SecondFragment extends Fragment {
                 ResponseBody r = response.body();
 
                 try {
+                    if (r == null) {
+                        Log.d("zzw", "r is null");
+                        return;
+                    }
                     String s = r.source().readUtf8();
                     String s2 = s.replace("\\", "");
                     int i = s2.indexOf("}");
@@ -136,28 +141,30 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        Call<ResponseBody> call2 = apiInterface.getParams();
-        call2.enqueue(new Callback<ResponseBody>() {
+        Call<HolidayConditionDemo> call2 = apiInterface.getParams();
+        call2.enqueue(new Callback<HolidayConditionDemo>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ResponseBody r = response.body();
+            public void onResponse(Call<HolidayConditionDemo> call, Response<HolidayConditionDemo> response) {
+                HolidayConditionDemo r = response.body();
 
-                try {
+               /* try {
+                    if (r == null) {
+                        Log.d("zzw", "r is null");
+                        return;
+                    }
+
                     String s = r.source().readUtf8();
                     String s2 = s.replace("\\", "");
                     int i = s2.indexOf("}");
-                    int l = s2.lastIndexOf("}");
-//                    Gson gson = new Gson();
-//                    ReminderModel m;
-//                    m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
-                    Log.d("zzw", response.code() + "success " + s2);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    int l = s2.lastIndexOf("}");*/
+                Log.d("zzw", response.code() + "success " + r);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<HolidayConditionDemo> call, Throwable t) {
                 Log.d("zzw", "fail" + t.getMessage());
             }
         });

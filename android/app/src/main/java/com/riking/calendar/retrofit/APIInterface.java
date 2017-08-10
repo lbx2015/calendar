@@ -1,5 +1,6 @@
 package com.riking.calendar.retrofit;
 
+import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.ReminderModel;
@@ -46,5 +47,5 @@ public interface APIInterface {
     Call<ResponseBody> getHolidays(@Body GetHolidayModel getHolidayModel);
 
     @POST("/ctryHdayCrcyApp/getParam")
-    Call<ResponseBody> getParams();
+    Call<HolidayConditionDemo> getParams();
 }
