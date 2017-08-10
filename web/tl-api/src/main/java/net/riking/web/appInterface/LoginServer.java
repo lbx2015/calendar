@@ -21,11 +21,10 @@ import net.riking.service.repo.AppUserRepo;
 import net.riking.util.JdpushUtil;
 import net.riking.web.filter.StartupListener;
 /**
- * 
+ * 用户登录操作
  * @author you.fei
  * @version crateTime：2017年8月5日 下午4:32:04
  * @used TODO
- * 用户登录操作
  */
 @RestController
 public class LoginServer {
@@ -39,8 +38,7 @@ public class LoginServer {
 	@ApiOperation(value = "用户登录", notes = "POST")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public AppResp login_(@RequestBody AppUser appUser, HttpSession session) {
-		Example<AppUser> example = Example.of(appUser,
-				ExampleMatcher.matchingAll());
+		Example<AppUser> example = Example.of(appUser,ExampleMatcher.matchingAll());
 		AppUser appUser2 = appUserRepo.findOne(example);
 		if (appUser2 != null) {
 			logger.info("{}登录成功",appUser2.getName());
@@ -61,7 +59,7 @@ public class LoginServer {
 		Jdpush jdpush = new Jdpush(NotificationTitle,"","","18171adc0338eaeaf9e","");
 		jdpushUtil.sendToRegistrationId(jdpush);
 		user.setValiCode(""+yzm);
-		logger.info("获取成功");
+		logger.info("手机{}获取验证码成功",appUser.getPhoneSeqNum());
 		return new AppResp(CodeDef.SUCCESS);
 	}
 
@@ -72,14 +70,12 @@ public class LoginServer {
 			return new AppResp(user, CodeDef.SUCCESS);
 		}
 		AppUser appUser2 = null;
-		if (appUser.getTelephone().equals(user.getTelephone())
-				&& appUser.getValiCode().equals(user.getValiCode())) {
+		if (appUser.getPhoneSeqNum().equals(user.getPhoneSeqNum())&& appUser.getValiCode().equals(user.getValiCode())) {
 			Example<AppUser> example = Example.of(appUser,ExampleMatcher.matchingAll());
 			appUser2 = appUserRepo.findOne(example);
 			if (appUser2 == null) {
 				appUser2 = appUserRepo.save(appUser);
 			}
-			
 		}
 		if(appUser2!=null){
 			logger.info("{}登录成功",appUser2.getName());

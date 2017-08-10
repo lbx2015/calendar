@@ -38,7 +38,7 @@
 			"group":"base",
 			"query": "1",
 			"query_order": "3",
-			"type": "dateDay"
+			"type": "date"
 		},
 		{
 			"prop": "crcy",

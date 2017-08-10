@@ -30,7 +30,9 @@ var Utils = {
             return time.format("yyyy-MM-dd");
         }else{
             if(Tool.isStr(s) && !isNaN(s)){
-                s = s.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1/$2/$3")
+                s = s.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1/$2/$3");
+            }else{
+        	 s = s.toString().replace(/^(\d{4})(\d{2})(\d{2})$/, "$1/$2/$3");
             }
             return  new Date(s).format("yyyy-MM-dd");
         }
@@ -167,6 +169,9 @@ var Utils = {
                             var value = "";
                             if(obj.value){
                                 value = obj.value.replace(/(^\s*)|(\s*$)/g, "");
+                            }
+                            if($(obj).data("type") == "date"){
+                                value = value.replace(/-/g,'');
                             }
                             str += "&" + obj.name + "=" + value;
                         }
