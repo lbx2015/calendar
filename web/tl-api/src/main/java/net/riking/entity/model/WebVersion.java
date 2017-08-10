@@ -13,7 +13,7 @@ import net.riking.entity.BaseEntity;
 
 @Comment("WEb版本")
 @Entity
-@Table(name = "t_ewb_version")
+@Table(name = "t_web_version")
 public class WebVersion extends BaseEntity {
 	
 	/**

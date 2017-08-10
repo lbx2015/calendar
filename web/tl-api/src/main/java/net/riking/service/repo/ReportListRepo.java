@@ -25,6 +25,8 @@ public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSp
 	@Query(" from ReportList  where Id in ?1 and deleteState = '1'  ")
 	List<ReportList> findbyReoprtId(Set<String> reoprtId);
 	
+	List<ReportList> findbyDeleteState(String deleteState);
+	
 	@Transactional
 	@Modifying
 	@Query(" update ReportList set deleteState = '0' where id in ?1  ")

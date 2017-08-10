@@ -1,12 +1,8 @@
 package net.riking.web.appInterface;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +27,7 @@ public class AppReportListServer {
 	@Autowired
 	AppUserReportRepo appUserReportRepo;
 
-	@ApiOperation(value = "app获取所有的报表", notes = "POST")
+/*	@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody ReportList reportList) {
 		reportList.setDeleteState("1");
@@ -42,5 +38,13 @@ public class AppReportListServer {
 		Example<ReportList> example = Example.of(reportList, ExampleMatcher.matchingAll());
 		Page<ReportList> page = reportListRepo.findAll(example, pageable);
 		return new AppResp(page, CodeDef.SUCCESS);
+	}*/
+	@ApiOperation(value = "app获取所有的报表", notes = "POST")
+	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
+	public AppResp getAllReport() {
+		//Map<String, List<ReportList>> map = new HashMap<>();
+		List<ReportList>list =reportListRepo.findbyDeleteState("1");
+		
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 }

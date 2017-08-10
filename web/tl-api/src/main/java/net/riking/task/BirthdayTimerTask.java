@@ -6,11 +6,13 @@ import java.util.Set;
 import java.util.TimerTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import net.riking.entity.model.Jdpush;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.util.JdpushUtil;
 
+@Component("infoJobfill")
 public class BirthdayTimerTask extends TimerTask {
 
 	@Autowired
@@ -21,6 +23,9 @@ public class BirthdayTimerTask extends TimerTask {
 	        	SimpleDateFormat sdf = new SimpleDateFormat("MMdd");
 	        	String date = sdf.format(Calendar.getInstance().getTime());
 	            Set<String>  set = appUserRepo.findByDate(date);
+	        	if (set.size()<1) {
+					return;
+				}
 	            JdpushUtil jdpushUtil = new JdpushUtil();
 	    		Jdpush jdpush = new Jdpush();
 	    		jdpush.setNotificationTitle("金融台历祝您生日快乐");
@@ -34,7 +39,7 @@ public class BirthdayTimerTask extends TimerTask {
 	             //在这里写你要执行的内容
 	           // System.out.println("执行当前时间"+formatter.format(Calendar.getInstance().getTime()));
 	        } catch (Exception e) {
-	            System.out.println("-------------解析信息发生异常--------------");
+	            e.printStackTrace();
 	        }
 	    }
 

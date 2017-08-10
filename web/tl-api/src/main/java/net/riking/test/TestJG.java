@@ -12,7 +12,9 @@ public class TestJG {
 		jdpush.setMsgTitle("这个是主题");
 		jdpush.setMsgContent("这个是内容");
 		jdpush.setExtrasparam("这是空");
-		jdpush.setRegisrationId("18171adc0338eaeaf9e");
+		jdpush.setRegisrationId("160a3797c831a2c5b7f");
+		//160a3797c831a2c5b7f
+		//18171adc0338eaeaf9e
 	   int result = jdpushUtil.sendToRegistrationId(jdpush);
 	   System.err.println(result);
 		/*
