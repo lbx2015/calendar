@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -52,8 +54,8 @@ public class CtryHdayCrcyServer {
 	
 	@Autowired
 	SysDataService sysDataservice;
-	
-	
+
+
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
 	public AppResp get_(HttpSession session, @RequestParam("id") String id) {
@@ -61,7 +63,7 @@ public class CtryHdayCrcyServer {
 //		CtryHdayCrcy ctryHdayCrcy = sysDataservice.getCtryHdayCrcy(id);
 		if(ctryHdayCrcy!=null){
 			AppUser cAppUser = (AppUser)session.getAttribute("currentUser");
-			setIconUrl(Arrays.asList(ctryHdayCrcy),cAppUser);
+			this._setDictValue(Arrays.asList(ctryHdayCrcy),cAppUser);
 		}
 		return new AppResp(ctryHdayCrcy, CodeDef.SUCCESS);
 	}
@@ -97,7 +99,7 @@ public class CtryHdayCrcyServer {
 //		Page<CtryHdayCrcy> page = new PageImpl<CtryHdayCrcy>(list,pageable,list.size());
 		if(page.getContent()!=null && page.getContent().size()>0){
 			AppUser cAppUser = (AppUser)session.getAttribute("currentUser");
-			setIconUrl(page.getContent(),cAppUser);
+			this._setDictValue(page.getContent(),cAppUser);
 		}
 		//将压缩包解压
 		this.getIcon();
@@ -147,9 +149,18 @@ public class CtryHdayCrcyServer {
 		}
 	}
 	
-	private void setIconUrl(List<CtryHdayCrcy> list,AppUser user){
+	private void _setDictValue(List<CtryHdayCrcy> list,AppUser user){
 		for (CtryHdayCrcy chc : list) {
 			chc.setIconUrl(Const.TL_STATIC_ICON_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCrcy()+".pong");
+			//币种
+			ModelPropDict dict1 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CRCY", chc.getCrcy());
+			chc.setCrcyValue(dict1.getValu());
+			//国家或地区
+			ModelPropDict dict2 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CTRY", chc.getCtryName());
+			chc.setCtryNameValue(dict2.getValu());
+			//节假日
+			ModelPropDict dict3 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "HDAY", chc.getHdayName());
+			chc.setHdayNameValue(dict3.getValu());
 		}
 	}
 }

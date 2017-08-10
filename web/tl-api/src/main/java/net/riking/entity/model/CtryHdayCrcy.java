@@ -28,9 +28,15 @@ public class CtryHdayCrcy extends PageQuery {
 	@Column(name = "ctry_name", length = 32)
 	private String ctryName;
 	
+	@Transient
+	private String ctryNameValue;
+	
 	@Comment("节假日名称")
 	@Column(name = "hday_name", length = 32)
 	private String hdayName;
+	
+	@Transient
+	private String hdayNameValue;
 	
 	@Comment("节假日时间")
 	@Column(name = "hday_date", length = 8)
@@ -39,6 +45,9 @@ public class CtryHdayCrcy extends PageQuery {
 	@Comment("币种")
 	@Column(name = "crcy", length = 3)
 	private String crcy;
+	
+	@Transient
+	private String crcyValue;
 	
 	@Comment("备注信息")
 	@Column(name = "remark", length = 500)
@@ -116,6 +125,32 @@ public class CtryHdayCrcy extends PageQuery {
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
 	}
+
+	public String getCtryNameValue() {
+		return ctryNameValue;
+	}
+
+	public void setCtryNameValue(String ctryNameValue) {
+		this.ctryNameValue = ctryNameValue;
+	}
+
+	public String getHdayNameValue() {
+		return hdayNameValue;
+	}
+
+	public void setHdayNameValue(String hdayNameValue) {
+		this.hdayNameValue = hdayNameValue;
+	}
+
+	public String getCrcyValue() {
+		return crcyValue;
+	}
+
+	public void setCrcyValue(String crcyValue) {
+		this.crcyValue = crcyValue;
+	}
+	
+	
 	
 	
 	
