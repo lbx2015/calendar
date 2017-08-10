@@ -48,10 +48,8 @@ public class AppUser extends BaseEntity {
 	private Integer sex;
 	
 	@Comment("用户生日")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "birthday")
-	private Date birthday;
+	private String birthday;
 	
 	@Comment("用户邮箱")
 	@Column(name = "email",length = 32)
@@ -149,11 +147,11 @@ public class AppUser extends BaseEntity {
 		this.sex = sex;
 	}
 
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 

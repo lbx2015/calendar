@@ -38,10 +38,8 @@ public class CtryHdayCrcy extends PageQuery {
 	private String hdayName;
 	
 	@Comment("节假日时间")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "hday_date")
-	private Date hdayDate;
+	private String hdayDate;
 	
 	@Comment("币种")
 	@Column(name = "crcy", length = 3)
@@ -84,11 +82,11 @@ public class CtryHdayCrcy extends PageQuery {
 		this.hdayName = hdayName;
 	}
 
-	public Date getHdayDate() {
+	public String getHdayDate() {
 		return hdayDate;
 	}
 
-	public void setHdayDate(Date hdayDate) {
+	public void setHdayDate(String hdayDate) {
 		this.hdayDate = hdayDate;
 	}
 

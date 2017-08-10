@@ -85,9 +85,9 @@ public class CtryHdayCrcyServer {
 		//币种
 		map.put("crcy",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "CRCY"));
 		//国家或地区
-		map.put("ctry",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "CTRY"));
+		map.put("ctryName",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "CTRY"));
 		//节假日
-		map.put("hday",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "HDAY"));
+		map.put("hdayName",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "HDAY"));
 		return new AppResp(map, CodeDef.SUCCESS);
 	}
 	
