@@ -48,7 +48,7 @@ public class AppUser extends BaseEntity {
 	private Integer sex;
 	
 	@Comment("用户生日")
-	@Column(name = "birthday")
+	@Column(name = "birthday",length = 8)
 	private String birthday;
 	
 	@Comment("用户邮箱")
