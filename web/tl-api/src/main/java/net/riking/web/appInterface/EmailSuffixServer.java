@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
+import net.riking.entity.AppResp;
 import net.riking.service.SysDataService;
 /**
  * 
@@ -30,9 +30,9 @@ public class EmailSuffixServer {
 	
 	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/getAll", method = RequestMethod.POST)
-	public Resp getAll_(){
+	public AppResp getAll_(){
 		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "EMAILSUFFIX");
-		return new Resp(list, CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 	
 }

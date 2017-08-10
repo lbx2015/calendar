@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
+import net.riking.entity.AppResp;
 import net.riking.service.SysDataService;
 /**
  * App数据字典接口
@@ -37,15 +37,15 @@ public class ModelPropDictServer {
 	SysDataService sysDataservice;
 	
 	@RequestMapping(value = "/{tableName}", method = RequestMethod.POST)
-	public Resp getModelAttrsInfo(@PathVariable(name = "tableName") String tableName, @RequestBody Set<String> fields)
+	public AppResp getModelAttrsInfo(@PathVariable(name = "tableName") String tableName, @RequestBody Set<String> fields)
 			throws Exception {
 		List<ModelPropDict> list = sysDataservice.getDictsByFields(tableName, fields);
-		return new Resp(list);
+		return new AppResp(list);
 	}
 	
 	
 	@RequestMapping(value = "/getAddF", method = RequestMethod.POST)
-	public Resp getAddF(@RequestParam(value = "prop", required = false) String prop,
+	public AppResp getAddF(@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "SF");
@@ -55,11 +55,11 @@ public class ModelPropDictServer {
 			}
 		}
 
-		return new Resp(enumKeyValues);
+		return new AppResp(enumKeyValues);
 	}
 
 	@RequestMapping(value = "/getAddS", method = RequestMethod.POST)
-	public Resp getAddS(@RequestParam(value = "key", required = false) String key,
+	public AppResp getAddS(@RequestParam(value = "key", required = false) String key,
 			@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
@@ -88,16 +88,16 @@ public class ModelPropDictServer {
 				}
 			}
 		}
-		return new Resp(enumKeyValues);
+		return new AppResp(enumKeyValues);
 	}
 	
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public Resp get(@RequestParam(value = "table") String table, @RequestParam(value = "field") String field,
+	public AppResp get(@RequestParam(value = "table") String table, @RequestParam(value = "field") String field,
 			@RequestParam(value = "key") String key) {
 		ModelPropDict dict = sysDataservice.getDict(table, field, key);
 		if(dict!=null){
-			return new Resp(dict).setCode(CodeDef.SUCCESS);
+			return new AppResp(dict).setCode(CodeDef.SUCCESS);
 		}
-		return new Resp().setCode(CodeDef.SUCCESS);
+		return new AppResp().setCode(CodeDef.SUCCESS);
 	}
 }

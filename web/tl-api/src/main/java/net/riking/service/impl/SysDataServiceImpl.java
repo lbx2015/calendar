@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.core.utils.ExceptUtils;
@@ -32,6 +31,9 @@ public class SysDataServiceImpl implements SysDataService {
 	@Autowired
 	ModelPropdictRepo modelPropdictRepo;
 	
+//	@Autowired
+//	CtryHdayCrcyRepo ctryHdayCrcyRepo;
+	
 	/***
 	 * 字典所有数据初始化
 	 * @author zm.you
@@ -39,10 +41,14 @@ public class SysDataServiceImpl implements SysDataService {
 	 * @used TODO
 	 */
 	public void initData(){
-		Map<String, Map<String, List<ModelPropDict>>> map = findAllSysDict();
-//		List<ModelPropDict> list = modelPropdictRepo.findAll();
 		logger.info("====================================================initData=======================================================");
-		
+		initDict();
+//		initCtryHdayCrcy();
+	}
+	
+	@SuppressWarnings("static-access")
+	private void initDict(){
+		Map<String, Map<String, List<ModelPropDict>>> map = findAllSysDict();
 		/* tableName和field组合 */
 		for(String tableName : map.keySet()){
 			Map<String, List<ModelPropDict>> clazzMap = map.get(tableName);
@@ -56,9 +62,7 @@ public class SysDataServiceImpl implements SysDataService {
 				}
 			}
 		}
-		
 	}
-	
 
 	/***
 	 * 通过tableName和field获取字典
@@ -66,6 +70,7 @@ public class SysDataServiceImpl implements SysDataService {
 	 * @version crateTime：2017年8月9日 下午5:18:28
 	 * @used TODO
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public List<ModelPropDict> getDicts(String tableName, String field) {
 		if (StringUtils.isBlank(tableName) || StringUtils.isBlank(field)) {
@@ -81,15 +86,14 @@ public class SysDataServiceImpl implements SysDataService {
 	 * @version crateTime：2017年8月9日 下午5:18:28
 	 * @used TODO
 	 */
+	@SuppressWarnings("static-access")
 	@Override
-	public ModelPropDict getDict(String table, String field, String key) {
-		List<ModelPropDict> list = getDicts(table, field);
-		for (ModelPropDict dict : list) {
-			if (dict.getKe().equals(key)) {
-				return dict;
-			}
+	public ModelPropDict getDict(String tableName, String field, String key) {
+		if (StringUtils.isBlank(tableName) || StringUtils.isBlank(field) || StringUtils.isBlank(key)) {
+			return null;
 		}
-		return null;
+		ModelPropDict dict = (ModelPropDict)RedisUtil.getInstall().getObject(tableName.toUpperCase()+":"+field.toUpperCase()+":"+key.toUpperCase());
+		return dict;
 	}
 	
 	/***
@@ -154,5 +158,63 @@ public class SysDataServiceImpl implements SysDataService {
 		}
 	}
 	
+//	@SuppressWarnings("static-access")
+//	private void initCtryHdayCrcy(){
+//		CtryHdayCrcy ctryHdayCrcy = new CtryHdayCrcy();
+//		ctryHdayCrcy.setDeleteState("1");
+//		Example<CtryHdayCrcy> example = Example.of(ctryHdayCrcy, ExampleMatcher.matchingAll());
+//		List<CtryHdayCrcy> list = ctryHdayCrcyRepo.findAll(example);
+//		logger.info("加载各国节假日条数：{}", list.size());
+//		RedisUtil.getInstall().setList(Const.CTRY_HDAY_CRCY, list);
+//		
+//		for (CtryHdayCrcy chc : list) {
+//			RedisUtil.getInstall().setObject(Const.CTRY_HDAY_CRCY+":"+chc.getId(), chc);
+//		}
+//	}
 	
+	
+//	/**
+//	 * 
+//	 * @used TODO
+//	 * @param matchingObj 匹配参数对象
+//	 * @param obj 被匹配对象
+//	 * @return
+//	 */
+//	private <T> boolean matching(T matchingObj, T obj){
+//		Field[] fields = matchingObj.getClass().getDeclaredFields();
+//		for (int i = 0; i < fields.length; i++) {
+//			Field f = fields[i];
+//			f.setAccessible(true);
+//			try {
+//				if(f.get(matchingObj)!=null && !f.get(matchingObj).equals(f.get(obj))){
+//					return false;
+//				}
+//			} catch (IllegalArgumentException | IllegalAccessException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return true;
+//	}
+
+
+//	@SuppressWarnings("static-access")
+//	@Override
+//	public CtryHdayCrcy getCtryHdayCrcy(String id) {
+//		CtryHdayCrcy chc = (CtryHdayCrcy)RedisUtil.getInstall().getObject(Const.CTRY_HDAY_CRCY+":"+id);
+//		return chc;
+//	}
+//
+//
+//	@SuppressWarnings("static-access")
+//	@Override
+//	public List<CtryHdayCrcy> getMoreCtryHdayCrcy(CtryHdayCrcy chc) {
+//		List<CtryHdayCrcy> CtryHdayCrcyList = RedisUtil.getInstall().getList(Const.CTRY_HDAY_CRCY);
+//		List<CtryHdayCrcy> list = new ArrayList<CtryHdayCrcy>();
+//		for (CtryHdayCrcy ctryHdayCrcy : CtryHdayCrcyList) {
+//			if(matching(chc, ctryHdayCrcy)){
+//				list.addAll(CtryHdayCrcyList);
+//			}
+//		}
+//		return list;
+//	}
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
+import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
 /**
@@ -27,33 +27,33 @@ public class AppUserServer {
 	
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public Resp get_(@RequestParam("id") String id) {
+	public AppResp get_(@RequestParam("id") String id) {
 		AppUser appUser = appUserRepo.findOne(id);
-		return new Resp(appUser, CodeDef.SUCCESS);
+		return new AppResp(appUser, CodeDef.SUCCESS);
 	}
 	
 	
 	@ApiOperation(value = "添加或者更新用户信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
-	public Resp addOrUpdate_(@RequestBody AppUser appUser) {
+	public AppResp addOrUpdate_(@RequestBody AppUser appUser) {
 		if(StringUtils.isEmpty(appUser.getId())||StringUtils.isEmpty(appUser.getDeleteState())){
 			appUser.setDeleteState("1");
 		}
 		AppUser save = appUserRepo.save(appUser);
-		return new Resp(save, CodeDef.SUCCESS);
+		return new AppResp(save, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
 	@RequestMapping(value = "/IsChangeMac", method = RequestMethod.POST)
-	public Resp IsChangeMac_(@RequestBody AppUser appUser) {
+	public AppResp IsChangeMac_(@RequestBody AppUser appUser) {
 		AppUser appUser2 = appUserRepo.findOne(appUser.getId());
 		String mac = appUser.getMac();
 		if(appUser2!=null && !appUser2.getMac().equals(mac)){
 			appUser2.setMac(mac);
 			appUserRepo.save(appUser2);
-			return new Resp(true,CodeDef.SUCCESS);
+			return new AppResp(true,CodeDef.SUCCESS);
 		}
-		return new Resp(false,CodeDef.SUCCESS);
+		return new AppResp(false,CodeDef.SUCCESS);
 	}
 	
 }

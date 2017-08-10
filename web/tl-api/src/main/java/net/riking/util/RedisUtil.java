@@ -292,18 +292,17 @@ public class RedisUtil {
 	/**
 	 * 获取list
 	 * 
-	 * @param <T>
 	 * @param key
-	 * @return list
+	 * @return Object
 	 */
-	public static <T> T getObject(String key) {
+	public static Object getObject(String key) {
 		String bKey = buildKey(key);
 		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
 			return null;
 		}
 		byte[] in = getJedis().get(key.getBytes());
-		T t = (T) SerializeUtil.unserialize(in);
-		return t;
+		return  SerializeUtil.unserialize(in);
+		
 	}
 
 	/** #####################redis-API常用操作############################### */
