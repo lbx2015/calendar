@@ -1,18 +1,13 @@
 package net.riking.entity.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.PageQuery;
@@ -38,7 +33,7 @@ public class CtryHdayCrcy extends PageQuery {
 	private String hdayName;
 	
 	@Comment("节假日时间")
-	@Column(name = "hday_date")
+	@Column(name = "hday_date", length = 8)
 	private String hdayDate;
 	
 	@Comment("币种")
