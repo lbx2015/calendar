@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@id/edit_first_day"
+                    android:layout_toLeftOf="@+id/edit_first_day"
                     android:text="@string/sundday"
                     android:textColor="@color/color_background_b6b6b6" />
 
@@ -73,7 +73,7 @@
                     android:id="@+id/edit_first_day"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_alignBottom="@id/select_time"
+                    android:layout_alignBottom="@+id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="9dp"
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@id/look_event_time"
+                    android:layout_toLeftOf="@+id/look_event_time"
                     android:text="08:00"
                     android:textColor="@color/color_background_b6b6b6" />
 
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@id/look_remind_voice"
+                    android:layout_toLeftOf="@+id/look_remind_voice"
                     android:text="@string/default_remind"
                     android:textColor="@color/color_background_b6b6b6" />
 
@@ -162,7 +162,7 @@
                     android:id="@+id/look_remind_voice"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_alignBottom="@id/select_time"
+                    android:layout_alignBottom="@+id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="9dp"
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@id/look_binded_phone"
+                    android:layout_toLeftOf="@+id/look_binded_phone"
                     android:text="@string/binded"
                     android:textColor="@color/color_background_b6b6b6" />
 
@@ -219,7 +219,7 @@
                     android:id="@+id/look_binded_phone"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_alignBottom="@id/select_time"
+                    android:layout_alignBottom="@+id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="9dp"
@@ -256,7 +256,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@id/look_wechat"
+                    android:layout_toLeftOf="@+id/look_wechat"
                     android:text="@string/not_binded"
                     android:textColor="@color/color_background_b6b6b6" />
 
@@ -305,7 +305,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
-                android:layout_toLeftOf="@id/look_clear_cache"
+                android:layout_toLeftOf="@+id/look_clear_cache"
                 android:text="@string/no_need_to_clear"
                 android:textColor="@color/color_background_b6b6b6" />
 

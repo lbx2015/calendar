@@ -12,12 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by zzw on 05/01/17.
  */
 
-public class   APIClient {
+public class APIClient {
 
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
-
+        if (retrofit != null)
+            return retrofit;
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
@@ -31,7 +32,6 @@ public class   APIClient {
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .client(client)
                 .build();
-
 
 
         return retrofit;

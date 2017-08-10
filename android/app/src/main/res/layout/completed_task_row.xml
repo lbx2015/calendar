@@ -37,7 +37,7 @@
             android:id="@+id/image_star"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignBottom="@id/select_time"
+            android:layout_alignBottom="@+id/select_time"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"

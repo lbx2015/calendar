@@ -1,10 +1,10 @@
 package com.riking.calendar.retrofit;
 
+import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
-import com.riking.calendar.realm.model.Reminder;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -41,4 +41,10 @@ public interface APIInterface {
 
     @POST("/remindApp/save")
     Call<ResponseBody> createRemind(@Body ReminderModel reminder);
+
+    @POST("/ctryHdayCrcyApp/getMore")
+    Call<ResponseBody> getHolidays(@Body GetHolidayModel getHolidayModel);
+
+    @POST("/ctryHdayCrcyApp/getParam")
+    Call<ResponseBody> getParams();
 }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +15,24 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.listener.HideShowScrollListener;
+import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.realm.model.Vocation;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.ViewFindUtils;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.widget.dialog.SearchDialog;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import io.realm.Realm;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -34,6 +43,7 @@ public class SecondFragment extends Fragment {
     Realm realm;
     ViewPagerActivity a;
     View searchView;
+    APIInterface apiInterface;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +106,62 @@ public class SecondFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new VocationRecyclerViewAdapter(vocations));
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+
+        GetHolidayModel mode = new GetHolidayModel();
+
+        Call<ResponseBody> call = apiInterface.getHolidays(mode);
+        call.enqueue(new retrofit2.Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ResponseBody r = response.body();
+
+                try {
+                    String s = r.source().readUtf8();
+                    String s2 = s.replace("\\", "");
+                    int i = s2.indexOf("}");
+                    int l = s2.lastIndexOf("}");
+//                    Gson gson = new Gson();
+//                    ReminderModel m;
+//                    m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
+                    Log.d("zzw", response.code() + "success " + s2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("zzw", "fail" + t.getMessage());
+            }
+        });
+
+        Call<ResponseBody> call2 = apiInterface.getParams();
+        call2.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ResponseBody r = response.body();
+
+                try {
+                    String s = r.source().readUtf8();
+                    String s2 = s.replace("\\", "");
+                    int i = s2.indexOf("}");
+                    int l = s2.lastIndexOf("}");
+//                    Gson gson = new Gson();
+//                    ReminderModel m;
+//                    m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
+                    Log.d("zzw", response.code() + "success " + s2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("zzw", "fail" + t.getMessage());
+            }
+        });
+
         return v;
     }
 
