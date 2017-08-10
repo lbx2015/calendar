@@ -13,11 +13,10 @@ import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.AppResp;
 import net.riking.service.SysDataService;
 /**
- * 
+ * app邮箱后缀接口
  * @author you.fei
  * @version crateTime：2017年8月5日 下午4:31:37
  * @used TODO
- * app邮箱后缀接口
  */
 @RestController
 @RequestMapping(value = "/emailSuffixApp")

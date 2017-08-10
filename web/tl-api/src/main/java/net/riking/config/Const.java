@@ -16,7 +16,11 @@ public class Const {
 	
 	public static final String EXPORT_REPORT_GROUP = "EXPORT_REPORT_GROUP";
 	
-	public static String  TL_STATIC_ICON_PATH = "/static/icon/";
+	public static final String  TL_STATIC_ICON_PATH = "/static/icon/";
+	
+	public static final String  TL_ABOUT_HTML5_PATH = "http://172.16.64.96:8280/financialDeskAppAbout.html";
+	
+	public static final String  TL_AGREEMENT_HTML5_PATH = "http://172.16.64.96:8280/agreement.html";
 	
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
 	

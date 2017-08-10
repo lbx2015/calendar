@@ -158,7 +158,7 @@ public class TaskFragment extends Fragment {
         RealmResults<Task> tasks = realm.where(Task.class).equalTo("isDone", 0).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        adapter = new TaskAdapter(tasks, this);
+        adapter = new TaskAdapter(tasks, realm);
         recyclerView.setAdapter(adapter);
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override

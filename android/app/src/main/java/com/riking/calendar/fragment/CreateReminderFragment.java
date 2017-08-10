@@ -37,7 +37,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     public String repeatWeek;
     public String title;
     public String remiderTime;
-    //time
+    //timeView
     public Calendar time;
     public EditText remindTitle;
     public byte repeatFlag;
@@ -75,7 +75,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         time = Calendar.getInstance();
         if (remiderTime == null) {
             time.setTime(new Date());
-            //set the default time to be 2 hours later comparing current time.
+            //set the default timeView to be 2 hours later comparing current timeView.
             time.set(Calendar.HOUR, time.get(Calendar.HOUR) + 2);
             time.set(Calendar.MINUTE, 0);
             remindTimeTextView.setText(sdf.format(time.getTime()));
@@ -104,7 +104,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
             boolean skipFirstTime;
 
             {
-                //Fix the first time when call switch toggle method , the checked method is invoked.
+                //Fix the first timeView when call switch toggle method , the checked method is invoked.
                 if (isAllDay == 1) {
                     skipFirstTime = true;
                 }
@@ -121,7 +121,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     time = Calendar.getInstance();
                     time.setTime(new Date());
-                    //set the default time to be 2 hours later comparing current time.
+                    //set the default timeView to be 2 hours later comparing current timeView.
                     time.set(Calendar.HOUR, 8);
                     remindTimeTextView.setText(sdf.format(time.getTime()));
                 } else {
@@ -129,7 +129,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     time = Calendar.getInstance();
                     time.setTime(new Date());
-                    //set the default time to be 2 hours later comparing current time.
+                    //set the default timeView to be 2 hours later comparing current timeView.
                     time.set(Calendar.HOUR, time.get(Calendar.HOUR) + 2);
                     time.set(Calendar.MINUTE, 0);
                     remindTimeTextView.setText(sdf.format(time.getTime()));
