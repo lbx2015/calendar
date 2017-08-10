@@ -3,7 +3,6 @@ package com.riking.calendar.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import com.riking.calendar.listener.HideShowScrollListener;
 import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.util.ViewFindUtils;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.widget.dialog.SearchDialog;
 
 import java.util.Date;
 import java.util.List;
@@ -33,11 +33,23 @@ public class SecondFragment extends Fragment {
     RecyclerView recyclerView;
     Realm realm;
     ViewPagerActivity a;
+    View searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         a = (ViewPagerActivity) getActivity();
         View v = inflater.inflate(R.layout.second_fragment, container, false);
+        searchView = v.findViewById(R.id.search);
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchDialog dialog = new SearchDialog(v.getContext());
+                dialog.show();
+
+            }
+        });
+
         recyclerView = ViewFindUtils.find(v, R.id.recycler_view);
         recyclerView.addOnScrollListener(new HideShowScrollListener() {
             int marginBottom = (int) ZR.convertDpToPx(a, 48);

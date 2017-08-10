@@ -22,7 +22,7 @@ import redis.clients.util.SafeEncoder;
  * @used TODO 
  */
 @Component("jedisUtil")
-public class JedisUtil {
+public class JedisUtils {
 //	private Logger log = Logger.getLogger(this.getClass());    
     /**缓存生存时间 */  
     private final int expire = 60000;  
@@ -1365,8 +1365,8 @@ public class JedisUtil {
            //ShardedJedis sjedis = getShardedJedis();  
            Jedis sjedis = getJedis();     
            List<String> list = sjedis.lrange(key, start, end);  
-           returnJedis(sjedis);  
-           return list;  
+           returnJedis(sjedis);
+           return list;
        }  
  
        /** 

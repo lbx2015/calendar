@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
@@ -45,8 +46,6 @@ import net.riking.util.ZipFileUtil;
 public class CtryHdayCrcyController {
 	@Autowired
 	CtryHdayCrcyRepo crtyHdayCrcyRepo;
-	
-	public static String  TL_STATIC_ICON_PATH = "static/icon/";
 	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -137,7 +136,7 @@ public class CtryHdayCrcyController {
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH +phoneType+"/";
+			String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_ICON_PATH +phoneType+"/";
 			File dir = new File(path);
 			if(!dir.exists()){
 				dir.mkdirs();
@@ -182,7 +181,7 @@ public class CtryHdayCrcyController {
 	}
 	
 	private void getIcon(){
-		String path = this.getClass().getResource("/").getPath()+ TL_STATIC_ICON_PATH;
+		String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_ICON_PATH;
 		File dir = new File(path);
 		parseIconZip(dir);
 	}
