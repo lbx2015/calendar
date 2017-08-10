@@ -21,6 +21,7 @@ import net.riking.core.workflow.Workflow;
 import net.riking.core.workflow.WorkflowMgr;
 import net.riking.service.impl.SysDataServiceImpl;
 import net.riking.util.RedisUtil;
+import net.riking.util.TimerManager;
 
 @Component
 public class StartupListener implements ServletContextListener {
@@ -41,6 +42,9 @@ public class StartupListener implements ServletContextListener {
 	@Autowired
 	RedisConfig redisConfig;
 	
+	@Autowired
+	TimerManager timerManager;
+	
 //	@Autowired
 //	JedisUtil jedisUtil;
 
@@ -57,10 +61,10 @@ public class StartupListener implements ServletContextListener {
 		
 		RedisUtil.redisConfig = redisConfig;
 		RedisUtil.getInstall();
-		
 		dataDictService.init();
 //		jedisUtil.init();
 		sysDataServiceImpl.initData();
+		timerManager.init();
 	}
 
 	private void initWorkflow(ServletContextEvent event)

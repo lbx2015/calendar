@@ -34,6 +34,6 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	@Query("update AppUser set passWord = '123456'  where id = ?1")
 	int passwordReset(String id);
 	
-	@Query("select a.phoneSeqNum from AppUser a where a.deleteState = '1' and substring(a.birthday, 2, 6) =?1 ")
+	@Query("select a.phoneSeqNum from AppUser a where a.deleteState = '1' and substring(a.birthday, 5, 4) =?1 ")
 	Set<String> findByDate(String date);
 }

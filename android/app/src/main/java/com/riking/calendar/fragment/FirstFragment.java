@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,15 +31,22 @@ import android.widget.ViewFlipper;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
-import com.riking.calendar.adapter.ReminderRecyclerViewAdapter;
+import com.riking.calendar.adapter.ReminderAdapter;
+import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.LunarCalendar;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -51,6 +57,12 @@ public class FirstFragment extends Fragment {
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
     ViewPagerActivity a;
     RecyclerView recyclerView;
+    RecyclerView taskRecyclerView;
+    RecyclerView reportRecyclerView;
+    TextView timeView;
+    TextView weekDayView;
+    ReminderAdapter reminderAdapter;
+    TaskAdapter taskAdapter;
     Realm realm;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
@@ -147,6 +159,8 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("zzw", this + " onCreateView");
         View v = inflater.inflate(R.layout.first_fragment, container, false);
+        timeView = (TextView) v.findViewById(R.id.time);
+        weekDayView = (TextView) v.findViewById(R.id.week_day);
         prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
         nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         setListener();
@@ -176,17 +190,58 @@ public class FirstFragment extends Fragment {
 //            public void execute(Realm realm) {
 //                // Add a person
 //                Reminder person = realm.createObject(Reminder.class, UUID.randomUUID().toString());
-//                person.time = new Date(2017,6,24,12,12);
+//                person.timeView = new Date(2017,6,24,12,12);
 //                person.title = "Don't forget to clock off";
 //            }
 //        });
 
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-        List<Reminder> reminders = realm.where(Reminder.class).findAll();
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        recyclerView.setAdapter(new ReminderRecyclerViewAdapter(reminders));
+        taskRecyclerView = (RecyclerView) v.findViewById(R.id.task_recycler_view);
+        taskRecyclerView.setLayoutManager(new LinearLayoutManager(a));
+        recyclerView.setLayoutManager(new LinearLayoutManager(a));
+
+        final Date date = new Date();
+        final Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        int weekDay = c.get(Calendar.DAY_OF_WEEK);
+        if (weekDay == Calendar.SUNDAY) {
+            weekDay = 7;
+        } else {
+            weekDay--;
+        }
+        LunarCalendar lc = new LunarCalendar();
+        SimpleDateFormat chineseFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        timeView.setText(chineseFormat.format(date));
+        String weekNo = "第" + c.get(Calendar.WEEK_OF_YEAR) + "周";
+        weekDayView.setText(weekNo + "   " + DateUtil.getWeekNameInChinese(weekDay)
+                + " " + lc.getLunarDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), false));
+
+        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+        RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(new Date())).equalTo("repeatFlag", 0).endGroup()
+                .or().beginGroup()
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
+                .contains("repeatWeek", String.valueOf(weekDay))
+                .endGroup()
+                .findAllSorted("time", Sort.ASCENDING);
+        reminderAdapter = new ReminderAdapter(reminders, realm);
+        recyclerView.setAdapter(reminderAdapter);
+
+        //only show the not complete tasks
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo("isDone", 0).findAll();
+        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        taskAdapter = new TaskAdapter(tasks, realm);
+        taskRecyclerView.setAdapter(taskAdapter);
+
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                //the data is changed.
+                reminderAdapter.notifyDataSetChanged();
+                taskAdapter.notifyDataSetChanged();
+            }
+        });
+
 /*
         recyclerView.addOnScrollListener(new HideShowScrollListener() {
             int marginBottom = (int) ZR.convertDpToPx(a, 48);

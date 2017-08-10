@@ -28,13 +28,13 @@ import io.realm.Realm;
  */
 
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyViewHolder> {
-    ReminderFragment fragment;
+    Realm realm;
 
     private List<Reminder> reminders;
 
-    public ReminderAdapter(List<Reminder> r, ReminderFragment fragment) {
+    public ReminderAdapter(List<Reminder> r, Realm realm) {
         this.reminders = r;
-        this.fragment = fragment;
+        this.realm = realm;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
             public void onClick(View v) {
                 notifyItemRemoved(position);
                 holder.sml.smoothCloseMenu();
-                fragment.realm.executeTransaction(new Realm.Transaction() {
+                realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
                         realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
@@ -102,7 +102,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         holder.contentRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LookReminderDialog d = new LookReminderDialog(v.getContext(), r, fragment);
+                LookReminderDialog d = new LookReminderDialog(v.getContext(), r, realm);
                 d.show();
             }
         });

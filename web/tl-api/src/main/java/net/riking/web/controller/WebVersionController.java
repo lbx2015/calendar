@@ -20,6 +20,7 @@ import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.WebVersion;
+import net.riking.service.repo.AppUserRepo;
 import net.riking.service.repo.WebVersionRepo;
 
 /**web版本的维护
@@ -32,6 +33,8 @@ public class WebVersionController {
 
 	@Autowired
 	WebVersionRepo webVersionRepo;
+	@Autowired
+	AppUserRepo appUserRepo;
 	
 	@ApiOperation(value = "得到单个Web版本信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
