@@ -88,8 +88,13 @@ public class AppUser extends BaseEntity {
 	private String dept;
 	
 	@Comment("手机地址")
-	@Column(name = "mac")
-	private String mac;
+	@Column(name = "phone_seq_num")
+	private String phoneSeqNum;
+	
+	@Comment("手机类型")
+	@Column(name = "phone_type")
+	private String phoneType;
+	
 	
 	//验证码
 	@Transient
@@ -216,13 +221,20 @@ public class AppUser extends BaseEntity {
 		this.dept = dept;
 	}
 	
-
-	public String getMac() {
-		return mac;
+	public String getPhoneSeqNum() {
+		return phoneSeqNum;
 	}
 
-	public void setMac(String mac) {
-		this.mac = mac;
+	public void setPhoneSeqNum(String phoneSeqNum) {
+		this.phoneSeqNum = phoneSeqNum;
+	}
+
+	public String getPhoneType() {
+		return phoneType;
+	}
+
+	public void setPhoneType(String phoneType) {
+		this.phoneType = phoneType;
 	}
 
 	public String getValiCode() {

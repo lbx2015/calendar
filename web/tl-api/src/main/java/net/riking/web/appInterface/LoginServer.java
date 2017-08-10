@@ -1,5 +1,7 @@
 package net.riking.web.appInterface;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.Resp;
+import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.web.filter.StartupListener;
@@ -34,31 +36,33 @@ public class LoginServer {
 
 	@ApiOperation(value = "用户登录", notes = "POST")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Resp login_(@RequestBody AppUser appUser) {
+	public AppResp login_(@RequestBody AppUser appUser, HttpSession session) {
 		Example<AppUser> example = Example.of(appUser,
 				ExampleMatcher.matchingAll());
 		AppUser appUser2 = appUserRepo.findOne(example);
 		if (appUser2 != null) {
-			return new Resp(appUser2, CodeDef.SUCCESS);
+			logger.info("{}登录成功",appUser2.getName());
+			session.setAttribute("currentUser", appUser2);
+			return new AppResp(appUser2, CodeDef.SUCCESS);
 		} else {
-			return new Resp(CodeDef.ERROR);
+			return new AppResp(CodeDef.ERROR);
 		}
 	}
 
 	@ApiOperation(value = "发送验证码", notes = "POST")
 	@RequestMapping(value = "/getValiCode", method = RequestMethod.POST)
-	public Resp getValiCode_(@RequestBody AppUser appUser) {
+	public AppResp getValiCode_(@RequestBody AppUser appUser) {
 		user = appUser;
 		user.setValiCode("1234");
 		logger.info("获取成功");
-		return new Resp("1234",CodeDef.SUCCESS);
+		return new AppResp("1234",CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "校验验证码", notes = "POST")
 	@RequestMapping(value = "/checkValiCode", method = RequestMethod.POST)
-	public Resp checkValiCode_(@RequestBody AppUser appUser) {
+	public AppResp checkValiCode_(@RequestBody AppUser appUser, HttpSession session) {
 		if(user==null){
-			return new Resp(user, CodeDef.SUCCESS);
+			return new AppResp(user, CodeDef.SUCCESS);
 		}
 		AppUser appUser2 = null;
 		if (appUser.getTelephone().equals(user.getTelephone())
@@ -70,8 +74,11 @@ public class LoginServer {
 			}
 			
 		}
-		logger.info("登录成功");
-		return new Resp(appUser2, CodeDef.SUCCESS);
+		if(appUser2!=null){
+			logger.info("{}登录成功",appUser2.getName());
+		}
+		session.setAttribute("currentUser", appUser2);
+		return new AppResp(appUser2, CodeDef.SUCCESS);
 	}
 
 }

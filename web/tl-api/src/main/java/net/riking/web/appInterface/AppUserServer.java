@@ -47,9 +47,10 @@ public class AppUserServer {
 	@RequestMapping(value = "/IsChangeMac", method = RequestMethod.POST)
 	public AppResp IsChangeMac_(@RequestBody AppUser appUser) {
 		AppUser appUser2 = appUserRepo.findOne(appUser.getId());
-		String mac = appUser.getMac();
-		if(appUser2!=null && !appUser2.getMac().equals(mac)){
-			appUser2.setMac(mac);
+		String seqNum = appUser.getPhoneSeqNum();
+		if(appUser2!=null && !appUser2.getPhoneSeqNum().equals(seqNum)){
+			appUser2.setPhoneSeqNum(seqNum);
+			appUser2.setPhoneType(appUser.getPhoneType());
 			appUserRepo.save(appUser2);
 			return new AppResp(true,CodeDef.SUCCESS);
 		}

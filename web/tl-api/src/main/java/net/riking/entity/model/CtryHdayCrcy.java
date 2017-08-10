@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -54,6 +55,9 @@ public class CtryHdayCrcy extends PageQuery {
 	@Comment("删除标记")
 	@Column(name = "delete_state")
 	private String deleteState;
+	
+	@Transient
+	private String iconUrl;
 
 	public String getId() {
 		return id;
@@ -110,6 +114,14 @@ public class CtryHdayCrcy extends PageQuery {
 
 	public void setDeleteState(String deleteState) {
 		this.deleteState = deleteState;
+	}
+
+	public String getIconUrl() {
+		return iconUrl;
+	}
+
+	public void setIconUrl(String iconUrl) {
+		this.iconUrl = iconUrl;
 	}
 	
 	

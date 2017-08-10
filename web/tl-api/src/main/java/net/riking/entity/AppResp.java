@@ -2,7 +2,6 @@ package net.riking.entity;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -15,7 +14,7 @@ import net.riking.core.entity.LogConfig;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class AppResp implements ILog {
-	protected Object _data;
+	protected Object _data;// 返回的数据
 	protected Short code; // 状态码
 	protected String codeDesc; // 状态码描述
 	protected Integer runtime = 0; // 运行时长

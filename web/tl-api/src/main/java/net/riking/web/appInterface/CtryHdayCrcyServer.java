@@ -2,6 +2,7 @@ package net.riking.web.appInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,17 +13,20 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.CtryHdayCrcyRepo;
@@ -33,6 +37,7 @@ import net.riking.util.ZipFileUtil;
  * @version crateTime：2017年8月5日 下午4:33:16
  * @used TODO
  */
+@SessionAttributes("currentUser")
 @RestController
 @RequestMapping(value = "/ctryHdayCrcyApp")
 public class CtryHdayCrcyServer {
@@ -46,15 +51,16 @@ public class CtryHdayCrcyServer {
 	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public AppResp get_(@RequestParam("id") String id) {
+	public AppResp get_(@ModelAttribute("currentUser") AppUser cAppUser,@RequestParam("id") String id) {
 		CtryHdayCrcy ctryHdayCrcy = crtyHdayCrcyRepo.findOne(id);
 //		CtryHdayCrcy ctryHdayCrcy = sysDataservice.getCtryHdayCrcy(id);
+		setIconUrl(Arrays.asList(ctryHdayCrcy),cAppUser);
 		return new AppResp(ctryHdayCrcy, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/getMore", method = RequestMethod.POST)
-	public AppResp getMore(@RequestBody CtryHdayCrcy crtyHdayCrcy){
+	public AppResp getMore(@ModelAttribute("currentUser") AppUser cAppUser, @RequestBody CtryHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(), crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
 		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
 			crtyHdayCrcy.setDeleteState("1");
@@ -64,6 +70,8 @@ public class CtryHdayCrcyServer {
 		
 //		List<CtryHdayCrcy> list = sysDataservice.getMoreCtryHdayCrcy(crtyHdayCrcy);
 //		Page<CtryHdayCrcy> page = new PageImpl<CtryHdayCrcy>(list,pageable,list.size());
+		
+		setIconUrl(page.getContent(),cAppUser);
 		//将压缩包解压
 		this.getIcon();
 		return new AppResp(page, CodeDef.SUCCESS);
@@ -109,6 +117,12 @@ public class CtryHdayCrcyServer {
 				}
 			}
 			
+		}
+	}
+	
+	private void setIconUrl(List<CtryHdayCrcy> list,AppUser user){
+		for (CtryHdayCrcy chc : list) {
+			chc.setIconUrl(Const.TL_STATIC_ICON_PATH + (user==null? "" : user.getPhoneType() + "/") + chc.getCrcy()+".pong");
 		}
 	}
 }
