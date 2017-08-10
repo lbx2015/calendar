@@ -1,7 +1,11 @@
 package net.riking.service.repo;
 
 import net.riking.entity.model.BusinessDay;
+
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,4 +16,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BusinessDayRepo extends JpaRepository<BusinessDay, Long> {
+	
+	@Query("select b.businessDay from BusinessDay b where b.businessDay like %?1%")
+	Set<String> finbByMonth(String date);
 }

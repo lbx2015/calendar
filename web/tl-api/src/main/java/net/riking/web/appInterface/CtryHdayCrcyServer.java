@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
+import net.riking.entity.AppResp;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.SysDataService;
 import net.riking.util.ZipFileUtil;
@@ -71,7 +72,7 @@ public class CtryHdayCrcyServer {
 	
 	@ApiOperation(value = "手机端得到查询条件", notes = "POST")
 	@RequestMapping(value = "/getParam", method = RequestMethod.POST)
-	public Resp getParam_() {
+	public AppResp getParam_() {
 		Map<String, List<ModelPropDict>> map = new HashMap<String,List<ModelPropDict>>();
 		//币种
 		map.put("crcy",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "CRCY"));
@@ -79,7 +80,8 @@ public class CtryHdayCrcyServer {
 		map.put("ctry",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "CTRY"));
 		//节假日
 		map.put("hday",sysDataservice.getDicts("T_CTRY_HDAY_CRCY", "HDAY"));
-		return new Resp(map, CodeDef.SUCCESS);
+		
+		return new AppResp(map).setCode(CodeDef.SUCCESS);
 	}
 	
 	
