@@ -38,12 +38,12 @@ public class AppResp implements ILog {
 	}
 
 	public AppResp(Object _data, Short code, String codeDesc) {
-		this.setData(_data);
+		this._data =_data;
 		this.code = code;
 		this.codeDesc = codeDesc;
 	}
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	public Object getData() {
 		return _data;
 	}
@@ -52,7 +52,7 @@ public class AppResp implements ILog {
 		if (data != null) {
 			this._data = data;
 		}
-	}
+	}*/
 
 	public Object get_data() {
 		return _data;
