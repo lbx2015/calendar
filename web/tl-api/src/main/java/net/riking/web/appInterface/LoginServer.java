@@ -16,7 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.Jdpush;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.util.JdpushUtil;
 import net.riking.web.filter.StartupListener;
 /**
  * 
@@ -53,9 +55,14 @@ public class LoginServer {
 	@RequestMapping(value = "/getValiCode", method = RequestMethod.POST)
 	public AppResp getValiCode_(@RequestBody AppUser appUser) {
 		user = appUser;
-		user.setValiCode("1234");
+		JdpushUtil jdpushUtil = new JdpushUtil();
+		int yzm = (int)(Math.random()*9+1)*100000;
+		String NotificationTitle ="您的一次性认证码为"+yzm+"，您在登录金融台历手机客户端，切勿将短信内容告诉他人" ;
+		Jdpush jdpush = new Jdpush(NotificationTitle,"","","18171adc0338eaeaf9e","");
+		jdpushUtil.sendToRegistrationId(jdpush);
+		user.setValiCode(""+yzm);
 		logger.info("获取成功");
-		return new AppResp("1234",CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "校验验证码", notes = "POST")
