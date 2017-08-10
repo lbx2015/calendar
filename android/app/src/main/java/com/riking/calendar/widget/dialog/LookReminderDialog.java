@@ -25,7 +25,7 @@ public class LookReminderDialog extends BottomSheetDialog {
     public View btnDelete, btnEdit;
     Reminder r;
 
-    public LookReminderDialog(@NonNull Context context, final Reminder r, final ReminderFragment fragment) {
+    public LookReminderDialog(@NonNull Context context, final Reminder r, final Realm realm) {
         super(context);
         this.r = r;
         setContentView(R.layout.look_reminder_dialog);
@@ -49,7 +49,7 @@ public class LookReminderDialog extends BottomSheetDialog {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment.realm.executeTransaction(new Realm.Transaction() {
+                realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
                         realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();

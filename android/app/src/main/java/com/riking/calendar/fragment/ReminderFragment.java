@@ -113,10 +113,10 @@ public class ReminderFragment extends Fragment {
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
-                .findAllSorted("time", Sort.ASCENDING);
+                .findAllSorted("timeView", Sort.ASCENDING);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
-        recyclerView.setAdapter(new ReminderAdapter(reminders, this));
+        recyclerView.setAdapter(new ReminderAdapter(reminders, realm));
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
@@ -171,8 +171,8 @@ public class ReminderFragment extends Fragment {
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
-                .findAllSorted("time", Sort.ASCENDING);
-        tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, this));
+                .findAllSorted("timeView", Sort.ASCENDING);
+        tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, realm));
 
         if (reminders.size() > 0) {
             tomorrowTitle.setVisibility(View.VISIBLE);
@@ -194,7 +194,7 @@ public class ReminderFragment extends Fragment {
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
                 .findAllSorted("reminderTime", Sort.ASCENDING);
-        futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders, this));
+        futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders, realm));
         if (futureReminders.size() > 0) {
             futureTitle.setVisibility(View.VISIBLE);
         } else {
