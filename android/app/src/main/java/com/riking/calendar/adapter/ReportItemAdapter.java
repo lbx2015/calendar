@@ -1,23 +1,18 @@
 package com.riking.calendar.adapter;
 
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.pojo.Report;
-import com.riking.calendar.realm.model.Task;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
-
-import io.realm.Realm;
 
 /**
  * Created by zw.zhang on 2017/7/12.
@@ -35,7 +30,7 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.completed_task_row, parent, false);
+                .inflate(R.layout.report_item_row, parent, false);
         return new MyViewHolder(reports, itemView);
     }
 
@@ -59,15 +54,10 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
 
     @Override
     public void onItemDissmiss(int position) {
-
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public ImageView done;
-        public ImageView important;
-        public Task task;
-
         public TextView tv;
         public int position;
         SwipeHorizontalMenuLayout sml;
@@ -75,8 +65,6 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         public MyViewHolder(final List<Report> reports, View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            done = (ImageView) view.findViewById(R.id.done);
-            important = (ImageView) view.findViewById(R.id.image_star);
             tv = (TextView) view.findViewById(R.id.tv_text);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
             tv.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +74,8 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
                     notifyItemRemoved(position);
                     //We should update the adapter after data set is changed. and we had not using RealmResult so for.
                     //so we need to update teh adapter manually
-                    reports.remove(task);
-                    Toast.makeText(done.getContext(), "deleted", Toast.LENGTH_LONG).show();
+//                    reports.remove(task);
+                    Toast.makeText(title.getContext(), "deleted", Toast.LENGTH_LONG).show();
                 }
             });
         }
