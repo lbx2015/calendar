@@ -1,15 +1,23 @@
 package com.riking.calendar.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.realm.model.Vocation;
+import com.riking.calendar.pojo.CtryHdayCrcy;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -18,9 +26,9 @@ import java.util.List;
  */
 
 public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRecyclerViewAdapter.MyViewHolder> {
-    private List<Vocation> vocationList;
+    private List<CtryHdayCrcy> vocationList;
 
-    public VocationRecyclerViewAdapter(List<Vocation> r) {
+    public VocationRecyclerViewAdapter(List<CtryHdayCrcy> r) {
         this.vocationList = r;
     }
 
@@ -34,13 +42,16 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Vocation r = vocationList.get(position);
+        CtryHdayCrcy r = vocationList.get(position);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd");
-        holder.date.setText(simpleDateFormat.format(r.date));
-        holder.country.setText(r.country);
-        holder.currency.setText(r.currency);
-        holder.vocation.setText(r.name);
-
+        holder.date.setText(simpleDateFormat.format(r.hdayDate));
+        holder.country.setText(r.ctryNameValue);
+        holder.currency.setText(r.crcy);
+        holder.vocation.setText(r.hdayNameValue);
+        String url = Const.BASE_URL + r.iconUrl;
+        MyTask myTask = new MyTask();
+        myTask.imageView = holder.countryImage;
+        myTask.execute(url);
     }
 
     @Override
@@ -48,8 +59,37 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
         return vocationList.size();
     }
 
+    public static class MyTask extends AsyncTask<String, Void, Bitmap> {
+        public ImageView imageView;
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... voids) {
+
+            Bitmap bitmap = null;
+            try {
+                URL url = new URL(voids[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = connection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imageView.setImageBitmap(bitmap);
+        }
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView date, country, currency, vocation;
+        public ImageView countryImage;
 
         public MyViewHolder(View view) {
             super(view);
@@ -57,6 +97,9 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
             country = (TextView) view.findViewById(R.id.country);
             currency = (TextView) view.findViewById(R.id.currency);
             vocation = (TextView) view.findViewById(R.id.vocation);
+            countryImage = (ImageView) view.findViewById(R.id.country_image);
+
         }
+
     }
 }
