@@ -17,43 +17,26 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "sys.config")
 public class Config {
 
-	private String company;
-	private String amlWorkId;
-	private String baseInfoWorkId;
-	private String receipt;
-	private String summary;
+	private String accessKeyId;
+	private String accessKeySecret;
 	private String appHtmlPath;
+	
+	
 
-	public String getCompany() {
-		return company;
+	public String getAccessKeyId() {
+		return accessKeyId;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
+	public void setAccessKeyId(String accessKeyId) {
+		this.accessKeyId = accessKeyId;
 	}
 
-	public String getBaseInfoWorkId() {
-		return baseInfoWorkId;
+	public String getAccessKeySecret() {
+		return accessKeySecret;
 	}
 
-	public void setBaseInfoWorkId(String baseInfoWorkId) {
-		this.baseInfoWorkId = baseInfoWorkId;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	public String getReceipt() {
-		return receipt;
-	}
-
-	public void setReceipt(String receipt) {
-		this.receipt = receipt;
+	public void setAccessKeySecret(String accessKeySecret) {
+		this.accessKeySecret = accessKeySecret;
 	}
 
 	public String getAppHtmlPath() {
@@ -62,18 +45,6 @@ public class Config {
 
 	public void setAppHtmlPath(String appHtmlPath) {
 		this.appHtmlPath = appHtmlPath;
-	}
-
-	/**
-	 * 大额可疑工作流id
-	 * @return
-	 */
-	public String getAmlWorkId() {
-		return amlWorkId;
-	}
-
-	public void setAmlWorkId(String amlWorkId) {
-		this.amlWorkId = amlWorkId;
 	}
 
 	@Bean
