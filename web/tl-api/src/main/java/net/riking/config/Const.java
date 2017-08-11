@@ -18,9 +18,13 @@ public class Const {
 	
 	public static final String  TL_STATIC_ICON_PATH = "/static/icon/";
 	
-	public static final String  TL_ABOUT_HTML5_PATH = "http://172.16.64.96:8280/financialDeskAppAbout.html";
+	public static final String  TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
 	
-	public static final String  TL_AGREEMENT_HTML5_PATH = "http://172.16.64.96:8280/agreement.html";
+	public static final String  TL_AGREEMENT_HTML5_PATH = "/agreement.html";
+	
+	public static final String  TL_REPORT_HTML5_PATH = "/reportListEdit.html?id=";
+	
+	public static final Integer VALI_CODE_TIME = 60; 
 	
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
 	

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.riking.core.entity.model.ModelPropDict;
+import net.riking.entity.model.AppUser;
 public interface SysDataService {
 
 	public List<ModelPropDict> getDicts(String table, String field);
@@ -15,5 +16,11 @@ public interface SysDataService {
 //	public CtryHdayCrcy getCtryHdayCrcy(String id);
 //	
 //	public List<CtryHdayCrcy> getMoreCtryHdayCrcy(CtryHdayCrcy chc);
+	
+	public AppUser getAppUser(AppUser user);
+	
+	public void setAppUser(AppUser user);
+	
+	public void delAppUser(AppUser user);
 	
 }

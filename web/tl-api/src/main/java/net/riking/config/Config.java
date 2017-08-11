@@ -17,13 +17,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "sys.config")
 public class Config {
 
-	private String company;
-	private String amlWorkId;
-	private String baseInfoWorkId;
-	private String receipt;
-	private String summary;
 	private String accessKeyId;
 	private String accessKeySecret;
+	private String appHtmlPath;
 	
 	
 
@@ -43,36 +39,12 @@ public class Config {
 		this.accessKeySecret = accessKeySecret;
 	}
 
-	public String getCompany() {
-		return company;
+	public String getAppHtmlPath() {
+		return appHtmlPath;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
-
-	public String getBaseInfoWorkId() {
-		return baseInfoWorkId;
-	}
-
-	public void setBaseInfoWorkId(String baseInfoWorkId) {
-		this.baseInfoWorkId = baseInfoWorkId;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	public String getReceipt() {
-		return receipt;
-	}
-
-	public void setReceipt(String receipt) {
-		this.receipt = receipt;
+	public void setAppHtmlPath(String appHtmlPath) {
+		this.appHtmlPath = appHtmlPath;
 	}
 
 	@Bean
