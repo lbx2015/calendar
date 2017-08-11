@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
@@ -83,11 +85,11 @@ public class FirstFragment extends Fragment {
     /**
      * 上个月
      */
-    private ImageView prevMonth;
+//    private ImageView prevMonth;
     /**
      * 下个月
      */
-    private ImageView nextMonth;
+//    private ImageView nextMonth;
     /**
      * 每次添加gridview到viewflipper中时给的标记
      */
@@ -96,26 +98,31 @@ public class FirstFragment extends Fragment {
      * 当前的年月，现在日历顶端
      */
     private TextView currentMonth;
+    private View add;
 
     private void setListener() {
         View.OnClickListener c = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 switch (v.getId()) {
-                    case R.id.nextMonth: // 下一个月
-                        enterNextMonth(gvFlag);
+//                    case R.id.nextMonth: // 下一个月
+//                        enterNextMonth(gvFlag);
+//                        break;
+//                    case R.id.prevMonth: // 上一个月
+//                        enterPrevMonth(gvFlag);
+//                        break;
+                    case R.id.add:{
+                        startActivity(new Intent(getActivity(), AddRemindActivity.class));
                         break;
-                    case R.id.prevMonth: // 上一个月
-                        enterPrevMonth(gvFlag);
-                        break;
+                    }
                     default:
                         break;
                 }
             }
         };
-        prevMonth.setOnClickListener(c);
-        nextMonth.setOnClickListener(c);
+//        prevMonth.setOnClickListener(c);
+        add.setOnClickListener(c);
+//        nextMonth.setOnClickListener(c);
     }
 
     @Override
@@ -166,8 +173,9 @@ public class FirstFragment extends Fragment {
         View v = inflater.inflate(R.layout.first_fragment, container, false);
         timeView = (TextView) v.findViewById(R.id.time);
         weekDayView = (TextView) v.findViewById(R.id.week_day);
-        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
-        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
+//        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
+//        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
+        add = v.findViewById(R.id.add);
         setListener();
         currentMonth = (TextView) v.findViewById(R.id.currentMonth);
         TextView todayButton = (TextView) v.findViewById(R.id.today_button);
