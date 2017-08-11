@@ -151,7 +151,7 @@ public class CtryHdayCrcyServer {
 	
 	private void _setDictValue(List<CtryHdayCrcy> list,AppUser user){
 		for (CtryHdayCrcy chc : list) {
-			chc.setIconUrl(Const.TL_STATIC_ICON_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCrcy()+".pong");
+			chc.setIconUrl(Const.TL_STATIC_ICON_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCrcy()+".png");
 			//币种
 //			ModelPropDict dict1 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CRCY", chc.getCrcy());
 //			chc.setCrcyValue(dict1.getValu());
