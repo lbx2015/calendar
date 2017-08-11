@@ -24,6 +24,9 @@ public class Const {
 	
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
 	
+	
+	public static final Integer VALI_CODE_TIME = 60; 
+	
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
 //	/* 根据tablename */

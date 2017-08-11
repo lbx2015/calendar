@@ -288,6 +288,16 @@ public class RedisUtil {
 			logger.warn("Set key error : " + e);
 		}
 	}
+	
+	
+	public static <T> void setObject(String key, int seconds,T t) {
+		try {
+			getJedis().set(key.getBytes(), SerializeUtil.serialize(t));
+			getJedis().expire(key, seconds);
+		} catch (Exception e) {
+			logger.error("Set keyex error : " + e);
+		}
+	}
 
 	/**
 	 * 获取list
@@ -303,6 +313,15 @@ public class RedisUtil {
 		byte[] in = getJedis().get(key.getBytes());
 		return  SerializeUtil.unserialize(in);
 		
+	}
+	
+	
+	public static void del(String key){
+		String bKey = buildKey(key);
+		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
+			return ;
+		}
+		getJedis().del(bKey);
 	}
 
 	/** #####################redis-API常用操作############################### */

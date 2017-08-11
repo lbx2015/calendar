@@ -17,6 +17,7 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.Jdpush;
+import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.util.JdpushUtil;
 import net.riking.web.filter.StartupListener;
@@ -32,8 +33,9 @@ public class LoginServer {
 	private static final Logger logger = LogManager.getLogger(StartupListener.class);
 	@Autowired
 	AppUserRepo appUserRepo;
-
-	private AppUser user;
+	
+	@Autowired
+	SysDataService SysDataService;
 
 	@ApiOperation(value = "用户登录", notes = "POST")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -52,32 +54,40 @@ public class LoginServer {
 	@ApiOperation(value = "发送验证码", notes = "POST")
 	@RequestMapping(value = "/getValiCode", method = RequestMethod.POST)
 	public AppResp getValiCode_(@RequestBody AppUser appUser) {
-		user = appUser;
+		//user = appUser;
 		JdpushUtil jdpushUtil = new JdpushUtil();
-		int yzm = (int)(Math.random()*9+1)*100000;
-		String NotificationTitle ="您的一次性认证码为"+yzm+"，您在登录金融台历手机客户端，切勿将短信内容告诉他人" ;
+		String valiCode = "";
+		for(int i = 0;i<6;i++){
+			valiCode +=(int)(Math.random()*9);
+		}
+		
+		String NotificationTitle ="您的一次性认证码为"+valiCode+"，您在登录金融台历手机客户端，切勿将短信内容告诉他人" ;
 		Jdpush jdpush = new Jdpush(NotificationTitle,"","","18171adc0338eaeaf9e","");
 		jdpushUtil.sendToRegistrationId(jdpush);
-		user.setValiCode(""+yzm);
+		appUser.setValiCode(valiCode);
+		SysDataService.setAppUser(appUser);
 		logger.info("手机{}获取验证码成功",appUser.getPhoneSeqNum());
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(appUser, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "校验验证码", notes = "POST")
 	@RequestMapping(value = "/checkValiCode", method = RequestMethod.POST)
 	public AppResp checkValiCode_(@RequestBody AppUser appUser, HttpSession session) {
+		AppUser user = SysDataService.getAppUser(appUser);
 		if(user==null){
 			return new AppResp(user, CodeDef.SUCCESS);
 		}
 		AppUser appUser2 = null;
-		if (appUser.getPhoneSeqNum().equals(user.getPhoneSeqNum())&& appUser.getValiCode().equals(user.getValiCode())) {
+		if (appUser.getValiCode().equals(user.getValiCode())) {
 			Example<AppUser> example = Example.of(appUser,ExampleMatcher.matchingAll());
 			appUser2 = appUserRepo.findOne(example);
 			if (appUser2 == null) {
 				appUser2 = appUserRepo.save(appUser);
+				logger.info("{}注册成功",appUser.getName());
 			}
 		}
 		if(appUser2!=null){
+			SysDataService.delAppUser(user);
 			logger.info("{}登录成功",appUser2.getName());
 		}
 		session.setAttribute("currentUser", appUser2);
