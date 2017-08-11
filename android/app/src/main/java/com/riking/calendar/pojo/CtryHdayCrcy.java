@@ -3,14 +3,14 @@ package com.riking.calendar.pojo;
 import java.util.Date;
 
 public class CtryHdayCrcy {
-
+    //query string
+    public String queryParam;
     //各国节假日币种表
     public String id;
     //	@Comment("国家/地区名称")
 //	@Column(name = "ctry_name", length = 32)
     public String ctryName;
     public String ctryNameValue;
-    public String crcyValue;
     //	@Comment("节假日名称")
 //	@Column(name = "hday_name", length = 32)
     public String hdayName;
@@ -37,6 +37,8 @@ public class CtryHdayCrcy {
 
     //	@Transient
     public String iconUrl;
+    public byte pindex;
+    public byte pcount;
 
     @Override
     public String toString() {

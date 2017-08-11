@@ -39,7 +39,7 @@ public interface APIInterface {
 
     @FormUrlEncoded
     @POST("/api/users?")
-    Call<UserList> doCreateUserWithField(@Field("name") String name, @Field("job") String job);
+    Call<UserList> doCreateUserWithField(@Field("queryParam") String name, @Field("job") String job);
 
 
     @POST("/remindApp/save")
@@ -53,6 +53,4 @@ public interface APIInterface {
 
     @POST("/ctryHdayCrcyApp/getMore")
     Call<CtryHdayCryCondition> getMore(@Body CtryHdayCrcy ctryHdayCrcy);
-
-
 }
