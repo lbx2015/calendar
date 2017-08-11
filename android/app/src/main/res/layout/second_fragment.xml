@@ -37,9 +37,11 @@
         android:paddingLeft="12dp">
 
         <LinearLayout
+            android:id="@+id/date_column"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:clickable="true"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -59,6 +61,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/country_column"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:layout_weight="2"
@@ -66,6 +69,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/country_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_gravity="center_vertical"
@@ -81,6 +85,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/concurrency_column"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:layout_weight="2"
@@ -88,6 +93,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/concurrency_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_gravity="center_vertical"
@@ -103,6 +109,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/holiday_column"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:layout_weight="2"
@@ -110,6 +117,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/holiday_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_gravity="center_vertical"

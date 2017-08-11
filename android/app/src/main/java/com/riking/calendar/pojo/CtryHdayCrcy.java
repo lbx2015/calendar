@@ -9,9 +9,12 @@ public class CtryHdayCrcy {
     //	@Comment("国家/地区名称")
 //	@Column(name = "ctry_name", length = 32)
     public String ctryName;
+    public String ctryNameValue;
+    public String crcyValue;
     //	@Comment("节假日名称")
 //	@Column(name = "hday_name", length = 32)
     public String hdayName;
+    public String hdayNameValue;
 
     //	@Comment("节假日时间")
 //	@Temporal(TemporalType.DATE)

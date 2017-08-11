@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 
 public class HolidayMode {
-    ArrayList<ModelPropDict> hdayName;
-    ArrayList<ModelPropDict> crcy;
-    ArrayList<ModelPropDict> ctryName;
+    public ArrayList<ModelPropDict> hdayName;
+    public ArrayList<ModelPropDict> crcy;
+    public ArrayList<ModelPropDict> ctryName;
 
     @Override
     public String toString() {
