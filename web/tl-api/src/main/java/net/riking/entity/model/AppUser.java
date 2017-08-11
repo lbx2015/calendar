@@ -15,7 +15,33 @@ import net.riking.entity.BaseEntity;
 @Entity
 @Table(name = "t_app_user")
 public class AppUser extends BaseEntity {
-//用户表
+	
+	public AppUser(String name, String realName, Integer sex, String birthday,
+			String email, String telephone, String address, String passWord,
+			String enabled, String remark, String deleteState, String dept,
+			String phoneSeqNum) {
+		super();
+		this.name = name;
+		this.realName = realName;
+		this.sex = sex;
+		this.birthday = birthday;
+		this.email = email;
+		this.telephone = telephone;
+		this.address = address;
+		this.passWord = passWord;
+		this.enabled = enabled;
+		this.remark = remark;
+		this.deleteState = deleteState;
+		this.dept = dept;
+		this.phoneSeqNum = phoneSeqNum;
+	}
+
+	public AppUser() {
+		super();
+	}
+	
+
+	//用户表
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")

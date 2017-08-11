@@ -85,8 +85,9 @@ public class LoginServer {
 			Example<AppUser> example = Example.of(appUser, ExampleMatcher.matchingAll());
 			appUser2 = appUserRepo.findOne(example);
 			if (appUser2 == null) {
-				appUser2 = appUserRepo.save(appUser);
-				logger.info("{}注册成功", appUser.getName());
+				AppUser appUser3 = new AppUser(appUser.getTelephone(), "", 0, "", "", appUser.getTelephone(), "", "123456", "", "", "1", "", "");
+				appUser2 = appUserRepo.save(appUser3);
+				logger.info("{}注册成功",appUser.getName());
 			}
 		}
 		if (appUser2 != null) {
