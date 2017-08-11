@@ -46,8 +46,8 @@ public class CtryHdayCrcy extends PageQuery {
 	@Column(name = "crcy", length = 3)
 	private String crcy;
 	
-	@Transient
-	private String crcyValue;
+//	@Transient
+//	private String crcyValue;
 	
 	@Comment("备注信息")
 	@Column(name = "remark", length = 500)
@@ -142,14 +142,14 @@ public class CtryHdayCrcy extends PageQuery {
 		this.hdayNameValue = hdayNameValue;
 	}
 
-	public String getCrcyValue() {
-		return crcyValue;
-	}
-
-	public void setCrcyValue(String crcyValue) {
-		this.crcyValue = crcyValue;
-	}
-	
+//	public String getCrcyValue() {
+//		return crcyValue;
+//	}
+//
+//	public void setCrcyValue(String crcyValue) {
+//		this.crcyValue = crcyValue;
+//	}
+//	
 	
 	
 	

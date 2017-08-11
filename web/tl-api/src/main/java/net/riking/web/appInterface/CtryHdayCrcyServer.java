@@ -153,8 +153,8 @@ public class CtryHdayCrcyServer {
 		for (CtryHdayCrcy chc : list) {
 			chc.setIconUrl(Const.TL_STATIC_ICON_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCrcy()+".pong");
 			//币种
-			ModelPropDict dict1 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CRCY", chc.getCrcy());
-			chc.setCrcyValue(dict1.getValu());
+//			ModelPropDict dict1 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CRCY", chc.getCrcy());
+//			chc.setCrcyValue(dict1.getValu());
 			//国家或地区
 			ModelPropDict dict2 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CTRY", chc.getCtryName());
 			chc.setCtryNameValue(dict2.getValu());

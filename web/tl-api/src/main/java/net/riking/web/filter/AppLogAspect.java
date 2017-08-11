@@ -71,7 +71,7 @@ public class AppLogAspect {
 		AppLogInfo info = new AppLogInfo();
     	info.setAppUserId(rs.getId());
     	info.setCreateTime(new Date());
-		if(rs!=null&&StringUtils.isNotBlank(rs.getId())){
+		if(rs!=null&&StringUtils.isNotBlank(rs.getTelephone())){
 	    	info.setDoThing("getValiCodeSucc");
 	    	logger.info("{} getValiCode Success",rs.getName());
 		}else{
