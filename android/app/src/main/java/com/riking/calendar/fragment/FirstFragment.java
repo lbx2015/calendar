@@ -32,7 +32,9 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
+import com.riking.calendar.adapter.ReportAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
+import com.riking.calendar.pojo.Report;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.util.CONST;
@@ -40,8 +42,11 @@ import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.LunarCalendar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -197,6 +202,8 @@ public class FirstFragment extends Fragment {
 
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         taskRecyclerView = (RecyclerView) v.findViewById(R.id.task_recycler_view);
+        reportRecyclerView = (RecyclerView) v.findViewById(R.id.report_recycler_view);
+        reportRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         recyclerView.setLayoutManager(new LinearLayoutManager(a));
 
@@ -241,33 +248,16 @@ public class FirstFragment extends Fragment {
                 taskAdapter.notifyDataSetChanged();
             }
         });
-
-/*
-        recyclerView.addOnScrollListener(new HideShowScrollListener() {
-            int marginBottom = (int) ZR.convertDpToPx(a, 48);
-
-            @Override
-            public void onHide() {
-                flipper.setVisibility(View.VISIBLE);
-                a.bottomTabs.setVisibility(View.GONE);
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-                params.setMargins(0, 0, 0, 0);
-                recyclerView.setLayoutParams(params);
-                recyclerView.invalidate();
-            }
-
-            @Override
-            public void onShow() {
-                flipper.setVisibility(View.GONE);
-                a.bottomTabs.setVisibility(View.VISIBLE);
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                params.height = LinearLayout.LayoutParams.MATCH_PARENT;
-                params.setMargins(0, 0, 0, marginBottom);
-                recyclerView.setLayoutParams(params);
-                recyclerView.invalidate();
-            }
-        });*/
+        LinkedHashMap<String, List<Report>> reports = new LinkedHashMap<String, List<Report>>();
+        ArrayList<Report> list = new ArrayList<>();
+        Report r = new Report();
+        r.id = "ida";
+        r.moduleType = "module type";
+        r.reportCode = "report code";
+        r.reportName = "report name";
+        list.add(r);
+        reports.put("title", list);
+        reportRecyclerView.setAdapter(new ReportAdapter(reports));
         return v;
     }
 
