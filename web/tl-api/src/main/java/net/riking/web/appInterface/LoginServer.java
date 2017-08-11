@@ -20,7 +20,6 @@ import net.riking.entity.model.Jdpush;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.util.JdpushUtil;
-import net.riking.web.filter.StartupListener;
 /**
  * 用户登录操作
  * @author you.fei
@@ -30,7 +29,7 @@ import net.riking.web.filter.StartupListener;
 @RestController
 public class LoginServer {
 	
-	private static final Logger logger = LogManager.getLogger(StartupListener.class);
+	private static final Logger logger = LogManager.getLogger("LoginServer");
 	@Autowired
 	AppUserRepo appUserRepo;
 	
@@ -43,7 +42,6 @@ public class LoginServer {
 		Example<AppUser> example = Example.of(appUser,ExampleMatcher.matchingAll());
 		AppUser appUser2 = appUserRepo.findOne(example);
 		if (appUser2 != null) {
-			logger.info("{}登录成功",appUser2.getName());
 			session.setAttribute("currentUser", appUser2);
 			return new AppResp(appUser2, CodeDef.SUCCESS);
 		} else {
@@ -66,7 +64,7 @@ public class LoginServer {
 		jdpushUtil.sendToRegistrationId(jdpush);
 		appUser.setValiCode(valiCode);
 		SysDataService.setAppUser(appUser);
-		logger.info("手机{}获取验证码成功",appUser.getPhoneSeqNum());
+		//logger.info("手机{}获取验证码成功",appUser.getPhoneSeqNum());
 		return new AppResp(appUser, CodeDef.SUCCESS);
 	}
 
@@ -88,7 +86,6 @@ public class LoginServer {
 		}
 		if(appUser2!=null){
 			SysDataService.delAppUser(user);
-			logger.info("{}登录成功",appUser2.getName());
 		}
 		session.setAttribute("currentUser", appUser2);
 		return new AppResp(appUser2, CodeDef.SUCCESS);
