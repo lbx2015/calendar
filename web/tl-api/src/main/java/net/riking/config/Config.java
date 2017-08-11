@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
- * 自动读config配置，只要声明一个属性就会自动注入
  * 
- * @author kai.cheng
- *
+ * @author lucky.liu
+ * @version crateTime：2017年8月11日 下午2:47:48
+ * @used TODO
  */
 @Component("config")
 @ConfigurationProperties(prefix = "sys.config")

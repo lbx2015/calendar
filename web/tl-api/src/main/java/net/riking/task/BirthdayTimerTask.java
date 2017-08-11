@@ -17,6 +17,8 @@ public class BirthdayTimerTask extends TimerTask {
 
 	@Autowired
 	AppUserRepo appUserRepo;
+	@Autowired
+	JdpushUtil jdpushUtil;
 	 @Override
 	    public void run() {
 	        try {
@@ -26,7 +28,6 @@ public class BirthdayTimerTask extends TimerTask {
 	        	if (set.size()<1) {
 					return;
 				}
-	            JdpushUtil jdpushUtil = new JdpushUtil();
 	    		Jdpush jdpush = new Jdpush();
 	    		jdpush.setNotificationTitle("金融台历祝您生日快乐");
 	    		jdpush.setMsgTitle("今天生日哟，不要忘了。");

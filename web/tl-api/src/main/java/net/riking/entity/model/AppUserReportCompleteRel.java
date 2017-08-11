@@ -42,7 +42,7 @@ public class AppUserReportCompleteRel extends BaseEntity {
 
 	// 是否完成（0-未完成；1-已完成）
 	@Column(name = "is_complete", length = 1)
-	private Integer isComplete;
+	private Integer isComplete; 
 
 	public String getId() {
 		return id;

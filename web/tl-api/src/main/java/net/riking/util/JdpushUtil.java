@@ -2,6 +2,7 @@ package net.riking.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -16,7 +17,7 @@ import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import net.riking.entity.model.Jdpush;
-
+@Component("jdpushUtil")
 public class JdpushUtil {
 	protected static final Logger LOG = LoggerFactory.getLogger(JdpushUtil.class);
 	private static JPushClient jPushClient = new JPushClient("ae4b5cb2379495f2303019ff", "f7ac0692d540d2a7e15613bb");;
