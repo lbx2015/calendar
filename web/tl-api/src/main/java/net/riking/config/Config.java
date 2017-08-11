@@ -22,8 +22,7 @@ public class Config {
 	private String baseInfoWorkId;
 	private String receipt;
 	private String summary;
-	
-	
+	private String appHtmlPath;
 
 	public String getCompany() {
 		return company;
@@ -57,6 +56,13 @@ public class Config {
 		this.receipt = receipt;
 	}
 
+	public String getAppHtmlPath() {
+		return appHtmlPath;
+	}
+
+	public void setAppHtmlPath(String appHtmlPath) {
+		this.appHtmlPath = appHtmlPath;
+	}
 
 	/**
 	 * 大额可疑工作流id
