@@ -22,8 +22,26 @@ public class Config {
 	private String baseInfoWorkId;
 	private String receipt;
 	private String summary;
+	private String accessKeyId;
+	private String accessKeySecret;
 	
 	
+
+	public String getAccessKeyId() {
+		return accessKeyId;
+	}
+
+	public void setAccessKeyId(String accessKeyId) {
+		this.accessKeyId = accessKeyId;
+	}
+
+	public String getAccessKeySecret() {
+		return accessKeySecret;
+	}
+
+	public void setAccessKeySecret(String accessKeySecret) {
+		this.accessKeySecret = accessKeySecret;
+	}
 
 	public String getCompany() {
 		return company;
@@ -55,19 +73,6 @@ public class Config {
 
 	public void setReceipt(String receipt) {
 		this.receipt = receipt;
-	}
-
-
-	/**
-	 * 大额可疑工作流id
-	 * @return
-	 */
-	public String getAmlWorkId() {
-		return amlWorkId;
-	}
-
-	public void setAmlWorkId(String amlWorkId) {
-		this.amlWorkId = amlWorkId;
 	}
 
 	@Bean

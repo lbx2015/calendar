@@ -69,23 +69,7 @@ public class StartupListener implements ServletContextListener {
 
 	private void initWorkflow(ServletContextEvent event)
 			throws InterruptedException {
-		InputStream tempIs = StartupListener.class
-				.getResourceAsStream("/workflow.json");
-		if (tempIs != null) {
-			try {
-				String str = IOUtils.readStreamAsString(tempIs, "utf-8");
-				workflowMgr.addWorkflows(str);
-				Workflow workflow = workflowMgr
-						.getWorkflow(config.getAmlWorkId());
-				Workflow baseInfoWorkflow = workflowMgr
-						.getWorkflow(config.getBaseInfoWorkId());
-				logger.info("--------------workflow init");
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		
 	}
 
 	/**

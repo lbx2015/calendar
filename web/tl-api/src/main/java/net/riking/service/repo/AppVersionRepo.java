@@ -27,6 +27,6 @@ public interface AppVersionRepo extends JpaRepository<AppVersion, String>, JpaSp
 	@Query(" update AppVersion set deleteState = '0' where id in ?1  ")
 	int deleteById(Set<String> ids);
 	
-	
-	List<AppVersion> findFirstByDeleteStateOrderByRenewalTime(String deletestate);
+	@Query(" from AppVersion where deleteState = '1' and versionNumber > ?1 order by versionNumber desc ")
+	List<AppVersion> getByVersionNumber(String versionNumber);
 }
