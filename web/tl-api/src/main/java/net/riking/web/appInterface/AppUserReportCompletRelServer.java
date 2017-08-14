@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserReportCompleteRel;
-import net.riking.entity.model.QureyResults;
+import net.riking.entity.model.QureyResulte;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
 
 @RestController
@@ -25,7 +25,7 @@ public class AppUserReportCompletRelServer {
      @ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
  	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
  	public AppResp getAllReport(@RequestParam("userId") String userId,@RequestParam("date") String date) {
-    	 List<QureyResults> completeRels = appUserReportCompleteRelRepo.getReportId(userId, date);
+    	 List<QureyResulte> completeRels = appUserReportCompleteRelRepo.getReportId(userId, date);
 		return new AppResp(completeRels, CodeDef.SUCCESS);
     	 
      }
