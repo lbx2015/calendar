@@ -110,51 +110,54 @@ public class AddRemindActivity extends AppCompatActivity {
                 }
             }
         });
+        //remind fragment
+        if (viewPager.getCurrentItem() == 0) {
+            Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
+            ReminderModel mode = new ReminderModel();
+            mode.id = r.id;
+            mode.aheadTime = r.aheadTime;
+            mode.clientType = r.clientType;
+            mode.currentWeek = r.currentWeek;
+            mode.day = r.day;
+            mode.isAllDay = r.isAllDay;
+            mode.isRemind = r.isRemind;
+            mode.repeatFlag = r.repeatFlag;
+            mode.time = r.time;
+            mode.title = r.title;
+            mode.deleteState = r.deleteState;
+            mode.endTime = r.endTime;
+            mode.repeatWeek = r.repeatWeek;
+            Log.d("zzw", "reminder model : " + mode);
 
-        Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
-        ReminderModel mode = new ReminderModel();
-        mode.id = r.id;
-        mode.aheadTime = r.aheadTime;
-        mode.clientType = r.clientType;
-        mode.currentWeek = r.currentWeek;
-        mode.day = r.day;
-        mode.isAllDay = r.isAllDay;
-        mode.isRemind = r.isRemind;
-        mode.repeatFlag = r.repeatFlag;
-        mode.time = r.time;
-        mode.title = r.title;
-        mode.deleteState = r.deleteState;
-        mode.endTime = r.endTime;
-        mode.repeatWeek = r.repeatWeek;
-        Log.d("zzw", "reminder model : " + mode);
+            Call<ResponseBody> call = apiInterface.createRemind(mode);
+            call.enqueue(new retrofit2.Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    ResponseBody r = response.body();
+                    try {
+                        if (r == null) {
+                            Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
+                        }
+                        String s = r.source().readUtf8();
+                        String s2 = s.replace("\\", "");
+                        int i = s2.indexOf("}");
+                        int l = s2.lastIndexOf("}");
+                        Gson gson = new Gson();
+                        ReminderModel m;
+                        m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
+                        Log.d("zzw", response.code() + " index of " + i + "" + l + "success " + m);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        Call<ResponseBody> call = apiInterface.createRemind(mode);
-        call.enqueue(new retrofit2.Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ResponseBody r = response.body();
-
-
-                try {
-                    String s = r.source().readUtf8();
-                    String s2 = s.replace("\\", "");
-                    int i = s2.indexOf("}");
-                    int l = s2.lastIndexOf("}");
-                    Gson gson = new Gson();
-                    ReminderModel m;
-                    m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
-                    Log.d("zzw", response.code() + " index of " + i + "" + l + "success " + m);
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
 
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("zzw", "fail" + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("zzw", "fail" + t.getMessage());
+                }
+            });
+        }
 
         onBackPressed();
     }

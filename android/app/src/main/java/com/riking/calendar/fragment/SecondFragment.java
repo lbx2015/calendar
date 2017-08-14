@@ -1,8 +1,5 @@
 package com.riking.calendar.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
@@ -33,12 +31,10 @@ import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.ViewFindUtils;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.SpinnerView;
+import com.riking.calendar.widget.dialog.DatePickerDialog;
 import com.riking.calendar.widget.dialog.SearchDialog;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -73,6 +69,10 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mCountryDatas;
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
+    CtryHdayCrcy requestBoday = new CtryHdayCrcy();
+    Callback getMoreVocationCallBack;
+
+    DatePickerDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,13 +87,14 @@ public class SecondFragment extends Fragment {
         concurrencyTextView = (TextView) v.findViewById(R.id.concurrency_textview);
 
         mSpinnerView = new SpinnerView((ViewGroup) countryColumn);
-
         mSpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 设置输入框内容
-                ModelPropDict data = mCountryDatas.get(position);
-                countryTextView.setText(data.valu);
+                ModelPropDict dict = mCountryDatas.get(position);
+                countryTextView.setText(dict.valu);
+                requestBoday.ctryName = dict.ke;
+                apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 // 隐藏popupWindow
                 mSpinnerView.mWindow.dismiss();
             }
@@ -105,6 +106,9 @@ public class SecondFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ModelPropDict data = mHolidayDatas.get(position);
                 holidayTextView.setText(data.valu);
+                requestBoday.hdayName = data.ke;
+                Log.d("zzw", "requestBoday: " + requestBoday.hdayName);
+                apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 mHolidaySpinnerView.mWindow.dismiss();
             }
         });
@@ -115,6 +119,8 @@ public class SecondFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ModelPropDict data = mConcurrencyDatas.get(position);
                 concurrencyTextView.setText(data.valu);
+                requestBoday.crcy = data.ke;
+                apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 mConcurrencySpinnerView.mWindow.dismiss();
             }
         });
@@ -125,9 +131,28 @@ public class SecondFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("zzw", "click country column");
                 mSpinnerView.toggle();
-
             }
         });
+
+        final View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
+
+        dateColumn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog == null) {
+                    dialog = new DatePickerDialog(getContext());
+                    dialog.btnSubmit.setOnClickListener(listener);
+                    dialog.btnCancel.setOnClickListener(listener);
+                }
+                dialog.show();
+            }
+        });
+
         holidayColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +170,40 @@ public class SecondFragment extends Fragment {
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SearchDialog dialog = new SearchDialog(v.getContext());
+
+                final SearchDialog dialog = new SearchDialog(v.getContext());
+                dialog.searchClickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("zzw", "click search Button");
+                        CtryHdayCrcy requestBoday = new CtryHdayCrcy();
+                        requestBoday.queryParam = dialog.editText.getText().toString();
+                        apiInterface.getMore(requestBoday).enqueue(new Callback<CtryHdayCryCondition>() {
+                            @Override
+                            public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
+                                if (recyclerView == null) {
+                                    return;
+                                }
+                                CtryHdayCryCondition ctryHdayCryCondition = response.body();
+                                if (ctryHdayCryCondition == null) {
+                                    Toast.makeText(getContext(), getString(R.string.no_found), Toast.LENGTH_SHORT);
+                                    return;
+                                } else {
+                                    holidayTextView.setText(mHolidayDatas.get(0).valu);
+                                    countryTextView.setText(mCountryDatas.get(0).valu);
+                                    concurrencyTextView.setText(mConcurrencyDatas.get(0).valu);
+                                }
+                                recyclerView.setAdapter(new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content));
+                            }
+
+                            @Override
+                            public void onFailure(Call<CtryHdayCryCondition> call, Throwable t) {
+
+                            }
+                        });
+                        dialog.dismiss();
+                    }
+                };
                 dialog.show();
             }
         });
@@ -171,6 +229,7 @@ public class SecondFragment extends Fragment {
                 a.bottomTabs.setVisibility(View.VISIBLE);
             }
         });
+
         realm = Realm.getDefaultInstance();
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
@@ -214,9 +273,6 @@ public class SecondFragment extends Fragment {
                     String s2 = s.replace("\\", "");
                     int i = s2.indexOf("}");
                     int l = s2.lastIndexOf("}");
-//                    Gson gson = new Gson();
-//                    ReminderModel m;
-//                    m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
                     Log.d("zzw", response.code() + "success " + s2);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -225,7 +281,7 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("zzw", "fail" + t.getMessage());
+                Log.d("zzw", "call fail" + t.getMessage());
             }
         });
 
@@ -234,6 +290,9 @@ public class SecondFragment extends Fragment {
             @Override
             public void onResponse(Call<HolidayConditionDemo> call, Response<HolidayConditionDemo> response) {
                 HolidayConditionDemo r = response.body();
+                if (r == null) {
+                    return;
+                }
                 // 模拟数据
                 mCountryDatas = r._data.ctryName;
                 mHolidayDatas = r._data.hdayName;
@@ -250,42 +309,39 @@ public class SecondFragment extends Fragment {
                 mConcurrencySpinnerView.setAdapter(new MyAdapter(mConcurrencyDatas));
                 mHolidaySpinnerView.setAdapter(new MyAdapter(mHolidayDatas));
                 mSpinnerView.setAdapter(new MyAdapter(mCountryDatas));
-               /* try {
-                    if (r == null) {
-                        Log.d("zzw", "r is null");
-                        return;
-                    }
-
-                    String s = r.source().readUtf8();
-                    String s2 = s.replace("\\", "");
-                    int i = s2.indexOf("}");
-                    int l = s2.lastIndexOf("}");*/
                 Log.d("zzw", response.code() + "success " + r);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             }
 
             @Override
             public void onFailure(Call<HolidayConditionDemo> call, Throwable t) {
-                Log.d("zzw", "fail" + t.getMessage());
+                Log.d("zzw", "call2 fail" + t.getMessage());
             }
         });
+        CtryHdayCrcy ctryHdayCrcy = new CtryHdayCrcy();
+        Gson gson = new Gson();
+        Log.d("feiyoulian", "jason: " + gson.toJson(ctryHdayCrcy));
+        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(ctryHdayCrcy);
 
-        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(new CtryHdayCrcy());
-        vocationCalls.enqueue(new Callback<CtryHdayCryCondition>() {
+        getMoreVocationCallBack = new Callback<CtryHdayCryCondition>() {
             @Override
             public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
+                if (recyclerView == null) {
+                    return;
+                }
                 CtryHdayCryCondition ctryHdayCryCondition = response.body();
+                if (ctryHdayCryCondition == null) {
+                    return;
+                }
                 recyclerView.setAdapter(new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content));
                 Log.d("zzw", "CtryHdayCryCondition success: " + ctryHdayCryCondition);
             }
 
             @Override
             public void onFailure(Call<CtryHdayCryCondition> call, Throwable t) {
-
             }
-        });
+        };
+
+        vocationCalls.enqueue(getMoreVocationCallBack);
 
         return v;
     }
