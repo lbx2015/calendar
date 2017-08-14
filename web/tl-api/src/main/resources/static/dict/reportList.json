@@ -62,18 +62,6 @@
 			"type" : "text"
 		},
 		{
-			"prop": "reportNote",
-			"alias": "报表说明",
-			"group":"base",
-			"type" : "text"
-		},
-		{
-			"prop": "reportRule",
-			"alias": "报表规则",
-			"group":"base",
-			"type" : "text"
-		},
-		{
 			"prop": "downloadUrl",
 			"alias": "报表模板下载地址",
 			"group":"base",
@@ -93,6 +81,18 @@
 			"group":"base",
 			"type" : "text",
       		"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "reportNote",
+			"alias": "报表说明",
+			"group":"base",
+			"type" : "text"
+		},
+		{
+			"prop": "reportRule",
+			"alias": "报表规则",
+			"group":"base",
+			"type" : "text"
 		}
 	]
 }

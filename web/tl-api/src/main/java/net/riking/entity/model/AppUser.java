@@ -36,6 +36,19 @@ public class AppUser extends BaseEntity {
 		this.phoneSeqNum = phoneSeqNum;
 	}
 
+	
+	public AppUser(String name, String telephone, String passWord,
+			String phoneSeqNum,String deleteState, String enabled) {
+		super();
+		this.name = name;
+		this.telephone = telephone;
+		this.passWord = passWord;
+		this.phoneSeqNum = phoneSeqNum;
+		this.enabled = enabled;
+		this.deleteState = deleteState;
+	}
+
+
 	public AppUser() {
 		super();
 	}
