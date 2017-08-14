@@ -136,9 +136,10 @@ public class RedisUtil {
 		} catch (Exception e) {
 			logger.error("Get jedis error : " + e);
 			e.printStackTrace();
-		} finally {
-			returnResource(jedis);
 		}
+//		} finally {
+//			returnResource(jedis);
+//		}
 		return jedis;
 	}
 
@@ -169,12 +170,15 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static void setString(String key, String value) {
+	public synchronized static void setString(String key, String value) {
+		Jedis jedis = getJedis();
 		try {
 			value = StringUtils.isNotEmpty(value) ? "" : value;
-			getJedis().set(buildKey(key), value);
+			jedis.set(buildKey(key), value);
 		} catch (Exception e) {
 			logger.error("Set keyex error : " + e);
+		}finally {
+			returnResource(jedis);
 		}
 	}
 
@@ -187,11 +191,14 @@ public class RedisUtil {
 	 * @param value
 	 */
 	public static void setString(String key, int seconds, String value) {
+		Jedis jedis = getJedis();
 		try {
 			value = StringUtils.isNotEmpty(value) ? "" : value;
-			getJedis().setex(buildKey(key), seconds, value);
+			jedis.setex(buildKey(key), seconds, value);
 		} catch (Exception e) {
 			logger.error("Set keyex error : " + e);
+		}finally {
+			returnResource(jedis);
 		}
 	}
 
@@ -203,10 +210,13 @@ public class RedisUtil {
 	 */
 	public static String getString(String key) {
 		String bKey = buildKey(key);
-		if (getJedis() == null || !getJedis().exists(bKey)) {
+		Jedis jedis = getJedis();
+		if (null == jedis || !jedis.exists(bKey)) {
 			return null;
 		}
-		return getJedis().get(bKey);
+		String value = jedis.get(bKey);
+		returnResource(jedis);
+		return value;
 	}
 
 	/**
@@ -217,11 +227,14 @@ public class RedisUtil {
 	 * @param value
 	 */
 	public static <T> void setList(String key, List<T> list) {
+		Jedis jedis = getJedis();
 		try {
 //			getJedis().set(key.getBytes(), ObjectTranscoder.serialize(list));
-			getJedis().set(key.getBytes(), SerializeUtil.serialize(list));
+			jedis.set(key.getBytes(), SerializeUtil.serialize(list));
 		} catch (Exception e) {
 			logger.error("Set key error : " + e);
+		}finally {
+			returnResource(jedis);
 		}
 	}
 
@@ -234,10 +247,12 @@ public class RedisUtil {
 	 */
 	public static <T> List<T> getList(String key) {
 		String bKey = buildKey(key);
-		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
+		Jedis jedis = getJedis();
+		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return null;
 		}
-		byte[] in = getJedis().get(key.getBytes());
+		byte[] in = jedis.get(key.getBytes());
+		returnResource(jedis);
 		List<T> list = (List<T>) SerializeUtil.unserialize(in);
 		return list;
 	}
@@ -249,11 +264,14 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static <T> void setMap(String key, Map<String, T> map) {
+	public synchronized static <T> void setMap(String key, Map<String, T> map) {
+		Jedis jedis = getJedis();
 		try {
-			getJedis().set(key.getBytes(), SerializeUtil.serialize(map));
+			jedis.set(key.getBytes(), SerializeUtil.serialize(map));
 		} catch (Exception e) {
 			logger.warn("Set key error : " + e);
+		}finally {
+			returnResource(jedis);
 		}
 	}
 
@@ -266,10 +284,12 @@ public class RedisUtil {
 	 */
 	public static <T> Map<String, T> getMap(String key) {
 		String bKey = buildKey(key);
-		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
+		Jedis jedis = getJedis();
+		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return null;
 		}
-		byte[] in = getJedis().get(key.getBytes());
+		byte[] in = jedis.get(key.getBytes());
+		returnResource(jedis);
 		Map<String, T> map = (Map<String, T>) SerializeUtil.unserialize(in);
 		return map;
 	}
@@ -282,20 +302,26 @@ public class RedisUtil {
 	 * @param value
 	 */
 	public static <T> void setObject(String key, T t) {
+		Jedis jedis = getJedis();
 		try {
-			getJedis().set(key.getBytes(), SerializeUtil.serialize(t));
+			jedis.set(key.getBytes(), SerializeUtil.serialize(t));
 		} catch (Exception e) {
 			logger.warn("Set key error : " + e);
+		}finally {
+			returnResource(jedis);
 		}
 	}
 	
 	
 	public static <T> void setObject(String key, int seconds,T t) {
+		Jedis jedis = getJedis();
 		try {
-			getJedis().set(key.getBytes(), SerializeUtil.serialize(t));
-			getJedis().expire(key, seconds);
+			jedis.set(key.getBytes(), SerializeUtil.serialize(t));
+			jedis.expire(key, seconds);
 		} catch (Exception e) {
 			logger.error("Set keyex error : " + e);
+		}finally {
+			returnResource(jedis);
 		}
 	}
 
@@ -307,26 +333,30 @@ public class RedisUtil {
 	 */
 	public static Object getObject(String key) {
 		String bKey = buildKey(key);
-		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
+		Jedis jedis = getJedis();
+		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return null;
 		}
-		byte[] in = getJedis().get(key.getBytes());
+		byte[] in = jedis.get(key.getBytes());
+		returnResource(jedis);
 		return  SerializeUtil.unserialize(in);
 		
 	}
 	
 	
-	public static void del(String key){
+	public  static void del(String key){
 		String bKey = buildKey(key);
-		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
+		Jedis jedis = getJedis();
+		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return ;
 		}
-		getJedis().del(bKey);
+		jedis.del(bKey);
+		returnResource(jedis);
 	}
 
 	/** #####################redis-API常用操作############################### */
 
-	private void KeyOperate() {
+	private  void KeyOperate() {
 		System.out.println("======================key==========================");
 		// 清空数据
 		System.out.println("清空库中所有数据：" + jedis.flushDB());

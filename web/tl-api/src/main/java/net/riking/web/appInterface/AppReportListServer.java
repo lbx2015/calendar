@@ -51,22 +51,6 @@ public class AppReportListServer {
 	@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport() {
-		/*Map<String, List<QueryReport>> map = new HashMap<>();
-		ReportResult reportResult = new ReportResult();
-		List<QueryReport>list =reportListRepo.findByDeleteState();
-		for (QueryReport queryReport : list) {
-			String value = sysDataservice.getDict("T_REPORT_LIST", "MODLE_TYPE", queryReport.getModuleType()).getValu();
-			if (!map.containsKey(value)) {
-				List<QueryReport>lists = new ArrayList<>();
-				lists.add(queryReport);
-				map.put(value,lists);
-			}else {
-				List<QueryReport>lists = map.get(value);
-				lists.add(queryReport);
-				map.put(value, lists);
-			}
-		}
-		reportResult.setResult(map);*/
 		List<QueryReport>list =reportListRepo.findByDeleteState();
 		Map<String, List<QueryReport>> map = new HashMap<>();
 		for (QueryReport queryReport : list) {

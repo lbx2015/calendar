@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.BusinessDay;
+import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
-import net.riking.service.repo.BusinessDayRepo;
+import net.riking.service.repo.AppUserReportCompletRelRepo;
 import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
 import net.riking.service.repo.TodoRepo;
@@ -37,7 +37,7 @@ public class SynchronousServer {
 	@Autowired
 	TodoRepo todoRepo;
 	@Autowired
-	BusinessDayRepo businessDayRepo;
+	AppUserReportCompletRelRepo appUserReportCompletesRelRepo;
 
 	@ApiOperation(value = "同步所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
@@ -45,18 +45,11 @@ public class SynchronousServer {
 		List<Remind> reminds = remindRepo.findByUserId(userId);
 		List<RemindHis> remindHis = remindHisRepo.findByUserId(userId);
 		List<Todo> todos = todoRepo.findByUserId(userId);
-		List<BusinessDay> businessDay = businessDayRepo.findAll();
-		SynResult result = new SynResult(reminds, remindHis, todos,businessDay);
+		List<AppUserReportCompleteRel> appUserReportCompleteRel = appUserReportCompletesRelRepo.findAll();
+		SynResult result = new SynResult(reminds, remindHis, todos,appUserReportCompleteRel);
 		return new AppResp(result, CodeDef.SUCCESS);
 	}
 	
-	
-	@ApiOperation(value = "同步工作日信息", notes = "POST")
-	@RequestMapping(value = "/synchronousBusinessDay", method = RequestMethod.POST)
-	public AppResp synchronousBusinessDay() {
-		List<BusinessDay> businessDay = businessDayRepo.findAll();
-		return new AppResp(businessDay, CodeDef.SUCCESS);
-	}
 	
 	@ApiOperation(value = "同步app提醒信息", notes = "POST")
 	@RequestMapping(value = "/synchronousReminds", method = RequestMethod.POST)
@@ -93,6 +86,23 @@ public class SynchronousServer {
 	}
 	
 	@ApiOperation(value = "同步app代办信息", notes = "POST")
+	@RequestMapping(value = "/synchronousComplete", method = RequestMethod.POST)
+	public AppResp synchronousComplete(@RequestBody List<AppUserReportCompleteRel> appUserReportCompleteRel) {
+		List<AppUserReportCompleteRel> appUserReportCompleteRelSave = new ArrayList<>(); 
+		List<AppUserReportCompleteRel> AppUserReportCompleteRelDele = new  ArrayList<>();
+		for (int i = 0; i < appUserReportCompleteRel.size(); i++) {
+			if (appUserReportCompleteRel.get(i).getIsComplete()==1) {
+				appUserReportCompleteRelSave.add(appUserReportCompleteRel.get(i));
+			}else {
+				AppUserReportCompleteRelDele.add(appUserReportCompleteRel.get(i));
+			}
+		}
+		appUserReportCompletesRelRepo.save(appUserReportCompleteRelSave);
+		appUserReportCompletesRelRepo.delete(AppUserReportCompleteRelDele);
+		return new AppResp( CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "同步用户报表完成信息", notes = "POST")
 	@RequestMapping(value = "/synchronousTodos", method = RequestMethod.POST)
 	public AppResp synchronousTodos(@RequestBody List<Todo> todos) {
 		List<Todo> todoSave = new ArrayList<>(); 

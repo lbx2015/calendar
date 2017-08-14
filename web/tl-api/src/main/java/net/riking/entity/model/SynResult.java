@@ -14,24 +14,26 @@ public class SynResult {
 	private List<Remind> remind;
 	private List<RemindHis> remindHis;
 	private List<Todo> todo;
-	private List<BusinessDay> businessDay;
+	private List<AppUserReportCompleteRel> appUserReportCompleteRel;
 
 	public SynResult() {
 	}
 
-	public SynResult(List<Remind> remind, List<RemindHis> remindHis, List<Todo> todo, List<BusinessDay> businessDay) {
+	public SynResult(List<Remind> remind, List<RemindHis> remindHis, List<Todo> todo, List<AppUserReportCompleteRel> appUserReportCompleteRel) {
 		this.remind = remind;
 		this.remindHis = remindHis;
 		this.todo = todo;
-		this.businessDay = businessDay;
+		this.appUserReportCompleteRel = appUserReportCompleteRel;
 	}
 
-	public List<BusinessDay> getBusinessDay() {
-		return businessDay;
+	
+
+	public List<AppUserReportCompleteRel> getAppUserReportCompleteRel() {
+		return appUserReportCompleteRel;
 	}
 
-	public void setBusinessDay(List<BusinessDay> businessDay) {
-		this.businessDay = businessDay;
+	public void setAppUserReportCompleteRel(List<AppUserReportCompleteRel> appUserReportCompleteRel) {
+		this.appUserReportCompleteRel = appUserReportCompleteRel;
 	}
 
 	public List<Remind> getRemind() {

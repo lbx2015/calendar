@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.PageQuery;
+import net.riking.service.getDateService;
 
 @Entity
 @Table(name = "t_ctry_hday_crcy")
@@ -57,6 +58,9 @@ public class CtryHdayCrcy extends PageQuery {
 	@Comment("删除标记")
 	@Column(name = "delete_state")
 	private String deleteState;
+	
+	@Transient
+	private String queryParam;
 	
 	@Transient
 	private String iconUrl;
@@ -142,6 +146,14 @@ public class CtryHdayCrcy extends PageQuery {
 		this.hdayNameValue = hdayNameValue;
 	}
 
+	public String getQueryParam() {
+		return queryParam;
+	}
+
+	public void setQueryParam(String queryParam) {
+		this.queryParam = queryParam;
+	}
+
 //	public String getCrcyValue() {
 //		return crcyValue;
 //	}
@@ -151,7 +163,13 @@ public class CtryHdayCrcy extends PageQuery {
 //	}
 //	
 	
-	
+	public Integer getPcount() {
+		Integer pcount = super.getPcount();
+		if(pcount==null||pcount<10){
+			return 10;
+		}
+		return pcount;
+	}
 	
 	
 }
