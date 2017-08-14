@@ -108,9 +108,11 @@ public class LoginActivity extends AppCompatActivity {
                         e.putBoolean(Const.IS_LOGIN, true);
                         e.putString(Const.USER_ID, user._data.id);
                         e.putString(Const.PHONE_NUMBER, user._data.telephone);
+                        e.putString(Const.USER_EMAIL, user._data.email);
                         e.putString(Const.PHONE_SEQ_NUMBER, user._data.phoneSeqNum);
                         e.putString(Const.USER_NAME, user._data.name);
                         e.putString(Const.USER_PASSWORD, user._data.passWord);
+                        e.putString(Const.USER_DEPT, user._data.dept);
                         e.commit();
                         onBackPressed();
                         startActivity(new Intent(LoginActivity.this, UserInfoActivity.class));

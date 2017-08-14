@@ -110,8 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_name"
-                    android:text="大海" />
+                    android:layout_toLeftOf="@+id/edit_name" />
 
                 <ImageView
                     android:id="@+id/edit_name"
@@ -154,8 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_email"
-                    android:text="johnrambo201512@outlook.com" />
+                    android:layout_toLeftOf="@+id/edit_email" />
 
                 <ImageView
                     android:id="@+id/edit_email"
@@ -218,7 +216,7 @@
 
                 android:background="@color/divider_color_d9d9d9" />
 
-            <RelativeLayout
+       <!--     <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -260,7 +258,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
 
-                android:background="@color/divider_color_d9d9d9" />
+                android:background="@color/divider_color_d9d9d9" />-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
