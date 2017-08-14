@@ -64,4 +64,7 @@ public interface APIInterface {
 
     @POST("/getValiCode")
     Call<GetVerificationModel> getVarificationCode(@Body AppUser user);
+
+    @POST("/appUserApp/addOrUpdate")
+    Call<GetVerificationModel> updateUserInfo(@Body AppUser user);
 }

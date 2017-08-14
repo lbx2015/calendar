@@ -33,7 +33,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
         v.findViewById(R.id.set_layout).setOnClickListener(this);
         userName = (TextView) v.findViewById(R.id.user_name);
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
-            userName.setText(sharedPreferences.getString(Const.USER_NAME, null));
+            userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
+                    sharedPreferences.getString(Const.USER_COMMENTS, ""));
         }
         return v;
     }

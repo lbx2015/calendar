@@ -16,6 +16,7 @@ public class Const {
     public static final String PHONE_NUMBER = "PhoneNumber";
     public static final String PHONE_SEQ_NUMBER = "phoneSeqNum";
     public static final String USER_NAME = "phoneSeqNum";
+    public static final String USER_COMMENTS = "USER_COMMENTS";
     public static final String USER_EMAIL = "USER_EMAIL";
     public static final String USER_PASSWORD = "USER_PASSWORD";
     public static final String USER_DEPT = "USER_DEPT";
