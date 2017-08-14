@@ -62,7 +62,8 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-
+                input.setText(preference.getString(Const.USER_COMMENTS, ""));
+                input.setSelection(preference.getString(Const.USER_COMMENTS, "").length());
                 // Set up the buttons
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

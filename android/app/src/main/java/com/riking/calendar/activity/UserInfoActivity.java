@@ -78,6 +78,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
+                String name = preference.getString(Const.USER_NAME, "");
+                input.setText(name);
+                input.setSelection(name.length());
 
                 // Set up the buttons
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
