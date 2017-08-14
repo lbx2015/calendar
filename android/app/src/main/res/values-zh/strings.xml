@@ -60,6 +60,13 @@
     <string name="create_failed">创建失败</string>
     <string name="whole_month">整月</string>
     <string name="clear_date_filter">清除日期过滤</string>
+    <string name="login_with_phone_number">手机号码登录</string>
+    <string name="phone_number">手机号</string>
+    <string name="verification_code">验证码</string>
+    <string name="login">登录</string>
+    <string name="please_input_phone_number">请输入手机号码</string>
+    <string name="please_input_verification_code">请输入验证码</string>
+    <string name="get_verification_code">获取验证码</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>

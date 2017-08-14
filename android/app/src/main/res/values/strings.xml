@@ -94,6 +94,13 @@
     <string name="create_failed">Created fail</string>
     <string name="whole_month">Whole Month</string>
     <string name="clear_date_filter">Clear Date filter</string>
+    <string name="login_with_phone_number">Login With Phone Number</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="login">Login</string>
+    <string name="please_input_phone_number">Please input phone number</string>
+    <string name="please_input_verification_code">Please input the verification code</string>
+    <string name="get_verification_code">Get Verification Code</string>
     <string-array name="subTittles">
         <item>Job</item>
         <item>Vocation</item>
