@@ -44,7 +44,6 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
 
     @Override
     public void onWheelScrolling(float deltaX, float deltaY) {
-
     }
 
     @Override

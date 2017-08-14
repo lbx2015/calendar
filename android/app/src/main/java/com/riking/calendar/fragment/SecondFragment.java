@@ -35,6 +35,8 @@ import com.riking.calendar.widget.dialog.DatePickerDialog;
 import com.riking.calendar.widget.dialog.SearchDialog;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +52,7 @@ import retrofit2.Response;
  */
 
 public class SecondFragment extends Fragment {
+    public Calendar calendar;
     RecyclerView recyclerView;
     Realm realm;
     ViewPagerActivity a;
@@ -62,7 +65,7 @@ public class SecondFragment extends Fragment {
     TextView countryTextView;
     TextView holidayTextView;
     TextView concurrencyTextView;
-
+    TextView dateTextView;
     SpinnerView mSpinnerView;
     SpinnerView mHolidaySpinnerView;
     SpinnerView mConcurrencySpinnerView;
@@ -71,11 +74,11 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mConcurrencyDatas;
     CtryHdayCrcy requestBoday = new CtryHdayCrcy();
     Callback getMoreVocationCallBack;
-
     DatePickerDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        calendar = Calendar.getInstance();
         a = (ViewPagerActivity) getActivity();
         View v = inflater.inflate(R.layout.second_fragment, container, false);
         dateColumn = v.findViewById(R.id.date_column);
@@ -85,6 +88,7 @@ public class SecondFragment extends Fragment {
         countryTextView = (TextView) v.findViewById(R.id.country_textview);
         holidayTextView = (TextView) v.findViewById(R.id.holiday_textview);
         concurrencyTextView = (TextView) v.findViewById(R.id.concurrency_textview);
+        dateTextView = (TextView) v.findViewById(R.id.date_textview);
 
         mSpinnerView = new SpinnerView((ViewGroup) countryColumn);
         mSpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,7 +141,25 @@ public class SecondFragment extends Fragment {
         final View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.btnSubmit: {
+                        calendar.set(Calendar.YEAR, Integer.parseInt(dialog.wheelDatePicker.year));
+                        calendar.set(Calendar.MONTH, Integer.parseInt(dialog.wheelDatePicker.month) - 1);
+                        calendar.set(Calendar.DATE, Integer.parseInt(dialog.wheelDatePicker.day) - 1);
 
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
+                        dateTextView.setText(sdf.format(calendar.getTime()));
+
+                        requestBoday.hdayDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+                        apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
+                        dialog.dismiss();
+                        break;
+                    }
+                    case R.id.btnCancel: {
+                        dialog.dismiss();
+                        break;
+                    }
+                }
             }
         };
 
@@ -176,9 +198,9 @@ public class SecondFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Log.d("zzw", "click search Button");
-                        CtryHdayCrcy requestBoday = new CtryHdayCrcy();
-                        requestBoday.queryParam = dialog.editText.getText().toString();
-                        apiInterface.getVagueQuery(requestBoday).enqueue(new Callback<CtryHdayCryCondition>() {
+                        final CtryHdayCrcy searchRequest = new CtryHdayCrcy();
+                        searchRequest.queryParam = dialog.editText.getText().toString();
+                        apiInterface.getVagueQuery(searchRequest).enqueue(new Callback<CtryHdayCryCondition>() {
                             @Override
                             public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
                                 if (recyclerView == null) {
@@ -192,6 +214,7 @@ public class SecondFragment extends Fragment {
                                     holidayTextView.setText(mHolidayDatas.get(0).valu);
                                     countryTextView.setText(mCountryDatas.get(0).valu);
                                     concurrencyTextView.setText(mConcurrencyDatas.get(0).valu);
+                                    requestBoday = new CtryHdayCrcy();
                                 }
                                 recyclerView.setAdapter(new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content));
                             }
