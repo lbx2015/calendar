@@ -178,7 +178,7 @@ public class SecondFragment extends Fragment {
                         Log.d("zzw", "click search Button");
                         CtryHdayCrcy requestBoday = new CtryHdayCrcy();
                         requestBoday.queryParam = dialog.editText.getText().toString();
-                        apiInterface.getMore(requestBoday).enqueue(new Callback<CtryHdayCryCondition>() {
+                        apiInterface.getVagueQuery(requestBoday).enqueue(new Callback<CtryHdayCryCondition>() {
                             @Override
                             public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
                                 if (recyclerView == null) {

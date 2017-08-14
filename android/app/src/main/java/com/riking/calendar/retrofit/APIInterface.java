@@ -53,4 +53,6 @@ public interface APIInterface {
 
     @POST("/ctryHdayCrcyApp/getMore")
     Call<CtryHdayCryCondition> getMore(@Body CtryHdayCrcy ctryHdayCrcy);
+    @POST("/ctryHdayCrcyApp/vagueQuery")
+    Call<CtryHdayCryCondition> getVagueQuery(@Body CtryHdayCrcy ctryHdayCrcy);
 }
