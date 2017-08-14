@@ -55,10 +55,9 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
         holder.country.setText(r.ctryNameValue);
         holder.currency.setText(r.crcy);
         holder.vocation.setText(r.hdayNameValue);
-        String url = Const.BASE_URL + r.iconUrl;
         MyTask myTask = new MyTask();
         myTask.imageView = holder.countryImage;
-        myTask.execute(url);
+        myTask.execute( r.iconUrl);
     }
 
     @Override
