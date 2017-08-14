@@ -40,6 +40,15 @@ public class FourthFragment extends Fragment implements OnClickListener {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+            userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
+                    sharedPreferences.getString(Const.USER_COMMENTS, ""));
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.my_photo_layout: {

@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/me"
+            android:text="@string/personal_info"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
     </FrameLayout>
@@ -31,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="3dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
@@ -41,44 +42,7 @@
             android:background="@android:color/white"
             android:orientation="vertical"
             android:paddingLeft="10dp">
-            <!--image-->
-            <RelativeLayout
-                android:id="@+id/smContentView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white">
 
-                <TextView
-                    android:id="@+id/my_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/user_image"
-                    android:textColor="@color/color_323232" />
-
-                <ImageView
-                    android:id="@+id/my_photo"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/next_step"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/cat_wide_2" />
-
-                <ImageView
-                    android:id="@+id/next_step"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
             <!--divider-->
             <View
                 android:layout_width="match_parent"
@@ -87,7 +51,7 @@
                 android:background="@color/divider_color_d9d9d9" />
 
             <RelativeLayout
-                android:id="@+id/user_name_relative_layout"
+                android:id="@+id/sex_relative_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -95,29 +59,27 @@
                 android:paddingTop="2dp">
 
                 <TextView
-                    android:id="@+id/name_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:text="@string/name"
+                    android:text="@string/sex"
                     android:textColor="@color/color_323232" />
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/sex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_name" />
+                    android:layout_toLeftOf="@+id/edit_sex" />
 
                 <ImageView
-                    android:id="@+id/edit_name"
+                    android:id="@+id/edit_sex"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="9dp"
@@ -138,29 +100,27 @@
                 android:paddingTop="2dp">
 
                 <TextView
-                    android:id="@+id/email_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:text="@string/job_email"
+                    android:text="@string/address"
                     android:textColor="@color/color_323232" />
 
                 <TextView
-                    android:id="@+id/email"
+                    android:id="@+id/address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_email" />
+                    android:layout_toLeftOf="@+id/edit_address" />
 
                 <ImageView
-                    android:id="@+id/edit_email"
+                    android:id="@+id/edit_address"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="9dp"
@@ -180,30 +140,27 @@
                 android:paddingTop="2dp">
 
                 <TextView
-                    android:id="@+id/depart_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:text="@string/depart"
+                    android:text="@string/birthday"
                     android:textColor="@color/color_323232" />
 
                 <TextView
-                    android:id="@+id/depart"
+                    android:id="@+id/birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_depart"
-                    android:text="产品事业中心" />
+                    android:layout_toLeftOf="@+id/edit_birthday" />
 
                 <ImageView
-                    android:id="@+id/edit_depart"
+                    android:id="@+id/edit_birthday"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="9dp"
@@ -216,7 +173,8 @@
 
                 android:background="@color/divider_color_d9d9d9" />
 
-       <!--     <RelativeLayout
+            <RelativeLayout
+                android:id="@+id/comments_relative_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -224,30 +182,27 @@
                 android:paddingTop="2dp">
 
                 <TextView
-                    android:id="@+id/quick_mark_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:text="@string/quick_remark_code"
+                    android:text="@string/user_comments"
                     android:textColor="@color/color_323232" />
 
-                <ImageView
-                    android:id="@+id/quick_mark_code"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                <TextView
+                    android:id="@+id/comments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/quick_mark_code_show"
-                    android:src="@drawable/quick_mark_code" />
+                    android:layout_toLeftOf="@+id/edit_comments" />
 
                 <ImageView
-                    android:id="@+id/quick_mark_code_show"
+                    android:id="@+id/edit_comments"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="9dp"
@@ -258,36 +213,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
 
-                android:background="@color/divider_color_d9d9d9" />-->
+                android:background="@color/divider_color_d9d9d9" />
 
-            <RelativeLayout
-                android:id="@+id/more_user_info_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp">
-
-                <TextView
-                    android:id="@+id/more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/more"
-                    android:textColor="@color/color_323232" />
-
-                <ImageView
-                    android:id="@+id/check_more"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

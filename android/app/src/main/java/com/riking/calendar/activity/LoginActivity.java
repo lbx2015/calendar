@@ -114,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                         e.putString(Const.USER_PASSWORD, user._data.passWord);
                         e.putString(Const.USER_DEPT, user._data.dept);
                         e.putString(Const.USER_COMMENTS, user._data.remark);
+                        e.putString(Const.USER_COMMENTS, user._data.remark);
                         e.commit();
                         onBackPressed();
                         startActivity(new Intent(LoginActivity.this, UserInfoActivity.class));

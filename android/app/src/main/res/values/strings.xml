@@ -101,6 +101,11 @@
     <string name="please_input_phone_number">Please input phone number</string>
     <string name="please_input_verification_code">Please input the verification code</string>
     <string name="get_verification_code">Get Verification Code</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="sex">Sex</string>
+    <string name="address">Address</string>
+    <string name="birthday">BirthDay</string>
+    <string name="user_comments">Comments</string>
     <string-array name="subTittles">
         <item>Job</item>
         <item>Vocation</item>
