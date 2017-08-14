@@ -6,8 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialog;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.riking.calendar.R;
 
@@ -18,6 +23,10 @@ import static com.riking.calendar.R.color.dialogColorPrimary;
  */
 
 public class SearchDialog extends AppCompatDialog {
+
+    public EditText editText;
+    public View.OnClickListener searchClickListener;
+    View searchButton;
 
     public SearchDialog(@NonNull Context context) {
         //step 1, required. to stretch the dialog to full screen
@@ -51,6 +60,11 @@ public class SearchDialog extends AppCompatDialog {
 
         // finally change the color
         window.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        searchButton =  findViewById(R.id.search);
+        editText = (EditText) findViewById(R.id.search_edit_view);
+        Log.d("zzw", "set on cick listener: " + searchClickListener);
+        searchButton.setOnClickListener(searchClickListener);
     }
 
     //step 2, required

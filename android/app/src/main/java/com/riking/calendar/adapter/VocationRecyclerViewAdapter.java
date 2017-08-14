@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 
 import java.io.IOException;
@@ -76,7 +77,7 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
                 InputStream inputStream = connection.getInputStream();
                 bitmap = BitmapFactory.decodeStream(inputStream);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.d("zzw", "image loaded failed" + e.getMessage());
             }
             return bitmap;
         }
