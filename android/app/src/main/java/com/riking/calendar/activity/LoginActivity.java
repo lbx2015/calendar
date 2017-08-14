@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                         e.putString(Const.PHONE_SEQ_NUMBER, user._data.phoneSeqNum);
                         e.putString(Const.USER_NAME, user._data.name);
                         e.putString(Const.USER_PASSWORD, user._data.passWord);
+                        e.commit();
                         onBackPressed();
                         startActivity(new Intent(LoginActivity.this, UserInfoActivity.class));
                         Logger.d("zzw", "login succes : " + user);
