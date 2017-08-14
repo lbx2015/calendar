@@ -16,7 +16,9 @@ public class Const {
 	
 	public static final String EXPORT_REPORT_GROUP = "EXPORT_REPORT_GROUP";
 	
-	public static final String  TL_STATIC_ICON_PATH = "/icon/";
+	public static final String  TL_STATIC_ICON_PATH = "/static/icon/";
+	
+	public static final String  TL_ICON_PATH = "/icon/";
 	
 	public static final String  TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
 	

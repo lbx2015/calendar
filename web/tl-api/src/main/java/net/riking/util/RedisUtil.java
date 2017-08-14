@@ -169,7 +169,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static void setString(String key, String value) {
+	public synchronized static void setString(String key, String value) {
 		try {
 			value = StringUtils.isNotEmpty(value) ? "" : value;
 			getJedis().set(buildKey(key), value);
@@ -186,7 +186,7 @@ public class RedisUtil {
 	 *            以秒为单位
 	 * @param value
 	 */
-	public static void setString(String key, int seconds, String value) {
+	public synchronized static void setString(String key, int seconds, String value) {
 		try {
 			value = StringUtils.isNotEmpty(value) ? "" : value;
 			getJedis().setex(buildKey(key), seconds, value);
@@ -201,7 +201,7 @@ public class RedisUtil {
 	 * @param key
 	 * @return value
 	 */
-	public static String getString(String key) {
+	public synchronized static String getString(String key) {
 		String bKey = buildKey(key);
 		if (getJedis() == null || !getJedis().exists(bKey)) {
 			return null;
@@ -216,7 +216,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static <T> void setList(String key, List<T> list) {
+	public synchronized static <T> void setList(String key, List<T> list) {
 		try {
 //			getJedis().set(key.getBytes(), ObjectTranscoder.serialize(list));
 			getJedis().set(key.getBytes(), SerializeUtil.serialize(list));
@@ -232,7 +232,7 @@ public class RedisUtil {
 	 * @param key
 	 * @return list
 	 */
-	public static <T> List<T> getList(String key) {
+	public synchronized static <T> List<T> getList(String key) {
 		String bKey = buildKey(key);
 		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
 			return null;
@@ -249,7 +249,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static <T> void setMap(String key, Map<String, T> map) {
+	public synchronized static <T> void setMap(String key, Map<String, T> map) {
 		try {
 			getJedis().set(key.getBytes(), SerializeUtil.serialize(map));
 		} catch (Exception e) {
@@ -264,7 +264,7 @@ public class RedisUtil {
 	 * @param key
 	 * @return list
 	 */
-	public static <T> Map<String, T> getMap(String key) {
+	public synchronized static <T> Map<String, T> getMap(String key) {
 		String bKey = buildKey(key);
 		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
 			return null;
@@ -281,7 +281,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static <T> void setObject(String key, T t) {
+	public synchronized static <T> void setObject(String key, T t) {
 		try {
 			getJedis().set(key.getBytes(), SerializeUtil.serialize(t));
 		} catch (Exception e) {
@@ -290,7 +290,7 @@ public class RedisUtil {
 	}
 	
 	
-	public static <T> void setObject(String key, int seconds,T t) {
+	public synchronized static <T> void setObject(String key, int seconds,T t) {
 		try {
 			getJedis().set(key.getBytes(), SerializeUtil.serialize(t));
 			getJedis().expire(key, seconds);
@@ -305,7 +305,7 @@ public class RedisUtil {
 	 * @param key
 	 * @return Object
 	 */
-	public static Object getObject(String key) {
+	public synchronized static Object getObject(String key) {
 		String bKey = buildKey(key);
 		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
 			return null;
@@ -316,7 +316,7 @@ public class RedisUtil {
 	}
 	
 	
-	public static void del(String key){
+	public synchronized static void del(String key){
 		String bKey = buildKey(key);
 		if (getJedis() == null || !getJedis().exists(key.getBytes())) {
 			return ;
@@ -326,7 +326,7 @@ public class RedisUtil {
 
 	/** #####################redis-API常用操作############################### */
 
-	private void KeyOperate() {
+	private  void KeyOperate() {
 		System.out.println("======================key==========================");
 		// 清空数据
 		System.out.println("清空库中所有数据：" + jedis.flushDB());
