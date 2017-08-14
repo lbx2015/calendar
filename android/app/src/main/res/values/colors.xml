@@ -5,6 +5,8 @@
     <color name="dialogColorPrimary">#efeff4</color>
     <color name="dialogColorPrimaryDark">#efeff4</color>
     <color name="color_accent">#FF3D00</color>
+    <color name="color_b3ffffff">#b3ffff</color>
+    <color name="color_bfe3fd">#bfe3fd</color>
     <color name="color_translucent">#99000000</color>
     <!--selected page tab -->
     <color name="color_29a1f7">#29a1f7</color>

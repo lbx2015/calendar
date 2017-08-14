@@ -9,12 +9,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.AppResp;
@@ -50,26 +53,30 @@ public class CtryHdayCrcyServer {
 	@Autowired
 	CtryHdayCrcyRepo crtyHdayCrcyRepo;
 	
+	@Autowired
+	Config config;
 	
 	@Autowired
 	SysDataService sysDataservice;
+	
+	@Autowired
+	private  HttpServletRequest request;
 
 
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public AppResp get_(HttpSession session, @RequestParam("id") String id) {
+	public AppResp get_(@RequestParam("id") String id) {
 		CtryHdayCrcy ctryHdayCrcy = crtyHdayCrcyRepo.findOne(id);
 //		CtryHdayCrcy ctryHdayCrcy = sysDataservice.getCtryHdayCrcy(id);
 		if(ctryHdayCrcy!=null){
-			AppUser cAppUser = (AppUser)session.getAttribute("currentUser");
-			this._setDictValue(Arrays.asList(ctryHdayCrcy),cAppUser);
+			this._setDictValue(Arrays.asList(ctryHdayCrcy),request);
 		}
 		return new AppResp(ctryHdayCrcy, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/getMore", method = RequestMethod.POST)
-	public AppResp getMore(HttpSession session, @RequestBody CtryHdayCrcy crtyHdayCrcy){
+	public AppResp getMore(@RequestBody CtryHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(),crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
 		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
 			crtyHdayCrcy.setDeleteState("1");
@@ -100,8 +107,7 @@ public class CtryHdayCrcyServer {
 //		List<CtryHdayCrcy> list = sysDataservice.getMoreCtryHdayCrcy(crtyHdayCrcy);
 //		Page<CtryHdayCrcy> page = new PageImpl<CtryHdayCrcy>(list,pageable,list.size());
 		if(page.getContent()!=null && page.getContent().size()>0){
-			AppUser cAppUser = (AppUser)session.getAttribute("currentUser");
-			this._setDictValue(page.getContent(),cAppUser);
+			this._setDictValue(page.getContent(),request);
 		}
 		//将压缩包解压
 		this.getIcon();
@@ -110,7 +116,7 @@ public class CtryHdayCrcyServer {
 	
 	@ApiOperation(value = "模糊查询得到<批量>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/vagueQuery", method = RequestMethod.POST)
-	public AppResp vagueQuery(HttpSession session, @RequestBody CtryHdayCrcy crtyHdayCrcy){
+	public AppResp vagueQuery(@RequestBody CtryHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(), crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
 		if(StringUtils.isEmpty(crtyHdayCrcy.getDeleteState())){
 			crtyHdayCrcy.setDeleteState("1");
@@ -157,8 +163,7 @@ public class CtryHdayCrcyServer {
 		};
 		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(Specifications.where(s1).and(s2),pageable);
 		if(page.getContent()!=null && page.getContent().size()>0){
-			AppUser cAppUser = (AppUser)session.getAttribute("currentUser");
-			this._setDictValue(page.getContent(),cAppUser);
+			this._setDictValue(page.getContent(),request);
 		}
 		//将压缩包解压
 		this.getIcon();
@@ -207,9 +212,11 @@ public class CtryHdayCrcyServer {
 		}
 	}
 	
-	private void _setDictValue(List<CtryHdayCrcy> list,AppUser user){
+	private void _setDictValue(List<CtryHdayCrcy> list,HttpServletRequest request){
+		AppUser user = (AppUser)request.getSession().getAttribute("currentUser");
+		String url = request.getRequestURL().toString();
 		for (CtryHdayCrcy chc : list) {
-			chc.setIconUrl(Const.TL_ICON_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCtryName()+".png");
+			chc.setIconUrl(getPortPath(url) + Const.TL_ICON_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCtryName()+".png");
 			//币种
 //			ModelPropDict dict1 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CRCY", chc.getCrcy());
 //			chc.setCrcyValue(dict1.getValu());
@@ -220,5 +227,14 @@ public class CtryHdayCrcyServer {
 			ModelPropDict dict3 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "HDAY", chc.getHdayName());
 			chc.setHdayNameValue(dict3.getValu());
 		}
+	}
+	
+	private String getPortPath(String url){
+		Pattern p = Pattern.compile("[a-zA-z]+://[^/]*");
+		Matcher matcher = p.matcher(url);  
+		if(matcher.find()){
+			return matcher.group();  
+		}
+		return null;
 	}
 }

@@ -11,8 +11,7 @@
     <permission
         android:name="com.riking.calendar.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-
-    <!-- Required  一些系统要求的权限，如访问网络等-->
+        <!-- Required  一些系统要求的权限，如访问网络等-->
     <uses-permission android:name="com.riking.calendar.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -96,7 +95,10 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.EditReminderActivity"
-            android:theme="@style/AppThemeNoActionBar" />jige
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/AppThemeNoActionBar" />
 
         <service
             android:name=".service.AlarmService"

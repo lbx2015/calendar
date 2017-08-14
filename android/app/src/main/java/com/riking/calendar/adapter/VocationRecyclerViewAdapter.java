@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -45,14 +46,18 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CtryHdayCrcy r = vocationList.get(position);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd");
-        holder.date.setText(simpleDateFormat.format(r.hdayDate));
+
+        try {
+            holder.date.setText(simpleDateFormat.format(new SimpleDateFormat("yyyyMMdd").parse(r.hdayDate)));
+        } catch (ParseException e) {
+            Logger.d("zzw", e.getMessage());
+        }
         holder.country.setText(r.ctryNameValue);
         holder.currency.setText(r.crcy);
         holder.vocation.setText(r.hdayNameValue);
-        String url = Const.BASE_URL + r.iconUrl;
         MyTask myTask = new MyTask();
         myTask.imageView = holder.countryImage;
-        myTask.execute(url);
+        myTask.execute( r.iconUrl);
     }
 
     @Override

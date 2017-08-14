@@ -4,15 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
+import android.widget.Switch;
 
 import com.riking.calendar.R;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.widget.wheelpicker.core.AbstractWheelPicker;
-import com.riking.calendar.widget.wheelpicker.view.WheelCurvedPicker;
 import com.riking.calendar.widget.wheelpicker.widget.curved.WheelDatePicker;
-import com.riking.calendar.widget.wheelpicker.widget.curved.WheelTimePicker;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/26.
@@ -21,6 +18,10 @@ import java.util.List;
 public class DatePickerDialog extends BottomSheetDialog implements AbstractWheelPicker.OnWheelChangeListener {
     public WheelDatePicker wheelDatePicker;
     public View btnSubmit, btnCancel;
+    public Switch wholeMonth;
+    public Switch clearDateFilter;
+    public boolean isWholeMonth;
+    public boolean isDateFilterCleared;
     private String currentData;
 
     public DatePickerDialog(@NonNull Context context) {
@@ -30,7 +31,32 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
         wheelDatePicker = (WheelDatePicker) findViewById(R.id.date_picker);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnCancel = findViewById(R.id.btnCancel);
-
+        wholeMonth = (Switch) findViewById(R.id.whole_month);
+        clearDateFilter = (Switch) findViewById(R.id.clear_date_filter);
+        wholeMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (wholeMonth.isChecked()) {
+                    Logger.d("zzw", "whole month checked");
+                    isWholeMonth = true;
+                } else {
+                    isWholeMonth = false;
+                    Logger.d("zzw", "whole month not checked");
+                }
+            }
+        });
+        clearDateFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clearDateFilter.isChecked()) {
+                    Logger.d("zzw", "clear date filter checked");
+                    isDateFilterCleared = true;
+                } else {
+                    Logger.d("zzw", "clear date filter is not checked.");
+                    isDateFilterCleared = false;
+                }
+            }
+        });
     }
 
     public DatePickerDialog(@NonNull Context context, int theme) {
@@ -44,7 +70,6 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
 
     @Override
     public void onWheelScrolling(float deltaX, float deltaY) {
-
     }
 
     @Override

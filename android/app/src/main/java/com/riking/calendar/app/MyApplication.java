@@ -1,6 +1,7 @@
 package com.riking.calendar.app;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;

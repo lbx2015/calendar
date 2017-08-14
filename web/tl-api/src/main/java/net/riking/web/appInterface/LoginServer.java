@@ -2,6 +2,7 @@ package net.riking.web.appInterface;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,14 @@ public class LoginServer {
 	@ApiOperation(value = "用户登录", notes = "POST")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public AppResp login_(@RequestBody AppUser appUser, HttpSession session) {
-		Example<AppUser> example = Example.of(appUser, ExampleMatcher.matchingAll());
+		if (StringUtils.isBlank(appUser.getDeleteState())) {
+			appUser.setDeleteState("1");
+		}
+		if (StringUtils.isBlank(appUser.getEnabled())) {
+			appUser.setEnabled("1");
+		}
+		Example<AppUser> example = Example.of(appUser,
+				ExampleMatcher.matchingAll());
 		AppUser appUser2 = appUserRepo.findOne(example);
 		if (appUser2 != null) {
 			session.setAttribute("currentUser", appUser2);
@@ -58,13 +66,15 @@ public class LoginServer {
 
 	@ApiOperation(value = "发送验证码", notes = "POST")
 	@RequestMapping(value = "/getValiCode", method = RequestMethod.POST)
-	public AppResp getValiCode_(@RequestBody AppUser appUser) throws ClientException {
+	public AppResp getValiCode_(@RequestBody AppUser appUser)
+			throws ClientException {
 		// user = appUser;
 		String valiCode = "";
 		for (int i = 0; i < 6; i++) {
 			valiCode += (int) (Math.random() * 9);
 		}
-		AliSme aliSms = new AliSme(appUser.getTelephone(), "悦历", "SMS_85110022", valiCode);
+		AliSme aliSms = new AliSme(appUser.getTelephone(), "悦历", "SMS_85110022",
+				valiCode);
 		smsUtil.sendSms(aliSms);
 		appUser.setValiCode(valiCode);
 		sysDataService.setAppUser(appUser);
@@ -74,19 +84,29 @@ public class LoginServer {
 
 	@ApiOperation(value = "校验验证码", notes = "POST")
 	@RequestMapping(value = "/checkValiCode", method = RequestMethod.POST)
-	public AppResp checkValiCode_(@RequestBody AppUser appUser, HttpSession session) {
+	public AppResp checkValiCode_(@RequestBody AppUser appUser,
+			HttpSession session) {
 		AppUser user = sysDataService.getAppUser(appUser);
 		if (user == null) {
 			return new AppResp(user, CodeDef.SUCCESS);
 		}
 		AppUser appUser2 = null;
 		if (appUser.getValiCode().equals(user.getValiCode())) {
-			Example<AppUser> example = Example.of(appUser, ExampleMatcher.matchingAll());
+			
+			if (StringUtils.isBlank(appUser.getDeleteState())) {
+				appUser.setDeleteState("1");
+			}
+			if (StringUtils.isBlank(appUser.getEnabled())) {
+				appUser.setEnabled("1");
+			}
+			Example<AppUser> example = Example.of(appUser,ExampleMatcher.matchingAll());
 			appUser2 = appUserRepo.findOne(example);
 			if (appUser2 == null) {
-				AppUser appUser3 = new AppUser(appUser.getTelephone(), "", 0, "", "", appUser.getTelephone(), "", "123456", "", "", "1", "", "");
+				AppUser appUser3 = new AppUser(appUser.getTelephone(),
+						appUser.getTelephone(), "123456", user.getPhoneSeqNum(),
+						"1", "1");
 				appUser2 = appUserRepo.save(appUser3);
-				logger.info("{}注册成功",appUser.getName());
+				logger.info("{}注册成功", appUser.getName());
 			}
 		}
 		if (appUser2 != null) {

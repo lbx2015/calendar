@@ -50,37 +50,7 @@
                     data.showGroup = "base";
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
-                    $("textarea[name='reportNote']").attr('id','reportNote');
-                    $("textarea[name='reportRule']").attr('id','reportRule');
-                    layui.use('layedit', function(){
-                	  var layedit = layui.layedit;
-                	  layedit.set({tool: ['strong' //加粗
-                	                      ,'|'
-										  ,'italic' //斜体
-										  ,'|'
-										  ,'underline' //下划线
-										  ,'|'
-										  ,'del' //删除线
-										  ,'|' //分割线
-										  ,'left' //左对齐
-										  ,'|'
-										  ,'center' //居中对齐
-										  ,'|'
-										  ,'right' //右对齐
-										  ,'|' 
-										  ,'link' //超链接
-										  ,'|'
-										  ,'unlink' //清除链接
-										  ,'|'
-										  ,'face' //表情
-										  ,'|'
-										  ,'image' //插入图片
-										  //,'help' //帮助
-									],
-								  	height: 500});
-	                 	reportRuleIndex = layedit.build('reportRule'); //建立编辑器
-                	  	reportNoteIndex = layedit.build('reportNote');
-                	});
+                    loadRichText();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -89,8 +59,34 @@
                 data.showGroup = "base";
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
+                loadRichText();
             }
         });
+    }
+    
+    function loadRichText(){
+	 	$("textarea[name='reportNote']").attr('id','reportNote');
+         $("textarea[name='reportRule']").attr('id','reportRule');
+         layui.use('layedit', function(){
+     	  var layedit = layui.layedit;
+     	  layedit.set({tool: ['strong' //加粗
+							  ,'italic' //斜体
+							  ,'underline' //下划线
+							  ,'del' //删除线
+							  ,'|' //分割线
+							  ,'left' //左对齐
+							  ,'center' //居中对齐
+							  ,'right' //右对齐
+							  ,'|' 
+							  ,'link' //超链接
+							  ,'unlink' //清除链接
+							  ,'face' //表情
+							  ,'image' //插入图片
+							  //,'help' //帮助
+								],height: 500});
+            reportRuleIndex = layedit.build('reportRule'); //建立编辑器
+     	  	reportNoteIndex = layedit.build('reportNote');
+     	});
     }
     //编辑保存
     function edit() {
