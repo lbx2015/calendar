@@ -43,6 +43,18 @@ public class AppAboutServer {
 		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + id,CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "跳转<报文详情-报文说明>html5页面", notes = "POST")
+	@RequestMapping(value = "/reportNoteHtml", method = RequestMethod.POST)	
+	public AppResp reportNoteApp(@RequestParam("id") String id) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + id+"&type=note",CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "跳转<报文详情-报文规则>html5页面", notes = "POST")
+	@RequestMapping(value = "/reportRuleHtml", method = RequestMethod.POST)	
+	public AppResp reportRuleApp(@RequestParam("id") String id) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + id+"&type=rule",CodeDef.SUCCESS);
+	}
+	
 //	@ApiOperation(value = "跳转<关于>html5页面", notes = "POST")
 //	@RequestMapping(value = "/aboutApp", method = RequestMethod.POST)	
 //	public void aboutApp(HttpServletResponse response) {

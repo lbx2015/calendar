@@ -26,6 +26,9 @@ public class Const {
 	
 	public static final String  TL_REPORT_HTML5_PATH = "/reportListEdit.html?id=";
 	
+	public static final String  TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
+	
+	
 	public static final Integer VALI_CODE_TIME = 60; 
 	
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
