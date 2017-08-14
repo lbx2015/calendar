@@ -149,6 +149,8 @@ public class SecondFragment extends Fragment {
 
                         if (dialog.isDateFilterCleared) {
                             dateTextView.setText(getString(R.string.date));
+                            //remove the date filter
+                            requestBoday.hdayDate = null;
                         } else {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
                             dateTextView.setText(sdf.format(calendar.getTime()));
@@ -158,6 +160,7 @@ public class SecondFragment extends Fragment {
                                 requestBoday.hdayDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
                             }
                         }
+
                         apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                         dialog.dismiss();
                         break;
