@@ -18,7 +18,7 @@ import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
-import net.riking.service.repo.AppUserReportCompleteRelRepo;
+import net.riking.service.repo.AppUserReportCompletRelRepo;
 import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
 import net.riking.service.repo.TodoRepo;
@@ -37,7 +37,7 @@ public class SynchronousServer {
 	@Autowired
 	TodoRepo todoRepo;
 	@Autowired
-	AppUserReportCompleteRelRepo appUserReportCompletesRelRepo;
+	AppUserReportCompletRelRepo appUserReportCompletesRelRepo;
 
 	@ApiOperation(value = "同步所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)

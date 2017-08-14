@@ -14,13 +14,13 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.QureyResults;
-import net.riking.service.repo.AppUserReportCompleteRelRepo;
+import net.riking.service.repo.AppUserReportCompletRelRepo;
 
 @RestController
 @RequestMapping(value = "/appUserReportCompleteRel")
 public class AppUserReportCompletRelServer {
      @Autowired
-     AppUserReportCompleteRelRepo appUserReportCompleteRelRepo;
+     AppUserReportCompletRelRepo appUserReportCompleteRelRepo;
      
      @ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
  	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
