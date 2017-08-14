@@ -18,7 +18,7 @@ import com.aliyuncs.exceptions.ClientException;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.AliSmes;
+import net.riking.entity.model.AliSme;
 import net.riking.entity.model.AppUser;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
@@ -65,7 +65,7 @@ public class LoginServer {
 		for (int i = 0; i < 6; i++) {
 			valiCode += (int) (Math.random() * 9);
 		}
-		AliSmes aliSms = new AliSmes(appUser.getTelephone(), "悦历", "SMS_85110022", valiCode);
+		AliSme aliSms = new AliSme(appUser.getTelephone(), "悦历", "SMS_85110022", valiCode);
 		smsUtil.sendSms(aliSms);
 		appUser.setValiCode(valiCode);
 		sysDataService.setAppUser(appUser);
