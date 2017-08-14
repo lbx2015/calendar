@@ -17,7 +17,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
 import net.riking.config.Config;
-import net.riking.entity.model.AliSms;
+import net.riking.entity.model.AliSmes;
 @Component("smsUtil")
 public class SmsUtil {
 	@Autowired
@@ -27,7 +27,7 @@ public class SmsUtil {
     //产品域名,开发者无需替换  
     static final String domain = "dysmsapi.aliyuncs.com";  
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)   
-    public  SendSmsResponse sendSms(AliSms alims) throws ClientException {  
+    public  SendSmsResponse sendSms(AliSmes alims) throws ClientException {  
   
         //可自助调整超时时间  
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");  

@@ -5,10 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
 /**
@@ -23,10 +23,8 @@ import net.riking.entity.BaseEntity;
 public class AppUserReportCompleteRel extends BaseEntity {
 
 	@Id
-	@Column(name = "Id", length = 32)
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@GeneratedValue(generator = "system-uuid")
-	private String id;
+	@Column(name = "complete_id", length = 17)
+	private String completeId;
 
 	// 用户ID"
 	@Column(name = "app_user_id", length = 32)
@@ -40,16 +38,16 @@ public class AppUserReportCompleteRel extends BaseEntity {
 	@Column(name = "complete_date", length = 8)
 	private String completeDate;
 
-	// 是否完成（0-未完成；1-已完成）
-	@Column(name = "is_complete", length = 1)
+	// 同步标识app端数据状态
+	@Transient
 	private Integer isComplete; 
 
-	public String getId() {
-		return id;
+	public String getCompleteId() {
+		return completeId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setCompleteId(String completeId) {
+		this.completeId = completeId;
 	}
 
 	public String getAppUserId() {
