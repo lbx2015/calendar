@@ -14,11 +14,13 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserReportCompleteRel;
+import net.riking.entity.model.Days;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
+import net.riking.service.repo.DaysRepo;
 import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
 import net.riking.service.repo.TodoRepo;
@@ -38,6 +40,8 @@ public class SynchronousServer {
 	TodoRepo todoRepo;
 	@Autowired
 	AppUserReportCompletRelRepo appUserReportCompletesRelRepo;
+	@Autowired
+	DaysRepo daysRepo;
 
 	@ApiOperation(value = "同步所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
@@ -48,6 +52,13 @@ public class SynchronousServer {
 		List<AppUserReportCompleteRel> appUserReportCompleteRel = appUserReportCompletesRelRepo.findAll();
 		SynResult result = new SynResult(reminds, remindHis, todos,appUserReportCompleteRel);
 		return new AppResp(result, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "同步日历信息", notes = "POST")
+	@RequestMapping(value = "/synchronousDate", method = RequestMethod.POST)
+	public AppResp synchronousDate() {
+		List<Days> days = daysRepo.findAll();
+		return new AppResp(days, CodeDef.SUCCESS);
 	}
 	
 	
