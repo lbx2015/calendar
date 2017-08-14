@@ -147,10 +147,17 @@ public class SecondFragment extends Fragment {
                         calendar.set(Calendar.MONTH, Integer.parseInt(dialog.wheelDatePicker.month) - 1);
                         calendar.set(Calendar.DATE, Integer.parseInt(dialog.wheelDatePicker.day) - 1);
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
-                        dateTextView.setText(sdf.format(calendar.getTime()));
-
-                        requestBoday.hdayDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+                        if (dialog.isDateFilterCleared) {
+                            dateTextView.setText(getString(R.string.date));
+                        } else {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
+                            dateTextView.setText(sdf.format(calendar.getTime()));
+                            if (dialog.isWholeMonth) {
+                                requestBoday.hdayDate = new SimpleDateFormat("yyyyMM").format(calendar.getTime());
+                            } else {
+                                requestBoday.hdayDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+                            }
+                        }
                         apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                         dialog.dismiss();
                         break;

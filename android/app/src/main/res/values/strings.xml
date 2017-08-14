@@ -92,6 +92,8 @@
     <string name="setting_su">设置成功</string>
     <string name="no_found">No records found</string>
     <string name="create_failed">Created fail</string>
+    <string name="whole_month">Whole Month</string>
+    <string name="clear_date_filter">Clear Date filter</string>
     <string-array name="subTittles">
         <item>Job</item>
         <item>Vocation</item>

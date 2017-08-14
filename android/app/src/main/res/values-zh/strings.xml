@@ -58,6 +58,8 @@
     <string name="concurrency_vocation">币种节假日</string>
     <string name="no_found">没有发现记录</string>
     <string name="create_failed">创建失败</string>
+    <string name="whole_month">整月</string>
+    <string name="clear_date_filter">清除日期过滤</string>
     <string-array name="subTittles">
         <item>工作台</item>
         <item>节假日</item>
