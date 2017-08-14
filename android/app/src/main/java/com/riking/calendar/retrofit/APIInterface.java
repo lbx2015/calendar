@@ -1,8 +1,10 @@
 package com.riking.calendar.retrofit;
 
+import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.GetHolidayModel;
+import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.ReminderModel;
@@ -53,6 +55,13 @@ public interface APIInterface {
 
     @POST("/ctryHdayCrcyApp/getMore")
     Call<CtryHdayCryCondition> getMore(@Body CtryHdayCrcy ctryHdayCrcy);
+
     @POST("/ctryHdayCrcyApp/vagueQuery")
     Call<CtryHdayCryCondition> getVagueQuery(@Body CtryHdayCrcy ctryHdayCrcy);
+
+    @POST("/checkValiCode")
+    Call<GetVerificationModel> checkVarificationCode(@Body AppUser user);
+
+    @POST("/getValiCode")
+    Call<GetVerificationModel> getVarificationCode(@Body AppUser user);
 }

@@ -10,6 +10,8 @@ import com.riking.calendar.activity.LoginActivity;
 
 import java.util.HashMap;
 
+import static com.ldf.calendar.Const.IS_LOGIN;
+
 /**
  * Created by zw.zhang on 2017/8/14.
  */
@@ -19,8 +21,7 @@ public class SessionManager {
     public static final String KEY_NAME = "name";
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
-    // All Shared Preferences Keys
-    public static final String IS_LOGIN = "IsLoggedIn";
+
     // Shared Preferences
     SharedPreferences pref;
     // Editor for Shared preferences

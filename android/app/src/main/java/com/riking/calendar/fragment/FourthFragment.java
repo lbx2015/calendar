@@ -37,7 +37,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
         switch (v.getId()) {
             case R.id.my_photo_layout: {
                 sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
-                if (sharedPreferences.getBoolean(SessionManager.IS_LOGIN, false)) {
+                if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
                     startActivity(new Intent(getContext(), UserInfoActivity.class));
                 } else {
                     startActivity((new Intent(getContext(), LoginActivity.class)));
