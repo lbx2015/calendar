@@ -18,9 +18,9 @@ public class CtryHdayCrcy {
 
     //	@Comment("节假日时间")
 //	@Temporal(TemporalType.DATE)
-//	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@DateTimeFormat(pattern = "yyyyMMdd")
 //	@Column(name = "hday_date")
-    public Date hdayDate;
+    public String hdayDate;
 
     //	@Comment("币种")
 //	@Column(name = "crcy", length = 3)

@@ -96,7 +96,10 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.EditReminderActivity"
-            android:theme="@style/AppThemeNoActionBar" />jige
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/AppThemeNoActionBar" />
 
         <service
             android:name=".service.AlarmService"
