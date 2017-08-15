@@ -18,6 +18,10 @@ public class Const {
 	
 	public static final String  TL_STATIC_ICON_PATH = "/static/icon/";
 	
+	public static final String  TL_STATIC_PATH = "/static";
+	
+	public static final String  TL_PHOTO_PATH = "/photo/";
+	
 	public static final String  TL_ICON_PATH = "/icon/";
 	
 	public static final String  TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";

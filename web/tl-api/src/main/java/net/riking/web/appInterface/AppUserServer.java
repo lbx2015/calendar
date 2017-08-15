@@ -1,5 +1,14 @@
 package net.riking.web.appInterface;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,9 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
+import net.riking.core.annos.AuthPass;
+import net.riking.core.entity.Resp;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
@@ -57,4 +71,54 @@ public class AppUserServer {
 		return new AppResp(false,CodeDef.SUCCESS);
 	}
 	
+	@AuthPass
+	@ApiOperation(value = "上传头像", notes = "POST")
+	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
+	public AppResp upLoad(HttpServletRequest request, @RequestParam("id")String id) {
+		String url = request.getRequestURL().toString();
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile mFile = multipartRequest.getFile("fileName");
+		InputStream is = null;
+		FileOutputStream fos = null;
+		try {
+			is = mFile.getInputStream();
+			String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH ;
+			File dir = new File(path);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
+			String photoUrl =  path + mFile.getOriginalFilename();
+			fos = new FileOutputStream(photoUrl);
+			int len = 0;
+			byte[] buf = new byte[1024*1024];
+			while((len = is.read(buf))>-1){
+				fos.write(buf, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new AppResp(false,CodeDef.ERROR);
+		}finally {
+			try {
+				fos.close();
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return new AppResp(false,CodeDef.ERROR);
+			}
+		}
+		int rs = appUserRepo.updatePhoto(id,getPortPath(url)+ Const.TL_PHOTO_PATH + mFile.getOriginalFilename());
+		if(rs>0){
+			return new AppResp(true, CodeDef.SUCCESS);
+		}
+		return new AppResp(CodeDef.ERROR);
+	}
+	
+	private String getPortPath(String url){
+		Pattern p = Pattern.compile("[a-zA-z]+://[^/]*");
+		Matcher matcher = p.matcher(url);  
+		if(matcher.find()){
+			return matcher.group();  
+		}
+		return null;
+	}
 }

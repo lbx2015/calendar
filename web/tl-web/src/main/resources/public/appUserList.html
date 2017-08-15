@@ -110,7 +110,8 @@
                     //row 当前行数 从1开始
                     //col 当前列数 从1开始
                     if (obj.row > 1 && obj.col == 2) {
-                        obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
+                	obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='fileUpLoad(" + "\"" + obj.item.id + "\"" + ");'>头像上传</button>";
+                        obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
                         obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='passwordReset(" + "\"" + obj.item.id + "\"" + ");'>重置密码</button>";
                         obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='report(" + "\"" + obj.item.id + "\"" + ");'>查看报表</button>";
                         if (obj.item.enabled == "0") { //禁用
@@ -119,6 +120,10 @@
                             return obj.html + "<button class='layui-btn layui-btn-danger layui-btn-mini' onclick='unEnable(" + "\"" + obj.item.id + "\"" + ");'>禁用</button>";
                         }
                     }
+                    /* if (obj.prop == "photoUrl") {
+		                obj.html = "<img src='"+Const.apiUrl + obj.item.photoUrl + "'  alt='"+ obj.item.photoUrl+"' height='40' width='50'  />";
+		            	return obj.html;
+            		} */
                     return obj.html;
                 }
                 //操作栏的宽度
@@ -194,6 +199,11 @@
         View.openDialog(url, title);
     }
 
+    function fileUpLoad(id) {
+        var url = "photoUpLoad.html?id=" + id;
+        var title = "头像上传";
+        View.openDialog(url, title);
+    }
     function enable(id) {
         TmplUtils.showConfirm('您确定启用该用户吗？', '确定', '取消', function() {
             var url = Const.apiUrl + "/appUser/enable";

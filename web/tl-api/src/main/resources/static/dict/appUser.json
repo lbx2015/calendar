@@ -6,6 +6,13 @@
 	}],
 	"attrs":[
 		{
+			"prop": "photoUrl",
+			"alias": "用户头像",
+			"group":"base",
+			"hidden":"edit,preview",
+			"type": "imgUrl"
+		},
+		{
 			"prop": "name",
 			"alias": "用户昵称",
 			"type": "string",

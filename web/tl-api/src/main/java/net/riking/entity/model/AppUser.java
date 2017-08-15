@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -127,6 +128,9 @@ public class AppUser extends BaseEntity {
 	@Column(name = "phone_type")
 	private String phoneType;
 	
+	@Comment("用户头像")
+	@Column(name = "photo_url")
+	private String photoUrl;
 	
 	//验证码
 	@Transient
@@ -276,6 +280,17 @@ public class AppUser extends BaseEntity {
 	public void setValiCode(String valiCode) {
 		this.valiCode = valiCode;
 	}
+	
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+
 
 	@Override
 	public int hashCode() {

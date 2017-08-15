@@ -1,6 +1,15 @@
 package net.riking.web.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +23,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
+import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
+import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.util.ExcelToList;
 /**
  * web端app用户操作
+ * 
  * @author you.fei
  * @version crateTime：2017年8月5日 下午4:34:09
  * @used TODO
@@ -32,69 +48,123 @@ import net.riking.service.repo.AppUserRepo;
 public class AppUserController {
 	@Autowired
 	AppUserRepo appUserRepo;
-	
+
 	@ApiOperation(value = "得到<单个>用户信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
 		AppUser appUser = appUserRepo.findOne(id);
 		return new Resp(appUser, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "得到<批量>用户信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute AppUser appUser){
-		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		if(StringUtils.isEmpty(appUser.getDeleteState())){
+	public Resp getMore_(@ModelAttribute PageQuery query,
+			@ModelAttribute AppUser appUser) {
+		PageRequest pageable = new PageRequest(query.getPindex(),
+				query.getPcount(), query.getSortObj());
+		if (StringUtils.isEmpty(appUser.getDeleteState())) {
 			appUser.setDeleteState("1");
 		}
-		Example<AppUser> example = Example.of(appUser, ExampleMatcher.matchingAll());
-		Page<AppUser> page = appUserRepo.findAll(example,pageable);
+		Example<AppUser> example = Example.of(appUser,
+				ExampleMatcher.matchingAll());
+		Page<AppUser> page = appUserRepo.findAll(example, pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "添加或者更新用户信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
 	public Resp addOrUpdate_(@RequestBody AppUser appUser) {
-		if(StringUtils.isEmpty(appUser.getId())||StringUtils.isEmpty(appUser.getDeleteState())){
+		if (StringUtils.isEmpty(appUser.getId())
+				|| StringUtils.isEmpty(appUser.getDeleteState())) {
 			appUser.setDeleteState("1");
 		}
 		AppUser save = appUserRepo.save(appUser);
 		return new Resp(save, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "启用用户信息", notes = "GET")
 	@RequestMapping(value = "/enable", method = RequestMethod.GET)
 	public Resp enable_(@RequestParam String id) {
-		 int rs = appUserRepo.enable(id);
+		int rs = appUserRepo.enable(id);
 		return new Resp(rs, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "禁用用户信息", notes = "GET")
 	@RequestMapping(value = "/unEnable", method = RequestMethod.GET)
 	public Resp unEnable_(@RequestParam String id) {
-		 int rs = appUserRepo.unEnable(id);
+		int rs = appUserRepo.unEnable(id);
 		return new Resp(rs, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "禁用用户信息", notes = "GET")
 	@RequestMapping(value = "/passwordReset", method = RequestMethod.GET)
 	public Resp passwordReset_(@RequestParam String id) {
-		 int rs = appUserRepo.passwordReset(id);
+		int rs = appUserRepo.passwordReset(id);
 		return new Resp(rs, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "批量删除用户信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
-		if(ids.size()>0){
+		if (ids.size() > 0) {
 			rs = appUserRepo.deleteByIds(ids);
 		}
-		if(rs>0){
+		if (rs > 0) {
 			return new Resp().setCode(CodeDef.SUCCESS);
-		}else{
+		} else {
 			return new Resp().setCode(CodeDef.ERROR);
 		}
 	}
+
+	@AuthPass
+	@ApiOperation(value = "上传头像", notes = "POST")
+	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
+	public Resp upLoad(HttpServletRequest request, @RequestParam("id")String id) {
+		String url = request.getRequestURL().toString();
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile mFile = multipartRequest.getFile("fileName");
+		InputStream is = null;
+		FileOutputStream fos = null;
+		try {
+			is = mFile.getInputStream();
+			String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH ;
+			File dir = new File(path);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
+			String photoUrl =  path + mFile.getOriginalFilename();
+			fos = new FileOutputStream(photoUrl);
+			int len = 0;
+			byte[] buf = new byte[1024*1024];
+			while((len = is.read(buf))>-1){
+				fos.write(buf, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Resp(false,CodeDef.ERROR);
+		}finally {
+			try {
+				fos.close();
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return new Resp(false,CodeDef.ERROR);
+			}
+		}
+		int rs = appUserRepo.updatePhoto(id, getPortPath(url)+Const.TL_PHOTO_PATH + mFile.getOriginalFilename());
+		if(rs>0){
+			return new Resp(true, CodeDef.SUCCESS);
+		}
+		return new Resp(CodeDef.ERROR);
+	}
 	
+	private String getPortPath(String url){
+		Pattern p = Pattern.compile("[a-zA-z]+://[^/]*");
+		Matcher matcher = p.matcher(url);  
+		if(matcher.find()){
+			return matcher.group();  
+		}
+		return null;
+	}
 }

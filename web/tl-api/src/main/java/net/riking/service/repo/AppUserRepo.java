@@ -31,6 +31,11 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	
 	@Transactional
 	@Modifying
+	@Query("update AppUser set photoUrl = ?2  where id = ?1")
+	int updatePhoto(String id,String photo);
+	
+	@Transactional
+	@Modifying
 	@Query("update AppUser set passWord = '123456'  where id = ?1")
 	int passwordReset(String id);
 	

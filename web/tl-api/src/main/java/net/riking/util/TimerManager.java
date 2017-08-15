@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.riking.task.BirthdayTimerTask;
-@Component
+@Component("timerManager")
 public class TimerManager {
 	@Autowired
 	BirthdayTimerTask birthdayTimerTask;
