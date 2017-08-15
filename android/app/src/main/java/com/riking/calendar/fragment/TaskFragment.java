@@ -1,6 +1,8 @@
 package com.riking.calendar.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
@@ -86,10 +89,12 @@ public class TaskFragment extends Fragment {
                         Date date = new Date();
                         Task task = realm.createObject(Task.class, simpleDateFormat.format(date));
                         task.title = quickAddEditor.getText().toString();
-                        task.createTime =date;
-                        task.isDone=0;
-                        task.isReminded=0;
-                        task.isImport = 0;
+                        task.appCreatedTime = new SimpleDateFormat(Const.yyyyMMddHHmm).format(date);
+                        task.isComplete = 0;
+                        task.isOpen = 0;
+                        task.isImportant = 0;
+                        SharedPreferences pref = getActivity().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+                        task.userId = pref.getString(Const.USER_ID, null);
                     }
                 });
                 quickAddEditor.setText(null);
@@ -155,7 +160,7 @@ public class TaskFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         realm = Realm.getDefaultInstance();
         //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo("isDone", 0).findAll();
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         adapter = new TaskAdapter(tasks, realm);

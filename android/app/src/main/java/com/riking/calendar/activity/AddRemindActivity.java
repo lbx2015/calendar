@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -31,10 +32,10 @@ import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.DateUtil;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 import io.realm.Realm;
 import okhttp3.ResponseBody;
@@ -87,6 +88,7 @@ public class AddRemindActivity extends AppCompatActivity {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 //remind fragment
                 if (viewPager.getCurrentItem() == 0) {
 
@@ -112,13 +114,10 @@ public class AddRemindActivity extends AppCompatActivity {
                     reminder.isAllDay = reminderFragment.isAllDay;
                     reminder.reminderTime = reminderDate;
                     reminder.userId = userId;
-
-
-                    //set reminder
+//set reminder
                     Intent intent = new Intent(AddRemindActivity.this, ReminderService.class);
                     intent.putExtra(Const.REMINDER_TITLE, reminder.title);
                     PendingIntent pendingIntent = PendingIntent.getService(AddRemindActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 //                    alarmManager.cancel(pendingIntent);
                     Calendar reminderCalendar = reminderFragment.time;
                     reminderCalendar.set(java.util.Calendar.MINUTE, reminderFragment.time.get(java.util.Calendar.MINUTE) - reminder.aheadTime);
@@ -150,18 +149,30 @@ public class AddRemindActivity extends AppCompatActivity {
                 }
                 //task fragment
                 else {
-                    Task task = realm.createObject(Task.class, UUID.randomUUID().toString());
-                    task.isImport = taskFragment.isImportant;
-                    task.createTime = new Date();
+                    Task task = realm.createObject(Task.class, id);
+                    task.isImportant = taskFragment.isImportant;
+                    SimpleDateFormat sdf = new SimpleDateFormat(Const.yyyyMMddHHmm);
+                    task.appCreatedTime = sdf.format(new Date());
                     if (taskFragment.needToRemind) {
-                        task.isReminded = 1;
-                        task.remindTime = taskFragment.calendar.getTime();
+                        task.isOpen = 1;
+                        task.strDate = sdf.format(taskFragment.calendar.getTime());
                     }
                     task.title = taskFragment.title.getText().toString();
-                    task.user_id = userId;
+                    task.userId = userId;
+                    if (task.isOpen == 1) {
+                        Intent intent = new Intent(AddRemindActivity.this, ReminderService.class);
+                        intent.putExtra(Const.REMINDER_TITLE, task.title);
+                        PendingIntent pendingIntent = PendingIntent.getService(AddRemindActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        try {
+                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, sdf.parse(task.strDate).getTime(), pendingIntent);
+                        } catch (ParseException e) {
+                            Logger.d("zzw", "parse failed.");
+                        }
+                    }
                 }
             }
         });
+
         if (preference.getBoolean(Const.IS_LOGIN, false)) {
             //remind fragment
             if (viewPager.getCurrentItem() == 0) {

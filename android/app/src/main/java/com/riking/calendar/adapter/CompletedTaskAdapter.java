@@ -57,12 +57,12 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
 //        }
         holder.position = position;
         holder.title.setText(r.title);
-        if (r.isImport == 1) {
+        if (r.isImportant == 1) {
         } else {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
         }
 
-        if (r.isDone == 1) {
+        if (r.isComplete == 1) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
@@ -112,7 +112,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            realm.where(Task.class).equalTo("id", task.id).findFirst().deleteFromRealm();
+                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst().deleteFromRealm();
                         }
                     });
 

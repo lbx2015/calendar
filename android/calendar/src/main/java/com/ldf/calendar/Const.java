@@ -23,4 +23,7 @@ public class Const {
     public static final String USER_ADDRESS = "USER_ADDRESS";
 
     public static final String REMINDER_TITLE="Reminder title";
+
+    //Date formats
+    public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
 }

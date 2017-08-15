@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CompletedTaskAdapter;
 import com.riking.calendar.realm.model.Task;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +43,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
         mPrimaryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         realm = Realm.getDefaultInstance();
-        List<Task> tasks = realm.where(Task.class).equalTo("isDone", 1).findAllSorted("completeDay", Sort.ASCENDING);
+        List<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 1).findAllSorted(Task.COMPLETEDATE, Sort.ASCENDING);
 
         LinkedHashMap<String, List<Task>> daysWithTasks = new LinkedHashMap<>();
         int size = tasks.size();
@@ -53,19 +55,27 @@ public class TaskHistoryActivity extends AppCompatActivity {
         String key;
         for (int i = 0; i < size; i++) {
             Task t = tasks.get(i);
+            Date completeDay = null;
+            SimpleDateFormat sdf = new SimpleDateFormat(Const.yyyyMMddHHmm);
+            try {
+                completeDay = sdf.parse(t.completeDate);
 
-            if (t.completeDay.getYear() != currentYear) {
-                key = yearDateFormat.format(t.completeDay).toLowerCase();
-            } else if (currentDay - t.completeDay.getDate() == 1) {
-                key = "完成于昨天";
-            } else {
-                key = simpleDateFormat.format(t.completeDay).toLowerCase();
+                if (completeDay.getYear() != currentYear) {
+                    key = yearDateFormat.format(completeDay).toLowerCase();
+                } else if (currentDay - completeDay.getDate() == 1) {
+                    key = "完成于昨天";
+                } else {
+                    key = simpleDateFormat.format(completeDay).toLowerCase();
+                }
+                Log.d("zzw", "date format: " + key);
+                if (!daysWithTasks.containsKey(key)) {
+                    daysWithTasks.put(key, new ArrayList<Task>());
+                }
+                daysWithTasks.get(key).add(t);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            Log.d("zzw", "date format: " + key);
-            if (!daysWithTasks.containsKey(key)) {
-                daysWithTasks.put(key, new ArrayList<Task>());
-            }
-            daysWithTasks.get(key).add(t);
+
         }
 
         mPrimaryRecyclerView.setAdapter(new TaskHistoryAdapter(daysWithTasks));
