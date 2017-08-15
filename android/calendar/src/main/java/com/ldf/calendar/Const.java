@@ -21,4 +21,6 @@ public class Const {
     public static final String USER_PASSWORD = "USER_PASSWORD";
     public static final String USER_DEPT = "USER_DEPT";
     public static final String USER_ADDRESS = "USER_ADDRESS";
+
+    public static final String REMINDER_TITLE="Reminder title";
 }

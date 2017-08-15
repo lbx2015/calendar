@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.service.AlarmService;
@@ -189,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("zzw", "c.getTimeMillis()" + c.getTimeInMillis());
                 alarm.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pintent);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
                 Toast.makeText(this, "alarm scheduled at " + sdf.format(c.getTime()), Toast.LENGTH_LONG).show();
                 break;

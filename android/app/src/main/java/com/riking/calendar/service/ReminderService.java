@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.MainActivity;
 
@@ -20,7 +21,9 @@ import com.riking.calendar.activity.MainActivity;
  * Created by zw.zhang on 2017/7/10.
  */
 
-public class AlarmService extends Service {
+public class ReminderService extends Service {
+    public String reminderTitle;
+
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
@@ -45,8 +48,9 @@ public class AlarmService extends Service {
     public void onStart(Intent intent, int startId) {
         // TODO Auto-generated method stub
         super.onStart(intent, startId);
-        Toast.makeText(this, "ServiceClass.onStart()", Toast.LENGTH_LONG).show();
-        Log.d("zzw", "Service got started");
+        reminderTitle = intent.getExtras().getString(Const.REMINDER_TITLE);
+        Toast.makeText(this, reminderTitle + " ServiceClass.onStart()", Toast.LENGTH_LONG).show();
+        Log.d("zzw", reminderTitle + "Service got started");
     }
 
     @Override
@@ -57,18 +61,18 @@ public class AlarmService extends Service {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(AlarmService.this, "onStartCommand got started", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ReminderService.this, "onStartCommand got started", Toast.LENGTH_LONG).show();
                         Log.d("zzw", "onStartCommand got started");
                     }
                 });
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                Intent intent2 = new Intent(AlarmService.this, MainActivity.class);
+                Intent intent2 = new Intent(ReminderService.this, MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(), 0, intent2, 0);
                 Notification notify = new NotificationCompat.Builder(getApplication())
                         .setSmallIcon(R.drawable.cat_1)
-                        .setTicker("您的***项目即将到期，请及时处理！")
-                        .setContentTitle("项目到期提醒")
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("此处注明的是有关需要提醒项目的某些重要内容"))
+                        .setTicker(reminderTitle)
+                        .setContentTitle(reminderTitle)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(reminderTitle))
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .build();
