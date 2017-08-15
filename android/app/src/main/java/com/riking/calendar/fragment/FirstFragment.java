@@ -23,7 +23,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,7 +110,7 @@ public class FirstFragment extends Fragment {
 //                    case R.id.prevMonth: // 上一个月
 //                        enterPrevMonth(gvFlag);
 //                        break;
-                    case R.id.add:{
+                    case R.id.add: {
                         startActivity(new Intent(getActivity(), AddRemindActivity.class));
                         break;
                     }
@@ -241,9 +240,15 @@ public class FirstFragment extends Fragment {
                 .findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
         recyclerView.setAdapter(reminderAdapter);
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                reminderAdapter.notifyDataSetChanged();
+            }
+        });
 
         //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo("isDone", 0).findAll();
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
         taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
         taskAdapter = new TaskAdapter(tasks, realm);
         taskRecyclerView.setAdapter(taskAdapter);
@@ -252,7 +257,6 @@ public class FirstFragment extends Fragment {
             @Override
             public void onChange(Realm realm) {
                 //the data is changed.
-                reminderAdapter.notifyDataSetChanged();
                 taskAdapter.notifyDataSetChanged();
             }
         });

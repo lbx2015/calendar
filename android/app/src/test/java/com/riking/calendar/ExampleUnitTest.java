@@ -2,16 +2,15 @@ package com.riking.calendar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ldf.calendar.Const;
 import com.riking.calendar.pojo.Report;
 import com.riking.calendar.realm.model.Task;
 
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,14 +35,15 @@ public class ExampleUnitTest {
         r.reportCode = "report code";
         r.reportName = "report name";
         list.add(r);
-        t.createTime = new Date();
+        t.strDate = new SimpleDateFormat(Const.yyyyMMddHHmm).format(new Date());
 //        Gson gson = new Gson();
         Gson gson = new GsonBuilder().setDateFormat("yyyyMMddHHmm").create();
 
-        HashMap<String, List<String>> employees = new HashMap<>();
-        employees.put("A", Arrays.asList("Andreas", "Arnold", "Aden"));
-        employees.put("C", Arrays.asList("Christian", "Carter"));
-        employees.put("M", Arrays.asList("Marcus", "Mary"));
-        String employeeJson = gson.toJson(employees);
+//        HashMap<String, List<String>> employees = new HashMap<>();
+//        employees.put("A", Arrays.asList("Andreas", "Arnold", "Aden"));
+//        employees.put("C", Arrays.asList("Christian", "Carter"));
+//        employees.put("M", Arrays.asList("Marcus", "Mary"));
+//        String employeeJson = gson.toJson(employees);
+        System.out.println(gson.toJson(t));
     }
 }

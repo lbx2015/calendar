@@ -1,17 +1,9 @@
 package com.riking.calendar.realm.model;
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.annotations.SerializedName;
-import com.riking.calendar.pojo.Report;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -19,29 +11,50 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Task extends RealmObject {
+    @Ignore
+    public static String IS_COMPLETE = "isComplete";
+    @Ignore
+    public static String TODO_ID = "todo_Id";
+    @Ignore
+    public static String COMPLETEDATE = "completeDate";
     @PrimaryKey
-    @SerializedName("todo_id")
-    public String id = UUID.randomUUID().toString();
-    public String user_id;
-    //The title of the reminder
-    @NonNull
+//    @Id
+//    @Column(name = "todo_id", length = 17)
+    public String todo_Id;
+
+    // 用户Id
+//    @Column(name = "user_id", length = 32)
+    public String userId;
+
+    // 提醒内容
+//    @Column(name = "content", length = 255)
     @SerializedName("content")
     public String title;
-    //the row of the reminder
-    @SerializedName("str_date")
-    public Date remindTime;
-    //This is just a flag to determine whether this event is import
-    @SerializedName("is_important")
-    public byte isImport;
-    @SerializedName("is_complete")
-    public byte isDone;
-    @SerializedName("is_open")
-    public byte isReminded;
-    //'2016-07-31'
-    @SerializedName("complete_date")
-    public Date completeDay;
-    @SerializedName("created_date")
-    public Date createTime;
-    public byte client_type = 2;
 
+    // 是否重要（0-不重要；1-重要）
+//    @Column(name = "is_important", length = 1)
+    public int isImportant;
+
+    // 待办提醒是否开启（0-否；1-是）
+//    @Column(name = "is_open", length = 1)
+    public int isOpen;
+
+    // 日期：yyyyMMddHHmm
+//    @Column(name = "str_date", length = 12)
+    public String strDate;
+
+    // 手机端提供创建时间（yyyy-MM-dd HHmm）
+//    @Column(name = "app_created_time", length = 12)
+    public String appCreatedTime;
+
+    // 待办提醒是否开启（0-否；1-是）
+//    @Column(name = "is_complete", length = 1)
+    public int isComplete;
+
+    // 完成时间（yyyyMMddHHmm）
+//    @Column(name = "complete_date", length = 12)
+    public String completeDate;
+
+    //    @Transient
+    public int deleteState;
 }
