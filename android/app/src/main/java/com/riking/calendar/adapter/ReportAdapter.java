@@ -9,23 +9,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.pojo.Report;
+import com.riking.calendar.pojo.QueryReportContainer;
+import com.riking.calendar.pojo.QueryReportModel;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/12.
  */
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHolder> {
-    ArrayList<List<Report>> reports;
-    ArrayList<String> titles;
+    ArrayList<QueryReportContainer> reports;
 
-    public ReportAdapter(LinkedHashMap<String, List<Report>> reports) {
-        this.reports = new ArrayList<>(reports.values());
-        titles = new ArrayList<>(reports.keySet());
+    public ReportAdapter(QueryReportModel reportModel) {
+        this.reports = reportModel._data.list;
     }
 
     @Override
@@ -38,10 +35,11 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Log.d("zzw", "position: " + position + " key " + titles.get(position));
-        holder.reportName.setText(titles.get(position));
+        QueryReportContainer reportContainer = reports.get(position);
+        Log.d("zzw", "position: " + position + " key " + reportContainer.title);
+        holder.reportName.setText(reportContainer.title);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.reportName.getContext()));
-        holder.recyclerView.setAdapter(new ReportItemAdapter(reports.get(position)));
+        holder.recyclerView.setAdapter(new ReportItemAdapter(reportContainer.result));
         holder.reportName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

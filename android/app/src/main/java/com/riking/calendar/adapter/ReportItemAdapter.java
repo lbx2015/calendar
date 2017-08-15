@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.app.DownloadManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
+import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.Report;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
@@ -19,10 +21,10 @@ import java.util.List;
  */
 
 public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
-    private List<Report> reports;
+    private List<QueryReport> reports;
     private int size;
 
-    public ReportItemAdapter(List<Report> r) {
+    public ReportItemAdapter(List<QueryReport> r) {
         this.reports = r;
         size = reports.size();
     }
@@ -36,7 +38,7 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        final Report r = reports.get(position);
+        final QueryReport r = reports.get(position);
 //        if(!r.isValid()){
 //            notifyItemRemoved(position);
 //            return;
@@ -62,7 +64,7 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         public int position;
         SwipeHorizontalMenuLayout sml;
 
-        public MyViewHolder(final List<Report> reports, View view) {
+        public MyViewHolder(final List<QueryReport> reports, View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             tv = (TextView) view.findViewById(R.id.tv_text);

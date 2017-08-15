@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.CtryHdayCrcy;
@@ -19,8 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -45,19 +42,13 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CtryHdayCrcy r = vocationList.get(position);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy:MM:dd");
-
-        try {
-            holder.date.setText(simpleDateFormat.format(new SimpleDateFormat("yyyyMMdd").parse(r.hdayDate)));
-        } catch (ParseException e) {
-            Logger.d("zzw", e.getMessage());
-        }
+        holder.date.setText(r.hdayDate);
         holder.country.setText(r.ctryNameValue);
         holder.currency.setText(r.crcy);
         holder.vocation.setText(r.hdayNameValue);
         MyTask myTask = new MyTask();
         myTask.imageView = holder.countryImage;
-        myTask.execute( r.iconUrl);
+        myTask.execute(r.iconUrl);
     }
 
     @Override

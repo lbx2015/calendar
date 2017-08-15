@@ -35,24 +35,28 @@ import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
-import com.riking.calendar.pojo.Report;
+import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.LunarCalendar;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -70,6 +74,7 @@ public class FirstFragment extends Fragment {
     ReminderAdapter reminderAdapter;
     TaskAdapter taskAdapter;
     Realm realm;
+    APIInterface apiInterface;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -80,7 +85,6 @@ public class FirstFragment extends Fragment {
     private int month_c = 0;
     //current day
     private int day_c = 0;
-    private String currentDate = "";
     /**
      * 上个月
      */
@@ -89,6 +93,7 @@ public class FirstFragment extends Fragment {
      * 下个月
      */
 //    private ImageView nextMonth;
+    private String currentDate = "";
     /**
      * 每次添加gridview到viewflipper中时给的标记
      */
@@ -232,7 +237,7 @@ public class FirstFragment extends Fragment {
                 + " " + lc.getLunarDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), false));
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-        RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(new Date())).equalTo("repeatFlag", 0).endGroup()
+        final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(new Date())).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
@@ -253,6 +258,8 @@ public class FirstFragment extends Fragment {
         taskAdapter = new TaskAdapter(tasks, realm);
         taskRecyclerView.setAdapter(taskAdapter);
 
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
@@ -260,7 +267,7 @@ public class FirstFragment extends Fragment {
                 taskAdapter.notifyDataSetChanged();
             }
         });
-        LinkedHashMap<String, List<Report>> reports = new LinkedHashMap<String, List<Report>>();
+     /*   LinkedHashMap<String, List<Report>> reports = new LinkedHashMap<String, List<Report>>();
         ArrayList<Report> list = new ArrayList<>();
         Report r = new Report();
         r.id = "ida";
@@ -269,7 +276,21 @@ public class FirstFragment extends Fragment {
         r.reportName = "report name";
         list.add(r);
         reports.put("title", list);
-        reportRecyclerView.setAdapter(new ReportAdapter(reports));
+        reportRecyclerView.setAdapter(new ReportAdapter(reports));*/
+
+        apiInterface.getAllReports(new QueryReport()).enqueue(new Callback<QueryReportModel>() {
+            @Override
+            public void onResponse(Call<QueryReportModel> call, Response<QueryReportModel> response) {
+                QueryReportModel reports = response.body();
+                Logger.d("zzw", "success loaded reports: " + reports);
+                reportRecyclerView.setAdapter(new ReportAdapter(reports));
+            }
+
+            @Override
+            public void onFailure(Call<QueryReportModel> call, Throwable t) {
+                Logger.d("zzw", "reports loaded failed: " + t.getMessage());
+            }
+        });
         return v;
     }
 
