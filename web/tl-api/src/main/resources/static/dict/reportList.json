@@ -1,98 +1,102 @@
 {
 	"table": "T_Report_List",
-	"groups":[{
-		"prop":"base",
-		"alias":"基础信息"
-	}],
-	"attrs":[
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
 		{
 			"prop": "reportName",
 			"alias": "报表名称",
 			"type": "string",
-			"group":"base"
+			"group": "base"
 		},
 		{
 			"prop": "reportCode",
 			"alias": "报表编号",
-			"group":"base",
+			"group": "base",
 			"type": "string"
 		},
 		{
 			"prop": "reportBrief",
-			"group":"base",
+			"group": "base",
 			"alias": "报表简介",
 			"type": "text"
 		},
 		{
 			"prop": "reportOrganization",
 			"alias": "填报机构",
-			"group":"base",
+			"group": "base",
 			"type": "string"
 		},
 		{
 			"prop": "reportFrequency",
 			"alias": "报送口径、频度及时间",
-			"group":"base",
+			"group": "base",
 			"type": "text"
 		},
 		{
 			"prop": "reportStyle",
 			"alias": "报送方式",
-			"group":"base",
-			"type" : "string"
+			"group": "base",
+			"type": "string"
 		},
 		{
 			"prop": "reportUnit",
 			"alias": "数据单位",
-			"group":"base",
-			"type" : "enum",
-      		"enum_search":"1",
-      		"dict_key": "T_REPORT_LIST.REPORTUNIT"
+			"group": "base",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_REPORT_LIST.REPORTUNIT"
 		},
 		{
 			"prop": "reportRound",
 			"alias": "四舍五入要求",
-			"group":"base",
-			"type" : "string"
+			"group": "base",
+			"type": "string"
 		},
 		{
 			"prop": "reportCurrency",
 			"alias": "填报币种",
-			"group":"base",
-			"type" : "text"
+			"group": "base",
+			"type": "text"
 		},
 		{
 			"prop": "downloadUrl",
 			"alias": "报表模板下载地址",
-			"group":"base",
-			"type" : "string"
+			"group": "base",
+			"type": "string"
 		},
 		{
 			"prop": "moduleType",
 			"alias": "报表所属模块，频度标识",
-			"group":"base",
-			"type" : "enum",
-      		"enum_search":"1",
-      		"dict_key": "T_REPORT_LIST.MODLE_TYPE"
+			"group": "base",
+			"type": "enum",
+			"enum_search": "1",
+			"dict_key": "T_REPORT_LIST.MODLE_TYPE"
 		},
 		{
 			"prop": "deleteState",
 			"alias": "删除状态  ",
-			"group":"base",
-			"type" : "text",
-      		"hidden":"table,edit,preview"
+			"group": "base",
+			"type": "text",
+			"hidden": "table,edit,preview"
 		},
 		{
 			"prop": "reportNote",
 			"alias": "报表说明",
-			"group":"base",
-			"type" : "text"
+			"group": "base",
+			"edit_block": "1",
+			"type": "text"
 		},
 		{
 			"prop": "reportRule",
 			"alias": "报表规则",
-			"group":"base",
-			"type" : "text"
+			"edit_block": "1",
+			"group": "base",
+			"type": "text"
 		}
 	]
 }
