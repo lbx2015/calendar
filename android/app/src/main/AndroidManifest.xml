@@ -104,6 +104,11 @@
             android:name=".service.AlarmService"
             android:enabled="true"
             android:process="system" />
+
+        <service
+            android:name=".service.ReminderService"
+            android:enabled="true"
+            android:process="system" />
         <!-- For test only 测试高级功能 -->
         <activity
             android:name="com.riking.calendar.jiguang.PushSetActivity"
