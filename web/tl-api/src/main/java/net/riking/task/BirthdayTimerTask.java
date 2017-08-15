@@ -12,7 +12,7 @@ import net.riking.entity.model.Jdpush;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.util.JdpushUtil;
 
-@Component("infoJobfill")
+@Component("birthdayTimerTask")
 public class BirthdayTimerTask extends TimerTask {
 
 	@Autowired
