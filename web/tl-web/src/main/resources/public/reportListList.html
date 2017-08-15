@@ -102,12 +102,14 @@
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
 				//表格显示列数
-				   data.trClick = "bindPro";
-               /* data.cellLeftCount = 4;
-                data.cellRightCount = 3;*/
+				 data.trClick = "bindPro";
+				//操作栏的宽度
+				data.operationWidth = 6;
+                data.cellLeftCount = 4;
+                data.cellRightCount = 3;
                 //表格各列显示比例
-				/*data.tdLeftWidth = [ 10, 20, 30, 10 ];
-				data.tdRightWidth = [ 30, 20, 50 ];*/
+				data.tdLeftWidth = [ 15, 15, 30, 10 ];
+				data.tdRightWidth = [ 50, 30, 20 ];
 
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
@@ -123,8 +125,6 @@
 	                    }
 					return obj.html;
 				}
-				//操作栏的宽度
-				data.operationWidth = 20;
 				callback.call(_this, data);
 				if (TmplUtils.pageTmpl.refresh) {
 					TmplUtils.pageTmpl.refresh();
