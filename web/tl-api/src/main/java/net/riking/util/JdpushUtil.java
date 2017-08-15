@@ -24,7 +24,7 @@ public class JdpushUtil {
 /**
  * 推送给指定用户
  */
-	public  int sendToRegistrationId(Jdpush jdpush) {
+	public static int sendToRegistrationId(Jdpush jdpush) {
 		int result = 0;
 		try {
 			PushPayload pushPayload = JdpushUtil.buildPushObject_all_registrationId_alertWithTitle(jdpush);
@@ -46,7 +46,7 @@ public class JdpushUtil {
 
 	/**
 	 * 发送给所有安卓用户*/
-	public  int sendToAllAndroid(Jdpush jdpush) {
+	public static  int sendToAllAndroid(Jdpush jdpush) {
 		int result = 0;
 		try {
 			PushPayload pushPayload = JdpushUtil.buildPushObject_android_all_alertWithTitle(jdpush);
@@ -66,7 +66,7 @@ public class JdpushUtil {
 	/**
 	 * 发送给所有IOS用户
 	 */
-	public  int sendToAllIos(Jdpush jdpush) {
+	public static  int sendToAllIos(Jdpush jdpush) {
 		int result = 0;
 		try {
 			PushPayload pushPayload = JdpushUtil.buildPushObject_ios_all_alertWithTitle(jdpush);
@@ -87,7 +87,7 @@ public class JdpushUtil {
 	/**
 	 * 发送给所有用户
 	 */
-	public  int sendToAll(Jdpush jdpush) {
+	public static  int sendToAll(Jdpush jdpush) {
 		int result = 0;
 		try {
 			PushPayload pushPayload = JdpushUtil.buildPushObject_android_and_ios(jdpush);

@@ -17,11 +17,11 @@ public class TimerManager {
     public void init() {
          Calendar calendar = Calendar.getInstance(); 
                 
-         /*** 定制每日2:00执行方法 ***/
+         /*** 定制每日10:00执行方法 ***/
 
-         calendar.set(Calendar.HOUR_OF_DAY,10 );
-         calendar.set(Calendar.MINUTE, 00);
-         calendar.set(Calendar.SECOND, 00);
+         calendar.set(Calendar.HOUR_OF_DAY,15 );
+         calendar.set(Calendar.MINUTE, 14);
+         calendar.set(Calendar.SECOND, 30);
           
          Date date=calendar.getTime(); //第一次执行定时任务的时间
          System.err.println(date);
