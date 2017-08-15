@@ -176,7 +176,7 @@ public class TestRedis {
 
         // RENAME key newkey
         // 将key改名为newkey。当key和newkey相同或者key不存在时，返回一个错误。当newkey已经存在时，RENAME命令将覆盖旧值。
-        jedis.rename("name", "foonew");
+        //jedis.rename("name", "foonew");
 
         // TYPE key 返回key所储存的值的类型。
         System.out.println(jedis.type("name"));// none(key不存在),string(字符串),list(列表),set(集合),zset(有序集),hash(哈希表)

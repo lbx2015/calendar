@@ -13,11 +13,11 @@ public class TimerManager {
 	@Autowired
 	BirthdayTimerTask birthdayTimerTask;
 	//时间间隔
-    private static final long PERIOD_DAY = 30 * 1000;
+    private static final long PERIOD_DAY = 24 * 60 * 60 * 1000;
     public void init() {
          Calendar calendar = Calendar.getInstance(); 
                 
-         /*** 定制每日2:00执行方法 ***/
+         /*** 定制每日10:00执行方法 ***/
 
          calendar.set(Calendar.HOUR_OF_DAY,10 );
          calendar.set(Calendar.MINUTE, 00);

@@ -36,7 +36,7 @@ public class RemindHis extends PageQuery {
 	private String startTime;
 
 	// 提醒日期
-	@Column(name = "str_date", length = 8)
+	@Column(name = "str_date", length = 14)
 	private String strDate;
 
 	// 同步标识app端数据状态

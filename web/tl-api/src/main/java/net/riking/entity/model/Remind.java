@@ -33,7 +33,7 @@ public class Remind extends PageQuery {
 	private String startTime;
 
 	// 提醒日期
-	@Column(name = "str_date", length = 8)
+	@Column(name = "str_date", length = 14)
 	private String strDate;
 
 	// 是否全天提醒(0-否；1-是)

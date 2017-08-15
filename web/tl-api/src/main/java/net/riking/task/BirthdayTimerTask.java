@@ -17,8 +17,6 @@ public class BirthdayTimerTask extends TimerTask {
 
 	@Autowired
 	AppUserRepo appUserRepo;
-	@Autowired
-	JdpushUtil jdpushUtil;
 	 @Override
 	    public void run() {
 	        try {
@@ -35,7 +33,7 @@ public class BirthdayTimerTask extends TimerTask {
 	    		jdpush.setExtrasparam("这是空");
 	            for (String string : set) {
 		    		jdpush.setRegisrationId(string);
-			        jdpushUtil.sendToRegistrationId(jdpush);
+			        JdpushUtil.sendToRegistrationId(jdpush);
 				}
 	             //在这里写你要执行的内容
 	           // System.out.println("执行当前时间"+formatter.format(Calendar.getInstance().getTime()));
