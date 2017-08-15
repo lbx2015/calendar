@@ -13,7 +13,7 @@
     <RelativeLayout
         android:id="@+id/smContentView"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="54dp"
         android:background="@android:color/white"
         android:gravity="center_vertical">
 
@@ -46,7 +46,7 @@
             android:id="@+id/remind_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_below="@id/title"
             android:layout_toEndOf="@+id/done"
             android:textColor="@color/color_background_b6b6b6" />
 

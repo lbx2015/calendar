@@ -52,7 +52,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         holder.title.setText(r.title);
         Log.d("zzw", "need to remind " + r.isOpen);
         if (r.isOpen == 1) {
-            holder.remindTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(r.strDate));
+            try {
+                holder.remindTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(Const.yyyyMMddHHmm).parse(r.strDate)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else {
             holder.remindTime.setText(null);
         }
