@@ -9,13 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
-import com.riking.calendar.session.SessionManager;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -23,20 +23,36 @@ import com.riking.calendar.session.SessionManager;
 
 public class FourthFragment extends Fragment implements OnClickListener {
     SharedPreferences sharedPreferences;
+    TextView userName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         View v = inflater.inflate(R.layout.fourth_fragment, container, false);
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
         v.findViewById(R.id.set_layout).setOnClickListener(this);
+        userName = (TextView) v.findViewById(R.id.user_name);
+        if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+            userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
+                    sharedPreferences.getString(Const.USER_COMMENTS, ""));
+        }
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+            userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
+                    sharedPreferences.getString(Const.USER_COMMENTS, ""));
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.my_photo_layout: {
-                sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+
                 if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
                     startActivity(new Intent(getContext(), UserInfoActivity.class));
                 } else {
