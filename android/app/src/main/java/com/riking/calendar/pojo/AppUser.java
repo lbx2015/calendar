@@ -29,8 +29,8 @@ public class AppUser {
     public String idCode;
 
     //	@Comment("用户性别")
-//	@Column(name = "sex")
-    public Integer sex;
+//	@Column(name = "sex") 1 mail 0 femail
+    public int sex = 1;
 
     //	@Comment("用户生日")
 //	@Column(name = "birthday",length = 8)

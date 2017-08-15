@@ -50,7 +50,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Task r = tasks.get(position);
         holder.title.setText(r.title);
-        Log.d("zzw", "need to remind " + r.isOpen);
         if (r.isOpen == 1) {
             try {
                 holder.remindTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(Const.yyyyMMddHHmm).parse(r.strDate)));
