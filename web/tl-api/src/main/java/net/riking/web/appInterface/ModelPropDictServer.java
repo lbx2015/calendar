@@ -46,12 +46,10 @@ public class ModelPropDictServer {
 	}
 
 	@RequestMapping(value = "/getAddF", method = RequestMethod.POST)
-	public AppResp getAddF(
-			@RequestParam(value = "prop", required = false) String prop,
-			@RequestParam(value = "keyword") String keyword) {
+	public AppResp getAddF(@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "SF");
-		if (list.size() > 0) {
+		if(null!=list && list.size()>0){
 			for (ModelPropDict dict : list) {
 				if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())
 						|| dict.getKe().toLowerCase()
@@ -66,11 +64,10 @@ public class ModelPropDictServer {
 	@RequestMapping(value = "/getAddS", method = RequestMethod.POST)
 	public AppResp getAddS(
 			@RequestParam(value = "key", required = false) String key,
-			@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword") String keyword) {
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", key);
-		if (list.size() > 0) {
+		if(null!=list && list.size()>0){
 			for (ModelPropDict dict : list) {
 				if (dict.getValu().toLowerCase()
 						.contains(keyword.toLowerCase())) {

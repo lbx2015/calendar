@@ -65,7 +65,7 @@ public class ModelPropDictController {
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
 		List<ModelPropDict> list = dataDictService.getDicts("T_APP_USER", "SF");
-		if(list.size()>0){
+		if(null!=list && list.size()>0){
 			for (ModelPropDict dict : list) {
 				if (dict.getValu().toLowerCase().contains(keyword.toLowerCase())
 						|| dict.getKe().toLowerCase().contains(keyword.toLowerCase())) {
@@ -86,7 +86,7 @@ public class ModelPropDictController {
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
 		List<ModelPropDict> list = dataDictService.getDicts("T_APP_USER", key);
-		if(list.size()>0){
+		if(null!=list && list.size()>0){
 			for (ModelPropDict dict : list) {
 				if (dict.getKe().toLowerCase().contains(keyword.toLowerCase())
 						|| dict.getValu().toLowerCase()

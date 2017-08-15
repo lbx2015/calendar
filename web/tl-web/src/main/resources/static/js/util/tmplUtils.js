@@ -205,7 +205,7 @@ var TmplUtils = {
                     for (var k = 0; k < enumurlSpans.size(); k++) {
                         var dataKey = enumurlSpans.eq(k).data("key");
                         var dataProp = enumurlSpans.eq(k).data("prop");
-                        if( resp[i].prop){
+                        if(resp[i] && resp[i].prop){
                             if (dataKey == resp[i].key && dataProp == resp[i].prop) {
                                 enumurlSpans.eq(k).html(resp[i].value);
                             }
@@ -219,7 +219,7 @@ var TmplUtils = {
             },function () {
             });
         }
-        var lazyEnums = {};
+        var lazyEnums = [];
         var lazyEnumurlHtmlObjs = $("._lazyEnum");
         for (var i = 0; i < lazyEnumurlHtmlObjs.size(); i++) {
             var enumurlHtmlObj = lazyEnumurlHtmlObjs.eq(i);
@@ -229,31 +229,33 @@ var TmplUtils = {
             data.enumparam = enumurlHtmlObj.data("enumparam");
             data.prop = enumurlHtmlObj.data("prop");
             data.value =  enumurlHtmlObj.data("key");
-            lazyEnums[prop] = data;
+            lazyEnums.push(data);
         }
-        for(var key in lazyEnums){
-            var url = lazyEnums[key].enumurl;
+        for(var i=0;i< lazyEnums.length;i++){
+            var url = lazyEnums[i].enumurl;
             if (url.indexOf("http") == -1) {
                 url = Const.apiUrl + url;
             }
             var param ="";
-            if(lazyEnums[key].enumparam && lazyEnums[key].enumparam != "undefined"){
-                param =  lazyEnums[key].enumparam + "&prop=" + lazyEnums[key].prop;
+            if(lazyEnums[i].enumparam && lazyEnums[i].enumparam != "undefined"){
+                param =  lazyEnums[i].enumparam + "&prop=" + lazyEnums[i].prop;
             }else{
-                param = "prop=" + lazyEnums[key].prop;
+                param = "prop=" + lazyEnums[i].prop;
             }
-            param += "&keyword="+lazyEnums[key].value.split(",")[key.charAt(key.length-1)];
-            if(key.charAt(key.length-1)>0){
-        	param +="&key="+lazyEnums[key].value.split(",")[key.charAt(key.length-1)-1];
+            if(lazyEnums[i].value.indexOf(",")>-1){
+        	param +="&key="+lazyEnums[i].value.split(",")[0];
+        	param += "&keyword="+lazyEnums[i].value.split(",")[1];
+            }else{
+        	param += "&keyword="+lazyEnums[i].value;
             }
             View.get(url,param,function (resp) {
                 var enumurlSpans = $("._lazyEnum");
                     for (var k = 0; k < enumurlSpans.size(); k++) {
                         var dataKey = enumurlSpans.eq(k).data("key");
                         var dataProp = enumurlSpans.eq(k).data("prop");
-                        if( resp[0].prop){
+                        if( resp[0] && resp[0].prop){
                             if (dataKey.indexOf( resp[0].key)>-1 && dataProp == resp[0].prop) {
-                                enumurlSpans.eq(k).html(resp[0].value);
+                                enumurlSpans.eq(k).html(resp[0].value+" ");
                             }
                         }
                     }
