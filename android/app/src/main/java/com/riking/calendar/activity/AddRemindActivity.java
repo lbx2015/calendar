@@ -18,12 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
-import com.google.gson.Gson;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
@@ -204,17 +204,16 @@ public class AddRemindActivity extends AppCompatActivity {
                                 Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
                             }
                             String s = r.source().readUtf8();
-                            String s2 = s.replace("\\", "");
-                            int i = s2.indexOf("}");
-                            int l = s2.lastIndexOf("}");
-                            Gson gson = new Gson();
-                            ReminderModel m;
-                            m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
-                            Log.d("zzw", response.code() + " index of " + i + "" + l + "success " + m);
+//                            String s2 = s.replace("\\", "");
+//                            int i = s2.indexOf("}");
+//                            int l = s2.lastIndexOf("}");
+//                            Gson gson = new Gson();
+//                            ReminderModel m;
+//                            m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
+                            Log.d("zzw", response.code() + "success " + s);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override
@@ -222,6 +221,31 @@ public class AddRemindActivity extends AppCompatActivity {
                         Log.d("zzw", "fail" + t.getMessage());
                     }
                 });
+            } else {
+                Task task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
+                TaskModel taskModel = new TaskModel(task);
+                Call<ResponseBody> call = apiInterface.createTask(taskModel);
+                call.enqueue(new retrofit2.Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        ResponseBody r = response.body();
+                        try {
+                            if (r == null) {
+                                Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
+                            }
+                            String s = r.source().readUtf8();
+                            Log.d("zzw", "success " + s);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("zzw", "fail" + t.getMessage());
+                    }
+                });
+
             }
         }
         onBackPressed();

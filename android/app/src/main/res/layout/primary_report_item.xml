@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="19dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -20,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="bottom|right"
+                android:textColor="@color/color_323232"
                 android:padding="10dp"
                 android:text="2007-01-22" />
 
@@ -39,6 +41,13 @@
             android:visibility="gone">
 
         </android.support.v7.widget.RecyclerView>
-
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/divider_color_d9d9d9" />
 </RelativeLayout>

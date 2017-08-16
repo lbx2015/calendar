@@ -7,7 +7,10 @@ import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.MultipleResource;
+import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 
@@ -47,6 +50,9 @@ public interface APIInterface {
     @POST("/remindApp/save")
     Call<ResponseBody> createRemind(@Body ReminderModel reminder);
 
+    @POST("/Todo/save")
+    Call<ResponseBody> createTask(@Body TaskModel taskModel);
+
     @POST("/ctryHdayCrcyApp/getMore")
     Call<ResponseBody> getHolidays(@Body GetHolidayModel getHolidayModel);
 
@@ -67,4 +73,7 @@ public interface APIInterface {
 
     @POST("/appUserApp/addOrUpdate")
     Call<GetVerificationModel> updateUserInfo(@Body AppUser user);
+
+    @POST("/reportListApp/getAllReport")
+    Call<QueryReportModel> getAllReports(@Body QueryReport report);
 }

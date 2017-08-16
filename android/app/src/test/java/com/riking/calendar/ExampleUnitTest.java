@@ -3,6 +3,10 @@ package com.riking.calendar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ldf.calendar.Const;
+import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.QueryReportContainer;
+import com.riking.calendar.pojo.QueryReportContainerList;
+import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.Report;
 import com.riking.calendar.realm.model.Task;
 
@@ -44,6 +48,24 @@ public class ExampleUnitTest {
 //        employees.put("C", Arrays.asList("Christian", "Carter"));
 //        employees.put("M", Arrays.asList("Marcus", "Mary"));
 //        String employeeJson = gson.toJson(employees);
+        System.out.println(gson.toJson(t));
+    }
+
+    @Test
+    public void jsonReportTest() throws Exception {
+        QueryReportModel t = new QueryReportModel();
+        ArrayList<QueryReportContainer> list = new ArrayList<>();
+        QueryReportContainer container = new QueryReportContainer();
+        container.title = "reportTitle";
+        QueryReport report = new QueryReport();
+        report.reportName = "test";
+        container.result = new ArrayList<QueryReport>();
+        container.result.add(report);
+        QueryReportContainerList queryList = new QueryReportContainerList();
+        queryList.list = new ArrayList<QueryReportContainer>();
+        t._data = queryList;
+        t._data.list.add(container);
+        Gson gson = new GsonBuilder().setDateFormat("yyyyMMddHHmm").create();
         System.out.println(gson.toJson(t));
     }
 }
