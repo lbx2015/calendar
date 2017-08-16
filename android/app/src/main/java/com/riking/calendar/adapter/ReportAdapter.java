@@ -22,7 +22,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
     ArrayList<QueryReportContainer> reports;
 
     public ReportAdapter(QueryReportModel reportModel) {
-        this.reports = reportModel._data.list;
+        this.reports = reportModel._data;
     }
 
     @Override
