@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ldf.calendar.Const;
@@ -16,6 +17,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
+import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -24,6 +26,7 @@ import com.riking.calendar.activity.UserInfoActivity;
 public class FourthFragment extends Fragment implements OnClickListener {
     SharedPreferences sharedPreferences;
     TextView userName;
+    ImageView myPhoto;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
         v.findViewById(R.id.set_layout).setOnClickListener(this);
         userName = (TextView) v.findViewById(R.id.user_name);
+        myPhoto = (ImageView) v.findViewById(R.id.my_photo);
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
             userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
                     sharedPreferences.getString(Const.USER_COMMENTS, ""));
@@ -42,11 +46,21 @@ public class FourthFragment extends Fragment implements OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
             userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
                     sharedPreferences.getString(Const.USER_COMMENTS, ""));
+
+            String imageUrl = sharedPreferences.getString(Const.USER_IMAGE_URL, null);
+            if (imageUrl != null && imageUrl.length() > 0) {
+                VocationRecyclerViewAdapter.MyTask myTask = new VocationRecyclerViewAdapter.MyTask();
+                myTask.imageView = myPhoto;
+                myTask.execute(imageUrl);
+            }
+
         } else {
             userName.setText(getString(R.string.not_register));
+            myPhoto.setImageDrawable(getResources().getDrawable(R.drawable.not_login));
         }
     }
 

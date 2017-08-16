@@ -11,6 +11,7 @@ import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
+import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 
@@ -82,5 +83,5 @@ public interface APIInterface {
 
     @Multipart
     @POST("/appUserApp/upLoad")
-    Call<ResponseBody> postImage(@Part MultipartBody.Part body, @Part("id") String id);
+    Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);
 }

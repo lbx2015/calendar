@@ -107,10 +107,10 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 builder.show();
             }
         });
-        if(preference.getInt(Const.USER_NAME,1)==1){
+        if (preference.getInt(Const.USER_SEX, 1) == 1) {
             sexTextView.setText(getString(R.string.male));
-        }else {
-        sexTextView.setText(getString(R.string.female));
+        } else {
+            sexTextView.setText(getString(R.string.female));
         }
     }
 

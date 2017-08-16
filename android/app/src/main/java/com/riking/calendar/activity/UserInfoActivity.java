@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -20,9 +19,11 @@ import android.widget.TextView;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
+import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
+import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.image.ImagePicker;
@@ -31,12 +32,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,33 +78,27 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         });
         // width and height will be at least 600px long (optional).
         ImagePicker.setMinQuality(600, 600);
+
+        String imageUrl = preference.getString(Const.USER_IMAGE_URL, null);
+        if (imageUrl != null && imageUrl.length() > 0) {
+            VocationRecyclerViewAdapter.MyTask myTask = new VocationRecyclerViewAdapter.MyTask();
+            myTask.imageView = myPhoto;
+            myTask.execute(imageUrl);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bitmap bitmap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
-        if (bitmap != null) {
+        Bitmap bitMap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
+        if (bitMap != null) {
             Logger.d("zzw", "bit map is not null");
-            myPhoto.setImageBitmap(bitmap);
+            myPhoto.setImageBitmap(bitMap);
         } else {
             Logger.d("zzw", "bitmap is null");
+            return;
         }
-        InputStream is = ImagePicker.getInputStreamFromResult(this, requestCode, resultCode, data);
-        if (is != null) {
-            try {
-                is.close();
-            } catch (IOException ex) {
-                // ignore
-            }
-        } else {
-            Logger.d("zzw", "Failed to get input stream!");
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
-    public void onPickImage(View view) {
-//        ImagePicker.pickImage(this, "Select your image:");
-        Bitmap bitMap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_1);
+//        Bitmap bitMap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_1);
 
         File mFile1 = Environment.getExternalStorageDirectory();
 
@@ -141,32 +134,47 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             Log.d("zzw", "no image file at location :" + sdPath);
         }
 
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), mFile2);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image"), mFile2);
         MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", mFile2.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
-        Logger.d("zzw", "userId: " + preference.getString(Const.USER_ID, null));
+//        Logger.d("zzw", "userId: " + preference.getString(Const.USER_ID, null));
 
-        apiInterface.postImage(body, "40283f815de9d009015de9ef007e0001").enqueue(new Callback<ResponseBody>() {
+        apiInterface.postImage(body, preference.getString(Const.USER_ID, null)).enqueue(new Callback<UploadImageModel>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ResponseBody r = response.body();
+            public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
+                UploadImageModel r = response.body();
 
-                try {
-                    if (r != null) {
-                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
-                    } else {
-                        Logger.d("zzw", "upload ok response body is null");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (r != null) {
+//                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
+                    SharedPreferences.Editor editor = preference.edit();
+                    editor.putString(Const.USER_IMAGE_URL, r._data);
+                    editor.commit();
+                } else {
+                    Logger.d("zzw", "upload ok response body is null");
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<UploadImageModel> call, Throwable t) {
                 Logger.d("zzw", "upload image fail: " + t.getMessage());
             }
         });
+
+       /* InputStream is = ImagePicker.getInputStreamFromResult(this, requestCode, resultCode, data);
+        if (is != null) {
+            try {
+                is.close();
+            } catch (IOException ex) {
+                // ignore
+            }
+        } else {
+            Logger.d("zzw", "Failed to get input stream!");
+        }*/
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void onPickImage(View view) {
+        ImagePicker.pickImage(this, "Select your image:");
     }
 
     @Override
