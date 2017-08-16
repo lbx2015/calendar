@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
                         GetVerificationModel user = response.body();
-                        if (user._data == null) {
+                        if (user == null || user._data == null) {
                             Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT);
                             return;
                         }

@@ -78,6 +78,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                             commentsTextView.setText(newComments);
                             AppUser user = new AppUser();
                             user.remark = newComments;
+                            user.id = preference.getString(Const.USER_ID,null);
                             SharedPreferences.Editor editor = preference.edit();
                             editor.putString(Const.USER_COMMENTS, newComments);
                             //save the changes.

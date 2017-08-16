@@ -212,6 +212,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                             userName.setText(newName);
                             AppUser user = new AppUser();
                             user.name = newName;
+                            user.id = preference.getString(Const.USER_ID, null);
                             SharedPreferences.Editor editor = preference.edit();
                             editor.putString(Const.USER_NAME, newName);
                             //save the changes.
