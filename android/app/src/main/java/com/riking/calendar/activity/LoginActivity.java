@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                         e.putString(Const.USER_NAME, user._data.name);
                         e.putString(Const.USER_PASSWORD, user._data.passWord);
                         e.putString(Const.USER_DEPT, user._data.dept);
+                        e.putInt(Const.USER_SEX,user._data.sex);
                         e.putString(Const.USER_COMMENTS, user._data.remark);
                         e.putString(Const.USER_COMMENTS, user._data.remark);
                         e.commit();

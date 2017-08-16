@@ -144,8 +144,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), mFile2);
         MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", mFile2.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+        Logger.d("zzw", "userId: " + preference.getString(Const.USER_ID, null));
 
-        apiInterface.postImage(body, preference.getString(Const.USER_ID, null)).enqueue(new Callback<ResponseBody>() {
+        apiInterface.postImage(body, "40283f815de9d009015de9ef007e0001").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ResponseBody r = response.body();

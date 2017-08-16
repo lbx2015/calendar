@@ -45,6 +45,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
             userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
                     sharedPreferences.getString(Const.USER_COMMENTS, ""));
+        } else {
+            userName.setText(getString(R.string.not_register));
         }
     }
 
@@ -53,11 +55,11 @@ public class FourthFragment extends Fragment implements OnClickListener {
         switch (v.getId()) {
             case R.id.my_photo_layout: {
 
-//                if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+                if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
                     startActivity(new Intent(getContext(), UserInfoActivity.class));
-//                } else {
-//                    startActivity((new Intent(getContext(), LoginActivity.class)));
-//                }
+                } else {
+                    startActivity((new Intent(getContext(), LoginActivity.class)));
+                }
                 break;
             }
             case R.id.set_layout: {
