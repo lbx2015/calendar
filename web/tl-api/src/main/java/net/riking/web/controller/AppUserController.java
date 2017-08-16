@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,11 +30,9 @@ import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
-import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
-import net.riking.util.ExcelToList;
 /**
  * web端app用户操作
  * 

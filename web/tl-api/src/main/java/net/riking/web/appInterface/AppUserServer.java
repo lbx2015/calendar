@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
-import net.riking.core.entity.Resp;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
@@ -38,6 +36,9 @@ import net.riking.service.repo.AppUserRepo;
 public class AppUserServer {
 	@Autowired
 	AppUserRepo appUserRepo;
+	
+	@Autowired
+	HttpServletRequest request;
 	
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
@@ -74,10 +75,8 @@ public class AppUserServer {
 	@AuthPass
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
-	public AppResp upLoad(HttpServletRequest request, @RequestParam("id")String id) {
+	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("id")String id) {
 		String url = request.getRequestURL().toString();
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		MultipartFile mFile = multipartRequest.getFile("fileName");
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {
@@ -106,9 +105,10 @@ public class AppUserServer {
 				return new AppResp(false,CodeDef.ERROR);
 			}
 		}
-		int rs = appUserRepo.updatePhoto(id,getPortPath(url)+ Const.TL_PHOTO_PATH + mFile.getOriginalFilename());
+		String photoUrl = getPortPath(url)+ Const.TL_PHOTO_PATH + mFile.getOriginalFilename();
+		int rs = appUserRepo.updatePhoto(id,photoUrl);
 		if(rs>0){
-			return new AppResp(true, CodeDef.SUCCESS);
+			return new AppResp(photoUrl, CodeDef.SUCCESS);
 		}
 		return new AppResp(CodeDef.ERROR);
 	}

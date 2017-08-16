@@ -505,7 +505,7 @@ var TmplUtils = {
         	         View.get(urls[0], "keyword="+keys[0], function(data) {
         	             if (keys[0] && keys[1]) {
         	                 View.get(urls[1], "key="+keys[0]+"&keyword="+keys[1], function(data2) {
-        	                     $(_this).val(data[0].value + data2[0].value);
+        	                     $(_this).val(data[0].value+" " + data2[0].value);
         	                 });
         	             }
         	         });
