@@ -65,14 +65,13 @@ public class AppReportListServer {
 				map.put(value, lists);
 			}
 		}
-		ReportResultList resultList = new ReportResultList();
+		List<ReportResult> listes =  new ArrayList<>();
 		for (String title : map.keySet()) {
 			ReportResult reportResult = new ReportResult();
 			reportResult.setTitle(title);
 			reportResult.setResult(map.get(title));
-			resultList.getList().add(reportResult);
+			listes.add(reportResult);
 		}
-		
-		return new AppResp(resultList, CodeDef.SUCCESS);
+		return new AppResp(listes, CodeDef.SUCCESS);
 	}
 }

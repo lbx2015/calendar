@@ -1,5 +1,7 @@
 package net.riking.web.appInterface;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -90,18 +92,15 @@ public class LoginServer {
 		if (user == null) {
 			return new AppResp(user, CodeDef.SUCCESS);
 		}
-		AppUser appUser2 = null;
+		List<AppUser> list;
+		AppUser appUser2 = null ;
 		if (appUser.getValiCode().equals(user.getValiCode())) {
 			
-			if (StringUtils.isBlank(appUser.getDeleteState())) {
-				appUser.setDeleteState("1");
+			list = appUserRepo.findByDeleteStateAndTelephone("1",appUser.getTelephone());
+			if (list.size()>0) {
+				appUser2=list.get(0);
 			}
-			if (StringUtils.isBlank(appUser.getEnabled())) {
-				appUser.setEnabled("1");
-			}
-			Example<AppUser> example = Example.of(appUser,ExampleMatcher.matchingAll());
-			appUser2 = appUserRepo.findOne(example);
-			if (appUser2 == null) {
+			if (appUser2==null) {
 				AppUser appUser3 = new AppUser(appUser.getTelephone(),
 						appUser.getTelephone(), "123456", user.getPhoneSeqNum(),
 						"1", "1");

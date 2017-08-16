@@ -36,7 +36,7 @@ public class AppVersion extends BaseEntity {
 	private String renewalTime;
 
 	// 删除状态 0删除 1显示
-	@Column(name = "delete_state", length = 2)
+	@Column(name = "delete_state", length = 1)
 	private String deleteState;
 
 	@Column(name = "forces", length = 2)

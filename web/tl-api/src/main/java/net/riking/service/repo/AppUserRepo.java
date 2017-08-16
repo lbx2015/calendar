@@ -1,5 +1,6 @@
 package net.riking.service.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -41,4 +42,6 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	
 	@Query("select a.phoneSeqNum from AppUser a where a.deleteState = '1' and substring(a.birthday, 5, 4) =?1 ")
 	Set<String> findByDate(String date);
+	
+	List<AppUser> findByDeleteStateAndTelephone(String deleteState,String telephone);
 }

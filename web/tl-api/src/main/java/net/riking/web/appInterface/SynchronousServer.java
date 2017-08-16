@@ -88,7 +88,7 @@ public class SynchronousServer {
 			if (remindHis.get(i).getDeleteState()==0) {
 				remindHisSave.add(remindHis.get(i));
 			}else {
-				remindHisSave.add(remindHis.get(i));
+				remindHisDele.add(remindHis.get(i));
 			}
 		}
 		remindHis = remindHisRepo.save(remindHisSave);
@@ -102,7 +102,7 @@ public class SynchronousServer {
 		List<AppUserReportCompleteRel> appUserReportCompleteRelSave = new ArrayList<>(); 
 		List<AppUserReportCompleteRel> AppUserReportCompleteRelDele = new  ArrayList<>();
 		for (int i = 0; i < appUserReportCompleteRel.size(); i++) {
-			if (appUserReportCompleteRel.get(i).getIsComplete()==1) {
+			if (appUserReportCompleteRel.get(i).getIsComplete()==0) {
 				appUserReportCompleteRelSave.add(appUserReportCompleteRel.get(i));
 			}else {
 				AppUserReportCompleteRelDele.add(appUserReportCompleteRel.get(i));
