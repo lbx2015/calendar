@@ -3,14 +3,19 @@ package com.riking.calendar.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ldf.calendar.Const;
@@ -20,7 +25,18 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.image.ImagePicker;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +49,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     public TextView userName;
     public TextView email;
     public TextView department;
+    ImageView myPhoto;
     View userNameRelativeLayout;
     SharedPreferences preference;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -43,6 +60,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         preference = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_user_info);
+        myPhoto = (ImageView) findViewById(R.id.my_photo);
         findViewById(R.id.back).setOnClickListener(this);
         userName = (TextView) findViewById(R.id.name);
         email = (TextView) findViewById(R.id.email);
@@ -57,6 +75,95 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(UserInfoActivity.this, MoreUserInfoActivity.class));
+            }
+        });
+        // width and height will be at least 600px long (optional).
+        ImagePicker.setMinQuality(600, 600);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bitmap bitmap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
+        if (bitmap != null) {
+            Logger.d("zzw", "bit map is not null");
+            myPhoto.setImageBitmap(bitmap);
+        } else {
+            Logger.d("zzw", "bitmap is null");
+        }
+        InputStream is = ImagePicker.getInputStreamFromResult(this, requestCode, resultCode, data);
+        if (is != null) {
+            try {
+                is.close();
+            } catch (IOException ex) {
+                // ignore
+            }
+        } else {
+            Logger.d("zzw", "Failed to get input stream!");
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void onPickImage(View view) {
+//        ImagePicker.pickImage(this, "Select your image:");
+        Bitmap bitMap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_1);
+
+        File mFile1 = Environment.getExternalStorageDirectory();
+
+        String fileName = "img1.jpg";
+
+        File mFile2 = new File(mFile1, fileName);
+        try {
+            FileOutputStream outStream;
+
+            outStream = new FileOutputStream(mFile2);
+
+            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+
+            outStream.flush();
+
+            outStream.close();
+
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        String sdPath = mFile1.getAbsolutePath().toString() + "/" + fileName;
+
+        Log.d("zzw", "Your IMAGE ABSOLUTE PATH:-" + sdPath);
+
+        File temp = new File(sdPath);
+
+        if (!temp.exists()) {
+            Log.d("zzw", "no image file at location :" + sdPath);
+        }
+
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), mFile2);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", mFile2.getName(), reqFile);
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+
+        apiInterface.postImage(body, preference.getString(Const.USER_ID, null)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ResponseBody r = response.body();
+
+                try {
+                    if (r != null) {
+                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
+                    } else {
+                        Logger.d("zzw", "upload ok response body is null");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Logger.d("zzw", "upload image fail: " + t.getMessage());
             }
         });
     }

@@ -61,10 +61,8 @@ public class ExampleUnitTest {
         report.reportName = "test";
         container.result = new ArrayList<QueryReport>();
         container.result.add(report);
-        QueryReportContainerList queryList = new QueryReportContainerList();
-        queryList.list = new ArrayList<QueryReportContainer>();
-        t._data = queryList;
-        t._data.list.add(container);
+        t._data = list;
+        t._data.add(container);
         Gson gson = new GsonBuilder().setDateFormat("yyyyMMddHHmm").create();
         System.out.println(gson.toJson(t));
     }

@@ -78,4 +78,5 @@
         <item>提醒</item>
         <item>个人中心</item>
     </string-array>
+    <string name="pick_image_intent_text">选择图片</string>
 </resources>
