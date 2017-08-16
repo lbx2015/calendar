@@ -80,8 +80,12 @@ public interface APIInterface {
 
     @POST("/reportListApp/getAllReport")
     Call<QueryReportModel> getAllReports(@Body QueryReport report);
+    @POST("/appAboutApp/reportHtml")
+    Call<ResponseBody> getReportDetail(@Body QueryReport report);
 
     @Multipart
     @POST("/appUserApp/upLoad")
     Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);
+
+
 }
