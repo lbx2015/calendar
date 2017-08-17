@@ -50,10 +50,12 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     public TextView userName;
     public TextView email;
     public TextView department;
+    public TextView address;
     ImageView myPhoto;
     View userNameRelativeLayout;
     View departmentRelativeLayout;
     View emailRelativeLayout;
+
     SharedPreferences preference;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     View moreUserInfoView;
@@ -67,10 +69,11 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.back).setOnClickListener(this);
         userName = (TextView) findViewById(R.id.name);
         email = (TextView) findViewById(R.id.email);
+        address = (TextView) findViewById(R.id.address);
         department = (TextView) findViewById(R.id.depart);
-        userName.setText(preference.getString(Const.USER_NAME, null));
-        email.setText(preference.getString(Const.USER_EMAIL, null));
-        department.setText(preference.getString(Const.USER_DEPT, null));
+        userName.setText(preference.getString(Const.USER_NAME, ""));
+        email.setText(preference.getString(Const.USER_EMAIL, ""));
+        department.setText(preference.getString(Const.USER_DEPT, ""));
         userNameRelativeLayout = findViewById(R.id.user_name_relative_layout);
         emailRelativeLayout = findViewById(R.id.email_row_relative_layout);
         departmentRelativeLayout = findViewById(R.id.depart_row_relative_layout);

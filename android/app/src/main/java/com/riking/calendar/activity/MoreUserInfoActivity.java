@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     TextView birthDayTextView;
     TextView commentsTextView;
     View commentsRelativeLayout;
+    View addressRelativeLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +48,67 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         addressTextView = (TextView) findViewById(R.id.address);
         birthDayTextView = (TextView) findViewById(R.id.birthday);
         commentsTextView = (TextView) findViewById(R.id.comments);
+        addressRelativeLayout = findViewById(R.id.address_relative_layout);
+        addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
+                builder.setTitle(getString(R.string.address));
+                // I'm using fragment here so I'm using getView() to provide ViewGroup
+                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+                View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_user_name_dialog, null, false);
+                // Set up the input
+                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+                String addressText = preference.getString(Const.USER_ADDRESS, "");
+                input.setText(addressText);
+                input.setSelection(addressText.length());
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Editable editable = input.getText();
+                        if (editable == null) {
+                            return;
+                        }
+                        String departName = input.getText().toString();
+                        if (departName.length() > 0) {
+                            addressTextView.setText(departName);
+                            AppUser user = new AppUser();
+                            user.address = departName;
+                            user.id = preference.getString(Const.USER_ID, null);
+                            SharedPreferences.Editor editor = preference.edit();
+                            editor.putString(Const.USER_ADDRESS, departName);
+                            //save the changes.
+                            editor.commit();
+
+                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
+                                @Override
+                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
+                                    GetVerificationModel user = response.body();
+                                    Logger.d("zzw", "update user : " + user);
+                                }
+
+                                @Override
+                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
         addressTextView.setText(preference.getString(Const.USER_ADDRESS, ""));
         commentsTextView.setText(preference.getString(Const.USER_COMMENTS, ""));
@@ -78,7 +141,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                             commentsTextView.setText(newComments);
                             AppUser user = new AppUser();
                             user.remark = newComments;
-                            user.id = preference.getString(Const.USER_ID,null);
+                            user.id = preference.getString(Const.USER_ID, null);
                             SharedPreferences.Editor editor = preference.edit();
                             editor.putString(Const.USER_COMMENTS, newComments);
                             //save the changes.
