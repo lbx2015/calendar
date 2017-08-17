@@ -1,6 +1,12 @@
 package net.riking.web.appInterface;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +17,8 @@ import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.ReportList;
+import springfox.documentation.builders.RequestHandlerSelectors;
 /**
  * app关于的html5页面跳转
  * @author you.fei
@@ -18,6 +26,7 @@ import net.riking.entity.AppResp;
  * @used TODO
  */
 @RestController
+@RequestMapping(value = "/appAboutApp")
 public class AppAboutServer {
 	
 	@Autowired
@@ -39,20 +48,20 @@ public class AppAboutServer {
 	
 	@ApiOperation(value = "跳转<报文详情>html5页面", notes = "POST")
 	@RequestMapping(value = "/reportHtml", method = RequestMethod.POST)	
-	public AppResp reportApp(@RequestParam("id") String id) {
-		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + id,CodeDef.SUCCESS);
+	public AppResp reportApp(@RequestBody ReportList reportList) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + reportList.getId(),CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "跳转<报文详情-报文说明>html5页面", notes = "POST")
 	@RequestMapping(value = "/reportNoteHtml", method = RequestMethod.POST)	
-	public AppResp reportNoteApp(@RequestParam("id") String id) {
-		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + id+"&type=note",CodeDef.SUCCESS);
+	public AppResp reportNoteApp(@RequestBody ReportList reportList) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + reportList.getId()+"&type=note",CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "跳转<报文详情-报文规则>html5页面", notes = "POST")
 	@RequestMapping(value = "/reportRuleHtml", method = RequestMethod.POST)	
-	public AppResp reportRuleApp(@RequestParam("id") String id) {
-		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + id+"&type=rule",CodeDef.SUCCESS);
+	public AppResp reportRuleApp(@RequestBody ReportList reportList) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + reportList.getId()+"&type=rule",CodeDef.SUCCESS);
 	}
 	
 //	@ApiOperation(value = "跳转<关于>html5页面", notes = "POST")
