@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +28,6 @@ import net.riking.core.annos.AuthPass;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
-import net.riking.util.MergeUtil;
 /**
  * app用户信息操作
  * @author you.fei
@@ -56,13 +58,19 @@ public class AppUserServer {
 			appUser.setDeleteState("1");
 		}
 		AppUser dbUser = appUserRepo.findById(appUser.getId());
-		try {
-			MergeUtil.merge(dbUser,appUser);
-		} catch (Exception e) {
-			return new AppResp(CodeDef.ERROR);
+		if(null==dbUser){
+			return new AppResp(false,CodeDef.ERROR);
 		}
-		AppUser save = appUserRepo.save(dbUser);
-		return new AppResp(save, CodeDef.SUCCESS);
+		try {
+			merge(dbUser,appUser);
+		} catch (Exception e) {
+			return new AppResp(false,CodeDef.ERROR);
+		}
+		AppUser saveUser = appUserRepo.save(dbUser);
+		if(null!=saveUser&&StringUtils.isNotEmpty(saveUser.getId())){
+			return new AppResp(true,CodeDef.SUCCESS);
+		}
+		return new AppResp(false,CodeDef.ERROR);
 	}
 	
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
@@ -83,7 +91,13 @@ public class AppUserServer {
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
 	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("id")String id) {
+		if (id.length()>32) {
+			id = id.substring(1, 33);
+		}
 		String url = request.getRequestURL().toString();
+		String suffix = mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String fileName = sdf.format(new Date())+suffix;
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {
@@ -93,7 +107,7 @@ public class AppUserServer {
 			if(!dir.exists()){
 				dir.mkdirs();
 			}
-			String photoUrl =  path + mFile.getOriginalFilename();
+			String photoUrl =  path + fileName;
 			fos = new FileOutputStream(photoUrl);
 			int len = 0;
 			byte[] buf = new byte[1024*1024];
@@ -112,7 +126,7 @@ public class AppUserServer {
 				return new AppResp(false,CodeDef.ERROR);
 			}
 		}
-		String photoUrl = getPortPath(url)+ Const.TL_PHOTO_PATH + mFile.getOriginalFilename();
+		String photoUrl = getPortPath(url)+ Const.TL_PHOTO_PATH + fileName;
 		int rs = appUserRepo.updatePhoto(id,photoUrl);
 		if(rs>0){
 			return new AppResp(photoUrl, CodeDef.SUCCESS);
@@ -129,4 +143,16 @@ public class AppUserServer {
 		return null;
 	}
 	
+	private <T> T merge(T dbObj,T appObj) throws Exception{
+		Field[] fields = dbObj.getClass().getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			Field field = fields[i];
+			field.setAccessible(true);
+			Object val = field.get(appObj);
+			if(val!=null){
+				field.set(dbObj, val);
+			}
+		}
+		return dbObj;
+	}
 }
