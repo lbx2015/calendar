@@ -47,7 +47,6 @@
     $(function() {
         if (id) {
             var url = Const.apiUrl + "/reportList/get";
-            var _this = this;
             View.get(url, "id=" + id, function(resp) {
                 $("#reportNote").val(resp.reportNote);
                 $("#reportRule").val(resp.reportRule);

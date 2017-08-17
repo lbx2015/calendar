@@ -67,43 +67,34 @@
 </form>
     </div>
 </body>
-<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="/layui/layui.all.js"></script>
+<script type="text/javascript" src="/js/util/utils.js"></script>
+<script type="text/javascript" src="/js/core/base.js"></script>
+<script type="text/javascript" src="/js/core/base64_utf8.js"></script>
+<script type="text/javascript" src="/js/util/tmplUtils.js"></script>
+<script type="text/javascript" src="/js/core/view.js"></script>
+<script type="text/javascript" src="/js/util/iframe.js"></script>
+<script type="text/javascript" src="/js/util/html5.js"></script>
+<script type="text/javascript" src="/js/core/iefix.js"></script>
 <script>
+var _SYS = Tool.parseJSON('{=current_system}' || "{}");
+var Const = {
+	sys : _SYS,
+	apiUrl : _SYS.apiAccessUrl,
+	webPath : "{=web_path}",
+	ctx : "{=ctx}",
+	security : "{=security}" == "true",
+	ssoLoginUrl : "{=sso_login_url}",
+	ssoApiUrl : "{=sso_api_url}",
+	cellLeftCount : 4,
+	cellRightCount : 3,
+	criteriaCount : 3
+}
     var id = View.getQStr('id');
-    function editOnBind(attrs, param) {
-        tmpl = this;
-        tmpl.bind(function(callback) {
-            var _this = this;
-            if (id) {
-                var url = Const.apiUrl + "/reportList/get";
-                var _this = this;
-                View.get(url, "id=" + id, function(resp) {
-                    var data = {};
-                    if (resp) {
-                        data.data = resp;
-                    }
-                    //默认展开分组 ，不配置默认展开第一个分组
-                    data.showGroup = "base";
-                    callback.call(_this, data);
-                    TmplUtils.editOnLoad();
-                    loadRichText();
-                }, function() {
-                    TmplUtils.showMsgFail('信息获取失败');
-                });
-            } else {
-                var data = {};
-                data.showGroup = "base";
-                callback.call(_this, data);
-                TmplUtils.editOnLoad();
-                loadRichText();
-            }
-        });
-    }
-    
     $(function(){
 	      if (id) {
 	                var url = Const.apiUrl + "/reportList/get";
-	                var _this = this;
+	                View.info(url);
 	                View.get(url, "id=" + id, function(resp) {
 	                    for(key in resp){
 	                		var id = "#"+key;
