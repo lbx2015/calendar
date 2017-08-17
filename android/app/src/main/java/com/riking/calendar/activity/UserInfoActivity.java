@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     public TextView department;
     ImageView myPhoto;
     View userNameRelativeLayout;
+    View departmentRelativeLayout;
     View emailRelativeLayout;
     SharedPreferences preference;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -71,6 +73,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         department.setText(preference.getString(Const.USER_DEPT, null));
         userNameRelativeLayout = findViewById(R.id.user_name_relative_layout);
         emailRelativeLayout = findViewById(R.id.email_row_relative_layout);
+        departmentRelativeLayout = findViewById(R.id.depart_row_relative_layout);
+        departmentRelativeLayout.setOnClickListener(this);
         emailRelativeLayout.setOnClickListener(this);
         userNameRelativeLayout.setOnClickListener(this);
         moreUserInfoView = findViewById(R.id.more_user_info_relative_layout);
@@ -277,6 +281,64 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                             user.id = preference.getString(Const.USER_EMAIL, null);
                             SharedPreferences.Editor editor = preference.edit();
                             editor.putString(Const.USER_EMAIL, emailText);
+                            //save the changes.
+                            editor.commit();
+
+                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
+                                @Override
+                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
+                                    GetVerificationModel user = response.body();
+                                    Logger.d("zzw", "update user : " + user);
+                                }
+
+                                @Override
+                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+                break;
+            }
+            case R.id.depart_row_relative_layout: {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.depart));
+                // I'm using fragment here so I'm using getView() to provide ViewGroup
+                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+                // Set up the input
+                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+                String name = preference.getString(Const.USER_DEPT, "");
+                input.setText(name);
+                input.setSelection(name.length());
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Editable editable = input.getText();
+                        if (editable == null) {
+                            return;
+                        }
+                        String departName = input.getText().toString();
+                        if (departName.length() > 0) {
+                            department.setText(departName);
+                            AppUser user = new AppUser();
+                            user.dept = departName;
+                            user.id = preference.getString(Const.USER_ID, null);
+                            SharedPreferences.Editor editor = preference.edit();
+                            editor.putString(Const.USER_DEPT, departName);
                             //save the changes.
                             editor.commit();
 
