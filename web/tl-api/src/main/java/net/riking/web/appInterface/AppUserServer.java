@@ -45,9 +45,9 @@ public class AppUserServer {
 	
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public AppResp get_(@RequestParam("id") String id) {
-		AppUser appUser = appUserRepo.findOne(id);
-		return new AppResp(appUser, CodeDef.SUCCESS);
+	public AppResp get_(@RequestBody AppUser appUser) {
+		AppUser dbUser = appUserRepo.findOne(appUser.getId());
+		return new AppResp(dbUser, CodeDef.SUCCESS);
 	}
 	
 	

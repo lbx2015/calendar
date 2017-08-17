@@ -28,7 +28,7 @@ public class Const {
 	
 	public static final String  TL_AGREEMENT_HTML5_PATH = "/agreement.html";
 	
-	public static final String  TL_REPORT_HTML5_PATH = "/reportListEdit.html?id=";
+	public static final String  TL_REPORT_HTML5_PATH = "/reportListApp.html?id=";
 	
 	public static final String  TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
 	

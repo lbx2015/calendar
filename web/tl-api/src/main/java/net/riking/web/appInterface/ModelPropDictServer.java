@@ -44,7 +44,7 @@ public class ModelPropDictServer {
 			@RequestBody Set<String> fields) throws Exception {
 		List<ModelPropDict> list = sysDataservice.getDictsByFields(tableName,
 				fields);
-		return new AppResp(list);
+		return new AppResp(list).setCode(CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到一级<地址>字典列表", notes = "POST")
@@ -61,7 +61,7 @@ public class ModelPropDictServer {
 				}
 			}
 		}
-		return new AppResp(enumKeyValues);
+		return new AppResp(enumKeyValues).setCode(CodeDef.SUCCESS);
 	}
 	@ApiOperation(value = "得到二级<地址>字典列表", notes = "POST")
 	@RequestMapping(value = "/getAddS", method = RequestMethod.POST)
@@ -78,7 +78,7 @@ public class ModelPropDictServer {
 				}
 			}
 		}
-		return new AppResp(enumKeyValues);
+		return new AppResp(enumKeyValues).setCode(CodeDef.SUCCESS);
 	}
 	@ApiOperation(value = "得到某个具体字典", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)

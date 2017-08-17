@@ -65,9 +65,8 @@ public class CtryHdayCrcyServer {
 
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public AppResp get_(@RequestParam("id") String id) {
-		CtryHdayCrcy ctryHdayCrcy = crtyHdayCrcyRepo.findOne(id);
-//		CtryHdayCrcy ctryHdayCrcy = sysDataservice.getCtryHdayCrcy(id);
+	public AppResp get_(@RequestBody CtryHdayCrcy chc) {
+		CtryHdayCrcy ctryHdayCrcy = crtyHdayCrcyRepo.findOne(chc.getId());
 		if(ctryHdayCrcy!=null){
 			this._setDictValue(Arrays.asList(ctryHdayCrcy),request);
 		}

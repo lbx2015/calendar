@@ -1,11 +1,6 @@
 package net.riking.web.appInterface;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +13,6 @@ import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.ReportList;
-import springfox.documentation.builders.RequestHandlerSelectors;
 /**
  * app关于的html5页面跳转
  * @author you.fei
@@ -50,6 +44,12 @@ public class AppAboutServer {
 	@RequestMapping(value = "/reportHtml", method = RequestMethod.POST)	
 	public AppResp reportApp(@RequestBody ReportList reportList) {
 		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + reportList.getId(),CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "跳转<报文详情>html5页面", notes = "POST")
+	@RequestMapping(value = "/testHtml", method = RequestMethod.POST)	
+	public AppResp reportApp(@RequestParam("id") String  id) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + id,CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "跳转<报文详情-报文说明>html5页面", notes = "POST")
