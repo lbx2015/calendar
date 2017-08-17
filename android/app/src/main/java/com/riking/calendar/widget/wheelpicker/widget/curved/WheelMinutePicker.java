@@ -15,8 +15,8 @@ public class WheelMinutePicker extends WheelCurvedPicker implements IDigital {
     private static final List<String> MINUTES_DIGITAL_DOUBLE = new ArrayList<>();
 
     static {
-        for (int i = 1; i < 60; i++) MINUTES_DIGITAL_SINGLE.add(String.valueOf(i));
-        for (int i = 1; i < 60; i++) {
+        for (int i = 0; i < 60; i++) MINUTES_DIGITAL_SINGLE.add(String.valueOf(i));
+        for (int i = 0; i < 60; i++) {
             String num = String.valueOf(i);
             if (num.length() == 1) {
                 num = "0" + num;

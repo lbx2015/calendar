@@ -281,7 +281,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                             email.setText(emailText);
                             AppUser user = new AppUser();
                             user.email = emailText;
-                            user.id = preference.getString(Const.USER_EMAIL, null);
+                            user.id = preference.getString(Const.USER_ID, null);
                             SharedPreferences.Editor editor = preference.edit();
                             editor.putString(Const.USER_EMAIL, emailText);
                             //save the changes.
