@@ -24,10 +24,13 @@ public class Const {
     public static final String USER_PASSWORD = "USER_PASSWORD";
     public static final String USER_DEPT = "USER_DEPT";
     public static final String USER_ADDRESS = "USER_ADDRESS";
+    public static final String USER_BIRTHDAY = "USER_BIRTHDAY";
     public static final String USER_SEX="user_sex";
 
     public static final String REMINDER_TITLE="Reminder title";
 
     //Date formats
     public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
+    public static final String yyyyMMdd = "yyyyMMdd";
+    public static final String birthDayFormat = "yyyy-MM-dd";
 }
