@@ -9,7 +9,7 @@ import com.riking.calendar.realm.model.Task;
  */
 
 public class TaskModel {
-    public String todo_Id;
+    public String todoId;
 
     // 用户Id
 //    @Column(name = "user_id", length = 32)
@@ -48,7 +48,7 @@ public class TaskModel {
     public int deleteState;
 
     public TaskModel(Task task) {
-        this.todo_Id = task.todo_Id;
+        this.todoId = task.todo_Id;
         this.userId = task.userId;
         this.title = task.title;
         this.isImportant = task.isImportant;

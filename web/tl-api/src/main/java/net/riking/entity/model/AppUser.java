@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -104,7 +103,7 @@ public class AppUser extends BaseEntity {
 	
 	//0-禁用    1-启用
 	@Comment("用户状态")
-	@Column(name = "enabled")
+	@Column(name = "enabled",length = 1)
 	private String enabled;
 	
 	@Comment("备注信息")
@@ -113,23 +112,23 @@ public class AppUser extends BaseEntity {
 	
 	//0-删除状态   1-未删除状态
 	@Comment("删除标记")
-	@Column(name = "delete_state")
+	@Column(name = "delete_state",length = 1)
 	private String deleteState;
 	
 	@Comment("部门")
-	@Column(name = "dept")
+	@Column(name = "dept",length = 12)
 	private String dept;
 	
 	@Comment("手机地址")
-	@Column(name = "phone_seq_num")
+	@Column(name = "phone_seq_num",length = 32)
 	private String phoneSeqNum;
 	
 	@Comment("手机类型")
-	@Column(name = "phone_type")
+	@Column(name = "phone_type",length = 1)
 	private String phoneType;
 	
 	@Comment("用户头像")
-	@Column(name = "photo_url")
+	@Column(name = "photo_url",length =128 )
 	private String photoUrl;
 	
 	//验证码

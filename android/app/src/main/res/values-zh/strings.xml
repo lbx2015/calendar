@@ -78,4 +78,8 @@
         <item>提醒</item>
         <item>个人中心</item>
     </string-array>
+    <string name="pick_image_intent_text">选择图片</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="login_failed">登录失败</string>
 </resources>

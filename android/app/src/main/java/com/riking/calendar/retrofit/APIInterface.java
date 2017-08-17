@@ -11,16 +11,20 @@ import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
+import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -76,4 +80,12 @@ public interface APIInterface {
 
     @POST("/reportListApp/getAllReport")
     Call<QueryReportModel> getAllReports(@Body QueryReport report);
+    @POST("/appAboutApp/reportHtml")
+    Call<ResponseBody> getReportDetail(@Body QueryReport report);
+
+    @Multipart
+    @POST("/appUserApp/upLoad")
+    Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);
+
+
 }

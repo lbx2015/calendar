@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 //@Entity
 //@Table(name = "t_app_user")
 public class AppUser {
+    public String photoUrl;
     //用户表
 //	@Id
 //	@Column(name = "Id", length = 32)
@@ -74,9 +75,9 @@ public class AppUser {
 //	@Column(name = "phone_seq_num")
     public String phoneSeqNum;
 
-    //	@Comment("手机类型")
+    //	@Comment("手机类型") "1" iphone "2" android
 //	@Column(name = "phone_type")
-    public String phoneType;
+    public String phoneType = "2";
     //验证码
 //	@Transient
     public String valiCode;

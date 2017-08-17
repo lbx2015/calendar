@@ -10,15 +10,17 @@ import net.riking.entity.PageQuery;
 
 @Entity
 @Table(name = "t_todo")
-public class Todo extends PageQuery{
-	
-	/**代办事项实体类
+public class Todo extends PageQuery {
+
+	/**
+	 * 代办事项实体类
+	 * 
 	 * @author Lucky.Liu on 2017/8/05.
 	 */
-	
+
 	@Id
 	@Column(name = "todo_id", length = 17)
-	private String todo_Id;
+	private String todoId;
 
 	// 用户Id
 	@Column(name = "user_id", length = 32)
@@ -51,10 +53,9 @@ public class Todo extends PageQuery{
 	// 完成时间（yyyyMMddHHmm）
 	@Column(name = "complete_date", length = 12)
 	private String completeDate;
-	
+
 	@Transient
 	private int deleteState;
-	
 
 	public int getDeleteState() {
 		return deleteState;
@@ -64,12 +65,12 @@ public class Todo extends PageQuery{
 		this.deleteState = deleteState;
 	}
 
-	public String getTodo_Id() {
-		return todo_Id;
+	public String getTodoId() {
+		return todoId;
 	}
 
-	public void setTodo_Id(String todo_Id) {
-		this.todo_Id = todo_Id;
+	public void setTodoId(String todoId) {
+		this.todoId = todoId;
 	}
 
 	public String getUserId() {
@@ -138,10 +139,9 @@ public class Todo extends PageQuery{
 
 	@Override
 	public String toString() {
-		return "Todo [todo_Id=" + todo_Id + ", userId=" + userId + ", content=" + content + ", isImportant="
-				+ isImportant + ", isOpen=" + isOpen + ", strDate=" + strDate + ", appCreatedTime=" + appCreatedTime
-				+ ", isComplete=" + isComplete + ", completeDate=" + completeDate + "]";
+		return "Todo [todoId=" + todoId + ", userId=" + userId + ", content=" + content + ", isImportant=" + isImportant
+				+ ", isOpen=" + isOpen + ", strDate=" + strDate + ", appCreatedTime=" + appCreatedTime + ", isComplete="
+				+ isComplete + ", completeDate=" + completeDate + ", deleteState=" + deleteState + "]";
 	}
-	
 
 }

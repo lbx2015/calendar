@@ -56,7 +56,7 @@ public class CtryHdayCrcy extends PageQuery {
 	
 	//0-删除状态   1-未删除状态
 	@Comment("删除标记")
-	@Column(name = "delete_state")
+	@Column(name = "delete_state",length = 1)
 	private String deleteState;
 	
 	@Transient

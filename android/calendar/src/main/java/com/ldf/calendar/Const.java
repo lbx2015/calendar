@@ -12,6 +12,7 @@ public class Const {
     public final static String PREFERENCE_FILE_NAME = "MyPref";
     // All Shared Preferences Keys
     public static final String IS_LOGIN = "IsLoggedIn";
+    public static final String USER_IMAGE_URL = "USER_IMAGE_URL";
     public static final String USER_ID = "UserId";
     public static final String PHONE_NUMBER = "PhoneNumber";
     public static final String PHONE_SEQ_NUMBER = "phoneSeqNum";
@@ -21,6 +22,7 @@ public class Const {
     public static final String USER_PASSWORD = "USER_PASSWORD";
     public static final String USER_DEPT = "USER_DEPT";
     public static final String USER_ADDRESS = "USER_ADDRESS";
+    public static final String USER_SEX="user_sex";
 
     public static final String REMINDER_TITLE="Reminder title";
 

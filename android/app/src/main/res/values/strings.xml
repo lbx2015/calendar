@@ -113,4 +113,9 @@
         <item>Info</item>
 
     </string-array>
+
+    <string name="pick_image_intent_text">Choose an image</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="login_failed">Login Failed</string>
 </resources>

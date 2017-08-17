@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
@@ -103,16 +104,22 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
                         GetVerificationModel user = response.body();
+                        if (user == null || user._data == null) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT);
+                            return;
+                        }
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
                         SharedPreferences.Editor e = pref.edit();
                         e.putBoolean(Const.IS_LOGIN, true);
                         e.putString(Const.USER_ID, user._data.id);
+                        e.putString(Const.USER_IMAGE_URL, user._data.photoUrl);
                         e.putString(Const.PHONE_NUMBER, user._data.telephone);
                         e.putString(Const.USER_EMAIL, user._data.email);
                         e.putString(Const.PHONE_SEQ_NUMBER, user._data.phoneSeqNum);
                         e.putString(Const.USER_NAME, user._data.name);
                         e.putString(Const.USER_PASSWORD, user._data.passWord);
                         e.putString(Const.USER_DEPT, user._data.dept);
+                        e.putInt(Const.USER_SEX, user._data.sex);
                         e.putString(Const.USER_COMMENTS, user._data.remark);
                         e.putString(Const.USER_COMMENTS, user._data.remark);
                         e.commit();

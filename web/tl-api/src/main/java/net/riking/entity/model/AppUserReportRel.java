@@ -21,7 +21,7 @@ import net.riking.entity.BaseEntity;
 
 @Comment("用户报表")
 @Entity
-@Table(name = "T_appUser_report_rel")
+@Table(name = "t_appuser_report_rel")
 public class AppUserReportRel extends BaseEntity {
 
 	@Id
@@ -36,9 +36,6 @@ public class AppUserReportRel extends BaseEntity {
 	// 报表ID
 	@Column(name = "report_id", length = 32)
 	private String reportId;
-	// 删除状态 0删除 1显示
-	@Column(name = "delete_state", length = 2)
-	private String deleteState;
 
 	public String getId() {
 		return id;
@@ -56,14 +53,6 @@ public class AppUserReportRel extends BaseEntity {
 		this.appUserId = appUserId;
 	}
 
-	public String getDeleteState() {
-		return deleteState;
-	}
-
-	public void setDeleteState(String deleteState) {
-		this.deleteState = deleteState;
-	}
-
 	public String getReportId() {
 		return reportId;
 	}
@@ -74,8 +63,7 @@ public class AppUserReportRel extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "AppUserReportRel [id=" + id + ", appUserId=" + appUserId + ", reportId=" + reportId + ", deleteState="
-				+ deleteState + "]";
+		return "AppUserReportRel [id=" + id + ", appUserId=" + appUserId + ", reportId=" + reportId + "]";
 	}
 
 }
