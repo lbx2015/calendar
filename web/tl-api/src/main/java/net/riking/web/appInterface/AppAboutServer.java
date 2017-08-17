@@ -45,11 +45,6 @@ public class AppAboutServer {
 		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + reportList.getId(),CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "跳转<报文详情>html5页面", notes = "POST")
-	@RequestMapping(value = "/testHtml", method = RequestMethod.POST)	
-	public AppResp reportApp(@RequestParam("id") String  id) {
-		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + id,CodeDef.SUCCESS);
-	}
 	
 	@ApiOperation(value = "跳转<报文详情-报文说明>html5页面", notes = "POST")
 	@RequestMapping(value = "/reportNoteHtml", method = RequestMethod.POST)	
