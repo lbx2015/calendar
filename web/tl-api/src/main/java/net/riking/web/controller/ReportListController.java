@@ -33,7 +33,7 @@ import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.ReportList;
-import net.riking.service.repo.AppUserReportRepo;
+import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.ReportListRepo;
 import net.riking.util.ExcelToList;
 
@@ -49,7 +49,7 @@ public class ReportListController {
 	@Autowired
 	ReportListRepo reportListRepo;
 	@Autowired
-	AppUserReportRepo appUserReportRepo;
+	AppUserReportRelRepo appUserReportRepo;
 
 	// 规则: 查,删 操作接口使用RequestMethod.GET，失败情况可以重复请求
 	// 增，改使用RequestMethod.POST，不能重复请求

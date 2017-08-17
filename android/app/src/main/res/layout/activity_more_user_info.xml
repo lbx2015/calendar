@@ -43,17 +43,10 @@
             android:orientation="vertical"
             android:paddingLeft="10dp">
 
-            <!--divider-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-
-                android:background="@color/divider_color_d9d9d9" />
-
             <RelativeLayout
                 android:id="@+id/sex_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -95,7 +88,7 @@
             <RelativeLayout
                 android:id="@+id/address_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -134,8 +127,9 @@
                 android:background="@color/divider_color_d9d9d9" />
 
             <RelativeLayout
+                android:id="@+id/birthday_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">

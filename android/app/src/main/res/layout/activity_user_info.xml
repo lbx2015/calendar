@@ -45,7 +45,7 @@
             <RelativeLayout
                 android:id="@+id/smContentView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white">
 
                 <TextView
@@ -90,7 +90,7 @@
             <RelativeLayout
                 android:id="@+id/user_name_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -134,7 +134,7 @@
             <RelativeLayout
                 android:id="@+id/email_row_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -177,7 +177,7 @@
             <RelativeLayout
                 android:id="@+id/depart_row_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -266,7 +266,7 @@
             <RelativeLayout
                 android:id="@+id/more_user_info_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp">

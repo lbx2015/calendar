@@ -33,4 +33,7 @@ public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSp
 	@Modifying
 	@Query(" update ReportList set deleteState = '0' where id in ?1  ")
 	int deleteById(Set<String> ids);
+	
+	@Query("  select new net.riking.entity.model.QueryReport(r.id,r.reportName,r.reportCode,r.moduleType) from ReportList r where r.deleteState='1' and  r.id in ?1 ")
+	List<QueryReport> findByIds(Set<String> ids);
 }
