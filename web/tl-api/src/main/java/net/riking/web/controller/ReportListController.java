@@ -54,6 +54,7 @@ public class ReportListController {
 	// 规则: 查,删 操作接口使用RequestMethod.GET，失败情况可以重复请求
 	// 增，改使用RequestMethod.POST，不能重复请求
 	// 为降低难度与兼容性， DELETE,PUT等操作不用。
+	@AuthPass
 	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {

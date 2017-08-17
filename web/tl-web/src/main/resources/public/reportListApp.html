@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>dialog2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="include" href="/common/depcss.html" />
+</head>
+
+<body>
+    <div class="formbox layui-form add-formbox">
+       <form name="edit" id="edit" action="">
+    <div class="layui-collapse" lay-filter="edit">
+       <!--  <div class="layui-colla-item">
+            <h2 class="layui-colla-title">基础信息</h2> -->
+            <div class="layui-colla-content layui-show">
+                <div name="edit" id="edit_base" action="">
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表名称</label>
+                        <div class="layui-input-inline"> <input type="text" id="reportName"  class="layui-input _tip"> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表编号</label>
+                        <div class="layui-input-inline"> <input type="text" id="reportCode"  class="layui-input _tip"> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表简介</label>
+                        <div class="layui-input-inline"> <textarea id="reportBrief" class="layui-textarea"></textarea> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">填报机构</label>
+                        <div class="layui-input-inline"> <input type="text" id="reportOrganization" class="layui-input _tip"> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">报送口径、频度及时间</label>
+                        <div class="layui-input-inline"> <textarea id="reportFrequency"  class="layui-textarea"></textarea> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">报送方式</label>
+                        <div class="layui-input-inline"> <input type="text" id="reportStyle"  class="layui-input _tip"> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">数据单位</label>
+                        <div class="layui-input-inline"> <select id="reportUnit"  class="_tip" lay-filter="reportUnit" lay-search>  <option value="--##--">--请选择--</option>   <option value="W">万元</option>    <option value="Y">元</option>    <option value="K">千元</option>   </select> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">四舍五入要求</label>
+                        <div class="layui-input-inline"> <input type="text" id="reportRound"  class="layui-input _tip"> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">填报币种</label>
+                        <div class="layui-input-inline"> <textarea id="reportCurrency"    class="layui-textarea"></textarea> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表模板下载地址</label>
+                        <div class="layui-input-inline"> <input type="text" id="downloadUrl"   class="layui-input _tip"> </div>
+                    </div>
+                    <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表所属模块，频度标识</label>
+                        <div class="layui-input-inline"> <select id="moduleType" lay-search>  <option value="--##--">--请选择--</option>   <option value="A">PBOC-数据大集中</option>    <option value="G">CBRC-1104Basel报表</option>    <option value="S">CBRC-1104特色报表</option>    <option value="H">CBRC-1104基础财务报表</option>    <option value="GF">CBRC-分支机构报表</option>    <option value="Q">CBRC-区域报表</option>   </select> </div>
+                    </div>
+                    <div class="layui-inline " style="display:none;"> <label class="layui-form-label" data-desc="">删除状态  </label>
+                        <div class="layui-input-inline"> <textarea id="deleteState"  class="layui-textarea"></textarea> </div>
+                    </div>
+                    <div class="layui-inline  space-wrap "> <label class="layui-form-label" data-desc="">报表说明</label>
+                        <div class="layui-input-inline"> <textarea id="reportNote" glprop="" data-type="text"  class="layui-textarea"></textarea> </div>
+                    </div>
+                    <div class="layui-inline  space-wrap "> <label class="layui-form-label" data-desc="">报表规则</label>
+                        <div class="layui-input-inline"> <textarea id="reportRule" glprop="" data-type="text"  class="layui-textarea"></textarea> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   <!--  </div> -->
+</form>
+    </div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+    var id = View.getQStr('id');
+    function editOnBind(attrs, param) {
+        tmpl = this;
+        tmpl.bind(function(callback) {
+            var _this = this;
+            if (id) {
+                var url = Const.apiUrl + "/reportList/get";
+                var _this = this;
+                View.get(url, "id=" + id, function(resp) {
+                    var data = {};
+                    if (resp) {
+                        data.data = resp;
+                    }
+                    //默认展开分组 ，不配置默认展开第一个分组
+                    data.showGroup = "base";
+                    callback.call(_this, data);
+                    TmplUtils.editOnLoad();
+                    loadRichText();
+                }, function() {
+                    TmplUtils.showMsgFail('信息获取失败');
+                });
+            } else {
+                var data = {};
+                data.showGroup = "base";
+                callback.call(_this, data);
+                TmplUtils.editOnLoad();
+                loadRichText();
+            }
+        });
+    }
+    
+    $(function(){
+	      if (id) {
+	                var url = Const.apiUrl + "/reportList/get";
+	                var _this = this;
+	                View.get(url, "id=" + id, function(resp) {
+	                    for(key in resp){
+	                		var id = "#"+key;
+	                		$(id).val(resp[key]);
+	                    }
+	                    loadRichText();
+	                }, function() {
+	                    TmplUtils.showMsgFail('信息获取失败');
+	                });
+	      }
+    });
+    
+    function loadRichText(){
+         layui.use('layedit', function(){
+     	  var layedit = layui.layedit;
+     	  layedit.set({tool: ['strong' //加粗
+							  ,'italic' //斜体
+							  ,'underline' //下划线
+							  ,'del' //删除线
+							  ,'|' //分割线
+							  ,'left' //左对齐
+							  ,'center' //居中对齐
+							  ,'right' //右对齐
+							  ,'|' 
+							  ,'link' //超链接
+							  ,'unlink' //清除链接
+							  ,'face' //表情
+							  ,'image' //插入图片
+							  //,'help' //帮助
+								],height: 250});
+           layedit.build('reportRule'); //建立编辑器
+     	   layedit.build('reportNote');
+     	});
+    }
+</script>
+
+</html>

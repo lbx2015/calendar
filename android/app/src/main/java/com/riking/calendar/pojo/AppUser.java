@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 //@Entity
 //@Table(name = "t_app_user")
 public class AppUser {
+    public String allDayReminderTime;
     public String photoUrl;
     //用户表
 //	@Id

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +16,7 @@ import net.riking.config.CodeDef;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.DictParam;
 import net.riking.service.SysDataService;
 /**
  * App数据字典接口
@@ -44,12 +44,13 @@ public class ModelPropDictServer {
 			@RequestBody Set<String> fields) throws Exception {
 		List<ModelPropDict> list = sysDataservice.getDictsByFields(tableName,
 				fields);
-		return new AppResp(list);
+		return new AppResp(list).setCode(CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "得到一级<地址>字典列表", notes = "POST")
 	@RequestMapping(value = "/getAddF", method = RequestMethod.POST)
-	public AppResp getAddF(@RequestParam(value = "keyword") String keyword) {
+	public AppResp getAddF(@RequestBody DictParam param) {
+		String keyword = param.getKeyWord();
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "SF");
 		if(null!=list && list.size()>0){
@@ -61,13 +62,13 @@ public class ModelPropDictServer {
 				}
 			}
 		}
-		return new AppResp(enumKeyValues);
+		return new AppResp(enumKeyValues).setCode(CodeDef.SUCCESS);
 	}
 	@ApiOperation(value = "得到二级<地址>字典列表", notes = "POST")
 	@RequestMapping(value = "/getAddS", method = RequestMethod.POST)
-	public AppResp getAddS(
-			@RequestParam(value = "key", required = false) String key,
-			@RequestParam(value = "keyword") String keyword) {
+	public AppResp getAddS(@RequestBody DictParam param) {
+		String key = param.getKey();
+		String keyword = param.getKeyWord();
 		List<ModelPropDict> enumKeyValues = new ArrayList<ModelPropDict>();
 		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", key);
 		if(null!=list && list.size()>0){
@@ -78,13 +79,14 @@ public class ModelPropDictServer {
 				}
 			}
 		}
-		return new AppResp(enumKeyValues);
+		return new AppResp(enumKeyValues).setCode(CodeDef.SUCCESS);
 	}
 	@ApiOperation(value = "得到某个具体字典", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public AppResp get(@RequestParam(value = "table") String table,
-			@RequestParam(value = "field") String field,
-			@RequestParam(value = "key") String key) {
+	public AppResp get(@RequestBody DictParam param) {
+		String table = param.getTableName();
+		String field = param.getField();
+		String key = param.getKey();
 		ModelPropDict dict = sysDataservice.getDict(table, field, key);
 		if (dict != null) {
 			return new AppResp(dict).setCode(CodeDef.SUCCESS);

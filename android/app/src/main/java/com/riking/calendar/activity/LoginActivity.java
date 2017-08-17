@@ -122,6 +122,8 @@ public class LoginActivity extends AppCompatActivity {
                         e.putInt(Const.USER_SEX, user._data.sex);
                         e.putString(Const.USER_COMMENTS, user._data.remark);
                         e.putString(Const.USER_COMMENTS, user._data.remark);
+                        e.putString(Const.WHOLE_DAY_EVENT_HOUR, user._data.allDayReminderTime.substring(0, 2));
+                        e.putString(Const.WHOLE_DAY_EVENT_MINUTE, user._data.allDayReminderTime.substring(2));
                         e.commit();
                         onBackPressed();
                         startActivity(new Intent(LoginActivity.this, UserInfoActivity.class));
