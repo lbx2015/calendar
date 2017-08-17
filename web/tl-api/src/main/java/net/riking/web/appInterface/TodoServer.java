@@ -16,6 +16,7 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Todo;
 import net.riking.service.repo.TodoRepo;
+import net.riking.util.MergeUtil;
 
 /**
  * 待办的增删改查
@@ -32,7 +33,17 @@ public class TodoServer {
 	@ApiOperation(value = "用户待办新增/修改", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public AppResp save(@RequestBody Todo todo){
-		todo = todoRepo.save(todo);
+		Todo todo2 = todoRepo.findOne(todo.getTodoId());
+		if (null==todo2) {
+			todo = todoRepo.save(todo);
+		}else {
+			try {
+				todo2 =	MergeUtil.merge(todo2,todo);
+			} catch (Exception e) {
+				return new AppResp(CodeDef.ERROR);
+			}
+			todo = todoRepo.save(todo2);
+		}
 		return new AppResp(todo, CodeDef.SUCCESS);
 	}
 	

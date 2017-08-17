@@ -18,6 +18,7 @@ import net.riking.entity.model.Remind;
 import net.riking.service.impl.GetDateServiceImpl;
 import net.riking.service.repo.BusinessDayRepo;
 import net.riking.service.repo.RemindRepo;
+import net.riking.util.MergeUtil;
 
 /**
  * 提醒的增删改查
@@ -39,7 +40,17 @@ public class RemindServer {
 	@ApiOperation(value = "用户提醒新增/修改", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public AppResp save(@RequestBody Remind remind) {
-		remind = remindRepo.save(remind);
+		Remind remind2 = remindRepo.findOne(remind.getReminderId());
+		if (null==remind2) {
+			remind = remindRepo.save(remind);
+		}else {
+			try {
+				remind2=MergeUtil.merge(remind2,remind);
+			} catch (Exception e) {
+				return new AppResp(CodeDef.ERROR);
+			}
+			remind = remindRepo.save(remind2);
+		}
 		return new AppResp(remind, CodeDef.SUCCESS);
 	}
 

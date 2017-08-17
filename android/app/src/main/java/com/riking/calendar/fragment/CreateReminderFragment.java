@@ -1,6 +1,7 @@
 package com.riking.calendar.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RemindRepeatActivity;
 import com.riking.calendar.activity.RemindWayActivity;
@@ -24,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_CANCELED;
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -47,6 +50,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
 
     public Switch allDaySwitch;
     public TextView remindTimeTextView;
+    SharedPreferences preference;
     //    private WheelPopWindow popWindow;
     private TimePickerDialog pickerDialog;
     private View selectRemindTime;
@@ -99,6 +103,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         pickerDialog.btnSubmit.setOnClickListener(this);
         pickerDialog.btnCancel.setOnClickListener(this);
         repeat.setOnClickListener(this);
+        preference = getActivity().getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
 
         allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             boolean skipFirstTime;
@@ -163,8 +168,8 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 time.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day));
                 if (isAllDay == 1) {
                     //24 hour format
-                    time.set(Calendar.HOUR_OF_DAY, 8);
-                    time.set(Calendar.MINUTE, 0);
+                    time.set(Calendar.HOUR_OF_DAY, preference.getInt(Const.WHOLE_DAY_EVENT_HOUR, 8));
+                    time.set(Calendar.MINUTE, preference.getInt(Const.WHOLE_DAY_EVENT_MINUTE, 0));
                 } else {
                     time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
                     time.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));

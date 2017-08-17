@@ -134,7 +134,5 @@ public class EmailAutoCompleteTextView extends AppCompatAutoCompleteTextView {
             Log.i(TAG, tv.getText().toString());
             return v;
         }
-
     }
-
 }
