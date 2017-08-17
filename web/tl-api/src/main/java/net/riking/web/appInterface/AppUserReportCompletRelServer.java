@@ -24,8 +24,8 @@ public class AppUserReportCompletRelServer {
      
      @ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
  	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
- 	public AppResp getAllReport(@RequestParam("userId") String userId,@RequestParam("date") String date) {
-    	 List<QureyResulte> completeRels = appUserReportCompleteRelRepo.getReportId(userId, date);
+ 	public AppResp getAllReport(@RequestBody AppUserReportCompleteRel completeRel) {
+    	 List<QureyResulte> completeRels = appUserReportCompleteRelRepo.getReportId(completeRel.getAppUserId(), completeRel.getCompleteDate());
 		return new AppResp(completeRels, CodeDef.SUCCESS);
     	 
      }

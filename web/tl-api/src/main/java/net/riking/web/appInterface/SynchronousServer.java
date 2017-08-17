@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Remind;
@@ -45,10 +45,10 @@ public class SynchronousServer {
 
 	@ApiOperation(value = "同步所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
-	public AppResp synchronousAll(@RequestParam("userId") String userId) {
-		List<Remind> reminds = remindRepo.findByUserId(userId);
-		List<RemindHis> remindHis = remindHisRepo.findByUserId(userId);
-		List<Todo> todos = todoRepo.findByUserId(userId);
+	public AppResp synchronousAll(@RequestBody AppUser appUser) {
+		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
+		List<RemindHis> remindHis = remindHisRepo.findByUserId(appUser.getId());
+		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
 		List<AppUserReportCompleteRel> appUserReportCompleteRel = appUserReportCompletesRelRepo.findAll();
 		SynResult result = new SynResult(reminds, remindHis, todos,appUserReportCompleteRel);
 		return new AppResp(result, CodeDef.SUCCESS);

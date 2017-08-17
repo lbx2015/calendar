@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.record.common.FeatFormulaErr2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,9 +15,8 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportResult;
-import net.riking.entity.model.ReportResultList;
 import net.riking.service.SysDataService;
-import net.riking.service.repo.AppUserReportRepo;
+import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.ReportListRepo;
 
 /**
@@ -32,7 +30,7 @@ public class AppReportListServer {
 	@Autowired
 	ReportListRepo reportListRepo;
 	@Autowired
-	AppUserReportRepo appUserReportRepo;
+	AppUserReportRelRepo appUserReportRepo;
 	@Autowired
 	SysDataService sysDataservice;
 

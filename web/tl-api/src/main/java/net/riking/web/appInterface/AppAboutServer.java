@@ -1,15 +1,9 @@
 package net.riking.web.appInterface;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +12,6 @@ import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.ReportList;
-import springfox.documentation.builders.RequestHandlerSelectors;
 /**
  * app关于的html5页面跳转
  * @author you.fei

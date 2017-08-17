@@ -1,9 +1,5 @@
 package net.riking.web.appInterface;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Remind;
-import net.riking.service.impl.GetDateServiceImpl;
-import net.riking.service.repo.BusinessDayRepo;
 import net.riking.service.repo.RemindRepo;
 import net.riking.util.MergeUtil;
 
@@ -31,11 +25,6 @@ public class RemindServer {
 
 	@Autowired
 	RemindRepo remindRepo;
-	@Autowired
-	BusinessDayRepo businessDayRepo;
-
-	@Autowired
-	GetDateServiceImpl getDateServiceImpl;
 
 	@ApiOperation(value = "用户提醒新增/修改", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -62,7 +51,7 @@ public class RemindServer {
 		return new AppResp().setCode(CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "获取一天提醒信息", notes = "POST")
+	/*@ApiOperation(value = "获取一天提醒信息", notes = "POST")
 	@RequestMapping(value = "/getDay", method = RequestMethod.POST)
 	public AppResp getDay(@RequestParam("userId") String userId, @RequestParam("date") String date,
 			@RequestParam("currWeek") String currWeek, @RequestParam("repeatFlag") Integer repeatFlag) {
@@ -103,6 +92,6 @@ public class RemindServer {
 			}
 		}
 		return new AppResp(data, CodeDef.SUCCESS);
-	}
+	}*/
 
 }
