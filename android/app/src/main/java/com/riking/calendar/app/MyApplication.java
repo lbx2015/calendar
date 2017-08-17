@@ -1,7 +1,7 @@
 package com.riking.calendar.app;
 
 import android.app.Application;
-import android.content.SharedPreferences;
+import android.content.Context;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
@@ -12,9 +12,12 @@ import io.realm.RealmConfiguration;
  */
 
 public class MyApplication extends Application {
+    public static Context APP;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        APP = getApplicationContext();
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
 

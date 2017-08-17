@@ -16,10 +16,16 @@ import android.widget.TextView;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.widget.dialog.BirthdayPickerDialog;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +44,10 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     TextView commentsTextView;
     View commentsRelativeLayout;
     View addressRelativeLayout;
+    View birthDayRelative;
+    BirthdayPickerDialog datePickerDialog;
+    //time
+    Calendar calendar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +59,54 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         birthDayTextView = (TextView) findViewById(R.id.birthday);
         commentsTextView = (TextView) findViewById(R.id.comments);
         addressRelativeLayout = findViewById(R.id.address_relative_layout);
+        birthDayRelative = findViewById(R.id.birthday_relative_layout);
+
+        final View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.btnSubmit: {
+                        calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, Integer.parseInt(datePickerDialog.wheelDatePicker.year));
+                        calendar.set(Calendar.MONTH, Integer.parseInt(datePickerDialog.wheelDatePicker.month) - 1);
+                        calendar.set(Calendar.DATE, Integer.parseInt(datePickerDialog.wheelDatePicker.day) - 1);
+                        AppUser user = new AppUser();
+                        user.id = preference.getString(Const.USER_ID, null);
+                        user.birthday = new SimpleDateFormat(Const.yyyyMMdd).format(calendar.getTime());
+                        apiInterface.updateUserBirthDay(user).enqueue(new ZCallBack<ResponseModel<AppUser>>() {
+                            @Override
+                            public void callBack(ResponseModel<AppUser> response) {
+                                Logger.d("zzw", "request success");
+                                SharedPreferences.Editor editor = preference.edit();
+                                String birthDay = new SimpleDateFormat(Const.birthDayFormat).format(calendar.getTime());
+                                editor.putString(Const.USER_BIRTHDAY, birthDay);
+                                editor.commit();
+                                birthDayTextView.setText(birthDay);
+                            }
+                        });
+                        datePickerDialog.dismiss();
+                        break;
+                    }
+                    case R.id.btnCancel: {
+                        datePickerDialog.dismiss();
+                        break;
+                    }
+                }
+            }
+        };
+
+        birthDayRelative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (datePickerDialog == null) {
+                    datePickerDialog = new BirthdayPickerDialog(MoreUserInfoActivity.this);
+                    datePickerDialog.btnSubmit.setOnClickListener(listener);
+                    datePickerDialog.btnCancel.setOnClickListener(listener);
+                }
+                datePickerDialog.show();
+            }
+        });
+
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +170,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
 
         addressTextView.setText(preference.getString(Const.USER_ADDRESS, ""));
         commentsTextView.setText(preference.getString(Const.USER_COMMENTS, ""));
+        birthDayTextView.setText(preference.getString(Const.USER_BIRTHDAY, ""));
         commentsRelativeLayout = findViewById(R.id.comments_relative_layout);
         commentsRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +230,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 builder.show();
             }
         });
+
         if (preference.getInt(Const.USER_SEX, 1) == 1) {
             sexTextView.setText(getString(R.string.male));
         } else {

@@ -3,10 +3,12 @@ package com.riking.calendar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ldf.calendar.Const;
+import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.Report;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.Task;
 
 import org.junit.Test;
@@ -39,6 +41,15 @@ public class ExampleUnitTest {
     public void testInterParse() throws Exception {
         String i = "01";
         System.out.println(Integer.parseInt(i));
+    }
+
+    @Test
+    public void testGeneric() throws Exception {
+        ResponseModel<AppUser> dd = new ResponseModel<>();
+        AppUser user = new AppUser();
+        user.id = "ddddd";
+        dd._data = user;
+        System.out.println(new Gson().toJson(dd));
     }
 
     @Test

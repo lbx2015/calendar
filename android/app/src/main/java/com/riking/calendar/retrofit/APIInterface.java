@@ -14,6 +14,7 @@ import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
+import com.riking.calendar.pojo.base.ResponseModel;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -77,6 +78,9 @@ public interface APIInterface {
 
     @POST("/appUserApp/addOrUpdate")
     Call<GetVerificationModel> updateUserInfo(@Body AppUser user);
+
+    @POST("/appUserApp/addOrUpdate")
+    Call<ResponseModel<AppUser>> updateUserBirthDay(@Body AppUser user);
 
     @POST("/reportListApp/getAllReport")
     Call<QueryReportModel> getAllReports(@Body QueryReport report);
