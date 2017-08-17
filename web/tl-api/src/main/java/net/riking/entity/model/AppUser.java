@@ -38,7 +38,7 @@ public class AppUser extends BaseEntity {
 
 	
 	public AppUser(String name, String telephone, String passWord,
-			String phoneSeqNum,String deleteState, String enabled) {
+			String phoneSeqNum,String deleteState, String enabled,String allDayReminderTime) {
 		super();
 		this.name = name;
 		this.telephone = telephone;
@@ -46,6 +46,7 @@ public class AppUser extends BaseEntity {
 		this.phoneSeqNum = phoneSeqNum;
 		this.enabled = enabled;
 		this.deleteState = deleteState;
+		this.allDayReminderTime = allDayReminderTime;
 	}
 
 
@@ -131,6 +132,9 @@ public class AppUser extends BaseEntity {
 	@Column(name = "photo_url",length =128 )
 	private String photoUrl;
 	
+	@Comment("全天提醒时间")
+	@Column(name = "all_day_reminder_time",length =4 )
+	private String allDayReminderTime;
 	//验证码
 	@Transient
 	private String valiCode;
@@ -142,6 +146,16 @@ public class AppUser extends BaseEntity {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public String getAllDayReminderTime() {
+		return allDayReminderTime;
+	}
+
+
+	public void setAllDayReminderTime(String allDayReminderTime) {
+		this.allDayReminderTime = allDayReminderTime;
+	}
+
 
 	public String getName() {
 		return name;
