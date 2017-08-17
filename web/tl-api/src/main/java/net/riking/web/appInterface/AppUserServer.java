@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +25,7 @@ import net.riking.core.annos.AuthPass;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.util.MergeUtil;
 /**
  * app用户信息操作
  * @author you.fei
@@ -57,7 +57,7 @@ public class AppUserServer {
 		}
 		AppUser dbUser = appUserRepo.findById(appUser.getId());
 		try {
-			merge(dbUser,appUser);
+			MergeUtil.merge(dbUser,appUser);
 		} catch (Exception e) {
 			return new AppResp(CodeDef.ERROR);
 		}
@@ -129,16 +129,4 @@ public class AppUserServer {
 		return null;
 	}
 	
-	private <T> T merge(T dbObj,T appObj) throws Exception{
-		Field[] fields = dbObj.getClass().getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			Field field = fields[i];
-			field.setAccessible(true);
-			Object val = field.get(appObj);
-			if(val!=null){
-				field.set(dbObj, val);
-			}
-		}
-		return dbObj;
-	}
 }
