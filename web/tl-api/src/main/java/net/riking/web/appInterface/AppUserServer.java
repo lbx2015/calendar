@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +55,13 @@ public class AppUserServer {
 		if(StringUtils.isEmpty(appUser.getId())||StringUtils.isEmpty(appUser.getDeleteState())){
 			appUser.setDeleteState("1");
 		}
-		AppUser save = appUserRepo.save(appUser);
+		AppUser dbUser = appUserRepo.findById(appUser.getId());
+		try {
+			merge(dbUser,appUser);
+		} catch (Exception e) {
+			return new AppResp(CodeDef.ERROR);
+		}
+		AppUser save = appUserRepo.save(dbUser);
 		return new AppResp(save, CodeDef.SUCCESS);
 	}
 	
@@ -120,5 +127,18 @@ public class AppUserServer {
 			return matcher.group();  
 		}
 		return null;
+	}
+	
+	private <T> T merge(T dbObj,T appObj) throws Exception{
+		Field[] fields = dbObj.getClass().getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			Field field = fields[i];
+			field.setAccessible(true);
+			Object val = field.get(appObj);
+			if(val!=null){
+				field.set(dbObj, val);
+			}
+		}
+		return dbObj;
 	}
 }
