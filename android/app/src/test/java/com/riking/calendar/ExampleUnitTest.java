@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.ldf.calendar.Const;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
-import com.riking.calendar.pojo.QueryReportContainerList;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.Report;
 import com.riking.calendar.realm.model.Task;
@@ -27,6 +26,19 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
+    }
+
+    @Test
+    public void testSubString() throws Exception {
+        String i = "0178";
+        System.out.println(i.substring(0, 2));
+        System.out.println(i.substring(2));
+    }
+
+    @Test
+    public void testInterParse() throws Exception {
+        String i = "01";
+        System.out.println(Integer.parseInt(i));
     }
 
     @Test

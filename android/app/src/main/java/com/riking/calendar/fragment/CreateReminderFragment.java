@@ -168,8 +168,8 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 time.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day));
                 if (isAllDay == 1) {
                     //24 hour format
-                    time.set(Calendar.HOUR_OF_DAY, preference.getInt(Const.WHOLE_DAY_EVENT_HOUR, 8));
-                    time.set(Calendar.MINUTE, preference.getInt(Const.WHOLE_DAY_EVENT_MINUTE, 0));
+                    time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(preference.getString(Const.WHOLE_DAY_EVENT_HOUR, null)));
+                    time.set(Calendar.MINUTE, Integer.parseInt(preference.getString(Const.WHOLE_DAY_EVENT_MINUTE, null)));
                 } else {
                     time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
                     time.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));

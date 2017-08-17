@@ -23,6 +23,7 @@ public class TimeClockPickerDialog extends BottomSheetDialog implements Abstract
         setContentView(R.layout.time_clock_pw_wheel);
 
         wheelTimePicker = (WheelTimePicker) findViewById(R.id.time_picker);
+        wheelTimePicker.setDigitType(2);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnCancel = findViewById(R.id.btnCancel);
 
