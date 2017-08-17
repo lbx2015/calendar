@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,13 +58,19 @@ public class AppUserServer {
 			appUser.setDeleteState("1");
 		}
 		AppUser dbUser = appUserRepo.findById(appUser.getId());
+		if(null==dbUser){
+			return new AppResp(false,CodeDef.ERROR);
+		}
 		try {
 			merge(dbUser,appUser);
 		} catch (Exception e) {
-			return new AppResp(CodeDef.ERROR);
+			return new AppResp(false,CodeDef.ERROR);
 		}
-		AppUser save = appUserRepo.save(dbUser);
-		return new AppResp(save, CodeDef.SUCCESS);
+		AppUser saveUser = appUserRepo.save(dbUser);
+		if(null!=saveUser&&StringUtils.isNotEmpty(saveUser.getId())){
+			return new AppResp(true,CodeDef.SUCCESS);
+		}
+		return new AppResp(false,CodeDef.ERROR);
 	}
 	
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
@@ -87,6 +95,9 @@ public class AppUserServer {
 			id = id.substring(1, 33);
 		}
 		String url = request.getRequestURL().toString();
+		String suffix = mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String fileName = sdf.format(new Date())+suffix;
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {
@@ -96,7 +107,7 @@ public class AppUserServer {
 			if(!dir.exists()){
 				dir.mkdirs();
 			}
-			String photoUrl =  path + mFile.getOriginalFilename();
+			String photoUrl =  path + fileName;
 			fos = new FileOutputStream(photoUrl);
 			int len = 0;
 			byte[] buf = new byte[1024*1024];
@@ -115,7 +126,7 @@ public class AppUserServer {
 				return new AppResp(false,CodeDef.ERROR);
 			}
 		}
-		String photoUrl = getPortPath(url)+ Const.TL_PHOTO_PATH + mFile.getOriginalFilename();
+		String photoUrl = getPortPath(url)+ Const.TL_PHOTO_PATH + fileName;
 		int rs = appUserRepo.updatePhoto(id,photoUrl);
 		if(rs>0){
 			return new AppResp(photoUrl, CodeDef.SUCCESS);
