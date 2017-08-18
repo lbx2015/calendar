@@ -102,7 +102,7 @@ public class LoginServer {
 			}
 			if (appUser2==null) {
 				AppUser appUser3 = new AppUser(appUser.getTelephone(),
-						appUser.getTelephone(), "123456", user.getPhoneSeqNum(),
+						appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
 						"1", "1","0800");
 				appUser2 = appUserRepo.save(appUser3);
 				logger.info("{}注册成功", appUser.getName());
