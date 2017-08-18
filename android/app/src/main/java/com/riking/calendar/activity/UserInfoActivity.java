@@ -4,8 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +28,7 @@ import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
 
@@ -92,7 +93,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         ImagePicker.setMinQuality(600, 600);
 
         String imageUrl = preference.getString(Const.USER_IMAGE_URL, null);
-        if (imageUrl != null && imageUrl.length() > 0) {
+        String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+        if (FileUtil.imageExists(imageName)) {
+            Logger.d("zzw", "no need load url: " + imageName);
+            Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
+            myPhoto.setImageBitmap(bitmap);
+
+        } else if (imageUrl != null && imageUrl.length() > 0) {
+            Logger.d("zzw", " load url: " + imageUrl);
             VocationRecyclerViewAdapter.MyTask myTask = new VocationRecyclerViewAdapter.MyTask();
             myTask.imageView = myPhoto;
             myTask.execute(imageUrl);
@@ -112,12 +120,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
 //        Bitmap bitMap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_1);
 
-        File mFile1 = Environment.getExternalStorageDirectory();
-
-        String fileName = "img1.jpg";
-
-        File mFile2 = new File(mFile1, fileName);
+        final File mFile2 = FileUtil.generateImageFile();
         try {
+            mFile2.createNewFile();
             FileOutputStream outStream;
 
             outStream = new FileOutputStream(mFile2);
@@ -136,7 +141,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-        String sdPath = mFile1.getAbsolutePath().toString() + "/" + fileName;
+        String sdPath = mFile2.getAbsolutePath().toString();
 
         Log.d("zzw", "Your IMAGE ABSOLUTE PATH:-" + sdPath);
 
@@ -154,13 +159,20 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         apiInterface.postImage(body, preference.getString(Const.USER_ID, null)).enqueue(new Callback<UploadImageModel>() {
             @Override
             public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
-                UploadImageModel r = response.body();
+                final UploadImageModel r = response.body();
 
                 if (r != null) {
 //                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
                     SharedPreferences.Editor editor = preference.edit();
                     editor.putString(Const.USER_IMAGE_URL, r._data);
                     editor.commit();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            File to = new File(new File(mFile2.getParent()), r._data.substring(r._data.lastIndexOf('/') + 1));
+                            mFile2.renameTo(to);
+                        }
+                    }).start();
                 } else {
                     Logger.d("zzw", "upload ok response body is null");
                 }
