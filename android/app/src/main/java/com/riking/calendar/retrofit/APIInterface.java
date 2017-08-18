@@ -83,7 +83,7 @@ public interface APIInterface {
     Call<QueryReportModel> getAllReports(@Body QueryReport report);
 
     @POST("appAboutApp/reportHtml")
-    Call<ResponseBody> getReportDetail(@Body QueryReport report);
+    Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
     @Multipart
     @POST("appUserApp/upLoad")
