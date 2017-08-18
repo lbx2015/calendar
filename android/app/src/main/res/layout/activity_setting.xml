@@ -189,6 +189,7 @@
             android:paddingLeft="10dp">
 
             <RelativeLayout
+                android:id="@+id/bind_phone_relative_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"

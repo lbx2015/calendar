@@ -4,9 +4,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
@@ -27,7 +29,6 @@ import java.io.File;
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     //timeView
     String hour, minute;
-    View cacheRelativeLayout;
 
     TextView wholeDayEventTime;
     TextView cacheSizeTextview;
@@ -53,6 +54,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.login_out_button).setOnClickListener(this);
         findViewById(R.id.whole_day_event_time_relative_layout).setOnClickListener(this);
         findViewById(R.id.clear_cache_relatvie_layout).setOnClickListener(this);
+        findViewById(R.id.bind_phone_relative_layout).setOnClickListener(this);
 
         wholeDayEventTime = (TextView) findViewById(R.id.event_time);
         if (preferences.getString(Const.WHOLE_DAY_EVENT_MINUTE, null) != null) {
@@ -119,13 +121,29 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             @Override
                             public void run() {
                                 cacheSizeTextview.setText(cacheSizeTextview.getContext().getString(R.string.no_need_to_clear));
+                                Toast.makeText(cacheSizeTextview.getContext(), cacheSizeTextview.getResources().getString(R.string.cleared), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 }).start();
                 break;
             }
+            case R.id.bind_phone_relative_layout: {
+                String phoneNumber = preferences.getString(Const.PHONE_NUMBER, "");
+                if (!phoneNumber.equals("")) {
+                    // 1. Instantiate an AlertDialog.Builder with its constructor
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+                    // 2. Chain together various setter methods to set the dialog characteristics
+                    builder.setMessage(phoneNumber)
+                            .setTitle(R.string.phone_number);
+
+                    // 3. Get the AlertDialog from create()
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    break;
+                }
+            }
         }
     }
 }
