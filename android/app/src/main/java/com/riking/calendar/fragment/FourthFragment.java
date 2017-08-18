@@ -14,11 +14,16 @@ import android.widget.TextView;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.AboutActivity;
 import com.riking.calendar.activity.LoginActivity;
+import com.riking.calendar.activity.ReportDetailActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.retrofit.APIInterface;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -28,6 +33,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
     SharedPreferences sharedPreferences;
     TextView userName;
     ImageView myPhoto;
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,7 +91,15 @@ public class FourthFragment extends Fragment implements OnClickListener {
             }
 
             case R.id.about_relative_layout: {
-                startActivity(new Intent(getContext(), AboutActivity.class));
+                apiInterface.getAboutHtml(new QueryReport()).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        Intent i = new Intent(getContext(), ReportDetailActivity.class);
+                        i.putExtra(Const.REPORT_URL, response._data);
+                        startActivity(i);
+                    }
+                });
+
             }
         }
     }

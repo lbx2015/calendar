@@ -85,6 +85,9 @@ public interface APIInterface {
     @POST("appAboutApp/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
+    @POST("appAboutApp/aboutHtml")
+    Call<ResponseModel<String>> getAboutHtml(@Body QueryReport report);
+
     @Multipart
     @POST("appUserApp/upLoad")
     Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);
