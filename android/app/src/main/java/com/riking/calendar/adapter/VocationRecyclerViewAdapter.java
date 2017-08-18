@@ -1,5 +1,7 @@
 package com.riking.calendar.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -10,10 +12,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
+import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.CtryHdayCrcy;
+import com.riking.calendar.util.FileUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -58,6 +65,10 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
 
     public static class MyTask extends AsyncTask<String, Void, Bitmap> {
         public ImageView imageView;
+        public String imageName;
+        public boolean imageFileExists;
+        public SharedPreferences preferences = MyApplication.APP.getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+        public File file;
 
         @Override
         protected void onPreExecute() {
@@ -68,6 +79,16 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
 
             Bitmap bitmap = null;
             try {
+                imageName = voids[0].substring(voids[0].lastIndexOf('/') + 1);
+                String imageUrl = preferences.getString(Const.USER_IMAGE_URL, null);
+                if (FileUtil.imageExists(imageName)) {
+                    Logger.d("zzw", "no need load url: " + imageName);
+                    imageFileExists = true;
+                    return BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
+                } else {
+                    imageFileExists = false;
+                }
+
                 URL url = new URL(voids[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = connection.getInputStream();
@@ -79,8 +100,30 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
         }
 
         @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            imageView.setImageBitmap(bitmap);
+        protected void onPostExecute(final Bitmap bitmap) {
+            if (imageView != null && bitmap != null) {
+                imageView.setImageBitmap(bitmap);
+                Logger.d("zzw", "imageName: " + imageName);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Logger.d("zzw", "file exists: " + imageFileExists);
+                        if (!imageFileExists) {
+                            File imageFile = new File(FileUtil.getImageFilePath(imageName));
+                            try {
+                                imageFile.createNewFile();
+                                FileOutputStream outputStream;
+                                outputStream = new FileOutputStream(imageFile);
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                                outputStream.flush();
+                                outputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }).start();
+            }
         }
     }
 

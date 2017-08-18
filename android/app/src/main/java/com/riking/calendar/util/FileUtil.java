@@ -74,7 +74,7 @@ public class FileUtil {
     /**
      * 递归
      * */
-    public long getFileSize(File f) {
+    public static long getFileSize(File f) {
         long size = 0;
         File flist[] = f.listFiles();
         for (int i = 0; i < flist.length; i++) {
@@ -90,7 +90,7 @@ public class FileUtil {
     /**
      * 转换文件大小
      * */
-    public String FormentFileSize(long fileS) {
+    public static String formatFileSize(long fileS) {
         DecimalFormat df = new DecimalFormat("#.00");
         String fileSizeString = "";
         if (fileS < 1024) {
