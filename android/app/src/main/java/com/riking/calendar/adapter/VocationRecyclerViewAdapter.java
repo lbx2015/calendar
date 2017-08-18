@@ -69,7 +69,6 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
             Bitmap bitmap = null;
             try {
                 URL url = new URL(voids[0]);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = connection.getInputStream();
                 bitmap = BitmapFactory.decodeStream(inputStream);
