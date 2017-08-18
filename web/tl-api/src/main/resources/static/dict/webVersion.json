@@ -20,7 +20,7 @@
 		{
 			"prop": "renewalTime",
 			"group":"base",
-			"alias": "跟新时间",
+			"alias": "更新时间",
 			"type": "date"
 		},
 		{
