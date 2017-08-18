@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +27,7 @@ import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
 
@@ -112,12 +112,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
 //        Bitmap bitMap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_1);
 
-        File mFile1 = Environment.getExternalStorageDirectory();
-
-        String fileName = "img1.jpg";
-
-        File mFile2 = new File(mFile1, fileName);
+        File mFile2 = FileUtil.generateImageFile();
         try {
+            mFile2.createNewFile();
             FileOutputStream outStream;
 
             outStream = new FileOutputStream(mFile2);
@@ -136,7 +133,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-        String sdPath = mFile1.getAbsolutePath().toString() + "/" + fileName;
+        String sdPath = mFile2.getAbsolutePath().toString();
 
         Log.d("zzw", "Your IMAGE ABSOLUTE PATH:-" + sdPath);
 
