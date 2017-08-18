@@ -7,7 +7,7 @@
 //
 
 #import "RKBaseViewController.h"
-
-@interface PersonViewController : RKBaseViewController
+#import "RKBaseTabViewController.h"
+@interface PersonViewController : RKBaseTabViewController
 
 @end

@@ -2,7 +2,9 @@ package com.riking.calendar.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -10,16 +12,15 @@ import android.widget.Toast;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.GetVerificationModel;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.io.File;
 
 /**
  * Created by zw.zhang on 2017/8/5.
@@ -30,6 +31,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     String hour, minute;
 
     TextView wholeDayEventTime;
+    TextView cacheSizeTextview;
     SharedPreferences preferences;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     private TimeClockPickerDialog pickerDialog;
@@ -39,9 +41,21 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         preferences = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_setting);
+        cacheSizeTextview = (TextView) findViewById(R.id.cache_size);
+        //set the image cache file size
+        long imageSize = FileUtil.getFileSize(new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH));
+        if (imageSize > 0) {
+            cacheSizeTextview.setText(FileUtil.formatFileSize(imageSize));
+        } else {
+            cacheSizeTextview.setText(getString(R.string.no_need_to_clear));
+        }
+
         findViewById(R.id.back).setOnClickListener(this);
         findViewById(R.id.login_out_button).setOnClickListener(this);
         findViewById(R.id.whole_day_event_time_relative_layout).setOnClickListener(this);
+        findViewById(R.id.clear_cache_relatvie_layout).setOnClickListener(this);
+        findViewById(R.id.bind_phone_relative_layout).setOnClickListener(this);
+
         wholeDayEventTime = (TextView) findViewById(R.id.event_time);
         if (preferences.getString(Const.WHOLE_DAY_EVENT_MINUTE, null) != null) {
             wholeDayEventTime.setText(preferences.getString(Const.WHOLE_DAY_EVENT_HOUR, "") + ":" + preferences.getString(Const.WHOLE_DAY_EVENT_MINUTE, ""));
@@ -73,28 +87,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btnSubmit: {
                 hour = pickerDialog.wheelTimePicker.hour;
                 minute = pickerDialog.wheelTimePicker.minute;
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(Const.WHOLE_DAY_EVENT_HOUR, hour);
-                editor.putString(Const.WHOLE_DAY_EVENT_MINUTE, minute);
-                wholeDayEventTime.setText(hour + ":" + minute);
-                editor.commit();
+
                 pickerDialog.dismiss();
                 AppUser user = new AppUser();
                 user.id = preferences.getString(Const.USER_ID, null);
                 user.allDayReminderTime = hour + minute;
-                apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
+                apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
-                    public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                        GetVerificationModel model = response.body();
-                        Logger.d("zzw", "update whole day reminder time ok " + call);
-                        if (model.code != 200) {
-                            Toast.makeText(getApplicationContext(), "update failed", Toast.LENGTH_SHORT);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<GetVerificationModel> call, Throwable t) {
-                        Logger.d("zzw", "update whole day reminder time fail " + call);
+                    public void callBack(ResponseModel<String> response) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(Const.WHOLE_DAY_EVENT_HOUR, hour);
+                        editor.putString(Const.WHOLE_DAY_EVENT_MINUTE, minute);
+                        wholeDayEventTime.setText(hour + ":" + minute);
+                        editor.commit();
                     }
                 });
                 break;
@@ -102,6 +107,42 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btnCancel: {
                 pickerDialog.dismiss();
                 break;
+            }
+
+            case R.id.clear_cache_relatvie_layout: {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        File imageDirectory = new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH);
+                        for (File f : imageDirectory.listFiles()) {
+                            f.delete();
+                        }
+                        SettingActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                cacheSizeTextview.setText(cacheSizeTextview.getContext().getString(R.string.no_need_to_clear));
+                                Toast.makeText(cacheSizeTextview.getContext(), cacheSizeTextview.getResources().getString(R.string.cleared), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).start();
+                break;
+            }
+            case R.id.bind_phone_relative_layout: {
+                String phoneNumber = preferences.getString(Const.PHONE_NUMBER, "");
+                if (!phoneNumber.equals("")) {
+                    // 1. Instantiate an AlertDialog.Builder with its constructor
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                    // 2. Chain together various setter methods to set the dialog characteristics
+                    builder.setMessage(phoneNumber)
+                            .setTitle(R.string.phone_number);
+
+                    // 3. Get the AlertDialog from create()
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    break;
+                }
             }
         }
     }

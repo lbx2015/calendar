@@ -11,14 +11,29 @@
 #define yuancheng_GlobalDefine_h
 
 
+static NSString *const kGoTopNotificationName = @"goTop";//进入置顶命令
+static NSString *const kLeaveTopNotificationName = @"leaveTop";//离开置顶命令
+static NSString *const kUserSwitchNotificationName = @"userSwitch";//切换用户
+
+
+static NSString *const UserKey = @"User";//user
+static NSString *const allDayRemindTimeKey = @"allDayRemindTime";//全天事件提醒时间
+
+
+static CGFloat const kTopBarHeight = 83.3;
+static CGFloat const kBottomBarHeight = 49;
+static CGFloat const kTabTitleViewHeight = 45.;
+
 
 //appdelegate
-#define YMDAPPDELEGATE              (AppDelegate *)[[UIApplication sharedApplication] delegate]
-#define YMDUSERDEFAULT              [NSUserDefaults standardUserDefaults]
+#define kAPPDELEGATE                 (AppDelegate *)[[UIApplication sharedApplication] delegate]
+#define kNSUserDefaults              [NSUserDefaults standardUserDefaults]
 
+#define UserID                       [kNSUserDefaults objectForKey:UserKey][@"id"]
+#define isUser                       [kNSUserDefaults objectForKey:UserKey]
+#define isAllDayRemindTime           [kNSUserDefaults objectForKey:allDayRemindTimeKey]
 
-#define UserId                      [YMDUSERDEFAULT objectForKey:@"userMessage"][@"UserId"]
-
+#define postNotificationName(name)             [[NSNotificationCenter defaultCenter] postNotificationName:(name) object:nil];
 
 //IOS版本
 #define MLIOS_VERSION               [[[UIDevice currentDevice] systemVersion] floatValue]
@@ -131,7 +146,7 @@ __LINE__, __func__);                                                        \
 fprintf(stderr, "\n");\
 } while (0)
 #else
-#define YMDLog(...)
+#define RKLog(...)
 #endif
 
 #ifdef DEBUG

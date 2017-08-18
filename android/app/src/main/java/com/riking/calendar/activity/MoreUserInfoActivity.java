@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,6 @@ import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
@@ -26,10 +26,6 @@ import com.riking.calendar.widget.dialog.BirthdayPickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/8/5.
@@ -45,6 +41,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     View commentsRelativeLayout;
     View addressRelativeLayout;
     View birthDayRelative;
+    View sexRelativeLayout;
     BirthdayPickerDialog datePickerDialog;
     //time
     Calendar calendar;
@@ -60,6 +57,8 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         commentsTextView = (TextView) findViewById(R.id.comments);
         addressRelativeLayout = findViewById(R.id.address_relative_layout);
         birthDayRelative = findViewById(R.id.birthday_relative_layout);
+        sexRelativeLayout = findViewById(R.id.sex_relative_layout);
+
 
         final View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -73,9 +72,9 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         AppUser user = new AppUser();
                         user.id = preference.getString(Const.USER_ID, null);
                         user.birthday = new SimpleDateFormat(Const.yyyyMMdd).format(calendar.getTime());
-                        apiInterface.updateUserBirthDay(user).enqueue(new ZCallBack<ResponseModel<AppUser>>() {
+                        apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                             @Override
-                            public void callBack(ResponseModel<AppUser> response) {
+                            public void callBack(ResponseModel<String> response) {
                                 Logger.d("zzw", "request success");
                                 SharedPreferences.Editor editor = preference.edit();
                                 String birthDay = new SimpleDateFormat(Const.birthDayFormat).format(calendar.getTime());
@@ -107,6 +106,73 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+        sexRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
+                builder.setTitle(getString(R.string.sex));
+                // I'm using fragment here so I'm using getView() to provide ViewGroup
+                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+                View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_sex_dialog, null, false);
+                // set up radio buttons
+                final AppCompatRadioButton maleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.male_button);
+                final AppCompatRadioButton femaleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.female_button);
+
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+                final int sex = preference.getInt(Const.USER_SEX, 0);
+                if (sex == 1) {
+                    if (!maleButton.isChecked()) {
+                        maleButton.toggle();
+                    }
+                }
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        int newSex = -1;
+                        if (maleButton.isChecked()) {
+                            //male
+                            newSex = 1;
+                        } else {
+                            //female
+                            newSex = 0;
+                        }
+                        if (sex != newSex) {
+                            final AppUser user = new AppUser();
+                            user.id = preference.getString(Const.USER_ID, null);
+                            user.sex = newSex;
+
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                                @Override
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putInt(Const.USER_SEX, user.sex);
+                                    editor.commit();
+
+                                    if (user.sex == 1) {
+                                        sexTextView.setText(getString(R.string.male));
+                                    } else {
+                                        sexTextView.setText(getString(R.string.female));
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+            }
+        });
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,26 +198,20 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         if (editable == null) {
                             return;
                         }
-                        String departName = input.getText().toString();
+                        final String departName = input.getText().toString();
                         if (departName.length() > 0) {
-                            addressTextView.setText(departName);
                             AppUser user = new AppUser();
                             user.address = departName;
                             user.id = preference.getString(Const.USER_ID, null);
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_ADDRESS, departName);
-                            //save the changes.
-                            editor.commit();
 
-                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
-                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                                    GetVerificationModel user = response.body();
-                                    Logger.d("zzw", "update user : " + user);
-                                }
-
-                                @Override
-                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(Const.USER_ADDRESS, departName);
+                                    //save the changes.
+                                    editor.commit();
+                                    addressTextView.setText(departName);
                                 }
                             });
                         }
@@ -195,26 +255,22 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         if (editable == null) {
                             return;
                         }
-                        String newComments = input.getText().toString();
+                        final String newComments = input.getText().toString();
                         if (newComments.length() > 0) {
-                            commentsTextView.setText(newComments);
+
                             AppUser user = new AppUser();
                             user.remark = newComments;
                             user.id = preference.getString(Const.USER_ID, null);
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_COMMENTS, newComments);
-                            //save the changes.
-                            editor.commit();
 
-                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
-                                @Override
-                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                                    GetVerificationModel user = response.body();
-                                    Logger.d("zzw", "update user : " + user);
-                                }
 
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
-                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(Const.USER_COMMENTS, newComments);
+                                    //save the changes.
+                                    editor.commit();
+                                    commentsTextView.setText(newComments);
                                 }
                             });
                         }

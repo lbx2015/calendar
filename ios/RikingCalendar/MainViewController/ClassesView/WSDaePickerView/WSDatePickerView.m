@@ -22,6 +22,8 @@
 
 typedef void(^doneBlock)(NSDate *);
 
+typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
+
 @interface WSDatePickerView ()<UIPickerViewDelegate,UIPickerViewDataSource,UIGestureRecognizerDelegate> {
     //日期存储数组
     NSMutableArray *_yearArray;
@@ -48,20 +50,33 @@ typedef void(^doneBlock)(NSDate *);
     NSString *_chooseHour;
     NSString *_chooseMinute;
     
+    BOOL _isFirstLoad;
+    
+    int a;
+    
+   
+    
 }
 @property (weak, nonatomic) IBOutlet UIView *buttomView;
 @property (weak, nonatomic) IBOutlet UIView *showYearView;
 @property (weak, nonatomic) IBOutlet UIButton *doneBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
-- (IBAction)doneAction:(UIButton *)btn;
-
-- (IBAction)cancelAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *selectFullMonth;
+@property (weak, nonatomic) IBOutlet UIButton *selectFullMonthBgView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *yearViewBottom;
 
 @property (nonatomic,strong)UIPickerView *datePicker;
 
 @property (nonatomic,strong)doneBlock doneBlock;
+@property (nonatomic,strong)chooseTime chooseTime;
 @property (nonatomic,assign)WSDateStyle datePickerStyle;
+
+- (IBAction)doneAction:(UIButton *)btn;
+
+- (IBAction)cancelAction:(id)sender;
+
+- (IBAction)selectFullMonth:(id)sender;
 
 
 @end
@@ -95,13 +110,22 @@ typedef void(^doneBlock)(NSDate *);
             _dateFormatter = @"yyyy-MM-dd";
             break;
         case DateStyleShowMonthDay:
-            _dateFormatter = @"yyyy-MM-dd";
+            _dateFormatter = @"MM-dd";
             break;
         case DateStyleShowHourMinute:
             _dateFormatter = @"HH:mm";
             break;
+        case DateStyleShowMonthOrShowYearMonthDay:
+            
+            if (self.selectFullMonth.selected) {
+                _dateFormatter = @"yyyy-MM";
+            }else{
+                _dateFormatter = @"yyyy-MM-dd";
+            }
+            
+            break;
         default:
-            _dateFormatter = @"yyyy-MM-dd HH:mm";
+            _dateFormatter = @"yyyy-MM";
             break;
     }
     
@@ -110,11 +134,62 @@ typedef void(^doneBlock)(NSDate *);
     
     if (completeBlock) {
         self.doneBlock = ^(NSDate *startDate) {
+            
+            
             completeBlock(startDate);
         };
     }
     
 }
+
+- (void)setDateStyle:(WSDateStyle)datePickerStyle isMonth:(BOOL)isMonth completeBlock:(void(^)(NSDate *date,BOOL isMonth))completeBlock{
+    
+    self.datePickerStyle = datePickerStyle;
+    self.selectFullMonth.selected = isMonth;
+    switch (datePickerStyle) {
+        case DateStyleShowYearMonthDayHourMinute:
+            _dateFormatter = @"yyyy-MM-dd HH:mm";
+            break;
+        case DateStyleShowMonthDayHourMinute:
+            _dateFormatter = @"yyyy-MM-dd HH:mm";
+            break;
+        case DateStyleShowYearMonthDay:
+            _dateFormatter = @"yyyy-MM-dd";
+            break;
+        case DateStyleShowMonthDay:
+            _dateFormatter = @"MM-dd";
+            break;
+        case DateStyleShowHourMinute:
+            _dateFormatter = @"HH:mm";
+            break;
+        case DateStyleShowMonthOrShowYearMonthDay:
+            
+            if (self.selectFullMonth.selected) {
+                _dateFormatter = @"yyyy-MM";
+            }else{
+                _dateFormatter = @"yyyy-MM-dd";
+            }
+            
+            break;
+        default:
+            _dateFormatter = @"yyyy-MM";
+            break;
+    }
+    
+    [self setupUI];
+    [self defaultConfig];
+    
+    if (completeBlock) {
+        self.chooseTime = ^(NSDate *date, BOOL isMonth){
+          
+            completeBlock(date,isMonth);
+            
+        };
+    }
+    
+}
+
+
 
 -(void)setupUI {
 
@@ -132,6 +207,20 @@ typedef void(^doneBlock)(NSDate *);
     [[UIApplication sharedApplication].keyWindow bringSubviewToFront:self];
     
     [self.showYearView addSubview:self.datePicker];
+    
+    
+    if (self.datePickerStyle == DateStyleShowMonthOrShowYearMonthDay) {
+        [self.selectFullMonth setImage:[UIImage imageNamed:@"selectTime_norm_icon"] forState:UIControlStateNormal];
+        [self.selectFullMonth setImage:[UIImage imageNamed:@"selectTime_selected_icon"] forState:UIControlStateSelected];
+        [self.selectFullMonth setTitle:@"整月" forState:UIControlStateNormal];
+        [self.selectFullMonth setTitleColor:dt_app_main_color forState:UIControlStateNormal];
+        [self.selectFullMonth setTitleColor:dt_app_main_color forState:UIControlStateSelected];
+        self.selectFullMonth.titleLabel.font = threeClassTextFont;
+        
+    }else{
+        self.selectFullMonthBgView.hidden = YES;
+        self.selectFullMonth.hidden = YES;
+    }
     
 }
 
@@ -222,6 +311,12 @@ typedef void(^doneBlock)(NSDate *);
         case DateStyleShowHourMinute:
             [self addLabelWithName:@[@"时",@"分"]];
             return 2;
+        case DateStyleShowMonthOrShowYearMonthDay:
+            if (self.selectFullMonth.selected) {
+                return 2;
+            }else{
+                return 3;
+            }
         default:
             return 0;
     }
@@ -253,6 +348,9 @@ typedef void(^doneBlock)(NSDate *);
             break;
         case DateStyleShowHourMinute:
             return [numberArr[component] integerValue];
+            break;
+        case DateStyleShowMonthOrShowYearMonthDay:
+            return [numberArr[component] integerValue]*1000;
             break;
         default:
             return 0;
@@ -289,6 +387,13 @@ typedef void(^doneBlock)(NSDate *);
         case DateStyleShowHourMinute:
             return @[@(hourNum),@(minuteNUm)];
             break;
+        case DateStyleShowMonthOrShowYearMonthDay:
+            if (self.selectFullMonth.selected) {
+                return @[@(yearNum),@(monthNum)];
+            }else{
+                return @[@(yearNum),@(monthNum),@(dayNum)];
+            }
+            break;
         default:
             return @[];
             break;
@@ -319,20 +424,22 @@ typedef void(^doneBlock)(NSDate *);
     switch (self.datePickerStyle) {
         case DateStyleShowYearMonthDayHourMinute:
             if (component==0) {
+               
                 title = _yearArray[row%_yearArray.count];
                 _chooseYear = title;
-//                NSLog(@"%@",_chooseYear);
+                NSLog(@"%@",_chooseYear);
                 
             }
             if (component==1) {
-                title = _monthArray[row%_monthArray.count];
-                _chooseMonth = title;
-//                 NSLog(@"%@",_chooseMonth);
+                
+                title = _chooseMonth =  _monthArray[row%_monthArray.count];
+                 NSLog(@"%@",_chooseMonth);
             }
             if (component==2) {
+                
                 _chooseDay = _dayArray[row%_dayArray.count];
                 NSString *chooseDate = [NSString stringWithFormat:@"%@%@%@",_chooseYear,_chooseMonth,_chooseDay];
-//                NSLog(@"%@",chooseDate);
+                NSLog(@"%@",chooseDate);
                 NSString *todayDate = [self transformDate:[NSDate date] formatterStr:@"yyyy年MM月dd日"];
                 if ([chooseDate isEqualToString:todayDate]) {
                     title = @"今天";
@@ -343,8 +450,6 @@ typedef void(^doneBlock)(NSDate *);
                         title = [NSString stringWithFormat:@"%@",_dayArray[row%_dayArray.count]];
                     }
                 }
-                
-                
                 
             }
             if (component==3) {
@@ -403,6 +508,33 @@ typedef void(^doneBlock)(NSDate *);
                 title = _minuteArray[row%_minuteArray.count];
             }
             break;
+        case DateStyleShowMonthOrShowYearMonthDay:
+            
+            if (self.selectFullMonth.selected) {
+                
+                if (component==0) {
+                    title = _yearArray[row%_yearArray.count];
+                }
+                if (component==1) {
+                    title = _monthArray[row%_monthArray.count];
+                }
+                
+            }else{
+                if (component==0) {
+                    title = _yearArray[row%_yearArray.count];
+                }
+                if (component==1) {
+                    title = _monthArray[row%_monthArray.count];
+                }
+                if (component==2) {
+                    if (_isShouWeek) {
+                        title = [NSString stringWithFormat:@"%@%@",_dayArray[row%_dayArray.count],_weekArray[row%_weekArray.count]];
+                    }else{
+                        title = _dayArray[row%_dayArray.count];
+                    }
+                }
+            }
+            break;
         default:
             title = @"";
             break;
@@ -416,6 +548,9 @@ typedef void(^doneBlock)(NSDate *);
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    
+    _isFirstLoad = NO;
+    
     switch (self.datePickerStyle) {
         case DateStyleShowYearMonthDayHourMinute:{
             
@@ -439,13 +574,12 @@ typedef void(^doneBlock)(NSDate *);
                 if (_dayArray.count-1<dayIndex) {
                     dayIndex = (_dayArray.count-1);
                 }
-                [self.datePicker selectRow:dayIndex inComponent:2 animated:YES];
-        
+                [self.datePicker selectRow:dayIndex inComponent:2 animated:NO];
             }
+            
+            [pickerView reloadComponent:2];
         }
             break;
-            
-            
         case DateStyleShowYearMonthDay:{
             
             if (component == 0) {
@@ -463,6 +597,9 @@ typedef void(^doneBlock)(NSDate *);
                     dayIndex = _dayArray.count-1;
                 }
             }
+            
+            [pickerView reloadComponent:2];
+            
         }
             break;
         case DateStyleShowMonthDayHourMinute:{
@@ -485,6 +622,8 @@ typedef void(^doneBlock)(NSDate *);
                 }
             }
             [self.datePicker selectRow:dayIndex inComponent:1 animated:YES];
+            
+            [pickerView reloadComponent:1];
         }
             break;
         case DateStyleShowMonthDay:{
@@ -499,6 +638,7 @@ typedef void(^doneBlock)(NSDate *);
                     dayIndex = _dayArray.count-1;
                 }
                 [self.datePicker selectRow:dayIndex inComponent:1 animated:YES];
+                [pickerView reloadComponent:1];
             }
         }
             break;
@@ -513,11 +653,43 @@ typedef void(^doneBlock)(NSDate *);
         }
             break;
             
+        case DateStyleShowMonthOrShowYearMonthDay:
+            
+            if (self.selectFullMonth.selected) {
+                
+                if (component == 0) {
+                    yearIndex = row%_yearArray.count;
+                }
+                if (component == 1) {
+                    monthIndex = row%_monthArray.count;
+                }
+                
+            }else{
+                if (component == 0) {
+                    yearIndex = row%_yearArray.count;
+                }
+                if (component == 1) {
+                    monthIndex = row%_monthArray.count;
+                }
+                if (component == 2) {
+                    dayIndex = row%_dayArray.count;
+                }
+                if (component == 0 || component == 1){
+                    [self DaysfromYear:[_yearArray[yearIndex] integerValue] andMonth:[_monthArray[monthIndex] integerValue]];
+                    if (_dayArray.count-1<dayIndex) {
+                        dayIndex = _dayArray.count-1;
+                    }
+                }
+                
+                [pickerView reloadComponent:2];
+            }
+            
+            break;
+            
         default:
             break;
     }
     
-    [pickerView reloadAllComponents];
     
     NSString *dateStr = [NSString stringWithFormat:@"%@%@%@ %@%@",_yearArray[yearIndex],_monthArray[monthIndex],_dayArray[dayIndex],_hourArray[hourIndex],_minuteArray[minuteIndex]];
     
@@ -586,6 +758,9 @@ typedef void(^doneBlock)(NSDate *);
     } completion:^(BOOL finished) {
         [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [self removeFromSuperview];
+        if (self.disMiss) {
+            self.disMiss();
+        }
     }];
 }
 
@@ -596,7 +771,14 @@ typedef void(^doneBlock)(NSDate *);
     
     _startDate = [self.scrollToDate dateWithFormatter:_dateFormatter];
     
-    self.doneBlock(_startDate);
+    if (self.doneBlock) {
+        self.doneBlock(_startDate);
+    }
+
+    if (self.chooseTime) {
+      self.chooseTime(_startDate, self.selectFullMonth.selected);
+    }
+    
     [self dismiss];
 }
 
@@ -604,10 +786,30 @@ typedef void(^doneBlock)(NSDate *);
      [self dismiss];
 }
 
+- (IBAction)selectFullMonth:(id)sender {
+    
+    self.selectFullMonth.selected = !self.selectFullMonth.selected;
+    
+    if (self.selectFullMonth.selected) {
+        _dateFormatter = @"yyyy-MM";
+    }else{
+        _dateFormatter = @"yyyy-MM-dd";
+    }
+    [self.datePicker reloadAllComponents];
+    [self getNowDate:self.scrollToDate animated:NO];
+}
+
 #pragma mark - tools
 //通过年月求每月天数
 - (NSInteger)DaysfromYear:(NSInteger)year andMonth:(NSInteger)month
 {
+    
+//    RKLog(@"%ld",yearIndex);
+//    RKLog(@"%ld",year);
+//    
+//    RKLog(@"%ld",monthIndex);
+//    RKLog(@"%ld",month);
+    
     NSInteger num_year  = year;
     NSInteger num_month = month;
     
@@ -668,12 +870,20 @@ typedef void(^doneBlock)(NSDate *);
 //设置每月的天数数组
 - (void)setdayArray:(NSInteger)num year:(NSInteger)year month:(NSInteger)month
 {
+    
+    if (_isFirstLoad) {
+        return ;
+    }
+    
+    _isFirstLoad = YES;
+    
     [_dayArray removeAllObjects];
     [_weekArray removeAllObjects];
+    
     for (int i=1; i<=num; i++) {
         [_dayArray addObject:[NSString stringWithFormat:@"%02d日",i]];
         if (_isShouWeek) {
-            [_weekArray addObject:[self getWeekWithYearMonth:[NSString stringWithFormat:@"%ld-%ld-%d",year,month,i]]];
+            [_weekArray addObject:[self getWeekWithYearMonth:[NSString stringWithFormat:@"%ld-%ld-%d",(long)year,(long)month,i]]];
         }
     }
 }
@@ -685,13 +895,18 @@ typedef void(^doneBlock)(NSDate *);
         date = [NSDate date];
     }
     
-    [self DaysfromYear:date.year andMonth:date.month];
+    _chooseYear = [NSString stringWithFormat:@"%ld年",date.year];
+    _chooseMonth = [NSString stringWithFormat:@"%02ld月",date.month];
+    _chooseDay = [NSString stringWithFormat:@"%02ld日",date.day];
+    
+//    [self DaysfromYear:date.year andMonth:date.month];
     
     yearIndex = date.year-MINYEAR;
     monthIndex = date.month-1;
     dayIndex = date.day-1;
     hourIndex = date.hour;
     minuteIndex = date.minute;
+    
     
     //循环滚动时需要用到
     preRow = (self.scrollToDate.year-MINYEAR)*12+self.scrollToDate.month-1;
@@ -708,15 +923,21 @@ typedef void(^doneBlock)(NSDate *);
         indexArray = @[@(monthIndex),@(dayIndex)];
     if (self.datePickerStyle == DateStyleShowHourMinute)
         indexArray = @[@(hourIndex),@(minuteIndex)];
-    
-    [self.datePicker reloadAllComponents];
+    if (self.datePickerStyle == DateStyleShowMonthOrShowYearMonthDay) {
+        if (self.selectFullMonth.selected) {
+            indexArray = @[@(yearIndex),@(monthIndex)];
+        }else{
+            indexArray = @[@(yearIndex),@(monthIndex),@(dayIndex)];
+        }
+    }
+//    [self.datePicker reloadComponent:2];
     
     for (int i=0; i<indexArray.count; i++) {
         if ((self.datePickerStyle == DateStyleShowMonthDayHourMinute || self.datePickerStyle == DateStyleShowMonthDay)&& i==0) {
             NSInteger mIndex = [indexArray[i] integerValue]+(12*(self.scrollToDate.year - MINYEAR));
-            [self.datePicker selectRow:mIndex inComponent:i animated:animated];
+            [self.datePicker selectRow:mIndex inComponent:i animated:NO];
         } else {
-            [self.datePicker selectRow:[indexArray[i] integerValue] inComponent:i animated:animated];
+            [self.datePicker selectRow:[indexArray[i] integerValue] inComponent:i animated:NO];
         }
         
     }
@@ -726,7 +947,9 @@ typedef void(^doneBlock)(NSDate *);
 #pragma mark - getter / setter
 -(UIPickerView *)datePicker {
     if (!_datePicker) {
+        
         [self.showYearView layoutIfNeeded];
+        self.showYearView.backgroundColor = [UIColor whiteColor];
         _datePicker = [[UIPickerView alloc] initWithFrame:self.showYearView.bounds];
         _datePicker.showsSelectionIndicator = YES;
         _datePicker.delegate = self;
@@ -734,6 +957,9 @@ typedef void(^doneBlock)(NSDate *);
     }
     return _datePicker;
 }
+
+
+
 
 -(void)setMinLimitDate:(NSDate *)minLimitDate {
     _minLimitDate = minLimitDate;

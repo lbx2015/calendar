@@ -10,6 +10,16 @@
 #import "YPTabBarController.h"
 #import "MJRefresh.h"
 #import "RKBaseScrollview.h"
+
+
+typedef NS_ENUM(NSUInteger, RGRequestStyle) {
+    remindSaveUpdate  = 0,
+    remindDelete,
+    gtasksSaveUpdate,
+    gtasksDelete
+};
+
+
 @interface RKBaseViewController : YPTabBarController
 
 @property (nonatomic,strong) MJRefreshNormalHeader *kkRefreshHeader;
@@ -50,6 +60,12 @@
  网络发生变化是否需要刷新数据
  */
 -(void)isShouldRefreshData;
+
+
+/**
+ 用户切换刷新本地数据
+ */
+- (void)userSwitch;
 
 /**
  创建导航右边按钮
@@ -92,6 +108,10 @@
 
 
 
+/**
+ 快速创建主要文字,font:17,color:323232
+ */
+- (UILabel *)createMainLabelWithText:(NSString *)text;
 
 
 /**
@@ -127,6 +147,19 @@
  网络请求数据(数据已经处理过,返回Code=200的值),自动添加网络请求等待
  */
 -(void)requestWithHTTPMethod:(KKHTTPMethod)method urlString:(NSString *)urlString parm:(NSDictionary *)parm isHaveAlert:(BOOL)alert waitTitle:(NSString *)waitTitle success:(void(^)(id dictData))success failure:(void (^)(NSString *message))failue;
+
+
+/**
+ 针对提醒和待办的请求
+
+ @param requestStyle requestStyle description
+ @param model model description
+ @param alert alert description
+ @param waitTitle waitTitle description
+ @param success success description
+ @param failue failue description
+ */
+- (void)doSaveRemindAndGtasksWithRequestStyle:(RGRequestStyle)requestStyle model:(RKBaseModel *)model isHaveAlert:(BOOL)alert waitTitle:(NSString *)waitTitle success:(void(^)(id dictData))success failure:(void (^)(NSString *message))failue;
 
 /**
  请求数据

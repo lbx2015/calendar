@@ -14,8 +14,8 @@ typedef enum{
     DateStyleShowMonthDayHourMinute,
     DateStyleShowYearMonthDay,
     DateStyleShowMonthDay,
-    DateStyleShowHourMinute
-    
+    DateStyleShowHourMinute,
+    DateStyleShowMonthOrShowYearMonthDay
 }WSDateStyle;
 
 
@@ -28,9 +28,15 @@ typedef enum{
 @property (nonatomic, retain) NSDate *minLimitDate;//限制最小时间（没有设置默认0）
 @property (weak, nonatomic) IBOutlet UIButton *Cancel;
 @property (weak, nonatomic) IBOutlet UIButton *SureBtn;
+@property (nonatomic,strong) void(^disMiss)();
+
 
 - (instancetype)init;
+
 - (void)setDateStyle:(WSDateStyle)datePickerStyle CompleteBlock:(void(^)(NSDate *))completeBlock;
+
+- (void)setDateStyle:(WSDateStyle)datePickerStyle isMonth:(BOOL)isMonth completeBlock:(void(^)(NSDate *date,BOOL isMonth))completeBlock;
+
 - (void)show;
 
 

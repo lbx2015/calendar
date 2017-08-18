@@ -7,7 +7,7 @@
 //
 
 #import "RKBaseViewController.h"
-
-@interface HolidaysViewController : RKBaseViewController
+#import "RKBaseTabViewController.h"
+@interface HolidaysViewController : RKBaseTabViewController
 
 @end

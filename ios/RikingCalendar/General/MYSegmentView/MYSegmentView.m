@@ -12,7 +12,7 @@
 
 @implementation MYSegmentView
 
-- (instancetype)initWithFrame:(CGRect)frame controllers:(NSArray *)controllers titleArray:(NSArray *)titleArray ParentController:(UIViewController *)parentC  lineWidth:(float)lineW lineHeight:(float)lineH
+- (instancetype)initWithFrame:(CGRect)frame controllers:(NSArray *)controllers titleArray:(NSArray *)titleArray ParentController:(UIViewController *)parentC  lineWidth:(float)lineW lineHeight:(float)lineH selectIndex:(NSInteger)index
 {
     if ( self=[super initWithFrame:frame])
     {
@@ -22,6 +22,7 @@
         self.nameArray=titleArray;
         
         self.segmentView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, segmentViewHight)];
+        [self.segmentView setBackgroundColor:[UIColor whiteColor]];
         self.segmentView.tag=50;
         [self addSubview:self.segmentView];
         self.segmentScrollV=[[UIScrollView alloc]initWithFrame:CGRectMake(0, segmentViewHight, frame.size.width, frame.size.height - segmentViewHight)];
@@ -59,8 +60,9 @@
                 [self.segmentView addSubview:lineView];
             }
             
-            if (i==0)
-            {btn.selected=YES ;self.seleBtn=btn;
+            if (i==index){
+                btn.selected=YES ;
+                self.seleBtn=btn;
                 btn.titleLabel.font=[UIFont systemFontOfSize:17.0];
             } else { btn.selected=NO; }
             
@@ -74,6 +76,12 @@
         self.line=[[UILabel alloc]initWithFrame:CGRectMake((avgWidth-lineW)/2,segmentViewHight - lineH, lineW, lineH)];
         self.line.backgroundColor = [UIColor hex_colorWithHex:@"29A1F7"];
         self.line.tag=100;
+        CGPoint  frame=self.line.center;
+        frame.x=self.frame.size.width/(self.controllers.count*2) +(self.frame.size.width/self.controllers.count)* (index);
+        self.line.center=frame;
+        
+        [self.segmentScrollV setContentOffset:CGPointMake((index)*self.frame.size.width, 0) animated:NO];
+        
         [self.segmentView addSubview:self.line];
     }
     
@@ -95,7 +103,44 @@
         self.line.center=frame;
     }];
     [self.segmentScrollV setContentOffset:CGPointMake((sender.tag)*self.frame.size.width, 0) animated:NO];
+    
+    if (self.sureDown) {
+        self.sureDown(self.seleBtn.tag);
+    }
+    
 }
+
+- (void)didiSelectIndex:(NSInteger)index{
+    
+    for (UIView *view in self.segmentView.subviews) {
+        
+        if ([view isKindOfClass:[UIButton class]]) {
+            
+            UIButton *btn = (UIButton *)view;
+            if (btn.tag == index) {
+                self.seleBtn.titleLabel.font= [UIFont systemFontOfSize:17.];
+                self.seleBtn.selected=NO;
+                self.seleBtn = btn;
+                self.seleBtn.selected=YES;
+                self.seleBtn.titleLabel.font= [UIFont systemFontOfSize:17.];
+                
+                break;
+            }
+            
+        }
+        
+    }
+    
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        CGPoint  frame=self.line.center;
+        frame.x=self.frame.size.width/(self.controllers.count*2) +(self.frame.size.width/self.controllers.count)* (self.seleBtn.tag);
+        self.line.center=frame;
+    }];
+    [self.segmentScrollV setContentOffset:CGPointMake((self.seleBtn.tag)*self.frame.size.width, 0) animated:NO];
+    
+}
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     

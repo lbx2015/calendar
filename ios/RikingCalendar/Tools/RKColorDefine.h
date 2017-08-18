@@ -44,6 +44,22 @@
 
 #define dt_line_color                      [UIColor hex_colorWithHex:@"#D9D9D9"]
 
+#define dt_text_light_color                [UIColor hex_colorWithHex:@"#929292"]
+
+#define dt_text_818181_color               [UIColor hex_colorWithHex:@"#818181"]
+
+#define dt_text_888888_color               [UIColor hex_colorWithHex:@"#888888"]
+
+#define dt_text_F8F8F8_color               [UIColor hex_colorWithHex:@"#F8F8F8"]
+
+#define dt_FAFAFA_color                    [UIColor hex_colorWithHex:@"#FAFAFA"]
+
+#define dt_F2F2F2_color                    [UIColor hex_colorWithHex:@"#F2F2F2"]
+
+
+
+
+
 
 
 #endif /* RKColorDefine_h */

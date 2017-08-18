@@ -22,12 +22,40 @@
                             <rect key="frame" x="0.0" y="20" width="375" height="193"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8X-yM-bxe">
+                            <rect key="frame" x="0.0" y="213" width="375" height="40"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZK-Jp-Hy9">
+                                    <rect key="frame" x="15" y="0.0" width="60" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="jkl-Ar-HH0"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" title="整月" image="selectTime_norm_icon">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="selectFullMonth:" destination="iN0-l3-epB" eventType="touchUpInside" id="nCV-dT-oYG"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="NZK-Jp-Hy9" firstAttribute="top" secondItem="y8X-yM-bxe" secondAttribute="top" id="dXT-Jc-52O"/>
+                                <constraint firstItem="NZK-Jp-Hy9" firstAttribute="leading" secondItem="y8X-yM-bxe" secondAttribute="leading" constant="15" id="dhz-Yj-kVw"/>
+                                <constraint firstAttribute="bottom" secondItem="NZK-Jp-Hy9" secondAttribute="bottom" id="uNN-tR-oDC"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstItem="y8X-yM-bxe" firstAttribute="leading" secondItem="gvZ-fK-lMh" secondAttribute="leading" id="4JK-nH-AEJ"/>
                         <constraint firstAttribute="height" constant="253" id="5dD-J8-1oE"/>
                         <constraint firstItem="rt8-o9-f2u" firstAttribute="leading" secondItem="gvZ-fK-lMh" secondAttribute="leading" id="6wM-4n-gZv"/>
                         <constraint firstAttribute="bottom" secondItem="rt8-o9-f2u" secondAttribute="bottom" constant="40" id="BX3-L0-lDo"/>
+                        <constraint firstAttribute="trailing" secondItem="y8X-yM-bxe" secondAttribute="trailing" id="NP4-hL-0Gb"/>
+                        <constraint firstAttribute="bottom" secondItem="y8X-yM-bxe" secondAttribute="bottom" id="QAQ-dn-uh5"/>
+                        <constraint firstItem="y8X-yM-bxe" firstAttribute="top" secondItem="rt8-o9-f2u" secondAttribute="bottom" id="kr3-Ep-Vnd"/>
                         <constraint firstAttribute="trailing" secondItem="rt8-o9-f2u" secondAttribute="trailing" id="lIV-yf-4M9"/>
                         <constraint firstItem="rt8-o9-f2u" firstAttribute="top" secondItem="gvZ-fK-lMh" secondAttribute="top" constant="20" id="wVy-eg-MXN"/>
                     </constraints>
@@ -93,7 +121,9 @@
                 <outlet property="SureBtn" destination="djK-S2-NNN" id="qsp-Zn-ozI"/>
                 <outlet property="bottomConstraint" destination="06Q-6b-L3a" id="0Te-6w-uNZ"/>
                 <outlet property="buttomView" destination="gvZ-fK-lMh" id="1kp-xm-4pD"/>
+                <outlet property="selectFullMonth" destination="NZK-Jp-Hy9" id="qQw-Pl-SMv"/>
                 <outlet property="showYearView" destination="rt8-o9-f2u" id="aRO-uW-SPK"/>
+                <outlet property="yearViewBottom" destination="BX3-L0-lDo" id="0xf-tk-pVz"/>
             </connections>
             <point key="canvasLocation" x="37.5" y="53.5"/>
         </view>
@@ -101,5 +131,6 @@
     <resources>
         <image name="chooseTime_cancel" width="15" height="15"/>
         <image name="chooseTime_sure" width="28" height="20"/>
+        <image name="selectTime_norm_icon" width="20" height="20"/>
     </resources>
 </document>

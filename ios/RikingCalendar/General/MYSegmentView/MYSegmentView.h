@@ -16,10 +16,14 @@
 @property (nonatomic,strong)UILabel * line;
 @property (nonatomic ,strong)UIButton * seleBtn;
 @property (nonatomic,strong)UILabel * down;
+@property (nonatomic, assign)NSInteger selectIndex;
 
 
-- (instancetype)initWithFrame:(CGRect)frame controllers:(NSArray *)controllers titleArray:(NSArray *)titleArray ParentController:(UIViewController *)parentC  lineWidth:(float)lineW lineHeight:(float)lineH;
+@property (nonatomic,copy)void(^sureDown)(NSInteger index);
+
+- (instancetype)initWithFrame:(CGRect)frame controllers:(NSArray *)controllers titleArray:(NSArray *)titleArray ParentController:(UIViewController *)parentC  lineWidth:(float)lineW lineHeight:(float)lineH selectIndex:(NSInteger)index;
 
 
+- (void)didiSelectIndex:(NSInteger)index;
 
 @end

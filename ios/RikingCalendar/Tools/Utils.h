@@ -7,6 +7,29 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSUInteger, DateFormatStyle) {
+    DateFormatYearMonthDayWithChinese  = 0,
+    DateFormatYearMonthWithChinese,
+    DateFormatMonthDayWithChinese,
+    DateFormatHourMinuteWith24HR,
+    DateFormatYearMonthDay,
+    DateFormatYearMonthDayHourMintesecond,
+    DateFormatYearMonthDayHourMintesecondMillisecond,
+    DateFormatYearMonthDayWithChineseAndHourMinute24HR,
+    DateFormatYearMonthDayHourMinute
+};
+
+
+typedef NS_ENUM(NSUInteger, SaveDateFormatStyle) {
+    SaveDateFormatYearMonthDayHourMintesecondMillisecond = 0,
+    SaveDateFormatYearMonthDayHourMintesecond,
+    SaveDateFormatYearMonthDay,
+    SaveDateFormatYearMonth,
+    SaveDateFormatMonthDay,
+    SaveDateFormatHourMinuteSecond
+};
 
 @interface Utils : NSObject
 
@@ -27,6 +50,12 @@
 +(NSString*)getCurrentTimeWithTimeFormat:(NSString *)format;
 
 +(NSString*)getCurrentTimeWithDay;
+
+#pragma mark - 时间字符串转成日期
+/**
+ 时间字符串转成日期
+ */
++ (NSDate *)getDataString:(NSString*)dataString formatter:(NSString *)formatter;
 
 
 /**
@@ -58,6 +87,21 @@
  */
 + (BOOL)validateWithStartTime:(NSString *)startTime withExpireTime:(NSString *)expireTime;
 
+#pragma mark - 把时间转换成时间字符串
++ (NSString *)transformDateWithFormatter:(NSString *)formatter date:(NSDate *)date;
+
+
+/**
+ 将时间或者时间字符串转换成相应的格式
+ */
++ (NSString *)transformDate:(id)date dateFormatStyle:(DateFormatStyle)dateStyle;
+
+
+/**
+ 将本地当前时间转换成相应的格式
+
+ */
++ (NSString *)getCurrentTimeWithDateStyle:(DateFormatStyle)dateStyle;
 
 #pragma mark - 获取网络时间,并传入所需的时间格式
 //+(NSString *)getInternetDateWithFormat:(NSString *)format;
@@ -67,26 +111,28 @@
  @param imageview ImageView
  @param imageurl url
  */
-//+ (void)setImageView:(UIImageView *)imageview imageUrl:(NSString *)imageurl;
++(void)setImageView:(UIImageView *)imageview imageUrl:(NSString *)imageurl placeholderImage:(NSString *)placeholder;
 
 //判断输入框输入两位小数
 + (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
 #pragma mark - 动态计算label的高度或者宽度
-//+ (CGSize)setWidthForText:(NSString*)text fontSize:(CGFloat)fontSize labelSize:(CGFloat)labelSize isGetHight:(BOOL)isHight;
++ (CGSize)setWidthForText:(NSString*)text fontSize:(CGFloat)fontSize labelSize:(CGFloat)labelSize isGetHight:(BOOL)isHight;
 
 + (NSDictionary *)openServiceMessageWithTitleOpenType:(NSString *)openType;
 
 + (NSString *)getMessageError:(NSError *)error;
 
++ (NSString *)setOldStringTime:(NSString *)strTime inputFormat:(NSString *)inputFormat outputFormat:(NSString *)outputFormat;
+
 
 /**
  快速创建Button
  */
-//+ (UIButton *)createButtonFrame:(CGRect)frame normalImage:(NSString *)normalImage selectImage:(NSString *)selectImage isBackgroundImage:(BOOL)backgroundImage title:(NSString *)title target:(id)target action:(SEL)action;
++ (UIButton *)createButtonFrame:(CGRect)frame normalImage:(NSString *)normalImage selectImage:(NSString *)selectImage isBackgroundImage:(BOOL)backgroundImage title:(NSString *)title target:(id)target action:(SEL)action;
 
 #pragma mark - 自适应label
-//+ (CGSize)sizeWithString:(NSString *)string font:(UIFont *)font;
++ (CGSize)sizeWithString:(NSString *)string font:(UIFont *)font;
 
 #pragma mark - 快速创建Label
 
@@ -100,7 +146,7 @@
  @param textAlignment textAlignment description
  @return label
  */
-//+ (UILabel *)createLabelFrame:(CGRect)frame text:(NSString *)text font:(CGFloat)font textColor:(UIColor*)color textAlignment:(NSTextAlignment)textAlignment;
++ (UILabel *)createLabelFrame:(CGRect)frame text:(NSString *)text font:(CGFloat)font textColor:(UIColor*)color textAlignment:(NSTextAlignment)textAlignment;
 
 
 /**
@@ -112,4 +158,53 @@
 + (UIColor*)mostColor:(UIImage*)image;
 
 
+/**
+ 显示简短提示语
+
+ */
++ (void)showMsg:(NSString *)msg;
+
+
+/**
+ 判断字符串不为空
+ */
++ (BOOL)isBlankString:(NSString *)string;
+
+
++ (NSString *)distanceWithBeforeTime:(NSString *)date;
+
+
+
+#pragma mark - 根据时间字符串获取周几
+/**
+ 根据时间字符串获取周几(周一,周二....)
+ @param dateStr dateStr description
+ @param formatter formatter description
+ @return return value description
+ */
++ (NSString *)getWeekDayWithDateStr:(NSString *)dateStr formatter:(NSString *)formatter;
+
+#pragma mark - 获取周几(1,2,3,4,5,6,7)
+
+/**
+ 获取周几(1,2,3,4,5,6,7)
+ */
++ (NSString*)weekdayStringFromDate:(NSString*)inputDateStr formatter:(NSString *)formatter;
+
+
+/**
+ 根据Date获取
+
+ @param date  获取周几(1,2,3,4,5,6,7)
+ */
++(NSString *)getWeekDayWithDate:(NSDate *)date;
+
+
++ (NSString *)convertToJsonData:(NSDictionary *)dict;
+
+
+/**
+ 解析json
+ */
++ (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString;
 @end

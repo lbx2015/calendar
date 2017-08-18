@@ -515,7 +515,8 @@
     [self.calendar configureAppearance];
 }
 
-- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize {}
+- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize {
+}
 - (BOOL)adjustsFontSizeToFitContentSize { return YES; }
 
 @end

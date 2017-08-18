@@ -27,6 +27,9 @@ public class Const {
     public static final String USER_BIRTHDAY = "USER_BIRTHDAY";
     public static final String USER_SEX="user_sex";
 
+    //image path external storage
+    public static final String IMAGE_PATH = "/rikingImage";
+
     public static final String REMINDER_TITLE="Reminder title";
 
     //Date formats

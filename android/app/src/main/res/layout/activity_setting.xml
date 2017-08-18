@@ -189,6 +189,7 @@
             android:paddingLeft="10dp">
 
             <RelativeLayout
+                android:id="@+id/bind_phone_relative_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
@@ -282,6 +283,7 @@
         app:cardUseCompatPadding="true">
 
         <RelativeLayout
+            android:id="@+id/clear_cache_relatvie_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
@@ -301,7 +303,7 @@
                 android:textColor="@color/color_323232" />
 
             <TextView
-                android:id="@+id/no_need_to_clear"
+                android:id="@+id/cache_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

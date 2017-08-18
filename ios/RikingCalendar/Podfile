@@ -26,4 +26,5 @@ pod 'IQKeyboardManagerSwift', '4.0.10'
 pod 'FSCalendar'
 pod 'Masonry'
 pod 'FMDB'
+pod 'JPush'
 end

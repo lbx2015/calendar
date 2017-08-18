@@ -9,7 +9,14 @@
 #import "AppDelegate.h"
 #import "RKTabbarViewController.h"
 #import "AFNetworking.h"
+#import "JPUSHService.h"
+#import <AdSupport/AdSupport.h>
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
 @interface AppDelegate ()
+
+<JPUSHRegisterDelegate>
 @property (strong, nonatomic) NSNumber *originalNetworkReachability;//原始的网络状态
 @end
 
@@ -19,12 +26,144 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [self initializesBaseConfiguration];
+    [self initializesBaseConfiguration];//初始化基础配置
     
-    [self goToMainViewController];
-   
+    [self registerPushlaunchOptions:launchOptions];//初始化推送
+    
+    [self goToMainViewController];//进入主界面
     return YES;
 }
+
+
+- (void)registerPushlaunchOptions:(NSDictionary *)launchOptions{
+    
+    
+    
+    //注册本地通知
+//    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+//    
+//    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+//    
+//    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    
+    
+    
+    //注册远程通知
+//    NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    // 3.0.0及以后版本注册可以这样写，也可以继续用旧的注册方式
+    JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        //可以添加自定义categories
+        //    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+        //      NSSet<UNNotificationCategory *> *categories;
+        //      entity.categories = categories;
+        //    }
+        //    else {
+        //      NSSet<UIUserNotificationCategory *> *categories;
+        //      entity.categories = categories;
+        //    }
+    }
+    [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+    
+    //如不需要使用IDFA，advertisingIdentifier 可为nil
+    [JPUSHService setupWithOption:launchOptions appKey:appKey
+                          channel:channel
+                 apsForProduction:isProduction
+            advertisingIdentifier:nil];
+    
+    //2.1.9版本新增获取registration id block接口。
+    [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
+        if(resCode == 0){
+            NSLog(@"registrationID获取成功：%@",registrationID);
+            
+            NSUserDefaults *defaults = kNSUserDefaults;
+            [defaults setObject:registrationID forKey:@"deviceCode"];
+            [defaults synchronize];
+            
+        }
+        else{
+            NSLog(@"registrationID获取失败，code：%d",resCode);
+        }
+    }];
+    
+    
+    
+}
+
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    
+    [JPUSHService registerDeviceToken:deviceToken];
+    
+    RKLog(@"registrationId:%@",[JPUSHService registrationID]);
+    
+    if ([JPUSHService registrationID])
+    {
+        NSUserDefaults *defaults = kNSUserDefaults;
+        [defaults setObject:[JPUSHService registrationID] forKey:@"DeviceCodeJPush"];
+        [defaults synchronize];
+    }
+}
+
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    
+    [JPUSHService handleRemoteNotification:userInfo];
+}
+
+
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#pragma mark- JPUSHRegisterDelegate
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
+    NSDictionary * userInfo = notification.request.content.userInfo;
+    
+    UNNotificationRequest *request = notification.request; // 收到推送的请求
+    UNNotificationContent *content = request.content; // 收到推送的消息内容
+    
+    NSNumber *badge = content.badge;  // 推送消息的角标
+    NSString *body = content.body;    // 推送消息体
+    UNNotificationSound *sound = content.sound;  // 推送消息的声音
+    NSString *subtitle = content.subtitle;  // 推送消息的副标题
+    NSString *title = content.title;  // 推送消息的标题
+    
+    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+        
+    }
+    else {
+        // 判断为本地通知
+        NSLog(@"iOS10 前台收到本地通知:{\nbody:%@，\ntitle:%@,\nsubtitle:%@,\nbadge：%@，\nsound：%@，\nuserInfo：%@\n}",body,title,subtitle,badge,sound,userInfo);
+    }
+    completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以设置
+}
+
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    
+    NSDictionary * userInfo = response.notification.request.content.userInfo;
+    UNNotificationRequest *request = response.notification.request; // 收到推送的请求
+    UNNotificationContent *content = request.content; // 收到推送的消息内容
+    
+    NSNumber *badge = content.badge;  // 推送消息的角标
+    NSString *body = content.body;    // 推送消息体
+    UNNotificationSound *sound = content.sound;  // 推送消息的声音
+    NSString *subtitle = content.subtitle;  // 推送消息的副标题
+    NSString *title = content.title;  // 推送消息的标题
+    
+    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+        NSLog(@"iOS10 收到远程通知:%@", [self logDic:userInfo]);
+    }
+    else {
+        // 判断为本地通知
+        NSLog(@"iOS10 收到本地通知:{\nbody:%@，\ntitle:%@,\nsubtitle:%@,\nbadge：%@，\nsound：%@，\nuserInfo：%@\n}",body,title,subtitle,badge,sound,userInfo);
+    }
+    
+    completionHandler();  // 系统要求执行这个方法
+}
+#endif
+
+
 
 #pragma mark - 初始化基础配置
 - (void)initializesBaseConfiguration{
@@ -44,12 +183,20 @@
 
 //    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navgationBar_bgImage"] forBarMetrics:UIBarMetricsDefault];
 //    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName:NavigationBar_Text_Font,NSForegroundColorAttributeName:[UIColor whiteColor]}];
-////    [[UINavigationBar appearance] setBarTintColor:[UIColor hex_colorWithHex:@"#1B82D2"]];
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor hex_colorWithHex:@"#1B82D2"]];
     [[UIApplication sharedApplication]setStatusBarStyle:UIStatusBarStyleLightContent];
     
     
+    
+    
+    
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
     RKTabbarViewController *mainController = [[RKTabbarViewController alloc]init];
+    
     self.window.rootViewController = mainController;
+    
+//    [self.window makeKeyAndVisible];
 }
 
 
@@ -118,6 +265,27 @@
     }
     
     _originalNetworkReachability = _networkReachability;
+}
+
+
+- (NSString *)logDic:(NSDictionary *)dic {
+    if (![dic count]) {
+        return nil;
+    }
+    NSString *tempStr1 =
+    [[dic description] stringByReplacingOccurrencesOfString:@"\\u"
+                                                 withString:@"\\U"];
+    NSString *tempStr2 =
+    [tempStr1 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    NSString *tempStr3 =
+    [[@"\"" stringByAppendingString:tempStr2] stringByAppendingString:@"\""];
+    NSData *tempData = [tempStr3 dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *str =
+    [NSPropertyListSerialization propertyListFromData:tempData
+                                     mutabilityOption:NSPropertyListImmutable
+                                               format:NULL
+                                     errorDescription:NULL];
+    return str;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

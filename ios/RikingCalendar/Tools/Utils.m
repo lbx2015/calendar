@@ -36,7 +36,7 @@ static Utils *instance = nil;
 +(NSString*)getCurrentTime
 {
     NSDateFormatter * formatter = [[NSDateFormatter alloc ] init];
-    [formatter setDateFormat:@"yyyy.MM.dd HH:mm"];
+    [formatter setDateFormat:@"yyyyMMddHHmm"];
     NSString *date = [formatter stringFromDate:[NSDate date]];
     NSString *currentdate = [NSString stringWithFormat:@"%@", date];
     return currentdate;
@@ -45,9 +45,22 @@ static Utils *instance = nil;
 +(NSString*)getCurrentTimeWithDay
 {
     NSDateFormatter * formatter = [[NSDateFormatter alloc ] init];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
+    [formatter setDateFormat:@"yyyyMMdd"];
     NSString *date = [formatter stringFromDate:[NSDate date]];
     NSString *currentdate = [NSString stringWithFormat:@"%@", date];
+    return currentdate;
+}
+
+
+
+
+#pragma mark - 把时间转换成时间字符串
++ (NSString *)transformDateWithFormatter:(NSString *)formatter date:(NSDate *)date{
+    
+    NSDateFormatter * formatter01 = [[NSDateFormatter alloc ] init];
+    [formatter01 setDateFormat:formatter];
+    NSString *dateStr = [formatter01 stringFromDate:date];
+    NSString *currentdate = [NSString stringWithFormat:@"%@", dateStr];
     return currentdate;
 }
 
@@ -66,7 +79,7 @@ static Utils *instance = nil;
     
     NSDate *datenow = [NSDate date];//现在时间
     //时间转时间戳的方法:
-    NSInteger timeSp = [[NSNumber numberWithDouble:[datenow timeIntervalSince1970]] integerValue];
+    NSInteger timeSp = [[NSNumber numberWithDouble:[datenow timeIntervalSince1970]*1000] integerValue];
     
     return timeSp;
     
@@ -129,8 +142,8 @@ static Utils *instance = nil;
 + (BOOL)validateWithStartTime:(NSString *)startTime withExpireTime:(NSString *)expireTime {
     
     NSDate *today = [self worldTimeToChinaTime:[NSDate date]];
-    NSDate *start = [self getDataString:startTime];
-    NSDate *expire = [self getDataString:expireTime];
+    NSDate *start = [self getDataString:startTime formatter:@"yyyy-MM-dd HH:mm"];
+    NSDate *expire = [self getDataString:expireTime formatter:@"yyyy-MM-dd HH:mm"];
     
     if ([today compare:start] == NSOrderedDescending && [today compare:expire] == NSOrderedAscending) {
         return YES;
@@ -139,16 +152,16 @@ static Utils *instance = nil;
 }
 
 #pragma mark - 时间字符串转成日期
-+ (NSDate *)getDataString:(NSString*)dataString
++ (NSDate *)getDataString:(NSString*)dataString formatter:(NSString *)formatter
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    [dateFormatter setDateFormat:formatter];
     NSDate *date = [dateFormatter dateFromString:dataString];
 
-    return [self worldTimeToChinaTime:date];
+    return date;
 }
 
-//将世界时间转化为中国区时间
+//将世界时间转化为系统时区区时间
 + (NSDate *)worldTimeToChinaTime:(NSDate *)date
 {
     NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
@@ -157,6 +170,122 @@ static Utils *instance = nil;
     return localeDate;
 }
 
+
++ (NSString *)setOldStringTime:(NSString *)strTime inputFormat:(NSString *)inputFormat outputFormat:(NSString *)outputFormat
+{
+    if ([inputFormat isEqualToString:@"timeStemp"]) {
+        NSTimeInterval time = [strTime doubleValue];
+        if (strTime.length == 13) {
+            time = [strTime doubleValue] / 1000;
+        }
+        NSDate *detailDate = [NSDate dateWithTimeIntervalSince1970:time];
+        
+        //实例化一个NSDateFormatter对象
+        NSDateFormatter *dateFormatter  = [[NSDateFormatter alloc]init];
+        [dateFormatter setDateFormat:outputFormat];
+        
+        NSString *dateStr = [dateFormatter stringFromDate:detailDate];
+        
+        return dateStr;
+        
+    }
+    else
+    {
+        NSDateFormatter *informat = [[NSDateFormatter alloc]init];
+        [informat setDateFormat:inputFormat];
+        NSDate *date = [informat dateFromString:strTime];
+        NSDateFormatter *outformat = [[NSDateFormatter alloc]init];
+        [outformat setDateFormat:outputFormat];
+        
+        return [outformat stringFromDate:date];;
+    }
+}
+
++ (NSString *)transformDate:(id)date dateFormatStyle:(DateFormatStyle)dateStyle{
+    
+    NSDate *newDate = nil;
+    if ([date isKindOfClass:[NSDate class]]) {
+         newDate = (NSDate *)date;
+    }else{
+        NSDateFormatter *informat = [[NSDateFormatter alloc]init];
+        [informat setDateFormat:@"yyyyMMdd"];
+        newDate = [informat dateFromString:date];
+    }
+
+    NSDateFormatter *outformat = [[NSDateFormatter alloc]init];
+    NSString *outputFormat = @"";
+    switch (dateStyle) {
+        case DateFormatYearMonthDayWithChinese:
+            outputFormat = @"yyyy年月MM月dd日";
+            break;
+        case DateFormatMonthDayWithChinese:
+            outputFormat = @"MM月dd日";
+            break;
+        case DateFormatHourMinuteWith24HR:
+            outputFormat = @"HH:mm";
+            break;
+        case DateFormatYearMonthWithChinese:
+            outputFormat = @"yyyy年MM月";
+            break;
+        case DateFormatYearMonthDay:
+            outputFormat = @"yyyy.MM.dd";
+            break;
+        case DateFormatYearMonthDayHourMintesecond:
+            outputFormat = @"yyyyMMddHHmmss";
+            break;
+        case DateFormatYearMonthDayHourMinute:
+            outputFormat = @"yyyyMMdd";
+            break;
+        default:
+            break;
+    }
+
+    [outformat setDateFormat:outputFormat];
+    return [outformat stringFromDate:newDate];
+}
+
++ (NSString *)getCurrentTimeWithDateStyle:(DateFormatStyle)dateStyle{
+    
+    NSDateFormatter * formatter = [[NSDateFormatter alloc ] init];
+    NSString *outputFormat = @"";
+    switch (dateStyle) {
+        case DateFormatYearMonthDayWithChinese:
+            outputFormat = @"yyyy年月MM月dd日";
+            break;
+        case DateFormatMonthDayWithChinese:
+            outputFormat = @"MM月dd日";
+            break;
+        case DateFormatHourMinuteWith24HR:
+            outputFormat = @"HH:mm";
+            break;
+        case DateFormatYearMonthWithChinese:
+            outputFormat = @"yyyy年MM月";
+            break;
+        case DateFormatYearMonthDay:
+            outputFormat = @"yyyy.MM.dd";
+            break;
+        case DateFormatYearMonthDayHourMintesecond:
+            outputFormat = @"yyyyMMddHHmmss";
+            break;
+        case DateFormatYearMonthDayHourMintesecondMillisecond:
+            outputFormat = @"yyyyMMddHHmmssSSS";
+            break;
+        case DateFormatYearMonthDayWithChineseAndHourMinute24HR:
+            outputFormat = @"yyyy年MM月dd日 HH:mm";
+            break;
+        case DateFormatYearMonthDayHourMinute:
+            outputFormat = @"yyyyMMdd";
+            break;
+        default:
+            break;
+    }
+    
+    [formatter setDateFormat:outputFormat];
+    NSString *date = [formatter stringFromDate:[NSDate date]];
+    NSString *currentdate = [NSString stringWithFormat:@"%@", date];
+    return currentdate;
+    
+}
 
 //#pragma mark - 获取网络当前时间
 //+ (NSDate *)getInternetDate
@@ -232,14 +361,22 @@ static Utils *instance = nil;
  @param imageview imageview
  @param imageurl imageurl
  */
-+(void)setImageView:(UIImageView *)imageview imageUrl:(NSString *)imageurl
++(void)setImageView:(UIImageView *)imageview imageUrl:(NSString *)imageurl placeholderImage:(NSString *)placeholder
 {
     
-    [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@""] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-        
-        
-    }];
+    [imageview setContentScaleFactor:[[UIScreen mainScreen] scale]];
+    imageview.contentMode =  UIViewContentModeScaleAspectFill;
+    
+    if (![self isBlankString:imageurl]) {
+        [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:placeholder] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            
+        }];
+    }else{
+        [imageview setImage:[UIImage imageNamed:placeholder]];
+    }
+    
+    
     
 }
 
@@ -434,15 +571,17 @@ static Utils *instance = nil;
 }
 
 #pragma mark - 快速创建Label
-+(UILabel *)createLabelFrame:(CGRect)frame text:(NSString *)text font:(UIFont *)font textColor:(UIColor*)color textAlignment:(NSTextAlignment)textAlignment
++ (UILabel *)createLabelFrame:(CGRect)frame text:(NSString *)text font:(CGFloat)font textColor:(UIColor*)color textAlignment:(NSTextAlignment)textAlignment;
 {
     UILabel *label = [[UILabel alloc]initWithFrame:frame];
     label.text = text;
     label.textColor = color;
-    label.font = font;
+    label.font = [UIFont systemFontOfSize:font];
     label.textAlignment = textAlignment;
     return label;
 }
+
+
 
 
 //根据图片获取图片的主色调
@@ -551,7 +690,267 @@ static Utils *instance = nil;
     return dict;
 }
 
++ (void)showMsg:(NSString *)msg
+{
+    [MBManager showBriefAlert:msg];
+}
 
 
++ (BOOL)isBlankString:(NSString *)string {
+    
+    if (string == nil || string == NULL) {
+        
+        return YES;
+        
+    }
+    
+    if ([string isKindOfClass:[NSNull class]]) {
+        
+        return YES;
+        
+    }
+    
+    if ([[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0) {
+        
+        return YES;
+        
+    }
+    
+    return NO;
+    
+}
+
+#pragma mark - 类似微信朋友圈一样的时间格式
++ (NSString *)distanceTimeWithBeforeTime:(NSString *)dateString
+{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *destDate= [dateFormatter dateFromString:dateString];
+    
+    double beTime = [destDate timeIntervalSince1970];
+    
+    NSTimeInterval now = [[NSDate date]timeIntervalSince1970];
+    double distanceTime = now - beTime;
+    NSString * distanceStr;
+    
+    NSDate * beDate = [NSDate dateWithTimeIntervalSince1970:beTime];
+    NSDateFormatter * df = [[NSDateFormatter alloc]init];
+    [df setDateFormat:@"HH:mm"];
+    NSString * timeStr = [df stringFromDate:beDate];
+    
+    [df setDateFormat:@"dd"];
+    NSString * nowDay = [df stringFromDate:[NSDate date]];
+    NSString * lastDay = [df stringFromDate:beDate];
+    
+    if (distanceTime < 60) {//小于一分钟
+        distanceStr = @"刚刚";
+    }
+    else if (distanceTime <60*60) {//时间小于一个小时
+        distanceStr = [NSString stringWithFormat:@"%ld分钟前",(long)distanceTime/60];
+    }
+    else if(distanceTime <24*60*60 ){//时间小于一天
+        distanceStr = [NSString stringWithFormat:@"%ld小时前",(long)distanceTime/60/60];
+    }
+    else if(distanceTime<24*60*60*2 && [nowDay integerValue] != [lastDay integerValue]){
+        
+        distanceStr = [NSString stringWithFormat:@"%ld天前",(long)distanceTime/60/60/24];
+        
+        if ([nowDay integerValue] - [lastDay integerValue] ==1 || ([lastDay integerValue] - [nowDay integerValue] > 10 && [nowDay integerValue] == 1)) {
+            distanceStr = [NSString stringWithFormat:@"昨天 %@",timeStr];
+        }
+        else{
+            [df setDateFormat:@"MM-dd HH:mm"];
+            distanceStr = [df stringFromDate:beDate];
+        }
+        
+    }
+    else if (distanceTime<24*60*60*30)
+    {
+        distanceStr = [NSString stringWithFormat:@"%ld天前",(long)distanceTime/60/60/24];
+    }
+    else if(distanceTime <24*60*60*365 && distanceTime>24*60*60*30){
+        [df setDateFormat:@"MM-dd HH:mm"];
+        distanceStr = [df stringFromDate:beDate];
+    }
+    else{
+        [df setDateFormat:@"yyyy-MM-dd HH:mm"];
+        distanceStr = [df stringFromDate:beDate];
+    }
+    return distanceStr;
+}
+
+
++ (NSString *)distanceWithBeforeTime:(NSString *)date{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat: @"yyyyMMddHHmm"];
+    NSTimeZone* timeZone = [NSTimeZone systemTimeZone];
+    [dateFormatter setTimeZone:timeZone];
+    
+    NSDate *destDate= [dateFormatter dateFromString:date];
+    
+    double beTime = [destDate timeIntervalSince1970];
+    
+    NSTimeInterval now = [[NSDate date]timeIntervalSince1970];
+    double distanceTime = now - beTime;
+    NSString * distanceStr;
+    
+    NSDate * beDate = [NSDate dateWithTimeIntervalSince1970:beTime];
+    NSDateFormatter * df = [[NSDateFormatter alloc]init];
+    [df setDateFormat:@"HH:mm"];
+    NSString * timeStr = [df stringFromDate:beDate];
+    
+    [df setDateFormat:@"dd"];
+    NSString * nowDay = [df stringFromDate:[NSDate date]];
+    NSString * lastDay = [df stringFromDate:beDate];
+    
+    if(distanceTime <24*60*60 ){//时间小于一天
+        distanceStr = [NSString stringWithFormat:@"今天"];
+    }
+    else{
+        if ([nowDay integerValue] - [lastDay integerValue] ==1 || ([lastDay integerValue] - [nowDay integerValue] > 10 && [nowDay integerValue] == 1)) {
+            distanceStr = [NSString stringWithFormat:@"昨天 %@",timeStr];
+        }
+        else{
+            [df setDateFormat:@"MM月dd日"];
+            distanceStr = [df stringFromDate:beDate];
+        }
+    }
+    return distanceStr;
+}
+
++ (NSString *)getWeekDayWithDateStr:(NSString *)dateStr formatter:(NSString *)formatter{
+    
+    NSDictionary *weekDict = @{@"1":@"周一",@"2":@"周二",@"3":@"周三",@"4":@"周四",@"5":@"周五",@"6":@"周六",@"7":@"周日"};
+    
+    return [weekDict objectForKey:[self weekdayStringFromDate:dateStr formatter:formatter]];
+}
+
++ (NSString*)weekdayStringFromDate:(NSString*)inputDateStr formatter:(NSString *)formatter {
+    
+    NSDate *date = [self getDataString:inputDateStr formatter:formatter];
+    
+    NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"7", @"1", @"2", @"3", @"4", @"5", @"6", nil];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+//    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"Asia/Shanghai"];
+//    
+//    [calendar setTimeZone: timeZone];
+    
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
+    
+    NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:date];
+    
+    return [weekdays objectAtIndex:theComponents.weekday];
+    
+}
+
++(NSString *)getWeekDayWithDate:(NSDate *)date{
+    
+    NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"7", @"1", @"2", @"3", @"4", @"5", @"6", nil];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+//    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"Asia/Shanghai"];
+    
+//    [calendar setTimeZone: timeZone];
+    
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
+    
+    NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:date];
+    
+    RKLog(@"%ld",theComponents.weekday);
+    
+    return [weekdays objectAtIndex:theComponents.weekday];
+    
+}
+
+
+- (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
+{
+    if (jsonString == nil) {
+        return nil;
+    }
+    
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err)
+    {
+        NSLog(@"json解析失败：%@",err);
+        return nil;
+    }
+    return dic;
+}
+
+
+
+/**
+ 字典转jsonStr
+ */
++ (NSString *)convertToJsonData:(NSDictionary *)dict
+{
+    NSError *error;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+    
+    NSString *jsonString;
+    
+    if (!jsonData) {
+        
+        NSLog(@"%@",error);
+        
+    }else{
+        
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+    }
+    
+    NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
+    
+    NSRange range = {0,jsonString.length};
+    
+    //去掉字符串中的空格
+    
+    [mutStr replaceOccurrencesOfString:@" " withString:@" " options:NSLiteralSearch range:range];
+    
+    NSRange range2 = {0,mutStr.length};
+    
+    //去掉字符串中的换行符
+    
+    [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+    
+    return mutStr;
+    
+}
+
+/**
+ JsonString解析Json
+ */
++ (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
+{
+    if (jsonString == nil) {
+        return nil;
+    }
+    
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err)
+    {
+        NSLog(@"json解析失败：%@",err);
+        return nil;
+    }
+    return dic;
+}
 
 @end

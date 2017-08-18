@@ -33,9 +33,13 @@
         _dataTabView.showsVerticalScrollIndicator = NO;
         _dataTabView.showsHorizontalScrollIndicator = NO;
         _dataTabView.backgroundColor = [UIColor clearColor];
+        
+        //设置cell分割线
         if ([ _dataTabView respondsToSelector:@selector(setSeparatorInset:)]) {
             [_dataTabView   setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         }
+        
+        //设置cell,accessoryType
         if ([_dataTabView respondsToSelector:@selector(setLayoutMargins:)]) {
             [_dataTabView setLayoutMargins:UIEdgeInsetsMake(0, 0, 0, 0)];
         }
@@ -80,6 +84,7 @@
         
     }];
     
+    
 }
 
 
@@ -99,7 +104,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 0.0001;
+    return 15;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -121,7 +126,7 @@
         [view removeFromSuperview];
     }
     
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
     

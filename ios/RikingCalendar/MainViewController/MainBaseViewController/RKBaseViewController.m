@@ -35,9 +35,17 @@
     if (controllerIndex > 0)
     {
         [self setDefaultButton:@""];
+    }else{
+        
+        //发送一个通知,用于切换用户,更新本地数据
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userSwitch) name:kUserSwitchNotificationName object:nil];
+
+        
     }
     
 }
+
+
 
 
 - (void)setDefaultButton:(NSString *)title
@@ -87,17 +95,30 @@
         }
     }
     
-    [self kkRequestWithHTTPMethod:method urlString:urlString parm:parm success:^(NSDictionary *dictData) {
+    NSMutableDictionary *dictParm = [NSMutableDictionary dictionaryWithDictionary:parm];
+    
+    if ([dictParm objectForKey:@"columeNames"]) {
+        [dictParm removeObjectForKey:@"columeNames"];
+        [dictParm removeObjectForKey:@"columeTypes"];
+        [dictParm removeObjectForKey:@"propertyNames"];
+        [dictParm removeObjectForKey:@"pk"];
+    }
+    
+    [self kkRequestWithHTTPMethod:method urlString:urlString parm:dictParm success:^(NSDictionary *dictData) {
         [self hideMBManager];
         
         
-        if (dictData && [dictData[@"Code"]isEqualToNumber:@200]) {
+        if (dictData && [dictData[@"code"]isEqualToNumber:@200]) {
             if (success) {
-                success(dictData[@"Data"]);
+                
+                if ([dictData objectForKey:@"_data"]) {
+                    success(dictData[@"_data"]);
+                }
+
             }
         }else{
             
-            NSString *message = dictData?dictData[@"Message"]:@"网络链接错误";
+            NSString *message = dictData?dictData[@"codeDesc"]:@"网络链接错误";
             [MBManager showBriefAlert:message inView:self.view];
             if (failue) {
                 failue(message);
@@ -134,13 +155,13 @@
     }
     [self kkRequestWithHTTPMethod:method urlString:urlString parm:parm success:^(NSDictionary *dictData) {
         [self hideMBProgressHUD];
-        if (dictData && [dictData[@"Code"]isEqualToNumber:@200]) {
-            if (success) {
-                success(dictData[@"Data"]);
+        if (dictData && [dictData[@"code"]isEqualToNumber:@200]) {
+            if ([dictData objectForKey:@"_data"]) {
+                success(dictData[@"_data"]);
             }
         }else{
             
-            NSString *message = dictData?dictData[@"Message"]:@"网络链接错误";
+            NSString *message = dictData?dictData[@"codeDesc"]:@"网络链接错误";
             [MBManager showBriefAlert:message inView:self.view];
             if (failue) {
                 failue(message);
@@ -152,6 +173,86 @@
         [MBManager showBriefAlert:[Utils getMessageError:error] inView:self.view];
     }];
 }
+
+
+- (void)doSaveRemindAndGtasksWithRequestStyle:(RGRequestStyle)requestStyle model:(RKBaseModel *)model isHaveAlert:(BOOL)alert waitTitle:(NSString *)waitTitle success:(void(^)(id dictData))success failure:(void (^)(NSString *message))failue{
+    
+    
+    if (!(isUser&&self.networkStatus)) {
+        
+        if (failue) {
+            failue(@"无网络或者未登录");
+        }
+        return;
+    }
+    
+    NSString *requestUrl = @"";
+    NSMutableDictionary *parm = [NSMutableDictionary dictionary];
+    
+    if (requestStyle == remindSaveUpdate) {
+        
+    }else if (requestStyle == remindDelete){
+        
+    }else if (requestStyle == gtasksSaveUpdate){
+        requestUrl = requestUrl(saveTodo);
+        GtasksModel *gModel = (GtasksModel *)model;
+        [parm setDictionary:[gModel mj_keyValues]];
+    }else{
+        
+    }
+    
+    if ([parm objectForKey:@"columeNames"]) {
+        [parm removeObjectForKey:@"columeNames"];
+        [parm removeObjectForKey:@"columeTypes"];
+        [parm removeObjectForKey:@"propertyNames"];
+        [parm removeObjectForKey:@"pk"];
+    }
+    
+    [parm setObject:UserID forKey:@"userId"];
+    
+    if (alert) {
+        _isShowAlert = YES;
+        
+        /**
+         注：此方法是一种非阻塞的执行方式，未找到取消执行的方法
+         可传任意类型参数
+         */
+        //        [self performSelector:@selector(doSomething:) withObject:nil afterDelay:1.0 inModes:@[NSRunLoopCommonModes]];
+        
+        
+        /**
+         注：此方法是一种非阻塞的执行方式，
+         取消执行方法：- (void)invalidate;即可
+         */
+        NSTimer *timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(doSomething:) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+        
+    }
+    [self kkRequestWithHTTPMethod:POST urlString:requestUrl parm:parm success:^(NSDictionary *dictData) {
+        [self hideMBProgressHUD];
+        if (dictData && [dictData[@"code"]isEqualToNumber:@200]) {
+            
+            if ([dictData objectForKey:@"_data"]) {
+                success(dictData[@"_data"]);
+            }
+        }else{
+            
+            NSString *message = dictData?dictData[@"codeDesc"]:@"网络链接错误";
+            [MBManager showBriefAlert:message inView:self.view];
+            if (failue) {
+                failue(message);
+            }
+        }
+        
+    } failure:^(NSError *error) {
+        [self hideMBProgressHUD];
+        [MBManager showBriefAlert:[Utils getMessageError:error] inView:self.view];
+    }];
+    
+    
+}
+
+
 
 
 -(void)doSomething:(NSTimer *)timer
@@ -284,8 +385,10 @@
     }
     
 }
-
-
+#pragma mark - 用户切换刷新数据
+- (void)userSwitch{
+    
+}
 
 #pragma mark - 获取当前网路状态
 - (int)networkStatus
@@ -321,9 +424,9 @@
         {
             [backBtn setImage:nil forState:UIControlStateNormal];
             [backBtn setTitle:buttonName forState:UIControlStateNormal];
-            [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [backBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [backBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
-            [backBtn setFrame:CGRectMake(0, 0, 16*[buttonName length], 30)];
+            [backBtn setFrame:CGRectMake(0, 0, 17*[buttonName length], 30)];
         }
         
     }
@@ -342,8 +445,8 @@
         UIImage *img = [UIImage imageNamed:buttonName];
         UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [rightBtn setFrame:CGRectMake(0, 0, img.size.width+10, 44)];
-//        [rightBtn setImage:img forState:UIControlStateNormal];
-        rightBtn.themeMap = @{kThemeMapKeyImageName : buttonName};
+        [rightBtn setImage:img forState:UIControlStateNormal];
+        //rightBtn.themeMap = @{kThemeMapKeyImageName : buttonName};
         [rightBtn addTarget:self action:@selector(doRightAction:) forControlEvents:UIControlEventTouchUpInside];
         [rightBtn setTag:i];
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
@@ -496,6 +599,18 @@
     label.textColor = color;
     label.font = font;
     label.textAlignment = textAlignment;
+    return label;
+}
+
+- (UILabel *)createMainLabelWithText:(NSString *)text{
+    
+    UILabel *label = [[UILabel alloc]init];
+    if (text) {
+        label.text = text;
+    }
+    label.themeMap = @{kThemeMapKeyColorName : normalText_main_color};
+    label.font = threeClassTextFont;
+    label.textAlignment = NSTextAlignmentLeft;
     return label;
 }
 

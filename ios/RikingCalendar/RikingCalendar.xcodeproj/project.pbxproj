@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		3FFBE45DE9A336DBBA62C0EC /* Pods_RikingCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6555A13EC148F134AC4DEBE1 /* Pods_RikingCalendar.framework */; };
 		5F0DF74D1CBDB98836C619BC /* Pods_RikingCalendarTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BEE65F4C11706557D2C414D /* Pods_RikingCalendarTests.framework */; };
-		830119B41F2056CF00DBAF80 /* AddReminderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 830119B31F2056CF00DBAF80 /* AddReminderController.m */; };
-		830119B71F20596E00DBAF80 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 830119B61F20596E00DBAF80 /* ReminderViewController.m */; };
 		830119C01F207B1A00DBAF80 /* MainTouchTableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 830119BD1F207B1A00DBAF80 /* MainTouchTableTableView.m */; };
 		830119C11F207B1A00DBAF80 /* MYSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 830119BF1F207B1A00DBAF80 /* MYSegmentView.m */; };
 		83011A5F1F21D78F00DBAF80 /* UIView+FontSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 83011A5E1F21D78F00DBAF80 /* UIView+FontSize.m */; };
@@ -18,7 +16,6 @@
 		8315A5C91F18AE40003BECDA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315A5C81F18AE40003BECDA /* AppDelegate.m */; };
 		8315A5CC1F18AE40003BECDA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315A5CB1F18AE40003BECDA /* ViewController.m */; };
 		8315A5CF1F18AE40003BECDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8315A5CD1F18AE40003BECDA /* Main.storyboard */; };
-		8315A5D11F18AE40003BECDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8315A5D01F18AE40003BECDA /* Assets.xcassets */; };
 		8315A5D41F18AE40003BECDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8315A5D21F18AE40003BECDA /* LaunchScreen.storyboard */; };
 		8315A5DF1F18AE40003BECDA /* RikingCalendarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315A5DE1F18AE40003BECDA /* RikingCalendarTests.m */; };
 		8315A5EA1F18AE40003BECDA /* RikingCalendarUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315A5E91F18AE40003BECDA /* RikingCalendarUITests.m */; };
@@ -36,18 +33,9 @@
 		8321D46E1F1C58E500CBEEBC /* RKBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D3F41F1C58E500CBEEBC /* RKBaseViewController.m */; };
 		8321D46F1F1C58E500CBEEBC /* RKTabbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D3F61F1C58E500CBEEBC /* RKTabbarViewController.m */; };
 		8321D4701F1C58E500CBEEBC /* PersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D3F91F1C58E500CBEEBC /* PersonViewController.m */; };
-		8321D4711F1C58E500CBEEBC /* RemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D3FC1F1C58E500CBEEBC /* RemindViewController.m */; };
 		8321D4721F1C58E500CBEEBC /* YPTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D3FF1F1C58E500CBEEBC /* YPTabBar.m */; };
 		8321D4731F1C58E500CBEEBC /* YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4011F1C58E500CBEEBC /* YPTabBarController.m */; };
 		8321D4741F1C58E500CBEEBC /* YPTabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4031F1C58E500CBEEBC /* YPTabItem.m */; };
-		8321D4751F1C58E500CBEEBC /* MJConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D40D1F1C58E500CBEEBC /* MJConst.m */; };
-		8321D4761F1C58E500CBEEBC /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4101F1C58E500CBEEBC /* MJFoundation.m */; };
-		8321D4771F1C58E500CBEEBC /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4121F1C58E500CBEEBC /* MJProperty.m */; };
-		8321D4781F1C58E500CBEEBC /* MJType.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4141F1C58E500CBEEBC /* MJType.m */; };
-		8321D4791F1C58E500CBEEBC /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4161F1C58E500CBEEBC /* NSObject+MJCoding.m */; };
-		8321D47A1F1C58E500CBEEBC /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4181F1C58E500CBEEBC /* NSObject+MJKeyValue.m */; };
-		8321D47B1F1C58E500CBEEBC /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D41A1F1C58E500CBEEBC /* NSObject+MJProperty.m */; };
-		8321D47C1F1C58E500CBEEBC /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D41C1F1C58E500CBEEBC /* NSString+MJExtension.m */; };
 		8321D47D1F1C58E500CBEEBC /* MJRefreshAutoFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4201F1C58E500CBEEBC /* MJRefreshAutoFooter.m */; };
 		8321D47E1F1C58E500CBEEBC /* MJRefreshBackFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4221F1C58E500CBEEBC /* MJRefreshBackFooter.m */; };
 		8321D47F1F1C58E500CBEEBC /* MJRefreshComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4241F1C58E500CBEEBC /* MJRefreshComponent.m */; };
@@ -77,18 +65,92 @@
 		8321D4991F1C58E500CBEEBC /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4631F1C58E500CBEEBC /* Utils.m */; };
 		836B06AC1F29D7120054DE46 /* ReminderDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06AB1F29D7120054DE46 /* ReminderDatePickerView.m */; };
 		836B06AE1F29D8130054DE46 /* ReminderDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836B06AD1F29D8130054DE46 /* ReminderDatePickerView.xib */; };
-		836B06B11F2AE2610054DE46 /* ReminderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06B01F2AE2610054DE46 /* ReminderListViewController.m */; };
-		836B06B41F2AE27B0054DE46 /* GtaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06B31F2AE27B0054DE46 /* GtaskListViewController.m */; };
-		836B06B81F2B31530054DE46 /* GtaskListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06B61F2B31530054DE46 /* GtaskListTableViewCell.m */; };
-		836B06B91F2B31530054DE46 /* GtaskListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836B06B71F2B31530054DE46 /* GtaskListTableViewCell.xib */; };
-		836B06BD1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06BB1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m */; };
-		836B06BE1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836B06BC1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib */; };
+		83712CD81F35EF6E003D2316 /* LoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83712CD71F35EF6E003D2316 /* LoginModel.m */; };
+		83712CDC1F35F721003D2316 /* NetAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83712CDB1F35F721003D2316 /* NetAPIManager.m */; };
+		83712CDF1F35F91C003D2316 /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83712CDE1F35F91C003D2316 /* RequestManager.m */; };
 		8371B05F1F2863F000DA7465 /* NSDate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B0591F2863F000DA7465 /* NSDate+Extension.m */; };
 		8371B0601F2863F000DA7465 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B05B1F2863F000DA7465 /* UIView+Extension.m */; };
 		8371B0611F2863F000DA7465 /* WSDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B05D1F2863F000DA7465 /* WSDatePickerView.m */; };
 		8371B0621F2863F000DA7465 /* WSDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8371B05E1F2863F000DA7465 /* WSDatePickerView.xib */; };
 		8371B0651F286D9200DA7465 /* RKBaseTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B0641F286D9200DA7465 /* RKBaseTabViewController.m */; };
-		8371B0681F286FC400DA7465 /* ChooseRepeatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8371B0671F286FC400DA7465 /* ChooseRepeatViewController.m */; };
+		837937BE1F3AA9A8009011E9 /* RKTabvIewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 837937BD1F3AA9A8009011E9 /* RKTabvIewView.m */; };
+		837937C11F3AB19F009011E9 /* ReportListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 837937C01F3AB19F009011E9 /* ReportListTableView.m */; };
+		837937E91F3B03C8009011E9 /* DOPDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 837937E81F3B03C8009011E9 /* DOPDropDownMenu.m */; };
+		837937EC1F3B0F5A009011E9 /* DropMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 837937EB1F3B0F5A009011E9 /* DropMenuTableView.m */; };
+		837937EE1F3B1A8A009011E9 /* DropMenuTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837937ED1F3B1A8A009011E9 /* DropMenuTableView.xib */; };
+		837937F41F3B1FAF009011E9 /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 837937F31F3B1FAF009011E9 /* MenuModel.m */; };
+		837937FA1F3C342D009011E9 /* RemindListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 837937F81F3C342D009011E9 /* RemindListTableViewCell.m */; };
+		837937FB1F3C342D009011E9 /* RemindListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837937F91F3C342D009011E9 /* RemindListTableViewCell.xib */; };
+		837938391F3D4150009011E9 /* ReportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938381F3D4150009011E9 /* ReportModel.m */; };
+		837938531F3D58C8009011E9 /* MJExtensionConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938401F3D58C8009011E9 /* MJExtensionConst.m */; };
+		837938541F3D58C8009011E9 /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938421F3D58C8009011E9 /* MJFoundation.m */; };
+		837938551F3D58C8009011E9 /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938441F3D58C8009011E9 /* MJProperty.m */; };
+		837938561F3D58C8009011E9 /* MJPropertyKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938461F3D58C8009011E9 /* MJPropertyKey.m */; };
+		837938571F3D58C8009011E9 /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938481F3D58C8009011E9 /* MJPropertyType.m */; };
+		837938581F3D58C8009011E9 /* NSObject+MJClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 8379384A1F3D58C8009011E9 /* NSObject+MJClass.m */; };
+		837938591F3D58C8009011E9 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8379384C1F3D58C8009011E9 /* NSObject+MJCoding.m */; };
+		8379385A1F3D58C8009011E9 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8379384E1F3D58C8009011E9 /* NSObject+MJKeyValue.m */; };
+		8379385B1F3D58C8009011E9 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938501F3D58C8009011E9 /* NSObject+MJProperty.m */; };
+		8379385C1F3D58C8009011E9 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 837938521F3D58C8009011E9 /* NSString+MJExtension.m */; };
+		8379385F1F3D784A009011E9 /* ReportLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8379385E1F3D784A009011E9 /* ReportLabel.m */; };
+		83829D3C1F41AAD400DF530A /* LocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D3B1F41AAD400DF530A /* LocalNotificationManager.m */; };
+		83829D3F1F41C8B400DF530A /* HolidayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D3E1F41C8B400DF530A /* HolidayModel.m */; };
+		83829D431F42DA9B00DF530A /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D421F42DA9B00DF530A /* UserModel.m */; };
+		83829D471F42DFA700DF530A /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D461F42DFA700DF530A /* WebViewController.m */; };
+		83829D4E1F42F48100DF530A /* JPullEmailTF.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D4A1F42F48100DF530A /* JPullEmailTF.m */; };
+		83829D4F1F42F48100DF530A /* JPullTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D4C1F42F48100DF530A /* JPullTableViewCell.m */; };
+		83829D501F42F48100DF530A /* JPullTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83829D4D1F42F48100DF530A /* JPullTableViewCell.xib */; };
+		83829D531F42F74600DF530A /* PersonMessageEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D521F42F74600DF530A /* PersonMessageEditViewController.m */; };
+		83829D561F43F45200DF530A /* CalendarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D551F43F45200DF530A /* CalendarModel.m */; };
+		83829D5A1F4425CC00DF530A /* RemindAndGtasksDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829D591F4425CC00DF530A /* RemindAndGtasksDBManager.m */; };
+		83829EB91F4593BB00DF530A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83829EB81F4593BB00DF530A /* Assets.xcassets */; };
+		83829EDB1F459D6600DF530A /* image12.gif in Resources */ = {isa = PBXBuildFile; fileRef = 83829EBC1F459D6600DF530A /* image12.gif */; };
+		83829EDC1F459D6600DF530A /* LaunchAdModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829EBF1F459D6600DF530A /* LaunchAdModel.m */; };
+		83829EDD1F459D6600DF530A /* NSString+XHLaunchAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829EC21F459D6600DF530A /* NSString+XHLaunchAd.m */; };
+		83829EDE1F459D6600DF530A /* UIImageView+XHLaunchAdCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829EC41F459D6600DF530A /* UIImageView+XHLaunchAdCache.m */; };
+		83829EDF1F459D6600DF530A /* XHLaunchAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829EC61F459D6600DF530A /* XHLaunchAd.m */; };
+		83829EE01F459D6600DF530A /* XHLaunchAdButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829EC81F459D6600DF530A /* XHLaunchAdButton.m */; };
+		83829EE11F459D6600DF530A /* XHLaunchAdCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ECA1F459D6600DF530A /* XHLaunchAdCache.m */; };
+		83829EE21F459D6600DF530A /* XHLaunchAdConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ECC1F459D6600DF530A /* XHLaunchAdConfiguration.m */; };
+		83829EE31F459D6600DF530A /* XHLaunchAdController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ECE1F459D6600DF530A /* XHLaunchAdController.m */; };
+		83829EE41F459D6600DF530A /* XHLaunchAdDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ED01F459D6600DF530A /* XHLaunchAdDownloader.m */; };
+		83829EE51F459D6600DF530A /* XHLaunchAdImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ED21F459D6600DF530A /* XHLaunchAdImage.m */; };
+		83829EE61F459D6600DF530A /* XHLaunchAdImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ED41F459D6600DF530A /* XHLaunchAdImageManager.m */; };
+		83829EE71F459D6600DF530A /* XHLaunchAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ED61F459D6600DF530A /* XHLaunchAdView.m */; };
+		83829EE81F459D6600DF530A /* XHLaunchImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829ED81F459D6600DF530A /* XHLaunchImageView.m */; };
+		83829EE91F459D6600DF530A /* XHLaunchAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83829EDA1F459D6600DF530A /* XHLaunchAdManager.m */; };
+		8383A1AA1F37FC290084385D /* ReminderWayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383A1A91F37FC290084385D /* ReminderWayViewController.m */; };
+		8388C0441F2F169700506FFA /* DIYMJRefreshHaderHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0431F2F169700506FFA /* DIYMJRefreshHaderHistory.m */; };
+		8388C0521F30258600506FFA /* LKDBColumnDes.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0481F30258600506FFA /* LKDBColumnDes.m */; };
+		8388C0531F30258600506FFA /* LKDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C04A1F30258600506FFA /* LKDBModel.m */; };
+		8388C0541F30258600506FFA /* LKDBSQLState.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C04C1F30258600506FFA /* LKDBSQLState.m */; };
+		8388C0551F30258600506FFA /* LKDBTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C04E1F30258600506FFA /* LKDBTool.m */; };
+		8388C05A1F3025C900506FFA /* RKBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0591F3025C900506FFA /* RKBaseModel.m */; };
+		8388C0611F31651E00506FFA /* PersonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0601F31651E00506FFA /* PersonDetailViewController.m */; };
+		8388C0651F317B9600506FFA /* PerPickImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0641F317B9600506FFA /* PerPickImageView.m */; };
+		83B9A57F1F3DDA41003F751C /* UISearchBar+Background.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B9A57E1F3DDA41003F751C /* UISearchBar+Background.m */; };
+		83D10E6A1F34088300B7A6B0 /* UserLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D10E681F34088300B7A6B0 /* UserLoginViewController.m */; };
+		83D10E6B1F34088300B7A6B0 /* UserLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D10E691F34088300B7A6B0 /* UserLoginViewController.xib */; };
+		83D10E701F340C6F00B7A6B0 /* AppSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D10E6F1F340C6F00B7A6B0 /* AppSettingViewController.m */; };
+		83D1A79F1F34404F00E48A4F /* GtasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7791F34404F00E48A4F /* GtasksViewController.m */; };
+		83D1A7A01F34404F00E48A4F /* GtasksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D1A77A1F34404F00E48A4F /* GtasksViewController.xib */; };
+		83D1A7A21F34404F00E48A4F /* ChooseRepeatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A77F1F34404F00E48A4F /* ChooseRepeatViewController.m */; };
+		83D1A7A41F34404F00E48A4F /* GtasksModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7841F34404F00E48A4F /* GtasksModel.m */; };
+		83D1A7A51F34404F00E48A4F /* ReminderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7861F34404F00E48A4F /* ReminderModel.m */; };
+		83D1A7A61F34404F00E48A4F /* GtaskHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A78B1F34404F00E48A4F /* GtaskHistoryCell.m */; };
+		83D1A7A71F34404F00E48A4F /* GtaskHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D1A78C1F34404F00E48A4F /* GtaskHistoryCell.xib */; };
+		83D1A7A81F34404F00E48A4F /* GtaskHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A78E1F34404F00E48A4F /* GtaskHistoryViewController.m */; };
+		83D1A7A91F34404F00E48A4F /* GtaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7931F34404F00E48A4F /* GtaskListViewController.m */; };
+		83D1A7AA1F34404F00E48A4F /* ReminderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7951F34404F00E48A4F /* ReminderListViewController.m */; };
+		83D1A7AB1F34404F00E48A4F /* GtaskListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7981F34404F00E48A4F /* GtaskListTableViewCell.m */; };
+		83D1A7AC1F34404F00E48A4F /* GtaskListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D1A7991F34404F00E48A4F /* GtaskListTableViewCell.xib */; };
+		83D1A7AD1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A79B1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.m */; };
+		83D1A7AE1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D1A79C1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.xib */; };
+		83D1A7AF1F34404F00E48A4F /* RemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A79E1F34404F00E48A4F /* RemindViewController.m */; };
+		83D1A7B21F3443A400E48A4F /* AddReminderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7B11F3443A400E48A4F /* AddReminderController.m */; };
+		83D1A7B51F3443B700E48A4F /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1A7B41F3443B700E48A4F /* ReminderViewController.m */; };
+		83D1CFA21F387FE00009483E /* ReminderHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1CFA11F387FE00009483E /* ReminderHistoryViewController.m */; };
+		83D1CFA51F38805F0009483E /* ReminderHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1CFA41F38805F0009483E /* ReminderHistoryModel.m */; };
 		83D72FD51F1C9E6C001C1275 /* UITabBarItem+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D72FD41F1C9E6C001C1275 /* UITabBarItem+Theme.m */; };
 		83D72FD71F1CA1FE001C1275 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 83D72FD61F1CA1FE001C1275 /* res */; };
 		83D72FDC1F1D9EB8001C1275 /* myNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D72FDA1F1D9EB8001C1275 /* myNavigationController.m */; };
@@ -97,8 +159,15 @@
 		83D72FEC1F1E0671001C1275 /* INSPECTIONSessionWrapperOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D72FEA1F1E0671001C1275 /* INSPECTIONSessionWrapperOperation.m */; };
 		83D72FF21F1E074B001C1275 /* MBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D72FEF1F1E074B001C1275 /* MBManager.m */; };
 		83D72FF31F1E074B001C1275 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D72FF11F1E074B001C1275 /* MBProgressHUD.m */; };
-		83F080B51F25EC1D00CC7359 /* GtasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F080B31F25EC1D00CC7359 /* GtasksViewController.m */; };
-		83F080B61F25EC1D00CC7359 /* GtasksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F080B41F25EC1D00CC7359 /* GtasksViewController.xib */; };
+		83DAA2611F395F8C008082FB /* LZAddressPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA2551F395F8C008082FB /* LZAddressPickerView.m */; };
+		83DAA2621F395F8C008082FB /* LZCustomLimitDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA2571F395F8C008082FB /* LZCustomLimitDatePicker.m */; };
+		83DAA2631F395F8C008082FB /* LZMultiplePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA2591F395F8C008082FB /* LZMultiplePickerView.m */; };
+		83DAA2641F395F8C008082FB /* LZPickTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA25B1F395F8C008082FB /* LZPickTopView.m */; };
+		83DAA2651F395F8C008082FB /* LZPickViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA25E1F395F8C008082FB /* LZPickViewManager.m */; };
+		83DAA2661F395F8C008082FB /* LZTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA2601F395F8C008082FB /* LZTimePickerView.m */; };
+		83DAA2691F398705008082FB /* ReminderAndGtasksDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA2681F398705008082FB /* ReminderAndGtasksDetailView.m */; };
+		83DAA26D1F398848008082FB /* ReminderAndGtasksDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83DAA26C1F398848008082FB /* ReminderAndGtasksDetailView.xib */; };
+		83DAA2731F39CAD3008082FB /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DAA2721F39CAD3008082FB /* SearchViewController.m */; };
 		AC379EB3EFF2A369C446363E /* Pods_RikingCalendarUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E4BDAAD33A965421FBD6411 /* Pods_RikingCalendarUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -125,10 +194,6 @@
 		463A086CC6F26A51C006AE8C /* Pods-RikingCalendarUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RikingCalendarUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RikingCalendarUITests/Pods-RikingCalendarUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5C792E9FA61085797FC950B0 /* Pods-RikingCalendarTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RikingCalendarTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RikingCalendarTests/Pods-RikingCalendarTests.release.xcconfig"; sourceTree = "<group>"; };
 		6555A13EC148F134AC4DEBE1 /* Pods_RikingCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RikingCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		830119B21F2056CF00DBAF80 /* AddReminderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddReminderController.h; sourceTree = "<group>"; };
-		830119B31F2056CF00DBAF80 /* AddReminderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddReminderController.m; sourceTree = "<group>"; };
-		830119B51F20596E00DBAF80 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
-		830119B61F20596E00DBAF80 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		830119BC1F207B1A00DBAF80 /* MainTouchTableTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTouchTableTableView.h; sourceTree = "<group>"; };
 		830119BD1F207B1A00DBAF80 /* MainTouchTableTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTouchTableTableView.m; sourceTree = "<group>"; };
 		830119BE1F207B1A00DBAF80 /* MYSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYSegmentView.h; sourceTree = "<group>"; };
@@ -142,7 +207,6 @@
 		8315A5CA1F18AE40003BECDA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		8315A5CB1F18AE40003BECDA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		8315A5CE1F18AE40003BECDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		8315A5D01F18AE40003BECDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8315A5D31F18AE40003BECDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8315A5D51F18AE40003BECDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8315A5DA1F18AE40003BECDA /* RikingCalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RikingCalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,31 +244,12 @@
 		8321D3F61F1C58E500CBEEBC /* RKTabbarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKTabbarViewController.m; sourceTree = "<group>"; };
 		8321D3F81F1C58E500CBEEBC /* PersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonViewController.h; sourceTree = "<group>"; };
 		8321D3F91F1C58E500CBEEBC /* PersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonViewController.m; sourceTree = "<group>"; };
-		8321D3FB1F1C58E500CBEEBC /* RemindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindViewController.h; sourceTree = "<group>"; };
-		8321D3FC1F1C58E500CBEEBC /* RemindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindViewController.m; sourceTree = "<group>"; };
 		8321D3FE1F1C58E500CBEEBC /* YPTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTabBar.h; sourceTree = "<group>"; };
 		8321D3FF1F1C58E500CBEEBC /* YPTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTabBar.m; sourceTree = "<group>"; };
 		8321D4001F1C58E500CBEEBC /* YPTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTabBarController.h; sourceTree = "<group>"; };
 		8321D4011F1C58E500CBEEBC /* YPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTabBarController.m; sourceTree = "<group>"; };
 		8321D4021F1C58E500CBEEBC /* YPTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTabItem.h; sourceTree = "<group>"; };
 		8321D4031F1C58E500CBEEBC /* YPTabItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTabItem.m; sourceTree = "<group>"; };
-		8321D40C1F1C58E500CBEEBC /* MJConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJConst.h; sourceTree = "<group>"; };
-		8321D40D1F1C58E500CBEEBC /* MJConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJConst.m; sourceTree = "<group>"; };
-		8321D40E1F1C58E500CBEEBC /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
-		8321D40F1F1C58E500CBEEBC /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
-		8321D4101F1C58E500CBEEBC /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
-		8321D4111F1C58E500CBEEBC /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJProperty.h; sourceTree = "<group>"; };
-		8321D4121F1C58E500CBEEBC /* MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJProperty.m; sourceTree = "<group>"; };
-		8321D4131F1C58E500CBEEBC /* MJType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJType.h; sourceTree = "<group>"; };
-		8321D4141F1C58E500CBEEBC /* MJType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJType.m; sourceTree = "<group>"; };
-		8321D4151F1C58E500CBEEBC /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
-		8321D4161F1C58E500CBEEBC /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
-		8321D4171F1C58E500CBEEBC /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
-		8321D4181F1C58E500CBEEBC /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
-		8321D4191F1C58E500CBEEBC /* NSObject+MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJProperty.h"; sourceTree = "<group>"; };
-		8321D41A1F1C58E500CBEEBC /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
-		8321D41B1F1C58E500CBEEBC /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
-		8321D41C1F1C58E500CBEEBC /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
 		8321D41F1F1C58E500CBEEBC /* MJRefreshAutoFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshAutoFooter.h; sourceTree = "<group>"; };
 		8321D4201F1C58E500CBEEBC /* MJRefreshAutoFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshAutoFooter.m; sourceTree = "<group>"; };
 		8321D4211F1C58E500CBEEBC /* MJRefreshBackFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBackFooter.h; sourceTree = "<group>"; };
@@ -265,16 +310,12 @@
 		836B06AA1F29D7120054DE46 /* ReminderDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderDatePickerView.h; sourceTree = "<group>"; };
 		836B06AB1F29D7120054DE46 /* ReminderDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderDatePickerView.m; sourceTree = "<group>"; };
 		836B06AD1F29D8130054DE46 /* ReminderDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderDatePickerView.xib; sourceTree = "<group>"; };
-		836B06AF1F2AE2610054DE46 /* ReminderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderListViewController.h; sourceTree = "<group>"; };
-		836B06B01F2AE2610054DE46 /* ReminderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderListViewController.m; sourceTree = "<group>"; };
-		836B06B21F2AE27B0054DE46 /* GtaskListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskListViewController.h; sourceTree = "<group>"; };
-		836B06B31F2AE27B0054DE46 /* GtaskListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskListViewController.m; sourceTree = "<group>"; };
-		836B06B51F2B31530054DE46 /* GtaskListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskListTableViewCell.h; sourceTree = "<group>"; };
-		836B06B61F2B31530054DE46 /* GtaskListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskListTableViewCell.m; sourceTree = "<group>"; };
-		836B06B71F2B31530054DE46 /* GtaskListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GtaskListTableViewCell.xib; sourceTree = "<group>"; };
-		836B06BA1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeedCreateGtaskTableViewCell.h; sourceTree = "<group>"; };
-		836B06BB1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeedCreateGtaskTableViewCell.m; sourceTree = "<group>"; };
-		836B06BC1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpeedCreateGtaskTableViewCell.xib; sourceTree = "<group>"; };
+		83712CD61F35EF6E003D2316 /* LoginModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginModel.h; sourceTree = "<group>"; };
+		83712CD71F35EF6E003D2316 /* LoginModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginModel.m; sourceTree = "<group>"; };
+		83712CDA1F35F721003D2316 /* NetAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetAPIManager.h; sourceTree = "<group>"; };
+		83712CDB1F35F721003D2316 /* NetAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetAPIManager.m; sourceTree = "<group>"; };
+		83712CDD1F35F91C003D2316 /* RequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestManager.h; sourceTree = "<group>"; };
+		83712CDE1F35F91C003D2316 /* RequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestManager.m; sourceTree = "<group>"; };
 		8371B0581F2863F000DA7465 /* NSDate+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Extension.h"; sourceTree = "<group>"; };
 		8371B0591F2863F000DA7465 /* NSDate+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Extension.m"; sourceTree = "<group>"; };
 		8371B05A1F2863F000DA7465 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
@@ -284,8 +325,155 @@
 		8371B05E1F2863F000DA7465 /* WSDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WSDatePickerView.xib; sourceTree = "<group>"; };
 		8371B0631F286D9200DA7465 /* RKBaseTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKBaseTabViewController.h; sourceTree = "<group>"; };
 		8371B0641F286D9200DA7465 /* RKBaseTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKBaseTabViewController.m; sourceTree = "<group>"; };
-		8371B0661F286FC400DA7465 /* ChooseRepeatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseRepeatViewController.h; sourceTree = "<group>"; };
-		8371B0671F286FC400DA7465 /* ChooseRepeatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseRepeatViewController.m; sourceTree = "<group>"; };
+		837937BC1F3AA9A8009011E9 /* RKTabvIewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKTabvIewView.h; sourceTree = "<group>"; };
+		837937BD1F3AA9A8009011E9 /* RKTabvIewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKTabvIewView.m; sourceTree = "<group>"; };
+		837937BF1F3AB19F009011E9 /* ReportListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportListTableView.h; sourceTree = "<group>"; };
+		837937C01F3AB19F009011E9 /* ReportListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportListTableView.m; sourceTree = "<group>"; };
+		837937E71F3B03C8009011E9 /* DOPDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DOPDropDownMenu.h; sourceTree = "<group>"; };
+		837937E81F3B03C8009011E9 /* DOPDropDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DOPDropDownMenu.m; sourceTree = "<group>"; };
+		837937EA1F3B0F5A009011E9 /* DropMenuTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropMenuTableView.h; sourceTree = "<group>"; };
+		837937EB1F3B0F5A009011E9 /* DropMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropMenuTableView.m; sourceTree = "<group>"; };
+		837937ED1F3B1A8A009011E9 /* DropMenuTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropMenuTableView.xib; sourceTree = "<group>"; };
+		837937F21F3B1FAF009011E9 /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
+		837937F31F3B1FAF009011E9 /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
+		837937F51F3C235D009011E9 /* RikingCalendar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RikingCalendar.entitlements; sourceTree = "<group>"; };
+		837937F61F3C2E7B009011E9 /* ModerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModerManager.h; sourceTree = "<group>"; };
+		837937F71F3C342D009011E9 /* RemindListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindListTableViewCell.h; sourceTree = "<group>"; };
+		837937F81F3C342D009011E9 /* RemindListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindListTableViewCell.m; sourceTree = "<group>"; };
+		837937F91F3C342D009011E9 /* RemindListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RemindListTableViewCell.xib; sourceTree = "<group>"; };
+		837938371F3D4150009011E9 /* ReportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportModel.h; sourceTree = "<group>"; };
+		837938381F3D4150009011E9 /* ReportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportModel.m; sourceTree = "<group>"; };
+		8379383E1F3D58C8009011E9 /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
+		8379383F1F3D58C8009011E9 /* MJExtensionConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtensionConst.h; sourceTree = "<group>"; };
+		837938401F3D58C8009011E9 /* MJExtensionConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJExtensionConst.m; sourceTree = "<group>"; };
+		837938411F3D58C8009011E9 /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
+		837938421F3D58C8009011E9 /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
+		837938431F3D58C8009011E9 /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJProperty.h; sourceTree = "<group>"; };
+		837938441F3D58C8009011E9 /* MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJProperty.m; sourceTree = "<group>"; };
+		837938451F3D58C8009011E9 /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyKey.h; sourceTree = "<group>"; };
+		837938461F3D58C8009011E9 /* MJPropertyKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyKey.m; sourceTree = "<group>"; };
+		837938471F3D58C8009011E9 /* MJPropertyType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyType.h; sourceTree = "<group>"; };
+		837938481F3D58C8009011E9 /* MJPropertyType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyType.m; sourceTree = "<group>"; };
+		837938491F3D58C8009011E9 /* NSObject+MJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJClass.h"; sourceTree = "<group>"; };
+		8379384A1F3D58C8009011E9 /* NSObject+MJClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJClass.m"; sourceTree = "<group>"; };
+		8379384B1F3D58C8009011E9 /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
+		8379384C1F3D58C8009011E9 /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
+		8379384D1F3D58C8009011E9 /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
+		8379384E1F3D58C8009011E9 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
+		8379384F1F3D58C8009011E9 /* NSObject+MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJProperty.h"; sourceTree = "<group>"; };
+		837938501F3D58C8009011E9 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
+		837938511F3D58C8009011E9 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
+		837938521F3D58C8009011E9 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
+		8379385D1F3D784A009011E9 /* ReportLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportLabel.h; sourceTree = "<group>"; };
+		8379385E1F3D784A009011E9 /* ReportLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportLabel.m; sourceTree = "<group>"; };
+		83829D3A1F41AAD400DF530A /* LocalNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotificationManager.h; sourceTree = "<group>"; };
+		83829D3B1F41AAD400DF530A /* LocalNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalNotificationManager.m; sourceTree = "<group>"; };
+		83829D3D1F41C8B400DF530A /* HolidayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HolidayModel.h; sourceTree = "<group>"; };
+		83829D3E1F41C8B400DF530A /* HolidayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HolidayModel.m; sourceTree = "<group>"; };
+		83829D411F42DA9B00DF530A /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		83829D421F42DA9B00DF530A /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		83829D451F42DFA700DF530A /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		83829D461F42DFA700DF530A /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		83829D491F42F48100DF530A /* JPullEmailTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPullEmailTF.h; sourceTree = "<group>"; };
+		83829D4A1F42F48100DF530A /* JPullEmailTF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPullEmailTF.m; sourceTree = "<group>"; };
+		83829D4B1F42F48100DF530A /* JPullTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPullTableViewCell.h; sourceTree = "<group>"; };
+		83829D4C1F42F48100DF530A /* JPullTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPullTableViewCell.m; sourceTree = "<group>"; };
+		83829D4D1F42F48100DF530A /* JPullTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JPullTableViewCell.xib; sourceTree = "<group>"; };
+		83829D511F42F74600DF530A /* PersonMessageEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonMessageEditViewController.h; sourceTree = "<group>"; };
+		83829D521F42F74600DF530A /* PersonMessageEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonMessageEditViewController.m; sourceTree = "<group>"; };
+		83829D541F43F45200DF530A /* CalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModel.h; sourceTree = "<group>"; };
+		83829D551F43F45200DF530A /* CalendarModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarModel.m; sourceTree = "<group>"; };
+		83829D581F4425CC00DF530A /* RemindAndGtasksDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindAndGtasksDBManager.h; sourceTree = "<group>"; };
+		83829D591F4425CC00DF530A /* RemindAndGtasksDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindAndGtasksDBManager.m; sourceTree = "<group>"; };
+		83829EB81F4593BB00DF530A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		83829EBC1F459D6600DF530A /* image12.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = image12.gif; sourceTree = "<group>"; };
+		83829EBE1F459D6600DF530A /* LaunchAdModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchAdModel.h; sourceTree = "<group>"; };
+		83829EBF1F459D6600DF530A /* LaunchAdModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchAdModel.m; sourceTree = "<group>"; };
+		83829EC11F459D6600DF530A /* NSString+XHLaunchAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XHLaunchAd.h"; sourceTree = "<group>"; };
+		83829EC21F459D6600DF530A /* NSString+XHLaunchAd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XHLaunchAd.m"; sourceTree = "<group>"; };
+		83829EC31F459D6600DF530A /* UIImageView+XHLaunchAdCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+XHLaunchAdCache.h"; sourceTree = "<group>"; };
+		83829EC41F459D6600DF530A /* UIImageView+XHLaunchAdCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+XHLaunchAdCache.m"; sourceTree = "<group>"; };
+		83829EC51F459D6600DF530A /* XHLaunchAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAd.h; sourceTree = "<group>"; };
+		83829EC61F459D6600DF530A /* XHLaunchAd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAd.m; sourceTree = "<group>"; };
+		83829EC71F459D6600DF530A /* XHLaunchAdButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdButton.h; sourceTree = "<group>"; };
+		83829EC81F459D6600DF530A /* XHLaunchAdButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdButton.m; sourceTree = "<group>"; };
+		83829EC91F459D6600DF530A /* XHLaunchAdCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdCache.h; sourceTree = "<group>"; };
+		83829ECA1F459D6600DF530A /* XHLaunchAdCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdCache.m; sourceTree = "<group>"; };
+		83829ECB1F459D6600DF530A /* XHLaunchAdConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdConfiguration.h; sourceTree = "<group>"; };
+		83829ECC1F459D6600DF530A /* XHLaunchAdConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdConfiguration.m; sourceTree = "<group>"; };
+		83829ECD1F459D6600DF530A /* XHLaunchAdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdController.h; sourceTree = "<group>"; };
+		83829ECE1F459D6600DF530A /* XHLaunchAdController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdController.m; sourceTree = "<group>"; };
+		83829ECF1F459D6600DF530A /* XHLaunchAdDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdDownloader.h; sourceTree = "<group>"; };
+		83829ED01F459D6600DF530A /* XHLaunchAdDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdDownloader.m; sourceTree = "<group>"; };
+		83829ED11F459D6600DF530A /* XHLaunchAdImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdImage.h; sourceTree = "<group>"; };
+		83829ED21F459D6600DF530A /* XHLaunchAdImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdImage.m; sourceTree = "<group>"; };
+		83829ED31F459D6600DF530A /* XHLaunchAdImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdImageManager.h; sourceTree = "<group>"; };
+		83829ED41F459D6600DF530A /* XHLaunchAdImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdImageManager.m; sourceTree = "<group>"; };
+		83829ED51F459D6600DF530A /* XHLaunchAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdView.h; sourceTree = "<group>"; };
+		83829ED61F459D6600DF530A /* XHLaunchAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdView.m; sourceTree = "<group>"; };
+		83829ED71F459D6600DF530A /* XHLaunchImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchImageView.h; sourceTree = "<group>"; };
+		83829ED81F459D6600DF530A /* XHLaunchImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchImageView.m; sourceTree = "<group>"; };
+		83829ED91F459D6600DF530A /* XHLaunchAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHLaunchAdManager.h; sourceTree = "<group>"; };
+		83829EDA1F459D6600DF530A /* XHLaunchAdManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHLaunchAdManager.m; sourceTree = "<group>"; };
+		8383A1A81F37FC290084385D /* ReminderWayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderWayViewController.h; sourceTree = "<group>"; };
+		8383A1A91F37FC290084385D /* ReminderWayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderWayViewController.m; sourceTree = "<group>"; };
+		8388C0421F2F169700506FFA /* DIYMJRefreshHaderHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIYMJRefreshHaderHistory.h; sourceTree = "<group>"; };
+		8388C0431F2F169700506FFA /* DIYMJRefreshHaderHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIYMJRefreshHaderHistory.m; sourceTree = "<group>"; };
+		8388C0471F30258600506FFA /* LKDBColumnDes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKDBColumnDes.h; sourceTree = "<group>"; };
+		8388C0481F30258600506FFA /* LKDBColumnDes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKDBColumnDes.m; sourceTree = "<group>"; };
+		8388C0491F30258600506FFA /* LKDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKDBModel.h; sourceTree = "<group>"; };
+		8388C04A1F30258600506FFA /* LKDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKDBModel.m; sourceTree = "<group>"; };
+		8388C04B1F30258600506FFA /* LKDBSQLState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKDBSQLState.h; sourceTree = "<group>"; };
+		8388C04C1F30258600506FFA /* LKDBSQLState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKDBSQLState.m; sourceTree = "<group>"; };
+		8388C04D1F30258600506FFA /* LKDBTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKDBTool.h; sourceTree = "<group>"; };
+		8388C04E1F30258600506FFA /* LKDBTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LKDBTool.m; sourceTree = "<group>"; };
+		8388C0581F3025C900506FFA /* RKBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKBaseModel.h; sourceTree = "<group>"; };
+		8388C0591F3025C900506FFA /* RKBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKBaseModel.m; sourceTree = "<group>"; };
+		8388C05F1F31651E00506FFA /* PersonDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetailViewController.h; sourceTree = "<group>"; };
+		8388C0601F31651E00506FFA /* PersonDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetailViewController.m; sourceTree = "<group>"; };
+		8388C0631F317B9600506FFA /* PerPickImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerPickImageView.h; sourceTree = "<group>"; };
+		8388C0641F317B9600506FFA /* PerPickImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerPickImageView.m; sourceTree = "<group>"; };
+		83B9A57D1F3DDA41003F751C /* UISearchBar+Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Background.h"; sourceTree = "<group>"; };
+		83B9A57E1F3DDA41003F751C /* UISearchBar+Background.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Background.m"; sourceTree = "<group>"; };
+		83D10E671F34088200B7A6B0 /* UserLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginViewController.h; sourceTree = "<group>"; };
+		83D10E681F34088300B7A6B0 /* UserLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoginViewController.m; sourceTree = "<group>"; };
+		83D10E691F34088300B7A6B0 /* UserLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserLoginViewController.xib; sourceTree = "<group>"; };
+		83D10E6E1F340C6F00B7A6B0 /* AppSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppSettingViewController.h; sourceTree = "<group>"; };
+		83D10E6F1F340C6F00B7A6B0 /* AppSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppSettingViewController.m; sourceTree = "<group>"; };
+		83D1A7781F34404F00E48A4F /* GtasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtasksViewController.h; sourceTree = "<group>"; };
+		83D1A7791F34404F00E48A4F /* GtasksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtasksViewController.m; sourceTree = "<group>"; };
+		83D1A77A1F34404F00E48A4F /* GtasksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GtasksViewController.xib; sourceTree = "<group>"; };
+		83D1A77E1F34404F00E48A4F /* ChooseRepeatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseRepeatViewController.h; sourceTree = "<group>"; };
+		83D1A77F1F34404F00E48A4F /* ChooseRepeatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseRepeatViewController.m; sourceTree = "<group>"; };
+		83D1A7831F34404F00E48A4F /* GtasksModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtasksModel.h; sourceTree = "<group>"; };
+		83D1A7841F34404F00E48A4F /* GtasksModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtasksModel.m; sourceTree = "<group>"; };
+		83D1A7851F34404F00E48A4F /* ReminderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderModel.h; sourceTree = "<group>"; };
+		83D1A7861F34404F00E48A4F /* ReminderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderModel.m; sourceTree = "<group>"; };
+		83D1A78A1F34404F00E48A4F /* GtaskHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskHistoryCell.h; sourceTree = "<group>"; };
+		83D1A78B1F34404F00E48A4F /* GtaskHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskHistoryCell.m; sourceTree = "<group>"; };
+		83D1A78C1F34404F00E48A4F /* GtaskHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GtaskHistoryCell.xib; sourceTree = "<group>"; };
+		83D1A78D1F34404F00E48A4F /* GtaskHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskHistoryViewController.h; sourceTree = "<group>"; };
+		83D1A78E1F34404F00E48A4F /* GtaskHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskHistoryViewController.m; sourceTree = "<group>"; };
+		83D1A7921F34404F00E48A4F /* GtaskListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskListViewController.h; sourceTree = "<group>"; };
+		83D1A7931F34404F00E48A4F /* GtaskListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskListViewController.m; sourceTree = "<group>"; };
+		83D1A7941F34404F00E48A4F /* ReminderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderListViewController.h; sourceTree = "<group>"; };
+		83D1A7951F34404F00E48A4F /* ReminderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderListViewController.m; sourceTree = "<group>"; };
+		83D1A7971F34404F00E48A4F /* GtaskListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtaskListTableViewCell.h; sourceTree = "<group>"; };
+		83D1A7981F34404F00E48A4F /* GtaskListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtaskListTableViewCell.m; sourceTree = "<group>"; };
+		83D1A7991F34404F00E48A4F /* GtaskListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GtaskListTableViewCell.xib; sourceTree = "<group>"; };
+		83D1A79A1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeedCreateGtaskTableViewCell.h; sourceTree = "<group>"; };
+		83D1A79B1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeedCreateGtaskTableViewCell.m; sourceTree = "<group>"; };
+		83D1A79C1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpeedCreateGtaskTableViewCell.xib; sourceTree = "<group>"; };
+		83D1A79D1F34404F00E48A4F /* RemindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindViewController.h; sourceTree = "<group>"; };
+		83D1A79E1F34404F00E48A4F /* RemindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindViewController.m; sourceTree = "<group>"; };
+		83D1A7B01F3443A400E48A4F /* AddReminderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddReminderController.h; sourceTree = "<group>"; };
+		83D1A7B11F3443A400E48A4F /* AddReminderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddReminderController.m; sourceTree = "<group>"; };
+		83D1A7B31F3443B700E48A4F /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
+		83D1A7B41F3443B700E48A4F /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
+		83D1CFA01F387FE00009483E /* ReminderHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderHistoryViewController.h; sourceTree = "<group>"; };
+		83D1CFA11F387FE00009483E /* ReminderHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderHistoryViewController.m; sourceTree = "<group>"; };
+		83D1CFA31F38805F0009483E /* ReminderHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderHistoryModel.h; sourceTree = "<group>"; };
+		83D1CFA41F38805F0009483E /* ReminderHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderHistoryModel.m; sourceTree = "<group>"; };
 		83D72FD31F1C9E6C001C1275 /* UITabBarItem+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarItem+Theme.h"; sourceTree = "<group>"; };
 		83D72FD41F1C9E6C001C1275 /* UITabBarItem+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarItem+Theme.m"; sourceTree = "<group>"; };
 		83D72FD61F1CA1FE001C1275 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
@@ -303,9 +491,24 @@
 		83D72FEF1F1E074B001C1275 /* MBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBManager.m; sourceTree = "<group>"; };
 		83D72FF01F1E074B001C1275 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		83D72FF11F1E074B001C1275 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		83F080B21F25EC1D00CC7359 /* GtasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GtasksViewController.h; sourceTree = "<group>"; };
-		83F080B31F25EC1D00CC7359 /* GtasksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GtasksViewController.m; sourceTree = "<group>"; };
-		83F080B41F25EC1D00CC7359 /* GtasksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GtasksViewController.xib; sourceTree = "<group>"; };
+		83DAA2541F395F8C008082FB /* LZAddressPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZAddressPickerView.h; sourceTree = "<group>"; };
+		83DAA2551F395F8C008082FB /* LZAddressPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZAddressPickerView.m; sourceTree = "<group>"; };
+		83DAA2561F395F8C008082FB /* LZCustomLimitDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZCustomLimitDatePicker.h; sourceTree = "<group>"; };
+		83DAA2571F395F8C008082FB /* LZCustomLimitDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZCustomLimitDatePicker.m; sourceTree = "<group>"; };
+		83DAA2581F395F8C008082FB /* LZMultiplePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZMultiplePickerView.h; sourceTree = "<group>"; };
+		83DAA2591F395F8C008082FB /* LZMultiplePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZMultiplePickerView.m; sourceTree = "<group>"; };
+		83DAA25A1F395F8C008082FB /* LZPickTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZPickTopView.h; sourceTree = "<group>"; };
+		83DAA25B1F395F8C008082FB /* LZPickTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZPickTopView.m; sourceTree = "<group>"; };
+		83DAA25C1F395F8C008082FB /* LZPickViewDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZPickViewDefine.h; sourceTree = "<group>"; };
+		83DAA25D1F395F8C008082FB /* LZPickViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZPickViewManager.h; sourceTree = "<group>"; };
+		83DAA25E1F395F8C008082FB /* LZPickViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZPickViewManager.m; sourceTree = "<group>"; };
+		83DAA25F1F395F8C008082FB /* LZTimePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZTimePickerView.h; sourceTree = "<group>"; };
+		83DAA2601F395F8C008082FB /* LZTimePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZTimePickerView.m; sourceTree = "<group>"; };
+		83DAA2671F398705008082FB /* ReminderAndGtasksDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderAndGtasksDetailView.h; sourceTree = "<group>"; };
+		83DAA2681F398705008082FB /* ReminderAndGtasksDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderAndGtasksDetailView.m; sourceTree = "<group>"; };
+		83DAA26C1F398848008082FB /* ReminderAndGtasksDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderAndGtasksDetailView.xib; sourceTree = "<group>"; };
+		83DAA2711F39CAD3008082FB /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		83DAA2721F39CAD3008082FB /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		845641208AC429B4CBC294C7 /* Pods-RikingCalendarUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RikingCalendarUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RikingCalendarUITests/Pods-RikingCalendarUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9BEE65F4C11706557D2C414D /* Pods_RikingCalendarTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RikingCalendarTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77336EBEF206082061C4399 /* Pods-RikingCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RikingCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-RikingCalendar/Pods-RikingCalendar.release.xcconfig"; sourceTree = "<group>"; };
@@ -363,24 +566,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		830119B11F20569800DBAF80 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				836B06A71F2997EC0054DE46 /* ClassesModel */,
-				836B06A81F2997EC0054DE46 /* ClassesViews */,
-				830119B21F2056CF00DBAF80 /* AddReminderController.h */,
-				830119B31F2056CF00DBAF80 /* AddReminderController.m */,
-				830119B51F20596E00DBAF80 /* ReminderViewController.h */,
-				830119B61F20596E00DBAF80 /* ReminderViewController.m */,
-				83F080B21F25EC1D00CC7359 /* GtasksViewController.h */,
-				83F080B31F25EC1D00CC7359 /* GtasksViewController.m */,
-				83F080B41F25EC1D00CC7359 /* GtasksViewController.xib */,
-				8371B0661F286FC400DA7465 /* ChooseRepeatViewController.h */,
-				8371B0671F286FC400DA7465 /* ChooseRepeatViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
 		830119BB1F207B1A00DBAF80 /* MYSegmentView */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,17 +607,18 @@
 		8315A5C31F18AE40003BECDA /* RikingCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				837937F51F3C235D009011E9 /* RikingCalendar.entitlements */,
 				8315A5C71F18AE40003BECDA /* AppDelegate.h */,
 				8315A5C81F18AE40003BECDA /* AppDelegate.m */,
 				8315A5CA1F18AE40003BECDA /* ViewController.h */,
 				8315A5CB1F18AE40003BECDA /* ViewController.m */,
 				8315A5CD1F18AE40003BECDA /* Main.storyboard */,
-				8315A5D01F18AE40003BECDA /* Assets.xcassets */,
 				8315A5D21F18AE40003BECDA /* LaunchScreen.storyboard */,
 				8315A5D51F18AE40003BECDA /* Info.plist */,
 				8321D3D01F1C54C100CBEEBC /* PrefixHeader.pch */,
 				8337BDA21F1C62E800709471 /* Resources */,
 				8315A5C41F18AE40003BECDA /* Supporting Files */,
+				83829EB81F4593BB00DF530A /* Assets.xcassets */,
 			);
 			path = RikingCalendar;
 			sourceTree = "<group>";
@@ -468,6 +654,8 @@
 		8321D3D91F1C58E500CBEEBC /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				83B9A57D1F3DDA41003F751C /* UISearchBar+Background.h */,
+				83B9A57E1F3DDA41003F751C /* UISearchBar+Background.m */,
 				83011A5D1F21D78F00DBAF80 /* UIView+FontSize.h */,
 				83011A5E1F21D78F00DBAF80 /* UIView+FontSize.m */,
 				83D72FDD1F1DD657001C1275 /* NSCalendar+SFHelper.h */,
@@ -499,6 +687,8 @@
 		8321D3E71F1C58E500CBEEBC /* MainViewController */ = {
 			isa = PBXGroup;
 			children = (
+				83829D441F42DF9000DF530A /* WebViewController */,
+				83D10E661F34086400B7A6B0 /* RKUserLoginViewController */,
 				8371B0561F2863F000DA7465 /* ClassesView */,
 				8321D3E81F1C58E500CBEEBC /* HolidaysViewController */,
 				8321D3EB1F1C58E500CBEEBC /* HomeViewController */,
@@ -513,6 +703,9 @@
 		8321D3E81F1C58E500CBEEBC /* HolidaysViewController */ = {
 			isa = PBXGroup;
 			children = (
+				83DAA26F1F39CAB7008082FB /* Modes */,
+				83DAA2701F39CAB7008082FB /* Views */,
+				83DAA26E1F39CA99008082FB /* Controllers */,
 				8321D3E91F1C58E500CBEEBC /* HolidaysViewController.h */,
 				8321D3EA1F1C58E500CBEEBC /* HolidaysViewController.m */,
 			);
@@ -522,8 +715,11 @@
 		8321D3EB1F1C58E500CBEEBC /* HomeViewController */ = {
 			isa = PBXGroup;
 			children = (
+				837938361F3C9BE8009011E9 /* Model */,
 				8321D3EC1F1C58E500CBEEBC /* HomeViewController.h */,
 				8321D3ED1F1C58E500CBEEBC /* HomeViewController.m */,
+				837937BF1F3AB19F009011E9 /* ReportListTableView.h */,
+				837937C01F3AB19F009011E9 /* ReportListTableView.m */,
 			);
 			path = HomeViewController;
 			sourceTree = "<group>";
@@ -531,6 +727,7 @@
 		8321D3EE1F1C58E500CBEEBC /* MainBaseViewController */ = {
 			isa = PBXGroup;
 			children = (
+				8388C0571F3025B600506FFA /* RKBaseModel */,
 				83D72FD91F1D9EB8001C1275 /* myNavigationController.h */,
 				83D72FDA1F1D9EB8001C1275 /* myNavigationController.m */,
 				83D72FDB1F1D9EB8001C1275 /* MYNavigationControllerShouldPopProtocol.h */,
@@ -551,6 +748,8 @@
 		8321D3F71F1C58E500CBEEBC /* PersonViewController */ = {
 			isa = PBXGroup;
 			children = (
+				83829D401F42DA8000DF530A /* Model */,
+				8388C05E1F3164F400506FFA /* Controllers */,
 				8321D3F81F1C58E500CBEEBC /* PersonViewController.h */,
 				8321D3F91F1C58E500CBEEBC /* PersonViewController.m */,
 			);
@@ -560,19 +759,12 @@
 		8321D3FA1F1C58E500CBEEBC /* RemindViewController */ = {
 			isa = PBXGroup;
 			children = (
-				8321D3FB1F1C58E500CBEEBC /* RemindViewController.h */,
-				8321D3FC1F1C58E500CBEEBC /* RemindViewController.m */,
-				836B06B21F2AE27B0054DE46 /* GtaskListViewController.h */,
-				836B06B31F2AE27B0054DE46 /* GtaskListViewController.m */,
-				836B06B51F2B31530054DE46 /* GtaskListTableViewCell.h */,
-				836B06B61F2B31530054DE46 /* GtaskListTableViewCell.m */,
-				836B06B71F2B31530054DE46 /* GtaskListTableViewCell.xib */,
-				836B06BA1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.h */,
-				836B06BB1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m */,
-				836B06BC1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib */,
-				836B06AF1F2AE2610054DE46 /* ReminderListViewController.h */,
-				836B06B01F2AE2610054DE46 /* ReminderListViewController.m */,
-				830119B11F20569800DBAF80 /* Controller */,
+				83829D571F44259600DF530A /* RemindAndGtaskManager */,
+				83D1A7761F34404F00E48A4F /* AddReminderORGtasksViewController */,
+				83D1A7821F34404F00E48A4F /* ClassesModel */,
+				83D1A7871F34404F00E48A4F /* ClassesViews */,
+				83D1A7881F34404F00E48A4F /* ReminderAndGtaskHistoryControllers */,
+				83D1A7901F34404F00E48A4F /* ReminderORGtasksHomeController */,
 			);
 			path = RemindViewController;
 			sourceTree = "<group>";
@@ -593,34 +785,10 @@
 		8321D4041F1C58E500CBEEBC /* ThirdPartyLibraries */ = {
 			isa = PBXGroup;
 			children = (
-				8321D40B1F1C58E500CBEEBC /* MJExtension */,
+				8379383D1F3D58C8009011E9 /* MJExtension */,
 				8321D41D1F1C58E500CBEEBC /* MJRefresh */,
 			);
 			path = ThirdPartyLibraries;
-			sourceTree = "<group>";
-		};
-		8321D40B1F1C58E500CBEEBC /* MJExtension */ = {
-			isa = PBXGroup;
-			children = (
-				8321D40C1F1C58E500CBEEBC /* MJConst.h */,
-				8321D40D1F1C58E500CBEEBC /* MJConst.m */,
-				8321D40E1F1C58E500CBEEBC /* MJExtension.h */,
-				8321D40F1F1C58E500CBEEBC /* MJFoundation.h */,
-				8321D4101F1C58E500CBEEBC /* MJFoundation.m */,
-				8321D4111F1C58E500CBEEBC /* MJProperty.h */,
-				8321D4121F1C58E500CBEEBC /* MJProperty.m */,
-				8321D4131F1C58E500CBEEBC /* MJType.h */,
-				8321D4141F1C58E500CBEEBC /* MJType.m */,
-				8321D4151F1C58E500CBEEBC /* NSObject+MJCoding.h */,
-				8321D4161F1C58E500CBEEBC /* NSObject+MJCoding.m */,
-				8321D4171F1C58E500CBEEBC /* NSObject+MJKeyValue.h */,
-				8321D4181F1C58E500CBEEBC /* NSObject+MJKeyValue.m */,
-				8321D4191F1C58E500CBEEBC /* NSObject+MJProperty.h */,
-				8321D41A1F1C58E500CBEEBC /* NSObject+MJProperty.m */,
-				8321D41B1F1C58E500CBEEBC /* NSString+MJExtension.h */,
-				8321D41C1F1C58E500CBEEBC /* NSString+MJExtension.m */,
-			);
-			path = MJExtension;
 			sourceTree = "<group>";
 		};
 		8321D41D1F1C58E500CBEEBC /* MJRefresh */ = {
@@ -778,20 +946,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		836B06A71F2997EC0054DE46 /* ClassesModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ClassesModel;
-			sourceTree = "<group>";
-		};
-		836B06A81F2997EC0054DE46 /* ClassesViews */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ClassesViews;
-			sourceTree = "<group>";
-		};
 		836B06A91F29D6D80054DE46 /* ReminderDatePickerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -802,9 +956,30 @@
 			path = ReminderDatePickerView;
 			sourceTree = "<group>";
 		};
+		83712CD51F35EF4C003D2316 /* LoginModel */ = {
+			isa = PBXGroup;
+			children = (
+				83712CD61F35EF6E003D2316 /* LoginModel.h */,
+				83712CD71F35EF6E003D2316 /* LoginModel.m */,
+			);
+			path = LoginModel;
+			sourceTree = "<group>";
+		};
+		83712CD91F35F701003D2316 /* NetAPIManager */ = {
+			isa = PBXGroup;
+			children = (
+				83712CDA1F35F721003D2316 /* NetAPIManager.h */,
+				83712CDB1F35F721003D2316 /* NetAPIManager.m */,
+				83712CDD1F35F91C003D2316 /* RequestManager.h */,
+				83712CDE1F35F91C003D2316 /* RequestManager.m */,
+			);
+			path = NetAPIManager;
+			sourceTree = "<group>";
+		};
 		8371B0561F2863F000DA7465 /* ClassesView */ = {
 			isa = PBXGroup;
 			children = (
+				8388C0411F2F166000506FFA /* DIYMJRefreshHeader */,
 				836B06A91F29D6D80054DE46 /* ReminderDatePickerView */,
 				8371B0571F2863F000DA7465 /* WSDaePickerView */,
 			);
@@ -825,9 +1000,383 @@
 			path = WSDaePickerView;
 			sourceTree = "<group>";
 		};
+		837937BB1F3AA97E009011E9 /* LinkageTabView */ = {
+			isa = PBXGroup;
+			children = (
+				837937BC1F3AA9A8009011E9 /* RKTabvIewView.h */,
+				837937BD1F3AA9A8009011E9 /* RKTabvIewView.m */,
+			);
+			path = LinkageTabView;
+			sourceTree = "<group>";
+		};
+		837938361F3C9BE8009011E9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				837938371F3D4150009011E9 /* ReportModel.h */,
+				837938381F3D4150009011E9 /* ReportModel.m */,
+				8379385D1F3D784A009011E9 /* ReportLabel.h */,
+				8379385E1F3D784A009011E9 /* ReportLabel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8379383D1F3D58C8009011E9 /* MJExtension */ = {
+			isa = PBXGroup;
+			children = (
+				8379383E1F3D58C8009011E9 /* MJExtension.h */,
+				8379383F1F3D58C8009011E9 /* MJExtensionConst.h */,
+				837938401F3D58C8009011E9 /* MJExtensionConst.m */,
+				837938411F3D58C8009011E9 /* MJFoundation.h */,
+				837938421F3D58C8009011E9 /* MJFoundation.m */,
+				837938431F3D58C8009011E9 /* MJProperty.h */,
+				837938441F3D58C8009011E9 /* MJProperty.m */,
+				837938451F3D58C8009011E9 /* MJPropertyKey.h */,
+				837938461F3D58C8009011E9 /* MJPropertyKey.m */,
+				837938471F3D58C8009011E9 /* MJPropertyType.h */,
+				837938481F3D58C8009011E9 /* MJPropertyType.m */,
+				837938491F3D58C8009011E9 /* NSObject+MJClass.h */,
+				8379384A1F3D58C8009011E9 /* NSObject+MJClass.m */,
+				8379384B1F3D58C8009011E9 /* NSObject+MJCoding.h */,
+				8379384C1F3D58C8009011E9 /* NSObject+MJCoding.m */,
+				8379384D1F3D58C8009011E9 /* NSObject+MJKeyValue.h */,
+				8379384E1F3D58C8009011E9 /* NSObject+MJKeyValue.m */,
+				8379384F1F3D58C8009011E9 /* NSObject+MJProperty.h */,
+				837938501F3D58C8009011E9 /* NSObject+MJProperty.m */,
+				837938511F3D58C8009011E9 /* NSString+MJExtension.h */,
+				837938521F3D58C8009011E9 /* NSString+MJExtension.m */,
+			);
+			path = MJExtension;
+			sourceTree = "<group>";
+		};
+		83829D391F41AAA900DF530A /* LocalNotificationManager */ = {
+			isa = PBXGroup;
+			children = (
+				83829D3A1F41AAD400DF530A /* LocalNotificationManager.h */,
+				83829D3B1F41AAD400DF530A /* LocalNotificationManager.m */,
+			);
+			path = LocalNotificationManager;
+			sourceTree = "<group>";
+		};
+		83829D401F42DA8000DF530A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				83829D411F42DA9B00DF530A /* UserModel.h */,
+				83829D421F42DA9B00DF530A /* UserModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		83829D441F42DF9000DF530A /* WebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83829D451F42DFA700DF530A /* WebViewController.h */,
+				83829D461F42DFA700DF530A /* WebViewController.m */,
+			);
+			path = WebViewController;
+			sourceTree = "<group>";
+		};
+		83829D481F42F48100DF530A /* JEmailPullTextfield */ = {
+			isa = PBXGroup;
+			children = (
+				83829D491F42F48100DF530A /* JPullEmailTF.h */,
+				83829D4A1F42F48100DF530A /* JPullEmailTF.m */,
+				83829D4B1F42F48100DF530A /* JPullTableViewCell.h */,
+				83829D4C1F42F48100DF530A /* JPullTableViewCell.m */,
+				83829D4D1F42F48100DF530A /* JPullTableViewCell.xib */,
+			);
+			path = JEmailPullTextfield;
+			sourceTree = "<group>";
+		};
+		83829D571F44259600DF530A /* RemindAndGtaskManager */ = {
+			isa = PBXGroup;
+			children = (
+				83829D581F4425CC00DF530A /* RemindAndGtasksDBManager.h */,
+				83829D591F4425CC00DF530A /* RemindAndGtasksDBManager.m */,
+			);
+			path = RemindAndGtaskManager;
+			sourceTree = "<group>";
+		};
+		83829EBA1F459D6600DF530A /* XHLaunchAdManager */ = {
+			isa = PBXGroup;
+			children = (
+				83829EBB1F459D6600DF530A /* Images */,
+				83829EBD1F459D6600DF530A /* Model */,
+				83829EC01F459D6600DF530A /* XHLaunchAd */,
+				83829ED91F459D6600DF530A /* XHLaunchAdManager.h */,
+				83829EDA1F459D6600DF530A /* XHLaunchAdManager.m */,
+			);
+			path = XHLaunchAdManager;
+			sourceTree = "<group>";
+		};
+		83829EBB1F459D6600DF530A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				83829EBC1F459D6600DF530A /* image12.gif */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		83829EBD1F459D6600DF530A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				83829EBE1F459D6600DF530A /* LaunchAdModel.h */,
+				83829EBF1F459D6600DF530A /* LaunchAdModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		83829EC01F459D6600DF530A /* XHLaunchAd */ = {
+			isa = PBXGroup;
+			children = (
+				83829EC11F459D6600DF530A /* NSString+XHLaunchAd.h */,
+				83829EC21F459D6600DF530A /* NSString+XHLaunchAd.m */,
+				83829EC31F459D6600DF530A /* UIImageView+XHLaunchAdCache.h */,
+				83829EC41F459D6600DF530A /* UIImageView+XHLaunchAdCache.m */,
+				83829EC51F459D6600DF530A /* XHLaunchAd.h */,
+				83829EC61F459D6600DF530A /* XHLaunchAd.m */,
+				83829EC71F459D6600DF530A /* XHLaunchAdButton.h */,
+				83829EC81F459D6600DF530A /* XHLaunchAdButton.m */,
+				83829EC91F459D6600DF530A /* XHLaunchAdCache.h */,
+				83829ECA1F459D6600DF530A /* XHLaunchAdCache.m */,
+				83829ECB1F459D6600DF530A /* XHLaunchAdConfiguration.h */,
+				83829ECC1F459D6600DF530A /* XHLaunchAdConfiguration.m */,
+				83829ECD1F459D6600DF530A /* XHLaunchAdController.h */,
+				83829ECE1F459D6600DF530A /* XHLaunchAdController.m */,
+				83829ECF1F459D6600DF530A /* XHLaunchAdDownloader.h */,
+				83829ED01F459D6600DF530A /* XHLaunchAdDownloader.m */,
+				83829ED11F459D6600DF530A /* XHLaunchAdImage.h */,
+				83829ED21F459D6600DF530A /* XHLaunchAdImage.m */,
+				83829ED31F459D6600DF530A /* XHLaunchAdImageManager.h */,
+				83829ED41F459D6600DF530A /* XHLaunchAdImageManager.m */,
+				83829ED51F459D6600DF530A /* XHLaunchAdView.h */,
+				83829ED61F459D6600DF530A /* XHLaunchAdView.m */,
+				83829ED71F459D6600DF530A /* XHLaunchImageView.h */,
+				83829ED81F459D6600DF530A /* XHLaunchImageView.m */,
+			);
+			path = XHLaunchAd;
+			sourceTree = "<group>";
+		};
+		8388C0411F2F166000506FFA /* DIYMJRefreshHeader */ = {
+			isa = PBXGroup;
+			children = (
+				8388C0421F2F169700506FFA /* DIYMJRefreshHaderHistory.h */,
+				8388C0431F2F169700506FFA /* DIYMJRefreshHaderHistory.m */,
+			);
+			path = DIYMJRefreshHeader;
+			sourceTree = "<group>";
+		};
+		8388C0451F30258600506FFA /* FMDBToos */ = {
+			isa = PBXGroup;
+			children = (
+				8388C0461F30258600506FFA /* LKFMDB */,
+			);
+			path = FMDBToos;
+			sourceTree = "<group>";
+		};
+		8388C0461F30258600506FFA /* LKFMDB */ = {
+			isa = PBXGroup;
+			children = (
+				8388C0471F30258600506FFA /* LKDBColumnDes.h */,
+				8388C0481F30258600506FFA /* LKDBColumnDes.m */,
+				8388C0491F30258600506FFA /* LKDBModel.h */,
+				8388C04A1F30258600506FFA /* LKDBModel.m */,
+				8388C04B1F30258600506FFA /* LKDBSQLState.h */,
+				8388C04C1F30258600506FFA /* LKDBSQLState.m */,
+				8388C04D1F30258600506FFA /* LKDBTool.h */,
+				8388C04E1F30258600506FFA /* LKDBTool.m */,
+			);
+			path = LKFMDB;
+			sourceTree = "<group>";
+		};
+		8388C0571F3025B600506FFA /* RKBaseModel */ = {
+			isa = PBXGroup;
+			children = (
+				8388C0581F3025C900506FFA /* RKBaseModel.h */,
+				8388C0591F3025C900506FFA /* RKBaseModel.m */,
+				837937F61F3C2E7B009011E9 /* ModerManager.h */,
+			);
+			path = RKBaseModel;
+			sourceTree = "<group>";
+		};
+		8388C05E1F3164F400506FFA /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				83D10E6D1F340C4B00B7A6B0 /* AppSettingViewController */,
+				8388C05F1F31651E00506FFA /* PersonDetailViewController.h */,
+				8388C0601F31651E00506FFA /* PersonDetailViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		8388C0621F317B9600506FFA /* PerPickImageView */ = {
+			isa = PBXGroup;
+			children = (
+				8388C0631F317B9600506FFA /* PerPickImageView.h */,
+				8388C0641F317B9600506FFA /* PerPickImageView.m */,
+			);
+			path = PerPickImageView;
+			sourceTree = "<group>";
+		};
+		83D10E661F34086400B7A6B0 /* RKUserLoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83712CD51F35EF4C003D2316 /* LoginModel */,
+				83D10E671F34088200B7A6B0 /* UserLoginViewController.h */,
+				83D10E681F34088300B7A6B0 /* UserLoginViewController.m */,
+				83D10E691F34088300B7A6B0 /* UserLoginViewController.xib */,
+			);
+			path = RKUserLoginViewController;
+			sourceTree = "<group>";
+		};
+		83D10E6D1F340C4B00B7A6B0 /* AppSettingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83D10E6E1F340C6F00B7A6B0 /* AppSettingViewController.h */,
+				83D10E6F1F340C6F00B7A6B0 /* AppSettingViewController.m */,
+				83829D511F42F74600DF530A /* PersonMessageEditViewController.h */,
+				83829D521F42F74600DF530A /* PersonMessageEditViewController.m */,
+			);
+			path = AppSettingViewController;
+			sourceTree = "<group>";
+		};
+		83D1A7761F34404F00E48A4F /* AddReminderORGtasksViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7B01F3443A400E48A4F /* AddReminderController.h */,
+				83D1A7B11F3443A400E48A4F /* AddReminderController.m */,
+				83D1A7771F34404F00E48A4F /* AddGtasksViewController */,
+				83D1A77B1F34404F00E48A4F /* AddReminderViewController */,
+			);
+			path = AddReminderORGtasksViewController;
+			sourceTree = "<group>";
+		};
+		83D1A7771F34404F00E48A4F /* AddGtasksViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7781F34404F00E48A4F /* GtasksViewController.h */,
+				83D1A7791F34404F00E48A4F /* GtasksViewController.m */,
+				83D1A77A1F34404F00E48A4F /* GtasksViewController.xib */,
+			);
+			path = AddGtasksViewController;
+			sourceTree = "<group>";
+		};
+		83D1A77B1F34404F00E48A4F /* AddReminderViewController */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7B31F3443B700E48A4F /* ReminderViewController.h */,
+				83D1A7B41F3443B700E48A4F /* ReminderViewController.m */,
+				8383A1A81F37FC290084385D /* ReminderWayViewController.h */,
+				8383A1A91F37FC290084385D /* ReminderWayViewController.m */,
+				83D1A77E1F34404F00E48A4F /* ChooseRepeatViewController.h */,
+				83D1A77F1F34404F00E48A4F /* ChooseRepeatViewController.m */,
+			);
+			path = AddReminderViewController;
+			sourceTree = "<group>";
+		};
+		83D1A7821F34404F00E48A4F /* ClassesModel */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7831F34404F00E48A4F /* GtasksModel.h */,
+				83D1A7841F34404F00E48A4F /* GtasksModel.m */,
+				83D1A7851F34404F00E48A4F /* ReminderModel.h */,
+				83D1A7861F34404F00E48A4F /* ReminderModel.m */,
+				83D1CFA31F38805F0009483E /* ReminderHistoryModel.h */,
+				83D1CFA41F38805F0009483E /* ReminderHistoryModel.m */,
+				83829D541F43F45200DF530A /* CalendarModel.h */,
+				83829D551F43F45200DF530A /* CalendarModel.m */,
+			);
+			path = ClassesModel;
+			sourceTree = "<group>";
+		};
+		83D1A7871F34404F00E48A4F /* ClassesViews */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ClassesViews;
+			sourceTree = "<group>";
+		};
+		83D1A7881F34404F00E48A4F /* ReminderAndGtaskHistoryControllers */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7891F34404F00E48A4F /* GtaskHistoryController */,
+				83D1A78F1F34404F00E48A4F /* ReminderHistoryController */,
+			);
+			path = ReminderAndGtaskHistoryControllers;
+			sourceTree = "<group>";
+		};
+		83D1A7891F34404F00E48A4F /* GtaskHistoryController */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A78A1F34404F00E48A4F /* GtaskHistoryCell.h */,
+				83D1A78B1F34404F00E48A4F /* GtaskHistoryCell.m */,
+				83D1A78C1F34404F00E48A4F /* GtaskHistoryCell.xib */,
+				83D1A78D1F34404F00E48A4F /* GtaskHistoryViewController.h */,
+				83D1A78E1F34404F00E48A4F /* GtaskHistoryViewController.m */,
+			);
+			path = GtaskHistoryController;
+			sourceTree = "<group>";
+		};
+		83D1A78F1F34404F00E48A4F /* ReminderHistoryController */ = {
+			isa = PBXGroup;
+			children = (
+				83D1CFA01F387FE00009483E /* ReminderHistoryViewController.h */,
+				83D1CFA11F387FE00009483E /* ReminderHistoryViewController.m */,
+			);
+			path = ReminderHistoryController;
+			sourceTree = "<group>";
+		};
+		83D1A7901F34404F00E48A4F /* ReminderORGtasksHomeController */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7911F34404F00E48A4F /* ClassessControllers */,
+				83D1A7961F34404F00E48A4F /* ClassessViews */,
+				83D1A79D1F34404F00E48A4F /* RemindViewController.h */,
+				83D1A79E1F34404F00E48A4F /* RemindViewController.m */,
+			);
+			path = ReminderORGtasksHomeController;
+			sourceTree = "<group>";
+		};
+		83D1A7911F34404F00E48A4F /* ClassessControllers */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7921F34404F00E48A4F /* GtaskListViewController.h */,
+				83D1A7931F34404F00E48A4F /* GtaskListViewController.m */,
+				83D1A7941F34404F00E48A4F /* ReminderListViewController.h */,
+				83D1A7951F34404F00E48A4F /* ReminderListViewController.m */,
+				83DAA2671F398705008082FB /* ReminderAndGtasksDetailView.h */,
+				83DAA2681F398705008082FB /* ReminderAndGtasksDetailView.m */,
+				83DAA26C1F398848008082FB /* ReminderAndGtasksDetailView.xib */,
+			);
+			path = ClassessControllers;
+			sourceTree = "<group>";
+		};
+		83D1A7961F34404F00E48A4F /* ClassessViews */ = {
+			isa = PBXGroup;
+			children = (
+				83D1A7971F34404F00E48A4F /* GtaskListTableViewCell.h */,
+				83D1A7981F34404F00E48A4F /* GtaskListTableViewCell.m */,
+				83D1A7991F34404F00E48A4F /* GtaskListTableViewCell.xib */,
+				83D1A79A1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.h */,
+				83D1A79B1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.m */,
+				83D1A79C1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.xib */,
+				837937F71F3C342D009011E9 /* RemindListTableViewCell.h */,
+				837937F81F3C342D009011E9 /* RemindListTableViewCell.m */,
+				837937F91F3C342D009011E9 /* RemindListTableViewCell.xib */,
+			);
+			path = ClassessViews;
+			sourceTree = "<group>";
+		};
 		83D72FE51F1E0671001C1275 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				83829EBA1F459D6600DF530A /* XHLaunchAdManager */,
+				83829D481F42F48100DF530A /* JEmailPullTextfield */,
+				83829D391F41AAA900DF530A /* LocalNotificationManager */,
+				837937BB1F3AA97E009011E9 /* LinkageTabView */,
+				83DAA2531F395F8C008082FB /* PickerView */,
+				83712CD91F35F701003D2316 /* NetAPIManager */,
+				8388C0621F317B9600506FFA /* PerPickImageView */,
+				8388C0451F30258600506FFA /* FMDBToos */,
 				830119BB1F207B1A00DBAF80 /* MYSegmentView */,
 				83D72FE61F1E0671001C1275 /* AFNWorkIngToos */,
 			);
@@ -854,6 +1403,58 @@
 				83D72FF11F1E074B001C1275 /* MBProgressHUD.m */,
 			);
 			path = RKMBProgressHUD;
+			sourceTree = "<group>";
+		};
+		83DAA2531F395F8C008082FB /* PickerView */ = {
+			isa = PBXGroup;
+			children = (
+				83DAA2541F395F8C008082FB /* LZAddressPickerView.h */,
+				83DAA2551F395F8C008082FB /* LZAddressPickerView.m */,
+				83DAA2561F395F8C008082FB /* LZCustomLimitDatePicker.h */,
+				83DAA2571F395F8C008082FB /* LZCustomLimitDatePicker.m */,
+				83DAA2581F395F8C008082FB /* LZMultiplePickerView.h */,
+				83DAA2591F395F8C008082FB /* LZMultiplePickerView.m */,
+				83DAA25A1F395F8C008082FB /* LZPickTopView.h */,
+				83DAA25B1F395F8C008082FB /* LZPickTopView.m */,
+				83DAA25C1F395F8C008082FB /* LZPickViewDefine.h */,
+				83DAA25D1F395F8C008082FB /* LZPickViewManager.h */,
+				83DAA25E1F395F8C008082FB /* LZPickViewManager.m */,
+				83DAA25F1F395F8C008082FB /* LZTimePickerView.h */,
+				83DAA2601F395F8C008082FB /* LZTimePickerView.m */,
+			);
+			path = PickerView;
+			sourceTree = "<group>";
+		};
+		83DAA26E1F39CA99008082FB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				837937E71F3B03C8009011E9 /* DOPDropDownMenu.h */,
+				837937E81F3B03C8009011E9 /* DOPDropDownMenu.m */,
+				837937EA1F3B0F5A009011E9 /* DropMenuTableView.h */,
+				837937EB1F3B0F5A009011E9 /* DropMenuTableView.m */,
+				837937ED1F3B1A8A009011E9 /* DropMenuTableView.xib */,
+				83DAA2711F39CAD3008082FB /* SearchViewController.h */,
+				83DAA2721F39CAD3008082FB /* SearchViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		83DAA26F1F39CAB7008082FB /* Modes */ = {
+			isa = PBXGroup;
+			children = (
+				837937F21F3B1FAF009011E9 /* MenuModel.h */,
+				837937F31F3B1FAF009011E9 /* MenuModel.m */,
+				83829D3D1F41C8B400DF530A /* HolidayModel.h */,
+				83829D3E1F41C8B400DF530A /* HolidayModel.m */,
+			);
+			path = Modes;
+			sourceTree = "<group>";
+		};
+		83DAA2701F39CAB7008082FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -935,6 +1536,14 @@
 						DevelopmentTeam = S5VH522992;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					8315A5D91F18AE40003BECDA = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -973,15 +1582,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83D1A7AE1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.xib in Resources */,
+				83829D501F42F48100DF530A /* JPullTableViewCell.xib in Resources */,
 				836B06AE1F29D8130054DE46 /* ReminderDatePickerView.xib in Resources */,
+				83D1A7AC1F34404F00E48A4F /* GtaskListTableViewCell.xib in Resources */,
 				8315A5D41F18AE40003BECDA /* LaunchScreen.storyboard in Resources */,
 				8371B0621F2863F000DA7465 /* WSDatePickerView.xib in Resources */,
-				8315A5D11F18AE40003BECDA /* Assets.xcassets in Resources */,
+				83829EB91F4593BB00DF530A /* Assets.xcassets in Resources */,
+				83D1A7A01F34404F00E48A4F /* GtasksViewController.xib in Resources */,
+				83DAA26D1F398848008082FB /* ReminderAndGtasksDetailView.xib in Resources */,
+				83D1A7A71F34404F00E48A4F /* GtaskHistoryCell.xib in Resources */,
 				8321D48B1F1C58E500CBEEBC /* MJRefresh.bundle in Resources */,
-				83F080B61F25EC1D00CC7359 /* GtasksViewController.xib in Resources */,
-				836B06BE1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.xib in Resources */,
+				83829EDB1F459D6600DF530A /* image12.gif in Resources */,
+				83D10E6B1F34088300B7A6B0 /* UserLoginViewController.xib in Resources */,
+				837937FB1F3C342D009011E9 /* RemindListTableViewCell.xib in Resources */,
+				837937EE1F3B1A8A009011E9 /* DropMenuTableView.xib in Resources */,
 				83D72FD71F1CA1FE001C1275 /* res in Resources */,
-				836B06B91F2B31530054DE46 /* GtaskListTableViewCell.xib in Resources */,
 				8315A5CF1F18AE40003BECDA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1146,83 +1762,145 @@
 			buildActionMask = 2147483647;
 			files = (
 				8321D4651F1C58E500CBEEBC /* UIBarButtonItem+Badge.m in Sources */,
-				8321D4711F1C58E500CBEEBC /* RemindViewController.m in Sources */,
+				83D1A7A61F34404F00E48A4F /* GtaskHistoryCell.m in Sources */,
 				8321D47E1F1C58E500CBEEBC /* MJRefreshBackFooter.m in Sources */,
 				8321D4941F1C58E500CBEEBC /* DeallocBlockExecutor.m in Sources */,
+				83829D4E1F42F48100DF530A /* JPullEmailTF.m in Sources */,
 				8321D4951F1C58E500CBEEBC /* NSObject+DeallocBlock.m in Sources */,
+				837938571F3D58C8009011E9 /* MJPropertyType.m in Sources */,
+				837937EC1F3B0F5A009011E9 /* DropMenuTableView.m in Sources */,
 				8321D46D1F1C58E500CBEEBC /* RKBaseScrollview.m in Sources */,
 				836B06AC1F29D7120054DE46 /* ReminderDatePickerView.m in Sources */,
+				83829EE41F459D6600DF530A /* XHLaunchAdDownloader.m in Sources */,
+				83D1A7A21F34404F00E48A4F /* ChooseRepeatViewController.m in Sources */,
+				83D10E701F340C6F00B7A6B0 /* AppSettingViewController.m in Sources */,
 				8321D46E1F1C58E500CBEEBC /* RKBaseViewController.m in Sources */,
 				8321D4831F1C58E500CBEEBC /* MJRefreshAutoNormalFooter.m in Sources */,
+				83829EE21F459D6600DF530A /* XHLaunchAdConfiguration.m in Sources */,
+				83829D471F42DFA700DF530A /* WebViewController.m in Sources */,
+				8379385B1F3D58C8009011E9 /* NSObject+MJProperty.m in Sources */,
 				8321D4681F1C58E500CBEEBC /* UIImage+ColorFix.m in Sources */,
 				8321D4661F1C58E500CBEEBC /* UIButton+Badge.m in Sources */,
 				8371B0601F2863F000DA7465 /* UIView+Extension.m in Sources */,
+				83829EDD1F459D6600DF530A /* NSString+XHLaunchAd.m in Sources */,
+				83DAA2631F395F8C008082FB /* LZMultiplePickerView.m in Sources */,
 				83011A5F1F21D78F00DBAF80 /* UIView+FontSize.m in Sources */,
 				8321D48F1F1C58E500CBEEBC /* UIView+MJExtension.m in Sources */,
-				8371B0681F286FC400DA7465 /* ChooseRepeatViewController.m in Sources */,
+				8388C0551F30258600506FFA /* LKDBTool.m in Sources */,
+				83829D5A1F4425CC00DF530A /* RemindAndGtasksDBManager.m in Sources */,
 				8321D48C1F1C58E500CBEEBC /* MJRefreshConst.m in Sources */,
+				83D10E6A1F34088300B7A6B0 /* UserLoginViewController.m in Sources */,
 				8321D48D1F1C58E500CBEEBC /* UIScrollView+MJExtension.m in Sources */,
+				8388C0521F30258600506FFA /* LKDBColumnDes.m in Sources */,
 				8321D4931F1C58E500CBEEBC /* PW_DatePickerView.m in Sources */,
+				83829EE01F459D6600DF530A /* XHLaunchAdButton.m in Sources */,
+				83D1A7B21F3443A400E48A4F /* AddReminderController.m in Sources */,
 				8321D4841F1C58E500CBEEBC /* MJRefreshAutoStateFooter.m in Sources */,
 				8321D4641F1C58E500CBEEBC /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
+				837938591F3D58C8009011E9 /* NSObject+MJCoding.m in Sources */,
 				8321D47F1F1C58E500CBEEBC /* MJRefreshComponent.m in Sources */,
+				83DAA2661F395F8C008082FB /* LZTimePickerView.m in Sources */,
+				83829D3C1F41AAD400DF530A /* LocalNotificationManager.m in Sources */,
+				83D1A7AB1F34404F00E48A4F /* GtaskListTableViewCell.m in Sources */,
 				8321D4851F1C58E500CBEEBC /* MJRefreshBackGifFooter.m in Sources */,
+				8388C0541F30258600506FFA /* LKDBSQLState.m in Sources */,
 				8321D4701F1C58E500CBEEBC /* PersonViewController.m in Sources */,
+				83DAA2731F39CAD3008082FB /* SearchViewController.m in Sources */,
 				83D72FD51F1C9E6C001C1275 /* UITabBarItem+Theme.m in Sources */,
 				83D72FF31F1E074B001C1275 /* MBProgressHUD.m in Sources */,
-				836B06B11F2AE2610054DE46 /* ReminderListViewController.m in Sources */,
 				83D72FEC1F1E0671001C1275 /* INSPECTIONSessionWrapperOperation.m in Sources */,
+				83829EE31F459D6600DF530A /* XHLaunchAdController.m in Sources */,
 				8315A5CC1F18AE40003BECDA /* ViewController.m in Sources */,
 				8321D4811F1C58E500CBEEBC /* MJRefreshHeader.m in Sources */,
-				8321D4761F1C58E500CBEEBC /* MJFoundation.m in Sources */,
-				836B06B81F2B31530054DE46 /* GtaskListTableViewCell.m in Sources */,
+				83712CDF1F35F91C003D2316 /* RequestManager.m in Sources */,
+				83D1A7B51F3443B700E48A4F /* ReminderViewController.m in Sources */,
+				837938391F3D4150009011E9 /* ReportModel.m in Sources */,
+				8388C05A1F3025C900506FFA /* RKBaseModel.m in Sources */,
+				837937F41F3B1FAF009011E9 /* MenuModel.m in Sources */,
+				83712CD81F35EF6E003D2316 /* LoginModel.m in Sources */,
+				837937C11F3AB19F009011E9 /* ReportListTableView.m in Sources */,
 				8321D48E1F1C58E500CBEEBC /* UIScrollView+MJRefresh.m in Sources */,
 				8321D47D1F1C58E500CBEEBC /* MJRefreshAutoFooter.m in Sources */,
 				8315A5C91F18AE40003BECDA /* AppDelegate.m in Sources */,
-				83F080B51F25EC1D00CC7359 /* GtasksViewController.m in Sources */,
 				8321D4691F1C58E500CBEEBC /* UIImage+ImageEffects.m in Sources */,
 				8321D4671F1C58E500CBEEBC /* UIColor+Hex.m in Sources */,
-				8321D47A1F1C58E500CBEEBC /* NSObject+MJKeyValue.m in Sources */,
 				8321D4731F1C58E500CBEEBC /* YPTabBarController.m in Sources */,
+				83D1A7A41F34404F00E48A4F /* GtasksModel.m in Sources */,
 				8321D4991F1C58E500CBEEBC /* Utils.m in Sources */,
+				83712CDC1F35F721003D2316 /* NetAPIManager.m in Sources */,
 				8321D46C1F1C58E500CBEEBC /* MainTabbarViewController.m in Sources */,
-				8321D47C1F1C58E500CBEEBC /* NSString+MJExtension.m in Sources */,
+				83829EE81F459D6600DF530A /* XHLaunchImageView.m in Sources */,
+				8388C0531F30258600506FFA /* LKDBModel.m in Sources */,
 				830119C01F207B1A00DBAF80 /* MainTouchTableTableView.m in Sources */,
+				83DAA2651F395F8C008082FB /* LZPickViewManager.m in Sources */,
+				83D1A7A91F34404F00E48A4F /* GtaskListViewController.m in Sources */,
 				83D72FEB1F1E0671001C1275 /* AFNWorkingTool.m in Sources */,
-				830119B41F2056CF00DBAF80 /* AddReminderController.m in Sources */,
+				83DAA2641F395F8C008082FB /* LZPickTopView.m in Sources */,
+				83DAA2621F395F8C008082FB /* LZCustomLimitDatePicker.m in Sources */,
+				837937E91F3B03C8009011E9 /* DOPDropDownMenu.m in Sources */,
+				837937FA1F3C342D009011E9 /* RemindListTableViewCell.m in Sources */,
+				83829D531F42F74600DF530A /* PersonMessageEditViewController.m in Sources */,
+				837937BE1F3AA9A8009011E9 /* RKTabvIewView.m in Sources */,
+				837938531F3D58C8009011E9 /* MJExtensionConst.m in Sources */,
 				8321D4891F1C58E500CBEEBC /* MJRefreshNormalHeader.m in Sources */,
 				8321D48A1F1C58E500CBEEBC /* MJRefreshStateHeader.m in Sources */,
 				8321D4881F1C58E500CBEEBC /* MJRefreshGifHeader.m in Sources */,
-				830119B71F20596E00DBAF80 /* ReminderViewController.m in Sources */,
 				8321D4861F1C58E500CBEEBC /* MJRefreshBackNormalFooter.m in Sources */,
+				8383A1AA1F37FC290084385D /* ReminderWayViewController.m in Sources */,
+				83DAA2691F398705008082FB /* ReminderAndGtasksDetailView.m in Sources */,
+				8388C0611F31651E00506FFA /* PersonDetailViewController.m in Sources */,
+				83829EE51F459D6600DF530A /* XHLaunchAdImage.m in Sources */,
 				8321D4921F1C58E500CBEEBC /* NSString+Hashing.m in Sources */,
+				8388C0441F2F169700506FFA /* DIYMJRefreshHaderHistory.m in Sources */,
+				83829D561F43F45200DF530A /* CalendarModel.m in Sources */,
 				8321D46F1F1C58E500CBEEBC /* RKTabbarViewController.m in Sources */,
+				837938541F3D58C8009011E9 /* MJFoundation.m in Sources */,
+				83D1A7A51F34404F00E48A4F /* ReminderModel.m in Sources */,
+				83D1A7AA1F34404F00E48A4F /* ReminderListViewController.m in Sources */,
 				8321D4821F1C58E500CBEEBC /* MJRefreshAutoGifFooter.m in Sources */,
 				8321D4981F1C58E500CBEEBC /* UIView+Theme.m in Sources */,
+				83829D431F42DA9B00DF530A /* UserModel.m in Sources */,
+				83829EDE1F459D6600DF530A /* UIImageView+XHLaunchAdCache.m in Sources */,
 				8371B0651F286D9200DA7465 /* RKBaseTabViewController.m in Sources */,
-				8321D4781F1C58E500CBEEBC /* MJType.m in Sources */,
+				83B9A57F1F3DDA41003F751C /* UISearchBar+Background.m in Sources */,
+				8379385A1F3D58C8009011E9 /* NSObject+MJKeyValue.m in Sources */,
 				830119C11F207B1A00DBAF80 /* MYSegmentView.m in Sources */,
+				8379385C1F3D58C8009011E9 /* NSString+MJExtension.m in Sources */,
+				83829EE91F459D6600DF530A /* XHLaunchAdManager.m in Sources */,
 				8315A5C61F18AE40003BECDA /* main.m in Sources */,
-				836B06BD1F2B46340054DE46 /* SpeedCreateGtaskTableViewCell.m in Sources */,
 				83D72FF21F1E074B001C1275 /* MBManager.m in Sources */,
+				83829EDC1F459D6600DF530A /* LaunchAdModel.m in Sources */,
+				837938581F3D58C8009011E9 /* NSObject+MJClass.m in Sources */,
+				83829EE61F459D6600DF530A /* XHLaunchAdImageManager.m in Sources */,
+				8379385F1F3D784A009011E9 /* ReportLabel.m in Sources */,
+				83D1CFA51F38805F0009483E /* ReminderHistoryModel.m in Sources */,
+				83D1A79F1F34404F00E48A4F /* GtasksViewController.m in Sources */,
+				83D1A7AD1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.m in Sources */,
+				83829EDF1F459D6600DF530A /* XHLaunchAd.m in Sources */,
+				83D1CFA21F387FE00009483E /* ReminderHistoryViewController.m in Sources */,
 				8321D4971F1C58E500CBEEBC /* ThemeManager.m in Sources */,
 				8371B0611F2863F000DA7465 /* WSDatePickerView.m in Sources */,
 				8321D4801F1C58E500CBEEBC /* MJRefreshFooter.m in Sources */,
-				836B06B41F2AE27B0054DE46 /* GtaskListViewController.m in Sources */,
 				8321D4741F1C58E500CBEEBC /* YPTabItem.m in Sources */,
+				83DAA2611F395F8C008082FB /* LZAddressPickerView.m in Sources */,
 				8371B05F1F2863F000DA7465 /* NSDate+Extension.m in Sources */,
 				8321D4721F1C58E500CBEEBC /* YPTabBar.m in Sources */,
-				8321D4791F1C58E500CBEEBC /* NSObject+MJCoding.m in Sources */,
-				8321D4771F1C58E500CBEEBC /* MJProperty.m in Sources */,
 				83D72FDC1F1D9EB8001C1275 /* myNavigationController.m in Sources */,
-				8321D47B1F1C58E500CBEEBC /* NSObject+MJProperty.m in Sources */,
 				8321D4961F1C58E500CBEEBC /* SkinStyle.m in Sources */,
-				8321D4751F1C58E500CBEEBC /* MJConst.m in Sources */,
+				83829EE71F459D6600DF530A /* XHLaunchAdView.m in Sources */,
+				83D1A7AF1F34404F00E48A4F /* RemindViewController.m in Sources */,
 				8321D4871F1C58E500CBEEBC /* MJRefreshBackStateFooter.m in Sources */,
 				8321D46A1F1C58E500CBEEBC /* HolidaysViewController.m in Sources */,
+				83829D3F1F41C8B400DF530A /* HolidayModel.m in Sources */,
 				8321D3CF1F1C529F00CBEEBC /* Bridging.swift in Sources */,
+				837938551F3D58C8009011E9 /* MJProperty.m in Sources */,
 				8321D46B1F1C58E500CBEEBC /* HomeViewController.m in Sources */,
+				837938561F3D58C8009011E9 /* MJPropertyKey.m in Sources */,
+				83D1A7A81F34404F00E48A4F /* GtaskHistoryViewController.m in Sources */,
+				83829EE11F459D6600DF530A /* XHLaunchAdCache.m in Sources */,
+				83829D4F1F42F48100DF530A /* JPullTableViewCell.m in Sources */,
 				83D72FDF1F1DD657001C1275 /* NSCalendar+SFHelper.m in Sources */,
+				8388C0651F317B9600506FFA /* PerPickImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1375,7 +2053,9 @@
 			baseConfigurationReference = 173C8D1C1DCCB8E1FD8B5D29 /* Pods-RikingCalendar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RikingCalendar/RikingCalendar.entitlements;
 				DEVELOPMENT_TEAM = S5VH522992;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/RikingCalendar/PrefixHeader.pch";
@@ -1397,7 +2077,9 @@
 			baseConfigurationReference = A77336EBEF206082061C4399 /* Pods-RikingCalendar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RikingCalendar/RikingCalendar.entitlements;
 				DEVELOPMENT_TEAM = S5VH522992;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/RikingCalendar/PrefixHeader.pch";

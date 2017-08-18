@@ -35,11 +35,15 @@ typedef void(^doneBlock)(NSString *time);
 @property (weak, nonatomic) IBOutlet UIButton *cancelBtn;
 @property (weak, nonatomic) IBOutlet UIButton *sureBtn;
 @property (weak, nonatomic) IBOutlet UILabel *reminderTimeLabel;
-
 @property (weak, nonatomic) IBOutlet UIView *pickyViewBg;
-
+@property (copy, nonatomic) NSString *didSelectTime;
 @property (nonatomic,strong) UIPickerView *reminderPickView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickViewBgBottomLayout;
+
+
+
+
+
 - (IBAction)showPickView:(id)sender;
 
 - (IBAction)cancelPickView:(id)sender;
@@ -103,10 +107,6 @@ typedef void(^doneBlock)(NSString *time);
             completeBlock(time);
         };
     }
-    
-
-    
-
     
     for (int i = 0; i<365; i++) {
         
@@ -284,15 +284,8 @@ typedef void(^doneBlock)(NSString *time);
             break;
     }
     
-    
-    
-    
-//    [pickerView reloadAllComponents];
-    
-   
-    
     self.reminderTimeLabel.text = [NSString stringWithFormat:@"提前%@",timeStr];
-    
+    _didSelectTime = timeStr;
 }
 
 
@@ -341,7 +334,7 @@ typedef void(^doneBlock)(NSString *time);
     return YES;
 }
 - (IBAction)showPickView:(id)sender {
-    self.doneBlock(self.reminderTimeLabel.text);
+    self.doneBlock([_didSelectTime stringByReplacingOccurrencesOfString:@"分" withString:@""]);
     [self dismiss];
 }
 

@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, KKHTTPMethod)
 - (void)AFNHttpRequestPOSTurlstring:(NSString *)url parm:(NSDictionary *)parm success:(void(^)(NSDictionary *dictData))success failure:(void (^)(NSError *error))failue;
 
 
-
+-(void)UpLoadImage:(NSString *)url parm:(NSMutableDictionary *)parm images:(NSMutableArray *)imageArr success:(void(^)(NSDictionary *dictData))success   failure:(void (^)(NSError *error))failue;
 
 /**
  队列请求

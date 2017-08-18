@@ -3,17 +3,13 @@
 //  MJExtensionExample
 //
 //  Created by MJ Lee on 15/4/17.
-//  Copyright (c) 2015年 itcast. All rights reserved.
+//  Copyright (c) 2015年 小码哥. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import "MJExtensionConst.h"
 
 @class MJProperty;
-
-/**
- *  遍历所有类的block（父类）
- */
-typedef void (^MJClassesBlock)(Class c, BOOL *stop);
 
 /**
  *  遍历成员变量用的block
@@ -21,22 +17,63 @@ typedef void (^MJClassesBlock)(Class c, BOOL *stop);
  *  @param property 成员的包装对象
  *  @param stop   YES代表停止遍历，NO代表继续遍历
  */
-typedef void (^MJPropertiesBlock)(MJProperty *property, BOOL *stop);
+typedef void (^MJPropertiesEnumeration)(MJProperty *property, BOOL *stop);
 
+/** 将属性名换为其他key去字典中取值 */
+typedef NSDictionary * (^MJReplacedKeyFromPropertyName)();
+typedef id (^MJReplacedKeyFromPropertyName121)(NSString *propertyName);
+/** 数组中需要转换的模型类 */
+typedef NSDictionary * (^MJObjectClassInArray)();
+/** 用于过滤字典中的值 */
+typedef id (^MJNewValueFromOldValue)(id object, id oldValue, MJProperty *property);
+
+/**
+ * 成员属性相关的扩展
+ */
 @interface NSObject (MJProperty)
-
+#pragma mark - 遍历
 /**
  *  遍历所有的成员
  */
-+ (void)enumeratePropertiesWithBlock:(MJPropertiesBlock)block;
++ (void)mj_enumerateProperties:(MJPropertiesEnumeration)enumeration;
 
+#pragma mark - 新值配置
 /**
- *  遍历所有的类
+ *  用于过滤字典中的值
+ *
+ *  @param newValueFormOldValue 用于过滤字典中的值
  */
-+ (void)enumerateClassesWithBlock:(MJClassesBlock)block;
++ (void)mj_setupNewValueFromOldValue:(MJNewValueFromOldValue)newValueFormOldValue;
++ (id)mj_getNewValueFromObject:(__unsafe_unretained id)object oldValue:(__unsafe_unretained id)oldValue property:(__unsafe_unretained MJProperty *)property;
 
+#pragma mark - key配置
 /**
- *  返回一个临时对象
+ *  将属性名换为其他key去字典中取值
+ *
+ *  @param replacedKeyFromPropertyName 将属性名换为其他key去字典中取值
  */
-+ (instancetype)tempObject;
++ (void)mj_setupReplacedKeyFromPropertyName:(MJReplacedKeyFromPropertyName)replacedKeyFromPropertyName;
+/**
+ *  将属性名换为其他key去字典中取值
+ *
+ *  @param replacedKeyFromPropertyName121 将属性名换为其他key去字典中取值
+ */
++ (void)mj_setupReplacedKeyFromPropertyName121:(MJReplacedKeyFromPropertyName121)replacedKeyFromPropertyName121;
+
+#pragma mark - array model class配置
+/**
+ *  数组中需要转换的模型类
+ *
+ *  @param objectClassInArray          数组中需要转换的模型类
+ */
++ (void)mj_setupObjectClassInArray:(MJObjectClassInArray)objectClassInArray;
+@end
+
+@interface NSObject (MJPropertyDeprecated_v_2_5_16)
++ (void)enumerateProperties:(MJPropertiesEnumeration)enumeration MJExtensionDeprecated("请在方法名前面加上mj_前缀，使用mj_***");
++ (void)setupNewValueFromOldValue:(MJNewValueFromOldValue)newValueFormOldValue MJExtensionDeprecated("请在方法名前面加上mj_前缀，使用mj_***");
++ (id)getNewValueFromObject:(__unsafe_unretained id)object oldValue:(__unsafe_unretained id)oldValue property:(__unsafe_unretained MJProperty *)property MJExtensionDeprecated("请在方法名前面加上mj_前缀，使用mj_***");
++ (void)setupReplacedKeyFromPropertyName:(MJReplacedKeyFromPropertyName)replacedKeyFromPropertyName MJExtensionDeprecated("请在方法名前面加上mj_前缀，使用mj_***");
++ (void)setupReplacedKeyFromPropertyName121:(MJReplacedKeyFromPropertyName121)replacedKeyFromPropertyName121 MJExtensionDeprecated("请在方法名前面加上mj_前缀，使用mj_***");
++ (void)setupObjectClassInArray:(MJObjectClassInArray)objectClassInArray MJExtensionDeprecated("请在方法名前面加上mj_前缀，使用mj_***");
 @end

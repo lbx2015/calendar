@@ -105,6 +105,8 @@ static AFNWorkingTool *_manager = nil;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
+//        NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
         NSDictionary *dict = (NSDictionary *)responseObject;
         RKLog(@"请求的URL:\n********%@********",task.response.URL);
         RKLog(@"Message:\n********%@********",dict[@"Message"]);
@@ -255,6 +257,64 @@ static AFNWorkingTool *_manager = nil;
     }];
 }
 
+
+
+#pragma mark - 批量上传图片
+-(void)UpLoadImage:(NSString *)url parm:(NSMutableDictionary *)parm images:(NSMutableArray *)imageArr success:(void(^)(NSDictionary *dictData))success   failure:(void (^)(NSError *error))failue
+{
+    
+    if (!_session)
+    {
+        _session = [AFHTTPSessionManager manager];
+    }
+    
+    //AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    /*
+     *    出现如下请求error:Request failed: unacceptable content-type: text/plain
+     *    使用下面一行代码解决
+     */
+    _session.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    _session.requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    _session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"text/json",@"application/json",@"text/javascript",@"text/html", @"application/javascript", @"text/js", nil];
+    
+    [_session POST:url parameters:parm constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        
+        for(NSInteger i = 0; i < imageArr.count; i++)
+        {
+            NSData * imageData = [imageArr objectAtIndex: i];
+            // 上传的参数名
+            NSString * Name = [NSString stringWithFormat:@"%@", @"mFile"];
+            // 上传filename
+            NSString * fileName = [NSString stringWithFormat:@"%@.jpg", Name];
+            
+            [formData appendPartWithFileData:imageData name:Name fileName:fileName mimeType:@"image/jpeg/png"];
+        }
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        //        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *json = (NSDictionary *)responseObject;
+        
+        if (success) {
+            success(json);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        
+        if (error) {
+            failue(error);
+        }
+        
+    }];
+    
+}
 
 
 

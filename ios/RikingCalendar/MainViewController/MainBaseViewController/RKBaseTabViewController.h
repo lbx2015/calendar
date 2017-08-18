@@ -14,4 +14,6 @@
 
 @property (nonatomic,strong) NSMutableArray *dataArray;
 
+
+- (void)updateTabViewFrameWithTop:(CGFloat)top left:(CGFloat)left right:(CGFloat)right bottom:(CGFloat)bottom;
 @end

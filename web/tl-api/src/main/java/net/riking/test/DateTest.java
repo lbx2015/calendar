@@ -156,11 +156,11 @@ public class DateTest {
 
 			// -------------- 剔除补班时间(周末需要补班的)---------------------
 			List<Days> workDays = new ArrayList<Days>();
-			workDays.add(new Days("1","2017-01-22"));
-			workDays.add(new Days("1", "2017-04-01"));
-			workDays.add(new Days("1", "2017-02-04"));
-			workDays.add(new Days("1", "2017-05-27"));
-			workDays.add(new Days("1", "2017-09-30"));
+			workDays.add(new Days("1","20170122"));
+			workDays.add(new Days("1", "20170401"));
+			workDays.add(new Days("1", "20170204"));
+			workDays.add(new Days("1", "20170527"));
+			workDays.add(new Days("1", "20170930"));
 
 			for (Days day : workDays) {
 				// System.out.println("剔除日期：" + sdf.format(day.getDate()) + ","

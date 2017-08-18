@@ -32,7 +32,10 @@
 
 #define sevenClassTextFont                [UIFont systemFontOfSize:12]
 
-#define eightClassTextFont                [UIFont systemFontOfSize:10]
+#define eightClassTextFont                [UIFont systemFontOfSize:11]
+
+#define nineClassTextFont                 [UIFont systemFontOfSize:10]
+
 
 
 #endif /* RKTextFont_h */

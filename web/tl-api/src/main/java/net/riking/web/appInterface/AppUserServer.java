@@ -91,9 +91,6 @@ public class AppUserServer {
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
 	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("id")String id) {
-		if (id.length()>32) {
-			id = id.substring(1, 33);
-		}
 		String url = request.getRequestURL().toString();
 		String suffix = mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
