@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     View commentsRelativeLayout;
     View addressRelativeLayout;
     View birthDayRelative;
+    View sexRelativeLayout;
     BirthdayPickerDialog datePickerDialog;
     //time
     Calendar calendar;
@@ -55,6 +57,8 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         commentsTextView = (TextView) findViewById(R.id.comments);
         addressRelativeLayout = findViewById(R.id.address_relative_layout);
         birthDayRelative = findViewById(R.id.birthday_relative_layout);
+        sexRelativeLayout = findViewById(R.id.sex_relative_layout);
+
 
         final View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -102,6 +106,73 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+        sexRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
+                builder.setTitle(getString(R.string.sex));
+                // I'm using fragment here so I'm using getView() to provide ViewGroup
+                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+                View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_sex_dialog, null, false);
+                // set up radio buttons
+                final AppCompatRadioButton maleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.male_button);
+                final AppCompatRadioButton femaleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.female_button);
+
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+                final int sex = preference.getInt(Const.USER_SEX, 0);
+                if (sex == 1) {
+                    if (!maleButton.isChecked()) {
+                        maleButton.toggle();
+                    }
+                }
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        int newSex = -1;
+                        if (maleButton.isChecked()) {
+                            //male
+                            newSex = 1;
+                        } else {
+                            //female
+                            newSex = 0;
+                        }
+                        if (sex != newSex) {
+                            final AppUser user = new AppUser();
+                            user.id = preference.getString(Const.USER_ID, null);
+                            user.sex = newSex;
+
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                                @Override
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putInt(Const.USER_SEX, user.sex);
+                                    editor.commit();
+
+                                    if (user.sex == 1) {
+                                        sexTextView.setText(getString(R.string.male));
+                                    } else {
+                                        sexTextView.setText(getString(R.string.female));
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+            }
+        });
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
