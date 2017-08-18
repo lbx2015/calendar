@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AboutActivity;
 import com.riking.calendar.activity.LoginActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
@@ -34,6 +35,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
         View v = inflater.inflate(R.layout.fourth_fragment, container, false);
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
         v.findViewById(R.id.set_layout).setOnClickListener(this);
+        v.findViewById(R.id.about_relative_layout).setOnClickListener(this);
+
         userName = (TextView) v.findViewById(R.id.user_name);
         myPhoto = (ImageView) v.findViewById(R.id.my_photo);
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
@@ -79,6 +82,10 @@ public class FourthFragment extends Fragment implements OnClickListener {
             case R.id.set_layout: {
                 startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
+            }
+
+            case R.id.about_relative_layout: {
+                startActivity(new Intent(getContext(), AboutActivity.class));
             }
         }
     }

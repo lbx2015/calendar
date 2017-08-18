@@ -137,6 +137,13 @@
             android:exported="false"
             android:theme="@style/MyDialogStyle"></activity>
 
+        <activity
+            android:name=".activity.AboutActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.ReportDetailActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+
         <!-- Required SDK核心功能-->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
