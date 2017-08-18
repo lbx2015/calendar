@@ -352,6 +352,7 @@ public class SecondFragment extends Fragment {
             }
         });
         CtryHdayCrcy ctryHdayCrcy = new CtryHdayCrcy();
+        ctryHdayCrcy.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
         Gson gson = new Gson();
         Log.d("feiyoulian", "jason: " + gson.toJson(ctryHdayCrcy));
         Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(ctryHdayCrcy);
