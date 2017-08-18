@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="RemindListTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22:29" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mZy-RD-4YQ">
+                        <rect key="frame" x="15" y="0.0" width="50" height="43.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="aKL-gm-vct"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我是一个提醒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p7U-yx-CzM">
+                        <rect key="frame" x="80" y="0.0" width="225" height="43.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="mZy-RD-4YQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="D6D-cw-UtZ"/>
+                    <constraint firstAttribute="bottom" secondItem="mZy-RD-4YQ" secondAttribute="bottom" id="OVJ-5A-Oth"/>
+                    <constraint firstAttribute="trailing" secondItem="p7U-yx-CzM" secondAttribute="trailing" constant="15" id="Rnc-1w-OSV"/>
+                    <constraint firstItem="p7U-yx-CzM" firstAttribute="leading" secondItem="mZy-RD-4YQ" secondAttribute="trailing" constant="15" id="U2t-MB-cZG"/>
+                    <constraint firstAttribute="bottom" secondItem="p7U-yx-CzM" secondAttribute="bottom" id="XIK-7I-MMh"/>
+                    <constraint firstItem="mZy-RD-4YQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="YkI-wg-Vqc"/>
+                    <constraint firstItem="p7U-yx-CzM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="tub-mp-OkM"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="remindConment" destination="p7U-yx-CzM" id="6Z2-nd-Pub"/>
+                <outlet property="remindTime" destination="mZy-RD-4YQ" id="LRP-m3-6KW"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
