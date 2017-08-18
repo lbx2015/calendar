@@ -156,11 +156,12 @@ public class SecondFragment extends Fragment {
                             dateTextView.setText(sdf.format(calendar.getTime()));
                             if (dialog.isWholeMonth) {
                                 requestBoday.hdayDate = new SimpleDateFormat("yyyyMM").format(calendar.getTime());
+                            } else if (dialog.isWholeYear) {
+                                requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
                             } else {
                                 requestBoday.hdayDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
                             }
                         }
-
                         apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                         dialog.dismiss();
                         break;

@@ -19,8 +19,10 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
     public WheelDatePicker wheelDatePicker;
     public View btnSubmit, btnCancel;
     public Switch wholeMonth;
+    public Switch wholeYear;
     public Switch clearDateFilter;
     public boolean isWholeMonth;
+    public boolean isWholeYear;
     public boolean isDateFilterCleared;
     private String currentData;
 
@@ -32,25 +34,66 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
         btnSubmit = findViewById(R.id.btnSubmit);
         btnCancel = findViewById(R.id.btnCancel);
         wholeMonth = (Switch) findViewById(R.id.whole_month);
+        wholeYear = (Switch) findViewById(R.id.whole_year);
         clearDateFilter = (Switch) findViewById(R.id.clear_date_filter);
+
         wholeMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (wholeMonth.isChecked()) {
                     Logger.d("zzw", "whole month checked");
                     isWholeMonth = true;
+                    clearDateFilter.setChecked(false);
+                    isDateFilterCleared = false;
+                    wholeYear.setChecked(false);
+                    isWholeYear = false;
+                    //show month
+                    wheelDatePicker.pickerMonth.setVisibility(View.VISIBLE);
+                    //hide day
+                    wheelDatePicker.pickerDay.setVisibility(View.GONE);
                 } else {
+                    wheelDatePicker.pickerDay.setVisibility(View.VISIBLE);
+                    wheelDatePicker.pickerMonth.setVisibility(View.VISIBLE);
                     isWholeMonth = false;
                     Logger.d("zzw", "whole month not checked");
                 }
             }
         });
+
+        wholeYear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (wholeYear.isChecked()) {
+                    Logger.d("zzw", "whole month checked");
+                    isWholeYear = true;
+                    clearDateFilter.setChecked(false);
+                    isDateFilterCleared = false;
+                    wholeMonth.setChecked(false);
+                    isWholeMonth = false;
+                    //hide week
+                    wheelDatePicker.pickerDay.setVisibility(View.GONE);
+                    wheelDatePicker.pickerMonth.setVisibility(View.GONE);
+                } else {
+                    isWholeYear = false;
+                    wheelDatePicker.pickerDay.setVisibility(View.VISIBLE);
+                    wheelDatePicker.pickerMonth.setVisibility(View.VISIBLE);
+                    Logger.d("zzw", "whole month not checked");
+                }
+            }
+        });
+
         clearDateFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (clearDateFilter.isChecked()) {
                     Logger.d("zzw", "clear date filter checked");
                     isDateFilterCleared = true;
+                    wholeYear.setChecked(false);
+                    isWholeYear = false;
+                    wholeMonth.setChecked(false);
+                    isWholeMonth = false;
+                    wheelDatePicker.pickerDay.setVisibility(View.VISIBLE);
+                    wheelDatePicker.pickerMonth.setVisibility(View.VISIBLE);
                 } else {
                     Logger.d("zzw", "clear date filter is not checked.");
                     isDateFilterCleared = false;

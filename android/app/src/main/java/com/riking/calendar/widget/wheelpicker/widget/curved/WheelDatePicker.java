@@ -32,10 +32,8 @@ public class WheelDatePicker extends LinearLayout implements IWheelPicker {
     public WheelYearPicker pickerYear;
     public WheelMonthPicker pickerMonth;
     public WheelDayPicker pickerDay;
-
-    protected AbstractWheelPicker.OnWheelChangeListener listener;
-
     public String year, month, day;
+    protected AbstractWheelPicker.OnWheelChangeListener listener;
     protected int labelColor = 0xFF000000;
     protected int stateYear, stateMonth, stateDay;
 
@@ -61,6 +59,7 @@ public class WheelDatePicker extends LinearLayout implements IWheelPicker {
         labelTextSize = padding;
 
         LayoutParams llParams = new LayoutParams(-2, -2);
+        llParams.gravity = Gravity.CENTER;
 
         pickerYear = new WheelYearPicker(getContext());
         pickerMonth = new WheelMonthPicker(getContext());

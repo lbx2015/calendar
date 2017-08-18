@@ -47,18 +47,27 @@
 
         <com.riking.calendar.widget.wheelpicker.widget.curved.WheelDatePicker
             android:id="@+id/date_picker"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/switches"
+            android:gravity="center_horizontal" />
 
         <LinearLayout
+            android:id="@+id/switches"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="20dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
             android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/whole_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/whole_year"
+                android:thumbTint="@color/colorPrimary" />
 
             <Switch
                 android:id="@+id/whole_month"
