@@ -20,7 +20,6 @@ import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
@@ -91,7 +90,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
             }
 
             case R.id.about_relative_layout: {
-                apiInterface.getAboutHtml(new QueryReport()).enqueue(new ZCallBack<ResponseModel<String>>() {
+                apiInterface.getAboutHtml(new Object()).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(getContext(), ReportDetailActivity.class);
