@@ -45,5 +45,6 @@
     <com.riking.calendar.widget.wheelpicker.widget.curved.WheelDatePicker
         android:id="@+id/date_picker"
         android:layout_width="wrap_content"
-        android:layout_height="160dp"/>
+        android:layout_height="160dp"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

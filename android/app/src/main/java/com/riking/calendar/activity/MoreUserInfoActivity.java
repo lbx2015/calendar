@@ -18,7 +18,6 @@ import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
@@ -26,10 +25,6 @@ import com.riking.calendar.widget.dialog.BirthdayPickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/8/5.
@@ -73,9 +68,9 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         AppUser user = new AppUser();
                         user.id = preference.getString(Const.USER_ID, null);
                         user.birthday = new SimpleDateFormat(Const.yyyyMMdd).format(calendar.getTime());
-                        apiInterface.updateUserBirthDay(user).enqueue(new ZCallBack<ResponseModel<AppUser>>() {
+                        apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                             @Override
-                            public void callBack(ResponseModel<AppUser> response) {
+                            public void callBack(ResponseModel<String> response) {
                                 Logger.d("zzw", "request success");
                                 SharedPreferences.Editor editor = preference.edit();
                                 String birthDay = new SimpleDateFormat(Const.birthDayFormat).format(calendar.getTime());
@@ -132,26 +127,20 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         if (editable == null) {
                             return;
                         }
-                        String departName = input.getText().toString();
+                        final String departName = input.getText().toString();
                         if (departName.length() > 0) {
-                            addressTextView.setText(departName);
                             AppUser user = new AppUser();
                             user.address = departName;
                             user.id = preference.getString(Const.USER_ID, null);
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_ADDRESS, departName);
-                            //save the changes.
-                            editor.commit();
 
-                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
-                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                                    GetVerificationModel user = response.body();
-                                    Logger.d("zzw", "update user : " + user);
-                                }
-
-                                @Override
-                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(Const.USER_ADDRESS, departName);
+                                    //save the changes.
+                                    editor.commit();
+                                    addressTextView.setText(departName);
                                 }
                             });
                         }
@@ -195,26 +184,22 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         if (editable == null) {
                             return;
                         }
-                        String newComments = input.getText().toString();
+                        final String newComments = input.getText().toString();
                         if (newComments.length() > 0) {
-                            commentsTextView.setText(newComments);
+
                             AppUser user = new AppUser();
                             user.remark = newComments;
                             user.id = preference.getString(Const.USER_ID, null);
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_COMMENTS, newComments);
-                            //save the changes.
-                            editor.commit();
 
-                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
-                                @Override
-                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                                    GetVerificationModel user = response.body();
-                                    Logger.d("zzw", "update user : " + user);
-                                }
 
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
-                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(Const.USER_COMMENTS, newComments);
+                                    //save the changes.
+                                    editor.commit();
+                                    commentsTextView.setText(newComments);
                                 }
                             });
                         }

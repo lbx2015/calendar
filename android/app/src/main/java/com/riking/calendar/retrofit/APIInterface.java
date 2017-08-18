@@ -77,10 +77,7 @@ public interface APIInterface {
     Call<GetVerificationModel> getVarificationCode(@Body AppUser user);
 
     @POST("/appUserApp/addOrUpdate")
-    Call<GetVerificationModel> updateUserInfo(@Body AppUser user);
-
-    @POST("/appUserApp/addOrUpdate")
-    Call<ResponseModel<AppUser>> updateUserBirthDay(@Body AppUser user);
+    Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
 
     @POST("/reportListApp/getAllReport")
     Call<QueryReportModel> getAllReports(@Body QueryReport report);

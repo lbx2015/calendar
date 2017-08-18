@@ -11,8 +11,10 @@ import android.widget.Toast;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
@@ -73,28 +75,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btnSubmit: {
                 hour = pickerDialog.wheelTimePicker.hour;
                 minute = pickerDialog.wheelTimePicker.minute;
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(Const.WHOLE_DAY_EVENT_HOUR, hour);
-                editor.putString(Const.WHOLE_DAY_EVENT_MINUTE, minute);
-                wholeDayEventTime.setText(hour + ":" + minute);
-                editor.commit();
+
                 pickerDialog.dismiss();
                 AppUser user = new AppUser();
                 user.id = preferences.getString(Const.USER_ID, null);
                 user.allDayReminderTime = hour + minute;
-                apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
+                apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
-                    public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                        GetVerificationModel model = response.body();
-                        Logger.d("zzw", "update whole day reminder time ok " + call);
-                        if (model.code != 200) {
-                            Toast.makeText(getApplicationContext(), "update failed", Toast.LENGTH_SHORT);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<GetVerificationModel> call, Throwable t) {
-                        Logger.d("zzw", "update whole day reminder time fail " + call);
+                    public void callBack(ResponseModel<String> response) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(Const.WHOLE_DAY_EVENT_HOUR, hour);
+                        editor.putString(Const.WHOLE_DAY_EVENT_MINUTE, minute);
+                        wholeDayEventTime.setText(hour + ":" + minute);
+                        editor.commit();
                     }
                 });
                 break;

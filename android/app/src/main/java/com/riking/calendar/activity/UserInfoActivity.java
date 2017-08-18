@@ -22,9 +22,10 @@ import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.UploadImageModel;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.image.ImagePicker;
@@ -218,26 +219,21 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         if (editable == null) {
                             return;
                         }
-                        String newName = input.getText().toString();
+                        final String newName = input.getText().toString();
                         if (newName.length() > 0) {
                             userName.setText(newName);
                             AppUser user = new AppUser();
                             user.name = newName;
                             user.id = preference.getString(Const.USER_ID, null);
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_NAME, newName);
-                            //save the changes.
-                            editor.commit();
 
-                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
-                                @Override
-                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                                    GetVerificationModel user = response.body();
-                                    Logger.d("zzw", "update user : " + user);
-                                }
 
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
-                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(Const.USER_NAME, newName);
+                                    //save the changes.
+                                    editor.commit();
                                 }
                             });
                         }
@@ -276,26 +272,21 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         if (editable == null) {
                             return;
                         }
-                        String emailText = input.getText().toString();
+                        final String emailText = input.getText().toString();
                         if (emailText.length() > 0) {
                             email.setText(emailText);
                             AppUser user = new AppUser();
                             user.email = emailText;
                             user.id = preference.getString(Const.USER_ID, null);
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_EMAIL, emailText);
-                            //save the changes.
-                            editor.commit();
 
-                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
-                                @Override
-                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                                    GetVerificationModel user = response.body();
-                                    Logger.d("zzw", "update user : " + user);
-                                }
 
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
-                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(Const.USER_EMAIL, emailText);
+                                    //save the changes.
+                                    editor.commit();
                                 }
                             });
                         }
@@ -334,26 +325,21 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         if (editable == null) {
                             return;
                         }
-                        String departName = input.getText().toString();
+                        final String departName = input.getText().toString();
                         if (departName.length() > 0) {
                             department.setText(departName);
                             AppUser user = new AppUser();
                             user.dept = departName;
                             user.id = preference.getString(Const.USER_ID, null);
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_DEPT, departName);
-                            //save the changes.
-                            editor.commit();
 
-                            apiInterface.updateUserInfo(user).enqueue(new Callback<GetVerificationModel>() {
-                                @Override
-                                public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                                    GetVerificationModel user = response.body();
-                                    Logger.d("zzw", "update user : " + user);
-                                }
 
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
-                                public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(Const.USER_DEPT, departName);
+                                    //save the changes.
+                                    editor.commit();
                                 }
                             });
                         }
