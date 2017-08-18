@@ -200,7 +200,7 @@ public class AddRemindActivity extends AppCompatActivity {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         ResponseBody r = response.body();
                         try {
-                            if (r == null) {
+                            if (r == null || r.source() == null) {
                                 Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
                             }
                             String s = r.source().readUtf8();
