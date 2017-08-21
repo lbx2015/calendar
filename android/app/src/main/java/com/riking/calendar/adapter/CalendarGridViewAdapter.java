@@ -29,6 +29,9 @@ import java.util.Date;
  */
 
 public class CalendarGridViewAdapter extends BaseAdapter {
+    public int currentFlag = -1; // 用于标记当天
+    public int realCurrentDayPositionFlag = -1; // 用于标记今天，这个是是不会变的。
+    public TextView currentDayTextView;
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
     private int dayOfWeek = 0; // 具体某一天是星期几
@@ -40,13 +43,10 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     private LunarCalendar lc = null;
     private Resources res = null;
     private Drawable drawable = null;
-
     private String currentYear = "";
     private String currentMonth = "";
     private String currentDay = "";
-
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
-    public int currentFlag = -1; // 用于标记当天
     private int[] schDateTagFlag = null; // 存储当月所有的日程日期
 
     private String showYear = ""; // 用于在头部显示的年份
@@ -77,6 +77,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 
         int stepYear = year_c + jumpYear;
         int stepMonth = month_c + jumpMonth;
+        //The swiping month in current year or future
         if (stepMonth > 0) {
             // 往下一个月滑动
             if (stepMonth % 12 == 0) {
@@ -86,7 +87,9 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 stepYear = year_c + stepMonth / 12;
                 stepMonth = stepMonth % 12;
             }
-        } else {
+        }
+        //The swiping month is not in current year. It in last year or previous year.
+        else {
             // 往上一个月滑动
             stepYear = year_c - 1 + stepMonth / 12;
             stepMonth = stepMonth % 12 + 12;
@@ -174,6 +177,19 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             drawable = new ColorDrawable(Color.rgb(23, 126, 214));
             textView.setBackgroundDrawable(drawable);
             textView.setTextColor(Color.WHITE);
+            currentDayTextView = textView;
+        }
+        //disable the other selected text view
+        else {
+            if (position < daysOfMonth + dayOfWeek && position >= dayOfWeek) {
+                // 当前月信息显示
+                textView.setTextColor(Color.BLACK);// 当月字体设黑
+                textView.setBackgroundDrawable(null);
+                if (position % 7 == 0 || position % 7 == 6) {
+                    // 当前月信息显示
+                    textView.setTextColor(Color.rgb(23, 126, 214));// 当月字体设黑
+                }
+            }
         }
         return convertView;
     }
@@ -221,8 +237,9 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 dayNumber[i] = i - dayOfWeek + 1 + "." + lunarDay;
                 // 对于当前月才去标记当前日期
                 if (sys_year.equals(String.valueOf(year)) && sys_month.equals(String.valueOf(month)) && sys_day.equals(day)) {
-                    // 标记当前日期
+                    // 标记当前日期,这里是真的今天，不会变的，就是new Date();
                     currentFlag = i;
+                    realCurrentDayPositionFlag = i;
                 }
                 setShowYear(String.valueOf(year));
                 setShowMonth(String.valueOf(month));

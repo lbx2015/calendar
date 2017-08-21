@@ -145,7 +145,11 @@ public class FirstFragment extends Fragment {
     }
 
     public void enterCurrentMonth() {
-        if (calV.currentFlag > 0) {
+        if (calV.realCurrentDayPositionFlag > 0) {
+            if (calV.realCurrentDayPositionFlag != calV.currentFlag) {
+                calV.currentFlag = calV.realCurrentDayPositionFlag;
+                calV.notifyDataSetChanged();
+            }
             //do nothing if already in current month.
             return;
         }
@@ -186,6 +190,7 @@ public class FirstFragment extends Fragment {
         todayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.d("zzw", "click today button.");
                 enterCurrentMonth();
             }
         });
@@ -229,6 +234,7 @@ public class FirstFragment extends Fragment {
         } else {
             weekDay--;
         }
+
         LunarCalendar lc = new LunarCalendar();
         SimpleDateFormat chineseFormat = new SimpleDateFormat("yyyy年MM月dd日");
         timeView.setText(chineseFormat.format(date));
@@ -398,6 +404,8 @@ public class FirstFragment extends Fragment {
                     // //这一天的阴历
                     String scheduleYear = calV.getShowYear();
                     String scheduleMonth = calV.getShowMonth();
+                    calV.currentFlag = position;
+                    calV.notifyDataSetChanged();
                     Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
                     // Toast.LENGTH_SHORT).show();z
