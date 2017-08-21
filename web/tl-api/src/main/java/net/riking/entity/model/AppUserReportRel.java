@@ -1,14 +1,10 @@
 package net.riking.entity.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -24,6 +20,14 @@ import net.riking.entity.BaseEntity;
 @Table(name = "t_appuser_report_rel")
 public class AppUserReportRel extends BaseEntity {
 
+	
+	public AppUserReportRel(String reportId) {
+		super();
+		this.reportId = reportId;
+	}
+
+	public AppUserReportRel() {
+	}
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")

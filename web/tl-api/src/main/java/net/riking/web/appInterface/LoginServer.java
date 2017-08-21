@@ -22,8 +22,11 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AliSme;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserReportRel;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.service.repo.AppUserReportRelRepo;
+import net.riking.service.repo.ReportListRepo;
 import net.riking.util.SmsUtil;
 
 /**
@@ -42,6 +45,12 @@ public class LoginServer {
 
 	@Autowired
 	SysDataService sysDataService;
+	
+	@Autowired
+	ReportListRepo reportListRepo;
+	
+	@Autowired
+	AppUserReportRelRepo appUserReportRelRepo;
 
 	@Autowired
 	SmsUtil smsUtil;
@@ -105,6 +114,11 @@ public class LoginServer {
 						appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
 						"1", "1","0800");
 				appUser2 = appUserRepo.save(appUser3);
+				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
+				for (AppUserReportRel appUserReportRel : appUserReportRels) {
+					appUserReportRel.setAppUserId(appUser2.getId());
+				}
+				appUserReportRelRepo.save(appUserReportRels);
 				logger.info("{}注册成功", appUser.getName());
 			}
 		}

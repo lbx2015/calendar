@@ -8,6 +8,12 @@
 	],
 	"attrs": [
 		{
+			"prop": "reportTitle",
+			"alias": "报表标题",
+			"type": "string",
+			"group": "base"
+		},
+		{
 			"prop": "reportName",
 			"alias": "报表名称",
 			"type": "string",

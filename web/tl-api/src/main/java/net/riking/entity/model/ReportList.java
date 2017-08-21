@@ -11,7 +11,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
-import net.riking.entity.PageQuery;
 
 @Comment("报表信息")
 @Entity
@@ -27,6 +26,10 @@ public class ReportList extends BaseEntity {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
+
+	// 报表标题
+	@Column(name = "report_title", length = 32)
+	private String reportTitle;
 
 	// 报表名称
 	@Column(name = "report_name", length = 32)
@@ -81,7 +84,6 @@ public class ReportList extends BaseEntity {
 	// 报表模板下载地址
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
-
 
 	// 删除状态 0删除 1显示
 	@Column(name = "delete_state", length = 2)
@@ -205,6 +207,14 @@ public class ReportList extends BaseEntity {
 
 	public void setDownloadUrl(String downloadUrl) {
 		this.downloadUrl = downloadUrl;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
 	}
 
 	@Override
