@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,6 +26,7 @@ import net.riking.core.annos.AuthPass;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.util.StringUtil;
 /**
  * app用户信息操作
  * @author you.fei
@@ -123,22 +122,17 @@ public class AppUserServer {
 				return new AppResp(false,CodeDef.ERROR);
 			}
 		}
-		String photoUrl = getPortPath(url)+ Const.TL_PHOTO_PATH + fileName;
-		int rs = appUserRepo.updatePhoto(id,photoUrl);
+		//截取资源访问路径
+		String projectPath = StringUtil.getProjectPath(url);
+		String photoUrl = projectPath+ Const.TL_PHOTO_PATH + fileName;
+		//数据库保存路径
+		int rs = appUserRepo.updatePhoto(id,Const.TL_PHOTO_PATH + fileName);
 		if(rs>0){
 			return new AppResp(photoUrl, CodeDef.SUCCESS);
 		}
 		return new AppResp(CodeDef.ERROR);
 	}
 	
-	private String getPortPath(String url){
-		Pattern p = Pattern.compile("[a-zA-z]+://[^/]*");
-		Matcher matcher = p.matcher(url);  
-		if(matcher.find()){
-			return matcher.group();  
-		}
-		return null;
-	}
 	
 	private <T> T merge(T dbObj,T appObj) throws Exception{
 		Field[] fields = dbObj.getClass().getDeclaredFields();

@@ -6,7 +6,7 @@
 	}],
 	"attrs":[
 		{
-			"prop": "icon",
+			"prop": "flagUrl",
 			"alias": "国旗图片url",
 			"group":"base",
 			"hidden":"preview,edit",

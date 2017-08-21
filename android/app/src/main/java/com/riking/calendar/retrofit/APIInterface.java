@@ -86,7 +86,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
     @POST("appAboutApp/aboutHtml")
-    Call<ResponseModel<String>> getAboutHtml(@Body QueryReport report);
+    Call<ResponseModel<String>> getAboutHtml(@Body Object object);
 
     @Multipart
     @POST("appUserApp/upLoad")

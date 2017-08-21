@@ -22,7 +22,6 @@ import net.riking.service.repo.AppLogInfoRepo;
 @Aspect
 @Component
 public class AppLogAspect {
-	private static final String AppUser = null;
 	Logger logger = LogManager.getLogger("AppLogAspect");
 	ObjectMapper mapper = new ObjectMapper();
 
