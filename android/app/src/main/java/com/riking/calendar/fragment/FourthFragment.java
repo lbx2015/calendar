@@ -15,9 +15,14 @@ import android.widget.TextView;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginActivity;
+import com.riking.calendar.activity.ReportDetailActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.retrofit.APIInterface;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -27,6 +32,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
     SharedPreferences sharedPreferences;
     TextView userName;
     ImageView myPhoto;
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +40,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
         View v = inflater.inflate(R.layout.fourth_fragment, container, false);
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
         v.findViewById(R.id.set_layout).setOnClickListener(this);
+        v.findViewById(R.id.about_relative_layout).setOnClickListener(this);
+
         userName = (TextView) v.findViewById(R.id.user_name);
         myPhoto = (ImageView) v.findViewById(R.id.my_photo);
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
@@ -79,6 +87,18 @@ public class FourthFragment extends Fragment implements OnClickListener {
             case R.id.set_layout: {
                 startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
+            }
+
+            case R.id.about_relative_layout: {
+                apiInterface.getAboutHtml(new Object()).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        Intent i = new Intent(getContext(), ReportDetailActivity.class);
+                        i.putExtra(Const.REPORT_URL, response._data);
+                        startActivity(i);
+                    }
+                });
+
             }
         }
     }

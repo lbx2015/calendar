@@ -36,4 +36,6 @@ public class Const {
     public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
     public static final String yyyyMMdd = "yyyyMMdd";
     public static final String birthDayFormat = "yyyy-MM-dd";
+
+    public static final String  REPORT_URL="reportQuery";
 }

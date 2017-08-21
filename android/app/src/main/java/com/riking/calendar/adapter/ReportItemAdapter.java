@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,21 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.ReportDetailActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
-import java.io.IOException;
 import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/12.
@@ -80,21 +79,17 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Logger.d("zzw", "report id: " + r.id);
-                    apiInterface.getReportDetail(r).enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            ResponseBody body = response.body();
-                            try {
-                                Logger.d("zzw", body.source().readUtf8());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
 
+                    Logger.d("zzw", "report id: " + r.id);
+                    apiInterface.getReportDetail(r).enqueue(new ZCallBack<ResponseModel<String>>() {
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Logger.d("zzw", t.getMessage());
+                        public void callBack(ResponseModel<String> response) {
+                            String reportUrl = response._data;
+                            if (reportUrl != null) {
+                                Intent i = new Intent(title.getContext(), ReportDetailActivity.class);
+                                i.putExtra(Const.REPORT_URL, reportUrl);
+                                title.getContext().startActivity(i);
+                            }
                         }
                     });
                 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>dialog2</title>
+    <title>G01《资产负债项目统计表》填报说明</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -19,46 +19,46 @@
             <div class="layui-colla-content layui-show">
                 <div name="edit" id="edit_base" action="">
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表名称</label>
-                        <div class="layui-input-inline"> <input type="text" id="reportName"  class="layui-input _tip"> </div>
+                        <div class="layui-input-inline"> <input type="text" id="reportName"  class="layui-input _tip" readonly> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表编号</label>
-                        <div class="layui-input-inline"> <input type="text" id="reportCode"  class="layui-input _tip"> </div>
+                        <div class="layui-input-inline"> <input type="text" id="reportCode"  class="layui-input _tip" readonly> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表简介</label>
-                        <div class="layui-input-inline"> <textarea id="reportBrief" class="layui-textarea"></textarea> </div>
+                        <div class="layui-input-inline"> <textarea id="reportBrief" class="layui-textarea" readonly></textarea> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">填报机构</label>
-                        <div class="layui-input-inline"> <input type="text" id="reportOrganization" class="layui-input _tip"> </div>
+                        <div class="layui-input-inline"> <input type="text" id="reportOrganization" class="layui-input _tip" readonly> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">报送口径、频度及时间</label>
-                        <div class="layui-input-inline"> <textarea id="reportFrequency"  class="layui-textarea"></textarea> </div>
+                        <div class="layui-input-inline"> <textarea id="reportFrequency"  class="layui-textarea" readonly></textarea> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">报送方式</label>
-                        <div class="layui-input-inline"> <input type="text" id="reportStyle"  class="layui-input _tip"> </div>
+                        <div class="layui-input-inline"> <input type="text" id="reportStyle"  class="layui-input _tip" readonly> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">数据单位</label>
-                        <div class="layui-input-inline"> <select id="reportUnit"  class="_tip" lay-filter="reportUnit" lay-search>  <option value="--##--">--请选择--</option>   <option value="W">万元</option>    <option value="Y">元</option>    <option value="K">千元</option>   </select> </div>
+                        <div class="layui-input-inline"> <select id="reportUnit"  class="_tip" lay-filter="reportUnit" lay-search readonly>  <option value="--##--">--请选择--</option>   <option value="W">万元</option>    <option value="Y">元</option>    <option value="K">千元</option>   </select> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">四舍五入要求</label>
-                        <div class="layui-input-inline"> <input type="text" id="reportRound"  class="layui-input _tip"> </div>
+                        <div class="layui-input-inline"> <input type="text" id="reportRound"  class="layui-input _tip" readonly> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">填报币种</label>
-                        <div class="layui-input-inline"> <textarea id="reportCurrency"    class="layui-textarea"></textarea> </div>
+                        <div class="layui-input-inline"> <textarea id="reportCurrency"    class="layui-textarea" readonly></textarea> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表模板下载地址</label>
-                        <div class="layui-input-inline"> <input type="text" id="downloadUrl"   class="layui-input _tip"> </div>
+                        <div class="layui-input-inline"> <input type="text" id="downloadUrl"   class="layui-input _tip" readonly> </div>
                     </div>
                     <div class="layui-inline "> <label class="layui-form-label" data-desc="">报表所属模块，频度标识</label>
-                        <div class="layui-input-inline"> <select id="moduleType" lay-search>  <option value="--##--">--请选择--</option>   <option value="A">PBOC-数据大集中</option>    <option value="G">CBRC-1104Basel报表</option>    <option value="S">CBRC-1104特色报表</option>    <option value="H">CBRC-1104基础财务报表</option>    <option value="GF">CBRC-分支机构报表</option>    <option value="Q">CBRC-区域报表</option>   </select> </div>
+                        <div class="layui-input-inline"> <select id="moduleType" lay-search readonly>  <option value="--##--">--请选择--</option>   <option value="A">PBOC-数据大集中</option>    <option value="G">CBRC-1104Basel报表</option>    <option value="S">CBRC-1104特色报表</option>    <option value="H">CBRC-1104基础财务报表</option>    <option value="GF">CBRC-分支机构报表</option>    <option value="Q">CBRC-区域报表</option>   </select> </div>
                     </div>
                     <div class="layui-inline " style="display:none;"> <label class="layui-form-label" data-desc="">删除状态  </label>
-                        <div class="layui-input-inline"> <textarea id="deleteState"  class="layui-textarea"></textarea> </div>
+                        <div class="layui-input-inline"> <textarea id="deleteState"  class="layui-textarea" readonly></textarea> </div>
                     </div>
                     <div class="layui-inline  space-wrap "> <label class="layui-form-label" data-desc="">报表说明</label>
-                        <div class="layui-input-inline"> <textarea id="reportNote" glprop="" data-type="text"  class="layui-textarea"></textarea> </div>
+                        <div class="layui-input-inline"> <textarea id="reportNote" glprop="" data-type="text"  class="layui-textarea" readonly></textarea> </div>
                     </div>
                     <div class="layui-inline  space-wrap "> <label class="layui-form-label" data-desc="">报表规则</label>
-                        <div class="layui-input-inline"> <textarea id="reportRule" glprop="" data-type="text"  class="layui-textarea"></textarea> </div>
+                        <div class="layui-input-inline"> <textarea id="reportRule" glprop="" data-type="text"  class="layui-textarea" readonly></textarea> </div>
                     </div>
                 </div>
             </div>
@@ -67,15 +67,15 @@
 </form>
     </div>
 </body>
-<script type="text/javascript" src="/layui/layui.all.js"></script>
-<script type="text/javascript" src="/js/util/utils.js"></script>
-<script type="text/javascript" src="/js/core/base.js"></script>
-<script type="text/javascript" src="/js/core/base64_utf8.js"></script>
-<script type="text/javascript" src="/js/util/tmplUtils.js"></script>
-<script type="text/javascript" src="/js/core/view.js"></script>
-<script type="text/javascript" src="/js/util/iframe.js"></script>
-<script type="text/javascript" src="/js/util/html5.js"></script>
-<script type="text/javascript" src="/js/core/iefix.js"></script>
+<script type="text/javascript" src="/tl-web/layui/layui.all.js"></script>
+<script type="text/javascript" src="/tl-web/js/util/utils.js"></script>
+<script type="text/javascript" src="/tl-web/js/core/base.js"></script>
+<script type="text/javascript" src="/tl-web/js/core/base64_utf8.js"></script>
+<script type="text/javascript" src="/tl-web/js/util/tmplUtils.js"></script>
+<script type="text/javascript" src="/tl-web/js/core/view.js"></script>
+<script type="text/javascript" src="/tl-web/js/util/iframe.js"></script>
+<script type="text/javascript" src="/tl-web/js/util/html5.js"></script>
+<script type="text/javascript" src="/tl-web/js/core/iefix.js"></script>
 <script>
 var _SYS = Tool.parseJSON('{=current_system}' || "{}");
 var Const = {

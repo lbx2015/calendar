@@ -38,54 +38,58 @@ public interface APIInterface {
     @GET
     Call<ResponseBody> doGetListResources(@Url String url);
 
-    @GET("/api/unknown")
+    @GET("api/unknown")
     Call<MultipleResource> doGetListResources();
 
-    @POST("/api/users")
+    @POST("api/users")
     Call<User> createUser(@Body User user);
 
-    @GET("/api/users?")
+    @GET("api/users?")
     Call<UserList> doGetUserList(@Query("page") String page);
 
     @FormUrlEncoded
-    @POST("/api/users?")
+    @POST("api/users?")
     Call<UserList> doCreateUserWithField(@Field("queryParam") String name, @Field("job") String job);
 
 
-    @POST("/remindApp/save")
+    @POST("remindApp/save")
     Call<ResponseBody> createRemind(@Body ReminderModel reminder);
 
-    @POST("/Todo/save")
+    @POST("Todo/save")
     Call<ResponseBody> createTask(@Body TaskModel taskModel);
 
-    @POST("/ctryHdayCrcyApp/getMore")
+    @POST("ctryHdayCrcyApp/getMore")
     Call<ResponseBody> getHolidays(@Body GetHolidayModel getHolidayModel);
 
-    @POST("/ctryHdayCrcyApp/getParam")
+    @POST("ctryHdayCrcyApp/getParam")
     Call<HolidayConditionDemo> getParams();
 
-    @POST("/ctryHdayCrcyApp/getMore")
+    @POST("ctryHdayCrcyApp/getMore")
     Call<CtryHdayCryCondition> getMore(@Body CtryHdayCrcy ctryHdayCrcy);
 
-    @POST("/ctryHdayCrcyApp/vagueQuery")
+    @POST("ctryHdayCrcyApp/vagueQuery")
     Call<CtryHdayCryCondition> getVagueQuery(@Body CtryHdayCrcy ctryHdayCrcy);
 
-    @POST("/checkValiCode")
+    @POST("checkValiCode")
     Call<GetVerificationModel> checkVarificationCode(@Body AppUser user);
 
-    @POST("/getValiCode")
+    @POST("getValiCode")
     Call<GetVerificationModel> getVarificationCode(@Body AppUser user);
 
-    @POST("/appUserApp/addOrUpdate")
+    @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
 
-    @POST("/reportListApp/getAllReport")
+    @POST("reportListApp/getAllReport")
     Call<QueryReportModel> getAllReports(@Body QueryReport report);
-    @POST("/appAboutApp/reportHtml")
-    Call<ResponseBody> getReportDetail(@Body QueryReport report);
+
+    @POST("appAboutApp/reportHtml")
+    Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
+
+    @POST("appAboutApp/aboutHtml")
+    Call<ResponseModel<String>> getAboutHtml(@Body Object object);
 
     @Multipart
-    @POST("/appUserApp/upLoad")
+    @POST("appUserApp/upLoad")
     Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);
 
 

@@ -17,9 +17,12 @@ public class CtryHdayCrcy {
     public String hdayNameValue;
 
     //	@Comment("节假日时间")
-//	@Temporal(TemporalType.DATE)
-//	@DateTimeFormat(pattern = "yyyyMMdd")
-//	@Column(name = "hday_date")
+    //@Temporal(TemporalType.DATE)
+    //@DateTimeFormat(pattern = "yyyyMMdd")
+    //	@Column(name = "hday_date")
+    //yyyy representing whole year reports
+    //yyyyMM representing whole month reports query
+    //yyyyMMdd representing a specific day query
     public String hdayDate;
 
     //	@Comment("币种")

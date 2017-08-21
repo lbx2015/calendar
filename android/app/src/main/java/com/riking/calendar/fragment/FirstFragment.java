@@ -282,8 +282,10 @@ public class FirstFragment extends Fragment {
             @Override
             public void onResponse(Call<QueryReportModel> call, Response<QueryReportModel> response) {
                 QueryReportModel reports = response.body();
-                Logger.d("zzw", "success loaded reports: " + reports);
-                reportRecyclerView.setAdapter(new ReportAdapter(reports));
+                if (reports != null) {
+                    Logger.d("zzw", "success loaded reports: " + reports);
+                    reportRecyclerView.setAdapter(new ReportAdapter(reports));
+                }
             }
 
             @Override

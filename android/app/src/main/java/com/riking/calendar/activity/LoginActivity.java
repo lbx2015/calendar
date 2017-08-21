@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.ldf.calendar.Const;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     public EditText phoneNumber;
     public EditText verificationCode;
     public View getVerificationCodeButton;
+    RadioButton agreeButton;
     View loginButton;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     //device id
@@ -48,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         phoneNumber = (EditText) findViewById(R.id.phone_nubmer_editor);
         verificationCode = (EditText) findViewById(R.id.verification_code);
+        agreeButton = (RadioButton) findViewById(R.id.agree_contract_button);
         loginButton = findViewById(R.id.login);
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,14 +94,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Editable code = verificationCode.getText();
                 if (code == null) {
+                    Toast.makeText(LoginActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 String Regex = "[^\\d]";
                 String valiCode = code.toString().replaceAll(Regex, "");
                 if (valiCode.length() != 6) {
+                    Toast.makeText(LoginActivity.this, "验证码格式不正确", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                if (!agreeButton.isChecked()) {
+                    Toast.makeText(LoginActivity.this, "请同意用户服务协议", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 user.valiCode = valiCode;
                 apiInterface.checkVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
                     @Override

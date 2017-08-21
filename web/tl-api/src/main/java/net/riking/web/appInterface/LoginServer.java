@@ -80,6 +80,7 @@ public class LoginServer {
 		smsUtil.sendSms(aliSms);
 		appUser.setValiCode(valiCode);
 		sysDataService.setAppUser(appUser);
+		// logger.info("手机{}获取验证码成功",appUser.getPhoneSeqNum());
 		return new AppResp(appUser, CodeDef.SUCCESS);
 	}
 
@@ -100,12 +101,9 @@ public class LoginServer {
 				appUser2=list.get(0);
 			}
 			if (appUser2==null) {
-				String password = "";
-				for (int i = 0; i < 6; i++) {
-					password += (int) (Math.random() * 9);
-				}
 				AppUser appUser3 = new AppUser(appUser.getTelephone(),
-						    appUser.getTelephone(), password, user.getPhoneSeqNum(),"1", "1","0800");
+						appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
+						"1", "1","0800");
 				appUser2 = appUserRepo.save(appUser3);
 				logger.info("{}注册成功", appUser.getName());
 			}
