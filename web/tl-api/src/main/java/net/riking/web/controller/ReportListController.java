@@ -113,7 +113,7 @@ public class ReportListController {
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
 		List<ReportList> list = null;
 		String[] fields = { "reportName", "reportCode", "reportBrief", "reportOrganization", "reportFrequency",
-				"reportStyle", "reportUnit", "reportRound", "reportCurrency", "moduleType", "downloadUrl" };
+				"reportStyle", "reportUnit", "reportRound", "reportCurrency", "downloadUrl" , "moduleType"};
 		try {
 			InputStream is = mFile.getInputStream();
 			if (suffix.equals("xlsx")) {

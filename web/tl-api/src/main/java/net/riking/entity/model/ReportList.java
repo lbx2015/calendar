@@ -28,7 +28,7 @@ public class ReportList extends BaseEntity {
 	private String id;
 
 	// 报表标题
-	@Column(name = "report_title", length = 32)
+	@Column(name = "report_title", length = 128)
 	private String reportTitle;
 
 	// 报表名称
@@ -44,7 +44,7 @@ public class ReportList extends BaseEntity {
 	private String reportBrief;
 
 	// 填报机构
-	@Column(name = "report_organization", length = 256)
+	@Column(name = "report_organization", length = 512)
 	private String reportOrganization;
 
 	// 报送口径、频度及时间
@@ -86,7 +86,7 @@ public class ReportList extends BaseEntity {
 	private String downloadUrl;
 
 	// 删除状态 0删除 1显示
-	@Column(name = "delete_state", length = 2)
+	@Column(name = "delete_state", length = 1)
 	private String deleteState;
 
 	public String getId() {

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>demo</title>
+<title>报表报送口径配置</title>
 <link type="include" href="/common/depcss.html" />
 </head>
 
@@ -16,28 +16,23 @@
 				</button>
 				<button
 					class="layui-btn layui-btn-normal layui-btn-small modal-full"
-					id="add-data">
+					id="add-data" onclick="add()">
 					<i class="layui-icon">&#xe608;</i> 添加
-				</button>
-				<button
-					class="layui-btn layui-btn-normal layui-btn-small modal-full fun_ addmore_"
-					id="addMore-data" onclick="addMore()">
-					<i class="layui-icon">&#xe608;</i>批量导入
 				</button>
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html"
-				data-attr="reportList.json" data-bind="filterCriteriaOnBind"
+				data-attr="reportSubmitCaliber.json" data-bind="filterCriteriaOnBind"
 				data-param=""></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
 		<div class="contentLeft layui-form">
 			<div class="_tmpl" data-url="table.html" id="table"
-				data-attr="reportList.json" data-bind="tbOnBind"
+				data-attr="reportSubmitCaliber.json" data-bind="tbOnBind"
 				data-param="pindex=0&pcount=10"></div>
 		</div>
 		<div class="contentRight">
-			<div class="_tmpl" data-url="preview.html" data-attr="reportList.json"
+			<div class="_tmpl" data-url="preview.html" data-attr="reportSubmitCaliber.json"
 				data-bind="previewOnBind" data-param=""></div>
 		</div>
 		<div style="clear: both"></div>
@@ -47,19 +42,11 @@
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
-	$(function() {
-		$("#add-data").click(function() {
-		    var url  = "reportListEdit.html";
-			var title =  "添加数据";
-			View.openDialog(url,title);
-		});
-
 		var form = layui.form();
 		//监听提交，设置为不刷新页面
 		form.on('submit', function(data) {
 			return false;
 		});
-	});
 </script>
 <script>
 	var form = layui.form(), layer = layui.layer;
@@ -77,6 +64,7 @@
 	
 </script>
 <script>
+var id = View.getQStr('id');
 	var item;
 	var tbTmpl;
 	function forbbit(id) {
@@ -85,9 +73,9 @@
 	function tbOnBind(attrs, param) {
 		tmpl = this;
 		tbTmpl = tmpl;
-
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/reportList/getMore";
+            param.reportId=id;
+			var url = Const.apiUrl + "/reportSubmitCaliber/getMore";
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
@@ -104,7 +92,7 @@
 				//表格显示列数
 				 data.trClick = "bindPro";
 				//操作栏的宽度
-				data.operationWidth = 12;
+				data.operationWidth = 10;
                 data.cellLeftCount = 4;
                 data.cellRightCount = 3;
                 //表格各列显示比例
@@ -120,7 +108,12 @@
 					//row 当前行数 从1开始
 					//col 当前列数 从1开始
 				      if (obj.row > 1 && obj.col == 2) {
-	                        obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button><button class='layui-btn layui-btn-mini layui-btn-normal' onclick='reportSubmitCaliber(" + "\"" + obj.item.id + "\"" + ");'>查看配置</button>";
+	                        obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
+	                        if (obj.item.enabled == "0") { //禁用
+	                            return obj.html + "<button class='layui-btn layui-btn-mini' onclick='enable(" + "\"" + obj.item.id + "\"" + ");'>启用</button>";
+	                        } else {
+	                            return obj.html + "<button class='layui-btn layui-btn-danger layui-btn-mini' onclick='unEnable(" + "\"" + obj.item.id + "\"" + ");'>禁用</button>";
+	                        }
 	                      return obj.html;
 	                    }
 					return obj.html;
@@ -156,7 +149,7 @@
 			return;
 		}
 		tmpl.bind(function(callback) {
-			var url = Const.apiUrl + "/reportList/get";
+			var url = Const.apiUrl + "/reportSubmitCaliber/get";
 			var data = {};
 			//是否可编辑
 			//data.canEdit = true;
@@ -190,20 +183,20 @@
 	}
 	//弹出添加iframe
 	function edit(id) {
-	    var url  = "reportListEdit.html?id="+ id;
+	    var url  = "reportSubmitCaliberEdit.html?id="+ id+"&type=1";
 		var title =  "数据处理";
 		View.openDialog(url,title);
 	}
 	
-	function reportSubmitCaliber(id) {
-	    var url  = "reportSubmitCaliberList.html?id="+ id;
-		var title =  "数据处理";
-		View.openDialog(url,title);
-	}
+	  function add() {
+		  var url  = "reportSubmitCaliberEdit.html?id="+ id+"&type=0";
+			var title =  "新增数据";
+			View.openDialog(url,title);
+	    }
 
 	//保存
 	function save() {
-		var url = Const.apiUrl + "/reportList/save";
+		var url = Const.apiUrl + "/reportSubmitCaliber/save";
 		var employee = Utils.formToObj("preview");
 		View.post(url, employee, function(resp) {
 			TmplUtils.showMsgSuccess('编辑成功');
@@ -214,7 +207,38 @@
 			TmplUtils.showMsgFail('编辑失败');
 		})
 	}
+	//启用
+    function enable(id) {
+        TmplUtils.showConfirm('您确定启用该用户吗？', '确定', '取消', function() {
+            var url = Const.apiUrl + "/reportSubmitCaliber/enable";
+            View.get(url, "id=" + id, function(resp) {
+                TmplUtils.showMsgSuccess('启用成功');
+                tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
+                    TmplUtils.pageSize + TmplUtils.searchParam);
+                TmplUtils.closePreview();
+            }, function(code) {
+                TmplUtils.showMsgFail('启用失败');
+            });
+        }, function() {
 
+        });
+    }
+	//禁用
+    function unEnable(id) {
+        TmplUtils.showConfirm('您确定禁用该用户吗？', '确定', '取消', function() {
+            var url = Const.apiUrl + "/reportSubmitCaliber/unEnable";
+            View.get(url, "id=" + id, function(resp) {
+                TmplUtils.showMsgSuccess('禁用成功');
+                tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
+                    TmplUtils.pageSize + TmplUtils.searchParam);
+                TmplUtils.closePreview();
+            }, function(code) {
+                TmplUtils.showMsgFail('禁用失败');
+            });
+        }, function() {
+
+        });
+    }
 	//删除
 	function del() {
 		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
@@ -225,7 +249,7 @@
 					ids.push($(this).data("id"));
 				}
 			});
-			var url = Const.apiUrl + "/reportList/delMore"
+			var url = Const.apiUrl + "/reportSubmitCaliber/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -238,11 +262,5 @@
 
 		});
 	}
-	
-    function addMore(){
-		var url = "reportListAddMore.html";
-        var title = "批量添加";
-        View.openDialog(url, title);
-    }
 </script>
 </html>

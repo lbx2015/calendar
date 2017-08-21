@@ -47,9 +47,9 @@ public class ReportSubmitCaliber extends BaseEntity {
 	@Column(name = "enabled", length = 1)
 	private Integer enabled;
 
-	// 是否启用：0-禁用；1-启用
+	// 是否启用：0-删除；1-显示
 	@Column(name = "delete_state", length = 1)
-	private Integer deleteState;
+	private String deleteState;
 
 	public String getId() {
 		return id;
@@ -115,13 +115,11 @@ public class ReportSubmitCaliber extends BaseEntity {
 		this.enabled = enabled;
 	}
 
-	public Integer getDeleteState() {
+	public String getDeleteState() {
 		return deleteState;
 	}
 
-	public void setDeleteState(Integer deleteState) {
+	public void setDeleteState(String deleteState) {
 		this.deleteState = deleteState;
 	}
-
-
 }

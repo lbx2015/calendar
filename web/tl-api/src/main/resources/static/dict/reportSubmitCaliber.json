@@ -7,7 +7,7 @@
 	"attrs":[
 		{
 			"prop": "reportId",
-			"hidden":"edit,preview",
+			"hidden":"edit,preview,table",
 			"type": "string"
 		},
 		{
@@ -15,104 +15,50 @@
 			"alias": "口径类型",
 			"type": "enum",
 			"enum_search":"1",
-			"dict_key":"T_APP_USER.IDTYPE",
+			"dict_key":"T_REPORT_SUBMIT.CALIBERTYPE",
 			"group":"base"
 		},
 		{
-			"prop": "realName",
-			"alias": "真实姓名",
-			"type": "string",
-			"query": "1",
-			"group":"base",
-			"query_order": "1"
-		},
-		{
-			"prop": "idType",
-			"alias": "证件类型",
-			"group":"base",
+			"prop": "frequency",
+			"alias": "频度",
 			"type": "enum",
 			"enum_search":"1",
-			"dict_key":"T_APP_USER.IDTYPE"
+			"dict_key":"T_REPORT_SUBMIT.FREQUENCY",
+			"group":"base"
 		},
 		{
-			"prop": "idCode",
-			"alias": "证件号码",
-			"type": "string",
-			"query": "1",
+			"prop": "delayDates",
+			"alias": "延后天数",
 			"group":"base",
-			"query_order": "2"
+			"type": "int"
 		},
 		{
-			"prop": "sex",
-			"alias": "用户性别",
+			"prop": "submitTime",
+			"alias": "报送截止时间点",
+			"type": "int",
+			"group":"base"
+		},
+		{
+			"prop": "isWorkDay",
+			"alias": "是否工作日",
 			"group":"base",
-			"query": "1",
-			"query_order": "3",
 			"type": "enum",
-			"dict_key": "T_APP_USER.SEX",
+			"dict_key": "T_REPORT_SUBMIT.ISWORKDAY",
 			"enum_search":"1"
 		},
 		{
-			"prop": "address",
-			"alias": "用户地址",
-			"group":"base",
-			"type" : "lazyEnum",
-      		"enum_search":"1",
-      		"enum_urls":"/modelPropDict/getAddF,/modelPropDict/getAddS"
-		},
-		{
-			"prop": "birthday",
-			"group":"base",
-			"alias": "用户生日",
-			"type": "date"
-		},
-		{
-			"prop": "telephone",
-			"alias": "用户电话",
-			"group":"base",
-			"type": "string"
-		},
-		{
-			"prop": "phoneSeqNum",
-			"alias": "手机序列号",
-			"group":"base",
-			"type": "string"
-		},
-		{
-			"prop": "phoneType",
-			"alias": "手机类型",
-			"group":"base",
-			"type": "string"
-		},
-		{
-			"prop": "dept",
-			"alias": "用户部门",
-			"group":"base",
-			"type": "enum",
-			"enum_search":"1",
-			"dict_key":"T_APP_USER.DEPT"
-		},
-		{
-			"prop": "email",
-			"alias": "用户邮箱",
-			"group":"base",
-			"type": "strAndEnum",
-			"enum_search":"1",
-      		"enum_urls":",/modelPropDict/getEmailSuffix"
-		},
-		{
 			"prop": "enabled",
-			"alias": "用户状态",
 			"group":"base",
-			"type" : "enum",
-			"edit_block":"1",
-      		"enum_search":"1",
-      		"dict_key": "T_APP_USER.ENABLED"
+			"alias": "是否启用",
+			"type": "enum",
+			"dict_key": "T_APP_USER.ENABLED",
+			"enum_search":"1"
 		},
 		{
-			"prop": "remark",
-			"alias": "备注信息",
+			"prop": "deleteState",
+			"alias": "删除状态",
 			"group":"base",
+			"hidden":"edit,preview,table",
 			"type" : "text"
 		}
 	]
