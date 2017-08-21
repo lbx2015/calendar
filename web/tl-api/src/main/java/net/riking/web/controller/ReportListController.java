@@ -31,8 +31,10 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
+import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.ReportList;
+import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.ReportListRepo;
 import net.riking.util.ExcelToList;
@@ -50,11 +52,14 @@ public class ReportListController {
 	ReportListRepo reportListRepo;
 	@Autowired
 	AppUserReportRelRepo appUserReportRepo;
+	
+	@Autowired
+	SysDataService sysDataService;
 
 	// 规则: 查,删 操作接口使用RequestMethod.GET，失败情况可以重复请求
 	// 增，改使用RequestMethod.POST，不能重复请求
 	// 为降低难度与兼容性， DELETE,PUT等操作不用。
-	@AuthPass
+	
 	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
@@ -102,6 +107,7 @@ public class ReportListController {
 		ReportList pReportList = reportListRepo.save(reportList);
 		return new Resp(pReportList, CodeDef.SUCCESS);
 	}
+	
 
 	@AuthPass
 	@ApiOperation(value = "新增多条报表数据", notes = "POST")
@@ -147,6 +153,16 @@ public class ReportListController {
 		} else {
 			return new Resp().setCode(CodeDef.ERROR);
 		}
+	}
+	
+	@AuthPass
+	@ApiOperation(value = "得到<单个>报表详情h5页面", notes = "GET")
+	@RequestMapping(value = "/getForHtml", method = RequestMethod.GET)
+	public Resp getForHtml_(@RequestParam("id") String id) {
+		ReportList reportList = reportListRepo.findOne(id);
+		ModelPropDict dict = sysDataService.getDict("T_REPORT_LIST", "REPORTUNIT", reportList.getReportUnit());
+		reportList.setReportUnit(dict.getValu());
+		return new Resp(reportList, CodeDef.SUCCESS);
 	}
 
 }

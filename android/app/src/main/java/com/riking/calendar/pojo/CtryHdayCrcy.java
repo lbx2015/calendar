@@ -1,7 +1,5 @@
 package com.riking.calendar.pojo;
 
-import java.util.Date;
-
 public class CtryHdayCrcy {
     //query string
     public String queryParam;
@@ -39,7 +37,7 @@ public class CtryHdayCrcy {
     public String deleteState;
 
     //	@Transient
-    public String iconUrl;
+    public String falgUrl;
     public byte pindex;
     public byte pcount;
 
@@ -53,7 +51,7 @@ public class CtryHdayCrcy {
                 ", crcy='" + crcy + '\'' +
                 ", remark='" + remark + '\'' +
                 ", deleteState='" + deleteState + '\'' +
-                ", iconUrl='" + iconUrl + '\'' +
+                ", falgUrl='" + falgUrl + '\'' +
                 '}';
     }
 }
