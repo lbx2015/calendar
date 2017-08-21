@@ -119,11 +119,11 @@
                         obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
                     	return obj.html;
                     }
-                    if (obj.prop == "icon") {
-                		var icon = "/icon/"+obj.item.ctryName+".png";
+               /*      if (obj.prop == "icon") {
+                		var icon = "/images/flag/"+obj.item.ctryName+".png";
                         obj.html = "<img src='"+Const.apiUrl + icon + "'  alt='"+ obj.item.ctryName+"' height='40' width='50'  />";
                     	return obj.html;
-                    }
+                    } */
                     return obj.html;
                 }
                 //操作栏的宽度

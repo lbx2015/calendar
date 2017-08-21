@@ -163,14 +163,14 @@ public class SysDataServiceImpl implements SysDataService {
 	@SuppressWarnings("static-access")
 	@Override
 	public AppUser getAppUser(AppUser user) {
-		AppUser appUser = (AppUser)RedisUtil.getInstall().getObject(user.getPhoneSeqNum()+":"+user.getTelephone());
+		AppUser appUser = (AppUser)RedisUtil.getInstall().getObject(user.getTelephone());
 		return appUser;
 	}
 
 	@SuppressWarnings("static-access")
 	@Override
 	public void setAppUser(AppUser user) {
-		RedisUtil.getInstall().setObject(user.getPhoneSeqNum()+":"+user.getTelephone(), Const.VALI_CODE_TIME, user);
+		RedisUtil.getInstall().setObject(user.getTelephone(), Const.VALI_CODE_TIME, user);
 	}
 	
 	@SuppressWarnings("static-access")

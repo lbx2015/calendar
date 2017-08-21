@@ -63,7 +63,7 @@ public class CtryHdayCrcy extends PageQuery {
 	private String queryParam;
 	
 	@Transient
-	private String iconUrl;
+	private String flagUrl;
 
 	public String getId() {
 		return id;
@@ -122,12 +122,12 @@ public class CtryHdayCrcy extends PageQuery {
 		this.deleteState = deleteState;
 	}
 
-	public String getIconUrl() {
-		return iconUrl;
+	public String getFlagUrl() {
+		return flagUrl;
 	}
 
-	public void setIconUrl(String iconUrl) {
-		this.iconUrl = iconUrl;
+	public void setFlagUrl(String flagUrl) {
+		this.flagUrl = flagUrl;
 	}
 
 	public String getCtryNameValue() {
