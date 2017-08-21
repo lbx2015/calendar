@@ -54,7 +54,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-
+/*
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
             userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
                     sharedPreferences.getString(Const.USER_COMMENTS, ""));
@@ -69,7 +69,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
         } else {
             userName.setText(getString(R.string.not_register));
             myPhoto.setImageDrawable(getResources().getDrawable(R.drawable.not_login));
-        }
+        }*/
     }
 
     @Override
