@@ -20,6 +20,7 @@ public class Config {
 	private String accessKeyId;
 	private String accessKeySecret;
 	private String appHtmlPath;
+	private String appApiPath;
 	
 	
 
@@ -45,6 +46,14 @@ public class Config {
 
 	public void setAppHtmlPath(String appHtmlPath) {
 		this.appHtmlPath = appHtmlPath;
+	}
+	
+	public String getAppApiPath() {
+		return appApiPath;
+	}
+
+	public void setAppApiPath(String appApiPath) {
+		this.appApiPath = appApiPath;
 	}
 
 	@Bean

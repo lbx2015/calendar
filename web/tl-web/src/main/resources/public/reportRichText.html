@@ -44,9 +44,10 @@
 	}
     var id = View.getQStr('id');
     var type = View.getQStr('type');
+    var url = View.getQStr('url');
     $(function() {
         if (id) {
-            var url = Const.apiUrl + "/reportList/get";
+            url += "/reportList/getForHtml";
             View.get(url, "id=" + id, function(resp) {
                 $("#reportNote").val(resp.reportNote);
                 $("#reportRule").val(resp.reportRule);
