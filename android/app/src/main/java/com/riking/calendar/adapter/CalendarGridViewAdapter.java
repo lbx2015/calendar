@@ -5,15 +5,12 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -143,40 +140,50 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.calendar_item, null);
         }
+        LinearLayout cellRoot = (LinearLayout) convertView.findViewById(R.id.root_linearLayout);
         TextView textView = (TextView) convertView.findViewById(R.id.tvtext);
+        TextView nTextView = (TextView) convertView.findViewById(R.id.n_tvtext);
         String d = dayNumber[position].split("\\.")[0];
         String dv = dayNumber[position].split("\\.")[1];
 
-        SpannableString sp = new SpannableString(d + "\n" + dv);
-        sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        sp.setSpan(new RelativeSizeSpan(1.2f), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if (dv != null || dv != "") {
-            sp.setSpan(new RelativeSizeSpan(0.75f), d.length() + 1, dayNumber[position].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
+//        SpannableString sp = new SpannableString(d + "\n" + dv);
+//        sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        sp.setSpan(new RelativeSizeSpan(1.2f), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        if (dv != null || dv != "") {
+//            sp.setSpan(new RelativeSizeSpan(0.75f), d.length() + 1, dayNumber[position].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        }
         // sp.setSpan(new ForegroundColorSpan(Color.MAGENTA), 14, 16,
         // Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        textView.setText(sp);
-        textView.setTextColor(Color.GRAY);
+        textView.setText(d);
+        nTextView.setText(dv);
+        textView.setTextColor(res.getColor(R.color.color_background_b6b6b6));
 
         if (position < daysOfMonth + dayOfWeek && position >= dayOfWeek) {
             // 当前月信息显示
             textView.setTextColor(Color.BLACK);// 当月字体设黑
+            nTextView.setTextColor(Color.BLACK);
+
+//            drawable = res.getDrawable(R.drawable.circular_textview);
 //			drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
-            drawable = new ColorDrawable(Color.rgb(23, 126, 214));
-            if (position % 7 == 0 || position % 7 == 6) {
-                // 当前月信息显示
-                textView.setTextColor(Color.rgb(23, 126, 214));// 当月字体设黑
+//            drawable = new ColorDrawable(Color.rgb(23, 126, 214));
+//            if (position % 7 == 0 || position % 7 == 6) {
+            // 当前月信息显示
+//                textView.setTextColor(Color.BLACK);// 当月字体设黑
+//                nTextView.setTextColor(Color.BLACK);
 //				drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
-                drawable = new ColorDrawable(Color.rgb(23, 126, 214));
-            }
+//                drawable = new ColorDrawable(Color.rgb(23, 126, 214));
+//            }
         }
 
         if (currentFlag == position) {
             // 设置当天的背景
+            drawable = res.getDrawable(R.drawable.circular_textview);
+//            drawable = res.getDrawable(R.drawable.selected_date_background);
 //			drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
-            drawable = new ColorDrawable(Color.rgb(23, 126, 214));
-            textView.setBackgroundDrawable(drawable);
+//            drawable = new ColorDrawable(Color.rgb(23, 126, 214));
+            cellRoot.setBackgroundDrawable(drawable);
             textView.setTextColor(Color.WHITE);
+            nTextView.setTextColor(Color.WHITE);
             currentDayTextView = textView;
         }
         //disable the other selected text view
@@ -184,11 +191,15 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             if (position < daysOfMonth + dayOfWeek && position >= dayOfWeek) {
                 // 当前月信息显示
                 textView.setTextColor(Color.BLACK);// 当月字体设黑
-                textView.setBackgroundDrawable(null);
-                if (position % 7 == 0 || position % 7 == 6) {
-                    // 当前月信息显示
-                    textView.setTextColor(Color.rgb(23, 126, 214));// 当月字体设黑
-                }
+                nTextView.setTextColor(Color.BLACK);
+                //remove the background
+                cellRoot.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+//                textView.setBackgroundDrawable(null);
+//                nTextView.setBackgroundDrawable(null);
+//                if (position % 7 == 0 || position % 7 == 6) {
+                // 当前月信息显示
+//                    textView.setTextColor(Color.rgb(23, 126, 214));// 当月字体设黑
+//                }
             }
         }
         return convertView;
