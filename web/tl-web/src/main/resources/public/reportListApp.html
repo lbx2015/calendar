@@ -25,11 +25,9 @@
         </div>-->
         <section class="content contentText">
             <h1 style="font-size:0.19rem;" id="reportTitle"></h1>
-            <a href="#" style="color:#29a1f7;">G01报表模板下载</a>
+           <!--  <a href="#" style="color:#29a1f7;">G01报表模板下载</a> -->
             <h2>引言</h2>
-            <p>
-                本表反映填报机构在报告日的财务状况，应当按照资产、负债和所有者权益分类分项列示。
-            </p>
+            <p id="reportBrief"></p>
             <p class="line"></p>
             <h2>一般说明</h2>
             <p>1．报表名称：<span id="reportName"></span></p>
@@ -73,18 +71,18 @@
         criteriaCount: 3
     }
     var id = View.getQStr('id');
+    var url = View.getQStr('url');
     $(function() {
         if (id) {
-            var url = Const.apiUrl + "/reportList/getForHtml";
-            View.info(url);
-            View.get(url, "id=" + id, function(resp) {
+            url += "/reportList/getForHtml";
+           View.get(url, "id=" + id, function(resp) {
                 for (key in resp) {
                     var id = "#" + key;
                     $(id).html(resp[key]);
                 }
             }, function() {
                 TmplUtils.showMsgFail('信息获取失败');
-            });
+            }); 
         }
     });
 </script>
