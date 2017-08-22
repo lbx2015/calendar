@@ -32,9 +32,9 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public TextView currentDayTextView;
     //the day number of current month plus the previous month's last several day which to make up the week blank.
     public ArrayList<String> daysOfCurrentMonth = new ArrayList<>();
+    public int dayOfWeek = 0; // 具体某一天是星期几
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
-    public int dayOfWeek = 0; // 具体某一天是星期几
     private int daysOfLastMonth = 0; // 上一个月的总天数
     private Context context;
     private String[] dayNumber = new String[42]; // 一个gridview中的日期存入此数组中
@@ -158,11 +158,11 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 //        }
         // sp.setSpan(new ForegroundColorSpan(Color.MAGENTA), 14, 16,
         // Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        textView.setText(d);
-        nTextView.setText(dv);
-        textView.setTextColor(res.getColor(R.color.color_background_b6b6b6));
+//        textView.setTextColor(res.getColor(R.color.color_background_b6b6b6));
 
         if (position < daysOfMonth + dayOfWeek && position >= dayOfWeek) {
+            textView.setText(d);
+            nTextView.setText(dv);
             // 当前月信息显示
             textView.setTextColor(Color.BLACK);// 当月字体设黑
             nTextView.setTextColor(Color.BLACK);
@@ -177,6 +177,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 //				drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
 //                drawable = new ColorDrawable(Color.rgb(23, 126, 214));
 //            }
+        }else {
+            return convertView;
         }
 
         if (currentFlag == position) {
