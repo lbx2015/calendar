@@ -45,6 +45,7 @@ import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.LunarCalendar;
+import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -201,6 +202,17 @@ public class FirstFragment extends Fragment {
         calV = new CalendarGridViewAdapter(a, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         addGridView();
         gridView.setAdapter(calV);
+        Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+        if (calV.daysOfCurrentMonth.size() <= 35) {
+            ViewGroup.LayoutParams params = flipper.getLayoutParams();
+            Logger.d("zzw", "flipper height: " + params.height);
+            params.height = (int) ZR.convertDpToPx(getContext(), 280);
+            Logger.d("zzw", "reset flipper height: " + params.height);
+            flipper.setLayoutParams(params);
+//            flipper.invalidate();
+            Logger.d("zzw", "after reset layout params flipper height: " + flipper.getLayoutParams().height);
+        }
+
         flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
         // Create the Realm instance
@@ -315,6 +327,21 @@ public class FirstFragment extends Fragment {
         gridView.setAdapter(calV);
         addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
         gvFlag++;
+
+        Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+
+        ViewGroup.LayoutParams params = flipper.getLayoutParams();
+        //reset set the height of the month view
+        if (calV.daysOfCurrentMonth.size() <= 35) {
+            Logger.d("zzw", "enterNextMonth flipper height: " + params.height);
+            params.height = (int) ZR.convertDpToPx(getContext(), 280);
+            Logger.d("zzw", "enterNextMonth reset flipper height: " + params.height);
+        } else {
+            params.height = (int) ZR.convertDpToPx(getContext(), 330);
+        }
+        flipper.setLayoutParams(params);
+//        flipper.invalidate();
+
         flipper.addView(gridView, gvFlag);
         flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
         flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_out));
@@ -332,6 +359,18 @@ public class FirstFragment extends Fragment {
         jumpMonth--; // 上一个月
 
         calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+        Logger.d("zzw", " enterPrevMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+        ViewGroup.LayoutParams params = flipper.getLayoutParams();
+        if (calV.daysOfCurrentMonth.size() <= 35) {
+            Logger.d("zzw", "enterPrevMonth flipper height: " + params.height);
+            params.height = (int) ZR.convertDpToPx(getContext(), 280);
+            Logger.d("zzw", "enterPrevMonth reset flipper height: " + params.height);
+        } else {
+            params.height = (int)ZR.convertDpToPx(getContext(),330);
+        }
+            flipper.setLayoutParams(params);
+//            flipper.invalidate();
+
         gridView.setAdapter(calV);
         gvFlag++;
         addTextToTopTextView(currentMonth); // 移动到上一月后，将当月显示在头标题中
@@ -358,7 +397,7 @@ public class FirstFragment extends Fragment {
     }
 
     private void addGridView() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         // 取得屏幕的宽度和高度
         WindowManager windowManager = a.getWindowManager();
         Display display = windowManager.getDefaultDisplay();

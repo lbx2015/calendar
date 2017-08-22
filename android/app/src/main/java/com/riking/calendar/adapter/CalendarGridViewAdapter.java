@@ -18,6 +18,7 @@ import com.riking.calendar.util.LunarCalendar;
 import com.riking.calendar.util.SpecialCalendar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -29,9 +30,11 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public int currentFlag = -1; // 用于标记当天
     public int realCurrentDayPositionFlag = -1; // 用于标记今天，这个是是不会变的。
     public TextView currentDayTextView;
+    //the day number of current month plus the previous month's last several day which to make up the week blank.
+    public ArrayList<String> daysOfCurrentMonth = new ArrayList<>();
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
-    private int dayOfWeek = 0; // 具体某一天是星期几
+    public int dayOfWeek = 0; // 具体某一天是星期几
     private int daysOfLastMonth = 0; // 上一个月的总天数
     private Context context;
     private String[] dayNumber = new String[42]; // 一个gridview中的日期存入此数组中
@@ -119,7 +122,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return dayNumber.length;
+//        return dayNumber.length;
+        return daysOfCurrentMonth.size();
     }
 
     @Override
@@ -197,7 +201,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                     textView.setTextColor(Color.BLACK);// 当月字体设黑
                     nTextView.setTextColor(Color.BLACK);
                 }
-                
+
                 //remove the background
                 cellRoot.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 //                textView.setBackgroundDrawable(null);
@@ -229,7 +233,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 
         // 得到当前月的所有日程日期(这些日期需要标记)
 
-        for (int i = 0; i < dayNumber.length; i++) {
+        for (int i = 0; i < 42; i++) {
             // 周一
             // if(i<7){
             // dayNumber[i]=week[i]+"."+" ";
@@ -247,11 +251,13 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 int temp = daysOfLastMonth - dayOfWeek + 1;
                 lunarDay = lc.getLunarDate(year, month - 1, temp + i, false);
                 dayNumber[i] = (temp + i) + "." + lunarDay;
+                daysOfCurrentMonth.add(i, (temp + i) + "." + lunarDay);
 
             } else if (i < daysOfMonth + dayOfWeek) { // 本月
                 String day = String.valueOf(i - dayOfWeek + 1); // 得到的日期
                 lunarDay = lc.getLunarDate(year, month, i - dayOfWeek + 1, false);
                 dayNumber[i] = i - dayOfWeek + 1 + "." + lunarDay;
+                daysOfCurrentMonth.add(i, i - dayOfWeek + 1 + "." + lunarDay);
                 // 对于当前月才去标记当前日期
                 if (sys_year.equals(String.valueOf(year)) && sys_month.equals(String.valueOf(month)) && sys_day.equals(day)) {
                     // 标记当前日期,这里是真的今天，不会变的，就是new Date();
@@ -263,16 +269,19 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 setAnimalsYear(lc.animalsYear(year));
                 setLeapMonth(lc.leapMonth == 0 ? "" : String.valueOf(lc.leapMonth));
                 setCyclical(lc.cyclical(year));
-            } else { // 下一个月
-                lunarDay = lc.getLunarDate(year, month + 1, j, false);
-                dayNumber[i] = j + "." + lunarDay;
-                j++;
+            } else {
+                //not show next month days
+                break;
+                // 下一个月
+//                lunarDay = lc.getLunarDate(year, month + 1, j, false);
+//                dayNumber[i] = j + "." + lunarDay;
+//                j++;
             }
         }
 
         String abc = "";
-        for (int i = 0; i < dayNumber.length; i++) {
-            abc = abc + dayNumber[i] + ":";
+        for (int i = 0; i < daysOfCurrentMonth.size(); i++) {
+            abc = abc + daysOfCurrentMonth.get(i) + ":";
         }
         Log.d("DAYNUMBER", abc);
 
