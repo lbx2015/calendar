@@ -21,4 +21,8 @@ public interface AppUserReportRelRepo  extends JpaRepository<AppUserReportRel, S
 	
 	@Query("select reportId from AppUserReportRel u where u.appUserId = ?1 ")
 	Set<String> findbyAppUserId(String appUserId);
+	
+	@Query("select u.appUserId from AppUserReportRel u where u.reportId in ?1")
+	Set<String> findbyReportId(Set<String> reportId);
+
 }

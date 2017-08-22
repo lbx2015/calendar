@@ -43,6 +43,9 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	@Query("select a.phoneSeqNum from AppUser a where a.deleteState = '1' and substring(a.birthday, 5, 4) =?1 ")
 	Set<String> findByDate(String date);
 	
+	@Query("select a.phoneSeqNum from AppUser a where a.deleteState = '1' and a.id  in ?1 ")
+	Set<String> findByUserId(Set<String> userId);
+	
 	List<AppUser> findByDeleteStateAndTelephone(String deleteState,String telephone);
 
 	@Query(" from AppUser  where deleteState = '1' and id = ?1 ")

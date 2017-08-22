@@ -52,7 +52,7 @@ public class ReportList extends BaseEntity {
 	private String reportFrequency;
 
 	// 报送方式
-	@Column(name = "report_style", length = 32)
+	@Column(name = "report_style", length = 512)
 	private String reportStyle;
 
 	// 数据单位
