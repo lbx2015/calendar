@@ -189,9 +189,15 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         //disable the other selected text view
         else {
             if (position < daysOfMonth + dayOfWeek && position >= dayOfWeek) {
-                // 当前月信息显示
-                textView.setTextColor(Color.BLACK);// 当月字体设黑
-                nTextView.setTextColor(Color.BLACK);
+                if (realCurrentDayPositionFlag > -1 && realCurrentDayPositionFlag == position && realCurrentDayPositionFlag != currentFlag) {
+                    textView.setTextColor(res.getColor(R.color.colorPrimary));// 当天字体
+                    nTextView.setTextColor(res.getColor(R.color.colorPrimary));
+                } else {
+                    // 当前月信息显示
+                    textView.setTextColor(Color.BLACK);// 当月字体设黑
+                    nTextView.setTextColor(Color.BLACK);
+                }
+                
                 //remove the background
                 cellRoot.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 //                textView.setBackgroundDrawable(null);
