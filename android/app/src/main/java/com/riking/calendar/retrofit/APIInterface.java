@@ -38,6 +38,9 @@ public interface APIInterface {
     @GET
     Call<ResponseBody> doGetListResources(@Url String url);
 
+    @GET("/reportList/getForHtml")
+    Call<ResponseBody> getHtml(@Query("id") String id);
+
     @GET("api/unknown")
     Call<MultipleResource> doGetListResources();
 
