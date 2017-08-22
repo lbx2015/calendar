@@ -27,7 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textSize="9sp" />
+            android:textSize="9sp"
+            android:singleLine="true"
+            android:maxLines="1" />
 
     </LinearLayout>
 </FrameLayout>
