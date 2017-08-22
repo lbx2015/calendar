@@ -30,7 +30,7 @@ public class APIClient {
 //                .baseUrl("http://www.baidu.com")
 //                .baseUrl("https://reqres.in")
 //                .baseUrl("http://172.16.32.14:6061/tl-api/")
-                .baseUrl("http://172.16.64.96:8281/")
+//                .baseUrl("http://172.16.64.96:8281/")
                 .baseUrl("http://172.16.64.85:8281/")
                 .addConverterFactory(new GsonStringConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
