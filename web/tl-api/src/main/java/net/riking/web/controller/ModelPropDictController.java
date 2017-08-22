@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.riking.config.CodeDef;
 import net.riking.core.entity.EnumCustom;
+import net.riking.core.entity.MultipleChoiceCustom;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.DataDictService;
@@ -59,6 +60,21 @@ public class ModelPropDictController {
 		return new Resp(enumKeyValues);
 	}
 
+	@RequestMapping(value = "/getUnit", method = RequestMethod.GET)
+	public Resp getUnit(
+			@RequestParam(value = "prop", required = false) String prop) {
+		List<ModelPropDict> datas = dataDictService.getDicts("T_REPORT_LIST", "REPORTUNIT");
+		List<MultipleChoiceCustom> multipleChoiceCustoms = new ArrayList<MultipleChoiceCustom>();
+		for (ModelPropDict data : datas) {
+			MultipleChoiceCustom multipleChoiceCustom = new MultipleChoiceCustom();
+			multipleChoiceCustom.setKey(data.getKe());
+			multipleChoiceCustom.setValue(data.getValu());
+			multipleChoiceCustom.setProp(prop);
+			multipleChoiceCustoms.add(multipleChoiceCustom);
+		}
+		return new Resp(multipleChoiceCustoms);
+	}
+	
 	@RequestMapping(value = "/getAddF", method = RequestMethod.GET)
 	public Resp getAddF(@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword", required = false) String keyword) {

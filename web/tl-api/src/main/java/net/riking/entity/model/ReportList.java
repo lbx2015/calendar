@@ -56,7 +56,7 @@ public class ReportList extends BaseEntity {
 	private String reportStyle;
 
 	// 数据单位
-	@Column(name = "report_unit", length = 2)
+	@Column(name = "report_unit", length = 32)
 	private String reportUnit;
 
 	// 四舍五入要求

@@ -53,9 +53,8 @@
 			"prop": "reportUnit",
 			"alias": "数据单位",
 			"group": "base",
-			"type": "enum",
-			"enum_search": "1",
-			"dict_key": "T_REPORT_LIST.REPORTUNIT"
+			"type": "multipleChoice",
+			"choice_url": "/modelPropDict/getUnit"
 		},
 		{
 			"prop": "reportRound",
