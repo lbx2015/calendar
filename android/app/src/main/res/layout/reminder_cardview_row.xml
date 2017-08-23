@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     android:orientation="horizontal"
     sml:sml_auto_open_percent="0.2"
-    sml:sml_scroller_duration="250"
+    sml:sml_scroller_duration="50"
     sml:sml_scroller_interpolator="@android:anim/bounce_interpolator">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,8 +38,9 @@
             android:textSize="16sp" />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/divider_height"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="10dp"

@@ -35,6 +35,12 @@ public class ViewPagerActivity extends FragmentActivity {
     private String[] mTitles;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private View mDecorView;
+    private int[] mIconUnselectIds = {
+            R.drawable.work_page_unselected, R.drawable.holiday_page_unselected,
+            R.drawable.remind_page_unselected, R.drawable.me_page_unselected};
+    private int[] mIconSelectIds = {
+            R.drawable.work_page_selected, R.drawable.holiday_page_selected,
+            R.drawable.remind_page_selected, R.drawable.me_page_selected};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +68,12 @@ public class ViewPagerActivity extends FragmentActivity {
         mTitles = getResources().getStringArray(R.array.subTittles);
 
         for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], 0, 0));
+            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
 
         mDecorView = getWindow().getDecorView();
         /** indicator圆角色块 */
-        bottomTabs = ViewFindUtils.find(mDecorView, R.id.tl_8);
+        bottomTabs = ViewFindUtils.find(mDecorView, R.id.tl_3);
         bottomTabs.setTabData(mTabEntities);
         bottomTabs.setOnTabSelectListener(new OnTabSelectListener() {
             @Override

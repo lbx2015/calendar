@@ -38,6 +38,9 @@ public interface APIInterface {
     @GET
     Call<ResponseBody> doGetListResources(@Url String url);
 
+    @GET("/reportList/getForHtml")
+    Call<ResponseBody> getHtml(@Query("id") String id);
+
     @GET("api/unknown")
     Call<MultipleResource> doGetListResources();
 
@@ -86,7 +89,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
     @POST("appAboutApp/aboutHtml")
-    Call<ResponseModel<String>> getAboutHtml(@Body QueryReport report);
+    Call<ResponseModel<String>> getAboutHtml(@Body Object object);
 
     @Multipart
     @POST("appUserApp/upLoad")
