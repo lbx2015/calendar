@@ -5,17 +5,18 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:orientation="horizontal">
+        android:background="?attr/colorPrimary">
 
         <TextView
             android:id="@+id/today_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="19dp"
             android:text="@string/today"
             android:textColor="@android:color/white"
@@ -23,10 +24,10 @@
 
         <TextView
             android:id="@+id/currentMonth"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="35dp"
+            android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
-            android:layout_weight="3"
             android:gravity="center"
             android:text="2014年6月"
             android:textColor="@android:color/white"
@@ -34,20 +35,20 @@
 
         <ImageView
             android:id="@+id/add"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="19dp"
-            android:layout_weight="1"
             android:src="@drawable/ic_add_black_24dp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="4dp"
         android:background="#ffffffff"
-        android:paddingRight="6dp">
+        android:paddingRight="6dp"
+        android:paddingTop="4dp">
 
         <TextView
             style="@style/weekName"
