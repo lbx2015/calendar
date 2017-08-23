@@ -44,13 +44,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="#ffffffff">
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:paddingRight="6dp">
 
         <TextView
             style="@style/weekName"
             android:text="日"
-            android:textColor="#177ed6" />
+            android:textColor="@color/color_background_b6b6b6" />
 
         <TextView
             style="@style/weekName"
@@ -75,14 +76,8 @@
         <TextView
             style="@style/weekName"
             android:text="六"
-            android:textColor="#177ed6" />
+            android:textColor="@color/color_background_b6b6b6" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/two_dp"
-        android:background="#ff8091a8" />
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -99,6 +94,7 @@
                 android:id="@+id/flipper"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
+                android:layout_marginLeft="8dp"
                 app:layout_scrollFlags="scroll|enterAlways" />
         </android.support.design.widget.AppBarLayout>
 
