@@ -164,8 +164,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             textView.setText(d);
             nTextView.setText(dv);
             // 当前月信息显示
-            textView.setTextColor(Color.BLACK);// 当月字体设黑
-            nTextView.setTextColor(Color.BLACK);
+            textView.setTextColor(res.getColor(R.color.color_323232));// 当月字体设黑
+            nTextView.setTextColor(res.getColor(R.color.color_323232));
 
 //            drawable = res.getDrawable(R.drawable.circular_textview);
 //			drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
@@ -177,7 +177,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 //				drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
 //                drawable = new ColorDrawable(Color.rgb(23, 126, 214));
 //            }
-        }else {
+        } else {
             return convertView;
         }
 
@@ -196,8 +196,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         else {
             if (position < daysOfMonth + dayOfWeek && position >= dayOfWeek) {
                 if (realCurrentDayPositionFlag > -1 && realCurrentDayPositionFlag == position && realCurrentDayPositionFlag != currentFlag) {
-                    textView.setTextColor(res.getColor(R.color.colorPrimary));// 当天字体
-                    nTextView.setTextColor(res.getColor(R.color.colorPrimary));
+                    textView.setTextColor(res.getColor(R.color.color_29a1f7));// 当天字体
+                    nTextView.setTextColor(res.getColor(R.color.color_29a1f7));
                 } else {
                     // 当前月信息显示
                     textView.setTextColor(Color.BLACK);// 当月字体设黑
