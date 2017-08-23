@@ -99,7 +99,7 @@ public class AppUser extends BaseEntity {
 	private String address;
 	
 	@Comment("用户登录密码")
-	@Column(name = "passWord",length = 64)
+	@Column(name = "password",length = 64)
 	private String passWord;
 	
 	//0-禁用    1-启用

@@ -11,7 +11,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
-import net.riking.entity.PageQuery;
 
 @Comment("报表信息")
 @Entity
@@ -28,6 +27,10 @@ public class ReportList extends BaseEntity {
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
 
+	// 报表标题
+	@Column(name = "report_title", length = 128)
+	private String reportTitle;
+
 	// 报表名称
 	@Column(name = "report_name", length = 32)
 	private String reportName;
@@ -41,7 +44,7 @@ public class ReportList extends BaseEntity {
 	private String reportBrief;
 
 	// 填报机构
-	@Column(name = "report_organization", length = 256)
+	@Column(name = "report_organization", length = 512)
 	private String reportOrganization;
 
 	// 报送口径、频度及时间
@@ -49,11 +52,11 @@ public class ReportList extends BaseEntity {
 	private String reportFrequency;
 
 	// 报送方式
-	@Column(name = "report_style", length = 32)
+	@Column(name = "report_style", length = 512)
 	private String reportStyle;
 
 	// 数据单位
-	@Column(name = "report_unit", length = 2)
+	@Column(name = "report_unit", length = 32)
 	private String reportUnit;
 
 	// 四舍五入要求
@@ -82,9 +85,8 @@ public class ReportList extends BaseEntity {
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
 
-
 	// 删除状态 0删除 1显示
-	@Column(name = "delete_state", length = 2)
+	@Column(name = "delete_state", length = 1)
 	private String deleteState;
 
 	public String getId() {
@@ -205,6 +207,14 @@ public class ReportList extends BaseEntity {
 
 	public void setDownloadUrl(String downloadUrl) {
 		this.downloadUrl = downloadUrl;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
 	}
 
 	@Override

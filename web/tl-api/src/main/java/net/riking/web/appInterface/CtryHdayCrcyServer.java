@@ -1,7 +1,5 @@
 package net.riking.web.appInterface;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -27,7 +23,6 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +35,7 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.CtryHdayCrcyRepo;
-import net.riking.util.ZipFileUtil;
+import net.riking.util.StringUtil;
 /**
  * app各国节假日币种接口
  * @author you.fei
@@ -108,8 +103,6 @@ public class CtryHdayCrcyServer {
 		if(page.getContent()!=null && page.getContent().size()>0){
 			this._setDictValue(page.getContent(),request);
 		}
-		//将压缩包解压
-		this.getIcon();
 		return new AppResp(page, CodeDef.SUCCESS);
 	}
 	
@@ -164,8 +157,6 @@ public class CtryHdayCrcyServer {
 		if(page.getContent()!=null && page.getContent().size()>0){
 			this._setDictValue(page.getContent(),request);
 		}
-		//将压缩包解压
-		this.getIcon();
 		return new AppResp(page, CodeDef.SUCCESS);
 	}
 	
@@ -183,39 +174,13 @@ public class CtryHdayCrcyServer {
 	}
 	
 	
-	private void getIcon(){
-		String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_ICON_PATH;
-		File dir = new File(path);
-		parseIconZip(dir);
-	}
-	
-	private void parseIconZip(File dir){
-		if(!dir.exists()){
-			return;
-		}
-		File[] files = dir.listFiles();
-		for (int i = 0; i < files.length; i++) {
-			if(files[i].isDirectory()){
-				parseIconZip(files[i]);
-				continue;
-			}
-			String suffix = files[i].getName().substring(files[i].getName().lastIndexOf(".")).toUpperCase();
-			if(suffix.equals(".ZIP")){
-				try {
-					ZipFileUtil.parseZip(files[i],files[i].getParent());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			
-		}
-	}
 	
 	private void _setDictValue(List<CtryHdayCrcy> list,HttpServletRequest request){
 		AppUser user = (AppUser)request.getSession().getAttribute("currentUser");
 		String url = request.getRequestURL().toString();
+		String projectPath = StringUtil.getProjectPath(url);
 		for (CtryHdayCrcy chc : list) {
-			chc.setIconUrl(getPortPath(url) + Const.TL_ICON_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCtryName()+".png");
+			chc.setFlagUrl(projectPath + Const.TL_FLAG_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCtryName()+".png");
 			//币种
 //			ModelPropDict dict1 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CRCY", chc.getCrcy());
 //			chc.setCrcyValue(dict1.getValu());
@@ -228,12 +193,4 @@ public class CtryHdayCrcyServer {
 		}
 	}
 	
-	private String getPortPath(String url){
-		Pattern p = Pattern.compile("[a-zA-z]+://[^/]*");
-		Matcher matcher = p.matcher(url);  
-		if(matcher.find()){
-			return matcher.group();  
-		}
-		return null;
-	}
 }

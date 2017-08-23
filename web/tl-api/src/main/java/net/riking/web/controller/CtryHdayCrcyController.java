@@ -33,6 +33,7 @@ import net.riking.entity.PageQuery;
 import net.riking.entity.model.CtryHdayCrcy;
 import net.riking.service.repo.CtryHdayCrcyRepo;
 import net.riking.util.ExcelToList;
+import net.riking.util.StringUtil;
 import net.riking.util.ZipFileUtil;
 /**
  * 
@@ -46,6 +47,9 @@ import net.riking.util.ZipFileUtil;
 public class CtryHdayCrcyController {
 	@Autowired
 	CtryHdayCrcyRepo crtyHdayCrcyRepo;
+	
+	@Autowired
+	HttpServletRequest request;
 	
 	@ApiOperation(value = "得到<单个>各国节假日信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -63,12 +67,15 @@ public class CtryHdayCrcyController {
 		}
 		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
 		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
-		//将压缩包解压
-		this.getIcon();
+		String url = request.getRequestURL().toString();
+		String projectPath = StringUtil.getProjectPath(url);
+		for (CtryHdayCrcy chc : page.getContent()) {
+			chc.setFlagUrl(projectPath + Const.TL_FLAG_PATH + chc.getCtryName()+".png");
+		}
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "POST")
+/*	@ApiOperation(value = "得到<批量>各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/getMorePost", method = RequestMethod.POST)
 	public Resp getMore(@RequestBody CtryHdayCrcy crtyHdayCrcy){
 		PageRequest pageable = new PageRequest(crtyHdayCrcy.getPindex(), crtyHdayCrcy.getPcount(), crtyHdayCrcy.getSortObj());
@@ -77,10 +84,8 @@ public class CtryHdayCrcyController {
 		}
 		Example<CtryHdayCrcy> example = Example.of(crtyHdayCrcy, ExampleMatcher.matchingAll());
 		Page<CtryHdayCrcy> page = crtyHdayCrcyRepo.findAll(example,pageable);
-		//将压缩包解压
-		this.getIcon();
 		return new Resp(page, CodeDef.SUCCESS);
-	}
+	}*/
 	
 	@ApiOperation(value = "添加或者更新各国节假日信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
@@ -136,7 +141,7 @@ public class CtryHdayCrcyController {
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_ICON_PATH +phoneType+"/";
+			String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_FLAG_PATH +phoneType+"/";
 			File dir = new File(path);
 			if(!dir.exists()){
 				dir.mkdirs();
@@ -162,6 +167,8 @@ public class CtryHdayCrcyController {
 				e.printStackTrace();
 				return new Resp(false,CodeDef.ERROR);
 			}
+			//将压缩包解压
+			this.getFlag();
 		}
 		return new Resp(true,CodeDef.SUCCESS);
 	}
@@ -180,20 +187,22 @@ public class CtryHdayCrcyController {
 		}
 	}
 	
-	private void getIcon(){
-		String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_ICON_PATH;
+	private void getFlag(){
+		String url = request.getRequestURL().toString();
+		String projectPath = StringUtil.getProjectPath(url);
+		String path = projectPath + Const.TL_STATIC_FLAG_PATH;
 		File dir = new File(path);
-		parseIconZip(dir);
+		parseFlagZip(dir);
 	}
 	
-	private void parseIconZip(File dir){
+	private void parseFlagZip(File dir){
 		if(!dir.exists()){
 			return;
 		}
 		File[] files = dir.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			if(files[i].isDirectory()){
-				parseIconZip(files[i]);
+				parseFlagZip(files[i]);
 				continue;
 			}
 			String suffix = files[i].getName().substring(files[i].getName().lastIndexOf(".")).toUpperCase();
