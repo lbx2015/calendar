@@ -3,7 +3,6 @@ package com.riking.calendar.adapter;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,6 +110,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         });
 
         holder.sml.setSwipeEnable(true);
+        //hide the last item's divider line
+        if (position + 1 == tasks.size()) {
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -133,6 +138,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public TextView deleteButton;
         public TextView editButton;
         SwipeHorizontalMenuLayout sml;
+        View divider;
 
         public MyViewHolder(View view) {
             super(view);
@@ -143,6 +149,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
             remindTime = (TextView) view.findViewById(R.id.remind_time);
+            divider = view.findViewById(R.id.divider);
 
             done.setOnClickListener(new View.OnClickListener() {
                 @Override

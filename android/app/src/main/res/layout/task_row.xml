@@ -51,6 +51,7 @@
             android:textColor="@color/color_background_b6b6b6" />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:layout_alignParentBottom="true"
