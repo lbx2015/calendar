@@ -43,8 +43,6 @@ import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.DateUtil;
-import com.riking.calendar.util.LunarCalendar;
 import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
@@ -70,8 +68,6 @@ public class FirstFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView taskRecyclerView;
     RecyclerView reportRecyclerView;
-    TextView timeView;
-    TextView weekDayView;
     ReminderAdapter reminderAdapter;
     TaskAdapter taskAdapter;
     Realm realm;
@@ -180,8 +176,6 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("zzw", this + " onCreateView");
         View v = inflater.inflate(R.layout.first_fragment, container, false);
-        timeView = (TextView) v.findViewById(R.id.time);
-        weekDayView = (TextView) v.findViewById(R.id.week_day);
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         add = v.findViewById(R.id.add);
@@ -246,13 +240,6 @@ public class FirstFragment extends Fragment {
         } else {
             weekDay--;
         }
-
-        LunarCalendar lc = new LunarCalendar();
-        SimpleDateFormat chineseFormat = new SimpleDateFormat("yyyy年MM月dd日");
-        timeView.setText(chineseFormat.format(date));
-        String weekNo = "第" + c.get(Calendar.WEEK_OF_YEAR) + "周";
-        weekDayView.setText(weekNo + "   " + DateUtil.getWeekNameInChinese(weekDay)
-                + " " + lc.getLunarDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), false));
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(new Date())).equalTo("repeatFlag", 0).endGroup()
