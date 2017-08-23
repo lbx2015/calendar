@@ -90,14 +90,15 @@
             android:id="@+id/main.appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white">
+            android:background="@android:color/white"
+            app:elevation="1dp"
+            android:translationZ="1dp">
 
             <ViewFlipper
                 android:id="@+id/flipper"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
                 android:layout_marginLeft="8dp"
-                android:elevation="1dp"
                 app:layout_scrollFlags="scroll|enterAlways" />
         </android.support.design.widget.AppBarLayout>
 

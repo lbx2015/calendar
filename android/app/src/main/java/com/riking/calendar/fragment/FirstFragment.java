@@ -366,9 +366,9 @@ public class FirstFragment extends Fragment {
             params.height = (int) ZR.convertDpToPx(getContext(), 280);
             Logger.d("zzw", "enterPrevMonth reset flipper height: " + params.height);
         } else {
-            params.height = (int)ZR.convertDpToPx(getContext(),330);
+            params.height = (int) ZR.convertDpToPx(getContext(), 330);
         }
-            flipper.setLayoutParams(params);
+        flipper.setLayoutParams(params);
 //            flipper.invalidate();
 
         gridView.setAdapter(calV);
