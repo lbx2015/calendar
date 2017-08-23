@@ -49,15 +49,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Task r = tasks.get(position);
         holder.title.setText(r.title);
-        if (r.isOpen == 1) {
-            try {
-                holder.remindTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(Const.yyyyMMddHHmm).parse(r.strDate)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        } else {
-            holder.remindTime.setText(null);
-        }
         if (r.isImportant == 1) {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
         } else {
@@ -133,7 +124,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public ImageView done;
         public ImageView important;
         public Task task;
-        public TextView remindTime;
 
         public TextView deleteButton;
         public TextView editButton;
@@ -148,7 +138,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             deleteButton = (TextView) view.findViewById(R.id.tv_text);
             editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
-            remindTime = (TextView) view.findViewById(R.id.remind_time);
             divider = view.findViewById(R.id.divider);
 
             done.setOnClickListener(new View.OnClickListener() {
