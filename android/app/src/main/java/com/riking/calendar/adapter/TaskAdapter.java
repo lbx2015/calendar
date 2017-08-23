@@ -2,6 +2,7 @@ package com.riking.calendar.adapter;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -129,6 +130,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public TextView editButton;
         SwipeHorizontalMenuLayout sml;
         View divider;
+        boolean completed = false;
 
         public MyViewHolder(View view) {
             super(view);
@@ -139,31 +141,41 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
             divider = view.findViewById(R.id.divider);
-
+            final Handler handler = new Handler();
             done.setOnClickListener(new View.OnClickListener() {
+                Runnable callBack = new Runnable() {
+                    @Override
+                    public void run() {
+                        realm.executeTransaction
+                                (new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        Task t;
+                                        if (completed) {
+                                            t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
+                                            t.isComplete = 1;
+                                            t.completeDate = new SimpleDateFormat(Const.yyyyMMddHHmm).format(new Date());
+                                        }
+                                    }
+                                });
+                    }
+                };
+
                 @Override
                 public void onClick(View v) {
-
-                    realm.executeTransaction
-                            (new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    Task t;
-                                    if (task.isComplete == 1) {
-                                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
-                                        title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                                        t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
-                                        t.isComplete = 0;
-                                        t.completeDate = null;
-                                    } else {
-                                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
-                                        title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                                        t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
-                                        t.isComplete = 1;
-                                        t.completeDate = new SimpleDateFormat(Const.yyyyMMddHHmm).format(new Date());
-                                    }
-                                }
-                            });
+                    if (completed) {
+                        completed = false;
+                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
+                        title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        //cancel the pending runnable to complete the task
+                        handler.removeCallbacks(callBack);
+                    } else {
+                        completed = true;
+                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
+                        title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        //complete the task after 5 seconds delay
+                        handler.postDelayed(callBack, 5000);
+                    }
                 }
             });
 
