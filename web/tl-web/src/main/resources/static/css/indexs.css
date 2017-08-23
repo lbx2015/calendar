@@ -51,7 +51,7 @@
 	display:inline-block;
     width: .12rem;
     height: .2rem;
-    background: url(../images/BACKS.png) no-repeat;
+    background: url(../images/BACK.png) no-repeat;
     background-size: cover;
 	margin-right:.04rem;
 	vertical-align:middle;
@@ -139,19 +139,19 @@
 	vertical-align:middle;
 }
 .content .list li.weixin i{
-	background:url(../images/ico-weixins.png) no-repeat;
+	background:url(../images/ico-weixin.png) no-repeat;
 	width:0.21rem;
 	height:0.18rem;
 	background-size:100%;
 }
 .content .list li.email i{
-	background:url(../images/ico-emails.png) no-repeat;
+	background:url(../images/ico-email.png) no-repeat;
 	width:0.21rem;
 	height:0.16rem;
 	background-size:100%;
 }
 .content .list li.tel i{
-	background:url(../images/ico-tels.png) no-repeat;
+	background:url(../images/ico-tel.png) no-repeat;
 	width:0.21rem;
 	height:0.19rem;
 	background-size:100%;
@@ -167,7 +167,7 @@
 	top:50%;
 	width:.09rem;
 	height:.15rem;
-	background:url(../images/return-rs.png) no-repeat;
+	background:url(../images/return-r.png) no-repeat;
 	background-size:100%;
 	margin-top:-.08rem;
 }
@@ -215,7 +215,7 @@
 	-ms-flex: 1.0;
 	flex: 1.0;
 }
-.policyText{
+.policyText,.contentText{
 	padding:.2rem .2rem 0;
 }
 .policyText h1{
@@ -224,29 +224,65 @@
 	text-align:center;
 	padding:.1rem 0 .2rem;
 }
+.contentText h1{
+	font-size:.20rem;
+	color:#323232;
+	text-align:left;
+	padding:.1rem 0 .2rem;
+}
+
 .policyText h3{
 	font-size:.16rem;
 	color:#333;
 	padding:.1rem 0;
 	font-weight:normal;
 }
-.policyText p{
+.contentText h2{
+	font-size:.16rem;
+	color:#333;
+	margin:.1rem 0 .1rem -.2rem;
+	padding-left:.1rem;
+	border-left:8px solid #29a1f7;
+}
+.contentText .line{
+	margin:0 -.2rem .2rem;
+	webkit-box-shadow: 0px 3px 10px #ddd;
+    -moz-box-shadow: 0px 3px 10px #ddd;
+    box-shadow: 0px 5px 5px #f2f2f2;
+	
+}
+.contentText h3{
+	font-size:.16rem;
+	color:#333;
+	padding:.1rem 0;
+}
+.contentText .text h3{
+	font-weight:normal;
+}
+.policyText p,.contentText p{
 	line-height:.2rem;
 	padding:0 0 .1rem ;
 	font-size:.14rem;
 	color:#323232;
 }
-.policyText ul{
+.policyText ul,.contentText ul{
 	padding:0 .1rem .1rem;	
 }
-.policyText ul li{
+.policyText ul li,.contentText ul li{
 	font-size:.12rem;
 	color:#666;
 	line-height:.24rem;
 }
-.policyText .policy-foot{
+.policyText .policy-foot,.contentText .policy-foot{
 	padding:.4rem 0 0;
 	text-align:right;
+}
+.contentText .color1{
+	color:#f00;
+}
+.contentText .text span{
+	display:block;
+	padding-bottom:15px;
 }
 /*loading*/
 .loading{width: 1.53rem;height:1.15rem;position: fixed;top: 50%;left: 50%;background: rgba(0,0,0,0.8);border-radius: 6px; margin-left: -0.765rem;margin-top: -0.575rem;z-index: 9999999999999999999999999999;}
@@ -266,4 +302,4 @@
 .jg{background: url(../images/jg.png); background-size: 0.36rem; }
 
 
-.back2{background:url(../images/backs.png) center no-repeat;background-size: 0.12rem 0.2rem;}
+.back2{background:url(../images/back.png) center no-repeat;background-size: 0.12rem 0.2rem;}

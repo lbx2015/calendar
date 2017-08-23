@@ -104,12 +104,12 @@
 				//表格显示列数
 				 data.trClick = "bindPro";
 				//操作栏的宽度
-				data.operationWidth = 6;
+				data.operationWidth = 12;
                 data.cellLeftCount = 4;
                 data.cellRightCount = 3;
                 //表格各列显示比例
-				data.tdLeftWidth = [ 15, 15, 30, 10 ];
-				data.tdRightWidth = [ 50, 30, 20 ];
+				data.tdLeftWidth = [ 15, 15, 10, 30 ];
+				data.tdRightWidth = [ 50, 25, 25 ];
 
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
@@ -120,7 +120,7 @@
 					//row 当前行数 从1开始
 					//col 当前列数 从1开始
 				      if (obj.row > 1 && obj.col == 2) {
-	                        obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
+	                        obj.html = "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button><button class='layui-btn layui-btn-mini layui-btn-normal' onclick='reportSubmitCaliber(" + "\"" + obj.item.id + "\"" + ");'>查看配置</button>";
 	                      return obj.html;
 	                    }
 					return obj.html;
@@ -191,6 +191,12 @@
 	//弹出添加iframe
 	function edit(id) {
 	    var url  = "reportListEdit.html?id="+ id;
+		var title =  "数据处理";
+		View.openDialog(url,title);
+	}
+	
+	function reportSubmitCaliber(id) {
+	    var url  = "reportSubmitCaliberList.html?id="+ id;
 		var title =  "数据处理";
 		View.openDialog(url,title);
 	}
