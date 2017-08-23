@@ -97,6 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
                 android:layout_marginLeft="8dp"
+                android:elevation="1dp"
                 app:layout_scrollFlags="scroll|enterAlways" />
         </android.support.design.widget.AppBarLayout>
 
@@ -115,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
 
-                    app:cardElevation="2dp"
+                    app:cardElevation="1dp"
 
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -132,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
 
-                    app:cardElevation="2dp"
+                    app:cardElevation="1dp"
 
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -149,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
 
-                    app:cardElevation="2dp"
+                    app:cardElevation="1dp"
 
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -181,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="62dp"
                     android:layout_marginTop="10dp"
-                    app:cardElevation="2dp"
+                    app:cardElevation="1dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                     <android.support.v7.widget.RecyclerView

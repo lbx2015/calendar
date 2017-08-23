@@ -38,8 +38,9 @@
             android:textSize="16sp" />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/divider_height"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="10dp"
