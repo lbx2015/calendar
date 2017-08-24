@@ -24,9 +24,11 @@
                 android:layout_gravity="bottom|right"
                 android:padding="10dp"
                 android:text="2007-01-22"
-                android:textColor="@color/color_323232" />
+                android:textColor="@color/color_323232"
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
+                android:id="@+id/arrow_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
