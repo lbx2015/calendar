@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.view.ZCenterImageView;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -23,10 +24,10 @@ import com.riking.calendar.R;
 public class WelcomeActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
-    private ImageView progress1;
-    private ImageView progress2;
-    private ImageView progress3;
-    private ImageView progress4;
+    private ZCenterImageView progress1;
+    private ZCenterImageView progress2;
+    private ZCenterImageView progress3;
+    private ZCenterImageView progress4;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -90,10 +91,10 @@ public class WelcomeActivity extends AppCompatActivity {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        progress1 = (ImageView) findViewById(R.id.progress1);
-        progress2 = (ImageView) findViewById(R.id.progress2);
-        progress3 = (ImageView) findViewById(R.id.progress3);
-        progress4 = (ImageView) findViewById(R.id.progress4);
+        progress1 = (ZCenterImageView) findViewById(R.id.progress1);
+        progress2 = (ZCenterImageView) findViewById(R.id.progress2);
+        progress3 = (ZCenterImageView) findViewById(R.id.progress3);
+        progress4 = (ZCenterImageView) findViewById(R.id.progress4);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
 
 
@@ -106,16 +107,14 @@ public class WelcomeActivity extends AppCompatActivity {
      * View pager adapter
      */
     public class MyViewPagerAdapter extends PagerAdapter {
-        private LayoutInflater layoutInflater;
 
         public MyViewPagerAdapter() {
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            ImageView i = new ImageView(container.getContext());
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ZCenterImageView i = new ZCenterImageView(container.getContext());
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             i.setLayoutParams(params);
             switch (position) {
