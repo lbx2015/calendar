@@ -45,11 +45,19 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
             public void onClick(View v) {
                 if (holder.recyclerView.getVisibility() == View.VISIBLE) {
                     holder.recyclerView.setVisibility(View.GONE);
+                    holder.firstDivider.setVisibility(View.GONE);
                 } else {
                     holder.recyclerView.setVisibility(View.VISIBLE);
+                    holder.firstDivider.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+        if (position + 1 == reports.size()) {
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -60,11 +68,15 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView reportName;
         public RecyclerView recyclerView;
+        public View divider;
+        public View firstDivider;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             reportName = (TextView) itemView.findViewById(R.id.report_name);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.nested_recyclerview);
+            divider = itemView.findViewById(R.id.divider);
+            firstDivider = itemView.findViewById(R.id.first_divider);
         }
     }
 }
