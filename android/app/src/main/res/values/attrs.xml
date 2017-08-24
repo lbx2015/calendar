@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="ZEnterImageView">
+        <attr name="buttonTextSize"  />
+        <attr name="buttonText"  />
+    </declare-styleable>
+    <attr name="buttonTextSize" format="dimension" />
+    <attr name="buttonText" format="string" />
+
     <declare-styleable name="AbstractWheelPicker">
         <attr name="wheel_data" format="reference" />
         <attr name="wheel_style" format="enum">

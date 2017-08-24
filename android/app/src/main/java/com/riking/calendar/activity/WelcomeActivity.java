@@ -3,7 +3,6 @@ package com.riking.calendar.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.view.ZCenterImageView;
@@ -28,6 +26,8 @@ public class WelcomeActivity extends AppCompatActivity {
     private ZCenterImageView progress2;
     private ZCenterImageView progress3;
     private ZCenterImageView progress4;
+    private View enterButton;
+    private View dotsLayout;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -39,6 +39,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     progress2.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress3.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress4.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
+                    enterButton.setVisibility(View.GONE);
                     break;
                 }
                 case 1: {
@@ -46,6 +47,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     progress1.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress3.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress4.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
+                    enterButton.setVisibility(View.GONE);
                     break;
                 }
                 case 2: {
@@ -53,6 +55,8 @@ public class WelcomeActivity extends AppCompatActivity {
                     progress2.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress1.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress4.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
+                    enterButton.setVisibility(View.GONE);
+                    dotsLayout.setVisibility(View.VISIBLE);
                     break;
                 }
                 case 3: {
@@ -60,16 +64,16 @@ public class WelcomeActivity extends AppCompatActivity {
                     progress2.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress3.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
                     progress1.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    new Handler().postDelayed(new Runnable() {
-
+                    enterButton.setVisibility(View.VISIBLE);
+                    dotsLayout.setVisibility(View.GONE);
+                    enterButton.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
-
+                        public void onClick(View v) {
                             Intent intent = new Intent(WelcomeActivity.this, ViewPagerActivity.class);
                             startActivity(intent);
                             finish(); //This closes current activity
                         }
-                    }, 500); //It means 4 seconds
+                    });
                     break;
                 }
             }
@@ -85,6 +89,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         }
     };
+    private int[] layouts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,7 +101,16 @@ public class WelcomeActivity extends AppCompatActivity {
         progress3 = (ZCenterImageView) findViewById(R.id.progress3);
         progress4 = (ZCenterImageView) findViewById(R.id.progress4);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
+        enterButton = findViewById(R.id.enter_button);
+        dotsLayout = findViewById(R.id.layoutDots);
 
+        // layouts of all welcome sliders
+        // add few more layouts if you want
+        layouts = new int[]{
+                R.layout.welcome_slide1,
+                R.layout.welcome_slide2,
+                R.layout.welcome_slide3,
+                R.layout.welcome_slide4};
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -107,38 +121,17 @@ public class WelcomeActivity extends AppCompatActivity {
      * View pager adapter
      */
     public class MyViewPagerAdapter extends PagerAdapter {
+        private LayoutInflater layoutInflater;
 
         public MyViewPagerAdapter() {
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            ZCenterImageView i = new ZCenterImageView(container.getContext());
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            i.setLayoutParams(params);
-            switch (position) {
-                case 0: {
-                    i.setImageDrawable(getDrawable(R.drawable.lead_welcome1));
-                    break;
-                }
-                case 1: {
-                    i.setImageDrawable(getDrawable(R.drawable.lead_welcome2));
-                    break;
-                }
-                case 2: {
-                    i.setImageDrawable(getDrawable(R.drawable.lead_welcome3));
-                    break;
-                }
-                case 3: {
-                    i.setImageDrawable(getDrawable(R.drawable.lead_welcome4));
-                    break;
-                }
-            }
-
-            container.addView(i);
-
-            return i;
+            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = layoutInflater.inflate(layouts[position], container, false);
+            container.addView(view);
+            return view;
         }
 
         @Override
