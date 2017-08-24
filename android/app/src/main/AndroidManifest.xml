@@ -44,9 +44,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.ViewPagerActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/AppThemeNoTitle">
+            android:name=".activity.WelcomeActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,6 +54,7 @@
         </activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.RealmIntroActivity" />
+        <activity android:name=".activity.ViewPagerActivity" />
         <activity
             android:name=".activity.NoActionBarActivity"
             android:theme="@style/AppThemeNoActionBar"
