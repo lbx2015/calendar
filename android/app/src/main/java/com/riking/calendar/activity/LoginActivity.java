@@ -10,6 +10,7 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     public EditText phoneNumber;
     public EditText verificationCode;
     public TextView getVerificationCodeButton;
-    View loginButton;
+    Button loginButton;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     //device id
     String uid;
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         phoneNumber = (EditText) findViewById(R.id.phone_nubmer_editor);
         verificationCode = (EditText) findViewById(R.id.verification_code);
-        loginButton = findViewById(R.id.login);
+        loginButton = (Button) findViewById(R.id.login);
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,11 +96,23 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Editable number = phoneNumber.getText();
+                if (number == null) {
+                    Toast.makeText(phoneNumber.getContext(), "电话号码不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String phoneDigits = number.toString();
+                if (!StringUtil.isMobileNO(phoneDigits)) {
+                    Toast.makeText(phoneNumber.getContext(), "电话号码格式不正确", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Editable code = verificationCode.getText();
                 if (code == null) {
                     Toast.makeText(LoginActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 String Regex = "[^\\d]";
                 String valiCode = code.toString().replaceAll(Regex, "");
                 if (valiCode.length() != 6) {
