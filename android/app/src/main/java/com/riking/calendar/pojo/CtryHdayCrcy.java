@@ -39,7 +39,7 @@ public class CtryHdayCrcy {
     //	@Transient
     public String flagUrl;
     public byte pindex;
-    public byte pcount;
+    public byte pcount = 30;
 
     @Override
     public String toString() {
