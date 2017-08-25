@@ -11,7 +11,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ldf.calendar.Const;
@@ -21,6 +21,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.TimeUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,8 +34,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     public EditText phoneNumber;
     public EditText verificationCode;
-    public View getVerificationCodeButton;
-    RadioButton agreeButton;
+    public TextView getVerificationCodeButton;
     View loginButton;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     //device id
@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         phoneNumber = (EditText) findViewById(R.id.phone_nubmer_editor);
         verificationCode = (EditText) findViewById(R.id.verification_code);
-        agreeButton = (RadioButton) findViewById(R.id.agree_contract_button);
         loginButton = findViewById(R.id.login);
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,12 +57,14 @@ public class LoginActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        getVerificationCodeButton = findViewById(R.id.get_verification_code_button);
+        getVerificationCodeButton = (TextView) findViewById(R.id.get_verification_code_button);
         getVerificationCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Editable number = phoneNumber.getText();
+                new TimeUtil(getVerificationCodeButton).RunTimer();
                 if (number == null) {
+                    Toast.makeText(phoneNumber.getContext(), "电话号码不能为空", Toast.LENGTH_SHORT);
                     return;
                 }
                 String Regex = "[^\\d]";
@@ -79,10 +80,12 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
                         GetVerificationModel resource = response.body();
                         Log.d("zzw", "phone number success " + resource);
+                        new TimeUtil(getVerificationCodeButton).RunTimer();
                     }
 
                     @Override
                     public void onFailure(Call<GetVerificationModel> call, Throwable t) {
+                        new TimeUtil(getVerificationCodeButton).RunTimer();
                         Log.d("zzw", "failed ");
                     }
                 });
@@ -104,10 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (!agreeButton.isChecked()) {
-                    Toast.makeText(LoginActivity.this, "请同意用户服务协议", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 user.valiCode = valiCode;
                 apiInterface.checkVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
                     @Override

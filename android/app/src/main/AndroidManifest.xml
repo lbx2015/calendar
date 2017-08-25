@@ -44,14 +44,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.WelcomeActivity"
+            android:name=".activity.LaunchActivity"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.FullScreen">
+            android:theme="@style/AppTheme.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.FullScreen"></activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.RealmIntroActivity" />
         <activity android:name=".activity.ViewPagerActivity" />
