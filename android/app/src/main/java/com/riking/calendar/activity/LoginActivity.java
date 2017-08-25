@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
@@ -24,7 +25,6 @@ import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.StringUtil;
-import com.riking.calendar.util.TimeUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,12 +43,14 @@ public class LoginActivity extends AppCompatActivity {
     //device id
     String uid;
     AppUser user = new AppUser();
+    private TimeCount time;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TelephonyManager tManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         uid = tManager.getDeviceId();
+        time = new TimeCount(60000, 1000);
         Logger.d("zzw", "device id:" + uid);
         setContentView(R.layout.activity_login);
         phoneNumber = (EditText) findViewById(R.id.phone_nubmer_editor);
@@ -82,12 +84,12 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
                         GetVerificationModel resource = response.body();
                         Log.d("zzw", "phone number success " + resource);
-                        new TimeUtil(getVerificationCodeButton).RunTimer();
+                        time.startTick();
                     }
 
                     @Override
                     public void onFailure(Call<GetVerificationModel> call, Throwable t) {
-                        new TimeUtil(getVerificationCodeButton).RunTimer();
+                        time.startTick();
                         Log.d("zzw", "failed ");
                     }
                 });
@@ -159,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-        
+
         addVerifyCodeInputWatch();
     }
 
@@ -196,6 +198,34 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    class TimeCount extends CountDownTimer {
+
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            getVerificationCodeButton.setText( + millisUntilFinished / 1000 + "s后重新发送");
+        }
+
+        @Override
+        public void onFinish() {
+            getVerificationCodeButton.setText("重新获取验证码");
+            getVerificationCodeButton.setBackground(getDrawable(R.drawable.rounded_login__verify_code_color_rectangle));
+            getVerificationCodeButton.setEnabled(true);
+            getVerificationCodeButton.setClickable(true);
+        }
+
+        public void startTick() {
+            getVerificationCodeButton.setBackground(getDrawable(R.drawable.rounded_login__verify_code_rectangle));
+            getVerificationCodeButton.setEnabled(false);
+            getVerificationCodeButton.setClickable(false);
+            start();
+        }
 
     }
 }
