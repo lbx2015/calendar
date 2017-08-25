@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
-import com.riking.calendar.fragment.ReminderFragment;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.widget.dialog.LookReminderDialog;
@@ -106,6 +105,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
                 d.show();
             }
         });
+
+        //hide the divider line for the last item
+        if (position + 1 == reminders.size()) {
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -121,6 +127,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         public TextView editButton;
         SwipeHorizontalMenuLayout sml;
         View contentRow;
+        View divider;
 
         public MyViewHolder(View view) {
             super(view);
@@ -130,6 +137,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
             editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
             contentRow = view.findViewById(R.id.smContentView);
+            divider = view.findViewById(R.id.divider);
         }
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -45,11 +46,21 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
             public void onClick(View v) {
                 if (holder.recyclerView.getVisibility() == View.VISIBLE) {
                     holder.recyclerView.setVisibility(View.GONE);
+                    holder.firstDivider.setVisibility(View.GONE);
+                    holder.arrowImage.setImageDrawable(holder.arrowImage.getContext().getDrawable(R.drawable.arrow_down));
                 } else {
+                    holder.arrowImage.setImageDrawable(holder.arrowImage.getContext().getDrawable(R.drawable.arrow_left));
                     holder.recyclerView.setVisibility(View.VISIBLE);
+                    holder.firstDivider.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+        if (position + 1 == reports.size()) {
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -60,11 +71,17 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView reportName;
         public RecyclerView recyclerView;
+        public View divider;
+        public View firstDivider;
+        public ImageView arrowImage;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             reportName = (TextView) itemView.findViewById(R.id.report_name);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.nested_recyclerview);
+            divider = itemView.findViewById(R.id.divider);
+            firstDivider = itemView.findViewById(R.id.first_divider);
+            arrowImage = (ImageView) itemView.findViewById(R.id.arrow_button);
         }
     }
 }

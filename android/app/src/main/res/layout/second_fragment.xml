@@ -19,10 +19,10 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
-        <ImageView
+        <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/search"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:src="@drawable/white_search" />
 
@@ -39,7 +39,7 @@
         <LinearLayout
             android:id="@+id/date_column"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:layout_weight="3"
             android:clickable="true"
             android:gravity="center"
@@ -48,16 +48,16 @@
             <TextView
                 android:id="@+id/date_textview"
                 android:layout_width="wrap_content"
-                android:layout_height="44dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/date"
                 android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+            <com.riking.calendar.view.ZCenterImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/arrow_down" />
         </LinearLayout>
 
@@ -69,6 +69,12 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <View
+                android:layout_width="@dimen/divider_height"
+                android:layout_height="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/divider_color_d9d9d9" />
+
             <TextView
                 android:id="@+id/country_textview"
                 android:layout_width="wrap_content"
@@ -77,7 +83,7 @@
                 android:gravity="center"
                 android:text="@string/country"
                 android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:layout_width="12dp"
@@ -93,6 +99,12 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <View
+                android:layout_width="@dimen/divider_height"
+                android:layout_height="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/divider_color_d9d9d9" />
+
             <TextView
                 android:id="@+id/concurrency_textview"
                 android:layout_width="wrap_content"
@@ -101,7 +113,7 @@
                 android:gravity="center"
                 android:text="@string/currency"
                 android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:layout_width="12dp"
@@ -117,6 +129,12 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <View
+                android:layout_width="@dimen/divider_height"
+                android:layout_height="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/divider_color_d9d9d9" />
+
             <TextView
                 android:id="@+id/holiday_textview"
                 android:layout_width="wrap_content"
@@ -125,7 +143,7 @@
                 android:gravity="center"
                 android:text="@string/vocation"
                 android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:layout_width="12dp"
@@ -136,7 +154,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/divider_height"
         android:background="@color/divider_color_a7a7a7" />
 
     <android.support.v7.widget.RecyclerView
