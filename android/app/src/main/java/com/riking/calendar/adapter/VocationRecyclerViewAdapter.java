@@ -3,6 +3,7 @@ package com.riking.calendar.adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +22,9 @@ import com.riking.calendar.util.FileUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -51,7 +55,7 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
         holder.vocation.setText(r.hdayNameValue);
         MyTask myTask = new MyTask();
         myTask.imageView = holder.countryImage;
-        myTask.execute(r.falgUrl);
+        myTask.execute(r.flagUrl);
     }
 
     @Override
@@ -72,19 +76,8 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
 
         @Override
         protected Bitmap doInBackground(String... voids) {
-/*
             Bitmap bitmap = null;
             try {
-                imageName = voids[0].substring(voids[0].lastIndexOf('/') + 1);
-                String imageUrl = preferences.getString(Const.USER_IMAGE_URL, null);
-                if (FileUtil.imageExists(imageName)) {
-                    Logger.d("zzw", "no need load url: " + imageName);
-                    imageFileExists = true;
-                    return BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
-                } else {
-                    imageFileExists = false;
-                }
-
                 URL url = new URL(voids[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = connection.getInputStream();
@@ -92,8 +85,7 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
             } catch (IOException e) {
                 Logger.d("zzw", "image loaded failed" + e.getMessage());
             }
-            return bitmap;*/
-            return null;
+            return bitmap;
         }
 
         @Override

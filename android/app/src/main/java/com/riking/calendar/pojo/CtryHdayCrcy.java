@@ -37,7 +37,7 @@ public class CtryHdayCrcy {
     public String deleteState;
 
     //	@Transient
-    public String falgUrl;
+    public String flagUrl;
     public byte pindex;
     public byte pcount;
 
@@ -51,7 +51,7 @@ public class CtryHdayCrcy {
                 ", crcy='" + crcy + '\'' +
                 ", remark='" + remark + '\'' +
                 ", deleteState='" + deleteState + '\'' +
-                ", falgUrl='" + falgUrl + '\'' +
+                ", flagUrl='" + flagUrl + '\'' +
                 '}';
     }
 }
