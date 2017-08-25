@@ -14,13 +14,26 @@ import android.widget.ImageView;
 
 public class LaunchActivity extends AppCompatActivity {
 
+    Handler handler = new Handler();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         ImageView view = new ImageView(this);
         setContentView(view);
-        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
+                startActivity(i);
+            }
+        }, 2000);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

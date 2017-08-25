@@ -41,7 +41,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_margin="5dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/cat_wide_2" />
+                android:src="@drawable/default_user_icon" />
 
             <TextView
                 android:id="@+id/user_name"

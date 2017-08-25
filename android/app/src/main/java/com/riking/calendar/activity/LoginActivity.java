@@ -20,11 +20,12 @@ import android.widget.Toast;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
-import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StringUtil;
 
 import retrofit2.Call;
@@ -171,9 +172,16 @@ public class LoginActivity extends AppCompatActivity {
         userContractLinkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, ReportDetailActivity.class);
-                i.putExtra(Const.REPORT_URL, "http://172.16.32.14:6062/tl-web/agreement.html");
-                startActivity(i);
+
+                apiInterface.getAgreementHtml(null).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        Intent i = new Intent(LoginActivity.this, ReportDetailActivity.class);
+                        i.putExtra(Const.REPORT_URL, response._data);
+                        startActivity(i);
+                    }
+                });
+
             }
         });
     }
