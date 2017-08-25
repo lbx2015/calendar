@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.TextView;
 
+import com.riking.calendar.R;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,13 +25,11 @@ public class TimeUtil {
 
                     if (time > 0) {
                         textView.setText(time + "秒后重新发送");
-                        textView.setTextSize(14);
                     } else {
 
                         timer.cancel();
                         textView.setText(btnText);
-                        textView.setEnabled(true);
-                        textView.setTextSize(14);
+                        textView.setBackground(textView.getResources().getDrawable(R.drawable.rounded_login__verify_code_rectangle));
                     }
 
                     break;
@@ -58,6 +58,7 @@ public class TimeUtil {
                 handler.sendMessage(msg);
             }
         };
+        textView.setBackground(textView.getResources().getDrawable(R.drawable.rounded_login__verify_code_rectangle));
         timer.schedule(task, 100, 1000);
     }
 }

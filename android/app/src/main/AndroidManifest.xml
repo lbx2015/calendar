@@ -102,7 +102,7 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppTheme.FullScreen" />
 
         <service
             android:name=".service.AlarmService"

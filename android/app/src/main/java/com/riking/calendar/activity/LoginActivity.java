@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.TimeUtil;
+import com.riking.calendar.util.image.StringUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,18 +63,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Editable number = phoneNumber.getText();
-                new TimeUtil(getVerificationCodeButton).RunTimer();
                 if (number == null) {
-                    Toast.makeText(phoneNumber.getContext(), "电话号码不能为空", Toast.LENGTH_SHORT);
+                    Toast.makeText(phoneNumber.getContext(), "电话号码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String Regex = "[^\\d]";
-                String PhoneDigits = number.toString().replaceAll(Regex, "");
-                if (PhoneDigits.length() != 11) {
+                String phoneDigits = number.toString();
+                if (!StringUtil.isMobileNO(phoneDigits)) {
+                    Toast.makeText(phoneNumber.getContext(), "电话号码格式不正确", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                user.telephone = PhoneDigits;
+                user.telephone = phoneDigits;
                 user.phoneSeqNum = uid;
                 apiInterface.getVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
                     @Override

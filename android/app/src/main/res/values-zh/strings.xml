@@ -64,9 +64,9 @@
     <string name="phone_number">手机号</string>
     <string name="verification_code">验证码</string>
     <string name="login">登录</string>
-    <string name="please_input_phone_number">请输入手机号码</string>
-    <string name="please_input_verification_code">请输入验证码</string>
-    <string name="get_verification_code">获取验证码</string>
+    <string name="please_input_phone_number">手机号码</string>
+    <string name="please_input_verification_code">验证码</string>
+    <string name="get_verification_code">发送验证码</string>
     <string name="personal_info">个人信息</string>
     <string name="sex">性别</string>
     <string name="address">地址</string>
