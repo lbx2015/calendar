@@ -26,6 +26,7 @@ import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.FileUtil;
 
 /**
@@ -61,7 +62,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
 
             } else if (imageUrl != null && imageUrl.length() > 0) {
                 Logger.d("zzw", " load url: " + imageUrl);
-                VocationRecyclerViewAdapter.MyTask myTask = new VocationRecyclerViewAdapter.MyTask();
+                LoadUserImageTask myTask = new LoadUserImageTask();
                 myTask.imageView = myPhoto;
                 myTask.execute(imageUrl);
             }

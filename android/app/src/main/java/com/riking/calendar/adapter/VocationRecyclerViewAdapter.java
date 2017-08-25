@@ -17,6 +17,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.CtryHdayCrcy;
+import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.FileUtil;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class VocationRecyclerViewAdapter extends RecyclerView.Adapter<VocationRe
         holder.country.setText(r.ctryNameValue);
         holder.currency.setText(r.crcy);
         holder.vocation.setText(r.hdayNameValue);
-        MyTask myTask = new MyTask();
+        LoadUserImageTask myTask = new LoadUserImageTask();
         myTask.imageView = holder.countryImage;
         myTask.execute(r.flagUrl);
     }

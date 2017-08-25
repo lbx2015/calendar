@@ -38,7 +38,7 @@
             <TextView
                 android:id="@+id/country"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="left"
                 android:textColor="@color/color_323232"
