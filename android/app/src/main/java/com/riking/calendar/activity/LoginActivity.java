@@ -24,6 +24,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StringUtil;
 
 import retrofit2.Call;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     public EditText phoneNumber;
     public EditText verificationCode;
     public TextView getVerificationCodeButton;
+    public TextView userContractLinkButton;
     Button loginButton;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     //device id
@@ -55,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         phoneNumber = (EditText) findViewById(R.id.phone_nubmer_editor);
         verificationCode = (EditText) findViewById(R.id.verification_code);
+        userContractLinkButton = (TextView) findViewById(R.id.user_contract);
         loginButton = (Button) findViewById(R.id.login);
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +165,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //set the message verify code after 60seconds
         addVerifyCodeInputWatch();
+
+        userContractLinkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, ReportDetailActivity.class);
+                i.putExtra(Const.REPORT_URL, "http://172.16.32.14:6062/tl-web/agreement.html");
+                startActivity(i);
+            }
+        });
     }
 
     private void addVerifyCodeInputWatch() {
@@ -209,12 +222,12 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            getVerificationCodeButton.setText( + millisUntilFinished / 1000 + "s后重新发送");
+            getVerificationCodeButton.setText(+millisUntilFinished / 1000 + "s后重新发送");
         }
 
         @Override
         public void onFinish() {
-            getVerificationCodeButton.setText("重新获取验证码");
+            getVerificationCodeButton.setText("重新获取");
             getVerificationCodeButton.setBackground(getDrawable(R.drawable.rounded_login__verify_code_color_rectangle));
             getVerificationCodeButton.setEnabled(true);
             getVerificationCodeButton.setClickable(true);
