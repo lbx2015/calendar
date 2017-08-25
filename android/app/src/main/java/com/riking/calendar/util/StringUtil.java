@@ -1,4 +1,4 @@
-package com.riking.calendar.util.image;
+package com.riking.calendar.util;
 
 import android.text.TextUtils;
 

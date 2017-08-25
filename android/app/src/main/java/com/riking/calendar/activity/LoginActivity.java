@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,8 +23,8 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.TimeUtil;
-import com.riking.calendar.util.image.StringUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -158,5 +159,43 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+        
+        addVerifyCodeInputWatch();
+    }
+
+    private void addVerifyCodeInputWatch() {
+        verificationCode.addTextChangedListener(new TextWatcher() {
+            //    Tips:
+            //    1. onTextChanged和beforTextChanged传入的参数s其实是当前EditText的文字内容，而不是当前输入的内容
+            //    2. 如果在任意一个方法中调用了设置当前EditText文本的方法，setText()，实际都触发了一遍这3个函数，
+            //       所以要有判断条件，在if体内去setText，而且就需要手动设置光标的位置，不然每次光标都会到最开始的位置
+            //    3. onTextChanged中，before=0： 增加；before=1： 点击删除按键
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null) {
+                    Logger.d("zzw", "after changed " + s);
+                    if (s.toString().trim().matches("\\d{6}")) {
+                        Logger.d("zzw", "pass check changed " + s);
+                        loginButton.setEnabled(true);
+                        loginButton.setBackground(getDrawable(R.drawable.rounded_login_color_rectangle));
+                    } else {
+                        loginButton.setEnabled(false);
+                        loginButton.setBackground(getDrawable(R.drawable.rounded_login_rectangle));
+                    }
+                }
+            }
+        });
+
     }
 }
