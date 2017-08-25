@@ -79,7 +79,7 @@ public class SynchronousServer {
 		return new AppResp(0, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
+/*	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/synchronousRemindHis", method = RequestMethod.POST)
 	public AppResp synchronousRemindHis(@RequestBody List<RemindHis> remindHis) {
 		List<RemindHis> remindHisSave = new ArrayList<>(); 
@@ -94,7 +94,7 @@ public class SynchronousServer {
 		remindHis = remindHisRepo.save(remindHisSave);
 		remindHisRepo.delete(remindHisDele);
 		return new AppResp(0, CodeDef.SUCCESS);
-	}
+	}*/
 	
 	@ApiOperation(value = "同步用户报表完成信息", notes = "POST")
 	@RequestMapping(value = "/synchronousComplete", method = RequestMethod.POST)
