@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -61,6 +62,7 @@ public class SecondFragment extends Fragment {
     View searchView;
     APIInterface apiInterface;
     View dateColumn;
+    ImageView dateArrow;
     View countryColumn;
     View holidayColumn;
     View concurrencyColumn;
@@ -159,20 +161,29 @@ public class SecondFragment extends Fragment {
                         }
                         apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                         dialog.dismiss();
+                        dateArrow.setRotation(0);
                         break;
                     }
                     case R.id.btnCancel: {
                         dialog.dismiss();
+                        dateArrow.setRotation(0);
                         break;
                     }
                 }
             }
         };
 
-        ImageView dateArrow = (ImageView) v.findViewById(R.id.date_arrow);
+        dateArrow = (ImageView) v.findViewById(R.id.date_arrow);
         final ImageView countryArrow = (ImageView) v.findViewById(R.id.country_arrow);
         final ImageView currencyArrow = (ImageView) v.findViewById(R.id.currency_arrow);
         final ImageView holidayArrow = (ImageView) v.findViewById(R.id.holiday_arrow);
+        final DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                //arrow down
+                dateArrow.setRotation(0);
+            }
+        };
         dateColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,16 +192,20 @@ public class SecondFragment extends Fragment {
                     dialog.btnSubmit.setOnClickListener(listener);
                     dialog.btnCancel.setOnClickListener(listener);
                 }
+
+                dialog.setOnDismissListener(dismissListener);
                 dialog.show();
+                dateArrow.setRotation(180);
             }
         });
+
 
         //change the arrow icon to arrow down icon
         mSpinnerView.dismissListener = new SpinnerView.DismissListener() {
             @Override
             public void onDismiss() {
                 mSpinnerView.mWindow.dismiss();
-                countryArrow.setImageDrawable(countryArrow.getContext().getDrawable(R.drawable.arrow_down));
+                countryArrow.setRotation(0);
             }
         };
 
@@ -198,7 +213,7 @@ public class SecondFragment extends Fragment {
             @Override
             public void onDismiss() {
                 mConcurrencySpinnerView.mWindow.dismiss();
-                currencyArrow.setImageDrawable(currencyArrow.getContext().getDrawable(R.drawable.arrow_down));
+                currencyArrow.setRotation(0);
             }
         };
 
@@ -206,7 +221,7 @@ public class SecondFragment extends Fragment {
             @Override
             public void onDismiss() {
                 mHolidaySpinnerView.mWindow.dismiss();
-                holidayArrow.setImageDrawable(holidayArrow.getContext().getDrawable(R.drawable.arrow_down));
+                holidayArrow.setRotation(0);
             }
         };
 
@@ -218,11 +233,12 @@ public class SecondFragment extends Fragment {
                 if (mSpinnerView.mWindow != null && mSpinnerView.mWindow.isShowing()) {
                     Logger.d("zzw", "arrow down");
                     mSpinnerView.dismiss();
-                    countryArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_down));
+                    countryArrow.setRotation(0);
+                    ;
                 } else {
                     mSpinnerView.clickArrow();
                     Logger.d("zzw", "arrow left");
-                    countryArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_up));
+                    countryArrow.setRotation(180);
                 }
             }
         });
@@ -233,10 +249,10 @@ public class SecondFragment extends Fragment {
                 Log.d("zzw", "click country column");
                 if (mHolidaySpinnerView.mWindow != null && mHolidaySpinnerView.mWindow.isShowing()) {
                     mHolidaySpinnerView.dismiss();
-                    holidayArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_down));
+                    holidayArrow.setRotation(0);
                 } else {
                     mHolidaySpinnerView.clickArrow();
-                    holidayArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_up));
+                    holidayArrow.setRotation(180);
                 }
             }
         });
@@ -245,10 +261,10 @@ public class SecondFragment extends Fragment {
             public void onClick(View v) {
                 if (mConcurrencySpinnerView.mWindow != null && mConcurrencySpinnerView.mWindow.isShowing()) {
                     mConcurrencySpinnerView.dismiss();
-                    currencyArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_down));
+                    currencyArrow.setRotation(0);
                 } else {
                     mConcurrencySpinnerView.clickArrow();
-                    currencyArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_up));
+                    currencyArrow.setRotation(180);
                 }
             }
         });
