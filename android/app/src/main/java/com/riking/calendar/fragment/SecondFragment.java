@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.HideShowScrollListener;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
@@ -100,7 +102,7 @@ public class SecondFragment extends Fragment {
                 requestBoday.ctryName = dict.ke;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 // 隐藏popupWindow
-                mSpinnerView.mWindow.dismiss();
+                mSpinnerView.dismiss();
             }
         });
 
@@ -113,7 +115,7 @@ public class SecondFragment extends Fragment {
                 requestBoday.hdayName = data.ke;
                 Log.d("zzw", "requestBoday: " + requestBoday.hdayName);
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
-                mHolidaySpinnerView.mWindow.dismiss();
+                mHolidaySpinnerView.dismiss();
             }
         });
 
@@ -125,18 +127,11 @@ public class SecondFragment extends Fragment {
                 concurrencyTextView.setText(data.valu);
                 requestBoday.crcy = data.ke;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
-                mConcurrencySpinnerView.mWindow.dismiss();
+                mConcurrencySpinnerView.dismiss();
             }
         });
 
         searchView = v.findViewById(R.id.search);
-        countryColumn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("zzw", "click country column");
-                mSpinnerView.toggle();
-            }
-        });
 
         final View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -174,6 +169,10 @@ public class SecondFragment extends Fragment {
             }
         };
 
+        ImageView dateArrow = (ImageView) v.findViewById(R.id.date_arrow);
+        final ImageView countryArrow = (ImageView) v.findViewById(R.id.country_arrow);
+        final ImageView currencyArrow = (ImageView) v.findViewById(R.id.currency_arrow);
+        final ImageView holidayArrow = (ImageView) v.findViewById(R.id.holiday_arrow);
         dateColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,17 +185,71 @@ public class SecondFragment extends Fragment {
             }
         });
 
+        //change the arrow icon to arrow down icon
+        mSpinnerView.dismissListener = new SpinnerView.DismissListener() {
+            @Override
+            public void onDismiss() {
+                mSpinnerView.mWindow.dismiss();
+                countryArrow.setImageDrawable(countryArrow.getContext().getDrawable(R.drawable.arrow_down));
+            }
+        };
+
+        mConcurrencySpinnerView.dismissListener = new SpinnerView.DismissListener() {
+            @Override
+            public void onDismiss() {
+                mConcurrencySpinnerView.mWindow.dismiss();
+                currencyArrow.setImageDrawable(currencyArrow.getContext().getDrawable(R.drawable.arrow_down));
+            }
+        };
+
+        mHolidaySpinnerView.dismissListener = new SpinnerView.DismissListener() {
+            @Override
+            public void onDismiss() {
+                mHolidaySpinnerView.mWindow.dismiss();
+                holidayArrow.setImageDrawable(holidayArrow.getContext().getDrawable(R.drawable.arrow_down));
+            }
+        };
+
+
+        countryColumn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("zzw", "click country column");
+                if (mSpinnerView.mWindow != null && mSpinnerView.mWindow.isShowing()) {
+                    Logger.d("zzw", "arrow down");
+                    mSpinnerView.dismiss();
+                    countryArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_down));
+                } else {
+                    mSpinnerView.clickArrow();
+                    Logger.d("zzw", "arrow left");
+                    countryArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_up));
+                }
+            }
+        });
+
         holidayColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("zzw", "click country column");
-                mHolidaySpinnerView.toggle();
+                if (mHolidaySpinnerView.mWindow != null && mHolidaySpinnerView.mWindow.isShowing()) {
+                    mHolidaySpinnerView.dismiss();
+                    holidayArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_down));
+                } else {
+                    mHolidaySpinnerView.clickArrow();
+                    holidayArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_up));
+                }
             }
         });
         concurrencyColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mConcurrencySpinnerView.toggle();
+                if (mConcurrencySpinnerView.mWindow != null && mConcurrencySpinnerView.mWindow.isShowing()) {
+                    mConcurrencySpinnerView.dismiss();
+                    currencyArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_down));
+                } else {
+                    mConcurrencySpinnerView.clickArrow();
+                    currencyArrow.setImageDrawable(v.getContext().getDrawable(R.drawable.arrow_up));
+                }
             }
         });
 
