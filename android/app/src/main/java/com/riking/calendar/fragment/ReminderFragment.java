@@ -3,6 +3,7 @@ package com.riking.calendar.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ldf.calendar.Utils;
 import com.riking.calendar.R;
@@ -35,6 +37,7 @@ import io.realm.Sort;
 
 public class ReminderFragment extends Fragment {
     public Realm realm;
+    protected SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     RecyclerView tomorrowRecyclerView;
     RecyclerView futureRecyclerView;
@@ -53,12 +56,23 @@ public class ReminderFragment extends Fragment {
         View v = inflater.inflate(R.layout.reminder_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
-        checkHistoryButton = v.findViewById(R.id.check_task_history);
+        checkHistoryButton = v.findViewById(R.id.check_remind_history);
         today = (TextView) v.findViewById(R.id.today_date);
         todayTitle = v.findViewById(R.id.today_title);
         tomorrow = (TextView) v.findViewById(R.id.tomorrow_date);
         tomorrowTitle = (TextView) v.findViewById(R.id.tomorrow_title);
         futureTitle = (TextView) v.findViewById(R.id.future_title);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                checkHistoryButton.setVisibility(View.VISIBLE);
+                Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
 
         setRecyclerView(v);
         root.onDraggingListener = new CustomLinearLayout.OnDraggingListener() {
@@ -67,16 +81,16 @@ public class ReminderFragment extends Fragment {
                 if (checkHistoryButton.getVisibility() == View.VISIBLE) {
                     checkHistoryButton.setVisibility(View.GONE);
                 }
-                a.bottomTabs.setVisibility(View.GONE);
+//                a.bottomTabs.setVisibility(View.GONE);
             }
 
             @Override
             public void scrollDown() {
 //                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
 //                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
-                checkHistoryButton.setVisibility(View.VISIBLE);
+//                checkHistoryButton.setVisibility(View.VISIBLE);
 //                }
-                a.bottomTabs.setVisibility(View.VISIBLE);
+//                a.bottomTabs.setVisibility(View.VISIBLE);
             }
         };
         return v;
