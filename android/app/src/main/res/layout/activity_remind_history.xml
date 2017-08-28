@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/completed_task"
+            android:text="@string/reminder"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
     </FrameLayout>

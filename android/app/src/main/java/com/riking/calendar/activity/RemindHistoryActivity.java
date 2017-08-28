@@ -43,7 +43,6 @@ public class RemindHistoryActivity extends AppCompatActivity {
 
         realm = Realm.getDefaultInstance();
         final Date date = new Date();
-        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().lessThan("reminderTime", date).equalTo("repeatFlag", 0).endGroup()
                 .findAllSorted("time", Sort.ASCENDING);
 
