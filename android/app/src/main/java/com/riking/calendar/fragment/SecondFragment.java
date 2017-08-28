@@ -56,11 +56,11 @@ import retrofit2.Response;
 
 public class SecondFragment extends Fragment {
     public Calendar calendar;
+    public APIInterface apiInterface;
     RecyclerView recyclerView;
     Realm realm;
     ViewPagerActivity a;
     View searchView;
-    APIInterface apiInterface;
     View dateColumn;
     ImageView dateArrow;
     View countryColumn;
@@ -76,8 +76,8 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mCountryDatas;
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
-    CtryHdayCrcy requestBoday = new CtryHdayCrcy();
-    Callback getMoreVocationCallBack;
+    public CtryHdayCrcy requestBoday = new CtryHdayCrcy();
+    public Callback getMoreVocationCallBack;
     DatePickerDialog dialog;
 
     @Override
@@ -420,11 +420,11 @@ public class SecondFragment extends Fragment {
                 Log.d("zzw", "call2 fail" + t.getMessage());
             }
         });
-        CtryHdayCrcy ctryHdayCrcy = new CtryHdayCrcy();
-        ctryHdayCrcy.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
+
+        requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
         Gson gson = new Gson();
-        Log.d("feiyoulian", "jason: " + gson.toJson(ctryHdayCrcy));
-        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(ctryHdayCrcy);
+        Log.d("zzw", "jason: " + gson.toJson(requestBoday));
+        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(requestBoday);
 
         getMoreVocationCallBack = new Callback<CtryHdayCryCondition>() {
             @Override
@@ -436,7 +436,10 @@ public class SecondFragment extends Fragment {
                 if (ctryHdayCryCondition == null) {
                     return;
                 }
-                recyclerView.setAdapter(new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content));
+                VocationRecyclerViewAdapter adapter = new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content);
+                adapter.setFootViewText("加载中。。。", SecondFragment.this);
+                recyclerView.setAdapter(adapter);
+
                 Log.d("zzw", "CtryHdayCryCondition success: " + ctryHdayCryCondition);
             }
 
