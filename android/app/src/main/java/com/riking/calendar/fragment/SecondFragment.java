@@ -22,7 +22,6 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.listener.HideShowScrollListener;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.GetHolidayModel;
@@ -295,7 +294,10 @@ public class SecondFragment extends Fragment {
                                     concurrencyTextView.setText(mConcurrencyDatas.get(0).valu);
                                     requestBoday = new CtryHdayCrcy();
                                 }
-                                recyclerView.setAdapter(new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content));
+
+                                VocationRecyclerViewAdapter adapter = new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content);
+                                adapter.setFootViewText("加载中。。。", SecondFragment.this);
+                                recyclerView.setAdapter(adapter);
                             }
 
                             @Override
