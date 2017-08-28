@@ -3,6 +3,7 @@ package com.riking.calendar.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class ReminderFragment extends Fragment {
     RecyclerView futureRecyclerView;
     ViewPagerActivity a;
     CustomLinearLayout root;
+    NestedScrollView nestedScrollView;
     View checkHistoryButton;
     TextView today;
     View todayTitle;
@@ -62,6 +65,7 @@ public class ReminderFragment extends Fragment {
         tomorrow = (TextView) v.findViewById(R.id.tomorrow_date);
         tomorrowTitle = (TextView) v.findViewById(R.id.tomorrow_title);
         futureTitle = (TextView) v.findViewById(R.id.future_title);
+        nestedScrollView = (NestedScrollView) v.findViewById(R.id.nested_recyclerview);
 
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -93,6 +97,12 @@ public class ReminderFragment extends Fragment {
 //                a.bottomTabs.setVisibility(View.VISIBLE);
             }
         };
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+        params.setMargins(0, 0, 0, marginBottom);
+        root.setLayoutParams(params);
+
         return v;
     }
 
