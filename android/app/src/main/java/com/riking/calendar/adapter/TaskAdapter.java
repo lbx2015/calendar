@@ -58,9 +58,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         if (r.isComplete == 1) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
+            holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_background_b6b6b6));
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
+            holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_323232));
             holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 

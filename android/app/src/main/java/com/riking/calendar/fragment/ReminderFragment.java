@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.ldf.calendar.Utils;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.RemindHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.realm.model.Reminder;
@@ -103,6 +105,13 @@ public class ReminderFragment extends Fragment {
         params.setMargins(0, 0, 0, marginBottom);
         root.setLayoutParams(params);
 
+        checkHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open the remind history page
+                startActivity(new Intent(getContext(), RemindHistoryActivity.class));
+            }
+        });
         return v;
     }
 

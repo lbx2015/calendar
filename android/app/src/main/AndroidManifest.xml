@@ -89,6 +89,9 @@
             android:name=".activity.TaskHistoryActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
+            android:name=".activity.RemindHistoryActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
             android:name=".activity.EditTaskActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
