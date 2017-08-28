@@ -32,7 +32,6 @@ import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.ViewFindUtils;
-import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.SpinnerView;
 import com.riking.calendar.widget.dialog.DatePickerDialog;
 import com.riking.calendar.widget.dialog.SearchDialog;
@@ -57,6 +56,8 @@ import retrofit2.Response;
 public class SecondFragment extends Fragment {
     public Calendar calendar;
     public APIInterface apiInterface;
+    public CtryHdayCrcy requestBoday = new CtryHdayCrcy();
+    public Callback getMoreVocationCallBack;
     RecyclerView recyclerView;
     Realm realm;
     ViewPagerActivity a;
@@ -76,8 +77,6 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mCountryDatas;
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
-    public CtryHdayCrcy requestBoday = new CtryHdayCrcy();
-    public Callback getMoreVocationCallBack;
     DatePickerDialog dialog;
 
     @Override
@@ -311,28 +310,10 @@ public class SecondFragment extends Fragment {
             }
         });
         recyclerView = ViewFindUtils.find(v, R.id.recycler_view);
-        recyclerView.addOnScrollListener(new HideShowScrollListener() {
-            int marginBottom = (int) ZR.convertDpToPx(a, 48);
-
-            @Override
-            public void onHide() {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-                params.setMargins(0, 0, 0, 0);
-                recyclerView.setLayoutParams(params);
-                a.bottomTabs.setVisibility(View.GONE);
-                recyclerView.invalidate();
-            }
-
-            @Override
-            public void onShow() {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-                params.setMargins(0, 0, 0, marginBottom);
-                recyclerView.setLayoutParams(params);
-                recyclerView.invalidate();
-                a.bottomTabs.setVisibility(View.VISIBLE);
-            }
-        });
-
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+        params.setMargins(0, 0, 0, marginBottom);
+        recyclerView.setLayoutParams(params);
         realm = Realm.getDefaultInstance();
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
