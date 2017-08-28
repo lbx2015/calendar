@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +24,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,6 +72,9 @@ public class FirstFragment extends Fragment {
     RecyclerView taskRecyclerView;
     RecyclerView reportRecyclerView;
     ReminderAdapter reminderAdapter;
+    CardView firstCardView;
+    CardView secondCardView;
+    CardView thirdCardView;
     TaskAdapter taskAdapter;
     Realm realm;
     APIInterface apiInterface;
@@ -179,6 +185,9 @@ public class FirstFragment extends Fragment {
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         add = v.findViewById(R.id.add);
+        firstCardView = (CardView) v.findViewById(R.id.first_cardview);
+        secondCardView = (CardView) v.findViewById(R.id.second_cardview);
+        thirdCardView = (CardView) v.findViewById(R.id.third_cardview);
         setListener();
         currentMonth = (TextView) v.findViewById(R.id.currentMonth);
         TextView todayButton = (TextView) v.findViewById(R.id.today_button);
@@ -250,9 +259,19 @@ public class FirstFragment extends Fragment {
                 .findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
         recyclerView.setAdapter(reminderAdapter);
+        if (reminderAdapter.getItemCount() == 0) {
+            firstCardView.setVisibility(View.GONE);
+        }
+
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
+                if (reminderAdapter.getItemCount() == 0) {
+                    firstCardView.setVisibility(View.GONE);
+                } else {
+                    firstCardView.setVisibility(View.VISIBLE);
+                }
+
                 reminderAdapter.notifyDataSetChanged();
             }
         });
@@ -262,12 +281,20 @@ public class FirstFragment extends Fragment {
         taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
         taskAdapter = new TaskAdapter(tasks, realm);
         taskRecyclerView.setAdapter(taskAdapter);
+        if (taskAdapter.getItemCount() == 0) {
+            secondCardView.setVisibility(View.GONE);
+        }
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
+                if (taskAdapter.getItemCount() == 0) {
+                    secondCardView.setVisibility(View.GONE);
+                } else {
+                    secondCardView.setVisibility(View.VISIBLE);
+                }
                 //the data is changed.
                 taskAdapter.notifyDataSetChanged();
             }
@@ -298,6 +325,13 @@ public class FirstFragment extends Fragment {
                 Logger.d("zzw", "reports loaded failed: " + t.getMessage());
             }
         });
+
+        //set the layout params
+        FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
+        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+        params.setMargins(0, 0, 0, marginBottom);
+        scrollView.setLayoutParams(params);
         return v;
     }
 
