@@ -116,6 +116,7 @@ public class TaskFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                checkHistoryButton.setVisibility(View.VISIBLE);
                 Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -128,9 +129,6 @@ public class TaskFragment extends Fragment {
             public void scrollUp() {
                 if (checkHistoryButton.getVisibility() == View.VISIBLE) {
                     // Start the animation
-//                    checkHistoryButton.animate()
-//                            .translationY(0)
-//                            .alpha(0.0f).setDuration(500);
                     checkHistoryButton.setVisibility(View.GONE);
                 }
             }
@@ -140,7 +138,7 @@ public class TaskFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
                 if ((viewHolder == null) || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
 //                    root.animate().translationY(checkHistoryButton.getHeight()).setDuration(400);
-                    checkHistoryButton.setVisibility(View.VISIBLE);
+//                    checkHistoryButton.setVisibility(View.VISIBLE);
                 }
             }
         };
