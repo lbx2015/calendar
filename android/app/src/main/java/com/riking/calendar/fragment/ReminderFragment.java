@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +34,10 @@ import io.realm.Sort;
  */
 
 public class ReminderFragment extends Fragment {
+    public Realm realm;
     RecyclerView recyclerView;
     RecyclerView tomorrowRecyclerView;
     RecyclerView futureRecyclerView;
-    public Realm realm;
     ViewPagerActivity a;
     CustomLinearLayout root;
     View checkHistoryButton;
@@ -73,8 +72,7 @@ public class ReminderFragment extends Fragment {
 
             @Override
             public void scrollDown() {
-                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
-                Log.d("zzw", "scroll down" + " first item visibility: " + viewHolder.itemView.getVisibility());
+//                RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
 //                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
                 checkHistoryButton.setVisibility(View.VISIBLE);
 //                }
