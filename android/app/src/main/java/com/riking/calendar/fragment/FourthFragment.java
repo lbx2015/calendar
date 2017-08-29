@@ -3,6 +3,8 @@ package com.riking.calendar.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,10 +21,13 @@ import com.riking.calendar.activity.ReportDetailActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.task.LoadUserImageTask;
+import com.riking.calendar.util.FileUtil;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -47,6 +52,20 @@ public class FourthFragment extends Fragment implements OnClickListener {
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
             userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
                     sharedPreferences.getString(Const.USER_COMMENTS, ""));
+
+            String imageUrl = sharedPreferences.getString(Const.USER_IMAGE_URL, null);
+            String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+            if (FileUtil.imageExists(imageName)) {
+                Logger.d("zzw", "no need load url: " + imageName);
+                Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
+                myPhoto.setImageBitmap(bitmap);
+
+            } else if (imageUrl != null && imageUrl.length() > 0) {
+                Logger.d("zzw", " load url: " + imageUrl);
+                LoadUserImageTask myTask = new LoadUserImageTask();
+                myTask.imageView = myPhoto;
+                myTask.execute(imageUrl);
+            }
         }
         return v;
     }

@@ -2,6 +2,7 @@ package com.riking.calendar.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,6 +14,9 @@ import android.view.ViewGroup;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
+import com.riking.calendar.activity.ViewPagerActivity;
+
+import static com.riking.calendar.R.id.coordinator_layout;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -43,6 +47,7 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
         //adding view pager to the slidingTabLayout
         SlidingTabLayout topTabLayout = (SlidingTabLayout) v.findViewById(R.id.top_tab_layout);
         topTabLayout.setViewPager(mViewPager);
+
         return v;
     }
 

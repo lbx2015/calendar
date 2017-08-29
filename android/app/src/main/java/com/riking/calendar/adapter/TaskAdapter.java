@@ -2,8 +2,8 @@ package com.riking.calendar.adapter;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,15 +50,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Task r = tasks.get(position);
         holder.title.setText(r.title);
-        if (r.isOpen == 1) {
-            try {
-                holder.remindTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(Const.yyyyMMddHHmm).parse(r.strDate)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        } else {
-            holder.remindTime.setText(null);
-        }
         if (r.isImportant == 1) {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
         } else {
@@ -67,9 +58,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         if (r.isComplete == 1) {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
+            holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_background_b6b6b6));
             holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
+            holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_323232));
             holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
@@ -111,6 +104,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         });
 
         holder.sml.setSwipeEnable(true);
+        //hide the last item's divider line
+        if (position + 1 == tasks.size()) {
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -128,11 +127,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public ImageView done;
         public ImageView important;
         public Task task;
-        public TextView remindTime;
 
         public TextView deleteButton;
         public TextView editButton;
         SwipeHorizontalMenuLayout sml;
+        View divider;
+        boolean completed = false;
 
         public MyViewHolder(View view) {
             super(view);
@@ -142,32 +142,42 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             deleteButton = (TextView) view.findViewById(R.id.tv_text);
             editButton = (TextView) view.findViewById(R.id.tv_edit);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
-            remindTime = (TextView) view.findViewById(R.id.remind_time);
-
+            divider = view.findViewById(R.id.divider);
+            final Handler handler = new Handler();
             done.setOnClickListener(new View.OnClickListener() {
+                Runnable callBack = new Runnable() {
+                    @Override
+                    public void run() {
+                        realm.executeTransaction
+                                (new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        Task t;
+                                        if (completed) {
+                                            t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
+                                            t.isComplete = 1;
+                                            t.completeDate = new SimpleDateFormat(Const.yyyyMMddHHmm).format(new Date());
+                                        }
+                                    }
+                                });
+                    }
+                };
+
                 @Override
                 public void onClick(View v) {
-
-                    realm.executeTransaction
-                            (new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    Task t;
-                                    if (task.isComplete == 1) {
-                                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
-                                        title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                                        t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
-                                        t.isComplete = 0;
-                                        t.completeDate = null;
-                                    } else {
-                                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
-                                        title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                                        t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
-                                        t.isComplete = 1;
-                                        t.completeDate = new SimpleDateFormat(Const.yyyyMMddHHmm).format(new Date());
-                                    }
-                                }
-                            });
+                    if (completed) {
+                        completed = false;
+                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
+                        title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        //cancel the pending runnable to complete the task
+                        handler.removeCallbacks(callBack);
+                    } else {
+                        completed = true;
+                        done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
+                        title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        //complete the task after 5 seconds delay
+                        handler.postDelayed(callBack, 5000);
+                    }
                 }
             });
 

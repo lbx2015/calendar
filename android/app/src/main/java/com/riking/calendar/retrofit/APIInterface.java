@@ -91,6 +91,9 @@ public interface APIInterface {
     @POST("appAboutApp/aboutHtml")
     Call<ResponseModel<String>> getAboutHtml(@Body Object object);
 
+    @POST("appAboutApp/agreementHtml")
+    Call<ResponseModel<String>> getAgreementHtml(@Query("id") String notUsed);
+
     @Multipart
     @POST("appUserApp/upLoad")
     Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);

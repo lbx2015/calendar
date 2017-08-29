@@ -38,23 +38,27 @@
     <application
         android:name="com.riking.calendar.app.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/sample_3"
+        android:icon="@mipmap/launcher_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/launcher_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.ViewPagerActivity"
+            android:name=".activity.LaunchActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppThemeNoTitle">
+            android:theme="@style/AppTheme.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.FullScreen"></activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.RealmIntroActivity" />
+        <activity android:name=".activity.ViewPagerActivity" />
         <activity
             android:name=".activity.NoActionBarActivity"
             android:theme="@style/AppThemeNoActionBar"
@@ -85,6 +89,9 @@
             android:name=".activity.TaskHistoryActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
+            android:name=".activity.RemindHistoryActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
             android:name=".activity.EditTaskActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
@@ -98,7 +105,7 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppTheme.FullScreen" />
 
         <service
             android:name=".service.AlarmService"

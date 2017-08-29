@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
 
@@ -49,7 +47,11 @@ public class SearchDialog extends AppCompatDialog {
         setContentView(R.layout.search_dialog);
         KeepStatusBar();
         Window window = getWindow();
-        getSupportActionBar().hide();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         getWindow().setBackgroundDrawable(new ColorDrawable(getContext().getResources().getColor(dialogColorPrimary)));
 
         // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -61,7 +63,7 @@ public class SearchDialog extends AppCompatDialog {
         // finally change the color
         window.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
 
-        searchButton =  findViewById(R.id.search);
+        searchButton = findViewById(R.id.search);
         editText = (EditText) findViewById(R.id.search_edit_view);
         Log.d("zzw", "set on cick listener: " + searchClickListener);
         searchButton.setOnClickListener(searchClickListener);

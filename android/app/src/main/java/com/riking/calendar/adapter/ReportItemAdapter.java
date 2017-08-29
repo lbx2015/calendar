@@ -55,6 +55,11 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
 
         holder.sml.setSwipeEnable(true);
         holder.r = r;
+        if (position == reports.size() - 1) {
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -70,12 +75,14 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         public TextView title;
         public TextView tv;
         public int position;
+        public View divider;
         SwipeHorizontalMenuLayout sml;
         QueryReport r;
 
         public MyViewHolder(final List<QueryReport> reports, View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
+            divider = view.findViewById(R.id.divider);
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

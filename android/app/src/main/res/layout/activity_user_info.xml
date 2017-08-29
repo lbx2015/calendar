@@ -83,7 +83,7 @@
             <!--divider-->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/divider_height"
 
                 android:background="@color/divider_color_d9d9d9" />
 
@@ -127,8 +127,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-
+                android:layout_height="@dimen/divider_height"
                 android:background="@color/divider_color_d9d9d9" />
 
             <RelativeLayout
@@ -171,7 +170,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/divider_height"
                 android:background="@color/divider_color_d9d9d9" />
 
             <RelativeLayout
@@ -215,8 +214,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-
+                android:layout_height="@dimen/divider_height"
                 android:background="@color/divider_color_d9d9d9" />
 
             <!--     <RelativeLayout

@@ -120,4 +120,9 @@
     <string name="login_failed">Login Failed</string>
     <string name="cleared">Memory Cleared</string>
     <string name="whole_year">Whole Year</string>
+    <string name="welcome_page_text1">每日报表汇总，同步工作进度</string>
+    <string name="welcome_page_text2">外币交易市场币种节假日查询</string>
+    <string name="welcome_page_text3">快速建立提醒，重要事件不忘记</string>
+    <string name="welcome_page_text4">悦历——服务金融从业人员的日历</string>
+    <string name="enter">立即进入</string>
 </resources>

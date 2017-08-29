@@ -13,7 +13,7 @@
     <RelativeLayout
         android:id="@+id/smContentView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:layout_marginLeft="38dp"
         android:background="@android:color/white">
 
@@ -28,8 +28,9 @@
             android:textColor="@color/color_323232" />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/divider_height"
             android:layout_alignParentBottom="true"
             android:background="@color/divider_color_d9d9d9"
             android:paddingTop="4dp" />

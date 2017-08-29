@@ -4,17 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/custom_linear_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="72dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/check_task_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="109dp"
+        android:layout_height="18dp"
         android:layout_gravity="center_horizontal"
-        android:background="@color/color_background_f2f2f2"
-        android:gravity="center_horizontal"
+        android:layout_marginBottom="14dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/search_button_rounded_rectangle"
+        android:gravity="center"
         android:text="查看历史记录"
+        android:textColor="@color/color_929292"
+        android:textSize="10sp"
         android:visibility="gone" />
 
     <!--<View-->
@@ -31,15 +36,14 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="48dp">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="2dp"
-                app:cardUseCompatPadding="true">
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -52,11 +56,17 @@
                         android:layout_height="wrap_content"
                         android:scrollbars="vertical" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:background="@color/divider_color_d9d9d9"
+                        android:paddingTop="4dp" />
+
                     <TextView
                         android:id="@+id/quick_add_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
