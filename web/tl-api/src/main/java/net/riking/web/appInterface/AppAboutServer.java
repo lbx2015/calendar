@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +29,8 @@ public class AppAboutServer {
 	
 	@ApiOperation(value = "跳转<关于>html5页面", notes = "POST")
 	@RequestMapping(value = "/aboutHtml", method = RequestMethod.POST)	
-	public AppResp aboutApp() {
-		return new AppResp(config.getAppHtmlPath()+Const.TL_ABOUT_HTML5_PATH,CodeDef.SUCCESS);
+	public AppResp aboutApp(@RequestParam("versionNumber")String versionNumber) {
+		return new AppResp(config.getAppHtmlPath()+Const.TL_ABOUT_HTML5_PATH+"?versionNumber="+versionNumber,CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "跳转<app使用协议>html5页面", notes = "POST")
