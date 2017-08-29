@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +21,7 @@ import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
-import com.riking.calendar.listener.HideShowScrollListener;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.GetHolidayModel;
@@ -29,7 +31,6 @@ import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.ViewFindUtils;
-import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.SpinnerView;
 import com.riking.calendar.widget.dialog.DatePickerDialog;
 import com.riking.calendar.widget.dialog.SearchDialog;
@@ -53,12 +54,15 @@ import retrofit2.Response;
 
 public class SecondFragment extends Fragment {
     public Calendar calendar;
+    public APIInterface apiInterface;
+    public CtryHdayCrcy requestBoday = new CtryHdayCrcy();
+    public Callback getMoreVocationCallBack;
     RecyclerView recyclerView;
     Realm realm;
     ViewPagerActivity a;
     View searchView;
-    APIInterface apiInterface;
     View dateColumn;
+    ImageView dateArrow;
     View countryColumn;
     View holidayColumn;
     View concurrencyColumn;
@@ -72,8 +76,6 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mCountryDatas;
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
-    CtryHdayCrcy requestBoday = new CtryHdayCrcy();
-    Callback getMoreVocationCallBack;
     DatePickerDialog dialog;
 
     @Override
@@ -98,9 +100,10 @@ public class SecondFragment extends Fragment {
                 ModelPropDict dict = mCountryDatas.get(position);
                 countryTextView.setText(dict.valu);
                 requestBoday.ctryName = dict.ke;
+                requestBoday.pindex = 0;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 // 隐藏popupWindow
-                mSpinnerView.mWindow.dismiss();
+                mSpinnerView.dismiss();
             }
         });
 
@@ -112,8 +115,9 @@ public class SecondFragment extends Fragment {
                 holidayTextView.setText(data.valu);
                 requestBoday.hdayName = data.ke;
                 Log.d("zzw", "requestBoday: " + requestBoday.hdayName);
+                requestBoday.pindex = 0;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
-                mHolidaySpinnerView.mWindow.dismiss();
+                mHolidaySpinnerView.dismiss();
             }
         });
 
@@ -124,19 +128,13 @@ public class SecondFragment extends Fragment {
                 ModelPropDict data = mConcurrencyDatas.get(position);
                 concurrencyTextView.setText(data.valu);
                 requestBoday.crcy = data.ke;
+                requestBoday.pindex = 0;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
-                mConcurrencySpinnerView.mWindow.dismiss();
+                mConcurrencySpinnerView.dismiss();
             }
         });
 
         searchView = v.findViewById(R.id.search);
-        countryColumn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("zzw", "click country column");
-                mSpinnerView.toggle();
-            }
-        });
 
         final View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -144,36 +142,46 @@ public class SecondFragment extends Fragment {
                 switch (v.getId()) {
                     case R.id.btnSubmit: {
                         calendar.set(Calendar.YEAR, Integer.parseInt(dialog.wheelDatePicker.year));
-                        calendar.set(Calendar.MONTH, Integer.parseInt(dialog.wheelDatePicker.month) - 1);
-                        calendar.set(Calendar.DATE, Integer.parseInt(dialog.wheelDatePicker.day) - 1);
 
-                        if (dialog.isDateFilterCleared) {
-                            dateTextView.setText(getString(R.string.date));
-                            //remove the date filter
-                            requestBoday.hdayDate = null;
-                        } else {
+                        //whole month
+                        if (dialog.isWholeMonth) {
+                            calendar.set(Calendar.MONTH, Integer.parseInt(dialog.wheelDatePicker.month) - 1);
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
                             dateTextView.setText(sdf.format(calendar.getTime()));
-                            if (dialog.isWholeMonth) {
-                                requestBoday.hdayDate = new SimpleDateFormat("yyyyMM").format(calendar.getTime());
-                            } else if (dialog.isWholeYear) {
-                                requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
-                            } else {
-                                requestBoday.hdayDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
-                            }
+                            requestBoday.hdayDate = new SimpleDateFormat("yyyyMM").format(calendar.getTime());
                         }
+                        //whole year
+                        else {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年");
+                            dateTextView.setText(sdf.format(calendar.getTime()));
+                            requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
+                        }
+                        requestBoday.pindex = 0;
                         apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                         dialog.dismiss();
+                        dateArrow.setRotation(0);
                         break;
                     }
                     case R.id.btnCancel: {
                         dialog.dismiss();
+                        dateArrow.setRotation(0);
                         break;
                     }
                 }
             }
         };
 
+        dateArrow = (ImageView) v.findViewById(R.id.date_arrow);
+        final ImageView countryArrow = (ImageView) v.findViewById(R.id.country_arrow);
+        final ImageView currencyArrow = (ImageView) v.findViewById(R.id.currency_arrow);
+        final ImageView holidayArrow = (ImageView) v.findViewById(R.id.holiday_arrow);
+        final DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                //arrow down
+                dateArrow.setRotation(0);
+            }
+        };
         dateColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,7 +190,54 @@ public class SecondFragment extends Fragment {
                     dialog.btnSubmit.setOnClickListener(listener);
                     dialog.btnCancel.setOnClickListener(listener);
                 }
+
+                dialog.setOnDismissListener(dismissListener);
                 dialog.show();
+                dateArrow.setRotation(180);
+            }
+        });
+
+
+        //change the arrow icon to arrow down icon
+        mSpinnerView.dismissListener = new SpinnerView.DismissListener() {
+            @Override
+            public void onDismiss() {
+                mSpinnerView.mWindow.dismiss();
+                countryArrow.setRotation(0);
+            }
+        };
+
+        mConcurrencySpinnerView.dismissListener = new SpinnerView.DismissListener() {
+            @Override
+            public void onDismiss() {
+                mConcurrencySpinnerView.mWindow.dismiss();
+                currencyArrow.setRotation(0);
+            }
+        };
+
+        mHolidaySpinnerView.dismissListener = new SpinnerView.DismissListener() {
+            @Override
+            public void onDismiss() {
+                mHolidaySpinnerView.mWindow.dismiss();
+                holidayArrow.setRotation(0);
+            }
+        };
+
+
+        countryColumn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("zzw", "click country column");
+                if (mSpinnerView.mWindow != null && mSpinnerView.mWindow.isShowing()) {
+                    Logger.d("zzw", "arrow down");
+                    mSpinnerView.dismiss();
+                    countryArrow.setRotation(0);
+                    ;
+                } else {
+                    mSpinnerView.clickArrow();
+                    Logger.d("zzw", "arrow left");
+                    countryArrow.setRotation(180);
+                }
             }
         });
 
@@ -190,13 +245,25 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("zzw", "click country column");
-                mHolidaySpinnerView.toggle();
+                if (mHolidaySpinnerView.mWindow != null && mHolidaySpinnerView.mWindow.isShowing()) {
+                    mHolidaySpinnerView.dismiss();
+                    holidayArrow.setRotation(0);
+                } else {
+                    mHolidaySpinnerView.clickArrow();
+                    holidayArrow.setRotation(180);
+                }
             }
         });
         concurrencyColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mConcurrencySpinnerView.toggle();
+                if (mConcurrencySpinnerView.mWindow != null && mConcurrencySpinnerView.mWindow.isShowing()) {
+                    mConcurrencySpinnerView.dismiss();
+                    currencyArrow.setRotation(0);
+                } else {
+                    mConcurrencySpinnerView.clickArrow();
+                    currencyArrow.setRotation(180);
+                }
             }
         });
 
@@ -227,7 +294,10 @@ public class SecondFragment extends Fragment {
                                     concurrencyTextView.setText(mConcurrencyDatas.get(0).valu);
                                     requestBoday = new CtryHdayCrcy();
                                 }
-                                recyclerView.setAdapter(new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content));
+
+                                VocationRecyclerViewAdapter adapter = new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content);
+                                adapter.setFootViewText("加载中。。。", SecondFragment.this);
+                                recyclerView.setAdapter(adapter);
                             }
 
                             @Override
@@ -242,28 +312,10 @@ public class SecondFragment extends Fragment {
             }
         });
         recyclerView = ViewFindUtils.find(v, R.id.recycler_view);
-        recyclerView.addOnScrollListener(new HideShowScrollListener() {
-            int marginBottom = (int) ZR.convertDpToPx(a, 48);
-
-            @Override
-            public void onHide() {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-                params.setMargins(0, 0, 0, 0);
-                recyclerView.setLayoutParams(params);
-                a.bottomTabs.setVisibility(View.GONE);
-                recyclerView.invalidate();
-            }
-
-            @Override
-            public void onShow() {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-                params.setMargins(0, 0, 0, marginBottom);
-                recyclerView.setLayoutParams(params);
-                recyclerView.invalidate();
-                a.bottomTabs.setVisibility(View.VISIBLE);
-            }
-        });
-
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+        params.setMargins(0, 0, 0, marginBottom);
+        recyclerView.setLayoutParams(params);
         realm = Realm.getDefaultInstance();
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
@@ -351,11 +403,11 @@ public class SecondFragment extends Fragment {
                 Log.d("zzw", "call2 fail" + t.getMessage());
             }
         });
-        CtryHdayCrcy ctryHdayCrcy = new CtryHdayCrcy();
-        ctryHdayCrcy.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
+
+        requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
         Gson gson = new Gson();
-        Log.d("feiyoulian", "jason: " + gson.toJson(ctryHdayCrcy));
-        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(ctryHdayCrcy);
+        Log.d("zzw", "jason: " + gson.toJson(requestBoday));
+        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(requestBoday);
 
         getMoreVocationCallBack = new Callback<CtryHdayCryCondition>() {
             @Override
@@ -367,7 +419,10 @@ public class SecondFragment extends Fragment {
                 if (ctryHdayCryCondition == null) {
                     return;
                 }
-                recyclerView.setAdapter(new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content));
+                VocationRecyclerViewAdapter adapter = new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content);
+                adapter.setFootViewText("加载中。。。", SecondFragment.this);
+                recyclerView.setAdapter(adapter);
+
                 Log.d("zzw", "CtryHdayCryCondition success: " + ctryHdayCryCondition);
             }
 

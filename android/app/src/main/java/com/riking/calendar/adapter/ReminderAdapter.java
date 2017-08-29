@@ -56,10 +56,8 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         //set a different color for the future reminders.
         if (DateUtil.get(r.day, r.time).compareTo(today) > 0 && r.day.equals(dateFormat.format(today))) {
             holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_29a1f7));
-            holder.title.setTextColor(ContextCompat.getColor(holder.title.getContext(), R.color.color_323232));
         } else {
-            holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_888888));
-            holder.title.setTextColor(ContextCompat.getColor(holder.title.getContext(), R.color.color_888888));
+            holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_background_b6b6b6));
         }
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {

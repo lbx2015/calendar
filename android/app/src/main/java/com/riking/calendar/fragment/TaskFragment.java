@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ldf.calendar.Const;
@@ -116,6 +117,7 @@ public class TaskFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                checkHistoryButton.setVisibility(View.VISIBLE);
                 Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -128,9 +130,6 @@ public class TaskFragment extends Fragment {
             public void scrollUp() {
                 if (checkHistoryButton.getVisibility() == View.VISIBLE) {
                     // Start the animation
-//                    checkHistoryButton.animate()
-//                            .translationY(0)
-//                            .alpha(0.0f).setDuration(500);
                     checkHistoryButton.setVisibility(View.GONE);
                 }
             }
@@ -140,7 +139,7 @@ public class TaskFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
                 if ((viewHolder == null) || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
 //                    root.animate().translationY(checkHistoryButton.getHeight()).setDuration(400);
-                    checkHistoryButton.setVisibility(View.VISIBLE);
+//                    checkHistoryButton.setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -152,6 +151,11 @@ public class TaskFragment extends Fragment {
                 startActivity(new Intent(getContext(), TaskHistoryActivity.class));
             }
         });
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+        params.setMargins(0, 0, 0, marginBottom);
+        root.setLayoutParams(params);
         return v;
     }
 

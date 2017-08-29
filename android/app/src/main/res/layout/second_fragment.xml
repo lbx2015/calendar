@@ -56,6 +56,7 @@
                 android:textSize="14sp" />
 
             <com.riking.calendar.view.ZCenterImageView
+                android:id="@+id/date_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_down" />
@@ -85,9 +86,10 @@
                 android:textColor="@color/color_323232"
                 android:textSize="14sp" />
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+            <com.riking.calendar.view.ZCenterImageView
+                android:id="@+id/country_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/arrow_down" />
         </LinearLayout>
 
@@ -115,7 +117,8 @@
                 android:textColor="@color/color_323232"
                 android:textSize="14sp" />
 
-            <ImageView
+            <com.riking.calendar.view.ZCenterImageView
+                android:id="@+id/currency_arrow"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/arrow_down" />
@@ -145,7 +148,8 @@
                 android:textColor="@color/color_323232"
                 android:textSize="14sp" />
 
-            <ImageView
+            <com.riking.calendar.view.ZCenterImageView
+                android:id="@+id/holiday_arrow"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/arrow_down" />

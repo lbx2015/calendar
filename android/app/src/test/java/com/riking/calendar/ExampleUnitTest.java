@@ -7,7 +7,6 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.QueryReportModel;
-import com.riking.calendar.pojo.Report;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.Task;
 
@@ -50,28 +49,6 @@ public class ExampleUnitTest {
         user.id = "ddddd";
         dd._data = user;
         System.out.println(new Gson().toJson(dd));
-    }
-
-    @Test
-    public void jsonTest() throws Exception {
-        Task t = new Task();
-        ArrayList<Report> list = new ArrayList<>();
-        Report r = new Report();
-        r.id = "ida";
-        r.moduleType = "module type";
-        r.reportCode = "report code";
-        r.reportName = "report name";
-        list.add(r);
-        t.strDate = new SimpleDateFormat(Const.yyyyMMddHHmm).format(new Date());
-//        Gson gson = new Gson();
-        Gson gson = new GsonBuilder().setDateFormat("yyyyMMddHHmm").create();
-
-//        HashMap<String, List<String>> employees = new HashMap<>();
-//        employees.put("A", Arrays.asList("Andreas", "Arnold", "Aden"));
-//        employees.put("C", Arrays.asList("Christian", "Carter"));
-//        employees.put("M", Arrays.asList("Marcus", "Mary"));
-//        String employeeJson = gson.toJson(employees);
-        System.out.println(gson.toJson(t));
     }
 
     @Test

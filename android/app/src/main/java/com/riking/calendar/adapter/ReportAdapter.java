@@ -47,9 +47,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 if (holder.recyclerView.getVisibility() == View.VISIBLE) {
                     holder.recyclerView.setVisibility(View.GONE);
                     holder.firstDivider.setVisibility(View.GONE);
-                    holder.arrowImage.setImageDrawable(holder.arrowImage.getContext().getDrawable(R.drawable.arrow_down));
+                    holder.arrowImage.setRotation(0);
                 } else {
-                    holder.arrowImage.setImageDrawable(holder.arrowImage.getContext().getDrawable(R.drawable.arrow_left));
+                    holder.arrowImage.setRotation(90);
                     holder.recyclerView.setVisibility(View.VISIBLE);
                     holder.firstDivider.setVisibility(View.VISIBLE);
                 }

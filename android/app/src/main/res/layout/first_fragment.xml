@@ -103,8 +103,10 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -113,12 +115,11 @@
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/first_cardview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-
                     app:cardElevation="1dp"
-
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                     <android.support.v7.widget.RecyclerView
@@ -130,6 +131,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/second_cardview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -144,11 +146,10 @@
                         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
                 </android.support.v7.widget.CardView>
 
-
                 <android.support.v7.widget.CardView
+                    android:id="@+id/third_cardview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="62dp"
                     android:layout_marginTop="10dp"
                     app:cardElevation="1dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">

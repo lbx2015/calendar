@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@android:color/white"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sml="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smContentView"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sml="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
 
     <android.support.v7.widget.CardView
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        sml:cardCornerRadius="3dp"
-        sml:cardElevation="4dp"
-        sml:cardUseCompatPadding="true">
+        android:layout_height="wrap_content"
+        sml:cardElevation="2dp">
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/nested_recyclerview"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/completed_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="bottom|right"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
                 android:padding="10dp"
                 android:text="2007-01-22" />
         </LinearLayout>

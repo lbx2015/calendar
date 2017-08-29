@@ -54,6 +54,7 @@
         </activity>
         <activity
             android:name=".activity.WelcomeActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.FullScreen"></activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.RealmIntroActivity" />
@@ -86,6 +87,9 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.TaskHistoryActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.RemindHistoryActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.EditTaskActivity"
