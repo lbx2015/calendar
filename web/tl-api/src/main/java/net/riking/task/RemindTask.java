@@ -74,7 +74,7 @@ public class RemindTask extends TimerTask {
 		Integer yearWorkDay = daysRepo.findByDate(date.substring(0, 4) + "0101", date);
 		Integer yearAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "0101", date);
 		Set<String> reportId = new HashSet<>();
-		if (day.getRemark().equals("1")) {
+		if (day.getIsWork()==1) {
 			reportId = reportSubmitCaliberRepo.findByWorkDatefromReportId(Integer.valueOf(day.getWeekday()), tenWorkDay,
 					monthWorkDay, seasonWorkDay, halfYearWorkDay, yearWorkDay);
 			Set<String> reportIdAdd = reportSubmitCaliberRepo.findByFreeDatefromReportId(
