@@ -83,7 +83,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
 
     @POST("reportListApp/getAllReport")
-    Call<QueryReportModel> getAllReports(@Body QueryReport report);
+    Call<QueryReportModel> getAllReports(@Query("id") String notUsed);
 
     @POST("appAboutApp/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);

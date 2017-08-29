@@ -16,7 +16,6 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Remind;
-import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
@@ -47,11 +46,24 @@ public class SynchronousServer {
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
 	public AppResp synchronousAll(@RequestBody AppUser appUser) {
 		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
-		List<RemindHis> remindHis = remindHisRepo.findByUserId(appUser.getId());
 		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
 		List<AppUserReportCompleteRel> appUserReportCompleteRel = appUserReportCompletesRelRepo.findAll();
-		SynResult result = new SynResult(reminds, remindHis, todos,appUserReportCompleteRel);
+		SynResult result = new SynResult(reminds, todos,appUserReportCompleteRel);
 		return new AppResp(result, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "同步提醒信息", notes = "POST")
+	@RequestMapping(value = "/synchronousRemindToApp", method = RequestMethod.POST)
+	public AppResp synchronousRemindToApp(@RequestBody AppUser appUser) {
+		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
+		return new AppResp(reminds, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "同步待办信息", notes = "POST")
+	@RequestMapping(value = "/synchronousTodoToApp", method = RequestMethod.POST)
+	public AppResp synchronousTodoToApp(@RequestBody AppUser appUser) {
+		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
+		return new AppResp(todos, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "同步日历信息", notes = "POST")

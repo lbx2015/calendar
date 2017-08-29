@@ -12,16 +12,14 @@ import java.util.List;
 public class SynResult {
 
 	private List<Remind> remind;
-	private List<RemindHis> remindHis;
 	private List<Todo> todo;
 	private List<AppUserReportCompleteRel> appUserReportCompleteRel;
 
 	public SynResult() {
 	}
 
-	public SynResult(List<Remind> remind, List<RemindHis> remindHis, List<Todo> todo, List<AppUserReportCompleteRel> appUserReportCompleteRel) {
+	public SynResult(List<Remind> remind,  List<Todo> todo, List<AppUserReportCompleteRel> appUserReportCompleteRel) {
 		this.remind = remind;
-		this.remindHis = remindHis;
 		this.todo = todo;
 		this.appUserReportCompleteRel = appUserReportCompleteRel;
 	}
@@ -42,14 +40,6 @@ public class SynResult {
 
 	public void setRemind(List<Remind> remind) {
 		this.remind = remind;
-	}
-
-	public List<RemindHis> getRemindHis() {
-		return remindHis;
-	}
-
-	public void setRemindHis(List<RemindHis> remindHis) {
-		this.remindHis = remindHis;
 	}
 
 	public List<Todo> getTodo() {

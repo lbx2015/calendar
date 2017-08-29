@@ -142,14 +142,18 @@ public class SecondFragment extends Fragment {
                 switch (v.getId()) {
                     case R.id.btnSubmit: {
                         calendar.set(Calendar.YEAR, Integer.parseInt(dialog.wheelDatePicker.year));
-                        calendar.set(Calendar.MONTH, Integer.parseInt(dialog.wheelDatePicker.month) - 1);
 
-
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
-                        dateTextView.setText(sdf.format(calendar.getTime()));
+                        //whole month
                         if (dialog.isWholeMonth) {
+                            calendar.set(Calendar.MONTH, Integer.parseInt(dialog.wheelDatePicker.month) - 1);
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
+                            dateTextView.setText(sdf.format(calendar.getTime()));
                             requestBoday.hdayDate = new SimpleDateFormat("yyyyMM").format(calendar.getTime());
-                        } else {
+                        }
+                        //whole year
+                        else {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年");
+                            dateTextView.setText(sdf.format(calendar.getTime()));
                             requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
                         }
                         requestBoday.pindex = 0;

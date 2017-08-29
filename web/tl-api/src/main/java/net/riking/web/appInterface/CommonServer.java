@@ -51,7 +51,7 @@ public class CommonServer {
 					return new AppResp(new AppVersionResult("1",appVersion.get(0).getVersionNote()), CodeDef.SUCCESS);
 				}
 			}
-	 		return new AppResp(new AppVersionResult("1",appVersion.get(0).getVersionNote()), CodeDef.SUCCESS);
+	 		return new AppResp(new AppVersionResult("0",appVersion.get(0).getVersionNote()), CodeDef.SUCCESS);
 		}else {
 
 	 		return new AppResp(null, CodeDef.SUCCESS);

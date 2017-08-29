@@ -39,8 +39,7 @@ import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.pojo.QueryReport;
-import com.riking.calendar.pojo.QueryReportModel;
+import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
@@ -56,9 +55,6 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -238,7 +234,63 @@ public class FirstFragment extends Fragment {
         reportRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         recyclerView.setLayoutManager(new LinearLayoutManager(a));
+        initReminderAdapter();
 
+        //only show the not complete tasks
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
+        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        taskAdapter = new TaskAdapter(tasks, realm);
+        taskRecyclerView.setAdapter(taskAdapter);
+        if (taskAdapter.getItemCount() == 0) {
+            secondCardView.setVisibility(View.GONE);
+        }
+
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                if (taskAdapter.getItemCount() == 0) {
+                    secondCardView.setVisibility(View.GONE);
+                } else {
+                    secondCardView.setVisibility(View.VISIBLE);
+                }
+                //the data is changed.
+                taskAdapter.notifyDataSetChanged();
+            }
+        });
+
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+
+//        apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<QueryReportModel>>() {
+//            @Override
+//            public void callBack(ResponseModel<QueryReportModel> response) {
+//                if (response != null) {
+//                    Logger.d("zzw", "success loaded reports: " + response._data);
+//                    reportRecyclerView.setAdapter(new ReportAdapter(response._data));
+//                }
+//            }
+//        });
+
+        RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
+        Logger.d("zzw", "report adapter size: " + reports.size());
+        final ReportAdapter reportAdapter = new ReportAdapter(reports);
+        reportRecyclerView.setAdapter(reportAdapter);
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                reportAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //set the layout params
+        FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
+        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+        params.setMargins(0, 0, 0, marginBottom);
+        scrollView.setLayoutParams(params);
+        return v;
+    }
+
+    public void initReminderAdapter() {
         final Date date = new Date();
         final Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -249,9 +301,13 @@ public class FirstFragment extends Fragment {
         } else {
             weekDay--;
         }
+        updateReminderAdapter(date, weekDay);
+    }
+
+    private void updateReminderAdapter(Date date, int weekDay) {
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-        final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(new Date())).equalTo("repeatFlag", 0).endGroup()
+        final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
@@ -275,64 +331,6 @@ public class FirstFragment extends Fragment {
                 reminderAdapter.notifyDataSetChanged();
             }
         });
-
-        //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
-        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        taskAdapter = new TaskAdapter(tasks, realm);
-        taskRecyclerView.setAdapter(taskAdapter);
-        if (taskAdapter.getItemCount() == 0) {
-            secondCardView.setVisibility(View.GONE);
-        }
-
-        apiInterface = APIClient.getClient().create(APIInterface.class);
-
-        realm.addChangeListener(new RealmChangeListener<Realm>() {
-            @Override
-            public void onChange(Realm realm) {
-                if (taskAdapter.getItemCount() == 0) {
-                    secondCardView.setVisibility(View.GONE);
-                } else {
-                    secondCardView.setVisibility(View.VISIBLE);
-                }
-                //the data is changed.
-                taskAdapter.notifyDataSetChanged();
-            }
-        });
-     /*   LinkedHashMap<String, List<Report>> reports = new LinkedHashMap<String, List<Report>>();
-        ArrayList<Report> list = new ArrayList<>();
-        Report r = new Report();
-        r.id = "ida";
-        r.moduleType = "module type";
-        r.reportCode = "report code";
-        r.reportName = "report name";
-        list.add(r);
-        reports.put("title", list);
-        reportRecyclerView.setAdapter(new ReportAdapter(reports));*/
-
-        apiInterface.getAllReports(new QueryReport()).enqueue(new Callback<QueryReportModel>() {
-            @Override
-            public void onResponse(Call<QueryReportModel> call, Response<QueryReportModel> response) {
-                QueryReportModel reports = response.body();
-                if (reports != null) {
-                    Logger.d("zzw", "success loaded reports: " + reports);
-                    reportRecyclerView.setAdapter(new ReportAdapter(reports));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<QueryReportModel> call, Throwable t) {
-                Logger.d("zzw", "reports loaded failed: " + t.getMessage());
-            }
-        });
-
-        //set the layout params
-        FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
-        final int marginBottom = a.bottomTabs.getMeasuredHeight();
-        params.setMargins(0, 0, 0, marginBottom);
-        scrollView.setLayoutParams(params);
-        return v;
     }
 
     /**
@@ -466,6 +464,20 @@ public class FirstFragment extends Fragment {
                     String scheduleMonth = calV.getShowMonth();
                     calV.currentFlag = position;
                     calV.notifyDataSetChanged();
+
+                    final Calendar c = Calendar.getInstance();
+                    c.set(Calendar.YEAR, Integer.parseInt(scheduleYear));
+                    c.set(Calendar.MONTH, Integer.parseInt(scheduleMonth) - 1);
+                    c.set(Calendar.DATE, Integer.parseInt(scheduleDay));
+
+                    int weekDay = c.get(Calendar.DAY_OF_WEEK);
+                    if (weekDay == Calendar.SUNDAY) {
+                        weekDay = 7;
+                    } else {
+                        weekDay--;
+                    }
+                    updateReminderAdapter(c.getTime(), weekDay);
+
                     Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
                     // Toast.LENGTH_SHORT).show();z
