@@ -238,43 +238,7 @@ public class FirstFragment extends Fragment {
         reportRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         recyclerView.setLayoutManager(new LinearLayoutManager(a));
-
-        final Date date = new Date();
-        final Calendar c = Calendar.getInstance();
-        c.setTime(date);
-
-        int weekDay = c.get(Calendar.DAY_OF_WEEK);
-        if (weekDay == Calendar.SUNDAY) {
-            weekDay = 7;
-        } else {
-            weekDay--;
-        }
-
-        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-        final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(new Date())).equalTo("repeatFlag", 0).endGroup()
-                .or().beginGroup()
-                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
-                .contains("repeatWeek", String.valueOf(weekDay))
-                .endGroup()
-                .findAllSorted("time", Sort.ASCENDING);
-        reminderAdapter = new ReminderAdapter(reminders, realm);
-        recyclerView.setAdapter(reminderAdapter);
-        if (reminderAdapter.getItemCount() == 0) {
-            firstCardView.setVisibility(View.GONE);
-        }
-
-        realm.addChangeListener(new RealmChangeListener<Realm>() {
-            @Override
-            public void onChange(Realm realm) {
-                if (reminderAdapter.getItemCount() == 0) {
-                    firstCardView.setVisibility(View.GONE);
-                } else {
-                    firstCardView.setVisibility(View.VISIBLE);
-                }
-
-                reminderAdapter.notifyDataSetChanged();
-            }
-        });
+        initReminderAdapter();
 
         //only show the not complete tasks
         RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
@@ -333,6 +297,49 @@ public class FirstFragment extends Fragment {
         params.setMargins(0, 0, 0, marginBottom);
         scrollView.setLayoutParams(params);
         return v;
+    }
+
+    public void initReminderAdapter() {
+        final Date date = new Date();
+        final Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        int weekDay = c.get(Calendar.DAY_OF_WEEK);
+        if (weekDay == Calendar.SUNDAY) {
+            weekDay = 7;
+        } else {
+            weekDay--;
+        }
+        updateReminderAdapter(date, weekDay);
+    }
+
+    private void updateReminderAdapter(Date date, int weekDay) {
+
+        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+        final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+                .or().beginGroup()
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
+                .contains("repeatWeek", String.valueOf(weekDay))
+                .endGroup()
+                .findAllSorted("time", Sort.ASCENDING);
+        reminderAdapter = new ReminderAdapter(reminders, realm);
+        recyclerView.setAdapter(reminderAdapter);
+        if (reminderAdapter.getItemCount() == 0) {
+            firstCardView.setVisibility(View.GONE);
+        }
+
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                if (reminderAdapter.getItemCount() == 0) {
+                    firstCardView.setVisibility(View.GONE);
+                } else {
+                    firstCardView.setVisibility(View.VISIBLE);
+                }
+
+                reminderAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /**
@@ -466,6 +473,20 @@ public class FirstFragment extends Fragment {
                     String scheduleMonth = calV.getShowMonth();
                     calV.currentFlag = position;
                     calV.notifyDataSetChanged();
+
+                    final Calendar c = Calendar.getInstance();
+                    c.set(Calendar.YEAR, Integer.parseInt(scheduleYear));
+                    c.set(Calendar.MONTH, Integer.parseInt(scheduleMonth) - 1);
+                    c.set(Calendar.DATE, Integer.parseInt(scheduleDay));
+
+                    int weekDay = c.get(Calendar.DAY_OF_WEEK);
+                    if (weekDay == Calendar.SUNDAY) {
+                        weekDay = 7;
+                    } else {
+                        weekDay--;
+                    }
+                    updateReminderAdapter(c.getTime(), weekDay);
+
                     Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
                     // Toast.LENGTH_SHORT).show();z
