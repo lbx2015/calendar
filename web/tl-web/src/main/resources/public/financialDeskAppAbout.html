@@ -24,7 +24,7 @@
         <section class="content">
         	<section class="version">
             	  <div class="version-icon"><img alt="" src="{=ctx}/images/logo.png" height="" style="width:0.6rem; height: 0.6rem;" /></div>
-                  <p>版本号：1.0</p>
+                  <p id = "versionNumber">版本号：1.0</p>
             </section>
             <section class="list">
                 <ul class="clearfix f30">
@@ -65,5 +65,13 @@
 </body>
 <script type="text/javascript" >
 
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+var versionNumber = GetQueryString("versionNumber");
+document.getElementById("versionNumber").innerHTML="版本号："+versionNumber;
 </script>
 </html>
