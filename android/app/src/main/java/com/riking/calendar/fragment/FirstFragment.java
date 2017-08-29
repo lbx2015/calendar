@@ -39,7 +39,6 @@ import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -274,7 +273,7 @@ public class FirstFragment extends Fragment {
         reports.put("title", list);
         reportRecyclerView.setAdapter(new ReportAdapter(reports));*/
 
-        apiInterface.getAllReports(new QueryReport()).enqueue(new Callback<QueryReportModel>() {
+        apiInterface.getAllReports(null).enqueue(new Callback<QueryReportModel>() {
             @Override
             public void onResponse(Call<QueryReportModel> call, Response<QueryReportModel> response) {
                 QueryReportModel reports = response.body();
