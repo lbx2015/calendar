@@ -31,7 +31,7 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        Logger.d("zzw", "request fail + " + call.request().toString());
+        Logger.d("zzw", "request fail + " + call.request().toString() + t.getMessage());
         Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT);
     }
 }

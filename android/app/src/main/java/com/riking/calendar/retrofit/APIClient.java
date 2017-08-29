@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class APIClient {
 
     private static Retrofit retrofit = null;
+    public static APIInterface apiInterface = getClient().create(APIInterface.class);
 
     public static Retrofit getClient() {
         if (retrofit != null)
