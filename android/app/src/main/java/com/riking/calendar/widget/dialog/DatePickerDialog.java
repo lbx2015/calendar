@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.widget.wheelpicker.core.AbstractWheelPicker;
 import com.riking.calendar.widget.wheelpicker.widget.curved.WheelYearMonthPicker;
 
@@ -32,7 +33,9 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
         btnCancel = findViewById(R.id.btnCancel);
         wholeMonth = findViewById(R.id.whole_month);
         wholeMonthImage = (ImageView) findViewById(R.id.whole_month_image);
+
         wheelDatePicker.pickerMonth.setVisibility(View.GONE);
+        wheelDatePicker.setItemSpace((int) ZR.convertDpToPx(getContext(), 20f));
         wholeMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

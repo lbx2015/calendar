@@ -62,8 +62,8 @@ public class WheelYearMonthPicker extends LinearLayout implements IWheelPicker {
 
         pickerYear = new WheelYearPicker(getContext());
         pickerMonth = new WheelMonthPicker(getContext());
-        pickerYear.setPadding(0, padding, padding2x, padding);
-        pickerMonth.setPadding(0, padding, padding2x, padding);
+        pickerYear.setPadding(0, 0, padding2x, 0);
+        pickerMonth.setPadding(0, 0, padding2x, 0);
 
         addView(pickerYear, llParams);
         addView(pickerMonth, llParams);
