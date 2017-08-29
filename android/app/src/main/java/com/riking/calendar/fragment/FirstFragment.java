@@ -262,16 +262,6 @@ public class FirstFragment extends Fragment {
                 taskAdapter.notifyDataSetChanged();
             }
         });
-     /*   LinkedHashMap<String, List<Report>> reports = new LinkedHashMap<String, List<Report>>();
-        ArrayList<Report> list = new ArrayList<>();
-        Report r = new Report();
-        r.id = "ida";
-        r.moduleType = "module type";
-        r.reportCode = "report code";
-        r.reportName = "report name";
-        list.add(r);
-        reports.put("title", list);
-        reportRecyclerView.setAdapter(new ReportAdapter(reports));*/
 
         apiInterface.getAllReports(null).enqueue(new Callback<QueryReportModel>() {
             @Override
