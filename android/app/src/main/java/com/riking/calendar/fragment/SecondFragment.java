@@ -143,22 +143,14 @@ public class SecondFragment extends Fragment {
                     case R.id.btnSubmit: {
                         calendar.set(Calendar.YEAR, Integer.parseInt(dialog.wheelDatePicker.year));
                         calendar.set(Calendar.MONTH, Integer.parseInt(dialog.wheelDatePicker.month) - 1);
-                        calendar.set(Calendar.DATE, Integer.parseInt(dialog.wheelDatePicker.day) - 1);
 
-                        if (dialog.isDateFilterCleared) {
-                            dateTextView.setText(getString(R.string.date));
-                            //remove the date filter
-                            requestBoday.hdayDate = null;
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
+                        dateTextView.setText(sdf.format(calendar.getTime()));
+                        if (dialog.isWholeMonth) {
+                            requestBoday.hdayDate = new SimpleDateFormat("yyyyMM").format(calendar.getTime());
                         } else {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月");
-                            dateTextView.setText(sdf.format(calendar.getTime()));
-                            if (dialog.isWholeMonth) {
-                                requestBoday.hdayDate = new SimpleDateFormat("yyyyMM").format(calendar.getTime());
-                            } else if (dialog.isWholeYear) {
-                                requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
-                            } else {
-                                requestBoday.hdayDate = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
-                            }
+                            requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
                         }
                         requestBoday.pindex = 0;
                         apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
