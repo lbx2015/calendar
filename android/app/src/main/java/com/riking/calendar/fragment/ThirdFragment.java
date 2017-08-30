@@ -25,7 +25,6 @@ import static com.riking.calendar.R.id.coordinator_layout;
 public class ThirdFragment extends Fragment implements View.OnClickListener {
     private ViewPager mViewPager;
     private View add;
-    private View cancel;
     private View done;
     private View title;
 
@@ -39,7 +38,6 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
         mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         add = v.findViewById(R.id.add);
-        cancel = v.findViewById(R.id.cancel);
         done = v.findViewById(R.id.done);
         title = v.findViewById(R.id.title);
         add.setOnClickListener(this);
@@ -70,13 +68,11 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
             }
             case R.id.cancel: {
                 done.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
                 add.setVisibility(View.VISIBLE);
                 break;
             }
             case R.id.done: {
                 done.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
                 add.setVisibility(View.VISIBLE);
                 break;
             }

@@ -11,7 +11,9 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <TextView
@@ -30,15 +32,6 @@
                 android:layout_gravity="center"
                 android:text="@string/reminder"
                 android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:text="@string/cancel"
-                android:textColor="@android:color/white"
-                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/add"
