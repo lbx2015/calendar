@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,27 +17,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
-import com.riking.calendar.bean.JsonBean;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.DictionaryMode;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.FileUtil;
-import com.riking.calendar.util.GetJsonDataUtil;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
-
-import org.json.JSONArray;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -101,7 +93,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         ImagePicker.setMinQuality(600, 600);
 
         String imageUrl = preference.getString(Const.USER_IMAGE_URL, null);
-        if(imageUrl==null){
+        if (imageUrl == null) {
             return;
         }
         String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
@@ -326,6 +318,15 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
             }
             case R.id.depart_row_relative_layout: {
+                ArrayList<String> fields = new ArrayList<>();
+                fields.add("DEPT");
+                apiInterface.getDictionary(fields).enqueue(new ZCallBack<ResponseModel<DictionaryMode>>() {
+                    @Override
+                    public void callBack(ResponseModel<DictionaryMode> response) {
+                        Logger.d("zzw", "depart query ok: " + response._data);
+                    }
+                });
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.depart));
                 // I'm using fragment here so I'm using getView() to provide ViewGroup
