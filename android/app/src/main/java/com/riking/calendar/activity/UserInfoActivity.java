@@ -436,7 +436,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 .setLayoutRes(R.layout.pickerview_department, new CustomListener() {
                     @Override
                     public void customLayout(View v) {
-                        final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
+                        final View tvSubmit = v.findViewById(R.id.tv_finish);
                         ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
