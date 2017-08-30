@@ -135,7 +135,6 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 .setTextColorCenter(getResources().getColor(R.color.color_323232)) //设置选中项文字颜色
                 .setContentTextSize(16)
                 .setLineSpacingMultiplier(2f)
-                .isDialog(true)
                 .setCyclic(true, false, false)
                 .build();
 
