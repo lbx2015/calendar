@@ -4,13 +4,15 @@ public class AppVersionResult {
 
 	private String type;
 	private String msg;
+	private String versionNumber;
 	public AppVersionResult(){
 		super();
 	}
 	
-	public AppVersionResult(String type, String msg) {
+	public AppVersionResult(String type, String msg ,String versionNumber) {
 		this.type = type;
 		this.msg = msg;
+		this.versionNumber = versionNumber;
 	}
 	public String getType() {
 		return type;
@@ -23,6 +25,14 @@ public class AppVersionResult {
 	}
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+	public String getVersionNumber() {
+		return versionNumber;
+	}
+
+	public void setVersionNumber(String versionNumber) {
+		this.versionNumber = versionNumber;
 	}
 	
 }

@@ -48,13 +48,12 @@ public class CommonServer {
 		if (appVersion.size()>0) {
 			for (int i = 0; i < appVersion.size(); i++) {
 				if (null!=appVersion.get(i).getForces()&&"Y".equals(appVersion.get(i).getForces())) {
-					return new AppResp(new AppVersionResult("1",appVersion.get(0).getVersionNote()), CodeDef.SUCCESS);
+					return new AppResp(new AppVersionResult("2",appVersion.get(0).getVersionNote(),appVersion.get(0).getVersionNumber()), CodeDef.SUCCESS);
 				}
 			}
-	 		return new AppResp(new AppVersionResult("0",appVersion.get(0).getVersionNote()), CodeDef.SUCCESS);
+	 		return new AppResp(new AppVersionResult("1",appVersion.get(0).getVersionNote(),appVersion.get(0).getVersionNumber()), CodeDef.SUCCESS);
 		}else {
-
-	 		return new AppResp(null, CodeDef.SUCCESS);
+	 		return new AppResp(new AppVersionResult("0","",appVersion.get(0).getVersionNumber()), CodeDef.SUCCESS);
 		}
 	}
 	
