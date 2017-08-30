@@ -2,7 +2,6 @@ package com.riking.calendar.activity;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.pickerview.OptionsPickerView;
 import com.google.gson.Gson;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
@@ -29,6 +27,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.GetJsonDataUtil;
+import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.dialog.BirthdayPickerDialog;
 
 import org.json.JSONArray;
@@ -58,19 +57,19 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     BirthdayPickerDialog datePickerDialog;
     //time
     Calendar calendar;
+    OptionsPickerView pvOptions;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private Thread thread;
     private boolean isLoaded = false;
-
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LOAD_DATA:
                     if (thread == null) {//如果已创建就不再重新创建子线程了
 
-                        Toast.makeText(MoreUserInfoActivity.this, "Begin Parse Data", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MoreUserInfoActivity.this, "Begin Parse Data", Toast.LENGTH_SHORT).show();
                         thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -83,7 +82,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                     break;
 
                 case MSG_LOAD_SUCCESS:
-                    Toast.makeText(MoreUserInfoActivity.this, "Parse Succeed", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MoreUserInfoActivity.this, "Parse Succeed", Toast.LENGTH_SHORT).show();
                     isLoaded = true;
                     if (isLoaded) {
                         ShowPickerView();
@@ -98,9 +97,13 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         }
     };
 
-    private void ShowPickerView() {// 弹出选择器
-
-        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+    private void ShowPickerView() {
+        if (pvOptions != null) {
+            pvOptions.show();
+            return;
+        }
+        // 弹出选择器
+        pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
@@ -128,9 +131,11 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         })
 
                 .setTitleText("城市选择")
-                .setDividerColor(Color.BLACK)
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
-                .setContentTextSize(20)
+                .setDividerColor(getResources().getColor(R.color.color_background_b6b6b6))
+                .setTextColorCenter(getResources().getColor(R.color.color_323232)) //设置选中项文字颜色
+                .setContentTextSize(16)
+                .setLineSpacingMultiplier(2f)
+                .setCyclic(true, false, false)
                 .build();
 
         /*pvOptions.setPicker(options1Items);//一级选择器
@@ -345,7 +350,12 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mHandler.sendEmptyMessage(MSG_LOAD_DATA);
+                if (isLoaded) {
+                    //address picker view
+                    ShowPickerView();
+                } else {
+                    mHandler.sendEmptyMessage(MSG_LOAD_DATA);
+                }
                 /*AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
                 builder.setTitle(getString(R.string.address));
                 // I'm using fragment here so I'm using getView() to provide ViewGroup

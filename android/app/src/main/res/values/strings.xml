@@ -125,4 +125,5 @@
     <string name="welcome_page_text3">快速建立提醒，重要事件不忘记</string>
     <string name="welcome_page_text4">悦历——服务金融从业人员的日历</string>
     <string name="enter">立即进入</string>
+    <string name="user_info">User Info</string>
 </resources>
