@@ -2,7 +2,6 @@ package com.riking.calendar.activity;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -132,10 +131,12 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         })
 
                 .setTitleText("城市选择")
-                .setDividerColor(Color.BLACK)
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
-                .setContentTextSize(20)
-                .setCyclic(true, false, true)
+                .setDividerColor(getResources().getColor(R.color.color_background_b6b6b6))
+                .setTextColorCenter(getResources().getColor(R.color.color_323232)) //设置选中项文字颜色
+                .setContentTextSize(16)
+                .setLineSpacingMultiplier(2f)
+                .isDialog(true)
+                .setCyclic(true, false, false)
                 .build();
 
         /*pvOptions.setPicker(options1Items);//一级选择器
