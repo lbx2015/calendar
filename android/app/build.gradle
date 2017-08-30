@@ -73,6 +73,7 @@ dependencies {
     compile project(':FlycoTabLayout_Lib')
     compile project(path: ':calendar')
     compile project(':library')
+    compile project(':pickerview')
 
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 

@@ -10,20 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.pojo.QueryReportContainer;
-import com.riking.calendar.pojo.QueryReportModel;
+import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
+import com.riking.calendar.realm.model.QueryReportRealmModel;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 /**
  * Created by zw.zhang on 2017/7/12.
  */
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHolder> {
-    ArrayList<QueryReportContainer> reports;
+    RealmResults<QueryReportContainerRealmModel> reports;
 
-    public ReportAdapter(QueryReportModel reportModel) {
-        this.reports = reportModel._data;
+    public ReportAdapter(RealmResults<QueryReportContainerRealmModel> reports) {
+        this.reports = reports;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        QueryReportContainer reportContainer = reports.get(position);
+        QueryReportContainerRealmModel reportContainer = reports.get(position);
         Log.d("zzw", "position: " + position + " key " + reportContainer.title);
         holder.reportName.setText(reportContainer.title);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.reportName.getContext()));

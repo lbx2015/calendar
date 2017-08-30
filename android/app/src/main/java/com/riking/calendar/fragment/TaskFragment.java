@@ -52,6 +52,7 @@ public class TaskFragment extends Fragment {
     View quickAddFrameLayout;
     EditText quickAddEditor;
     View quickAddConfirmButton;
+    View emptyView;
 
     @Nullable
     @Override
@@ -62,6 +63,7 @@ public class TaskFragment extends Fragment {
         quickAddFrameLayout = v.findViewById(R.id.quick_add_frame_layout);
         quickAddEditor = (EditText) v.findViewById(R.id.quick_add_editer);
         quickAddConfirmButton = v.findViewById(R.id.quick_add_confirm_button);
+        emptyView = v.findViewById(R.id.empty);
 
         quickAddEditor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,16 +166,31 @@ public class TaskFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         realm = Realm.getDefaultInstance();
         //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
+        final RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         adapter = new TaskAdapter(tasks, realm);
         recyclerView.setAdapter(adapter);
+        if (tasks.size() == 0) {
+            emptyView.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
+        }
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
                 //the data is changed.
                 recyclerView.getAdapter().notifyDataSetChanged();
+                if (tasks.size() == 0) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.GONE);
+                } else {
+                    emptyView.setVisibility(View.GONE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
 

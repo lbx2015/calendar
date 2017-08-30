@@ -39,7 +39,7 @@ import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.pojo.QueryReportModel;
+import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
@@ -55,9 +55,6 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -248,8 +245,6 @@ public class FirstFragment extends Fragment {
             secondCardView.setVisibility(View.GONE);
         }
 
-        apiInterface = APIClient.getClient().create(APIInterface.class);
-
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
@@ -263,19 +258,26 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        apiInterface.getAllReports(null).enqueue(new Callback<QueryReportModel>() {
-            @Override
-            public void onResponse(Call<QueryReportModel> call, Response<QueryReportModel> response) {
-                QueryReportModel reports = response.body();
-                if (reports != null) {
-                    Logger.d("zzw", "success loaded reports: " + reports);
-                    reportRecyclerView.setAdapter(new ReportAdapter(reports));
-                }
-            }
+        apiInterface = APIClient.getClient().create(APIInterface.class);
 
+//        apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<QueryReportModel>>() {
+//            @Override
+//            public void callBack(ResponseModel<QueryReportModel> response) {
+//                if (response != null) {
+//                    Logger.d("zzw", "success loaded reports: " + response._data);
+//                    reportRecyclerView.setAdapter(new ReportAdapter(response._data));
+//                }
+//            }
+//        });
+
+        RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
+        Logger.d("zzw", "report adapter size: " + reports.size());
+        final ReportAdapter reportAdapter = new ReportAdapter(reports);
+        reportRecyclerView.setAdapter(reportAdapter);
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
-            public void onFailure(Call<QueryReportModel> call, Throwable t) {
-                Logger.d("zzw", "reports loaded failed: " + t.getMessage());
+            public void onChange(Realm realm) {
+                reportAdapter.notifyDataSetChanged();
             }
         });
 
