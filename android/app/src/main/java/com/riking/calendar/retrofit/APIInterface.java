@@ -3,7 +3,7 @@ package com.riking.calendar.retrofit;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
-import com.riking.calendar.pojo.DictionaryMode;
+import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
@@ -102,6 +102,5 @@ public interface APIInterface {
     Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);
 
     @POST("modelPropDictApp/T_APP_USER")
-    Call<ResponseModel<DictionaryMode>> getDictionary(@Body ArrayList<String> fields);
-
+    Call<ResponseModel<ArrayList<Dictionary>>> getDictionary(@Body ArrayList<String> fields);
 }
