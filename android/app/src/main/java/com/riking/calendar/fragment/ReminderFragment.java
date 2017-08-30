@@ -54,6 +54,7 @@ public class ReminderFragment extends Fragment {
     TextView tomorrow;
     TextView tomorrowTitle;
     TextView futureTitle;
+    View emptyView;
 
     @Nullable
     @Override
@@ -61,6 +62,7 @@ public class ReminderFragment extends Fragment {
         View v = inflater.inflate(R.layout.reminder_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
+        emptyView = v.findViewById(R.id.empty);
         checkHistoryButton = v.findViewById(R.id.check_remind_history);
         today = (TextView) v.findViewById(R.id.today_date);
         todayTitle = v.findViewById(R.id.today_title);
@@ -148,6 +150,7 @@ public class ReminderFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         recyclerView.setAdapter(new ReminderAdapter(reminders, realm));
+
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
@@ -185,6 +188,14 @@ public class ReminderFragment extends Fragment {
                     futureTitle.setVisibility(View.VISIBLE);
                 } else {
                     futureTitle.setVisibility(View.GONE);
+                }
+
+                if (todayAdapter.getItemCount() == 0 && tomorrowAdapter.getItemCount() == 0 && futureAdapter.getItemCount() == 0) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.GONE);
+                } else {
+                    emptyView.setVisibility(View.GONE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -230,6 +241,14 @@ public class ReminderFragment extends Fragment {
             futureTitle.setVisibility(View.VISIBLE);
         } else {
             futureTitle.setVisibility(View.GONE);
+        }
+
+        if (tomorrowReminders.size() == 0 && reminders.size() == 0 && futureReminders.size() == 0) {
+            emptyView.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
         }
     }
 

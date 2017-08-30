@@ -8,6 +8,7 @@
 		{
 			"prop": "reportId",
 			"hidden":"edit,preview,table",
+			"group":"base",
 			"type": "string"
 		},
 		{
