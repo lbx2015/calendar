@@ -95,6 +95,7 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
                         @Override
                         public void callBack(ResponseModel<String> response) {
                             String reportUrl = response._data;
+                            Logger.d("zzw", "report Url : " + reportUrl);
                             if (reportUrl != null) {
                                 Intent i = new Intent(title.getContext(), ReportDetailActivity.class);
                                 i.putExtra(Const.REPORT_URL, reportUrl);

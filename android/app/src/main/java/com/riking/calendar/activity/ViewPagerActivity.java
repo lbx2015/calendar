@@ -49,7 +49,6 @@ public class ViewPagerActivity extends FragmentActivity {
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
-        pager.setOffscreenPageLimit(2);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
