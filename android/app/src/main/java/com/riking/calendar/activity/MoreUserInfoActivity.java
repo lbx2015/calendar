@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.pickerview.OptionsPickerView;
 import com.google.gson.Gson;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
@@ -29,6 +28,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.GetJsonDataUtil;
+import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.dialog.BirthdayPickerDialog;
 
 import org.json.JSONArray;
@@ -70,7 +70,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 case MSG_LOAD_DATA:
                     if (thread == null) {//如果已创建就不再重新创建子线程了
 
-                        Toast.makeText(MoreUserInfoActivity.this, "Begin Parse Data", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MoreUserInfoActivity.this, "Begin Parse Data", Toast.LENGTH_SHORT).show();
                         thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -83,7 +83,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                     break;
 
                 case MSG_LOAD_SUCCESS:
-                    Toast.makeText(MoreUserInfoActivity.this, "Parse Succeed", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MoreUserInfoActivity.this, "Parse Succeed", Toast.LENGTH_SHORT).show();
                     isLoaded = true;
                     if (isLoaded) {
                         ShowPickerView();
@@ -345,7 +345,12 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mHandler.sendEmptyMessage(MSG_LOAD_DATA);
+                if (isLoaded) {
+                    //address picker view
+                    ShowPickerView();
+                } else {
+                    mHandler.sendEmptyMessage(MSG_LOAD_DATA);
+                }
                 /*AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
                 builder.setTitle(getString(R.string.address));
                 // I'm using fragment here so I'm using getView() to provide ViewGroup
