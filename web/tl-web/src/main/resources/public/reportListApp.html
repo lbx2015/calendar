@@ -25,7 +25,7 @@
         </div>-->
         <section class="content contentText">
             <h1 style="font-size:0.19rem;" id="reportTitle"></h1>
-            <a href="#" style="color:#29a1f7;" id = "reportModel" >报表模板预览</a>
+            <a href="javascript:showModel();" style="color:#29a1f7;" id = "reportModel" >报表模板预览</a>
             <h2>引言</h2>
             <p id="reportBrief"></p>
             <p class="line"></p>
@@ -70,8 +70,12 @@
         cellRightCount: 3,
         criteriaCount: 3
     }
+    
+    var form = layui.form(), layer = layui.layer;
     var id = View.getQStr('id');
     var url = View.getQStr('url');
+    var reportName;
+    var reportModelfile;
     $(function() {
         if (id) {
            var _url = url + "/reportList/getForHtml";
@@ -80,12 +84,29 @@
                     var id = "#" + key;
                     $(id).html(resp[key]);
                 }
-				$("#reportModel").attr("href", url+"/reportModel/"+resp.reportName +".xls");
+				reportModelfile ="{=ctx}/pdf/"+resp.reportName +".pdf";
+				reoprtName = resp.reportName;
             }, function() {
                 TmplUtils.showMsgFail('信息获取失败');
             }); 
         }
     });
+    
+   function showModel(){
+       layer.open({
+		type : 2,
+		title : reportName,
+		shadeClose : true,
+		shade : false,
+		scrollbar : true,
+		maxmin : false, //开启最大化最小化按钮
+		area : [ '100%', '100%' ],
+		offset : '0px',
+		move : false,
+		content : "modelPdf.html?src="+reportModelfile //iframe的url
+	}); 
+   }
+   
     
     
     
