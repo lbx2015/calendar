@@ -11,6 +11,7 @@ android {
             keyAlias 'key1'
             keyPassword 'Riking6636'
             storePassword 'Riking6636'
+            //D:\projects\rikingtl\android\app
             storeFile file('/rikingkeystore.jks')
         }
     }
