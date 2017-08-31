@@ -19,6 +19,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.QueryReportRealmModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.Preference;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
@@ -54,7 +55,13 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         holder.position = position;
         holder.title.setText(r.reportName);
 
-        holder.sml.setSwipeEnable(true);
+        //not enable the swipe function when user is not logged.
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+            holder.sml.setSwipeEnable(true);
+        } else {
+            holder.sml.setSwipeEnable(false);
+        }
+
         holder.r = r;
         if (position == reports.size() - 1) {
             holder.divider.setVisibility(View.GONE);
