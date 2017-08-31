@@ -18,6 +18,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.FileUtil;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
 import java.io.File;
@@ -48,6 +49,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             cacheSizeTextview.setText(FileUtil.formatFileSize(imageSize));
         } else {
             cacheSizeTextview.setText(getString(R.string.no_need_to_clear));
+        }
+
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+            findViewById(R.id.login_out_card_view).setVisibility(View.VISIBLE);
         }
 
         findViewById(R.id.back).setOnClickListener(this);
