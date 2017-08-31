@@ -6,15 +6,18 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="13dp"
+        android:paddingTop="13dp">
 
-        <ImageView
+        <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/back"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginLeft="19dp"
             android:src="@drawable/back_icon" />
 
         <TextView
@@ -29,24 +32,22 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="19dp"
             android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+                android:layout_height="48dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:id="@+id/first_week_day"
@@ -88,7 +89,7 @@
             <RelativeLayout
                 android:id="@+id/whole_day_event_time_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -131,10 +132,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+                android:layout_height="48dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:id="@+id/remind_voice"
@@ -170,29 +169,26 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="19dp"
             android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/bind_phone_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+                android:layout_height="48dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:id="@+id/bind_phone"
@@ -226,47 +222,42 @@
                     android:src="@drawable/next_step" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
-
             <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:paddingBottom="2dp"-->
-                <!--android:paddingTop="2dp">-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:paddingBottom="2dp"-->
+            <!--android:paddingTop="2dp">-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/bind_wechat"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentLeft="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@string/bind_wechat"-->
-                    <!--android:textColor="@color/color_323232" />-->
+            <!--<TextView-->
+            <!--android:id="@+id/bind_wechat"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/bind_wechat"-->
+            <!--android:textColor="@color/color_323232" />-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/whether_wechat_binded"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--android:layout_toLeftOf="@+id/look_wechat"-->
-                    <!--android:text="@string/not_binded"-->
-                    <!--android:textColor="@color/color_background_b6b6b6" />-->
+            <!--<TextView-->
+            <!--android:id="@+id/whether_wechat_binded"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:layout_toLeftOf="@+id/look_wechat"-->
+            <!--android:text="@string/not_binded"-->
+            <!--android:textColor="@color/color_background_b6b6b6" />-->
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/look_wechat"-->
-                    <!--android:layout_width="10dp"-->
-                    <!--android:layout_height="10dp"-->
-                    <!--android:layout_alignParentEnd="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_marginEnd="9dp"-->
-                    <!--android:src="@drawable/next_step" />-->
+            <!--<ImageView-->
+            <!--android:id="@+id/look_wechat"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="10dp"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="9dp"-->
+            <!--android:src="@drawable/next_step" />-->
             <!--</RelativeLayout>-->
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -274,19 +265,17 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <RelativeLayout
             android:id="@+id/clear_cache_relatvie_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:paddingBottom="2dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="2dp">
+            android:layout_height="48dp"
+            android:layout_marginLeft="19dp"
+            android:background="@android:color/white">
 
             <TextView
                 android:id="@+id/clear_cache"
@@ -322,14 +311,11 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_height="48dp"
         android:background="@android:color/white"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <TextView
             android:id="@+id/login_out_button"
@@ -337,8 +323,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="19dp"
             android:layout_toLeftOf="@id/look_clear_cache"
             android:text="@string/login_out" />
     </android.support.v7.widget.CardView>
