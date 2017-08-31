@@ -58,7 +58,9 @@
             android:theme="@style/AppTheme.FullScreen"></activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.RealmIntroActivity" />
-        <activity android:name=".activity.ViewPagerActivity" />
+        <activity
+            android:name=".activity.ViewPagerActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".activity.NoActionBarActivity"
             android:theme="@style/AppThemeNoActionBar"

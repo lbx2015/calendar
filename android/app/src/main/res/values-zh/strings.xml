@@ -88,4 +88,5 @@
     <string name="welcome_page_text1">每日报表汇总，同步工作进度</string>
     <string name="welcome_page_text2">外币交易市场币种节假日查询</string>
     <string name="user_info">用户信息</string>
+    <string name="click_again_exit">再按一次退出</string>
 </resources>

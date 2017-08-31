@@ -127,4 +127,5 @@
     <string name="enter">立即进入</string>
     <string name="user_info">User Info</string>
     <string name="no_reminds">目前没有提醒，不要错过总要的事情哦</string>
+    <string name="click_again_exit">Please click BACK again to exit</string>
 </resources>
