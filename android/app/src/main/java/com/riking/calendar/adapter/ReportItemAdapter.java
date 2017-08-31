@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.ReportDetailActivity;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
@@ -97,8 +97,8 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
                             String reportUrl = response._data;
                             Logger.d("zzw", "report Url : " + reportUrl);
                             if (reportUrl != null) {
-                                Intent i = new Intent(title.getContext(), ReportDetailActivity.class);
-                                i.putExtra(Const.REPORT_URL, reportUrl);
+                                Intent i = new Intent(title.getContext(), WebviewActivity.class);
+                                i.putExtra(Const.WEB_URL, reportUrl);
                                 title.getContext().startActivity(i);
                             }
                         }

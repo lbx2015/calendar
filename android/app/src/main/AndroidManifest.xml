@@ -148,7 +148,7 @@
             android:name=".activity.AboutActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.ReportDetailActivity"
+            android:name=".activity.WebviewActivity"
             android:theme="@style/AppThemeNoActionBar" />
 
         <!-- Required SDK核心功能-->

@@ -18,9 +18,9 @@ import com.ldf.calendar.Const;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginActivity;
-import com.riking.calendar.activity.ReportDetailActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -112,8 +112,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
                 apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        Intent i = new Intent(getContext(), ReportDetailActivity.class);
-                        i.putExtra(Const.REPORT_URL, response._data);
+                        Intent i = new Intent(getContext(), WebviewActivity.class);
+                        i.putExtra(Const.WEB_URL, response._data);
                         startActivity(i);
                     }
                 });
