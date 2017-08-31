@@ -15,12 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ldf.calendar.Const;
+import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginActivity;
 import com.riking.calendar.activity.ReportDetailActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
-import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -109,7 +109,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
             }
 
             case R.id.about_relative_layout: {
-                apiInterface.getAboutHtml(new Object()).enqueue(new ZCallBack<ResponseModel<String>>() {
+                apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(getContext(), ReportDetailActivity.class);
