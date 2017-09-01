@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,6 +23,8 @@ import static org.junit.Assert.assertEquals;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+    String repeatWeekReminds;
+
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
@@ -79,5 +82,32 @@ public class ExampleUnitTest {
     @Test
     public void testMode() {
         System.out.print(6 % 7);
+    }
+
+    @Test
+    public void testCharacter() {
+        ArrayList<String> weekRepeatReminders = new ArrayList<>();
+        weekRepeatReminders.add("123");
+        weekRepeatReminders.add("012");
+        HashSet<Character> weeks = new HashSet<>();
+        for (String r : weekRepeatReminders) {
+            for (char ch : r.toCharArray()) {
+                weeks.add(ch);
+            }
+        }
+
+        for (char ch : weeks) {
+            repeatWeekReminds += ch;
+        }
+        System.out.println(repeatWeekReminds);
+    }
+
+    @Test
+    public void appendingZero() {
+        /*
+        0 - to pad with zeros
+3 - to set width to 3
+         */
+        System.out.println(String.format("%02d", 1));
     }
 }

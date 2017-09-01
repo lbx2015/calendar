@@ -48,8 +48,10 @@ import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -63,6 +65,9 @@ import io.realm.Sort;
 public class FirstFragment extends Fragment {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
+    public RealmResults<Reminder> reminders;
+    public ArrayList<String> notRepeatRemindDaysOfMonth = new ArrayList<>();
+    public String repeatWeekReminds = "";
     ViewPagerActivity a;
     RecyclerView recyclerView;
     RecyclerView taskRecyclerView;
@@ -74,7 +79,6 @@ public class FirstFragment extends Fragment {
     TaskAdapter taskAdapter;
     Realm realm;
     APIInterface apiInterface;
-    RealmResults<Reminder> reminders;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -131,6 +135,8 @@ public class FirstFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
         a = (ViewPagerActivity) getActivity();
         Log.d("zzw", this + " onCreate");
         Date date = new Date();
@@ -154,7 +160,7 @@ public class FirstFragment extends Fragment {
         }
         addGridView(); // 添加一个gridView
         //current month
-        calV = new CalendarGridViewAdapter(a, a.getResources(), 0, 0, year_c, month_c, day_c, reminders);
+        calV = new CalendarGridViewAdapter(this, a.getResources(), 0, 0, year_c, month_c, day_c);
         gridView.setAdapter(calV);
         addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
         flipper.addView(gridView, 1);
@@ -198,7 +204,7 @@ public class FirstFragment extends Fragment {
         gestureDetector = new GestureDetector(a, new FirstFragment.MyGestureListener());
         flipper = (ViewFlipper) v.findViewById(R.id.flipper);
         flipper.removeAllViews();
-        calV = new CalendarGridViewAdapter(a, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c, reminders);
+        calV = new CalendarGridViewAdapter(this, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         addGridView();
         gridView.setAdapter(calV);
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -224,8 +230,7 @@ public class FirstFragment extends Fragment {
 
         flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
-        // Create the Realm instance
-        realm = Realm.getDefaultInstance();
+
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
 //        realm.executeTransaction(new Realm.Transaction() {
@@ -314,8 +319,50 @@ public class FirstFragment extends Fragment {
         updateReminderAdapter(date, weekDay);
     }
 
-    private void updateReminderAdapter(Date date, int weekDay) {
+    public void getRemindDaysOfMonth(String yearMonth) {
+        //reset the values
+        notRepeatRemindDaysOfMonth.clear();
+        repeatWeekReminds = "";
+        if (realm.isClosed()) {
+            realm = Realm.getDefaultInstance();
+        }
+        RealmResults<Reminder> reminders = realm.where(Reminder.class)
+                .beginGroup()
+                .beginsWith("day", yearMonth)//this month
+                .equalTo("repeatFlag", 0)//not repeat reminders.
+                .endGroup().findAllSorted("time", Sort.ASCENDING);
+        Calendar c = Calendar.getInstance();
+        for (Reminder r : reminders) {
+            c.setTime(r.reminderTime);
+            notRepeatRemindDaysOfMonth.add(String.valueOf(c.get(Calendar.DATE)));
+        }
 
+        //find the repeat week days
+        RealmResults<Reminder> weekRepeatReminders = realm.where(Reminder.class)
+                .beginGroup()
+                .equalTo("repeatFlag", 3)
+                .endGroup().findAll();
+        HashSet<Character> weeks = new HashSet<>();
+        for (Reminder r : weekRepeatReminders) {
+            if (r.repeatWeek != null) {
+                for (char ch : r.repeatWeek.toCharArray()) {
+                    weeks.add(ch);
+                }
+            }
+        }
+
+        for (char ch : weeks) {
+            repeatWeekReminds = repeatWeekReminds + ch;
+        }
+    }
+
+    public void getRemindDaysOfMonth(Date date) {
+        SimpleDateFormat monthFormat = new SimpleDateFormat("yyyyMM");
+        getRemindDaysOfMonth(monthFormat.format(date));
+
+    }
+
+    public void updateReminderAdapter(Date date, int weekDay) {
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
@@ -354,8 +401,7 @@ public class FirstFragment extends Fragment {
     private void enterNextMonth(int gvFlag) {
         addGridView(); // 添加一个gridView
         jumpMonth++; // 下一个月
-
-        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c, reminders);
+        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         gridView.setAdapter(calV);
         addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
         gvFlag++;
@@ -393,8 +439,7 @@ public class FirstFragment extends Fragment {
     private void enterPrevMonth(int gvFlag) {
         addGridView(); // 添加一个gridView
         jumpMonth--; // 上一个月
-
-        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c, reminders);
+        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         gridView.setAdapter(calV);
         gvFlag++;
         addTextToTopTextView(currentMonth);// 移动到上一月后，将当月显示在头标题中

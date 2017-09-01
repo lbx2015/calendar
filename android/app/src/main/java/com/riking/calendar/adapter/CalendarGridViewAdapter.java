@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.fragment.FirstFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.util.LunarCalendar;
@@ -39,6 +40,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public ArrayList<String> daysOfCurrentMonth = new ArrayList<>();
     public int dayOfWeek = 0; // 具体某一天是星期几
     ArrayList<String> reminders = new ArrayList<>();
+    String repeatWeekReminds;
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
     private int daysOfLastMonth = 0; // 上一个月的总天数
@@ -73,23 +75,51 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         sys_day = sysDate.split("-")[2];
     }
 
-    public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
-        this(context, rs, jumpMonth, jumpYear, year_c, month_c, day_c, null);
+    public CalendarGridViewAdapter(FirstFragment fragment, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
+        this();
+        this.context = fragment.getContext();
+        sc = new SpecialCalendar();
+        lc = new LunarCalendar();
+        this.res = rs;
 
+        int stepYear = year_c + jumpYear;
+        int stepMonth = month_c + jumpMonth;
+        //The swiping month in current year or future
+        if (stepMonth > 0) {
+            // 往下一个月滑动
+            if (stepMonth % 12 == 0) {
+                stepYear = year_c + stepMonth / 12 - 1;
+                stepMonth = 12;
+            } else {
+                stepYear = year_c + stepMonth / 12;
+                stepMonth = stepMonth % 12;
+            }
+        }
+        //The swiping month is not in current year. It in last year or previous year.
+        else {
+            // 往上一个月滑动
+            stepYear = year_c - 1 + stepMonth / 12;
+            stepMonth = stepMonth % 12 + 12;
+            if (stepMonth % 12 == 0) {
+
+            }
+        }
+
+        //the day format in realm is yyyyMMdd so we need make sure the month have two digits
+        fragment.getRemindDaysOfMonth(stepYear + "" + String.format("%02d", stepMonth));
+        reminders = fragment.notRepeatRemindDaysOfMonth;
+        Logger.d("zzw", "notRepeatRemindDaysOfMonth: " + reminders.size());
+        this.repeatWeekReminds = fragment.repeatWeekReminds;
+        currentYear = String.valueOf(stepYear); // 得到当前的年份
+        currentMonth = String.valueOf(stepMonth); // 得到本月
+        // （jumpMonth为滑动的次数，每滑动一次就增加一月或减一月）
+        currentDay = String.valueOf(day_c); // 得到当前日期是哪天
+
+        getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
     }
 
-    public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c, RealmResults<Reminder> reminders) {
+    public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
         this();
-        if (reminders != null)
-            for (Reminder r : reminders) {
-                int year = r.reminderTime.getYear();
-                int month = r.reminderTime.getMonth();
-                Logger.d("zzw", "reminded year month: " + year + " : " + month + " current year month: " + year_c + " : " + month_c);
-//                if (year_c == year && month == month_c) {
-                this.reminders.add(String.valueOf(r.reminderTime.getDay()));
-                Logger.d("zww", " reminded day " + String.valueOf(r.reminderTime.getDay()));
-//                }
-            }
         this.context = context;
         sc = new SpecialCalendar();
         lc = new LunarCalendar();
@@ -211,8 +241,14 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 //                nTextView.setTextColor(res.getColor(R.color.color_323232));
 //            }
 
-            Logger.d("zww", " remind day " + d);
-            if (reminders.contains(d)) {
+            //sunday is 7,monday is 1,saturday is 6
+            int weekDayOfCurrentPosition = position % 7;
+            if (weekDayOfCurrentPosition == 0) {
+                weekDayOfCurrentPosition = 7;
+            }
+
+            if (reminders.contains(d) || repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition))) {
+                Logger.d("zww", " show circle point remind day " + d);
                 point.setVisibility(View.VISIBLE);
             }
 //            drawable = res.getDrawable(R.drawable.circular_textview);
