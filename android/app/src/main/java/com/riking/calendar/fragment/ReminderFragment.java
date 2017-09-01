@@ -245,7 +245,7 @@ public class ReminderFragment extends Fragment {
                 .greaterThan("reminderTime", c.getTime())
                 .endGroup().or()
                 .beginGroup()
-                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
+                .notEqualTo("repeatFlag", CONST.NOT_REPEAT_FLAG_WEEK)
 //                .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
                 .findAllSorted("reminderTime", Sort.ASCENDING);

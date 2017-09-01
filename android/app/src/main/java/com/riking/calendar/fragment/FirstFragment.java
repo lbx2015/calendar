@@ -51,7 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -68,6 +68,7 @@ public class FirstFragment extends Fragment {
     public RealmResults<Reminder> reminders;
     public ArrayList<String> notRepeatRemindDaysOfMonth = new ArrayList<>();
     public String repeatWeekReminds = "";
+    public HashMap<Character, Date> weeks = new HashMap<>();
     ViewPagerActivity a;
     RecyclerView recyclerView;
     RecyclerView taskRecyclerView;
@@ -88,15 +89,15 @@ public class FirstFragment extends Fragment {
     //current month
     private int month_c = 0;
     /**
+     * 下个月
+     */
+//    private ImageView nextMonth;
+    /**
      * 上个月
      */
 //    private ImageView prevMonth;
     //current day
     private int day_c = 0;
-    /**
-     * 下个月
-     */
-//    private ImageView nextMonth;
     /**
      * 每次添加gridview到viewflipper中时给的标记
      */
@@ -323,6 +324,8 @@ public class FirstFragment extends Fragment {
         //reset the values
         notRepeatRemindDaysOfMonth.clear();
         repeatWeekReminds = "";
+        weeks.clear();
+
         if (realm.isClosed()) {
             realm = Realm.getDefaultInstance();
         }
@@ -342,16 +345,19 @@ public class FirstFragment extends Fragment {
                 .beginGroup()
                 .equalTo("repeatFlag", 3)
                 .endGroup().findAll();
-        HashSet<Character> weeks = new HashSet<>();
+
         for (Reminder r : weekRepeatReminders) {
             if (r.repeatWeek != null) {
                 for (char ch : r.repeatWeek.toCharArray()) {
-                    weeks.add(ch);
+                    if (!weeks.containsKey(ch) || r.reminderTime.before(weeks.get(ch))) {
+                        Logger.d("zzw", "put week repeat remind: " + ch + " : " + r.reminderTime);
+                        weeks.put(ch, r.reminderTime);
+                    }
                 }
             }
         }
 
-        for (char ch : weeks) {
+        for (char ch : weeks.keySet()) {
             repeatWeekReminds = repeatWeekReminds + ch;
         }
     }

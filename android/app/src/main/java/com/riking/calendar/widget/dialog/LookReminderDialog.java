@@ -120,7 +120,7 @@ public class LookReminderDialog extends BottomSheetDialog {
                     s.append("日、");
                 }
 
-                if (!r.repeatWeek.contains("6") && !r.repeatWeek.contains("7")) {
+                if (r.repeatWeek.length() == 5 && !r.repeatWeek.contains("6") && !r.repeatWeek.contains("7")) {
                     repeat.setText("工作日重复");
                 } else if (r.repeatWeek.length() == 2 && r.repeatWeek.contains("6") && r.repeatWeek.contains("7")) {
                     repeat.setText("周末重复");

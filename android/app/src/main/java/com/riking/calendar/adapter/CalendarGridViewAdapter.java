@@ -41,6 +41,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public int dayOfWeek = 0; // 具体某一天是星期几
     ArrayList<String> reminders = new ArrayList<>();
     String repeatWeekReminds;
+    Calendar currentDate;
+    FirstFragment fragment;
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
     private int daysOfLastMonth = 0; // 上一个月的总天数
@@ -78,6 +80,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public CalendarGridViewAdapter(FirstFragment fragment, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
         this();
         this.context = fragment.getContext();
+        this.fragment = fragment;
         sc = new SpecialCalendar();
         lc = new LunarCalendar();
         this.res = rs;
@@ -114,7 +117,10 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         currentMonth = String.valueOf(stepMonth); // 得到本月
         // （jumpMonth为滑动的次数，每滑动一次就增加一月或减一月）
         currentDay = String.valueOf(day_c); // 得到当前日期是哪天
-
+        currentDate = Calendar.getInstance();
+        currentDate.set(Calendar.YEAR, stepYear);
+        currentDate.set(Calendar.MONTH, stepMonth);
+        currentDate.set(Calendar.DATE, day_c);
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
     }
 
@@ -152,7 +158,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         currentMonth = String.valueOf(stepMonth); // 得到本月
         // （jumpMonth为滑动的次数，每滑动一次就增加一月或减一月）
         currentDay = String.valueOf(day_c); // 得到当前日期是哪天
-
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
 
     }
@@ -247,7 +252,12 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 weekDayOfCurrentPosition = 7;
             }
 
-            if (reminders.contains(d) || repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition))) {
+            char currentWeekDay = Character.forDigit(weekDayOfCurrentPosition, 10);
+            Date currentWeekDate = fragment.weeks.get(currentWeekDay);
+            boolean afterRemindTime = currentDate == null ? false : currentWeekDate == null ? false : currentWeekDate.before(currentDate.getTime());
+            Logger.d("zzw", "afterRemindTime: " + afterRemindTime);
+            //repeat weeks not showing point before the reminder time
+            if (reminders.contains(d) || (repeatWeekReminds.contains(String.valueOf(currentWeekDay)) && afterRemindTime)) {
                 Logger.d("zww", " show circle point remind day " + d);
                 point.setVisibility(View.VISIBLE);
             }
