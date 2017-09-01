@@ -217,9 +217,9 @@ public class FirstFragment extends Fragment {
                 ViewGroup.LayoutParams params = flipper.getLayoutParams();
                 Logger.d("zzw", "flipper height: " + params.height);
                 if (calV.getCount() > 35) {
-                    params.height = lastChild.getMeasuredHeight() * 6;
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
                 } else {
-                    params.height = lastChild.getMeasuredHeight() * 5;
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
                 }
                 Logger.d("zzw", "reset flipper height: " + params.height);
                 flipper.setLayoutParams(params);
@@ -421,9 +421,9 @@ public class FirstFragment extends Fragment {
                 ViewGroup.LayoutParams params = flipper.getLayoutParams();
                 Logger.d("zzw", "flipper height: " + params.height);
                 if (calV.getCount() > 35) {
-                    params.height = lastChild.getMeasuredHeight() * 6;
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
                 } else {
-                    params.height = lastChild.getMeasuredHeight() * 5;
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
                 }
                 Logger.d("zzw", "reset flipper height: " + params.height);
                 flipper.setLayoutParams(params);
@@ -459,9 +459,9 @@ public class FirstFragment extends Fragment {
                 ViewGroup.LayoutParams params = flipper.getLayoutParams();
                 Logger.d("zzw", "flipper height: " + params.height);
                 if (calV.getCount() > 35) {
-                    params.height = lastChild.getMeasuredHeight() * 6;
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
                 } else {
-                    params.height = lastChild.getMeasuredHeight() * 5;
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
                 }
                 Logger.d("zzw", "reset flipper height: " + params.height);
                 flipper.setLayoutParams(params);
