@@ -14,12 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.util.LunarCalendar;
 import com.riking.calendar.util.SpecialCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+
+import io.realm.RealmResults;
 
 /**
  * 日历gridview中的每一个item显示的textview
@@ -33,6 +38,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     //the day number of current month plus the previous month's last several day which to make up the week blank.
     public ArrayList<String> daysOfCurrentMonth = new ArrayList<>();
     public int dayOfWeek = 0; // 具体某一天是星期几
+    ArrayList<String> reminders = new ArrayList<>();
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
     private int daysOfLastMonth = 0; // 上一个月的总天数
@@ -48,7 +54,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     private String currentDay = "";
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
     private int[] schDateTagFlag = null; // 存储当月所有的日程日期
-
     private String showYear = ""; // 用于在头部显示的年份
     private String showMonth = ""; // 用于在头部显示的月份
     private String animalsYear = "";
@@ -69,7 +74,22 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     }
 
     public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
+        this(context, rs, jumpMonth, jumpYear, year_c, month_c, day_c, null);
+
+    }
+
+    public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c, RealmResults<Reminder> reminders) {
         this();
+        if (reminders != null)
+            for (Reminder r : reminders) {
+                int year = r.reminderTime.getYear();
+                int month = r.reminderTime.getMonth();
+                Logger.d("zzw", "reminded year month: " + year + " : " + month + " current year month: " + year_c + " : " + month_c);
+//                if (year_c == year && month == month_c) {
+                this.reminders.add(String.valueOf(r.reminderTime.getDay()));
+                Logger.d("zww", " reminded day " + String.valueOf(r.reminderTime.getDay()));
+//                }
+            }
         this.context = context;
         sc = new SpecialCalendar();
         lc = new LunarCalendar();
@@ -119,6 +139,23 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
     }
 
+    public void updateReminders(RealmResults<Reminder> reminders) {
+        if (reminders != null) {
+            for (Reminder r : reminders) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(r.reminderTime);
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH) + 1;
+                if (currentYear.equals(String.valueOf(year)) && String.valueOf(month).equals(currentMonth)) {
+                    this.reminders.add(String.valueOf(c.get(Calendar.DAY_OF_MONTH)));
+                    Logger.d("zww", " found reminded day " + String.valueOf(r.reminderTime.getDay()));
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+    }
+
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
@@ -147,6 +184,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         LinearLayout cellRoot = (LinearLayout) convertView.findViewById(R.id.root_linearLayout);
         TextView textView = (TextView) convertView.findViewById(R.id.tvtext);
         TextView nTextView = (TextView) convertView.findViewById(R.id.n_tvtext);
+        View point = convertView.findViewById(R.id.remind_circle);
         String d = dayNumber[position].split("\\.")[0];
         String dv = dayNumber[position].split("\\.")[1];
 
@@ -166,7 +204,10 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             // 当前月信息显示
             textView.setTextColor(res.getColor(R.color.color_323232));// 当月字体设黑
             nTextView.setTextColor(res.getColor(R.color.color_323232));
-
+            Logger.d("zww", " remind day " + d);
+            if (reminders.contains(d)) {
+                point.setVisibility(View.VISIBLE);
+            }
 //            drawable = res.getDrawable(R.drawable.circular_textview);
 //			drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
 //            drawable = new ColorDrawable(Color.rgb(23, 126, 214));
@@ -218,13 +259,23 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     }
 
     // 得到某年的某月的天数且这月的第一天是星期几
+
     public void getCalendar(int year, int month) {
         isLeapyear = sc.isLeapYear(year); // 是否为闰年
         daysOfMonth = sc.getDaysOfMonth(isLeapyear, month); // 某月的总天数
         dayOfWeek = sc.getWeekdayOfMonth(year, month); // 某月第一天为星期几
         daysOfLastMonth = sc.getDaysOfMonth(isLeapyear, month - 1); // 上一个月的总天数
+
+        //If the previous days number showing in current month plus current month days bigger than 35
+        if (dayOfWeek + daysOfMonth > 35) {
+            dayNumber = new String[42];
+        } else {
+            dayNumber = new String[35];
+        }
+
         Log.d("DAY", isLeapyear + " ======  " + daysOfMonth + "  ============  " + dayOfWeek + "  =========   " + daysOfLastMonth);
         getweek(year, month);
+
     }
 
     // 将一个月中的每一天的值添加入数组dayNuber中
@@ -235,7 +286,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 
         // 得到当前月的所有日程日期(这些日期需要标记)
 
-        for (int i = 0; i < 42; i++) {
+        for (int i = 0; i < dayNumber.length; i++) {
             // 周一
             // if(i<7){
             // dayNumber[i]=week[i]+"."+" ";

@@ -2,13 +2,11 @@ package com.riking.calendar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ldf.calendar.Const;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.realm.model.Task;
 
 import org.junit.Test;
 
@@ -65,5 +63,16 @@ public class ExampleUnitTest {
         t._data.add(container);
         Gson gson = new GsonBuilder().setDateFormat("yyyyMMddHHmm").create();
         System.out.println(gson.toJson(t));
+    }
+
+    @Test
+    public void testDateFormat() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+        String currentDate = sdf.format(date); // 当期日期
+        int year_c = Integer.parseInt(currentDate.split("-")[0]);
+        int month_c = Integer.parseInt(currentDate.split("-")[1]);
+        int day_c = Integer.parseInt(currentDate.split("-")[2]);
+        System.out.println("currentDate: " + currentDate + " year_c:" + year_c + "month_c:" + month_c + "day_c:" + day_c);
     }
 }

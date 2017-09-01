@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/root_linearLayout"
         android:layout_width="39dp"
         android:layout_height="39dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
         android:background="#FFFFFF"
         android:orientation="vertical">
 
@@ -18,8 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/n_tvtext"
@@ -27,9 +27,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textSize="9sp"
+            android:maxLines="1"
             android:singleLine="true"
-            android:maxLines="1" />
-
+            android:textSize="9sp" />
     </LinearLayout>
-</FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="8dp"
+        android:layout_gravity="center_horizontal">
+
+        <View
+            android:id="@+id/remind_circle"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circular_reminder_points"
+            android:visibility="gone" />
+        <!--  android:layout_above="@+id/divider"
+                android:layout_alignBottom="@id/root_linearLayout"-->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_color_d9d9d9" />
+    </RelativeLayout>
+</LinearLayout>

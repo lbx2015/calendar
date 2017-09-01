@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
@@ -45,7 +46,6 @@ import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -74,6 +74,7 @@ public class FirstFragment extends Fragment {
     TaskAdapter taskAdapter;
     Realm realm;
     APIInterface apiInterface;
+    RealmResults<Reminder> reminders;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -82,17 +83,16 @@ public class FirstFragment extends Fragment {
     private int year_c = 0;
     //current month
     private int month_c = 0;
-    //current day
-    private int day_c = 0;
     /**
      * 上个月
      */
 //    private ImageView prevMonth;
+    //current day
+    private int day_c = 0;
     /**
      * 下个月
      */
 //    private ImageView nextMonth;
-    private String currentDate = "";
     /**
      * 每次添加gridview到viewflipper中时给的标记
      */
@@ -135,7 +135,7 @@ public class FirstFragment extends Fragment {
         Log.d("zzw", this + " onCreate");
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
-        currentDate = sdf.format(date); // 当期日期
+        String currentDate = sdf.format(date); // 当期日期
         year_c = Integer.parseInt(currentDate.split("-")[0]);
         month_c = Integer.parseInt(currentDate.split("-")[1]);
         day_c = Integer.parseInt(currentDate.split("-")[2]);
@@ -154,7 +154,7 @@ public class FirstFragment extends Fragment {
         }
         addGridView(); // 添加一个gridView
         //current month
-        calV = new CalendarGridViewAdapter(a, a.getResources(), 0, 0, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(a, a.getResources(), 0, 0, year_c, month_c, day_c, reminders);
         gridView.setAdapter(calV);
         addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
         flipper.addView(gridView, 1);
@@ -198,19 +198,29 @@ public class FirstFragment extends Fragment {
         gestureDetector = new GestureDetector(a, new FirstFragment.MyGestureListener());
         flipper = (ViewFlipper) v.findViewById(R.id.flipper);
         flipper.removeAllViews();
-        calV = new CalendarGridViewAdapter(a, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(a, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c, reminders);
         addGridView();
         gridView.setAdapter(calV);
-        Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
-        if (calV.daysOfCurrentMonth.size() <= 35) {
-            ViewGroup.LayoutParams params = flipper.getLayoutParams();
-            Logger.d("zzw", "flipper height: " + params.height);
-            params.height = (int) ZR.convertDpToPx(getContext(), 280);
-            Logger.d("zzw", "reset flipper height: " + params.height);
-            flipper.setLayoutParams(params);
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6;
+                } else {
+                    params.height = lastChild.getMeasuredHeight() * 5;
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+            }
+        });
+
 //            flipper.invalidate();
-            Logger.d("zzw", "after reset layout params flipper height: " + flipper.getLayoutParams().height);
-        }
+        Logger.d("zzw", "after reset layout params flipper height: " + flipper.getLayoutParams().height);
 
         flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
@@ -283,10 +293,10 @@ public class FirstFragment extends Fragment {
 
         //set the layout params
         FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
+        CoordinatorLayout.LayoutParams paramss = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
         final int marginBottom = a.bottomTabs.getMeasuredHeight();
-        params.setMargins(0, 0, 0, marginBottom);
-        scrollView.setLayoutParams(params);
+        paramss.setMargins(0, 0, 0, marginBottom);
+        scrollView.setLayoutParams(paramss);
         return v;
     }
 
@@ -307,7 +317,7 @@ public class FirstFragment extends Fragment {
     private void updateReminderAdapter(Date date, int weekDay) {
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-        final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+        reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
@@ -315,8 +325,10 @@ public class FirstFragment extends Fragment {
                 .findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
         recyclerView.setAdapter(reminderAdapter);
-        if (reminderAdapter.getItemCount() == 0) {
+        if (reminders.size() == 0) {
             firstCardView.setVisibility(View.GONE);
+        } else {
+            firstCardView.setVisibility(View.VISIBLE);
         }
 
         realm.addChangeListener(new RealmChangeListener<Realm>() {
@@ -331,6 +343,7 @@ public class FirstFragment extends Fragment {
                 reminderAdapter.notifyDataSetChanged();
             }
         });
+        calV.updateReminders(reminders);
     }
 
     /**
@@ -342,24 +355,28 @@ public class FirstFragment extends Fragment {
         addGridView(); // 添加一个gridView
         jumpMonth++; // 下一个月
 
-        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c, reminders);
         gridView.setAdapter(calV);
         addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
         gvFlag++;
 
-        Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
-
-        ViewGroup.LayoutParams params = flipper.getLayoutParams();
-        //reset set the height of the month view
-        if (calV.daysOfCurrentMonth.size() <= 35) {
-            Logger.d("zzw", "enterNextMonth flipper height: " + params.height);
-            params.height = (int) ZR.convertDpToPx(getContext(), 280);
-            Logger.d("zzw", "enterNextMonth reset flipper height: " + params.height);
-        } else {
-            params.height = (int) ZR.convertDpToPx(getContext(), 330);
-        }
-        flipper.setLayoutParams(params);
-//        flipper.invalidate();
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6;
+                } else {
+                    params.height = lastChild.getMeasuredHeight() * 5;
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+            }
+        });
 
         flipper.addView(gridView, gvFlag);
         flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
@@ -377,22 +394,30 @@ public class FirstFragment extends Fragment {
         addGridView(); // 添加一个gridView
         jumpMonth--; // 上一个月
 
-        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
-        Logger.d("zzw", " enterPrevMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
-        ViewGroup.LayoutParams params = flipper.getLayoutParams();
-        if (calV.daysOfCurrentMonth.size() <= 35) {
-            Logger.d("zzw", "enterPrevMonth flipper height: " + params.height);
-            params.height = (int) ZR.convertDpToPx(getContext(), 280);
-            Logger.d("zzw", "enterPrevMonth reset flipper height: " + params.height);
-        } else {
-            params.height = (int) ZR.convertDpToPx(getContext(), 330);
-        }
-        flipper.setLayoutParams(params);
-//            flipper.invalidate();
-
+        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c, reminders);
         gridView.setAdapter(calV);
         gvFlag++;
-        addTextToTopTextView(currentMonth); // 移动到上一月后，将当月显示在头标题中
+        addTextToTopTextView(currentMonth);// 移动到上一月后，将当月显示在头标题中
+
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6;
+                } else {
+                    params.height = lastChild.getMeasuredHeight() * 5;
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+                flipper.invalidate();
+            }
+        });
+
         //addView 方法中的index越大，View显示越上面。
         flipper.addView(gridView, gvFlag);
 
@@ -425,11 +450,11 @@ public class FirstFragment extends Fragment {
 
         gridView = new GridView(a);
         gridView.setNumColumns(7);
-        gridView.setColumnWidth(40);
+//        gridView.setColumnWidth(40);
         // gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-        if (Width == 720 && Height == 1280) {
-            gridView.setColumnWidth(40);
-        }
+//        if (Width == 720 && Height == 1280) {
+//            gridView.setColumnWidth(40);
+//        }
         gridView.setGravity(Gravity.CENTER_VERTICAL);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         // 去除gridView边框
