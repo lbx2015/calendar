@@ -229,7 +229,7 @@ public class ReminderFragment extends Fragment {
                 .findAllSorted("time", Sort.ASCENDING);
         tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, realm));
 
-        if (reminders.size() > 0) {
+        if (tomorrowReminders.size() > 0) {
             tomorrowTitle.setVisibility(View.VISIBLE);
             tomorrow.setVisibility(View.VISIBLE);
             SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
@@ -246,7 +246,7 @@ public class ReminderFragment extends Fragment {
                 .endGroup().or()
                 .beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
-                .contains("repeatWeek", String.valueOf(weekDay))
+//                .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
                 .findAllSorted("reminderTime", Sort.ASCENDING);
         futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders, realm));
