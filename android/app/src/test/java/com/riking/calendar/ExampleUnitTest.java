@@ -75,4 +75,9 @@ public class ExampleUnitTest {
         int day_c = Integer.parseInt(currentDate.split("-")[2]);
         System.out.println("currentDate: " + currentDate + " year_c:" + year_c + "month_c:" + month_c + "day_c:" + day_c);
     }
+
+    @Test
+    public void testMode() {
+        System.out.print(6 % 7);
+    }
 }

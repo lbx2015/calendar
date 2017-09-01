@@ -202,8 +202,15 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             textView.setText(d);
             nTextView.setText(dv);
             // 当前月信息显示
-            textView.setTextColor(res.getColor(R.color.color_323232));// 当月字体设黑
-            nTextView.setTextColor(res.getColor(R.color.color_323232));
+            //set the text color into b6b6b6 for sunday and saturday
+//            if ((position % 7) == 0 || (position % 7) == 6) {
+//                textView.setTextColor(res.getColor(R.color.color_background_b6b6b6));// 当月字体设黑
+//                nTextView.setTextColor(res.getColor(R.color.color_background_b6b6b6));
+//            } else {
+//                textView.setTextColor(res.getColor(R.color.color_323232));// 当月字体设黑
+//                nTextView.setTextColor(res.getColor(R.color.color_323232));
+//            }
+
             Logger.d("zww", " remind day " + d);
             if (reminders.contains(d)) {
                 point.setVisibility(View.VISIBLE);
@@ -240,9 +247,15 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                     textView.setTextColor(res.getColor(R.color.color_29a1f7));// 当天字体
                     nTextView.setTextColor(res.getColor(R.color.color_29a1f7));
                 } else {
-                    // 当前月信息显示
-                    textView.setTextColor(Color.BLACK);// 当月字体设黑
-                    nTextView.setTextColor(Color.BLACK);
+                    //set the text color into b6b6b6 for sunday and saturday
+                    if ((position % 7) == 0 || (position % 7) == 6) {
+                        textView.setTextColor(res.getColor(R.color.color_background_b6b6b6));// 当月字体设黑
+                        nTextView.setTextColor(res.getColor(R.color.color_background_b6b6b6));
+                    } else {
+                        // 当前月信息显示
+                        textView.setTextColor(Color.BLACK);// 当月字体设黑
+                        nTextView.setTextColor(Color.BLACK);
+                    }
                 }
 
                 //remove the background
