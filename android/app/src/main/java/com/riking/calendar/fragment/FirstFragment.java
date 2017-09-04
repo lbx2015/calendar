@@ -407,7 +407,8 @@ public class FirstFragment extends Fragment {
 
     public void updateReminderAdapter(Date date, int weekDay) {
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-        RealmQuery<Reminder> query = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+        String currentDay = dayFormat.format(date);
+        RealmQuery<Reminder> query = realm.where(Reminder.class).beginGroup().equalTo("day", currentDay).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
@@ -416,13 +417,13 @@ public class FirstFragment extends Fragment {
         boolean isTodayWorkDayRemind = false;
         //weekends
         if (weekDay > 5) {
-            if (workOnWeekendDates.contains(weekDay)) {
+            if (workOnWeekendDates.contains(currentDay)) {
                 isTodayWorkDayRemind = true;
             } else {
                 isTodayWorkDayRemind = false;
             }
         } else {
-            if (notWorkOnWorkDates.contains(weekDay)) {
+            if (notWorkOnWorkDates.contains(currentDay)) {
                 isTodayWorkDayRemind = false;
             } else {
                 isTodayWorkDayRemind = true;
