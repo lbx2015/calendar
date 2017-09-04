@@ -371,7 +371,7 @@ public class FirstFragment extends Fragment {
         for (Reminder r : weekRepeatReminders) {
             if (r.repeatWeek != null) {
                 for (char ch : r.repeatWeek.toCharArray()) {
-                    if (!weeks.containsKey(ch)) {
+                    if (!weeks.containsKey(ch) || r.reminderTime.before(weeks.get(ch))) {
                         Logger.d("zzw", "put week repeat remind: " + ch + " : " + r.reminderTime);
                         weeks.put(ch, r.reminderTime);
                     }
@@ -564,12 +564,6 @@ public class FirstFragment extends Fragment {
                     String scheduleMonth = calV.getShowMonth();
                     calV.currentFlag = position;
                     calV.notifyDataSetChanged();
-
-                    View point = arg1.findViewById(R.id.remind_circle);
-                    //if the reminders empty and keep empty on new selected date, no need do nothing.
-                    if (reminders.size() == 0 && point.getVisibility() == View.GONE) {
-                        return;
-                    }
 
                     final Calendar c = Calendar.getInstance();
                     c.set(Calendar.YEAR, Integer.parseInt(scheduleYear));
