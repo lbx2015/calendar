@@ -25,7 +25,7 @@
         </div>-->
         <section class="content contentText">
             <h1 style="font-size:0.19rem;" id="reportTitle"></h1>
-            <a href="javascript:showModel();" style="color:#29a1f7;" id = "reportModel" >报表模板预览</a>
+            <a href="" style="color:#29a1f7;" id = "reportModel" >报表模板预览</a>
             <h2>引言</h2>
             <p id="reportBrief"></p>
             <p class="line"></p>
@@ -85,6 +85,8 @@
                     $(id).html(resp[key]);
                 }
 				reportModelfile ="{=ctx}/pdf/"+resp.reportName +".pdf";
+				
+				$("#reportModel").attr("href",reportModelfile);
 				reoprtName = resp.reportName;
             }, function() {
                 TmplUtils.showMsgFail('信息获取失败');
@@ -92,8 +94,8 @@
         }
     });
     
-   function showModel(){
-/*        layer.open({
+   /* function showModel(){
+     layer.open({
 		type : 2,
 		title : reportName,
 		shadeClose : true,
@@ -104,10 +106,10 @@
 		offset : '0px',
 		move : false,
 		content : "modelPdf.html?src="+reportModelfile //iframe的url
-	});  */
+	});  
        
-       window.location.href = Const.webPath + "/modelPdf.html?src="+reportModelfile;
-   }
+     //  window.location.href =encodeURI(Const.webPath + "/modelPdf.html?src="+reportModelfile);
+   } */
    
     
     
