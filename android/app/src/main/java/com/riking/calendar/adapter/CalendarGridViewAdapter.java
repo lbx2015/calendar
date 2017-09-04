@@ -174,23 +174,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
     }
 
-    public void updateReminders(RealmResults<Reminder> reminders) {
-        if (reminders != null) {
-            for (Reminder r : reminders) {
-                Calendar c = Calendar.getInstance();
-                c.setTime(r.reminderTime);
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH) + 1;
-                if (currentYear.equals(String.valueOf(year)) && String.valueOf(month).equals(currentMonth)) {
-                    this.reminders.add(String.valueOf(c.get(Calendar.DAY_OF_MONTH)));
-                    Logger.d("zww", " found reminded day " + String.valueOf(r.reminderTime.getDay()));
-                }
-            }
-            notifyDataSetChanged();
-        }
-
-    }
-
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
@@ -289,7 +272,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             Date earliestWeekDate = fragment.weeks.get(currentWeekDay);
             boolean afterRemindTime = currentDate == null ? false : earliestWeekDate == null ? false : earliestWeekDate.before(currentDate.getTime());
             Logger.d("zzw", earliestWeekDate + "afterRemindTime: " + afterRemindTime);
-            //repeat weeks not showing point before the reminder time
+            //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder time)
             if (reminders.contains(d) || (repeatWeekReminds.contains(String.valueOf(currentWeekDay)) && afterRemindTime)) {
                 Logger.d("zww", " show circle point remind day " + d);
                 point.setVisibility(View.VISIBLE);

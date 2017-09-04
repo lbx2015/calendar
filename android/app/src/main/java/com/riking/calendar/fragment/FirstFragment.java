@@ -418,7 +418,6 @@ public class FirstFragment extends Fragment {
                 reminderAdapter.notifyDataSetChanged();
             }
         });
-        calV.updateReminders(reminders);
     }
 
     /**
