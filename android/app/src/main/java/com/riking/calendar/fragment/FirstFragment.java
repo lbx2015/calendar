@@ -449,6 +449,12 @@ public class FirstFragment extends Fragment {
                     .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)
                     .lessThan("reminderTime", date)
                     .endGroup();
+        } else {
+            query.or()
+                    .beginGroup()
+                    .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)
+                    .lessThan("reminderTime", date)
+                    .endGroup();
         }
 
         reminders = query.findAllSorted("time", Sort.ASCENDING);
@@ -631,7 +637,7 @@ public class FirstFragment extends Fragment {
                     }
                     updateReminderAdapter(c.getTime(), weekDay);
 
-                    Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
                     // Toast.LENGTH_SHORT).show();z
                 }
