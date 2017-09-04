@@ -38,7 +38,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public int dayOfWeek = 0; // 具体某一天是星期几
     ArrayList<String> reminders = new ArrayList<>();
     String repeatWeekReminds;
-    Calendar currentDate;
+    public Calendar currentDate;
     FirstFragment fragment;
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数

@@ -416,6 +416,8 @@ public class FirstFragment extends Fragment {
                 }
 
                 reminderAdapter.notifyDataSetChanged();
+                FirstFragment.this.getRemindDaysOfMonth(calV.currentDate.getTime());
+                calV.notifyDataSetChanged();
             }
         });
     }
