@@ -176,8 +176,8 @@ public class LoginActivity extends AppCompatActivity {
                 apiInterface.getAgreementHtml(null).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        Intent i = new Intent(LoginActivity.this, ReportDetailActivity.class);
-                        i.putExtra(Const.REPORT_URL, response._data);
+                        Intent i = new Intent(LoginActivity.this, WebviewActivity.class);
+                        i.putExtra(Const.WEB_URL, response._data);
                         startActivity(i);
                     }
                 });

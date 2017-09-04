@@ -25,7 +25,8 @@
             android:layout_centerVertical="true"
             android:layout_marginBottom="4dp"
             android:layout_toEndOf="@+id/done"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_323232"
+            android:textSize="16sp" />
 
         <View
             android:id="@+id/divider"

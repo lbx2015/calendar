@@ -2,7 +2,6 @@ package com.riking.calendar.activity;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -58,12 +57,12 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     BirthdayPickerDialog datePickerDialog;
     //time
     Calendar calendar;
+    OptionsPickerView pvOptions;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private Thread thread;
     private boolean isLoaded = false;
-
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -98,9 +97,13 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         }
     };
 
-    private void ShowPickerView() {// 弹出选择器
-
-        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+    private void ShowPickerView() {
+        if (pvOptions != null) {
+            pvOptions.show();
+            return;
+        }
+        // 弹出选择器
+        pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
@@ -128,9 +131,11 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         })
 
                 .setTitleText("城市选择")
-                .setDividerColor(Color.BLACK)
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
-                .setContentTextSize(20)
+                .setDividerColor(getResources().getColor(R.color.color_background_b6b6b6))
+                .setTextColorCenter(getResources().getColor(R.color.color_323232)) //设置选中项文字颜色
+                .setContentTextSize(16)
+                .setLineSpacingMultiplier(2f)
+                .setCyclic(true, false, false)
                 .build();
 
         /*pvOptions.setPicker(options1Items);//一级选择器

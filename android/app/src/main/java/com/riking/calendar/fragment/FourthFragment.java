@@ -15,12 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ldf.calendar.Const;
+import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginActivity;
-import com.riking.calendar.activity.ReportDetailActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
-import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -28,6 +28,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.FileUtil;
+import com.riking.calendar.util.MarketUtils;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -46,6 +47,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
         v.findViewById(R.id.set_layout).setOnClickListener(this);
         v.findViewById(R.id.about_relative_layout).setOnClickListener(this);
+        v.findViewById(R.id.comment_root).setOnClickListener(this);
+
 
         userName = (TextView) v.findViewById(R.id.user_name);
         myPhoto = (ImageView) v.findViewById(R.id.my_photo);
@@ -109,15 +112,18 @@ public class FourthFragment extends Fragment implements OnClickListener {
             }
 
             case R.id.about_relative_layout: {
-                apiInterface.getAboutHtml(new Object()).enqueue(new ZCallBack<ResponseModel<String>>() {
+                apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        Intent i = new Intent(getContext(), ReportDetailActivity.class);
-                        i.putExtra(Const.REPORT_URL, response._data);
+                        Intent i = new Intent(getContext(), WebviewActivity.class);
+                        i.putExtra(Const.WEB_URL, response._data);
                         startActivity(i);
                     }
                 });
-
+                break;
+            }
+            case R.id.comment_root:{
+                MarketUtils.launchAppDetail(BuildConfig.APPLICATION_ID,"");
             }
         }
     }

@@ -6,9 +6,11 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:paddingBottom="13dp"
+        android:paddingTop="13dp">
 
         <TextView
             android:id="@+id/title"

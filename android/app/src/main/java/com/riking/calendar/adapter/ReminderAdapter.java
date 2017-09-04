@@ -54,7 +54,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         Date today = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         //set a different color for the future reminders.
-        if (DateUtil.get(r.day, r.time).compareTo(today) > 0 && r.day.equals(dateFormat.format(today))) {
+        if (r.repeatFlag == 0 && DateUtil.get(r.day, r.time).compareTo(today) > 0 && r.day.equals(dateFormat.format(today))) {
             holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_29a1f7));
         } else {
             holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_background_b6b6b6));

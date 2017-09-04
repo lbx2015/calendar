@@ -38,7 +38,7 @@ public class MyApplication extends Application {
         }
 
         RealmConfiguration realmConfiguration = builder.build();
-        Realm.deleteRealm(realmConfiguration); // Clean slate
+//        Realm.deleteRealm(realmConfiguration); // Clean slate
         Realm.setDefaultConfiguration(realmConfiguration);
     }
 }

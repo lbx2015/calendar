@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,31 +13,27 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.bigkoo.pickerview.listener.CustomListener;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
-import com.riking.calendar.bean.JsonBean;
+import com.riking.calendar.bean.DictionaryBean;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.FileUtil;
-import com.riking.calendar.util.GetJsonDataUtil;
 import com.riking.calendar.util.image.ImagePicker;
+import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
-
-import org.json.JSONArray;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,6 +65,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     View moreUserInfoView;
 
+    private OptionsPickerView departPickerView;
+    private ArrayList<DictionaryBean> cardItem = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +98,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         ImagePicker.setMinQuality(600, 600);
 
         String imageUrl = preference.getString(Const.USER_IMAGE_URL, null);
-        if(imageUrl==null){
+        if (imageUrl == null) {
             return;
         }
         String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
@@ -326,58 +323,139 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
             }
             case R.id.depart_row_relative_layout: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(getString(R.string.depart));
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
-                // Set up the input
-                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                builder.setView(viewInflated);
-                String name = preference.getString(Const.USER_DEPT, "");
-                input.setText(name);
-                input.setSelection(name.length());
 
-                // Set up the buttons
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                if (cardItem.size() > 0) {
+                    departPickerView.show();
+                    return;
+                }
+                ArrayList<String> fields = new ArrayList<>();
+                fields.add("DEPT");
+                apiInterface.getDictionary(fields).enqueue(new ZCallBack<ResponseModel<ArrayList<Dictionary>>>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Editable editable = input.getText();
-                        if (editable == null) {
-                            return;
+                    public void callBack(ResponseModel<ArrayList<Dictionary>> response) {
+                        initCustomOptionPicker();
+                        for (Dictionary dictionary : response._data) {
+                            DictionaryBean bean = new DictionaryBean(dictionary);
+                            cardItem.add(bean);
                         }
-                        final String departName = input.getText().toString();
-                        if (departName.length() > 0) {
-                            department.setText(departName);
-                            AppUser user = new AppUser();
-                            user.dept = departName;
-                            user.id = preference.getString(Const.USER_ID, null);
-
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-                                @Override
-                                public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(Const.USER_DEPT, departName);
-                                    //save the changes.
-                                    editor.commit();
-                                }
-                            });
-                        }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        departPickerView.setPicker(cardItem);//添加数据
+                        departPickerView.show();
+                        Logger.d("zzw", "depart query ok: " + response._data);
                     }
                 });
 
-                builder.show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle(getString(R.string.depart));
+//                // I'm using fragment here so I'm using getView() to provide ViewGroup
+//                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+//                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+//                // Set up the input
+//                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
+//                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+//                builder.setView(viewInflated);
+//                String name = preference.getString(Const.USER_DEPT, "");
+//                input.setText(name);
+//                input.setSelection(name.length());
+//
+//                // Set up the buttons
+//                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        Editable editable = input.getText();
+//                        if (editable == null) {
+//                            return;
+//                        }
+//                        final String departName = input.getText().toString();
+//                        if (departName.length() > 0) {
+//                            department.setText(departName);
+//                            AppUser user = new AppUser();
+//                            user.dept = departName;
+//                            user.id = preference.getString(Const.USER_ID, null);
+//
+//
+//                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+//                                @Override
+//                                public void callBack(ResponseModel<String> response) {
+//                                    SharedPreferences.Editor editor = preference.edit();
+//                                    editor.putString(Const.USER_DEPT, departName);
+//                                    //save the changes.
+//                                    editor.commit();
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+
+//                builder.show();
                 break;
             }
         }
+    }
+
+    private void initCustomOptionPicker() {
+        if (departPickerView != null) {
+            return;
+        }
+
+        //条件选择器初始化，自定义布局
+        /**
+         * @description
+         *
+         * 注意事项：
+         * 自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针。
+         * 具体可参考demo 里面的两个自定义layout布局。
+         */
+        departPickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                final String departName = cardItem.get(options1).getPickerViewText();
+                AppUser user = new AppUser();
+                user.dept = departName;
+                user.id = preference.getString(Const.USER_ID, null);
+                Logger.d("zzw", "depart selected: " + departName);
+                apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        SharedPreferences.Editor editor = preference.edit();
+                        editor.putString(Const.USER_DEPT, departName);
+                        //save the changes.
+                        editor.commit();
+                        department.setText(departName);
+                    }
+                });
+            }
+        }).setCyclic(true, false, false)
+                .setLayoutRes(R.layout.pickerview_department, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final View tvSubmit = v.findViewById(R.id.tv_finish);
+                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Logger.d("zzw", "click save");
+                                departPickerView.returnData();
+                                departPickerView.dismiss();
+                            }
+                        });
+
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                departPickerView.dismiss();
+                            }
+                        });
+                    }
+                })
+                .isDialog(true)
+                .build();
     }
 }

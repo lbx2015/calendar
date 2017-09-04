@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.ReportDetailActivity;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
@@ -19,6 +19,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.QueryReportRealmModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.Preference;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
@@ -54,7 +55,13 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         holder.position = position;
         holder.title.setText(r.reportName);
 
-        holder.sml.setSwipeEnable(true);
+        //not enable the swipe function when user is not logged.
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+            holder.sml.setSwipeEnable(true);
+        } else {
+            holder.sml.setSwipeEnable(false);
+        }
+
         holder.r = r;
         if (position == reports.size() - 1) {
             holder.divider.setVisibility(View.GONE);
@@ -95,9 +102,10 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
                         @Override
                         public void callBack(ResponseModel<String> response) {
                             String reportUrl = response._data;
+                            Logger.d("zzw", "report Url : " + reportUrl);
                             if (reportUrl != null) {
-                                Intent i = new Intent(title.getContext(), ReportDetailActivity.class);
-                                i.putExtra(Const.REPORT_URL, reportUrl);
+                                Intent i = new Intent(title.getContext(), WebviewActivity.class);
+                                i.putExtra(Const.WEB_URL, reportUrl);
                                 title.getContext().startActivity(i);
                             }
                         }
