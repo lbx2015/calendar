@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FirstFragment;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.util.LunarCalendar;
 import com.riking.calendar.util.SpecialCalendar;
 
@@ -24,8 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import io.realm.RealmResults;
 
 /**
  * 日历gridview中的每一个item显示的textview
@@ -119,7 +116,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         currentDay = String.valueOf(day_c); // 得到当前日期是哪天
         currentDate = Calendar.getInstance();
         currentDate.set(Calendar.YEAR, stepYear);
-        currentDate.set(Calendar.MONTH, stepMonth);
+        //The month in java is from 0 to 11
+        currentDate.set(Calendar.MONTH, stepMonth - 1);
         currentDate.set(Calendar.DATE, day_c);
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
     }
