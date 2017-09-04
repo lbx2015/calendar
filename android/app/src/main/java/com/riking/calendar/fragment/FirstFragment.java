@@ -54,6 +54,7 @@ import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -406,13 +407,38 @@ public class FirstFragment extends Fragment {
 
     public void updateReminderAdapter(Date date, int weekDay) {
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-        reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+        RealmQuery<Reminder> query = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .lessThan("reminderTime", date)
-                .endGroup()
-                .findAllSorted("time", Sort.ASCENDING);
+                .endGroup();
+        boolean isTodayWorkDayRemind = false;
+        //weekends
+        if (weekDay > 5) {
+            if (workOnWeekendDates.contains(weekDay)) {
+                isTodayWorkDayRemind = true;
+            } else {
+                isTodayWorkDayRemind = false;
+            }
+        } else {
+            if (notWorkOnWorkDates.contains(weekDay)) {
+                isTodayWorkDayRemind = false;
+            } else {
+                isTodayWorkDayRemind = true;
+            }
+        }
+
+        //find the work day repeat reminders
+        if (isTodayWorkDayRemind) {
+            query.or()
+                    .beginGroup()
+                    .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)
+                    .lessThan("reminderTime", date)
+                    .endGroup();
+        }
+
+        reminders = query.findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
         recyclerView.setAdapter(reminderAdapter);
         if (reminders.size() == 0) {
