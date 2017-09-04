@@ -179,6 +179,28 @@ public class FirstFragment extends Fragment {
         jumpMonth = 0;
         jumpYear = 0;
         flipper.removeViewAt(0);
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                //The days of current month need to using 6 row of grid view to showing the days
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+                }
+                //The days of current month need to using 5 rows of grid view too showing days
+                //by the way one row have 7 columns.
+                else {
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+                flipper.invalidate();
+            }
+        });
     }
 
     @Override

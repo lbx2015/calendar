@@ -252,14 +252,49 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 weekDayOfCurrentPosition = 7;
             }
 
+            //convert the int type into char
             char currentWeekDay = Character.forDigit(weekDayOfCurrentPosition, 10);
-            Date currentWeekDate = fragment.weeks.get(currentWeekDay);
-            boolean afterRemindTime = currentDate == null ? false : currentWeekDate == null ? false : currentWeekDate.before(currentDate.getTime());
-            Logger.d("zzw", "afterRemindTime: " + afterRemindTime);
+            switch (weekDayOfCurrentPosition) {
+                case 1: {
+                    currentWeekDay = '1';
+                    break;
+                }
+                case 2: {
+                    currentWeekDay = '2';
+                    break;
+                }
+                case 3: {
+                    currentWeekDay = '3';
+                    break;
+                }
+                case 4: {
+                    currentWeekDay = '4';
+                    break;
+                }
+                case 5: {
+                    currentWeekDay = '5';
+                    break;
+                }
+                case 6: {
+                    currentWeekDay = '6';
+                    break;
+                }
+                case 7: {
+                    currentWeekDay = '7';
+                    break;
+                }
+            }
+
+            currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(d));
+            Date earliestWeekDate = fragment.weeks.get(currentWeekDay);
+            boolean afterRemindTime = currentDate == null ? false : earliestWeekDate == null ? false : earliestWeekDate.before(currentDate.getTime());
+            Logger.d("zzw", earliestWeekDate + "afterRemindTime: " + afterRemindTime);
             //repeat weeks not showing point before the reminder time
             if (reminders.contains(d) || (repeatWeekReminds.contains(String.valueOf(currentWeekDay)) && afterRemindTime)) {
                 Logger.d("zww", " show circle point remind day " + d);
                 point.setVisibility(View.VISIBLE);
+            } else {
+                point.setVisibility(View.GONE);
             }
 //            drawable = res.getDrawable(R.drawable.circular_textview);
 //			drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
