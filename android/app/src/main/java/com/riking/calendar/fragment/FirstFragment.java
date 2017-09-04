@@ -43,8 +43,7 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.util.CONST;
 
 import java.text.SimpleDateFormat;
@@ -67,8 +66,11 @@ public class FirstFragment extends Fragment {
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
     public RealmResults<Reminder> reminders;
     public ArrayList<String> notRepeatRemindDaysOfMonth = new ArrayList<>();
-    public String repeatWeekReminds = "";
-    public HashMap<Character, Date> weeks = new HashMap<>();
+    public String repeatWeekReminds;
+    public HashMap<String, Date> weeks = new HashMap<>();//weekly repeat reminders
+    public Date ealiestRemindWorkDate;//work day repeat reminders
+    public ArrayList<String> workOnWeekendDates = new ArrayList<>();//work on saturday or sunday
+    public ArrayList<String> notWorkOnWorkDates = new ArrayList<>();//not work on monday to friday
     ViewPagerActivity a;
     RecyclerView recyclerView;
     RecyclerView taskRecyclerView;
@@ -79,7 +81,6 @@ public class FirstFragment extends Fragment {
     CardView thirdCardView;
     TaskAdapter taskAdapter;
     Realm realm;
-    APIInterface apiInterface;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -296,18 +297,6 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        apiInterface = APIClient.getClient().create(APIInterface.class);
-
-//        apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<QueryReportModel>>() {
-//            @Override
-//            public void callBack(ResponseModel<QueryReportModel> response) {
-//                if (response != null) {
-//                    Logger.d("zzw", "success loaded reports: " + response._data);
-//                    reportRecyclerView.setAdapter(new ReportAdapter(response._data));
-//                }
-//            }
-//        });
-
         RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
         Logger.d("zzw", "report adapter size: " + reports.size());
         final ReportAdapter reportAdapter = new ReportAdapter(reports);
@@ -318,6 +307,19 @@ public class FirstFragment extends Fragment {
                 reportAdapter.notifyDataSetChanged();
             }
         });
+
+        RealmResults<WorkDateRealm> works = realm.where(WorkDateRealm.class).findAll();
+        for (WorkDateRealm w : works) {
+            int weekDay = Integer.parseInt(w.weekday);
+            //not work on work day
+            if (w.isWork == 0 && weekDay < 6) {
+                notWorkOnWorkDates.add(w.date);
+            }
+            //work on weekends
+            else if (w.isWork == 1 && weekDay > 5) {
+                workOnWeekendDates.add(w.date);
+            }
+        }
 
         //set the layout params
         FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
@@ -371,16 +373,28 @@ public class FirstFragment extends Fragment {
         for (Reminder r : weekRepeatReminders) {
             if (r.repeatWeek != null) {
                 for (char ch : r.repeatWeek.toCharArray()) {
-                    if (!weeks.containsKey(ch) || r.reminderTime.before(weeks.get(ch))) {
+                    String key = String.valueOf(ch);
+                    if (weeks.get(key) == null || r.reminderTime.before(weeks.get(key))) {
                         Logger.d("zzw", "put week repeat remind: " + ch + " : " + r.reminderTime);
-                        weeks.put(ch, r.reminderTime);
+                        weeks.put(key, r.reminderTime);
                     }
                 }
             }
         }
 
-        for (char ch : weeks.keySet()) {
-            repeatWeekReminds = repeatWeekReminds + ch;
+        for (String key : weeks.keySet()) {
+            repeatWeekReminds = repeatWeekReminds + key;
+        }
+
+        //find work day reminds
+        RealmResults<Reminder> workDayReminds = realm.where(Reminder.class)
+                .equalTo("repeatFlag", 1)//work day
+                .findAll();
+        for (Reminder r : workDayReminds) {
+            //keep the workRemind time as the earliest.
+            if (ealiestRemindWorkDate == null || r.reminderTime.before(ealiestRemindWorkDate)) {
+                ealiestRemindWorkDate = r.reminderTime;
+            }
         }
     }
 

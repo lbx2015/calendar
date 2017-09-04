@@ -13,9 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FirstFragment;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.LunarCalendar;
 import com.riking.calendar.util.SpecialCalendar;
 
@@ -36,8 +38,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     //the day number of current month plus the previous month's last several day which to make up the week blank.
     public ArrayList<String> daysOfCurrentMonth = new ArrayList<>();
     public int dayOfWeek = 0; // 具体某一天是星期几
-    ArrayList<String> reminders = new ArrayList<>();
     public Calendar currentDate;
+    ArrayList<String> reminders = new ArrayList<>();//not repeat reminders
     FirstFragment fragment;
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
@@ -231,45 +233,34 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 weekDayOfCurrentPosition = 7;
             }
 
-            //convert the int type into char
-            char currentWeekDay = Character.forDigit(weekDayOfCurrentPosition, 10);
-            switch (weekDayOfCurrentPosition) {
-                case 1: {
-                    currentWeekDay = '1';
-                    break;
+            currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(d));
+            Date cDate = currentDate.getTime();
+            Date earliestWeekDate = fragment.weeks.get(String.valueOf(weekDayOfCurrentPosition));
+            boolean afterRemindTime = currentDate == null ? false : earliestWeekDate == null ? false : DateUtil.before(earliestWeekDate, cDate);
+            Logger.d("zzw", earliestWeekDate + "afterRemindTime: " + afterRemindTime);
+
+            boolean workDayAfterRemindTime = currentDate == null ? false : fragment.ealiestRemindWorkDate == null ? false : DateUtil.before(fragment.ealiestRemindWorkDate, cDate);
+
+            boolean isTodayWorkDayRemind = false;//the today is current day not real today
+            String workDay = new SimpleDateFormat(Const.yyyyMMdd).format(cDate);
+            //weekends
+            if (weekDayOfCurrentPosition > 5) {
+                if (fragment.workOnWeekendDates.contains(workDay)) {
+                    isTodayWorkDayRemind = true;
+                } else {
+                    isTodayWorkDayRemind = false;
                 }
-                case 2: {
-                    currentWeekDay = '2';
-                    break;
-                }
-                case 3: {
-                    currentWeekDay = '3';
-                    break;
-                }
-                case 4: {
-                    currentWeekDay = '4';
-                    break;
-                }
-                case 5: {
-                    currentWeekDay = '5';
-                    break;
-                }
-                case 6: {
-                    currentWeekDay = '6';
-                    break;
-                }
-                case 7: {
-                    currentWeekDay = '7';
-                    break;
+            } else {
+                if (fragment.notWorkOnWorkDates.contains(workDay)) {
+                    isTodayWorkDayRemind = false;
+                } else {
+                    isTodayWorkDayRemind = true;
                 }
             }
 
-            currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(d));
-            Date earliestWeekDate = fragment.weeks.get(currentWeekDay);
-            boolean afterRemindTime = currentDate == null ? false : earliestWeekDate == null ? false : earliestWeekDate.before(currentDate.getTime());
-            Logger.d("zzw", earliestWeekDate + "afterRemindTime: " + afterRemindTime);
             //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder time)
-            if (reminders.contains(d) || (fragment.repeatWeekReminds.contains(String.valueOf(currentWeekDay)) && afterRemindTime)) {
+            if (reminders.contains(d) || (fragment.repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition)) && afterRemindTime)
+                    || (isTodayWorkDayRemind && workDayAfterRemindTime)) {
                 Logger.d("zww", " show circle point remind day " + d);
                 point.setVisibility(View.VISIBLE);
             } else {

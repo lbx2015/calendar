@@ -27,7 +27,7 @@ public class Reminder extends RealmObject {
     public int endTime;
     //1...7
     public String repeatWeek;
-    //0(not repeat),1,2,3(week repeat)
+    //0(not repeat),1(work day),2(holiday),3(week repeat)
     public byte repeatFlag;
     //0-6
     public byte currentWeek;
