@@ -396,6 +396,7 @@ public class FirstFragment extends Fragment {
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
+                .lessThan("reminderTime", date)
                 .endGroup()
                 .findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
@@ -563,6 +564,12 @@ public class FirstFragment extends Fragment {
                     String scheduleMonth = calV.getShowMonth();
                     calV.currentFlag = position;
                     calV.notifyDataSetChanged();
+
+                    View point = arg1.findViewById(R.id.remind_circle);
+                    //if the reminders empty and keep empty on new selected date, no need do nothing.
+                    if (reminders.size() == 0 && point.getVisibility() == View.GONE) {
+                        return;
+                    }
 
                     final Calendar c = Calendar.getInstance();
                     c.set(Calendar.YEAR, Integer.parseInt(scheduleYear));
