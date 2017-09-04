@@ -125,7 +125,7 @@ public class SynchronousServer {
 		return new AppResp( CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "同步待办信息", notes = "POST")
+	@ApiOperation(value = "同步app待办信息", notes = "POST")
 	@RequestMapping(value = "/synchronousTodos", method = RequestMethod.POST)
 	public AppResp synchronousTodos(@RequestBody List<Todo> todos) {
 		List<Todo> todoSave = new ArrayList<>(); 

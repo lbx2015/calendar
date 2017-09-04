@@ -8,12 +8,19 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.riking.entity.model.Days;
+import net.riking.entity.model.Period;
 import net.riking.service.getDateService;
+import net.riking.service.repo.DaysRepo;
 
 @Service("getDateService")
 public class GetDateServiceImpl implements getDateService {
+	
+	@Autowired 
+	DaysRepo daysRepo;
 	@Override
 	public String getDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -101,5 +108,57 @@ public class GetDateServiceImpl implements getDateService {
 		}
 		return str;
 	}
+	
+	public  Period getDate(String date,String type){
+     	Days day = daysRepo.findOne(date);
+ 		Integer tenWorkDay;
+ 		Integer tenAllDay;
+ 		if (date.substring(6, 7).equals("0")) {
+ 			tenWorkDay = daysRepo.findByDate(date.substring(0, 6) + "01", date);
+ 			tenAllDay = Integer.valueOf(date) - Integer.valueOf(date.substring(0, 6) + "00");
+ 		} else if (date.substring(6, 7).equals("1")) {
+ 			tenWorkDay = daysRepo.findByDate(date.substring(0, 6) + "11", date);
+ 			tenAllDay = Integer.valueOf(date) - Integer.valueOf(date.substring(0, 6) + "10");
+ 		} else {
+ 			tenWorkDay = daysRepo.findByDate(date.substring(0, 6) + "21", date);
+ 			tenAllDay = Integer.valueOf(date) - Integer.valueOf(date.substring(0, 6) + "20");
+ 		}
+ 		Integer monthWorkDay = daysRepo.findByDate(date.substring(0, 6) + "01", date);
+ 		Integer monthAllDay = Integer.valueOf(date) - Integer.valueOf(date.substring(0, 6) + "00");
+ 		Integer seasonWorkDay;
+ 		Integer seasonAllDay;
+ 		if (3 < Integer.valueOf(date.substring(4, 6)) && Integer.valueOf(date.substring(4, 6)) < 7) {
+ 			seasonWorkDay = daysRepo.findByDate(date.substring(0, 4) + "0401", date);
+ 			seasonAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "0401", date);
+ 		} else if (6 < Integer.valueOf(date.substring(4, 6)) && Integer.valueOf(date.substring(4, 6)) < 10) {
+ 			seasonWorkDay = daysRepo.findByDate(date.substring(0, 4) + "0701", date);
+ 			seasonAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "0701", date);
+ 		} else if (Integer.valueOf(date.substring(4, 6)) > 9) {
+ 			seasonWorkDay = daysRepo.findByDate(date.substring(0, 4) + "1001", date);
+ 			seasonAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "1001", date);
+ 		} else {
+ 			seasonWorkDay = daysRepo.findByDate(date.substring(0, 4) + "0101", date);
+ 			seasonAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "0101", date);
+ 		}
+ 		Integer halfYearWorkDay;
+ 		Integer halfYearAllDay;
+ 		if (Integer.valueOf(date.substring(4, 6)) < 7) {
+ 			halfYearWorkDay = daysRepo.findByDate(date.substring(0, 4) + "0101", date);
+ 			halfYearAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "0101", date);
+ 		} else {
+ 			halfYearWorkDay = daysRepo.findByDate(date.substring(0, 4) + "0701", date);
+ 			halfYearAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "0701", date);
+ 		}
+ 		Integer yearWorkDay = daysRepo.findByDate(date.substring(0, 4) + "0101", date);
+ 		Integer yearAllDay = daysRepo.findByAllDate(date.substring(0, 4) + "0101", date);
+ 		Period period;
+ 		if ("1".equals(type)) {
+ 			period  = new Period(Integer.valueOf(day.getWeekday()), tenWorkDay, monthWorkDay, seasonWorkDay, halfYearWorkDay, yearWorkDay);
+			}else {
+			 period = new Period(Integer.valueOf(day.getWeekday()), tenAllDay, monthAllDay, seasonAllDay, halfYearAllDay, yearAllDay);
+			}
+			return period;
+     	
+     }
 
 }

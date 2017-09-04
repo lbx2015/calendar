@@ -43,33 +43,37 @@ public class QueryReport {
 			bewteen = "其它";
 			break;
 		default:
+			bewteen = "";
 			break;
 		}
 		switch (frequency) {
 		case "1":
-			this.reportName = bewteen + "日报";
+			this.reportName = reportName+bewteen + "日报";
 			break;
 		case "2":
-			this.reportName = bewteen + "周报";
+			this.reportName = reportName+bewteen + "周报";
 			break;
 		case "3":
-			this.reportName = bewteen + "旬报";
+			this.reportName = reportName+bewteen + "旬报";
 			break;
 		case "4":
-			this.reportName = bewteen + "月报";
+			this.reportName = reportName+bewteen + "月报";
 			break;
 		case "5":
-			this.reportName = bewteen + "季报";
+			this.reportName = reportName+bewteen + "季报";
 			break;
 		case "6":
-			this.reportName = bewteen + "半年报";
+			this.reportName = reportName+bewteen + "半年报";
 			break;
 		case "7":
-			this.reportName = bewteen + "年报";
+			this.reportName = reportName+bewteen + "年报";
 			break;
 		default:
+			this.reportName = reportName+bewteen + "";
 			break;
 		}
+		this.caliberType = caliberType;
+		this.frequency = frequency;
 	}
 
 	public String getId() {
