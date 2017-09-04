@@ -37,7 +37,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public ArrayList<String> daysOfCurrentMonth = new ArrayList<>();
     public int dayOfWeek = 0; // 具体某一天是星期几
     ArrayList<String> reminders = new ArrayList<>();
-    String repeatWeekReminds;
     public Calendar currentDate;
     FirstFragment fragment;
     private boolean isLeapyear = false; // 是否为闰年
@@ -109,7 +108,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         fragment.getRemindDaysOfMonth(stepYear + "" + String.format("%02d", stepMonth));
         reminders = fragment.notRepeatRemindDaysOfMonth;
         Logger.d("zzw", "notRepeatRemindDaysOfMonth: " + reminders.size());
-        this.repeatWeekReminds = fragment.repeatWeekReminds;
         currentYear = String.valueOf(stepYear); // 得到当前的年份
         currentMonth = String.valueOf(stepMonth); // 得到本月
         // （jumpMonth为滑动的次数，每滑动一次就增加一月或减一月）
@@ -271,7 +269,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             boolean afterRemindTime = currentDate == null ? false : earliestWeekDate == null ? false : earliestWeekDate.before(currentDate.getTime());
             Logger.d("zzw", earliestWeekDate + "afterRemindTime: " + afterRemindTime);
             //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder time)
-            if (reminders.contains(d) || (repeatWeekReminds.contains(String.valueOf(currentWeekDay)) && afterRemindTime)) {
+            if (reminders.contains(d) || (fragment.repeatWeekReminds.contains(String.valueOf(currentWeekDay)) && afterRemindTime)) {
                 Logger.d("zww", " show circle point remind day " + d);
                 point.setVisibility(View.VISIBLE);
             } else {
