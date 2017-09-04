@@ -414,24 +414,25 @@ public class FirstFragment extends Fragment {
                 .contains("repeatWeek", String.valueOf(weekDay))
                 .lessThan("reminderTime", date)
                 .endGroup();
-        boolean isTodayWorkDayRemind = false;
+
+        boolean isTodayWorkDay;
         //weekends
         if (weekDay > 5) {
             if (workOnWeekendDates.contains(currentDay)) {
-                isTodayWorkDayRemind = true;
+                isTodayWorkDay = true;
             } else {
-                isTodayWorkDayRemind = false;
+                isTodayWorkDay = false;
             }
         } else {
             if (notWorkOnWorkDates.contains(currentDay)) {
-                isTodayWorkDayRemind = false;
+                isTodayWorkDay = false;
             } else {
-                isTodayWorkDayRemind = true;
+                isTodayWorkDay = true;
             }
         }
 
         //find the work day repeat reminders
-        if (isTodayWorkDayRemind) {
+        if (isTodayWorkDay) {
             query.or()
                     .beginGroup()
                     .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)
