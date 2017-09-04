@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
-import com.riking.calendar.fragment.ReminderFragment;
 import com.riking.calendar.realm.model.Reminder;
 
 import java.text.SimpleDateFormat;
@@ -92,8 +91,47 @@ public class LookReminderDialog extends BottomSheetDialog {
         TextView repeat = (TextView) findViewById(R.id.remind_repeat);
         if (r.repeatFlag == 0) {
             repeat.setText("不重复");
-        } else {
-            repeat.setText("重复提醒");
+        }
+        //week repeat
+        else if (r.repeatFlag == 3) {
+            if (r.repeatWeek.length() == 7) {
+                repeat.setText("每天重复");
+            } else {
+                StringBuilder s = new StringBuilder("每周");
+                if (r.repeatWeek.contains("1")) {
+                    s.append("一、");
+                }
+                if (r.repeatWeek.contains("2")) {
+                    s.append("二、");
+                }
+                if (r.repeatWeek.contains("3")) {
+                    s.append("三、");
+                }
+                if (r.repeatWeek.contains("4")) {
+                    s.append("四、");
+                }
+                if (r.repeatWeek.contains("5")) {
+                    s.append("五、");
+                }
+                if (r.repeatWeek.contains("6")) {
+                    s.append("六、");
+                }
+                if (r.repeatWeek.contains("7")) {
+                    s.append("日、");
+                }
+
+                if (r.repeatWeek.length() == 5 && !r.repeatWeek.contains("6") && !r.repeatWeek.contains("7")) {
+                    repeat.setText("工作日重复");
+                } else if (r.repeatWeek.length() == 2 && r.repeatWeek.contains("6") && r.repeatWeek.contains("7")) {
+                    repeat.setText("周末重复");
+                } else {
+                    repeat.setText(s.substring(0, s.length() - 1));
+                }
+            }
+        } else if (r.repeatFlag == 1) {
+            repeat.setText("法定工作日重复");
+        } else if (r.repeatFlag == 2) {
+            repeat.setText("法定节假日重复");
         }
 
     }

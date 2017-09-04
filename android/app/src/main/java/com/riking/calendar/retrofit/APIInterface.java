@@ -92,7 +92,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
     @POST("appAboutApp/aboutHtml")
-    Call<ResponseModel<String>> getAboutHtml(@Body Object object);
+    Call<ResponseModel<String>> getAboutHtml(@Query("versionNumber") String versionNumber);
 
     @POST("appAboutApp/agreementHtml")
     Call<ResponseModel<String>> getAgreementHtml(@Query("id") String notUsed);

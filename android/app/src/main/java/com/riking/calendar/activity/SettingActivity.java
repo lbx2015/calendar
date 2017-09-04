@@ -3,6 +3,7 @@ package com.riking.calendar.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.FileUtil;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
 import java.io.File;
@@ -34,6 +36,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     TextView cacheSizeTextview;
     SharedPreferences preferences;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    boolean doubleBackToClearMemory;
     private TimeClockPickerDialog pickerDialog;
 
     @Override
@@ -48,6 +51,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             cacheSizeTextview.setText(FileUtil.formatFileSize(imageSize));
         } else {
             cacheSizeTextview.setText(getString(R.string.no_need_to_clear));
+        }
+
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+            findViewById(R.id.login_out_card_view).setVisibility(View.VISIBLE);
         }
 
         findViewById(R.id.back).setOnClickListener(this);
@@ -110,22 +117,37 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             case R.id.clear_cache_relatvie_layout: {
-                new Thread(new Runnable() {
+                if (doubleBackToClearMemory) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            File imageDirectory = new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH);
+                            for (File f : imageDirectory.listFiles()) {
+                                f.delete();
+                            }
+                            SettingActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    cacheSizeTextview.setText(cacheSizeTextview.getContext().getString(R.string.no_need_to_clear));
+                                    Toast.makeText(cacheSizeTextview.getContext(), cacheSizeTextview.getResources().getString(R.string.cleared), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }).start();
+                    return;
+                }
+
+                this.doubleBackToClearMemory = true;
+                Toast.makeText(this, getString(R.string.click_again_clear_memory), Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+
                     @Override
                     public void run() {
-                        File imageDirectory = new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH);
-                        for (File f : imageDirectory.listFiles()) {
-                            f.delete();
-                        }
-                        SettingActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                cacheSizeTextview.setText(cacheSizeTextview.getContext().getString(R.string.no_need_to_clear));
-                                Toast.makeText(cacheSizeTextview.getContext(), cacheSizeTextview.getResources().getString(R.string.cleared), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        doubleBackToClearMemory = false;
                     }
-                }).start();
+                }, 2000);
+
                 break;
             }
             case R.id.bind_phone_relative_layout: {

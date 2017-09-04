@@ -49,20 +49,20 @@
             app:tl_divider_color="@color/divider_color_d9d9d9"
             app:tl_divider_width="1.3dp"
             app:tl_indicator_color="@color/color_29a1f7"
-            app:tl_indicator_height="4dp"
+            app:tl_indicator_height="2dp"
             app:tl_indicator_width_equal_title="false"
             app:tl_tab_space_equal="true"
             app:tl_textSelectColor="@color/color_29a1f7"
             app:tl_textUnselectColor="@color/color_323232"
             app:tl_textsize="14sp"
             app:tl_underline_color="@color/divider_color_d9d9d9"
-            app:tl_underline_height="1dp" />
+            app:tl_underline_height="0.3dp" />
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.riking.calendar.view.CustomViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_background_f2f2f2"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v4.view.ViewPager>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></com.riking.calendar.view.CustomViewPager>
 </android.support.design.widget.CoordinatorLayout>

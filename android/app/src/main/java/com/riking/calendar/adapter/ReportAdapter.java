@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
-import com.riking.calendar.realm.model.QueryReportRealmModel;
 
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -66,7 +64,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return reports.size();
+        if (reports.isValid()) {
+            return reports.size();
+        } else return 0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

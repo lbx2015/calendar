@@ -58,7 +58,9 @@
             android:theme="@style/AppTheme.FullScreen"></activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.RealmIntroActivity" />
-        <activity android:name=".activity.ViewPagerActivity" />
+        <activity
+            android:name=".activity.ViewPagerActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".activity.NoActionBarActivity"
             android:theme="@style/AppThemeNoActionBar"
@@ -148,7 +150,7 @@
             android:name=".activity.AboutActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".activity.ReportDetailActivity"
+            android:name=".activity.WebviewActivity"
             android:theme="@style/AppThemeNoActionBar" />
 
         <!-- Required SDK核心功能-->

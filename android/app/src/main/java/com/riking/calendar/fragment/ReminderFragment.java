@@ -54,7 +54,7 @@ public class ReminderFragment extends Fragment {
     TextView tomorrow;
     TextView tomorrowTitle;
     TextView futureTitle;
-    View emptyView;
+    CustomLinearLayout emptyView;
 
     @Nullable
     @Override
@@ -62,7 +62,7 @@ public class ReminderFragment extends Fragment {
         View v = inflater.inflate(R.layout.reminder_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
-        emptyView = v.findViewById(R.id.empty);
+        emptyView = (CustomLinearLayout) v.findViewById(R.id.empty);
         checkHistoryButton = v.findViewById(R.id.check_remind_history);
         today = (TextView) v.findViewById(R.id.today_date);
         todayTitle = v.findViewById(R.id.today_title);
@@ -83,6 +83,19 @@ public class ReminderFragment extends Fragment {
 
 
         setRecyclerView(v);
+        emptyView.onDraggingListener = new CustomLinearLayout.OnDraggingListener() {
+            @Override
+            public void scrollUp() {
+                if (checkHistoryButton.getVisibility() == View.VISIBLE) {
+                    checkHistoryButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void scrollDown() {
+                checkHistoryButton.setVisibility(View.VISIBLE);
+            }
+        };
         root.onDraggingListener = new CustomLinearLayout.OnDraggingListener() {
             @Override
             public void scrollUp() {
@@ -216,7 +229,7 @@ public class ReminderFragment extends Fragment {
                 .findAllSorted("time", Sort.ASCENDING);
         tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, realm));
 
-        if (reminders.size() > 0) {
+        if (tomorrowReminders.size() > 0) {
             tomorrowTitle.setVisibility(View.VISIBLE);
             tomorrow.setVisibility(View.VISIBLE);
             SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
@@ -232,8 +245,8 @@ public class ReminderFragment extends Fragment {
                 .greaterThan("reminderTime", c.getTime())
                 .endGroup().or()
                 .beginGroup()
-                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
-                .contains("repeatWeek", String.valueOf(weekDay))
+                .notEqualTo("repeatFlag", CONST.NOT_REPEAT_FLAG_WEEK)
+//                .contains("repeatWeek", String.valueOf(weekDay))
                 .endGroup()
                 .findAllSorted("reminderTime", Sort.ASCENDING);
         futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders, realm));
@@ -246,6 +259,7 @@ public class ReminderFragment extends Fragment {
         if (tomorrowReminders.size() == 0 && reminders.size() == 0 && futureReminders.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setVisibility(View.GONE);
+            emptyView.bringToFront();
         } else {
             emptyView.setVisibility(View.GONE);
             swipeRefreshLayout.setVisibility(View.VISIBLE);
