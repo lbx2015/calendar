@@ -240,6 +240,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             Logger.d("zzw", earliestWeekDate + "afterRemindTime: " + afterRemindTime);
 
             boolean workDayAfterRemindTime = currentDate == null ? false : fragment.ealiestRemindWorkDate == null ? false : DateUtil.before(fragment.ealiestRemindWorkDate, cDate);
+            boolean holidayAfterRemindTime = currentDate == null ? false : fragment.ealiestRemindHolidayDate == null ? false : DateUtil.before(fragment.ealiestRemindHolidayDate, cDate);
 
             boolean isTodayWorkDay = false;//the today is current day not real today
             String workDay = new SimpleDateFormat(Const.yyyyMMdd).format(cDate);
@@ -260,7 +261,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 
             //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder time)
             if (reminders.contains(d) || (fragment.repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition)) && afterRemindTime)
-                    || (isTodayWorkDay && workDayAfterRemindTime)) {
+                    || (isTodayWorkDay && workDayAfterRemindTime) || (holidayAfterRemindTime && !isTodayWorkDay)) {
                 Logger.d("zww", " show circle point remind day " + d);
                 point.setVisibility(View.VISIBLE);
             } else {

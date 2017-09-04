@@ -70,6 +70,7 @@ public class FirstFragment extends Fragment {
     public String repeatWeekReminds;
     public HashMap<String, Date> weeks = new HashMap<>();//weekly repeat reminders
     public Date ealiestRemindWorkDate;//work day repeat reminders
+    public Date ealiestRemindHolidayDate;//holiday repeat reminders
     public ArrayList<String> workOnWeekendDates = new ArrayList<>();//work on saturday or sunday
     public ArrayList<String> notWorkOnWorkDates = new ArrayList<>();//not work on monday to friday
     ViewPagerActivity a;
@@ -389,12 +390,22 @@ public class FirstFragment extends Fragment {
 
         //find work day reminds
         RealmResults<Reminder> workDayReminds = realm.where(Reminder.class)
-                .equalTo("repeatFlag", 1)//work day
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)//work day
                 .findAll();
         for (Reminder r : workDayReminds) {
             //keep the workRemind time as the earliest.
             if (ealiestRemindWorkDate == null || r.reminderTime.before(ealiestRemindWorkDate)) {
                 ealiestRemindWorkDate = r.reminderTime;
+            }
+        }
+
+        //find holiday reminds
+        RealmResults<Reminder> holidayReminds = realm.where(Reminder.class)
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)//holiday
+                .findAll();
+        for (Reminder r : holidayReminds) {
+            if (ealiestRemindHolidayDate == null || r.reminderTime.before(ealiestRemindHolidayDate)) {
+                ealiestRemindHolidayDate = r.reminderTime;
             }
         }
     }
