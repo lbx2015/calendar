@@ -339,14 +339,7 @@ public class FirstFragment extends Fragment {
     public void initReminderAdapter() {
         final Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-
-        int weekDay = c.get(Calendar.DAY_OF_WEEK);
-        if (weekDay == Calendar.SUNDAY) {
-            weekDay = 7;
-        } else {
-            weekDay--;
-        }
-        updateReminderAdapter(c, weekDay);
+        updateReminderAdapter(c);
     }
 
     public void getRemindDaysOfMonth(String yearMonth) {
@@ -421,7 +414,16 @@ public class FirstFragment extends Fragment {
 
     }
 
-    public void updateReminderAdapter(Calendar c, int weekDay) {
+    public void updateReminderAdapter(Calendar c) {
+        if (recyclerView == null) {
+            return;
+        }
+        int weekDay = c.get(Calendar.DAY_OF_WEEK);
+        if (weekDay == Calendar.SUNDAY) {
+            weekDay = 7;
+        } else {
+            weekDay--;
+        }
         //Fix the reminder time is not before the current day
         c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
@@ -639,13 +641,8 @@ public class FirstFragment extends Fragment {
                     c.set(Calendar.MONTH, Integer.parseInt(scheduleMonth) - 1);
                     c.set(Calendar.DATE, Integer.parseInt(scheduleDay));
 
-                    int weekDay = c.get(Calendar.DAY_OF_WEEK);
-                    if (weekDay == Calendar.SUNDAY) {
-                        weekDay = 7;
-                    } else {
-                        weekDay--;
-                    }
-                    updateReminderAdapter(c, weekDay);
+
+                    updateReminderAdapter(c);
 
 //                    Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",

@@ -118,8 +118,15 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         currentDate.set(Calendar.YEAR, stepYear);
         //The month in java is from 0 to 11
         currentDate.set(Calendar.MONTH, stepMonth - 1);
-        currentDate.set(Calendar.DATE, day_c);
+        //current real month
+        if (jumpMonth == 0 && jumpYear == 0) {
+            currentDate.set(Calendar.DATE, day_c);
+        } else {
+            currentDate.set(Calendar.DATE, 1);
+        }
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
+        //update the reminders for the first day of month
+        fragment.updateReminderAdapter(currentDate);
     }
 
     public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
@@ -157,7 +164,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         // （jumpMonth为滑动的次数，每滑动一次就增加一月或减一月）
         currentDay = String.valueOf(day_c); // 得到当前日期是哪天
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
-
     }
 
     public CalendarGridViewAdapter(Context context, Resources rs, int year, int month, int day) {
@@ -330,6 +336,8 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         daysOfMonth = sc.getDaysOfMonth(isLeapyear, month); // 某月的总天数
         dayOfWeek = sc.getWeekdayOfMonth(year, month); // 某月第一天为星期几
         daysOfLastMonth = sc.getDaysOfMonth(isLeapyear, month - 1); // 上一个月的总天数
+        //the first day of week this month is the position
+        currentFlag = dayOfWeek;
 
         //If the previous days number showing in current month plus current month days bigger than 35
         if (dayOfWeek + daysOfMonth > 35) {
