@@ -333,10 +333,12 @@ public class FirstFragment extends Fragment {
         return v;
     }
 
+    /**
+     * get today's reminders.
+     */
     public void initReminderAdapter() {
-        final Date date = new Date();
         final Calendar c = Calendar.getInstance();
-        c.setTime(date);
+        c.setTime(new Date());
 
         int weekDay = c.get(Calendar.DAY_OF_WEEK);
         if (weekDay == Calendar.SUNDAY) {
@@ -344,7 +346,7 @@ public class FirstFragment extends Fragment {
         } else {
             weekDay--;
         }
-        updateReminderAdapter(date, weekDay);
+        updateReminderAdapter(c, weekDay);
     }
 
     public void getRemindDaysOfMonth(String yearMonth) {
@@ -352,8 +354,8 @@ public class FirstFragment extends Fragment {
         notRepeatRemindDaysOfMonth.clear();
         repeatWeekReminds = "";
         weeks.clear();
-        ealiestRemindHolidayDate=null;
-        ealiestRemindWorkDate=null;
+        ealiestRemindHolidayDate = null;
+        ealiestRemindWorkDate = null;
 
         if (realm.isClosed()) {
             realm = Realm.getDefaultInstance();
@@ -419,7 +421,12 @@ public class FirstFragment extends Fragment {
 
     }
 
-    public void updateReminderAdapter(Date date, int weekDay) {
+    public void updateReminderAdapter(Calendar c, int weekDay) {
+        //Fix the reminder time is not before the current day
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+
+        Date date = c.getTime();
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         String currentDay = dayFormat.format(date);
         RealmQuery<Reminder> query = realm.where(Reminder.class).beginGroup().equalTo("day", currentDay).equalTo("repeatFlag", 0).endGroup()
@@ -450,13 +457,13 @@ public class FirstFragment extends Fragment {
             query.or()
                     .beginGroup()
                     .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)
-                    .lessThan("reminderTime", date)
+                    .lessThanOrEqualTo("reminderTime", date)
                     .endGroup();
         } else {
             query.or()
                     .beginGroup()
                     .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)
-                    .lessThan("reminderTime", date)
+                    .lessThanOrEqualTo("reminderTime", date)
                     .endGroup();
         }
 
@@ -638,7 +645,7 @@ public class FirstFragment extends Fragment {
                     } else {
                         weekDay--;
                     }
-                    updateReminderAdapter(c.getTime(), weekDay);
+                    updateReminderAdapter(c, weekDay);
 
 //                    Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
