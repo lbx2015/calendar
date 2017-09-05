@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportSubmitCaliber;
 @Repository
 public interface ReportSubmitCaliberRepo extends JpaRepository<ReportSubmitCaliber, String>, JpaSpecificationExecutor<ReportSubmitCaliber>{
@@ -34,5 +35,5 @@ public interface ReportSubmitCaliberRepo extends JpaRepository<ReportSubmitCalib
 	
 	@Query("select r.reportId from ReportSubmitCaliber r where ((r.frequency='1') or (r.frequency='2' and r.delayDates>=?1) or (r.frequency='3' and r.delayDates>=?2) or (r.frequency='4' and r.delayDates>=?3) or(r.frequency='5' and r.delayDates>=?4) or (r.frequency='6' and r.delayDates>=?5) or (r.frequency='7' and r.delayDates>=?6)) and r.isWorkDay=0 and r.enabled = 1")
 	Set<String> findByFreeDatefromReportId(Integer week,Integer ten,Integer month,Integer season,Integer halfYear,Integer Year);
-	
+
 }

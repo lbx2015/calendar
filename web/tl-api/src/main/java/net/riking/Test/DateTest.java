@@ -37,38 +37,37 @@ public class DateTest {
 					cal.setTime(date);
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'7','" + sdf.format(date) +"0)";
+								+ "'7','" + sdf.format(date) +"',0)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
 						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'1','" + sdf.format(date) + "1)";
+								+ "'1','" + sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
 						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'2','" + sdf.format(date) + "','1"
-								+ "')";
+								+ "'2','" + sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
 						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'3','" + sdf.format(date) + "1)";
+								+ "'3','" + sdf.format(date) +"',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
 						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'4','" + sdf.format(date) + "1)";
+								+ "'4','" + sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
 						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'5','" + sdf.format(date) + "1)";
+								+ "'5','" + sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
 						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'6','" + sdf.format(date) + "0)";
+								+ "'6','" + sdf.format(date) + "',0)";
 						statement.executeUpdate(insertSql);
 					}
 

@@ -15,6 +15,7 @@ import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
+import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 
 import java.util.ArrayList;
@@ -103,4 +104,7 @@ public interface APIInterface {
 
     @POST("modelPropDictApp/T_APP_USER")
     Call<ResponseModel<ArrayList<Dictionary>>> getDictionary(@Body ArrayList<String> fields);
+
+    @POST("synchronous/synchronousDate")
+    Call<ResponseModel<ArrayList<WorkDate>>> getWorkDays();
 }

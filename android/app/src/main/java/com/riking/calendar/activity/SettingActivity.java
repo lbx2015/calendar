@@ -18,11 +18,15 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.Preference;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
 import java.io.File;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by zw.zhang on 2017/8/5.
@@ -37,6 +41,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     SharedPreferences preferences;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     boolean doubleBackToClearMemory;
+    TextView bindedPhone;
     private TimeClockPickerDialog pickerDialog;
 
     @Override
@@ -45,6 +50,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         preferences = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_setting);
         cacheSizeTextview = (TextView) findViewById(R.id.cache_size);
+        bindedPhone = (TextView) findViewById(R.id.binded);
         //set the image cache file size
         long imageSize = FileUtil.getFileSize(new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH));
         if (imageSize > 0) {
@@ -55,6 +61,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
             findViewById(R.id.login_out_card_view).setVisibility(View.VISIBLE);
+            bindedPhone.setText(Preference.pref.getString(Const.PHONE_NUMBER, ""));
+        } else {
+            bindedPhone.setText(getString(R.string.not_binded));
         }
 
         findViewById(R.id.back).setOnClickListener(this);
@@ -84,6 +93,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.commit();
+
+                //change realm database
+                RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
+                        .deleteRealmIfMigrationNeeded();
+                builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);
+                Realm.setDefaultConfiguration(builder.build());
+
+//                Intent mStartActivity = new Intent(this, ViewPagerActivity.class);
+//                int mPendingIntentId = 123456;
+//                PendingIntent mPendingIntent = PendingIntent.getActivity(this, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+//                System.exit(0);
                 finish();
             }
             case R.id.whole_day_event_time_relative_layout: {

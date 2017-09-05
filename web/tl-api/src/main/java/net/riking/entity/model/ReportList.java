@@ -10,12 +10,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseEntity;
+import net.riking.entity.PageQuery;
 
 @Comment("报表信息")
 @Entity
 @Table(name = "T_report_list")
-public class ReportList extends BaseEntity {
+public class ReportList extends PageQuery {
 
 	/**
 	 * @author Lucky.Liu on 2017/8/05.

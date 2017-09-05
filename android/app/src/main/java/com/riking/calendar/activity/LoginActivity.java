@@ -28,6 +28,8 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.StringUtil;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
                         GetVerificationModel user = response.body();
                         if (user == null || user._data == null) {
-                            Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT);
+                            Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                             return;
                         }
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
@@ -153,6 +155,13 @@ public class LoginActivity extends AppCompatActivity {
                         e.putString(Const.WHOLE_DAY_EVENT_HOUR, user._data.allDayReminderTime.substring(0, 2));
                         e.putString(Const.WHOLE_DAY_EVENT_MINUTE, user._data.allDayReminderTime.substring(2));
                         e.commit();
+
+                        //change realm database with user id
+                        RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
+                                .deleteRealmIfMigrationNeeded();
+                        builder.name(user._data.id);
+                        Realm.setDefaultConfiguration(builder.build());
+
                         onBackPressed();
                         startActivity(new Intent(LoginActivity.this, UserInfoActivity.class));
                         Logger.d("zzw", "login succes : " + user);

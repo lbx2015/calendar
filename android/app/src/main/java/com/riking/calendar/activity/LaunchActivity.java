@@ -8,13 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.QueryReportModel;
+import com.riking.calendar.pojo.WorkDate;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.QueryReportRealmModel;
+import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.Preference;
 
 import java.util.ArrayList;
 
@@ -41,12 +47,22 @@ public class LaunchActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
-                startActivity(i);
-                finish();
+                if (Preference.pref.getBoolean(Const.NEED_WELCOME_ACTIVITY, true)) {
+                    //Welcome activity only need once
+                    Preference.put(Const.NEED_WELCOME_ACTIVITY, false);
+                    Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Intent i = new Intent(LaunchActivity.this, ViewPagerActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+
             }
         }, 2000);
         final Realm realm = Realm.getDefaultInstance();
+
         APIClient.apiInterface.getAllReports(null).enqueue(new Callback<QueryReportModel>() {
             @Override
             public void onResponse(Call<QueryReportModel> call, final Response<QueryReportModel> response) {
@@ -80,6 +96,26 @@ public class LaunchActivity extends AppCompatActivity {
             }
         });
 
+        APIClient.apiInterface.getWorkDays().enqueue(new ZCallBack<ResponseModel<ArrayList<WorkDate>>>() {
+            @Override
+            public void callBack(final ResponseModel<ArrayList<WorkDate>> response) {
+                Logger.d("zzw", "load work date ok");
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        ArrayList<WorkDate> workDates = response._data;
+                        Logger.d("zzw", "workDates size" + workDates.size());
+                        for (WorkDate c : workDates) {
+                            WorkDateRealm r = new WorkDateRealm();
+                            r.date = c.date;
+                            r.weekday = c.weekday;
+                            r.isWork = c.isWork;
+                            realm.copyToRealmOrUpdate(r);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override

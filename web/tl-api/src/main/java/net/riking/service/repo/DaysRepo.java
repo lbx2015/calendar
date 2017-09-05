@@ -9,7 +9,7 @@ import net.riking.entity.model.Days;
 
 @Repository
 public interface DaysRepo extends JpaRepository<Days, String>, JpaSpecificationExecutor<Days>{
- 	@Query("select count(*) from Days where date BETWEEN ?1 and ?2 and remark = '1' ")
+ 	@Query("select count(*) from Days where date BETWEEN ?1 and ?2 and isWork = '1' ")
 	Integer findByDate(String date1 ,String date2);
  	
  	@Query("select count(*) from Days where date BETWEEN ?1 and ?2  ")
