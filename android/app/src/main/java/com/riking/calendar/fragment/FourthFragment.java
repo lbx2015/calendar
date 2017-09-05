@@ -39,6 +39,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
     TextView userName;
     ImageView myPhoto;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    int loginState;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
         userName = (TextView) v.findViewById(R.id.user_name);
         myPhoto = (ImageView) v.findViewById(R.id.my_photo);
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+            loginState = 1;
             userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
                     sharedPreferences.getString(Const.USER_COMMENTS, ""));
 
@@ -69,6 +71,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
                 myTask.imageView = myPhoto;
                 myTask.execute(imageUrl);
             }
+        } else {
+            loginState = 0;
         }
         return v;
     }
@@ -76,22 +80,31 @@ public class FourthFragment extends Fragment implements OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-/*
         if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
-            userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
-                    sharedPreferences.getString(Const.USER_COMMENTS, ""));
+            //Login state changed.
+            if ((loginState ^ 1) == 1) {
+                //refresh the activity
+                getActivity().recreate();
+                loginState = 1;
+                userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
+                        sharedPreferences.getString(Const.USER_COMMENTS, ""));
 
-            String imageUrl = sharedPreferences.getString(Const.USER_IMAGE_URL, null);
-            if (imageUrl != null && imageUrl.length() > 0) {
-                VocationRecyclerViewAdapter.MyTask myTask = new VocationRecyclerViewAdapter.MyTask();
-                myTask.imageView = myPhoto;
-                myTask.execute(imageUrl);
+                String imageUrl = sharedPreferences.getString(Const.USER_IMAGE_URL, null);
+                if (imageUrl != null && imageUrl.length() > 0) {
+                    LoadUserImageTask myTask = new LoadUserImageTask();
+                    myTask.imageView = myPhoto;
+                    myTask.execute(imageUrl);
+                }
             }
-
         } else {
-            userName.setText(getString(R.string.not_register));
-            myPhoto.setImageDrawable(getResources().getDrawable(R.drawable.not_login));
-        }*/
+            if ((loginState ^ 1) == 0) {
+                //refresh the activity
+                getActivity().recreate();
+                loginState = 0;
+                userName.setText(getString(R.string.not_register));
+                myPhoto.setImageDrawable(getResources().getDrawable(R.drawable.default_user_icon));
+            }
+        }
     }
 
     @Override
@@ -122,8 +135,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
                 });
                 break;
             }
-            case R.id.comment_root:{
-                MarketUtils.launchAppDetail(BuildConfig.APPLICATION_ID,"");
+            case R.id.comment_root: {
+                MarketUtils.launchAppDetail(BuildConfig.APPLICATION_ID, "");
             }
         }
     }

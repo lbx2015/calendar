@@ -107,6 +107,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 //                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
 //                System.exit(0);
                 finish();
+                break;
             }
             case R.id.whole_day_event_time_relative_layout: {
                 pickerDialog.show();
