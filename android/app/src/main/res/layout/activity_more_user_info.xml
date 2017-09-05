@@ -12,11 +12,12 @@
         android:paddingBottom="13dp"
         android:paddingTop="13dp">
 
-        <ImageView
+        <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/back"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginLeft="19dp"
             android:src="@drawable/back_icon" />
 
         <TextView
