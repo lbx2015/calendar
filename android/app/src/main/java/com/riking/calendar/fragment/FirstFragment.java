@@ -29,7 +29,6 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.riking.calendar.R;
@@ -83,18 +82,20 @@ public class FirstFragment extends Fragment {
     CardView thirdCardView;
     TaskAdapter taskAdapter;
     Realm realm;
+    //current year month
+    String yearMonth;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
     private GridView gridView = null;
     //current year
     private int year_c = 0;
-    //current month
-    private int month_c = 0;
     /**
      * 下个月
      */
 //    private ImageView nextMonth;
+    //current month
+    private int month_c = 0;
     /**
      * 上个月
      */
@@ -351,6 +352,8 @@ public class FirstFragment extends Fragment {
         notRepeatRemindDaysOfMonth.clear();
         repeatWeekReminds = "";
         weeks.clear();
+        ealiestRemindHolidayDate=null;
+        ealiestRemindWorkDate=null;
 
         if (realm.isClosed()) {
             realm = Realm.getDefaultInstance();
@@ -476,7 +479,7 @@ public class FirstFragment extends Fragment {
                 }
 
                 reminderAdapter.notifyDataSetChanged();
-                FirstFragment.this.getRemindDaysOfMonth(calV.currentDate.getTime());
+                getRemindDaysOfMonth(yearMonth);
                 calV.notifyDataSetChanged();
             }
         });
