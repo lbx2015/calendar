@@ -37,6 +37,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     SharedPreferences preferences;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     boolean doubleBackToClearMemory;
+    TextView bindedPhone;
     private TimeClockPickerDialog pickerDialog;
 
     @Override
@@ -45,6 +46,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         preferences = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_setting);
         cacheSizeTextview = (TextView) findViewById(R.id.cache_size);
+        bindedPhone = (TextView) findViewById(R.id.binded);
         //set the image cache file size
         long imageSize = FileUtil.getFileSize(new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH));
         if (imageSize > 0) {
@@ -55,6 +57,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
             findViewById(R.id.login_out_card_view).setVisibility(View.VISIBLE);
+            bindedPhone.setText(Preference.pref.getString(Const.PHONE_NUMBER, ""));
+        } else {
+            bindedPhone.setText(getString(R.string.not_binded));
         }
 
         findViewById(R.id.back).setOnClickListener(this);
