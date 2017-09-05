@@ -44,49 +44,49 @@
             android:background="@android:color/white"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/white">
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="48dp"
+                 android:background="@android:color/white">
 
-                <TextView
-                    android:id="@+id/first_week_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/first_week_day"
-                    android:textColor="@color/color_323232"
-                    android:textSize="16sp" />
+                 <TextView
+                     android:id="@+id/first_week_day"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentLeft="true"
+                     android:layout_centerVertical="true"
+                     android:layout_gravity="center_vertical"
+                     android:gravity="center"
+                     android:text="@string/first_week_day"
+                     android:textColor="@color/color_323232"
+                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/first_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_first_day"
-                    android:text="@string/sundday"
-                    android:textColor="@color/color_background_b6b6b6"
-                    android:textSize="14sp" />
+                 <TextView
+                     android:id="@+id/first_day"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:layout_margin="5dp"
+                     android:layout_toLeftOf="@+id/edit_first_day"
+                     android:text="@string/sundday"
+                     android:textColor="@color/color_background_b6b6b6"
+                     android:textSize="14sp" />
 
-                <ImageView
-                    android:id="@+id/edit_first_day"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
+                 <ImageView
+                     android:id="@+id/edit_first_day"
+                     android:layout_width="10dp"
+                     android:layout_height="10dp"
+                     android:layout_alignBottom="@+id/select_time"
+                     android:layout_alignParentEnd="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginEnd="9dp"
+                     android:src="@drawable/next_step" />
+             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/divider_height"
+                 android:background="@color/divider_color_d9d9d9" />-->
 
             <RelativeLayout
                 android:id="@+id/whole_day_event_time_relative_layout"
@@ -333,7 +333,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginLeft="19dp"
             android:layout_toLeftOf="@id/look_clear_cache"
             android:text="@string/login_out"
             android:textSize="16sp" />

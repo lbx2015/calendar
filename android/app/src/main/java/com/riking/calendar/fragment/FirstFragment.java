@@ -140,8 +140,6 @@ public class FirstFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Create the Realm instance
-        realm = Realm.getDefaultInstance();
         a = (ViewPagerActivity) getActivity();
         Log.d("zzw", this + " onCreate");
         Date date = new Date();
@@ -210,6 +208,9 @@ public class FirstFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("zzw", this + " onCreateView");
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
+        Logger.d("zzw", " realm file name: " + realm.getConfiguration().getRealmFileName());
         View v = inflater.inflate(R.layout.first_fragment, container, false);
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);

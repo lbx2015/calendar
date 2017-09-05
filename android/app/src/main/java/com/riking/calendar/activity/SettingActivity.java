@@ -18,11 +18,15 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.Preference;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
 import java.io.File;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by zw.zhang on 2017/8/5.
@@ -89,6 +93,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.commit();
+
+                //change realm database
+                RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
+                        .deleteRealmIfMigrationNeeded();
+                builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);
+                Realm.setDefaultConfiguration(builder.build());
+
+//                Intent mStartActivity = new Intent(this, ViewPagerActivity.class);
+//                int mPendingIntentId = 123456;
+//                PendingIntent mPendingIntent = PendingIntent.getActivity(this, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+//                System.exit(0);
                 finish();
             }
             case R.id.whole_day_event_time_relative_layout: {
