@@ -1,6 +1,7 @@
 package com.riking.calendar.retrofit;
 
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.AppUserReportCompleteRel;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.Dictionary;
@@ -9,6 +10,7 @@ import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
@@ -88,6 +90,9 @@ public interface APIInterface {
 
     @POST("reportListApp/getAllReport")
     Call<QueryReportModel> getAllReports(@Query("id") String notUsed);
+
+    @POST("appUserReport/getUserRepor")
+    Call<ResponseModel<ArrayList<QueryReportContainer>>> getUserReports(@Body AppUserReportCompleteRel body);
 
     @POST("appAboutApp/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);

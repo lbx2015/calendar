@@ -61,41 +61,44 @@ public class LaunchActivity extends AppCompatActivity {
 
             }
         }, 2000);
+
         final Realm realm = Realm.getDefaultInstance();
+        //if the user is not login
+        if (!Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
 
-        APIClient.apiInterface.getAllReports(null).enqueue(new Callback<QueryReportModel>() {
-            @Override
-            public void onResponse(Call<QueryReportModel> call, final Response<QueryReportModel> response) {
-                Logger.d("zzw", "load reports ok");
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        ArrayList<QueryReportContainer> reportContainers = response.body()._data;
-                        Logger.d("zzw", "report size" + reportContainers.size());
-                        for (QueryReportContainer c : reportContainers) {
-                            QueryReportContainerRealmModel queryReportContainerRealmModel = new QueryReportContainerRealmModel();
-                            queryReportContainerRealmModel.title = c.title;
-                            queryReportContainerRealmModel.result = new RealmList<>();
-                            for (QueryReport q : c.result) {
-                                QueryReportRealmModel reportRealmModel = new QueryReportRealmModel();
-                                reportRealmModel.id = q.id;
-                                reportRealmModel.reportName = q.reportName;
-                                reportRealmModel.moduleType = q.moduleType;
-                                reportRealmModel.reportCode = q.reportCode;
-                                queryReportContainerRealmModel.result.add(reportRealmModel);
+            APIClient.apiInterface.getAllReports(null).enqueue(new Callback<QueryReportModel>() {
+                @Override
+                public void onResponse(Call<QueryReportModel> call, final Response<QueryReportModel> response) {
+                    Logger.d("zzw", "load reports ok");
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            ArrayList<QueryReportContainer> reportContainers = response.body()._data;
+                            Logger.d("zzw", "report size" + reportContainers.size());
+                            for (QueryReportContainer c : reportContainers) {
+                                QueryReportContainerRealmModel queryReportContainerRealmModel = new QueryReportContainerRealmModel();
+                                queryReportContainerRealmModel.title = c.title;
+                                queryReportContainerRealmModel.result = new RealmList<>();
+                                for (QueryReport q : c.result) {
+                                    QueryReportRealmModel reportRealmModel = new QueryReportRealmModel();
+                                    reportRealmModel.id = q.id;
+                                    reportRealmModel.reportName = q.reportName;
+                                    reportRealmModel.moduleType = q.moduleType;
+                                    reportRealmModel.reportCode = q.reportCode;
+                                    queryReportContainerRealmModel.result.add(reportRealmModel);
+                                }
+                                realm.copyToRealmOrUpdate(queryReportContainerRealmModel);
                             }
-                            realm.copyToRealmOrUpdate(queryReportContainerRealmModel);
                         }
-                    }
-                });
-            }
+                    });
+                }
 
-            @Override
-            public void onFailure(Call<QueryReportModel> call, Throwable t) {
-                Logger.d("zzw", "load reports fail" + t.getMessage());
-            }
-        });
-
+                @Override
+                public void onFailure(Call<QueryReportModel> call, Throwable t) {
+                    Logger.d("zzw", "load reports fail" + t.getMessage());
+                }
+            });
+        }
         APIClient.apiInterface.getWorkDays().enqueue(new ZCallBack<ResponseModel<ArrayList<WorkDate>>>() {
             @Override
             public void callBack(final ResponseModel<ArrayList<WorkDate>> response) {

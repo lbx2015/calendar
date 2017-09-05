@@ -127,6 +127,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
         //update the reminders for the first day of month
         fragment.updateReminderAdapter(currentDate);
+        fragment.updateReportAdapter(currentDate.getTime());
     }
 
     public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {

@@ -12,6 +12,8 @@ public class QueryReport {
     public String reportName;
     public String reportCode;
     public String moduleType;
+    public String caliberType;
+    public String frequency;
 
     @Override
     public String toString() {

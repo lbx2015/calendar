@@ -31,19 +31,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
+import com.riking.calendar.adapter.ReportOnlineAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.AppUserReportCompleteRel;
+import com.riking.calendar.pojo.QueryReportContainer;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,6 +92,7 @@ public class FirstFragment extends Fragment {
     Realm realm;
     //current year month
     String yearMonth;
+    ReportOnlineAdapter reportOnlineAdapter;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -301,16 +310,21 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
-        Logger.d("zzw", "report adapter size: " + reports.size());
-        final ReportAdapter reportAdapter = new ReportAdapter(reports);
-        reportRecyclerView.setAdapter(reportAdapter);
-        realm.addChangeListener(new RealmChangeListener<Realm>() {
-            @Override
-            public void onChange(Realm realm) {
-                reportAdapter.notifyDataSetChanged();
-            }
-        });
+        //what the fuck logic,
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+            updateReportAdapter(new Date());
+        } else {
+            RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
+            Logger.d("zzw", "report adapter size: " + reports.size());
+            final ReportAdapter reportAdapter = new ReportAdapter(reports);
+            reportRecyclerView.setAdapter(reportAdapter);
+            realm.addChangeListener(new RealmChangeListener<Realm>() {
+                @Override
+                public void onChange(Realm realm) {
+                    reportAdapter.notifyDataSetChanged();
+                }
+            });
+        }
 
         RealmResults<WorkDateRealm> works = realm.where(WorkDateRealm.class).findAll();
         for (WorkDateRealm w : works) {
@@ -332,6 +346,22 @@ public class FirstFragment extends Fragment {
         paramss.setMargins(0, 0, 0, marginBottom);
         scrollView.setLayoutParams(paramss);
         return v;
+    }
+
+    public void updateReportAdapter(Date date) {
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+            AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
+            requestBody.appUserId = Preference.pref.getString(Const.USER_ID, "");
+            requestBody.completeDate = new SimpleDateFormat(Const.yyyyMMdd).format(date);
+            APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
+                @Override
+                public void callBack(ResponseModel<ArrayList<QueryReportContainer>> response) {
+                    ArrayList<QueryReportContainer> reportContainers = response._data;
+                    reportOnlineAdapter = new ReportOnlineAdapter(reportContainers);
+                    reportRecyclerView.setAdapter(reportOnlineAdapter);
+                }
+            });
+        }
     }
 
     /**
@@ -642,8 +672,8 @@ public class FirstFragment extends Fragment {
                     c.set(Calendar.MONTH, Integer.parseInt(scheduleMonth) - 1);
                     c.set(Calendar.DATE, Integer.parseInt(scheduleDay));
 
-
                     updateReminderAdapter(c);
+                    updateReportAdapter(c.getTime());
 
 //                    Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
