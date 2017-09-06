@@ -11,9 +11,8 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
-import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.ReminderModel;
-import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -22,7 +21,6 @@ import com.riking.calendar.widget.dialog.LookReminderDialog;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,9 +67,19 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notifyItemRemoved(position);
                 holder.sml.smoothCloseMenu();
-              APIClient.synchronousReminds(r, CONST.DELETE);
+                APIClient.synchronousReminds(r, CONST.DELETE, new ZRequestCallBack() {
+                    @Override
+                    public void success() {
+                        notifyItemRemoved(position);
+                        Toast.makeText(MyApplication.APP, "删除成功", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void fail() {
+                        Toast.makeText(MyApplication.APP, "删除失败", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 

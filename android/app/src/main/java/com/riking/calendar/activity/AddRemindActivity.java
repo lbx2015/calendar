@@ -22,13 +22,13 @@ import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.service.ReminderService;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 
 import java.io.IOException;
@@ -177,50 +177,8 @@ public class AddRemindActivity extends AppCompatActivity {
             //remind fragment
             if (viewPager.getCurrentItem() == 0) {
                 Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
-                ReminderModel mode = new ReminderModel();
-                mode.id = r.id;
-                mode.aheadTime = r.aheadTime;
-                mode.clientType = r.clientType;
-                mode.currentWeek = r.currentWeek;
-                mode.day = r.day;
-                mode.isAllDay = r.isAllDay;
-                mode.isRemind = r.isRemind;
-                mode.repeatFlag = r.repeatFlag;
-                mode.time = r.time;
-                mode.title = r.title;
-                mode.deleteState = r.deleteState;
-                mode.endTime = r.endTime;
-                mode.repeatWeek = r.repeatWeek;
-                mode.userId = r.userId;
-                Log.d("zzw", "reminder model : " + mode);
-
-                Call<ResponseBody> call = apiInterface.createRemind(mode);
-                call.enqueue(new retrofit2.Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        ResponseBody r = response.body();
-                        try {
-                            if (r == null || r.source() == null) {
-                                Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
-                            }
-                            String s = r.source().readUtf8();
-//                            String s2 = s.replace("\\", "");
-//                            int i = s2.indexOf("}");
-//                            int l = s2.lastIndexOf("}");
-//                            Gson gson = new Gson();
-//                            ReminderModel m;
-//                            m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
-                            Log.d("zzw", response.code() + "success " + s);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d("zzw", "fail" + t.getMessage());
-                    }
-                });
+                //add a new remind to server.
+                APIClient.synchronousReminds(r, CONST.UPDATE, null);
             } else {
                 Task task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
                 TaskModel taskModel = new TaskModel(task);

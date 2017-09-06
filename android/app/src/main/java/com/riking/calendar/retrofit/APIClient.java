@@ -9,6 +9,7 @@ import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
@@ -67,7 +68,7 @@ public class APIClient {
         return retrofit;
     }
 
-    public static void synchronousReminds(final Reminder r, final byte operationType) {
+    public static void synchronousReminds(final Reminder r, final byte operationType, final ZRequestCallBack callBack) {
         final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>(1);
         ReminderModel m = null;
         if (operationType == 1) {
@@ -82,24 +83,32 @@ public class APIClient {
             @Override
             public void callBack(ResponseModel<String> response) {
                 Realm realm = Realm.getDefaultInstance();
-                //delete
-                if (operationType == 1) {
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            if (operationType == 1) {
-                                if (failed) {
-                                    r.deleteState = 1;
-                                    r.syncStatus = 1;
-                                } else {
-                                    realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
-
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        if (operationType == 1) {
+                            if (failed) {
+                                if (callBack != null) {
+                                    callBack.fail();
                                 }
+                                r.deleteState = 1;
+                                r.syncStatus = 1;
+                            } else {
+                                if (callBack != null) {
+                                    callBack.success();
+                                }
+                                realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
+                            }
+                        } else if (operationType == CONST.UPDATE) {
+                            if (failed) {
+                                Toast.makeText(MyApplication.APP, "上传失败", Toast.LENGTH_LONG).show();
+                                r.syncStatus = 1;
+                            } else {
+                                Toast.makeText(MyApplication.APP, "上传成功", Toast.LENGTH_LONG).show();
                             }
                         }
-                    });
-                    Toast.makeText(MyApplication.APP, "删除成功", Toast.LENGTH_LONG).show();
-                }
+                    }
+                });
             }
         });
     }
