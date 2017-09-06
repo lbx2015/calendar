@@ -519,6 +519,8 @@ public class FirstFragment extends Fragment {
                     .endGroup();
         }
 
+        query.equalTo("deleteState", 0);
+
         reminders = query.findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
         recyclerView.setAdapter(reminderAdapter);

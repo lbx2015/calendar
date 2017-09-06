@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.retrofit.APIClient;
@@ -63,7 +64,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         } else {
             holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_background_b6b6b6));
         }
-
+        Logger.d("zzw", "r.deleteState " + r.deleteState);
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,13 +72,11 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
                 APIClient.synchronousReminds(r, CONST.DELETE, new ZRequestCallBack() {
                     @Override
                     public void success() {
-                        notifyItemRemoved(position);
                         Toast.makeText(MyApplication.APP, "删除成功", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void fail() {
-                        Toast.makeText(MyApplication.APP, "删除失败", Toast.LENGTH_LONG).show();
                     }
                 });
             }

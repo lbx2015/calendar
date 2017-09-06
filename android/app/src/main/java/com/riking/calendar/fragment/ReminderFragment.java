@@ -21,6 +21,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.RemindHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.view.CustomLinearLayout;
@@ -154,7 +155,7 @@ public class ReminderFragment extends Fragment {
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
-        RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+        RealmResults<Reminder> reminders = realm.where(Reminder.class).notEqualTo("deleteState", 1).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
@@ -221,11 +222,11 @@ public class ReminderFragment extends Fragment {
             weekDay = 1;
         }
         //set tomorrow
-        List<Reminder> tomorrowReminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(c.getTime())).equalTo("repeatFlag", 0).endGroup()
+        final List<Reminder> tomorrowReminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(c.getTime())).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
-                .endGroup()
+                .endGroup().equalTo("deleteState", 0)
                 .findAllSorted("time", Sort.ASCENDING);
         tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, realm));
 
@@ -247,7 +248,7 @@ public class ReminderFragment extends Fragment {
                 .beginGroup()
                 .notEqualTo("repeatFlag", CONST.NOT_REPEAT_FLAG_WEEK)
 //                .contains("repeatWeek", String.valueOf(weekDay))
-                .endGroup()
+                .endGroup().equalTo("deleteState", 0)
                 .findAllSorted("reminderTime", Sort.ASCENDING);
         futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders, realm));
         if (futureReminders.size() > 0) {
@@ -255,6 +256,15 @@ public class ReminderFragment extends Fragment {
         } else {
             futureTitle.setVisibility(View.GONE);
         }
+
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                recyclerView.getAdapter().notifyDataSetChanged();
+                tomorrowRecyclerView.getAdapter().notifyDataSetChanged();
+                futureRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
 
         if (tomorrowReminders.size() == 0 && reminders.size() == 0 && futureReminders.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);

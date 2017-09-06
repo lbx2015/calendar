@@ -69,6 +69,7 @@ public class NetStateReceiver extends BroadcastReceiver {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         filter.setPriority(1000);
+        unRegisterNetworkStateReceiver(mContext);
         mContext.registerReceiver(getReceiver(), filter);
     }
 
