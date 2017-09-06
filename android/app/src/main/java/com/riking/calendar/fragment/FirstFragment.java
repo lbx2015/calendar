@@ -1,8 +1,11 @@
 package com.riking.calendar.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -61,6 +64,7 @@ import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -311,20 +315,7 @@ public class FirstFragment extends Fragment {
         });
 
         //what the fuck logic,
-        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
-            updateReportAdapter(new Date());
-        } else {
-            RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
-            Logger.d("zzw", "report adapter size: " + reports.size());
-            final ReportAdapter reportAdapter = new ReportAdapter(reports);
-            reportRecyclerView.setAdapter(reportAdapter);
-            realm.addChangeListener(new RealmChangeListener<Realm>() {
-                @Override
-                public void onChange(Realm realm) {
-                    reportAdapter.notifyDataSetChanged();
-                }
-            });
-        }
+        updateReportAdapter(new Date());
 
         RealmResults<WorkDateRealm> works = realm.where(WorkDateRealm.class).findAll();
         for (WorkDateRealm w : works) {
@@ -348,19 +339,47 @@ public class FirstFragment extends Fragment {
         return v;
     }
 
+    public boolean isNetAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) a.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        return info != null && info.isConnectedOrConnecting();
+    }
+
+    public void updateReportsWithLocalRealm() {
+        RealmConfiguration.Builder defaultRealmConfiguration = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded().name(CONST.DEFAUT_REALM_DATABASE_NAME);
+        Realm r = Realm.getInstance(defaultRealmConfiguration.build());
+        RealmResults<QueryReportContainerRealmModel> reports = r.where(QueryReportContainerRealmModel.class).findAll();
+        Logger.d("zzw", "report adapter size: " + reports.size());
+        final ReportAdapter reportAdapter = new ReportAdapter(reports);
+        reportRecyclerView.setAdapter(reportAdapter);
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                reportAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     public void updateReportAdapter(Date date) {
-        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+        if (reportRecyclerView == null) {
+            return;
+        }
+
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false) && isNetAvailable()) {
             AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
             requestBody.appUserId = Preference.pref.getString(Const.USER_ID, "");
             requestBody.completeDate = new SimpleDateFormat(Const.yyyyMMdd).format(date);
             APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<QueryReportContainer>> response) {
-                    ArrayList<QueryReportContainer> reportContainers = response._data;
+                    final ArrayList<QueryReportContainer> reportContainers = response._data;
                     reportOnlineAdapter = new ReportOnlineAdapter(reportContainers);
                     reportRecyclerView.setAdapter(reportOnlineAdapter);
                 }
             });
+        } else {
+            updateReportsWithLocalRealm();
         }
     }
 
