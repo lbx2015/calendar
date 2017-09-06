@@ -10,7 +10,11 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
+import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 
 import java.text.SimpleDateFormat;
 
@@ -48,13 +52,17 @@ public class LookReminderDialog extends BottomSheetDialog {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                realm.executeTransaction(new Realm.Transaction() {
+                APIClient.synchronousReminds(r, CONST.DELETE, new ZRequestCallBack() {
                     @Override
-                    public void execute(Realm realm) {
-                        realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
+                    public void success() {
+                        Toast.makeText(MyApplication.APP, "删除成功", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void fail() {
+                        Toast.makeText(MyApplication.APP, "删除失败", Toast.LENGTH_LONG).show();
                     }
                 });
-                Toast.makeText(v.getContext(), "deleted", Toast.LENGTH_LONG).show();
                 dismiss();
             }
         });

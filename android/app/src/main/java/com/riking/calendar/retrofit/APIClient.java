@@ -9,6 +9,7 @@ import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
@@ -79,9 +80,9 @@ public class APIClient {
             m = new ReminderModel(r);
         }
         reminderModels.add(m);
-        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
+        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
-            public void callBack(ResponseModel<String> response) {
+            public void callBack() {
                 Realm realm = Realm.getDefaultInstance();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -97,7 +98,7 @@ public class APIClient {
                                 if (callBack != null) {
                                     callBack.success();
                                 }
-                                realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
+                                r.deleteFromRealm();
                             }
                         } else if (operationType == CONST.UPDATE) {
                             if (failed) {

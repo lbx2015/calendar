@@ -129,4 +129,6 @@
     <string name="no_reminds">目前没有提醒，不要错过总要的事情哦</string>
     <string name="click_again_exit">Please click BACK again to exit</string>
     <string name="click_again_clear_memory">Please click again to clear the memory</string>
+    <string name="net_connected">网络连接成功</string>
+    <string name="net_not_connected">Offline</string>
 </resources>

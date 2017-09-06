@@ -9,8 +9,18 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.ldf.calendar.Const;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.Preference;
+
+import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -26,6 +36,7 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ImageView view = new ImageView(this);
         setContentView(view);
+        NetStateReceiver.registerNetworkStateReceiver(this);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -52,6 +63,41 @@ public class LaunchActivity extends AppCompatActivity {
             APIClient.synchAll();
         }
         APIClient.getWorkDays();
+        //register observer
+        NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
+            @Override
+            public void onNetConnected() {
+                final Realm realm = Realm.getDefaultInstance();
+                final RealmResults<Reminder> reminders = realm.where(Reminder.class).equalTo("syncStatus", 1).findAll();
+                final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>();
+
+                for (Reminder r : reminders) {
+                    reminderModels.add(new ReminderModel(r));
+                }
+                APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        if (!failed) {
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    for (Reminder r : reminders) {
+                                        r.syncStatus = 0;
+                                        if (r.deleteState != 0) {
+                                            r.deleteFromRealm();
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onNetDisConnect() {
+            }
+        });
     }
 
     @Override
