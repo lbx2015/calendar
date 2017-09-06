@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
-import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 
 import org.junit.Test;
@@ -56,7 +55,6 @@ public class ExampleUnitTest {
 
     @Test
     public void jsonReportTest() throws Exception {
-        QueryReportModel t = new QueryReportModel();
         ArrayList<QueryReportContainer> list = new ArrayList<>();
         QueryReportContainer container = new QueryReportContainer();
         container.title = "reportTitle";
@@ -64,10 +62,8 @@ public class ExampleUnitTest {
         report.reportName = "test";
         container.result = new ArrayList<QueryReport>();
         container.result.add(report);
-        t._data = list;
-        t._data.add(container);
         Gson gson = new GsonBuilder().setDateFormat("yyyyMMddHHmm").create();
-        System.out.println(gson.toJson(t));
+        System.out.println(gson.toJson(list));
     }
 
     @Test

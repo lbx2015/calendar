@@ -1,5 +1,10 @@
 package com.riking.calendar.realm.model;
 
+import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.util.Debug;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -35,4 +40,27 @@ public class Reminder extends RealmObject {
     //0 no remind, 1 remind
     public byte isRemind = 1;
     public byte clientType = 2;
+
+    public Reminder(){}
+    public Reminder(ReminderModel m) {
+        id = m.id;
+        userId = m.userId;
+        title = m.title;
+        day = m.day;
+        time = m.time;
+        try {
+            reminderTime = new SimpleDateFormat("yyyyMMddHHmm").parse(day + time);
+        } catch (ParseException e) {
+            Debug.Handle(e);
+        }
+        isAllDay = m.isAllDay;
+        aheadTime = m.aheadTime;
+        endTime = m.endTime;
+        repeatWeek = m.repeatWeek;
+        repeatFlag = m.repeatFlag;
+        currentWeek = m.currentWeek;
+        deleteState = m.deleteState;
+        isRemind = m.isRemind;
+        clientType = m.clientType;
+    }
 }

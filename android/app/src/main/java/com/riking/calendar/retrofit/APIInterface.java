@@ -11,7 +11,6 @@ import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
-import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.UploadImageModel;
@@ -19,6 +18,7 @@ import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
 
@@ -80,7 +80,7 @@ public interface APIInterface {
     Call<CtryHdayCryCondition> getVagueQuery(@Body CtryHdayCrcy ctryHdayCrcy);
 
     @POST("checkValiCode")
-    Call<GetVerificationModel> checkVarificationCode(@Body AppUser user);
+    Call<ResponseModel<AppUser>> checkVarificationCode(@Body AppUser user);
 
     @POST("getValiCode")
     Call<GetVerificationModel> getVarificationCode(@Body AppUser user);
@@ -88,9 +88,21 @@ public interface APIInterface {
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
 
+    /**
+     * get all reports when user not login
+     *
+     * @param notUsed
+     * @return
+     */
     @POST("reportListApp/getAllReport")
-    Call<QueryReportModel> getAllReports(@Query("id") String notUsed);
+    Call<ResponseModel<ArrayList<QueryReportContainer>>> getAllReports(@Query("id") String notUsed);
 
+    /**
+     * get all reports of user
+     *
+     * @param body
+     * @return
+     */
     @POST("appUserReport/getUserRepor")
     Call<ResponseModel<ArrayList<QueryReportContainer>>> getUserReports(@Body AppUserReportCompleteRel body);
 
@@ -112,4 +124,10 @@ public interface APIInterface {
 
     @POST("synchronous/synchronousDate")
     Call<ResponseModel<ArrayList<WorkDate>>> getWorkDays();
+
+    /**
+     * get user's reminders and tasks and other info ..
+     */
+    @POST("synchronous/synchronousAll")
+    Call<ResponseModel<SynResult>> synchronousAll(@Body AppUser user);
 }

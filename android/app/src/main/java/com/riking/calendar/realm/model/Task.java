@@ -1,6 +1,7 @@
 package com.riking.calendar.realm.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.riking.calendar.pojo.TaskModel;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -57,4 +58,19 @@ public class Task extends RealmObject {
 
     //    @Transient
     public int deleteState;
+
+    public Task() {
+    }
+
+    public Task(TaskModel m) {
+        todo_Id = m.todoId;
+        userId = m.userId;
+        title = m.title;
+        isImportant = m.isImportant;
+        isOpen = m.isOpen;
+        strDate = m.strDate;
+        appCreatedTime = m.appCreatedTime;
+        isComplete = m.isComplete;
+        completeDate = m.completeDate;
+    }
 }

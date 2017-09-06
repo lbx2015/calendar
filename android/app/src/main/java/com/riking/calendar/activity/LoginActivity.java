@@ -23,10 +23,17 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.GetVerificationModel;
+import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.synch.SynResult;
+import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.StringUtil;
+
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -47,12 +54,12 @@ public class LoginActivity extends AppCompatActivity {
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     //device id
     String uid;
-    AppUser user = new AppUser();
     private TimeCount time;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final AppUser user = new AppUser();
         TelephonyManager tManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         uid = tManager.getDeviceId();
         time = new TimeCount(60000, 1000);
@@ -130,46 +137,63 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 user.valiCode = valiCode;
-                apiInterface.checkVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
+                apiInterface.checkVarificationCode(user).enqueue(new ZCallBack<ResponseModel<AppUser>>() {
                     @Override
-                    public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
-                        GetVerificationModel user = response.body();
-                        if (user == null || user._data == null) {
-                            Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                    public void callBack(ResponseModel<AppUser> response) {
+                        AppUser u = response._data;
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
                         SharedPreferences.Editor e = pref.edit();
                         e.putBoolean(Const.IS_LOGIN, true);
-                        e.putString(Const.USER_ID, user._data.id);
-                        e.putString(Const.USER_IMAGE_URL, user._data.photoUrl);
-                        e.putString(Const.PHONE_NUMBER, user._data.telephone);
-                        e.putString(Const.USER_EMAIL, user._data.email);
-                        e.putString(Const.PHONE_SEQ_NUMBER, user._data.phoneSeqNum);
-                        e.putString(Const.USER_NAME, user._data.name);
-                        e.putString(Const.USER_PASSWORD, user._data.passWord);
-                        e.putString(Const.USER_DEPT, user._data.dept);
-                        e.putInt(Const.USER_SEX, user._data.sex);
-                        e.putString(Const.USER_COMMENTS, user._data.remark);
-                        e.putString(Const.USER_COMMENTS, user._data.remark);
-                        e.putString(Const.WHOLE_DAY_EVENT_HOUR, user._data.allDayReminderTime.substring(0, 2));
-                        e.putString(Const.WHOLE_DAY_EVENT_MINUTE, user._data.allDayReminderTime.substring(2));
+                        e.putString(Const.USER_ID, u.id);
+                        e.putString(Const.USER_IMAGE_URL, u.photoUrl);
+                        e.putString(Const.PHONE_NUMBER, u.telephone);
+                        e.putString(Const.USER_EMAIL, u.email);
+                        e.putString(Const.PHONE_SEQ_NUMBER, u.phoneSeqNum);
+                        e.putString(Const.USER_NAME, u.name);
+                        e.putString(Const.USER_PASSWORD, u.passWord);
+                        e.putString(Const.USER_DEPT, u.dept);
+                        e.putInt(Const.USER_SEX, u.sex);
+                        e.putString(Const.USER_COMMENTS, u.remark);
+                        e.putString(Const.USER_COMMENTS, u.remark);
+                        e.putString(Const.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
+                        e.putString(Const.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
                         e.commit();
 
                         //change realm database with user id
                         RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
                                 .deleteRealmIfMigrationNeeded();
-                        builder.name(user._data.id);
+                        builder.name(u.id);
                         Realm.setDefaultConfiguration(builder.build());
 
+                        //get user's reminders and tasks
+                        apiInterface.synchronousAll(u).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
+                            @Override
+                            public void callBack(final ResponseModel<SynResult> response) {
+                                final Realm realm = Realm.getDefaultInstance();
+                                realm.executeTransactionAsync(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        List<ReminderModel> reminders = response._data.remind;
+                                        List<TaskModel> tasks = response._data.todo;
+                                        if (reminders != null) {
+                                            for (ReminderModel m : reminders) {
+                                                Reminder r = new Reminder(m);
+                                                realm.copyToRealmOrUpdate(r);
+                                            }
+                                        }
+                                        if (tasks != null) {
+                                            for (TaskModel m : tasks) {
+                                                Task t = new Task(m);
+                                                realm.copyToRealmOrUpdate(t);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
                         onBackPressed();
                         startActivity(new Intent(LoginActivity.this, UserInfoActivity.class));
                         Logger.d("zzw", "login succes : " + user);
-                    }
-
-                    @Override
-                    public void onFailure(Call<GetVerificationModel> call, Throwable t) {
-
                     }
                 });
             }

@@ -13,7 +13,6 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
-import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
@@ -26,9 +25,6 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -66,14 +62,13 @@ public class LaunchActivity extends AppCompatActivity {
         //if the user is not login
         if (!Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
 
-            APIClient.apiInterface.getAllReports(null).enqueue(new Callback<QueryReportModel>() {
+            APIClient.apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
                 @Override
-                public void onResponse(Call<QueryReportModel> call, final Response<QueryReportModel> response) {
-                    Logger.d("zzw", "load reports ok");
+                public void callBack(final ResponseModel<ArrayList<QueryReportContainer>> response) {
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            ArrayList<QueryReportContainer> reportContainers = response.body()._data;
+                            ArrayList<QueryReportContainer> reportContainers = response._data;
                             Logger.d("zzw", "report size" + reportContainers.size());
                             for (QueryReportContainer c : reportContainers) {
                                 QueryReportContainerRealmModel queryReportContainerRealmModel = new QueryReportContainerRealmModel();
@@ -91,11 +86,7 @@ public class LaunchActivity extends AppCompatActivity {
                             }
                         }
                     });
-                }
 
-                @Override
-                public void onFailure(Call<QueryReportModel> call, Throwable t) {
-                    Logger.d("zzw", "load reports fail" + t.getMessage());
                 }
             });
         }
