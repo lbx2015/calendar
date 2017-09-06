@@ -48,16 +48,17 @@ public class AppLogAspect {
     public AppResp doAroundForCheckValiCode_(ProceedingJoinPoint pjp) throws Throwable { 
 		AppUser appUser = (AppUser)pjp.getArgs()[0];
 		AppResp appResp = (AppResp)pjp.proceed();
+		
 		AppUser rs =  (AppUser)appResp.get_data();
 		AppLogInfo info = new AppLogInfo();
     	info.setAppUserId(appUser.getId());
     	info.setCreateTime(new Date());
 		if(rs!=null&&StringUtils.isNotBlank(rs.getId())){
 	    	info.setDoThing("LoginSucc");
-	    	logger.info("{} Login Success",appUser.getName());
+	    	logger.info("{} Login Success",appUser.getTelephone());
 		}else{
 			info.setDoThing("LoginFail");
-			logger.info("{} Login Fail",appUser.getName());
+			logger.info("{} Login Fail",appUser.getTelephone());
 		}
 		appLogInfoRepo.save(info);
 		return appResp;

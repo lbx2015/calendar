@@ -171,5 +171,13 @@ public class CtryHdayCrcy extends PageQuery {
 		return pcount;
 	}
 	
+	public Integer getPindex() {
+		Integer pindex = super.getPindex();
+		if(pindex==null||pindex<1){
+			return 0;
+		}
+		return pindex-1;
+	}
+	
 	
 }
