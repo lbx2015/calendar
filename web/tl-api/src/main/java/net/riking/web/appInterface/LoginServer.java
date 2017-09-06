@@ -70,9 +70,13 @@ public class LoginServer {
 		if (appUser2 != null) {
 			session.setAttribute("currentUser", appUser2);
 			return new AppResp(appUser2, CodeDef.SUCCESS);
-		} else {
-			return new AppResp(CodeDef.ERROR);
 		}
+		List<AppUser> list = appUserRepo.findByDeleteStateAndTelephone("1", appUser.getTelephone());
+		if(null!=list&&list.size()>0){
+			return new AppResp(CodeDef.EMP.USER_PASS_ERR);
+		}
+		return new AppResp(CodeDef.EMP.DATA_NOT_FOUND);
+		
 	}
 
 	@ApiOperation(value = "发送验证码", notes = "POST")

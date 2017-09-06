@@ -90,7 +90,7 @@ public class CtryHdayCrcyServer {
 				if(StringUtils.isNotBlank(crtyHdayCrcy.getHdayName())){
 					list.add(cb.equal((root.get("hdayName").as(String.class)),crtyHdayCrcy.getHdayName()));
 				}
-				if(crtyHdayCrcy.getHdayDate()!=null){
+				if(StringUtils.isNotBlank(crtyHdayCrcy.getHdayDate())){
 					list.add(cb.like(root.get("hdayDate").as(String.class),crtyHdayCrcy.getHdayDate()+"%"));
 				}
 				Predicate[] p = new Predicate[list.size()];
