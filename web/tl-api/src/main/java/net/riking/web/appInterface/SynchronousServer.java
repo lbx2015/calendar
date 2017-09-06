@@ -47,8 +47,8 @@ public class SynchronousServer {
 	public AppResp synchronousAll(@RequestBody AppUser appUser) {
 		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
 		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
-		List<AppUserReportCompleteRel> appUserReportCompleteRel = appUserReportCompletesRelRepo.findAll();
-		SynResult result = new SynResult(reminds, todos,appUserReportCompleteRel);
+		List<Days> days = daysRepo.findAll();
+		SynResult result = new SynResult(reminds, todos,days);
 		return new AppResp(result, CodeDef.SUCCESS);
 	}
 	

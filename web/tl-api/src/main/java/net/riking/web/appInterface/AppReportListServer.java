@@ -1,12 +1,13 @@
 package net.riking.web.appInterface;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.ReportList;
+import net.riking.entity.model.QueryReport;
+import net.riking.entity.model.ReportResult;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.GetDateServiceImpl;
@@ -43,7 +45,7 @@ public class AppReportListServer {
 	@Autowired 
 	DaysRepo daysRepo;
 
-	@ApiOperation(value = "app获取所有的报表", notes = "POST")
+	/*@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody ReportList reportList) {
 		reportList.setDeleteState("1");
@@ -54,24 +56,12 @@ public class AppReportListServer {
 		Example<ReportList> example = Example.of(reportList, ExampleMatcher.matchingAll());
 		Page<ReportList> page = reportListRepo.findAll(example, pageable);
 		return new AppResp(page, CodeDef.SUCCESS);
-	}
-	/*@ApiOperation(value = "app获取所有的报表", notes = "POST")
+	}*/
+	@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport(@RequestParam("date") String date,@RequestParam("userId") String userId) {
-		Days day = daysRepo.findOne(date);
-		Period period = getDateService.getDate(date,"1");
-		Period periods = getDateService.getDate(date,"0");
+	public AppResp getAllReport() {
 		Set<QueryReport> set;
-		Set<QueryReport> freeSet = new HashSet<>();
-		if (day.getIsWork()==1) {
-			set = reportSubmitCaliberService.findAllByFreeDatefromReportId(userId,period.getWeek(),period.getTen(),period.getMonth(),period.getSeason(),period.getHalfYear(),period.getYear(), 1);
-			freeSet = reportSubmitCaliberService.findAllByFreeDatefromReportId(userId,periods.getWeek(),periods.getTen(),periods.getMonth(),periods.getSeason(),periods.getHalfYear(),periods.getYear(), 0);
-			for (QueryReport queryReport : freeSet) {
-				set.add(queryReport);
-			}
-		}else {
-			set = reportSubmitCaliberService.findAllByFreeDatefromReportId(userId,periods.getWeek(),periods.getTen(),periods.getMonth(),periods.getSeason(),periods.getHalfYear(),periods.getYear(), 0);
-		}
+			set = reportSubmitCaliberService.findAllfromReportId();
 		Map<String, Set<QueryReport>> map = new HashMap<>();
 		for (QueryReport queryReport : set) {
 			String value = sysDataservice.getDict("T_REPORT_LIST", "MODLE_TYPE", queryReport.getModuleType()).getValu();
@@ -94,7 +84,7 @@ public class AppReportListServer {
 		}
 		return new AppResp(listes, CodeDef.SUCCESS);
 		
-	}*/
+	}
 	
 	/*@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)

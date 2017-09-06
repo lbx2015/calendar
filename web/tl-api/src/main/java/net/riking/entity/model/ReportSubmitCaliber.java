@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
 import net.riking.entity.BaseEntity;
 
 @Entity
@@ -50,6 +51,9 @@ public class ReportSubmitCaliber extends BaseEntity {
 	// 是否启用：0-删除；1-显示
 	@Column(name = "delete_state", length = 1)
 	private String deleteState;
+	
+	@Column(name = "remarks", length = 256)
+	private String remarks;
 
 	public String getId() {
 		return id;
@@ -122,4 +126,13 @@ public class ReportSubmitCaliber extends BaseEntity {
 	public void setDeleteState(String deleteState) {
 		this.deleteState = deleteState;
 	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	
 }

@@ -50,4 +50,24 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 	    }
 		return list;
 	}
+
+	@Override
+	public Set<QueryReport> findAllfromReportId() {
+		 SessionImplementor session =entityManager.unwrap(SessionImplementor.class);
+	        Connection connection = session.connection();
+	    String sql = "SELECT c.Id, c.report_name,c.report_code,c.module_type,b.caliber_type,b.frequency from  t_report_submit_caliber b  LEFT JOIN t_report_list c ON b.report_id = c.Id WHERE b.enabled = 1 AND c.delete_state = '1' ORDER BY b.frequency";
+		PreparedStatement pstmt = null;
+		Set<QueryReport> list = new HashSet<>();
+		try {
+	        pstmt = (PreparedStatement) connection.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	        	QueryReport queryReport = new QueryReport(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+	        	list.add(queryReport);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		return list;
+	}
 }

@@ -56,6 +56,12 @@
 			"enum_search":"1"
 		},
 		{
+			"prop": "remarks",
+			"alias": "备注信息",
+			"group": "base",
+			"type": "text"
+		},
+		{
 			"prop": "deleteState",
 			"alias": "删除状态",
 			"group":"base",

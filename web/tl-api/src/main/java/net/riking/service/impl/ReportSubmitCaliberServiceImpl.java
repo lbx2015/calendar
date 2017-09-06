@@ -18,6 +18,11 @@ public class ReportSubmitCaliberServiceImpl implements ReportSubmitCaliberServic
 		Set<QueryReport> list = reportSubmitCaliberDao.findAllByFreeDatefromReportId(userId, week, ten, month, season, halfYear, Year, isWorkDay);
 		return list;
 	}
+	@Override
+	public Set<QueryReport> findAllfromReportId() {
+		Set<QueryReport> list = reportSubmitCaliberDao.findAllfromReportId();
+		return list;
+	}
 
 
 
