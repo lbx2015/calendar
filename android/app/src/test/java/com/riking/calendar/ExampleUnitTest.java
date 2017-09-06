@@ -12,7 +12,9 @@ import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
@@ -109,5 +111,35 @@ public class ExampleUnitTest {
 3 - to set width to 3
          */
         System.out.println(String.format("%02d", 1));
+    }
+
+    @Test
+    public void testTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2017);
+        cal.set(Calendar.MONTH, 8);
+        cal.set(Calendar.DATE, 4);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        System.out.print(cal.getTime());
+    }
+
+    @Test
+    public void testSparseArray() {
+        HashMap<String, String> s = new HashMap<>();
+        String week = "1234";
+        for (char i : week.toCharArray()) {
+            s.put(String.valueOf(i), "a" + i);
+        }
+        System.out.println(s.get(String.valueOf(2)));
+    }
+
+    @Test
+    public void testBinarySmartOperator() {
+        System.out.println("1^0: " + (1 ^ 0));
+        System.out.println("0^1: " + (0 ^ 1));
+        System.out.println("1^1: " + (1 ^ 1));
+        System.out.println("0^0: " + (0 ^ 0));
     }
 }

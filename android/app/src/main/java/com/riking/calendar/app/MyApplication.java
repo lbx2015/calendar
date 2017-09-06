@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.ldf.calendar.Const;
+import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.CONST;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
@@ -32,9 +34,10 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded();
 
         if (preferences.getBoolean(Const.IS_LOGIN, false)) {
-            builder.name("rkdb");
+            Logger.d("zzw", "set user id : " + preferences.getString(Const.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
+            builder.name(preferences.getString(Const.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
         } else {
-            builder.name(preferences.getString(Const.USER_ID, "rkdb"));
+            builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);
         }
 
         RealmConfiguration realmConfiguration = builder.build();

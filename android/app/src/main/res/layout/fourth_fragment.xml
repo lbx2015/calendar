@@ -33,15 +33,17 @@
         <RelativeLayout
             android:id="@+id/my_photo_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="78dp"
             android:background="@android:color/white">
 
-            <com.riking.calendar.view.ZCenterImageView
+            <ImageView
                 android:id="@+id/my_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
-                android:layout_margin="5dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="19dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_user_icon" />
 
@@ -83,15 +85,17 @@
             <RelativeLayout
                 android:id="@+id/set_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white">
 
-                <ImageView
+                <com.riking.calendar.view.ZCenterImageView
                     android:id="@+id/set"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_margin="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="19dp"
+                    android:layout_marginRight="19dp"
                     android:src="@drawable/set" />
 
                 <TextView
@@ -102,9 +106,9 @@
                     android:text="@string/set"
                     android:textColor="@color/color_323232" />
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                <com.riking.calendar.view.ZCenterImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -121,15 +125,17 @@
             <RelativeLayout
                 android:id="@+id/comment_root"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white">
 
-                <ImageView
+                <com.riking.calendar.view.ZCenterImageView
                     android:id="@+id/review"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_margin="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="19dp"
+                    android:layout_marginRight="19dp"
                     android:src="@drawable/review" />
 
                 <TextView
@@ -140,9 +146,9 @@
                     android:text="@string/review"
                     android:textColor="@color/color_323232" />
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                <com.riking.calendar.view.ZCenterImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/select_time"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -163,15 +169,17 @@
         <RelativeLayout
             android:id="@+id/about_relative_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@android:color/white">
 
-            <ImageView
+            <com.riking.calendar.view.ZCenterImageView
                 android:id="@+id/about"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_margin="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="19dp"
                 android:src="@drawable/about" />
 
             <TextView
@@ -182,9 +190,9 @@
                 android:text="@string/about"
                 android:textColor="@color/color_323232" />
 
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+            <com.riking.calendar.view.ZCenterImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/select_time"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"

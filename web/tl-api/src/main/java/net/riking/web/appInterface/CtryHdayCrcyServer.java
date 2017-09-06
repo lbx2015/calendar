@@ -180,7 +180,7 @@ public class CtryHdayCrcyServer {
 		String url = request.getRequestURL().toString();
 		String projectPath = StringUtil.getProjectPath(url);
 		for (CtryHdayCrcy chc : list) {
-			chc.setFlagUrl(projectPath + Const.TL_FLAG_PATH + (null==user? "" : user.getPhoneType() + "/") + chc.getCtryName()+".png");
+			chc.setFlagUrl(projectPath + Const.TL_FLAG_PATH + (null==user || StringUtils.isBlank(user.getPhoneType()) ? "" : user.getPhoneType() + "/") + chc.getCtryName()+".png");
 			//币种
 //			ModelPropDict dict1 = sysDataservice.getDict("T_CTRY_HDAY_CRCY", "CRCY", chc.getCrcy());
 //			chc.setCrcyValue(dict1.getValu());

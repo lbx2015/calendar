@@ -1,6 +1,7 @@
 package com.riking.calendar.retrofit;
 
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.AppUserReportCompleteRel;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.Dictionary;
@@ -9,12 +10,14 @@ import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.QueryReportModel;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
+import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 
 import java.util.ArrayList;
@@ -88,6 +91,9 @@ public interface APIInterface {
     @POST("reportListApp/getAllReport")
     Call<QueryReportModel> getAllReports(@Query("id") String notUsed);
 
+    @POST("appUserReport/getUserRepor")
+    Call<ResponseModel<ArrayList<QueryReportContainer>>> getUserReports(@Body AppUserReportCompleteRel body);
+
     @POST("appAboutApp/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
@@ -103,4 +109,7 @@ public interface APIInterface {
 
     @POST("modelPropDictApp/T_APP_USER")
     Call<ResponseModel<ArrayList<Dictionary>>> getDictionary(@Body ArrayList<String> fields);
+
+    @POST("synchronous/synchronousDate")
+    Call<ResponseModel<ArrayList<WorkDate>>> getWorkDays();
 }

@@ -100,7 +100,7 @@ public class SecondFragment extends Fragment {
                 ModelPropDict dict = mCountryDatas.get(position);
                 countryTextView.setText(dict.valu);
                 requestBoday.ctryName = dict.ke;
-                requestBoday.pindex = 0;
+                requestBoday.pindex = 1;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 // 隐藏popupWindow
                 mSpinnerView.dismiss();
@@ -115,7 +115,7 @@ public class SecondFragment extends Fragment {
                 holidayTextView.setText(data.valu);
                 requestBoday.hdayName = data.ke;
                 Log.d("zzw", "requestBoday: " + requestBoday.hdayName);
-                requestBoday.pindex = 0;
+                requestBoday.pindex = 1;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 mHolidaySpinnerView.dismiss();
             }
@@ -128,7 +128,7 @@ public class SecondFragment extends Fragment {
                 ModelPropDict data = mConcurrencyDatas.get(position);
                 concurrencyTextView.setText(data.valu);
                 requestBoday.crcy = data.ke;
-                requestBoday.pindex = 0;
+                requestBoday.pindex = 1;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 mConcurrencySpinnerView.dismiss();
             }
@@ -156,7 +156,7 @@ public class SecondFragment extends Fragment {
                             dateTextView.setText(sdf.format(calendar.getTime()));
                             requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
                         }
-                        requestBoday.pindex = 0;
+                        requestBoday.pindex = 1;
                         apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                         dialog.dismiss();
                         dateArrow.setRotation(0);

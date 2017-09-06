@@ -99,7 +99,7 @@ public class LoginServer {
 			HttpSession session) {
 		AppUser user = sysDataService.getAppUser(appUser);
 		if (user == null) {
-			return new AppResp(user, CodeDef.SUCCESS);
+			return new AppResp(user, CodeDef.EMP.CHECK_CODE_TIME_OUT);
 		}
 		List<AppUser> list;
 		AppUser appUser2 = null ;
@@ -121,9 +121,9 @@ public class LoginServer {
 				appUserReportRelRepo.save(appUserReportRels);
 				logger.info("{}注册成功", appUser.getName());
 			}
-		}
-		if (appUser2 != null) {
 			sysDataService.delAppUser(user);
+		}else{
+			return new AppResp(appUser2, CodeDef.EMP.CHECK_CODE_ERR);
 		}
 		session.setAttribute("currentUser", appUser2);
 		return new AppResp(appUser2, CodeDef.SUCCESS);

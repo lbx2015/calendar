@@ -48,7 +48,7 @@
             <RelativeLayout
                 android:id="@+id/smContentView"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="78dp"
                 android:background="@android:color/white">
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_toLeftOf="@+id/next_step"
                     android:onClick="onPickImage"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/cat_wide_2" />
+                    android:src="@drawable/default_user_icon" />
 
                 <ImageView
                     android:id="@+id/next_step"

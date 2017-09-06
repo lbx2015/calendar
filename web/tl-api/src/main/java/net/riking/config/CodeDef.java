@@ -13,5 +13,10 @@ public class CodeDef {
 		public static final short USER_PASS_ERR = -998;
 		//登录超时
 		public static final short LOGIN_TIME_OUT = -997;
+		//验证码错误
+		public static final short CHECK_CODE_ERR = -996;
+		//验证码错误
+		public static final short CHECK_CODE_TIME_OUT = -995;
 	}
+	
 }
