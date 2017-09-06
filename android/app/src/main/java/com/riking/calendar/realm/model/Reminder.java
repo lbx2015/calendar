@@ -40,6 +40,7 @@ public class Reminder extends RealmObject {
     //0 no remind, 1 remind
     public byte isRemind = 1;
     public byte clientType = 2;
+    public byte syncStatus;//同步的状态0:同步,1待同步
 
     public Reminder(){}
     public Reminder(ReminderModel m) {

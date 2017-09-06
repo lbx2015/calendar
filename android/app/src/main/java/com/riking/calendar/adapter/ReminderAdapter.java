@@ -11,12 +11,18 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.widget.dialog.LookReminderDialog;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,13 +71,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
             public void onClick(View v) {
                 notifyItemRemoved(position);
                 holder.sml.smoothCloseMenu();
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
-                    }
-                });
-                Toast.makeText(holder.time.getContext(), "deleted", Toast.LENGTH_LONG).show();
+              APIClient.synchronousReminds(r, CONST.DELETE);
             }
         });
 

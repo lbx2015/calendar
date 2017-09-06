@@ -21,6 +21,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -130,4 +131,7 @@ public interface APIInterface {
      */
     @POST("synchronous/synchronousAll")
     Call<ResponseModel<SynResult>> synchronousAll(@Body AppUser user);
+
+    @POST("synchronous/synchronousReminds")
+    Call<ResponseModel<String>> synchronousReminds(@Body List<ReminderModel> reminderModels);
 }
