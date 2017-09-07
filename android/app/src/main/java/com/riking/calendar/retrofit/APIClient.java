@@ -54,9 +54,6 @@ public class APIClient {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
         retrofit = new Retrofit.Builder()
 //                .baseUrl("http://www.baidu.com")
 //                .baseUrl("https://reqres.in")

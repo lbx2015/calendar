@@ -132,4 +132,5 @@
     <string name="net_connected">网络连接成功</string>
     <string name="net_not_connected">Offline</string>
     <string name="refresh_success">Refresh success</string>
+    <string name="server_error">Server error</string>
 </resources>

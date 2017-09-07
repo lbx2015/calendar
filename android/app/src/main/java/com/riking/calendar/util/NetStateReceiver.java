@@ -20,7 +20,7 @@ public class NetStateReceiver extends BroadcastReceiver {
 
     public static final IntentFilter FILTER = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 
-    private static boolean isNetAvailable = false;
+    public static boolean isNetAvailable = false;
     private static ArrayList<NetChangeObserver> mNetChangeObservers = new ArrayList<NetChangeObserver>();
     private static BroadcastReceiver mBroadcastReceiver;
 

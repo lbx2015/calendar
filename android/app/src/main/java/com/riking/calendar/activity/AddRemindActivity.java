@@ -48,6 +48,8 @@ public class AddRemindActivity extends AppCompatActivity {
     CreateTaskFragment taskFragment;
     APIInterface apiInterface;
     String userId;
+    String reminderTitle;
+    String taskTitle;
     private ViewPager viewPager;
     private Realm realm;
 
@@ -77,6 +79,20 @@ public class AddRemindActivity extends AppCompatActivity {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
         final String id = sdf.format(new Date());
+        //remind fragment
+        if (viewPager.getCurrentItem() == 0) {
+            reminderTitle = reminderFragment.remindTitle.getText().toString();
+            if (reminderTitle == null || reminderTitle.trim().equals("")) {
+                Toast.makeText(AddRemindActivity.this, "提醒内容不能为空", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
+            taskTitle = taskFragment.title.getText().toString();
+            if (taskTitle == null || taskTitle.trim().equals("")) {
+                Toast.makeText(AddRemindActivity.this, "标题不能为空", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
 
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
@@ -86,12 +102,6 @@ public class AddRemindActivity extends AppCompatActivity {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 //remind fragment
                 if (viewPager.getCurrentItem() == 0) {
-
-                    final String reminderTitle = reminderFragment.remindTitle.getText().toString();
-                    if (reminderTitle == null || reminderTitle.trim().equals("")) {
-                        Toast.makeText(AddRemindActivity.this, "提醒内容不能为空", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
 
                     // Add a remind
                     final Reminder reminder = realm.createObject(Reminder.class, id);
@@ -152,7 +162,7 @@ public class AddRemindActivity extends AppCompatActivity {
                         task.isOpen = 1;
                         task.strDate = sdf.format(taskFragment.calendar.getTime());
                     }
-                    task.title = taskFragment.title.getText().toString();
+                    task.title = taskTitle;
                     task.userId = userId;
                     if (task.isOpen == 1) {
                         Intent intent = new Intent(AddRemindActivity.this, ReminderService.class);

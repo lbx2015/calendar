@@ -155,8 +155,10 @@ public class LoginActivity extends AppCompatActivity {
                         e.putInt(Const.USER_SEX, u.sex);
                         e.putString(Const.USER_COMMENTS, u.remark);
                         e.putString(Const.USER_COMMENTS, u.remark);
-                        e.putString(Const.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
-                        e.putString(Const.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
+                        if (u.allDayReminderTime != null) {
+                            e.putString(Const.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
+                            e.putString(Const.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
+                        }
                         e.commit();
 
                         //change realm database with user id
