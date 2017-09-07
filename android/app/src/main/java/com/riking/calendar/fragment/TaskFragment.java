@@ -27,7 +27,9 @@ import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
@@ -119,7 +121,11 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
-                Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
+                if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+                    //get reminders and tasks of user from server
+                    APIClient.synchAll();
+                }
+//                Toast.makeText(root.getContext(), getString(R.string.refresh_success), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

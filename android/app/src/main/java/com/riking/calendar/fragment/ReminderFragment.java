@@ -14,16 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.ldf.calendar.Const;
 import com.ldf.calendar.Utils;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RemindHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
-import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
@@ -77,8 +78,11 @@ public class ReminderFragment extends Fragment {
             @Override
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
-                Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
+                if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+                    //get reminders and tasks of user from server
+                    APIClient.synchAll();
+                }
             }
         });
 
