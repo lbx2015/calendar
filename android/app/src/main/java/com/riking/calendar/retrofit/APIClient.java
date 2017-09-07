@@ -33,6 +33,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -67,6 +68,34 @@ public class APIClient {
                 .client(client)
                 .build();
         return retrofit;
+    }
+
+    public static void uploadUpdatedReminders() {
+        final Realm realm = Realm.getDefaultInstance();
+        final RealmResults<Reminder> reminders = realm.where(Reminder.class).equalTo("syncStatus", 1).findAll();
+        final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>();
+
+        for (Reminder r : reminders) {
+            reminderModels.add(new ReminderModel(r));
+        }
+        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+                if (!failed) {
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            for (Reminder r : reminders) {
+                                r.syncStatus = 0;
+                                if (r.deleteState != 0) {
+                                    r.deleteFromRealm();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public static void synchronousReminds(final Reminder r, final byte operationType, final ZRequestCallBack callBack) {
