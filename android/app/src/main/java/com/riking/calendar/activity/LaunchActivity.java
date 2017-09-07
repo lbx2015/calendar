@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ldf.calendar.Const;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.Preference;
@@ -27,6 +29,7 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ImageView view = new ImageView(this);
         setContentView(view);
+        NetStateReceiver.unRegisterNetworkStateReceiver(this);
         NetStateReceiver.registerNetworkStateReceiver(this);
         handler.postDelayed(new Runnable() {
             @Override
@@ -54,15 +57,19 @@ public class LaunchActivity extends AppCompatActivity {
             APIClient.synchAll();
         }
         APIClient.getWorkDays();
+        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
         //register observer
         NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
             @Override
             public void onNetConnected() {
-                APIClient.uploadUpdatedReminders();
+                Toast.makeText(getApplicationContext(), "connected", Toast.LENGTH_SHORT).show();
+                Logger.d("zzw", "on NetConnected.");
+                APIClient.updatePendingUpdates();
             }
 
             @Override
             public void onNetDisConnect() {
+                Toast.makeText(getApplicationContext(), "disconnected.", Toast.LENGTH_SHORT).show();
             }
         });
     }

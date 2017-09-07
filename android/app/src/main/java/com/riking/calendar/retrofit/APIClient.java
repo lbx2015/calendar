@@ -70,7 +70,7 @@ public class APIClient {
         return retrofit;
     }
 
-    public static void uploadUpdatedReminders() {
+    public static void updatePendingUpdates() {
         final Realm realm = Realm.getDefaultInstance();
         final RealmResults<Reminder> reminders = realm.where(Reminder.class).equalTo("syncStatus", 1).findAll();
         final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>();
@@ -96,6 +96,34 @@ public class APIClient {
                 }
             }
         });
+
+        //upload pending tasks
+        final RealmResults<Task> tasks = realm.where(Task.class).equalTo("syncStatus", 1).findAll();
+        final List<TaskModel> models = new ArrayList<>();
+
+        Logger.d("zzw", "found padding tasks size " + tasks.size());
+        for (Task t : tasks) {
+            models.add(new TaskModel(t));
+        }
+
+        apiInterface.synchronousTasks(models).enqueue(new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        for (Task task : tasks) {
+                            //the task is updated
+                            task.syncStatus = 0;
+                            //delete the pending item from realm
+                            if (task.deleteState != 0) {
+                                task.deleteFromRealm();
+                            }
+                        }
+                    }
+                });
+            }
+        });
     }
 
     public static void synchronousTasks(final Task task, final byte operationType) {
@@ -115,6 +143,7 @@ public class APIClient {
                     public void execute(Realm realm) {
                         if (operationType == CONST.DELETE) {
                             if (failed) {
+                                Logger.d("zzw", "set delete State 1 of " + task.title);
                                 task.deleteState = 1;
                                 task.syncStatus = 1;
                             } else {

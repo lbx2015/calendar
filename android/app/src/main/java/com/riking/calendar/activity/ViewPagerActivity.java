@@ -23,6 +23,7 @@ import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.SecondFragment;
 import com.riking.calendar.fragment.ThirdFragment;
 import com.riking.calendar.pojo.TabEntity;
+import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.ViewFindUtils;
 
 import java.util.ArrayList;
@@ -70,6 +71,8 @@ public class ViewPagerActivity extends FragmentActivity {
         setContentView(R.layout.activity_viewpager);
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
+        NetStateReceiver.unRegisterNetworkStateReceiver(this);
+        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
