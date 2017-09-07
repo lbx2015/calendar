@@ -80,7 +80,7 @@ public class AddRemindActivity extends AppCompatActivity {
 
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
-        realm.executeTransaction(new Realm.Transaction() {
+        realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -166,19 +166,23 @@ public class AddRemindActivity extends AppCompatActivity {
                     }
                 }
             }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (preference.getBoolean(Const.IS_LOGIN, false)) {
+                    //remind fragment
+                    if (viewPager.getCurrentItem() == 0) {
+                        Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
+                        //add a new remind to server.
+                        APIClient.synchronousReminds(r, CONST.UPDATE, null);
+                    } else {
+                        APIClient.synchronousTasks(realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst(), CONST.ADD);
+                    }
+                }
+                onBackPressed();
+            }
         });
 
-        if (preference.getBoolean(Const.IS_LOGIN, false)) {
-            //remind fragment
-            if (viewPager.getCurrentItem() == 0) {
-                Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
-                //add a new remind to server.
-                APIClient.synchronousReminds(r, CONST.UPDATE, null);
-            } else {
-                APIClient.synchronousTasks(realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst(), CONST.ADD);
-            }
-        }
-        onBackPressed();
     }
 
 

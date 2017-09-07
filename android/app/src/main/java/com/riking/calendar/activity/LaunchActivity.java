@@ -29,8 +29,8 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ImageView view = new ImageView(this);
         setContentView(view);
-        NetStateReceiver.unRegisterNetworkStateReceiver(this);
-        NetStateReceiver.registerNetworkStateReceiver(this);
+//        NetStateReceiver.unRegisterNetworkStateReceiver(this);
+//        NetStateReceiver.registerNetworkStateReceiver(this);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -57,7 +57,7 @@ public class LaunchActivity extends AppCompatActivity {
             APIClient.synchAll();
         }
         APIClient.getWorkDays();
-        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
+//        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
         //register observer
         NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
             @Override
@@ -72,6 +72,12 @@ public class LaunchActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "disconnected.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+//        NetStateReceiver.unRegisterNetworkStateReceiver(this);
+        super.onDestroy();
     }
 
     @Override

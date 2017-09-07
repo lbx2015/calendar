@@ -71,8 +71,6 @@ public class ViewPagerActivity extends FragmentActivity {
         setContentView(R.layout.activity_viewpager);
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
-        NetStateReceiver.unRegisterNetworkStateReceiver(this);
-        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

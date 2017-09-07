@@ -45,11 +45,4 @@ public class MyApplication extends Application {
 //        Realm.deleteRealm(realmConfiguration); // Clean slate
         Realm.setDefaultConfiguration(realmConfiguration);
     }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        NetStateReceiver.unRegisterNetworkStateReceiver(this);
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }
 }

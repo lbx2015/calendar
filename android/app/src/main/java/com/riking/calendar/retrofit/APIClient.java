@@ -70,7 +70,7 @@ public class APIClient {
         return retrofit;
     }
 
-    public static void updatePendingUpdates() {
+    public static void updatePendingReminds(final ZRequestCallBack callBack) {
         final Realm realm = Realm.getDefaultInstance();
         final RealmResults<Reminder> reminders = realm.where(Reminder.class).equalTo("syncStatus", 1).findAll();
         final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>();
@@ -81,22 +81,27 @@ public class APIClient {
         APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
-                if (!failed) {
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            for (Reminder r : reminders) {
-                                r.syncStatus = 0;
-                                if (r.deleteState != 0) {
-                                    r.deleteFromRealm();
-                                }
+                if (callBack != null) {
+                    callBack.success();
+                }
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        for (Reminder r : reminders) {
+                            r.syncStatus = 0;
+                            if (r.deleteState != 0) {
+                                r.deleteFromRealm();
                             }
                         }
-                    });
-                }
+                    }
+                });
             }
         });
 
+    }
+
+    public static void updatePendingTasks(final ZRequestCallBack callBack) {
+        final Realm realm = Realm.getDefaultInstance();
         //upload pending tasks
         final RealmResults<Task> tasks = realm.where(Task.class).equalTo("syncStatus", 1).findAll();
         final List<TaskModel> models = new ArrayList<>();
@@ -112,6 +117,9 @@ public class APIClient {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
+                        if (callBack != null) {
+                            callBack.success();
+                        }
                         for (Task task : tasks) {
                             //the task is updated
                             task.syncStatus = 0;
@@ -124,6 +132,11 @@ public class APIClient {
                 });
             }
         });
+    }
+
+    public static void updatePendingUpdates() {
+        updatePendingReminds(null);
+        updatePendingTasks(null);
     }
 
     public static void synchronousTasks(final Task task, final byte operationType) {
@@ -207,6 +220,25 @@ public class APIClient {
     }
 
     public static void synchAll() {
+        ZRequestCallBack updateCallBack = new ZRequestCallBack() {
+            @Override
+            public void success() {
+                successCount = successCount + 1;
+                if (successCount == 2) {
+                    getReminderAndTasksFromServer();
+                }
+            }
+
+            @Override
+            public void fail() {
+                successCount = successCount - 1;
+            }
+        };
+        updatePendingReminds(updateCallBack);
+        updatePendingTasks(updateCallBack);
+    }
+
+    public static void getReminderAndTasksFromServer() {
         AppUser u = new AppUser();
         u.id = Preference.pref.getString(Const.USER_ID, "");
         //get user's reminders and tasks
@@ -217,19 +249,45 @@ public class APIClient {
                 realm.executeTransactionAsync(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
+                        //alread synched tasks which means those data in server, if server not contain them, means deleted from server.
+                        RealmResults<Task> synchedTasks = realm.where(Task.class).equalTo("syncStatus", 0).findAll();
+                        RealmResults<Reminder> synchedReminders = realm.where(Reminder.class).equalTo("syncStatus", 0).findAll();
+
+                        ArrayList<String> remindIds = new ArrayList<String>();
+                        ArrayList<String> taskIds = new ArrayList<String>();
+                        for (Reminder r : synchedReminders) {
+                            remindIds.add(r.id);
+                        }
+                        for (Task t : synchedTasks) {
+                            taskIds.add(t.todo_Id);
+                        }
+
                         List<ReminderModel> reminders = response._data.remind;
                         List<TaskModel> tasks = response._data.todo;
                         if (reminders != null) {
                             for (ReminderModel m : reminders) {
                                 Reminder r = new Reminder(m);
+                                remindIds.remove(r.id);
                                 realm.copyToRealmOrUpdate(r);
                             }
                         }
+
+                        //delete those which is from server
+                        for (String id : remindIds) {
+                            realm.where(Reminder.class).equalTo("id", id).findFirst().deleteFromRealm();
+                        }
+
                         if (tasks != null) {
                             for (TaskModel m : tasks) {
                                 Task t = new Task(m);
+                                taskIds.remove(t.todo_Id);
                                 realm.copyToRealmOrUpdate(t);
                             }
+                        }
+
+                        //delete those which is from server
+                        for (String id : taskIds) {
+                            realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst().deleteFromRealm();
                         }
                     }
                 });
