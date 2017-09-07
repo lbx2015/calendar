@@ -15,6 +15,8 @@ public class Task extends RealmObject {
     @Ignore
     public static String IS_COMPLETE = "isComplete";
     @Ignore
+    public static String DELETESTATE = "deleteState";
+    @Ignore
     public static String TODO_ID = "todo_Id";
     @Ignore
     public static String COMPLETEDATE = "completeDate";
@@ -58,6 +60,7 @@ public class Task extends RealmObject {
 
     //    @Transient
     public int deleteState;
+    public byte syncStatus;//同步的状态0:同步,1待同步
 
     public Task() {
     }

@@ -22,7 +22,6 @@ import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
@@ -31,16 +30,12 @@ import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.Realm;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -180,30 +175,7 @@ public class AddRemindActivity extends AppCompatActivity {
                 //add a new remind to server.
                 APIClient.synchronousReminds(r, CONST.UPDATE, null);
             } else {
-                Task task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
-                TaskModel taskModel = new TaskModel(task);
-                Call<ResponseBody> call = apiInterface.createTask(taskModel);
-                call.enqueue(new retrofit2.Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        ResponseBody r = response.body();
-                        try {
-                            if (r == null) {
-                                Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
-                            }
-                            String s = r.source().readUtf8();
-                            Log.d("zzw", "success " + s);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d("zzw", "fail" + t.getMessage());
-                    }
-                });
-
+                APIClient.synchronousTasks(realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst(), CONST.ADD);
             }
         }
         onBackPressed();

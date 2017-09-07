@@ -98,6 +98,40 @@ public class APIClient {
         });
     }
 
+    public static void synchronousTasks(final Task task, final byte operationType) {
+        final ArrayList<TaskModel> tasks = new ArrayList<>(1);
+        TaskModel t = new TaskModel(task);
+        if (operationType == CONST.DELETE) {
+            t.deleteState = 1;
+        }
+
+        tasks.add(t);
+        apiInterface.synchronousTasks(tasks).enqueue(new ZCallBackWithFail<ResponseModel<String>>() {
+            @Override
+            public void callBack() {
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        if (operationType == CONST.DELETE) {
+                            if (failed) {
+                                task.deleteState = 1;
+                                task.syncStatus = 1;
+                            } else {
+                                task.deleteFromRealm();
+                            }
+                        } else {
+                            if (failed) {
+                                task.syncStatus = 1;
+                            } else {
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     public static void synchronousReminds(final Reminder r, final byte operationType, final ZRequestCallBack callBack) {
         final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>(1);
         ReminderModel m = null;

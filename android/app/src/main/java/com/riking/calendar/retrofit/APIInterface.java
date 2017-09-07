@@ -134,4 +134,7 @@ public interface APIInterface {
 
     @POST("synchronous/synchronousReminds")
     Call<ResponseModel<String>> synchronousReminds(@Body List<ReminderModel> reminderModels);
+
+    @POST("synchronous/synchronousTodos")
+    Call<ResponseModel<String>> synchronousTasks(@Body List<TaskModel> tasks);
 }
