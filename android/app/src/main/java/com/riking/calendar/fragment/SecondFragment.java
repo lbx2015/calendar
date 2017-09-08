@@ -66,7 +66,7 @@ public class SecondFragment extends Fragment {
     TextView holidayTextView;
     TextView concurrencyTextView;
     TextView dateTextView;
-    SpinnerView mSpinnerView;
+    SpinnerView countrySpinnerView;
     SpinnerView mHolidaySpinnerView;
     SpinnerView mConcurrencySpinnerView;
     List<ModelPropDict> mCountryDatas;
@@ -97,14 +97,14 @@ public class SecondFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        mSpinnerView = new SpinnerView((ViewGroup) countryColumn);
-        mSpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        countrySpinnerView = new SpinnerView((ViewGroup) countryColumn);
+        countrySpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 设置输入框内容
                 ModelPropDict dict = mCountryDatas.get(position);
                 if (countryTextView.getText().toString().equals(dict.valu)) {
-                    mSpinnerView.dismiss();
+                    countrySpinnerView.dismiss();
                     //do nothing for the same condition
                     return;
                 }
@@ -113,7 +113,7 @@ public class SecondFragment extends Fragment {
                 requestBoday.pindex = 1;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 // 隐藏popupWindow
-                mSpinnerView.dismiss();
+                countrySpinnerView.dismiss();
             }
         });
 
@@ -219,10 +219,10 @@ public class SecondFragment extends Fragment {
 
 
         //change the arrow icon to arrow down icon
-        mSpinnerView.dismissListener = new SpinnerView.DismissListener() {
+        countrySpinnerView.dismissListener = new SpinnerView.DismissListener() {
             @Override
             public void onDismiss() {
-                mSpinnerView.mWindow.dismiss();
+                countrySpinnerView.mWindow.dismiss();
                 countryArrow.setRotation(0);
             }
         };
@@ -248,13 +248,13 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("zzw", "click country column");
-                if (mSpinnerView.mWindow != null && mSpinnerView.mWindow.isShowing()) {
+                if (countrySpinnerView.mWindow != null && countrySpinnerView.mWindow.isShowing()) {
                     Logger.d("zzw", "arrow down");
-                    mSpinnerView.dismiss();
+                    countrySpinnerView.dismiss();
                     countryArrow.setRotation(0);
                     ;
                 } else {
-                    mSpinnerView.clickArrow();
+                    countrySpinnerView.clickArrow();
                     Logger.d("zzw", "arrow left");
                     countryArrow.setRotation(180);
                 }
@@ -344,11 +344,11 @@ public class SecondFragment extends Fragment {
                 empty.setVisibility(View.GONE);
             }
         };
+        recyclerView.setLayoutManager(new LinearLayoutManager(a));
 //        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
 //        final int marginBottom = a.bottomTabs.getMeasuredHeight();
 //        params.setMargins(0, 0, 0, marginBottom);
 //        recyclerView.setLayoutParams(params);
-        recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
 //        List<Vocation> vocations = realm.where(Vocation.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
@@ -407,7 +407,7 @@ public class SecondFragment extends Fragment {
                 mConcurrencyDatas.add(0, allConcurrency);
                 mConcurrencySpinnerView.setAdapter(new MyAdapter(mConcurrencyDatas));
                 mHolidaySpinnerView.setAdapter(new MyAdapter(mHolidayDatas));
-                mSpinnerView.setAdapter(new MyAdapter(mCountryDatas));
+                countrySpinnerView.setAdapter(new MyAdapter(mCountryDatas));
                 Log.d("zzw", response.code() + "success " + r);
             }
 
