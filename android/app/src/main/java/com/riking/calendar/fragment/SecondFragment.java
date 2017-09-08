@@ -3,6 +3,7 @@ package com.riking.calendar.fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -26,7 +27,6 @@ import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.ModelPropDict;
-import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.view.SpinnerView;
@@ -37,11 +37,8 @@ import com.riking.calendar.widget.dialog.SearchDialog;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-import io.realm.Realm;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,7 +54,7 @@ public class SecondFragment extends Fragment {
     public CtryHdayCrcy requestBoday = new CtryHdayCrcy();
     public Callback getMoreVocationCallBack;
     ZRecyclerView recyclerView;
-    Realm realm;
+
     ViewPagerActivity a;
     View searchView;
     View dateColumn;
@@ -76,6 +73,7 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
     DatePickerDialog dialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,6 +89,13 @@ public class SecondFragment extends Fragment {
         concurrencyTextView = (TextView) v.findViewById(R.id.concurrency_textview);
         dateTextView = (TextView) v.findViewById(R.id.date_textview);
         final View empty = v.findViewById(R.id.empty);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
+
+        // Configure the refreshing colors
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         mSpinnerView = new SpinnerView((ViewGroup) countryColumn);
         mSpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -339,30 +344,12 @@ public class SecondFragment extends Fragment {
                 empty.setVisibility(View.GONE);
             }
         };
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-        final int marginBottom = a.bottomTabs.getMeasuredHeight();
-        params.setMargins(0, 0, 0, marginBottom);
-        recyclerView.setLayoutParams(params);
-        realm = Realm.getDefaultInstance();
-        // Create the Realm instance
-        realm = Realm.getDefaultInstance();
-        //insert  to realm
-        // All writes must be wrapped in a transaction to facilitate safe multi threading
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // Add a person
-                Vocation v = realm.createObject(Vocation.class, UUID.randomUUID().toString());
-                v.date = new Date();
-                v.country = "China";
-                v.currency = "RMB";
-                v.name = "春节";
-
-            }
-        });
-
+//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+//        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+//        params.setMargins(0, 0, 0, marginBottom);
+//        recyclerView.setLayoutParams(params);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-        List<Vocation> vocations = realm.where(Vocation.class).findAll();
+//        List<Vocation> vocations = realm.where(Vocation.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
 //        recyclerView.setAdapter(new VocationRecyclerViewAdapter(vocations));
@@ -433,11 +420,12 @@ public class SecondFragment extends Fragment {
         requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
         Gson gson = new Gson();
         Log.d("zzw", "jason: " + gson.toJson(requestBoday));
-        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(requestBoday);
+        final Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(requestBoday);
 
         getMoreVocationCallBack = new Callback<CtryHdayCryCondition>() {
             @Override
             public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
+                swipeRefreshLayout.setRefreshing(false);
                 if (recyclerView == null) {
                     return;
                 }
@@ -454,10 +442,18 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CtryHdayCryCondition> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
             }
         };
 
         vocationCalls.enqueue(getMoreVocationCallBack);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                vocationCalls.clone().enqueue(getMoreVocationCallBack);
+            }
+        });
+
 
         return v;
     }
@@ -465,7 +461,6 @@ public class SecondFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        realm.close();
     }
 
     class MyAdapter extends BaseAdapter {
