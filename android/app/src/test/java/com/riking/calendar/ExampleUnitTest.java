@@ -2,13 +2,16 @@ package com.riking.calendar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.util.Debug;
 
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +54,33 @@ public class ExampleUnitTest {
         user.id = "ddddd";
         dd._data = user;
         System.out.println(new Gson().toJson(dd));
+    }
+
+    @Test
+    public void testDateFormatParse() {
+        String day = "20141210";
+        String time = "0601";
+        try {
+            Date reminderTime = new SimpleDateFormat("yyyyMMddHHmm").parse(day + time);
+            System.out.print(reminderTime);
+        } catch (ParseException e) {
+            Debug.Handle(e);
+        }
+    }
+
+    @Test
+    public void testStringParse() {
+        String time = "06:01";
+        System.out.print(time.replace(":", ""));
+    }
+
+    @org.junit.Test
+    public void testGsonString() {
+        String id = "adsfjdl";
+        JsonObject j = new JsonObject();
+        j.addProperty("id", id);
+        System.out.println(new Gson().toJson(j));
+
     }
 
     @Test

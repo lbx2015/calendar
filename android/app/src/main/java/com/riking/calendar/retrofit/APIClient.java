@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.ldf.calendar.Const;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
@@ -236,10 +237,10 @@ public class APIClient {
     }
 
     public static void getReminderAndTasksFromServer() {
-        AppUser u = new AppUser();
-        u.id = Preference.pref.getString(Const.USER_ID, "");
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id",Preference.pref.getString(Const.USER_ID, ""));
         //get user's reminders and tasks
-        APIClient.apiInterface.synchronousAll(u).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
+        APIClient.apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
             @Override
             public void callBack(final ResponseModel<SynResult> response) {
                 final Realm realm = Realm.getDefaultInstance();

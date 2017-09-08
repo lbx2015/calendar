@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
@@ -166,9 +167,10 @@ public class LoginActivity extends AppCompatActivity {
                                 .deleteRealmIfMigrationNeeded();
                         builder.name(u.id);
                         Realm.setDefaultConfiguration(builder.build());
-
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("id", u.id);
                         //get user's reminders and tasks
-                        apiInterface.synchronousAll(u).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
+                        apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
                             @Override
                             public void callBack(final ResponseModel<SynResult> response) {
                                 final Realm realm = Realm.getDefaultInstance();

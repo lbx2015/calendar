@@ -1,5 +1,6 @@
 package com.riking.calendar.retrofit;
 
+import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
 import com.riking.calendar.pojo.CtryHdayCrcy;
@@ -130,7 +131,7 @@ public interface APIInterface {
      * get user's reminders and tasks and other info ..
      */
     @POST("synchronous/synchronousAll")
-    Call<ResponseModel<SynResult>> synchronousAll(@Body AppUser user);
+    Call<ResponseModel<SynResult>> synchronousAll(@Body JsonObject user);
 
     @POST("synchronous/synchronousReminds")
     Call<ResponseModel<String>> synchronousReminds(@Body List<ReminderModel> reminderModels);
