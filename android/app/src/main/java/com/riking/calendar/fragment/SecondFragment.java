@@ -73,13 +73,17 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
     DatePickerDialog dialog;
+    View v;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (v != null) {
+            return v;
+        }
         calendar = Calendar.getInstance();
         a = (ViewPagerActivity) getActivity();
-        View v = inflater.inflate(R.layout.second_fragment, container, false);
+        v = inflater.inflate(R.layout.second_fragment, container, false);
         dateColumn = v.findViewById(R.id.date_column);
         countryColumn = v.findViewById(R.id.country_column);
         holidayColumn = v.findViewById(R.id.holiday_column);

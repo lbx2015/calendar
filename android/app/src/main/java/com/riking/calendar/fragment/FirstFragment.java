@@ -97,6 +97,7 @@ public class FirstFragment extends Fragment {
     //current year month
     String yearMonth;
     ReportOnlineAdapter reportOnlineAdapter;
+    View v;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -220,11 +221,14 @@ public class FirstFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (v != null) {
+            return v;
+        }
         Log.d("zzw", this + " onCreateView");
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
         Logger.d("zzw", " realm file name: " + realm.getConfiguration().getRealmFileName());
-        View v = inflater.inflate(R.layout.first_fragment, container, false);
+        v = inflater.inflate(R.layout.first_fragment, container, false);
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         add = v.findViewById(R.id.add);

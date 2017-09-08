@@ -2,7 +2,6 @@ package com.riking.calendar.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,32 +13,29 @@ import android.view.ViewGroup;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
-import com.riking.calendar.activity.ViewPagerActivity;
-
-import static com.riking.calendar.R.id.coordinator_layout;
 
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
 public class ThirdFragment extends Fragment implements View.OnClickListener {
+    View v;
     private ViewPager mViewPager;
     private View add;
     private View done;
-    private View title;
-
     private MyPagerAdapter mAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.third_fragment, container, false);
+        if (v != null) {
+            return v;
+        }
+        v = inflater.inflate(R.layout.third_fragment, container, false);
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         add = v.findViewById(R.id.add);
         done = v.findViewById(R.id.done);
-        title = v.findViewById(R.id.title);
         add.setOnClickListener(this);
 
         //adding view pager to the slidingTabLayout
