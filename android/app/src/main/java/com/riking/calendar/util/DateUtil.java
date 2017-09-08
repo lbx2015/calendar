@@ -16,13 +16,14 @@ public class DateUtil {
     /**
      * return ture if date1 is before date2
      * The compare will ignore the time information.
+     *
      * @param date1
      * @param date2
      * @return
      */
     public static boolean before(Date date1, Date date2) {
         SimpleDateFormat s = new SimpleDateFormat(Const.yyyyMMdd);
-        return s.format(date1).compareTo(s.format(date2))<=0;
+        return s.format(date1).compareTo(s.format(date2)) <= 0;
     }
 
     /**
@@ -81,7 +82,8 @@ public class DateUtil {
     public static Date get(String date, String time) {
         Date dateTime = null;
         try {
-            dateTime = new SimpleDateFormat("yyyyMMddHHmm").parse(date + time);
+            String numberRefined = (date + time).replaceAll("[^\\d]", "");
+            dateTime = new SimpleDateFormat("yyyyMMddHHmm").parse(numberRefined);
         } catch (ParseException e) {
             Debug.Handle(e);
         } finally {

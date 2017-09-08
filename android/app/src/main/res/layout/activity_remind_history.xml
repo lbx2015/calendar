@@ -12,7 +12,6 @@
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/image_height_40dp"
             android:layout_gravity="left|center_vertical"
@@ -29,8 +28,10 @@
             android:textSize="18sp" />
     </FrameLayout>
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.riking.calendar.view.ZRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/primary_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <include layout="@layout/empty_layout" />
 </LinearLayout>

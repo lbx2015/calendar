@@ -168,4 +168,13 @@ public class ExampleUnitTest {
         System.out.println("1^1: " + (1 ^ 1));
         System.out.println("0^0: " + (0 ^ 0));
     }
+
+    @Test
+    public void testRemoveNonNumber() {
+        String s = "albl2.df234:d34";
+        String numberRefined = s.replaceAll("[^0-9]", "");
+//        String numberRefined = s.replaceAll("[^\\d]", "");
+        //223434
+        System.out.println(numberRefined);
+    }
 }

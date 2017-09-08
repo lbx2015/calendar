@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.ReminderAdapter;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.view.ZRecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,15 +33,32 @@ import io.realm.Sort;
 
 public class RemindHistoryActivity extends AppCompatActivity {
     public Realm realm;
-    private RecyclerView mPrimaryRecyclerView;
+    private ZRecyclerView mPrimaryRecyclerView;
+    private View emptyView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remind_history);
-        mPrimaryRecyclerView = (RecyclerView) findViewById(R.id.primary_recycler_view);
+        mPrimaryRecyclerView = (ZRecyclerView) findViewById(R.id.primary_recycler_view);
+
+        mPrimaryRecyclerView.emptyViewCallBack = new ZRecyclerView.EmptyViewCallBack() {
+            @Override
+            public void onEmpty() {
+                Logger.d("zzw", "on Empty");
+                emptyView.setVisibility(View.VISIBLE);
+                mPrimaryRecyclerView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNotEmpty() {
+                emptyView.setVisibility(View.GONE);
+                mPrimaryRecyclerView.setVisibility(View.VISIBLE);
+            }
+        };
         mPrimaryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        emptyView = findViewById(R.id.empty);
 
         realm = Realm.getDefaultInstance();
         final Date date = new Date();
