@@ -58,11 +58,13 @@ public class ReminderFragment extends Fragment {
     TextView futureTitle;
     CustomLinearLayout emptyView;
     View remindersRoot;
+    View v;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.reminder_fragment, container, false);
+        realm = Realm.getDefaultInstance();
+        v = inflater.inflate(R.layout.reminder_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
         remindersRoot = v.findViewById(R.id.reminds);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
@@ -145,7 +147,6 @@ public class ReminderFragment extends Fragment {
         futureRecyclerView = (RecyclerView) v.findViewById(R.id.future_recycler_view);
         futureRecyclerView.setLayoutManager(new LinearLayoutManager(a));
 
-        realm = Realm.getDefaultInstance();
         final Date date = new Date();
         final Calendar c = Calendar.getInstance();
         c.setTime(date);

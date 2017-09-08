@@ -49,7 +49,7 @@ public class Reminder extends RealmObject {
         userId = m.userId;
         title = m.title;
         day = m.day;
-        time = m.time;
+        time = m.time.replace("[^\\d]", "");
         reminderTime = DateUtil.get(day, time);
         isAllDay = m.isAllDay;
         aheadTime = m.aheadTime;

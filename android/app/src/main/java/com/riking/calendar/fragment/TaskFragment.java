@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
@@ -55,11 +54,16 @@ public class TaskFragment extends Fragment {
     View quickAddFrameLayout;
     EditText quickAddEditor;
     View quickAddConfirmButton;
+    View v;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.task_fragment, container, false);
+        realm = Realm.getDefaultInstance();
+        if (v != null) {
+            return v;
+        }
+        v = inflater.inflate(R.layout.task_fragment, container, false);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
         quickAddButton = v.findViewById(R.id.quick_add_button);
         quickAddFrameLayout = v.findViewById(R.id.quick_add_frame_layout);
@@ -169,7 +173,6 @@ public class TaskFragment extends Fragment {
     private void setRecyclerView(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-        realm = Realm.getDefaultInstance();
         //only show the not complete tasks
         final RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).notEqualTo(Task.DELETESTATE, CONST.DELETE).findAll();
 

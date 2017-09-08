@@ -221,12 +221,13 @@ public class FirstFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (v != null) {
-            return v;
-        }
         Log.d("zzw", this + " onCreateView");
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
+        if (v != null) {
+            return v;
+        }
+
         Logger.d("zzw", " realm file name: " + realm.getConfiguration().getRealmFileName());
         v = inflater.inflate(R.layout.first_fragment, container, false);
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);

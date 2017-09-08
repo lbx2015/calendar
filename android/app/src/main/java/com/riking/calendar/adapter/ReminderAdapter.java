@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 
 /**
  * Created by zw.zhang on 2017/7/12.
@@ -122,6 +121,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
 
     @Override
     public int getItemCount() {
+        if (realm.isClosed()) {
+            return 0;
+        }
         return reminders.size();
     }
 
