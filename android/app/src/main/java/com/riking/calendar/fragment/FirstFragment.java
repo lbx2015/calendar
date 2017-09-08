@@ -410,8 +410,10 @@ public class FirstFragment extends Fragment {
                 .endGroup().findAllSorted("time", Sort.ASCENDING);
         Calendar c = Calendar.getInstance();
         for (Reminder r : reminders) {
-            c.setTime(r.reminderTime);
-            notRepeatRemindDaysOfMonth.add(String.valueOf(c.get(Calendar.DATE)));
+            if (r.reminderTime != null) {
+                c.setTime(r.reminderTime);
+                notRepeatRemindDaysOfMonth.add(String.valueOf(c.get(Calendar.DATE)));
+            }
         }
 
         //find the repeat week days
