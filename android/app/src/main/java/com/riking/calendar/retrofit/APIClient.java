@@ -138,6 +138,9 @@ public class APIClient {
     }
 
     public static void synchronousTasks(final Task task, final byte operationType) {
+        if(!task.isValid()){
+            return;
+        }
         final ArrayList<TaskModel> tasks = new ArrayList<>(1);
         TaskModel t = new TaskModel(task);
         if (operationType == CONST.DELETE) {
@@ -173,6 +176,9 @@ public class APIClient {
     }
 
     public static void synchronousReminds(final Reminder r, final byte operationType, final ZRequestCallBack callBack) {
+        if(!r.isValid()){
+            return;
+        }
         final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>(1);
         ReminderModel m = null;
         if (operationType == 1) {
