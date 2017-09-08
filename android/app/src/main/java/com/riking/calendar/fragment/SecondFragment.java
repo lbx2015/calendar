@@ -98,6 +98,11 @@ public class SecondFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 设置输入框内容
                 ModelPropDict dict = mCountryDatas.get(position);
+                if (countryTextView.getText().toString().equals(dict.valu)) {
+                    mSpinnerView.dismiss();
+                    //do nothing for the same condition
+                    return;
+                }
                 countryTextView.setText(dict.valu);
                 requestBoday.ctryName = dict.ke;
                 requestBoday.pindex = 1;
@@ -112,6 +117,11 @@ public class SecondFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ModelPropDict data = mHolidayDatas.get(position);
+                if (holidayTextView.getText().toString().equals(data.valu)) {
+                    mHolidaySpinnerView.dismiss();
+                    //do nothing for the same condition
+                    return;
+                }
                 holidayTextView.setText(data.valu);
                 requestBoday.hdayName = data.ke;
                 Log.d("zzw", "requestBoday: " + requestBoday.hdayName);
@@ -126,6 +136,11 @@ public class SecondFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ModelPropDict data = mConcurrencyDatas.get(position);
+                if (concurrencyTextView.getText().toString().equals(data.valu)) {
+                    mConcurrencySpinnerView.dismiss();
+                    //do nothing for the same condition
+                    return;
+                }
                 concurrencyTextView.setText(data.valu);
                 requestBoday.crcy = data.ke;
                 requestBoday.pindex = 1;
