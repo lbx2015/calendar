@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -61,10 +62,20 @@ public class RemindHistoryActivity extends AppCompatActivity {
         emptyView = findViewById(R.id.empty);
 
         realm = Realm.getDefaultInstance();
+        updateAdapter();
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                mPrimaryRecyclerView.getAdapter().notifyDataSetChanged();
+                updateAdapter();
+            }
+        });
+    }
+
+    private void updateAdapter() {
         final Date date = new Date();
         RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().lessThan("reminderTime", date).equalTo("repeatFlag", 0).endGroup()
                 .findAllSorted("time", Sort.ASCENDING);
-
         LinkedHashMap<String, List<Reminder>> daysWithTasks = new LinkedHashMap<>();
         int size = reminders.size();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
@@ -88,7 +99,6 @@ public class RemindHistoryActivity extends AppCompatActivity {
             }
             daysWithTasks.get(key).add(t);
         }
-
         mPrimaryRecyclerView.setAdapter(new ReminderHistoryAdapter(daysWithTasks));
     }
 
