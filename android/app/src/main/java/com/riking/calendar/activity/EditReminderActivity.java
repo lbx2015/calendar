@@ -8,10 +8,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.fragment.CreateReminderFragment;
+import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -84,6 +89,7 @@ public class EditReminderActivity extends AppCompatActivity {
                 reminder.isRemind = reminderFragment.isRemind;
                 reminder.isAllDay = reminderFragment.isAllDay;
                 reminder.reminderTime = reminderDate;
+                APIClient.synchronousReminds(reminder, CONST.UPDATE,null);
             }
         });
 

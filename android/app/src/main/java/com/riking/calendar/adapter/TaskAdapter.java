@@ -16,6 +16,8 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.text.ParseException;
@@ -71,15 +73,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notifyItemRemoved(position);
                 holder.sml.smoothCloseMenu();
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        realm.where(Task.class).equalTo(Task.TODO_ID, r.todo_Id).findFirst().deleteFromRealm();
-                    }
-                });
-                Toast.makeText(holder.done.getContext(), "deleted", Toast.LENGTH_LONG).show();
+                APIClient.synchronousTasks(r, CONST.DELETE);
+                Toast.makeText(holder.done.getContext(), "删除成功", Toast.LENGTH_LONG).show();
             }
         });
 

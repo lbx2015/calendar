@@ -23,6 +23,7 @@ import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.SecondFragment;
 import com.riking.calendar.fragment.ThirdFragment;
 import com.riking.calendar.pojo.TabEntity;
+import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.ViewFindUtils;
 
 import java.util.ArrayList;

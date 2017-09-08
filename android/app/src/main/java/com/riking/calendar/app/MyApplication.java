@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import com.ldf.calendar.Const;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.NetStateReceiver;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
@@ -39,7 +40,7 @@ public class MyApplication extends Application {
         } else {
             builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);
         }
-
+        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
         RealmConfiguration realmConfiguration = builder.build();
 //        Realm.deleteRealm(realmConfiguration); // Clean slate
         Realm.setDefaultConfiguration(realmConfiguration);

@@ -3,9 +3,9 @@ package com.riking.calendar.fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,20 +27,17 @@ import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.ModelPropDict;
-import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
-import com.riking.calendar.util.ViewFindUtils;
 import com.riking.calendar.view.SpinnerView;
+import com.riking.calendar.view.ZRecyclerView;
 import com.riking.calendar.widget.dialog.DatePickerDialog;
 import com.riking.calendar.widget.dialog.SearchDialog;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import io.realm.Realm;
 import okhttp3.ResponseBody;
@@ -57,8 +54,8 @@ public class SecondFragment extends Fragment {
     public APIInterface apiInterface;
     public CtryHdayCrcy requestBoday = new CtryHdayCrcy();
     public Callback getMoreVocationCallBack;
-    RecyclerView recyclerView;
-    Realm realm;
+    ZRecyclerView recyclerView;
+
     ViewPagerActivity a;
     View searchView;
     View dateColumn;
@@ -70,19 +67,24 @@ public class SecondFragment extends Fragment {
     TextView holidayTextView;
     TextView concurrencyTextView;
     TextView dateTextView;
-    SpinnerView mSpinnerView;
+    SpinnerView countrySpinnerView;
     SpinnerView mHolidaySpinnerView;
     SpinnerView mConcurrencySpinnerView;
     List<ModelPropDict> mCountryDatas;
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
     DatePickerDialog dialog;
+    View v;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (v != null) {
+            return v;
+        }
         calendar = Calendar.getInstance();
         a = (ViewPagerActivity) getActivity();
-        View v = inflater.inflate(R.layout.second_fragment, container, false);
+        v = inflater.inflate(R.layout.second_fragment, container, false);
         dateColumn = v.findViewById(R.id.date_column);
         countryColumn = v.findViewById(R.id.country_column);
         holidayColumn = v.findViewById(R.id.holiday_column);
@@ -91,19 +93,32 @@ public class SecondFragment extends Fragment {
         holidayTextView = (TextView) v.findViewById(R.id.holiday_textview);
         concurrencyTextView = (TextView) v.findViewById(R.id.concurrency_textview);
         dateTextView = (TextView) v.findViewById(R.id.date_textview);
+        final View empty = v.findViewById(R.id.empty);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
 
-        mSpinnerView = new SpinnerView((ViewGroup) countryColumn);
-        mSpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Configure the refreshing colors
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        countrySpinnerView = new SpinnerView((ViewGroup) countryColumn);
+        countrySpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 设置输入框内容
                 ModelPropDict dict = mCountryDatas.get(position);
+                if (countryTextView.getText().toString().equals(dict.valu)) {
+                    countrySpinnerView.dismiss();
+                    //do nothing for the same condition
+                    return;
+                }
                 countryTextView.setText(dict.valu);
                 requestBoday.ctryName = dict.ke;
                 requestBoday.pindex = 1;
                 apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
                 // 隐藏popupWindow
-                mSpinnerView.dismiss();
+                countrySpinnerView.dismiss();
             }
         });
 
@@ -112,6 +127,11 @@ public class SecondFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ModelPropDict data = mHolidayDatas.get(position);
+                if (holidayTextView.getText().toString().equals(data.valu)) {
+                    mHolidaySpinnerView.dismiss();
+                    //do nothing for the same condition
+                    return;
+                }
                 holidayTextView.setText(data.valu);
                 requestBoday.hdayName = data.ke;
                 Log.d("zzw", "requestBoday: " + requestBoday.hdayName);
@@ -126,6 +146,11 @@ public class SecondFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ModelPropDict data = mConcurrencyDatas.get(position);
+                if (concurrencyTextView.getText().toString().equals(data.valu)) {
+                    mConcurrencySpinnerView.dismiss();
+                    //do nothing for the same condition
+                    return;
+                }
                 concurrencyTextView.setText(data.valu);
                 requestBoday.crcy = data.ke;
                 requestBoday.pindex = 1;
@@ -199,10 +224,10 @@ public class SecondFragment extends Fragment {
 
 
         //change the arrow icon to arrow down icon
-        mSpinnerView.dismissListener = new SpinnerView.DismissListener() {
+        countrySpinnerView.dismissListener = new SpinnerView.DismissListener() {
             @Override
             public void onDismiss() {
-                mSpinnerView.mWindow.dismiss();
+                countrySpinnerView.mWindow.dismiss();
                 countryArrow.setRotation(0);
             }
         };
@@ -228,13 +253,13 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("zzw", "click country column");
-                if (mSpinnerView.mWindow != null && mSpinnerView.mWindow.isShowing()) {
+                if (countrySpinnerView.mWindow != null && countrySpinnerView.mWindow.isShowing()) {
                     Logger.d("zzw", "arrow down");
-                    mSpinnerView.dismiss();
+                    countrySpinnerView.dismiss();
                     countryArrow.setRotation(0);
                     ;
                 } else {
-                    mSpinnerView.clickArrow();
+                    countrySpinnerView.clickArrow();
                     Logger.d("zzw", "arrow left");
                     countryArrow.setRotation(180);
                 }
@@ -311,32 +336,25 @@ public class SecondFragment extends Fragment {
                 dialog.show();
             }
         });
-        recyclerView = ViewFindUtils.find(v, R.id.recycler_view);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-        final int marginBottom = a.bottomTabs.getMeasuredHeight();
-        params.setMargins(0, 0, 0, marginBottom);
-        recyclerView.setLayoutParams(params);
-        realm = Realm.getDefaultInstance();
-        // Create the Realm instance
-        realm = Realm.getDefaultInstance();
-        //insert  to realm
-        // All writes must be wrapped in a transaction to facilitate safe multi threading
-        realm.executeTransaction(new Realm.Transaction() {
+        recyclerView = (ZRecyclerView) v.findViewById(R.id.recycler_view);
+        ((TextView) ((LinearLayout) empty).getChildAt(1)).setText("没有找到数据");
+        recyclerView.emptyViewCallBack = new ZRecyclerView.EmptyViewCallBack() {
             @Override
-            public void execute(Realm realm) {
-                // Add a person
-                Vocation v = realm.createObject(Vocation.class, UUID.randomUUID().toString());
-                v.date = new Date();
-                v.country = "China";
-                v.currency = "RMB";
-                v.name = "春节";
-
+            public void onEmpty() {
+                empty.setVisibility(View.VISIBLE);
             }
-        });
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-        List<Vocation> vocations = realm.where(Vocation.class).findAll();
+            @Override
+            public void onNotEmpty() {
+                empty.setVisibility(View.GONE);
+            }
+        };
+        recyclerView.setLayoutManager(new LinearLayoutManager(a));
+//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+//        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+//        params.setMargins(0, 0, 0, marginBottom);
+//        recyclerView.setLayoutParams(params);
+//        List<Vocation> vocations = realm.where(Vocation.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
 //        recyclerView.setAdapter(new VocationRecyclerViewAdapter(vocations));
@@ -394,7 +412,7 @@ public class SecondFragment extends Fragment {
                 mConcurrencyDatas.add(0, allConcurrency);
                 mConcurrencySpinnerView.setAdapter(new MyAdapter(mConcurrencyDatas));
                 mHolidaySpinnerView.setAdapter(new MyAdapter(mHolidayDatas));
-                mSpinnerView.setAdapter(new MyAdapter(mCountryDatas));
+                countrySpinnerView.setAdapter(new MyAdapter(mCountryDatas));
                 Log.d("zzw", response.code() + "success " + r);
             }
 
@@ -407,11 +425,12 @@ public class SecondFragment extends Fragment {
         requestBoday.hdayDate = new SimpleDateFormat("yyyy").format(calendar.getTime());
         Gson gson = new Gson();
         Log.d("zzw", "jason: " + gson.toJson(requestBoday));
-        Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(requestBoday);
+        final Call<CtryHdayCryCondition> vocationCalls = apiInterface.getMore(requestBoday);
 
         getMoreVocationCallBack = new Callback<CtryHdayCryCondition>() {
             @Override
             public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
+                swipeRefreshLayout.setRefreshing(false);
                 if (recyclerView == null) {
                     return;
                 }
@@ -428,10 +447,20 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CtryHdayCryCondition> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
             }
         };
 
         vocationCalls.enqueue(getMoreVocationCallBack);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //first page
+                requestBoday.pindex = 1;
+                apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
+            }
+        });
+
 
         return v;
     }
@@ -439,7 +468,6 @@ public class SecondFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        realm.close();
     }
 
     class MyAdapter extends BaseAdapter {

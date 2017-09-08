@@ -55,7 +55,7 @@ public class ReminderModel {
         userId = r.userId;
         title = r.title;
         day = r.day;
-        time = r.time;
+        time = r.time.replace("[^\\d]","");
         repeatFlag = r.repeatFlag;
         isAllDay = r.isAllDay;
         aheadTime = r.aheadTime;

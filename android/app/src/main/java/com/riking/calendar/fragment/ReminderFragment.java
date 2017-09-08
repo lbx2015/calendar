@@ -14,15 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.ldf.calendar.Const;
 import com.ldf.calendar.Utils;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RemindHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
@@ -55,12 +57,16 @@ public class ReminderFragment extends Fragment {
     TextView tomorrowTitle;
     TextView futureTitle;
     CustomLinearLayout emptyView;
+    View remindersRoot;
+    View v;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.reminder_fragment, container, false);
+        realm = Realm.getDefaultInstance();
+        v = inflater.inflate(R.layout.reminder_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
+        remindersRoot = v.findViewById(R.id.reminds);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
         emptyView = (CustomLinearLayout) v.findViewById(R.id.empty);
         checkHistoryButton = v.findViewById(R.id.check_remind_history);
@@ -76,8 +82,11 @@ public class ReminderFragment extends Fragment {
             @Override
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
-                Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
+                if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+                    //get reminders and tasks of user from server
+                    APIClient.synchAll();
+                }
             }
         });
 
@@ -138,7 +147,6 @@ public class ReminderFragment extends Fragment {
         futureRecyclerView = (RecyclerView) v.findViewById(R.id.future_recycler_view);
         futureRecyclerView.setLayoutManager(new LinearLayoutManager(a));
 
-        realm = Realm.getDefaultInstance();
         final Date date = new Date();
         final Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -154,7 +162,7 @@ public class ReminderFragment extends Fragment {
 
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
-        RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
+        RealmResults<Reminder> reminders = realm.where(Reminder.class).notEqualTo("deleteState", 1).beginGroup().equalTo("day", dayFormat.format(date)).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
@@ -205,10 +213,10 @@ public class ReminderFragment extends Fragment {
 
                 if (todayAdapter.getItemCount() == 0 && tomorrowAdapter.getItemCount() == 0 && futureAdapter.getItemCount() == 0) {
                     emptyView.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setVisibility(View.GONE);
+                    remindersRoot.setVisibility(View.GONE);
                 } else {
                     emptyView.setVisibility(View.GONE);
-                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                    remindersRoot.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -221,11 +229,11 @@ public class ReminderFragment extends Fragment {
             weekDay = 1;
         }
         //set tomorrow
-        List<Reminder> tomorrowReminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(c.getTime())).equalTo("repeatFlag", 0).endGroup()
+        final List<Reminder> tomorrowReminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(c.getTime())).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
-                .endGroup()
+                .endGroup().equalTo("deleteState", 0)
                 .findAllSorted("time", Sort.ASCENDING);
         tomorrowRecyclerView.setAdapter(new ReminderAdapter(tomorrowReminders, realm));
 
@@ -247,7 +255,7 @@ public class ReminderFragment extends Fragment {
                 .beginGroup()
                 .notEqualTo("repeatFlag", CONST.NOT_REPEAT_FLAG_WEEK)
 //                .contains("repeatWeek", String.valueOf(weekDay))
-                .endGroup()
+                .endGroup().equalTo("deleteState", 0)
                 .findAllSorted("reminderTime", Sort.ASCENDING);
         futureRecyclerView.setAdapter(new ReminderAdapter(futureReminders, realm));
         if (futureReminders.size() > 0) {
@@ -256,13 +264,22 @@ public class ReminderFragment extends Fragment {
             futureTitle.setVisibility(View.GONE);
         }
 
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                recyclerView.getAdapter().notifyDataSetChanged();
+                tomorrowRecyclerView.getAdapter().notifyDataSetChanged();
+                futureRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
+
         if (tomorrowReminders.size() == 0 && reminders.size() == 0 && futureReminders.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
-            emptyView.bringToFront();
+            remindersRoot.setVisibility(View.GONE);
+//            emptyView.bringToFront();
         } else {
             emptyView.setVisibility(View.GONE);
-            swipeRefreshLayout.setVisibility(View.VISIBLE);
+            remindersRoot.setVisibility(View.VISIBLE);
         }
     }
 

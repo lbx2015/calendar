@@ -2,13 +2,16 @@ package com.riking.calendar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.util.Debug;
 
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +54,33 @@ public class ExampleUnitTest {
         user.id = "ddddd";
         dd._data = user;
         System.out.println(new Gson().toJson(dd));
+    }
+
+    @Test
+    public void testDateFormatParse() {
+        String day = "20141210";
+        String time = "0601";
+        try {
+            Date reminderTime = new SimpleDateFormat("yyyyMMddHHmm").parse(day + time);
+            System.out.print(reminderTime);
+        } catch (ParseException e) {
+            Debug.Handle(e);
+        }
+    }
+
+    @Test
+    public void testStringParse() {
+        String time = "06:01";
+        System.out.print(time.replace(":", ""));
+    }
+
+    @org.junit.Test
+    public void testGsonString() {
+        String id = "adsfjdl";
+        JsonObject j = new JsonObject();
+        j.addProperty("id", id);
+        System.out.println(new Gson().toJson(j));
+
     }
 
     @Test
@@ -137,5 +167,14 @@ public class ExampleUnitTest {
         System.out.println("0^1: " + (0 ^ 1));
         System.out.println("1^1: " + (1 ^ 1));
         System.out.println("0^0: " + (0 ^ 0));
+    }
+
+    @Test
+    public void testRemoveNonNumber() {
+        String s = "albl2.df234:d34";
+        String numberRefined = s.replaceAll("[^0-9]", "");
+//        String numberRefined = s.replaceAll("[^\\d]", "");
+        //223434
+        System.out.println(numberRefined);
     }
 }

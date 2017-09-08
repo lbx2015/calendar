@@ -40,9 +40,13 @@ public class FourthFragment extends Fragment implements OnClickListener {
     ImageView myPhoto;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     int loginState;
+    View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(v!=null){
+            return v;
+        }
         sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         View v = inflater.inflate(R.layout.fourth_fragment, container, false);
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);

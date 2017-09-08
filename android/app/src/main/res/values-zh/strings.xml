@@ -90,4 +90,8 @@
     <string name="user_info">用户信息</string>
     <string name="click_again_exit">再按一次退出</string>
     <string name="click_again_clear_memory">再按一下清理缓存数据</string>
+    <string name="net_connected">Network connected</string>
+    <string name="net_not_connected">网络断开</string>
+    <string name="refresh_success">刷新成功</string>
+    <string name="server_error">服务器错误</string>
 </resources>

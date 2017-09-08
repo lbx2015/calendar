@@ -97,6 +97,7 @@ public class FirstFragment extends Fragment {
     //current year month
     String yearMonth;
     ReportOnlineAdapter reportOnlineAdapter;
+    View v;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -223,8 +224,12 @@ public class FirstFragment extends Fragment {
         Log.d("zzw", this + " onCreateView");
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
+        if (v != null) {
+            return v;
+        }
+
         Logger.d("zzw", " realm file name: " + realm.getConfiguration().getRealmFileName());
-        View v = inflater.inflate(R.layout.first_fragment, container, false);
+        v = inflater.inflate(R.layout.first_fragment, container, false);
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         add = v.findViewById(R.id.add);
@@ -293,7 +298,7 @@ public class FirstFragment extends Fragment {
         initReminderAdapter();
 
         //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).notEqualTo(Task.DELETESTATE, CONST.DELETE).findAll();
         taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
         taskAdapter = new TaskAdapter(tasks, realm);
         taskRecyclerView.setAdapter(taskAdapter);
@@ -410,8 +415,10 @@ public class FirstFragment extends Fragment {
                 .endGroup().findAllSorted("time", Sort.ASCENDING);
         Calendar c = Calendar.getInstance();
         for (Reminder r : reminders) {
-            c.setTime(r.reminderTime);
-            notRepeatRemindDaysOfMonth.add(String.valueOf(c.get(Calendar.DATE)));
+            if (r.reminderTime != null) {
+                c.setTime(r.reminderTime);
+                notRepeatRemindDaysOfMonth.add(String.valueOf(c.get(Calendar.DATE)));
+            }
         }
 
         //find the repeat week days
@@ -518,6 +525,8 @@ public class FirstFragment extends Fragment {
                     .lessThanOrEqualTo("reminderTime", date)
                     .endGroup();
         }
+
+        query.equalTo("deleteState", 0);
 
         reminders = query.findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);

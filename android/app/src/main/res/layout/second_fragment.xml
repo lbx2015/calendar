@@ -8,9 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:padding="10dp"
-        android:paddingBottom="13dp"
-        android:paddingTop="13dp">
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
 
         <TextView
             android:id="@+id/title"
@@ -26,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="19dp"
             android:src="@drawable/white_search" />
 
     </FrameLayout>
@@ -163,10 +163,17 @@
         android:layout_height="@dimen/divider_height"
         android:background="@color/divider_color_a7a7a7" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
+
+        <com.riking.calendar.view.ZRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+        <include layout="@layout/empty_layout" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

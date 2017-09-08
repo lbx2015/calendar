@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
@@ -27,6 +26,9 @@ import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
@@ -52,11 +54,16 @@ public class TaskFragment extends Fragment {
     View quickAddFrameLayout;
     EditText quickAddEditor;
     View quickAddConfirmButton;
+    View v;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.task_fragment, container, false);
+        realm = Realm.getDefaultInstance();
+        if (v != null) {
+            return v;
+        }
+        v = inflater.inflate(R.layout.task_fragment, container, false);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
         quickAddButton = v.findViewById(R.id.quick_add_button);
         quickAddFrameLayout = v.findViewById(R.id.quick_add_frame_layout);
@@ -118,7 +125,11 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
-                Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
+                if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+                    //get reminders and tasks of user from server
+                    APIClient.synchAll();
+                }
+//                Toast.makeText(root.getContext(), getString(R.string.refresh_success), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -162,9 +173,8 @@ public class TaskFragment extends Fragment {
     private void setRecyclerView(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-        realm = Realm.getDefaultInstance();
         //only show the not complete tasks
-        final RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
+        final RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).notEqualTo(Task.DELETESTATE, CONST.DELETE).findAll();
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
