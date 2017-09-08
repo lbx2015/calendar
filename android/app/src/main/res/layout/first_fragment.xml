@@ -7,10 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp">
+        android:layout_height="42dp"
+        android:background="?attr/colorPrimary">
 
         <TextView
             android:id="@+id/today_button"
