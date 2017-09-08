@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="19dp"
-            android:paddingBottom="13dp"
-            android:paddingTop="13dp">
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
 
             <TextView
                 android:id="@+id/title"
@@ -22,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/reminder"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/add"
