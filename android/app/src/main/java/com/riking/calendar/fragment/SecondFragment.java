@@ -450,7 +450,9 @@ public class SecondFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                vocationCalls.clone().enqueue(getMoreVocationCallBack);
+                //first page
+                requestBoday.pindex = 1;
+                apiInterface.getMore(requestBoday).enqueue(getMoreVocationCallBack);
             }
         });
 
