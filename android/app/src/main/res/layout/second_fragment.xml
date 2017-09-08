@@ -163,10 +163,12 @@
         android:layout_height="@dimen/divider_height"
         android:background="@color/divider_color_a7a7a7" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.riking.calendar.view.ZRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
         android:scrollbars="vertical" />
+
+    <include layout="@layout/empty_layout" />
 </LinearLayout>

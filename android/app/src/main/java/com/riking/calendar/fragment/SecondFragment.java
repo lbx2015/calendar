@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +29,8 @@ import com.riking.calendar.pojo.ModelPropDict;
 import com.riking.calendar.realm.model.Vocation;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
-import com.riking.calendar.util.ViewFindUtils;
 import com.riking.calendar.view.SpinnerView;
+import com.riking.calendar.view.ZRecyclerView;
 import com.riking.calendar.widget.dialog.DatePickerDialog;
 import com.riking.calendar.widget.dialog.SearchDialog;
 
@@ -57,7 +56,7 @@ public class SecondFragment extends Fragment {
     public APIInterface apiInterface;
     public CtryHdayCrcy requestBoday = new CtryHdayCrcy();
     public Callback getMoreVocationCallBack;
-    RecyclerView recyclerView;
+    ZRecyclerView recyclerView;
     Realm realm;
     ViewPagerActivity a;
     View searchView;
@@ -91,6 +90,7 @@ public class SecondFragment extends Fragment {
         holidayTextView = (TextView) v.findViewById(R.id.holiday_textview);
         concurrencyTextView = (TextView) v.findViewById(R.id.concurrency_textview);
         dateTextView = (TextView) v.findViewById(R.id.date_textview);
+        final View empty = v.findViewById(R.id.empty);
 
         mSpinnerView = new SpinnerView((ViewGroup) countryColumn);
         mSpinnerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -326,7 +326,19 @@ public class SecondFragment extends Fragment {
                 dialog.show();
             }
         });
-        recyclerView = ViewFindUtils.find(v, R.id.recycler_view);
+        recyclerView = (ZRecyclerView) v.findViewById(R.id.recycler_view);
+        ((TextView) ((LinearLayout) empty).getChildAt(1)).setText("没有找到数据");
+        recyclerView.emptyViewCallBack = new ZRecyclerView.EmptyViewCallBack() {
+            @Override
+            public void onEmpty() {
+                empty.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNotEmpty() {
+                empty.setVisibility(View.GONE);
+            }
+        };
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
         final int marginBottom = a.bottomTabs.getMeasuredHeight();
         params.setMargins(0, 0, 0, marginBottom);
@@ -349,7 +361,6 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
         List<Vocation> vocations = realm.where(Vocation.class).findAll();
         recyclerView.setItemAnimator(new DefaultItemAnimator());
