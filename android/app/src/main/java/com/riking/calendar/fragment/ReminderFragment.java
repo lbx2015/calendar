@@ -57,12 +57,14 @@ public class ReminderFragment extends Fragment {
     TextView tomorrowTitle;
     TextView futureTitle;
     CustomLinearLayout emptyView;
+    View remindersRoot;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.reminder_fragment, container, false);
         a = (ViewPagerActivity) getActivity();
+        remindersRoot = v.findViewById(R.id.reminds);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
         emptyView = (CustomLinearLayout) v.findViewById(R.id.empty);
         checkHistoryButton = v.findViewById(R.id.check_remind_history);
@@ -210,10 +212,10 @@ public class ReminderFragment extends Fragment {
 
                 if (todayAdapter.getItemCount() == 0 && tomorrowAdapter.getItemCount() == 0 && futureAdapter.getItemCount() == 0) {
                     emptyView.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setVisibility(View.GONE);
+                    remindersRoot.setVisibility(View.GONE);
                 } else {
                     emptyView.setVisibility(View.GONE);
-                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                    remindersRoot.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -272,11 +274,11 @@ public class ReminderFragment extends Fragment {
 
         if (tomorrowReminders.size() == 0 && reminders.size() == 0 && futureReminders.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
-            emptyView.bringToFront();
+            remindersRoot.setVisibility(View.GONE);
+//            emptyView.bringToFront();
         } else {
             emptyView.setVisibility(View.GONE);
-            swipeRefreshLayout.setVisibility(View.VISIBLE);
+            remindersRoot.setVisibility(View.VISIBLE);
         }
     }
 

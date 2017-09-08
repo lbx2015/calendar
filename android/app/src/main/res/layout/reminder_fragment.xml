@@ -32,136 +32,120 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/reminds"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/today_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/today"
-                    android:textColor="@color/color_666666"
-                    android:textSize="12sp" />
-
-                <com.tubb.smrv.SwipeMenuRecyclerView
-                    android:id="@+id/recycler_view"
+                <LinearLayout
+                    android:id="@+id/reminds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="vertical" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/divider_height"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/divider_color_d9d9d9"
-                    android:paddingTop="4dp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/today_date"
+                        android:id="@+id/today_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="29dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="19dp"
-                        android:textColor="@color/color_818181"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/today"
+                        android:textColor="@color/color_666666"
                         android:textSize="12sp" />
-                </RelativeLayout>
 
+                    <com.tubb.smrv.SwipeMenuRecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical" />
 
-                <TextView
-                    android:id="@+id/tomorrow_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/tomorrow"
-                    android:textColor="@color/color_666666"
-                    android:textSize="12sp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/divider_color_d9d9d9"
+                        android:paddingTop="4dp" />
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white">
 
-                <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/tomorrow_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="vertical" />
+                        <TextView
+                            android:id="@+id/today_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="29dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="19dp"
+                            android:textColor="@color/color_818181"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/divider_height"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/divider_color_d9d9d9"
-                    android:paddingTop="4dp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white">
 
                     <TextView
-                        android:id="@+id/tomorrow_date"
+                        android:id="@+id/tomorrow_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="29dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="19dp"
-                        android:textColor="@color/color_818181"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/tomorrow"
+                        android:textColor="@color/color_666666"
                         android:textSize="12sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/future_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/future"
-                    android:textColor="@color/color_666666"
-                    android:textSize="12sp" />
 
 
-                <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/future_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="48dp"
-                    android:scrollbars="vertical" />
+                    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/tomorrow_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/divider_color_d9d9d9"
+                        android:paddingTop="4dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white">
+
+                        <TextView
+                            android:id="@+id/tomorrow_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="29dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="19dp"
+                            android:textColor="@color/color_818181"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/future_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/future"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12sp" />
+
+
+                    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/future_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="48dp"
+                        android:scrollbars="vertical" />
+                </LinearLayout>
+
+                <include layout="@layout/empty_layout" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <com.riking.calendar.view.CustomLinearLayout
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <com.riking.calendar.view.ZCenterImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="49dp"
-            android:src="@drawable/empty" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:text="@string/no_reminds"
-            android:textColor="@color/color_323232"
-            android:textSize="12sp" />
-    </com.riking.calendar.view.CustomLinearLayout>
 
 </com.riking.calendar.view.CustomLinearLayout>
