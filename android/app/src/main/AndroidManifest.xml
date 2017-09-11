@@ -90,6 +90,12 @@
 
         <receiver android:name=".util.NetStateReceiver" />
 
+        <receiver android:name=".receiver.ApkInstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activity.TaskHistoryActivity"
             android:theme="@style/AppThemeNoActionBar" />
