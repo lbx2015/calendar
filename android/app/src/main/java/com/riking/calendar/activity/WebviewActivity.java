@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.ldf.calendar.Const;
+import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 
 /**
@@ -25,8 +26,8 @@ public class WebviewActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
-        WebView webview = new WebView(this);
-        setContentView(webview);
+        setContentView(R.layout.activity_web_view);
+        WebView webview = (WebView) findViewById(R.id.web_view);
 
         Bundle bundle = getIntent().getExtras();
         webview.loadUrl(bundle.getString(Const.WEB_URL, null));
@@ -98,5 +99,9 @@ public class WebviewActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public void onBackClick(View v) {
+        onBackPressed();
     }
 }
