@@ -1,5 +1,5 @@
 {
-	"table": "T_APP_USER",
+	"table": "T_REPORT_SUBMIT_CALIBER",
 	"groups":[{
 		"prop":"base",
 		"alias":"基础信息"
@@ -58,8 +58,9 @@
 		{
 			"prop": "remarks",
 			"alias": "备注信息",
-			"group": "base",
-			"type": "text"
+			"type": "enum",
+			"dict_key": "T_REPORT_SUBMIT.REMARK",
+			"enum_search":"1"
 		},
 		{
 			"prop": "deleteState",

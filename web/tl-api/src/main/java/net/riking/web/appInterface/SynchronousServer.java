@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.SynResult;
@@ -108,7 +107,7 @@ public class SynchronousServer {
 		return new AppResp(0, CodeDef.SUCCESS);
 	}*/
 	
-	@ApiOperation(value = "同步用户报表完成信息", notes = "POST")
+/*	@ApiOperation(value = "同步用户报表完成信息", notes = "POST")
 	@RequestMapping(value = "/synchronousComplete", method = RequestMethod.POST)
 	public AppResp synchronousComplete(@RequestBody List<AppUserReportCompleteRel> appUserReportCompleteRel) {
 		List<AppUserReportCompleteRel> appUserReportCompleteRelSave = new ArrayList<>(); 
@@ -123,7 +122,7 @@ public class SynchronousServer {
 		appUserReportCompletesRelRepo.save(appUserReportCompleteRelSave);
 		appUserReportCompletesRelRepo.delete(AppUserReportCompleteRelDele);
 		return new AppResp( CodeDef.SUCCESS);
-	}
+	}*/
 	
 	@ApiOperation(value = "同步app待办信息", notes = "POST")
 	@RequestMapping(value = "/synchronousTodos", method = RequestMethod.POST)

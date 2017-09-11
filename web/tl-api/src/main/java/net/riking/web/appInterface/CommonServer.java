@@ -3,9 +3,9 @@ package net.riking.web.appInterface;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,17 +43,20 @@ public class CommonServer {
 	
 	@ApiOperation(value = "获取系统版本", notes = "POST")
 	@RequestMapping(value = "/getappVersion", method = RequestMethod.POST)
-	public AppResp getappVersion(@RequestParam("versionNumber") String versionNumber) {
-		List<AppVersion> appVersion = appVersionRepo.getByVersionNumber(versionNumber);
+	public AppResp getappVersion(@RequestBody AppVersion app ) {
+		List<AppVersion> appVersion = appVersionRepo.getByVersionNumber(app.getVersionNumber(),app.getType());
 		if (appVersion.size()>0) {
 			for (int i = 0; i < appVersion.size(); i++) {
+				if(null==appVersion.get(i).getApkUrl()){
+					appVersion.get(i).setApkUrl("");
+				}
 				if (null!=appVersion.get(i).getForces()&&"Y".equals(appVersion.get(i).getForces())) {
-					return new AppResp(new AppVersionResult("2",appVersion.get(0).getVersionNote(),appVersion.get(0).getVersionNumber()), CodeDef.SUCCESS);
+					return new AppResp(new AppVersionResult("2",appVersion.get(0).getVersionNote(),appVersion.get(0).getVersionNumber(),appVersion.get(0).getApkUrl()), CodeDef.SUCCESS);
 				}
 			}
-	 		return new AppResp(new AppVersionResult("1",appVersion.get(0).getVersionNote(),appVersion.get(0).getVersionNumber()), CodeDef.SUCCESS);
+	 		return new AppResp(new AppVersionResult("1",appVersion.get(0).getVersionNote(),appVersion.get(0).getVersionNumber(),appVersion.get(0).getApkUrl()), CodeDef.SUCCESS);
 		}else {
-	 		return new AppResp(new AppVersionResult("0","",appVersion.get(0).getVersionNumber()), CodeDef.SUCCESS);
+	 		return new AppResp(new AppVersionResult("0","",appVersion.get(0).getVersionNumber(),""), CodeDef.SUCCESS);
 		}
 	}
 	
