@@ -3,6 +3,7 @@ package com.riking.calendar.retrofit;
 import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
+import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.Dictionary;
@@ -138,4 +139,7 @@ public interface APIInterface {
 
     @POST("synchronous/synchronousTodos")
     Call<ResponseModel<String>> synchronousTasks(@Body List<TaskModel> tasks);
+
+    @POST("common/getappVersion")
+    Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
 }

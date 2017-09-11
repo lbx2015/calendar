@@ -39,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-import io.realm.Realm;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -341,11 +340,15 @@ public class SecondFragment extends Fragment {
         recyclerView.emptyViewCallBack = new ZRecyclerView.EmptyViewCallBack() {
             @Override
             public void onEmpty() {
+                Logger.d("zzw", "on empty");
+                recyclerView.setVisibility(View.GONE);
                 empty.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNotEmpty() {
+                Logger.d("zzw", "on not empty");
+                recyclerView.setVisibility(View.VISIBLE);
                 empty.setVisibility(View.GONE);
             }
         };
@@ -436,8 +439,14 @@ public class SecondFragment extends Fragment {
                 }
                 CtryHdayCryCondition ctryHdayCryCondition = response.body();
                 if (ctryHdayCryCondition == null) {
+                    recyclerView.setVisibility(View.GONE);
+                    empty.setVisibility(View.VISIBLE);
                     return;
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    empty.setVisibility(View.GONE);
                 }
+
                 VocationRecyclerViewAdapter adapter = new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content);
                 adapter.setFootViewText("加载中。。。", SecondFragment.this);
                 recyclerView.setAdapter(adapter);
@@ -447,6 +456,8 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CtryHdayCryCondition> call, Throwable t) {
+                recyclerView.setVisibility(View.GONE);
+                empty.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
             }
         };

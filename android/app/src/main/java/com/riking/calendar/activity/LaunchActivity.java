@@ -1,17 +1,23 @@
 package com.riking.calendar.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ldf.calendar.Const;
+import com.riking.calendar.BuildConfig;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.CheckCallBack;
+import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.DownLoadApk;
 import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.Preference;
 
@@ -22,6 +28,7 @@ import com.riking.calendar.util.Preference;
 public class LaunchActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
+    private AlertDialog.Builder mDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +64,27 @@ public class LaunchActivity extends AppCompatActivity {
             APIClient.synchAll();
         }
         APIClient.getWorkDays();
+
+
+//        APIClient.checkUpdate(new CheckCallBack() {
+//            @Override
+//            public void onSuccess(AppVersionResult updateInfo) {
+//                Logger.d("zzw", "on Success");
+//                forceUpdate(updateInfo);
+//                //返回0当前为最新版本，返回1有版本更新，返回2需要强制更新
+//                if (updateInfo.type.equals("2")) {
+//
+//                } else if (updateInfo.type.equals("1")) {
+//                } else {
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//        });
 //        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
         //register observer
         NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
@@ -72,6 +100,18 @@ public class LaunchActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "disconnected.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void forceUpdate(final AppVersionResult updateInfo) {
+        mDialog = new AlertDialog.Builder(this);
+        mDialog.setTitle(BuildConfig.APPLICATION_ID + "又更新咯！");
+        mDialog.setMessage(updateInfo.msg);
+        mDialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DownLoadApk.download(LaunchActivity.this, updateInfo.APKUrl, updateInfo.msg);
+            }
+        }).setCancelable(false).create().show();
     }
 
     @Override

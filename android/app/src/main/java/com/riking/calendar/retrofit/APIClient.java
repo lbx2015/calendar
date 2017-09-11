@@ -2,17 +2,18 @@ package com.riking.calendar.retrofit;
 
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.ldf.calendar.Const;
+import com.riking.calendar.BuildConfig;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZRequestCallBack;
-import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.ReminderModel;
@@ -138,7 +139,7 @@ public class APIClient {
     }
 
     public static void synchronousTasks(final Task task, final byte operationType) {
-        if(!task.isValid()){
+        if (!task.isValid()) {
             return;
         }
         final ArrayList<TaskModel> tasks = new ArrayList<>(1);
@@ -176,7 +177,7 @@ public class APIClient {
     }
 
     public static void synchronousReminds(final Reminder r, final byte operationType, final ZRequestCallBack callBack) {
-        if(!r.isValid()){
+        if (!r.isValid()) {
             return;
         }
         final ArrayList<ReminderModel> reminderModels = new ArrayList<ReminderModel>(1);
@@ -244,7 +245,7 @@ public class APIClient {
 
     public static void getReminderAndTasksFromServer() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id",Preference.pref.getString(Const.USER_ID, ""));
+        jsonObject.addProperty("id", Preference.pref.getString(Const.USER_ID, ""));
         //get user's reminders and tasks
         APIClient.apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
             @Override
@@ -353,6 +354,18 @@ public class APIClient {
                     }
                 });
 
+            }
+        });
+    }
+
+    public static void checkUpdate(final CheckCallBack updateCallback) {
+        JsonObject j = new JsonObject();
+        j.addProperty("versionNumber", BuildConfig.VERSION_NAME);
+        j.addProperty("type", "2");//1 is iphone 2 is android
+        apiInterface.getAppVersion(j).enqueue(new ZCallBack<ResponseModel<AppVersionResult>>() {
+            @Override
+            public void callBack(ResponseModel<AppVersionResult> response) {
+                updateCallback.onSuccess(response._data);
             }
         });
     }
