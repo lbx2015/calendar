@@ -8,8 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -98,6 +98,7 @@ public class FirstFragment extends Fragment {
     String yearMonth;
     ReportOnlineAdapter reportOnlineAdapter;
     View v;
+    Date currentDay;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
@@ -125,6 +126,7 @@ public class FirstFragment extends Fragment {
      */
     private TextView currentMonth;
     private View add;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private void setListener() {
         View.OnClickListener c = new View.OnClickListener() {
@@ -318,9 +320,9 @@ public class FirstFragment extends Fragment {
                 taskAdapter.notifyDataSetChanged();
             }
         });
-
+        currentDay = new Date();
         //what the fuck logic,
-        updateReportAdapter(new Date());
+        updateReportAdapter(currentDay);
 
         RealmResults<WorkDateRealm> works = realm.where(WorkDateRealm.class).findAll();
         for (WorkDateRealm w : works) {
@@ -335,12 +337,29 @@ public class FirstFragment extends Fragment {
             }
         }
 
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
+
+        // Configure the refreshing colors
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //first page
+                updateReportAdapter(currentDay);
+            }
+        });
+
+
         //set the layout params
         FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
-        CoordinatorLayout.LayoutParams paramss = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
-        final int marginBottom = a.bottomTabs.getMeasuredHeight();
-        paramss.setMargins(0, 0, 0, marginBottom);
-        scrollView.setLayoutParams(paramss);
+//        CoordinatorLayout.LayoutParams paramss = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
+//        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+//        paramss.setMargins(0, 0, 0, marginBottom);
+//        scrollView.setLayoutParams(paramss);
         return v;
     }
 
@@ -378,12 +397,16 @@ public class FirstFragment extends Fragment {
             APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<QueryReportContainer>> response) {
+                    swipeRefreshLayout.setRefreshing(false);
                     final ArrayList<QueryReportContainer> reportContainers = response._data;
                     reportOnlineAdapter = new ReportOnlineAdapter(reportContainers);
                     reportRecyclerView.setAdapter(reportOnlineAdapter);
                 }
             });
         } else {
+            if (swipeRefreshLayout != null) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
             updateReportsWithLocalRealm();
         }
     }
@@ -699,6 +722,7 @@ public class FirstFragment extends Fragment {
                     c.set(Calendar.YEAR, Integer.parseInt(scheduleYear));
                     c.set(Calendar.MONTH, Integer.parseInt(scheduleMonth) - 1);
                     c.set(Calendar.DATE, Integer.parseInt(scheduleDay));
+                    currentDay = c.getTime();
 
                     updateReminderAdapter(c);
                     updateReportAdapter(c.getTime());
