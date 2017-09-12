@@ -2,8 +2,10 @@ package net.riking.web.appInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +17,11 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportResult;
+import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
+import net.riking.service.impl.GetDateServiceImpl;
 import net.riking.service.repo.AppUserReportRelRepo;
+import net.riking.service.repo.DaysRepo;
 import net.riking.service.repo.ReportListRepo;
 
 /**
@@ -33,8 +38,14 @@ public class AppReportListServer {
 	AppUserReportRelRepo appUserReportRepo;
 	@Autowired
 	SysDataService sysDataservice;
+	@Autowired
+	GetDateServiceImpl getDateService;
+	@Autowired
+	ReportSubmitCaliberService reportSubmitCaliberService;
+	@Autowired 
+	DaysRepo daysRepo;
 
-/*	@ApiOperation(value = "app获取所有的报表", notes = "POST")
+	/*@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody ReportList reportList) {
 		reportList.setDeleteState("1");
@@ -47,6 +58,35 @@ public class AppReportListServer {
 		return new AppResp(page, CodeDef.SUCCESS);
 	}*/
 	@ApiOperation(value = "app获取所有的报表", notes = "POST")
+	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
+	public AppResp getAllReport() {
+		Set<QueryReport> set;
+			set = reportSubmitCaliberService.findAllfromReportId();
+		Map<String, Set<QueryReport>> map = new HashMap<>();
+		for (QueryReport queryReport : set) {
+			String value = sysDataservice.getDict("T_REPORT_LIST", "MODLE_TYPE", queryReport.getModuleType()).getValu();
+			if (!map.containsKey(value)) {
+				Set<QueryReport> set2 = new HashSet<>();
+				set2.add(queryReport);
+				map.put(value,set2);
+			}else {
+				Set<QueryReport> set2 =map.get(value);
+				set2.add(queryReport);
+				map.put(value, set2);
+			}
+		}
+		List<ReportResult> listes =  new ArrayList<>();
+		for (String title : map.keySet()) {
+			ReportResult reportResult = new ReportResult();
+			reportResult.setTitle(title);
+			reportResult.setResult(map.get(title));
+			listes.add(reportResult);
+		}
+		return new AppResp(listes, CodeDef.SUCCESS);
+		
+	}
+	
+	/*@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport() {
 		List<QueryReport>list =reportListRepo.findByDeleteState();
@@ -71,5 +111,5 @@ public class AppReportListServer {
 			listes.add(reportResult);
 		}
 		return new AppResp(listes, CodeDef.SUCCESS);
-	}
+	}*/
 }

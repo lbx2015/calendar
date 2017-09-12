@@ -10,8 +10,11 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
-import com.riking.calendar.fragment.ReminderFragment;
+import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 
 import java.text.SimpleDateFormat;
 
@@ -49,13 +52,17 @@ public class LookReminderDialog extends BottomSheetDialog {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                realm.executeTransaction(new Realm.Transaction() {
+                APIClient.synchronousReminds(r, CONST.DELETE, new ZRequestCallBack() {
                     @Override
-                    public void execute(Realm realm) {
-                        realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
+                    public void success() {
+                        Toast.makeText(MyApplication.APP, "删除成功", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void fail() {
+                        Toast.makeText(MyApplication.APP, "删除失败", Toast.LENGTH_LONG).show();
                     }
                 });
-                Toast.makeText(v.getContext(), "deleted", Toast.LENGTH_LONG).show();
                 dismiss();
             }
         });
@@ -92,8 +99,47 @@ public class LookReminderDialog extends BottomSheetDialog {
         TextView repeat = (TextView) findViewById(R.id.remind_repeat);
         if (r.repeatFlag == 0) {
             repeat.setText("不重复");
-        } else {
-            repeat.setText("重复提醒");
+        }
+        //week repeat
+        else if (r.repeatFlag == 3) {
+            if (r.repeatWeek.length() == 7) {
+                repeat.setText("每天重复");
+            } else {
+                StringBuilder s = new StringBuilder("每周");
+                if (r.repeatWeek.contains("1")) {
+                    s.append("一、");
+                }
+                if (r.repeatWeek.contains("2")) {
+                    s.append("二、");
+                }
+                if (r.repeatWeek.contains("3")) {
+                    s.append("三、");
+                }
+                if (r.repeatWeek.contains("4")) {
+                    s.append("四、");
+                }
+                if (r.repeatWeek.contains("5")) {
+                    s.append("五、");
+                }
+                if (r.repeatWeek.contains("6")) {
+                    s.append("六、");
+                }
+                if (r.repeatWeek.contains("7")) {
+                    s.append("日、");
+                }
+
+                if (r.repeatWeek.length() == 5 && !r.repeatWeek.contains("6") && !r.repeatWeek.contains("7")) {
+                    repeat.setText("工作日重复");
+                } else if (r.repeatWeek.length() == 2 && r.repeatWeek.contains("6") && r.repeatWeek.contains("7")) {
+                    repeat.setText("周末重复");
+                } else {
+                    repeat.setText(s.substring(0, s.length() - 1));
+                }
+            }
+        } else if (r.repeatFlag == 1) {
+            repeat.setText("法定工作日重复");
+        } else if (r.repeatFlag == 2) {
+            repeat.setText("法定节假日重复");
         }
 
     }

@@ -22,25 +22,20 @@ import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.pojo.ReminderModel;
-import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.service.ReminderService;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.Realm;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -53,6 +48,8 @@ public class AddRemindActivity extends AppCompatActivity {
     CreateTaskFragment taskFragment;
     APIInterface apiInterface;
     String userId;
+    String reminderTitle;
+    String taskTitle;
     private ViewPager viewPager;
     private Realm realm;
 
@@ -82,21 +79,29 @@ public class AddRemindActivity extends AppCompatActivity {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
         final String id = sdf.format(new Date());
+        //remind fragment
+        if (viewPager.getCurrentItem() == 0) {
+            reminderTitle = reminderFragment.remindTitle.getText().toString();
+            if (reminderTitle == null || reminderTitle.trim().equals("")) {
+                Toast.makeText(AddRemindActivity.this, "提醒内容不能为空", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
+            taskTitle = taskFragment.title.getText().toString();
+            if (taskTitle == null || taskTitle.trim().equals("")) {
+                Toast.makeText(AddRemindActivity.this, "标题不能为空", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
 
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
-        realm.executeTransaction(new Realm.Transaction() {
+        realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 //remind fragment
                 if (viewPager.getCurrentItem() == 0) {
-
-                    final String reminderTitle = reminderFragment.remindTitle.getText().toString();
-                    if (reminderTitle == null || reminderTitle.trim().equals("")) {
-                        Toast.makeText(AddRemindActivity.this, "提醒内容不能为空", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
 
                     // Add a remind
                     final Reminder reminder = realm.createObject(Reminder.class, id);
@@ -157,7 +162,7 @@ public class AddRemindActivity extends AppCompatActivity {
                         task.isOpen = 1;
                         task.strDate = sdf.format(taskFragment.calendar.getTime());
                     }
-                    task.title = taskFragment.title.getText().toString();
+                    task.title = taskTitle;
                     task.userId = userId;
                     if (task.isOpen == 1) {
                         Intent intent = new Intent(AddRemindActivity.this, ReminderService.class);
@@ -171,84 +176,23 @@ public class AddRemindActivity extends AppCompatActivity {
                     }
                 }
             }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (preference.getBoolean(Const.IS_LOGIN, false)) {
+                    //remind fragment
+                    if (viewPager.getCurrentItem() == 0) {
+                        Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
+                        //add a new remind to server.
+                        APIClient.synchronousReminds(r, CONST.UPDATE, null);
+                    } else {
+                        APIClient.synchronousTasks(realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst(), CONST.ADD);
+                    }
+                }
+                onBackPressed();
+            }
         });
 
-        if (preference.getBoolean(Const.IS_LOGIN, false)) {
-            //remind fragment
-            if (viewPager.getCurrentItem() == 0) {
-                Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
-                ReminderModel mode = new ReminderModel();
-                mode.id = r.id;
-                mode.aheadTime = r.aheadTime;
-                mode.clientType = r.clientType;
-                mode.currentWeek = r.currentWeek;
-                mode.day = r.day;
-                mode.isAllDay = r.isAllDay;
-                mode.isRemind = r.isRemind;
-                mode.repeatFlag = r.repeatFlag;
-                mode.time = r.time;
-                mode.title = r.title;
-                mode.deleteState = r.deleteState;
-                mode.endTime = r.endTime;
-                mode.repeatWeek = r.repeatWeek;
-                mode.userId = r.userId;
-                Log.d("zzw", "reminder model : " + mode);
-
-                Call<ResponseBody> call = apiInterface.createRemind(mode);
-                call.enqueue(new retrofit2.Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        ResponseBody r = response.body();
-                        try {
-                            if (r == null) {
-                                Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
-                            }
-                            String s = r.source().readUtf8();
-//                            String s2 = s.replace("\\", "");
-//                            int i = s2.indexOf("}");
-//                            int l = s2.lastIndexOf("}");
-//                            Gson gson = new Gson();
-//                            ReminderModel m;
-//                            m = gson.fromJson(s2.substring(10, i + 1), ReminderModel.class);
-                            Log.d("zzw", response.code() + "success " + s);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d("zzw", "fail" + t.getMessage());
-                    }
-                });
-            } else {
-                Task task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
-                TaskModel taskModel = new TaskModel(task);
-                Call<ResponseBody> call = apiInterface.createTask(taskModel);
-                call.enqueue(new retrofit2.Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        ResponseBody r = response.body();
-                        try {
-                            if (r == null) {
-                                Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.create_failed), Toast.LENGTH_SHORT).show();
-                            }
-                            String s = r.source().readUtf8();
-                            Log.d("zzw", "success " + s);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d("zzw", "fail" + t.getMessage());
-                    }
-                });
-
-            }
-        }
-        onBackPressed();
     }
 
 

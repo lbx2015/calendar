@@ -4,8 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,28 +13,33 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.listener.CustomListener;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.VocationRecyclerViewAdapter;
+import com.riking.calendar.bean.DictionaryBean;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.task.LoadUserImageTask;
+import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.image.ImagePicker;
+import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -51,7 +56,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     public TextView userName;
     public TextView email;
     public TextView department;
-    public TextView address;
     ImageView myPhoto;
     View userNameRelativeLayout;
     View departmentRelativeLayout;
@@ -60,6 +64,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     SharedPreferences preference;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     View moreUserInfoView;
+
+    private OptionsPickerView departPickerView;
+    private ArrayList<DictionaryBean> cardItem = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +77,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.back).setOnClickListener(this);
         userName = (TextView) findViewById(R.id.name);
         email = (TextView) findViewById(R.id.email);
-        address = (TextView) findViewById(R.id.address);
         department = (TextView) findViewById(R.id.depart);
         userName.setText(preference.getString(Const.USER_NAME, ""));
         email.setText(preference.getString(Const.USER_EMAIL, ""));
@@ -92,8 +98,18 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         ImagePicker.setMinQuality(600, 600);
 
         String imageUrl = preference.getString(Const.USER_IMAGE_URL, null);
-        if (imageUrl != null && imageUrl.length() > 0) {
-            VocationRecyclerViewAdapter.MyTask myTask = new VocationRecyclerViewAdapter.MyTask();
+        if (imageUrl == null) {
+            return;
+        }
+        String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+        if (FileUtil.imageExists(imageName)) {
+            Logger.d("zzw", "no need load url: " + imageName);
+            Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
+            myPhoto.setImageBitmap(bitmap);
+
+        } else if (imageUrl != null && imageUrl.length() > 0) {
+            Logger.d("zzw", " load url: " + imageUrl);
+            LoadUserImageTask myTask = new LoadUserImageTask();
             myTask.imageView = myPhoto;
             myTask.execute(imageUrl);
         }
@@ -112,12 +128,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
 //        Bitmap bitMap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_1);
 
-        File mFile1 = Environment.getExternalStorageDirectory();
-
-        String fileName = "img1.jpg";
-
-        File mFile2 = new File(mFile1, fileName);
+        final File mFile2 = FileUtil.generateImageFile();
         try {
+            mFile2.createNewFile();
             FileOutputStream outStream;
 
             outStream = new FileOutputStream(mFile2);
@@ -136,7 +149,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-        String sdPath = mFile1.getAbsolutePath().toString() + "/" + fileName;
+        String sdPath = mFile2.getAbsolutePath().toString();
 
         Log.d("zzw", "Your IMAGE ABSOLUTE PATH:-" + sdPath);
 
@@ -154,13 +167,20 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         apiInterface.postImage(body, preference.getString(Const.USER_ID, null)).enqueue(new Callback<UploadImageModel>() {
             @Override
             public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
-                UploadImageModel r = response.body();
+                final UploadImageModel r = response.body();
 
                 if (r != null) {
 //                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
                     SharedPreferences.Editor editor = preference.edit();
                     editor.putString(Const.USER_IMAGE_URL, r._data);
                     editor.commit();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            File to = new File(new File(mFile2.getParent()), r._data.substring(r._data.lastIndexOf('/') + 1));
+                            mFile2.renameTo(to);
+                        }
+                    }).start();
                 } else {
                     Logger.d("zzw", "upload ok response body is null");
                 }
@@ -303,58 +323,139 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
             }
             case R.id.depart_row_relative_layout: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(getString(R.string.depart));
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
-                // Set up the input
-                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                builder.setView(viewInflated);
-                String name = preference.getString(Const.USER_DEPT, "");
-                input.setText(name);
-                input.setSelection(name.length());
 
-                // Set up the buttons
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                if (cardItem.size() > 0) {
+                    departPickerView.show();
+                    return;
+                }
+                ArrayList<String> fields = new ArrayList<>();
+                fields.add("DEPT");
+                apiInterface.getDictionary(fields).enqueue(new ZCallBack<ResponseModel<ArrayList<Dictionary>>>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Editable editable = input.getText();
-                        if (editable == null) {
-                            return;
+                    public void callBack(ResponseModel<ArrayList<Dictionary>> response) {
+                        initCustomOptionPicker();
+                        for (Dictionary dictionary : response._data) {
+                            DictionaryBean bean = new DictionaryBean(dictionary);
+                            cardItem.add(bean);
                         }
-                        final String departName = input.getText().toString();
-                        if (departName.length() > 0) {
-                            department.setText(departName);
-                            AppUser user = new AppUser();
-                            user.dept = departName;
-                            user.id = preference.getString(Const.USER_ID, null);
-
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-                                @Override
-                                public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(Const.USER_DEPT, departName);
-                                    //save the changes.
-                                    editor.commit();
-                                }
-                            });
-                        }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        departPickerView.setPicker(cardItem);//添加数据
+                        departPickerView.show();
+                        Logger.d("zzw", "depart query ok: " + response._data);
                     }
                 });
 
-                builder.show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle(getString(R.string.depart));
+//                // I'm using fragment here so I'm using getView() to provide ViewGroup
+//                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+//                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+//                // Set up the input
+//                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
+//                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+//                builder.setView(viewInflated);
+//                String name = preference.getString(Const.USER_DEPT, "");
+//                input.setText(name);
+//                input.setSelection(name.length());
+//
+//                // Set up the buttons
+//                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        Editable editable = input.getText();
+//                        if (editable == null) {
+//                            return;
+//                        }
+//                        final String departName = input.getText().toString();
+//                        if (departName.length() > 0) {
+//                            department.setText(departName);
+//                            AppUser user = new AppUser();
+//                            user.dept = departName;
+//                            user.id = preference.getString(Const.USER_ID, null);
+//
+//
+//                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+//                                @Override
+//                                public void callBack(ResponseModel<String> response) {
+//                                    SharedPreferences.Editor editor = preference.edit();
+//                                    editor.putString(Const.USER_DEPT, departName);
+//                                    //save the changes.
+//                                    editor.commit();
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+
+//                builder.show();
                 break;
             }
         }
+    }
+
+    private void initCustomOptionPicker() {
+        if (departPickerView != null) {
+            return;
+        }
+
+        //条件选择器初始化，自定义布局
+        /**
+         * @description
+         *
+         * 注意事项：
+         * 自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针。
+         * 具体可参考demo 里面的两个自定义layout布局。
+         */
+        departPickerView = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                final String departName = cardItem.get(options1).getPickerViewText();
+                AppUser user = new AppUser();
+                user.dept = departName;
+                user.id = preference.getString(Const.USER_ID, null);
+                Logger.d("zzw", "depart selected: " + departName);
+                apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        SharedPreferences.Editor editor = preference.edit();
+                        editor.putString(Const.USER_DEPT, departName);
+                        //save the changes.
+                        editor.commit();
+                        department.setText(departName);
+                    }
+                });
+            }
+        }).setCyclic(true, false, false)
+                .setLayoutRes(R.layout.pickerview_department, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final View tvSubmit = v.findViewById(R.id.tv_finish);
+                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Logger.d("zzw", "click save");
+                                departPickerView.returnData();
+                                departPickerView.dismiss();
+                            }
+                        });
+
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                departPickerView.dismiss();
+                            }
+                        });
+                    }
+                })
+                .isDialog(true)
+                .build();
     }
 }

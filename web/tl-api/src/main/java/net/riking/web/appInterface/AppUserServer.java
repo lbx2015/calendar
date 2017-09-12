@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,6 +26,7 @@ import net.riking.core.annos.AuthPass;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.util.StringUtil;
 /**
  * app用户信息操作
  * @author you.fei
@@ -59,7 +58,7 @@ public class AppUserServer {
 		}
 		AppUser dbUser = appUserRepo.findById(appUser.getId());
 		if(null==dbUser){
-			return new AppResp(false,CodeDef.ERROR);
+			return new AppResp(false,CodeDef.EMP.DATA_NOT_FOUND);
 		}
 		try {
 			merge(dbUser,appUser);
@@ -77,6 +76,9 @@ public class AppUserServer {
 	@RequestMapping(value = "/IsChangeMac", method = RequestMethod.POST)
 	public AppResp IsChangeMac_(@RequestBody AppUser appUser) {
 		AppUser appUser2 = appUserRepo.findOne(appUser.getId());
+		if(null==appUser2){
+			return new AppResp(false,CodeDef.EMP.DATA_NOT_FOUND);
+		}
 		String seqNum = appUser.getPhoneSeqNum();
 		if(appUser2!=null && !appUser2.getPhoneSeqNum().equals(seqNum)){
 			appUser2.setPhoneSeqNum(seqNum);
@@ -84,16 +86,13 @@ public class AppUserServer {
 			appUserRepo.save(appUser2);
 			return new AppResp(true,CodeDef.SUCCESS);
 		}
-		return new AppResp(false,CodeDef.SUCCESS);
+		return new AppResp(false,CodeDef.ERROR);
 	}
 	
 	@AuthPass
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
 	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("id")String id) {
-		if (id.length()>32) {
-			id = id.substring(1, 33);
-		}
 		String url = request.getRequestURL().toString();
 		String suffix = mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
@@ -126,22 +125,17 @@ public class AppUserServer {
 				return new AppResp(false,CodeDef.ERROR);
 			}
 		}
-		String photoUrl = getPortPath(url)+ Const.TL_PHOTO_PATH + fileName;
-		int rs = appUserRepo.updatePhoto(id,photoUrl);
+		//截取资源访问路径
+		String projectPath = StringUtil.getProjectPath(url);
+		String photoUrl = projectPath+ Const.TL_PHOTO_PATH + fileName;
+		//数据库保存路径
+		int rs = appUserRepo.updatePhoto(id,Const.TL_PHOTO_PATH + fileName);
 		if(rs>0){
 			return new AppResp(photoUrl, CodeDef.SUCCESS);
 		}
 		return new AppResp(CodeDef.ERROR);
 	}
 	
-	private String getPortPath(String url){
-		Pattern p = Pattern.compile("[a-zA-z]+://[^/]*");
-		Matcher matcher = p.matcher(url);  
-		if(matcher.find()){
-			return matcher.group();  
-		}
-		return null;
-	}
 	
 	private <T> T merge(T dbObj,T appObj) throws Exception{
 		Field[] fields = dbObj.getClass().getDeclaredFields();

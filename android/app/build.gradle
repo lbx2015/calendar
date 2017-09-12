@@ -11,6 +11,7 @@ android {
             keyAlias 'key1'
             keyPassword 'Riking6636'
             storePassword 'Riking6636'
+            //D:\projects\rikingtl\android\app
             storeFile file('/rikingkeystore.jks')
         }
     }
@@ -21,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.rikingconfig
 
@@ -73,6 +74,7 @@ dependencies {
     compile project(':FlycoTabLayout_Lib')
     compile project(path: ':calendar')
     compile project(':library')
+    compile project(':pickerview')
 
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 

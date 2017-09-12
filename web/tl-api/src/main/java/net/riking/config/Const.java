@@ -16,13 +16,13 @@ public class Const {
 	
 	public static final String EXPORT_REPORT_GROUP = "EXPORT_REPORT_GROUP";
 	
-	public static final String  TL_STATIC_ICON_PATH = "/static/icon/";
+	public static final String  TL_STATIC_FLAG_PATH = "/static/images/flag/";
 	
 	public static final String  TL_STATIC_PATH = "/static";
 	
-	public static final String  TL_PHOTO_PATH = "/photo/";
+	public static final String  TL_PHOTO_PATH = "/images/user/photo/";
 	
-	public static final String  TL_ICON_PATH = "/icon/";
+	public static final String  TL_FLAG_PATH = "/images/flag/";
 	
 	public static final String  TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
 	

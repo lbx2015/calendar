@@ -12,6 +12,7 @@ public class Const {
     public final static String PREFERENCE_FILE_NAME = "MyPref";
     // All Shared Preferences Keys
     public static final String IS_LOGIN = "IsLoggedIn";
+    public static final String NEED_WELCOME_ACTIVITY = "NEED_WELCOME_ACTIVITY";
     public static final String WHOLE_DAY_EVENT_HOUR = "WHOLE_DAY_EVENT_HOUR";
     public static final String WHOLE_DAY_EVENT_MINUTE = "WHOLE_DAY_EVENT_MINUTE";
     public static final String USER_IMAGE_URL = "USER_IMAGE_URL";
@@ -25,12 +26,17 @@ public class Const {
     public static final String USER_DEPT = "USER_DEPT";
     public static final String USER_ADDRESS = "USER_ADDRESS";
     public static final String USER_BIRTHDAY = "USER_BIRTHDAY";
-    public static final String USER_SEX="user_sex";
+    public static final String USER_SEX = "user_sex";
 
-    public static final String REMINDER_TITLE="Reminder title";
+    //image path external storage
+    public static final String IMAGE_PATH = "/rikingImage";
+
+    public static final String REMINDER_TITLE = "Reminder title";
 
     //Date formats
     public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
     public static final String yyyyMMdd = "yyyyMMdd";
     public static final String birthDayFormat = "yyyy-MM-dd";
+
+    public static final String WEB_URL = "WEB_URL";
 }

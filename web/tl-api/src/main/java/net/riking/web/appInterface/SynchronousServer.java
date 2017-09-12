@@ -13,10 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Remind;
-import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
@@ -47,11 +45,24 @@ public class SynchronousServer {
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
 	public AppResp synchronousAll(@RequestBody AppUser appUser) {
 		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
-		List<RemindHis> remindHis = remindHisRepo.findByUserId(appUser.getId());
 		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
-		List<AppUserReportCompleteRel> appUserReportCompleteRel = appUserReportCompletesRelRepo.findAll();
-		SynResult result = new SynResult(reminds, remindHis, todos,appUserReportCompleteRel);
+		List<Days> days = daysRepo.findAll();
+		SynResult result = new SynResult(reminds, todos,days);
 		return new AppResp(result, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "同步提醒信息", notes = "POST")
+	@RequestMapping(value = "/synchronousRemindToApp", method = RequestMethod.POST)
+	public AppResp synchronousRemindToApp(@RequestBody AppUser appUser) {
+		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
+		return new AppResp(reminds, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "同步待办信息", notes = "POST")
+	@RequestMapping(value = "/synchronousTodoToApp", method = RequestMethod.POST)
+	public AppResp synchronousTodoToApp(@RequestBody AppUser appUser) {
+		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
+		return new AppResp(todos, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "同步日历信息", notes = "POST")
@@ -79,7 +90,7 @@ public class SynchronousServer {
 		return new AppResp(0, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
+/*	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/synchronousRemindHis", method = RequestMethod.POST)
 	public AppResp synchronousRemindHis(@RequestBody List<RemindHis> remindHis) {
 		List<RemindHis> remindHisSave = new ArrayList<>(); 
@@ -94,9 +105,9 @@ public class SynchronousServer {
 		remindHis = remindHisRepo.save(remindHisSave);
 		remindHisRepo.delete(remindHisDele);
 		return new AppResp(0, CodeDef.SUCCESS);
-	}
+	}*/
 	
-	@ApiOperation(value = "同步用户报表完成信息", notes = "POST")
+/*	@ApiOperation(value = "同步用户报表完成信息", notes = "POST")
 	@RequestMapping(value = "/synchronousComplete", method = RequestMethod.POST)
 	public AppResp synchronousComplete(@RequestBody List<AppUserReportCompleteRel> appUserReportCompleteRel) {
 		List<AppUserReportCompleteRel> appUserReportCompleteRelSave = new ArrayList<>(); 
@@ -111,9 +122,9 @@ public class SynchronousServer {
 		appUserReportCompletesRelRepo.save(appUserReportCompleteRelSave);
 		appUserReportCompletesRelRepo.delete(AppUserReportCompleteRelDele);
 		return new AppResp( CodeDef.SUCCESS);
-	}
+	}*/
 	
-	@ApiOperation(value = "同步待办信息", notes = "POST")
+	@ApiOperation(value = "同步app待办信息", notes = "POST")
 	@RequestMapping(value = "/synchronousTodos", method = RequestMethod.POST)
 	public AppResp synchronousTodos(@RequestBody List<Todo> todos) {
 		List<Todo> todoSave = new ArrayList<>(); 

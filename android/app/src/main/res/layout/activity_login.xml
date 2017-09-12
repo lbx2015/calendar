@@ -8,102 +8,124 @@
 
     <ImageView
         android:id="@+id/back"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="62.7dp"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/ic_keyboard_arrow_left_black_24dp" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48.7dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/login_with_phone_number"
-        android:textColor="@color/color_323232"
-        android:textSize="16.7sp" />
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/cancel" />
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:src="@mipmap/launcher_icon" />
+
+    <EditText
+        android:id="@+id/phone_nubmer_editor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/phone_number"
-            android:textSize="11.3sp" />
-
-        <EditText
-            android:id="@+id/phone_nubmer_editor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="38.7dp"
-            android:background="@android:color/transparent"
-            android:focusableInTouchMode="true"
-            android:hint="@string/please_input_phone_number"
-            android:inputType="phone"
-            android:textSize="11.3sp" />
-    </LinearLayout>
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="35dp"
+        android:background="@android:color/transparent"
+        android:focusableInTouchMode="true"
+        android:hint="@string/please_input_phone_number"
+        android:inputType="number"
+        android:maxLength="11"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/color_background_b6b6b6"
+        android:textSize="16sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:layout_marginTop="10dp"
         android:background="@color/divider_color_d9d9d9" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/verification_code"
-            android:textSize="11.3sp" />
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="15dp">
 
         <EditText
             android:id="@+id/verification_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="38.7dp"
-            android:layout_weight="1"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:hint="@string/please_input_verification_code"
             android:inputType="number"
-            android:textSize="11.3sp" />
+            android:maxLength="6"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/color_background_b6b6b6"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/get_verification_code_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/get_verification_code" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/rounded_login__verify_code_color_rectangle"
+            android:paddingBottom="10dp"
+            android:paddingLeft="11dp"
+            android:paddingRight="11dp"
+            android:paddingTop="10dp"
+            android:text="@string/get_verification_code"
+            android:textColor="@android:color/white"
+            android:textSize="10dp" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:layout_marginBottom="48.7dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="7dp"
         android:background="@color/divider_color_d9d9d9" />
 
     <Button
         android:id="@+id/login"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
+        android:layout_width="310dp"
+        android:layout_height="47dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="44dp"
         android:background="@drawable/rounded_login_rectangle"
+        android:enabled="false"
         android:gravity="center"
         android:text="@string/login"
         android:textColor="@android:color/white"
-        android:textSize="11.3sp" />
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="登录即表示同意"
+            android:textColor="@color/divider_color_d9d9d9"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/user_contract"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="《用户服务协议》"
+            android:textColor="@color/color_29a1f7"
+            android:textSize="12dp" />
+    </LinearLayout>
+
 </LinearLayout>

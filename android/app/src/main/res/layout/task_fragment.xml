@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.riking.calendar.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/custom_linear_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="72dp"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/check_task_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/color_background_f2f2f2"
-        android:gravity="center_horizontal"
-        android:text="查看历史记录"
-        android:visibility="gone" />
 
     <!--<View-->
     <!--android:layout_width="match_parent"-->
@@ -26,74 +16,84 @@
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_background_f2f2f2">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <TextView
+                android:id="@+id/check_task_history"
+                android:layout_width="109dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/search_button_rounded_rectangle"
+                android:gravity="center"
+                android:text="查看历史记录"
+                android:textColor="@color/color_929292"
+                android:textSize="10sp"
+                android:visibility="gone" />
+
+            <com.tubb.smrv.SwipeMenuRecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="2dp"
-                app:cardUseCompatPadding="true">
+                android:scrollbars="vertical" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/divider_color_d9d9d9"
+                android:paddingTop="4dp" />
 
-                    <com.tubb.smrv.SwipeMenuRecyclerView
-                        android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="vertical" />
+            <TextView
+                android:id="@+id/quick_add_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/white"
+                android:gravity="center_horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/quick_add"
+                android:textColor="@color/color_929292"
+                android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/quick_add_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:text="@string/quick_add"
-                        android:textColor="@color/color_929292"
-                        android:textSize="15sp" />
+            <RelativeLayout
+                android:id="@+id/quick_add_frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingLeft="19dp"
+                android:paddingRight="19dp"
+                android:visibility="gone">
 
-                    <RelativeLayout
-                        android:id="@+id/quick_add_frame_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
+                <EditText
+                    android:id="@+id/quick_add_editer"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/quick_add"
+                    android:textSize="15sp" />
 
-                        <EditText
-                            android:id="@+id/quick_add_editer"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:background="@android:color/transparent"
-                            android:hint="@string/quick_add"
-                            android:textSize="15sp" />
-
-                        <Button
-                            android:id="@+id/quick_add_confirm_button"
-                            android:layout_width="50dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_gravity="right|end"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/rounded_corner"
-                            android:text="@string/create"
-                            android:textColor="@android:color/holo_red_light"
-                            android:visibility="gone" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                <Button
+                    android:id="@+id/quick_add_confirm_button"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right|end"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounded_corner"
+                    android:text="@string/create"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 

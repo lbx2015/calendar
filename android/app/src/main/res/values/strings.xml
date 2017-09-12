@@ -118,4 +118,19 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="login_failed">Login Failed</string>
+    <string name="cleared">Memory Cleared</string>
+    <string name="whole_year">Whole Year</string>
+    <string name="welcome_page_text1">每日报表汇总，同步工作进度</string>
+    <string name="welcome_page_text2">外币交易市场币种节假日查询</string>
+    <string name="welcome_page_text3">快速建立提醒，重要事件不忘记</string>
+    <string name="welcome_page_text4">悦历——服务金融从业人员的日历</string>
+    <string name="enter">立即进入</string>
+    <string name="user_info">User Info</string>
+    <string name="no_reminds">目前没有提醒，不要错过重要的事情哦</string>
+    <string name="click_again_exit">Please click BACK again to exit</string>
+    <string name="click_again_clear_memory">Please click again to clear the memory</string>
+    <string name="net_connected">网络连接成功</string>
+    <string name="net_not_connected">Offline</string>
+    <string name="refresh_success">Refresh success</string>
+    <string name="server_error">Server error</string>
 </resources>

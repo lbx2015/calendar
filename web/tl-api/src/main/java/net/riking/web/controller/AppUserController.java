@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,6 +34,7 @@ import net.riking.core.entity.Resp;
 import net.riking.entity.PageQuery;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.util.StringUtil;
 /**
  * web端app用户操作
  * 
@@ -45,6 +47,9 @@ import net.riking.service.repo.AppUserRepo;
 public class AppUserController {
 	@Autowired
 	AppUserRepo appUserRepo;
+
+	@Autowired
+	HttpServletRequest request;
 
 	@ApiOperation(value = "得到<单个>用户信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -65,6 +70,8 @@ public class AppUserController {
 		Example<AppUser> example = Example.of(appUser,
 				ExampleMatcher.matchingAll());
 		Page<AppUser> page = appUserRepo.findAll(example, pageable);
+		String url = request.getRequestURL().toString();
+		setPhotoUrl(url, page.getContent());
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 
@@ -117,51 +124,57 @@ public class AppUserController {
 	@AuthPass
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
-	public Resp upLoad(HttpServletRequest request, @RequestParam("id")String id) {
-		String url = request.getRequestURL().toString();
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		MultipartFile mFile = multipartRequest.getFile("fileName");
+	public Resp upLoad(HttpServletRequest request,
+			@RequestParam("id") String id) {
+		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest)request;
+		MultipartFile mFile = mRequest.getFile("fileName");
+		String suffix = mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String fileName = sdf.format(new Date()) + suffix;
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath()+ Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH ;
+			String path = this.getClass().getResource("/").getPath()
+					+ Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH;
 			File dir = new File(path);
-			if(!dir.exists()){
+			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			String photoUrl =  path + mFile.getOriginalFilename();
+			String photoUrl = path + fileName;
 			fos = new FileOutputStream(photoUrl);
 			int len = 0;
-			byte[] buf = new byte[1024*1024];
-			while((len = is.read(buf))>-1){
+			byte[] buf = new byte[1024 * 1024];
+			while ((len = is.read(buf)) > -1) {
 				fos.write(buf, 0, len);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Resp(false,CodeDef.ERROR);
-		}finally {
+			return new Resp(false, CodeDef.ERROR);
+		} finally {
 			try {
 				fos.close();
 				is.close();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return new Resp(false,CodeDef.ERROR);
+				return new Resp(false, CodeDef.ERROR);
 			}
 		}
-		int rs = appUserRepo.updatePhoto(id, getPortPath(url)+Const.TL_PHOTO_PATH + mFile.getOriginalFilename());
-		if(rs>0){
+		//截取资源访问路径
+		String url = request.getRequestURL().toString();
+		String projectPath = StringUtil.getProjectPath(url);
+		int rs = appUserRepo.updatePhoto(id, projectPath+ Const.TL_PHOTO_PATH + fileName);
+		if (rs > 0) {
 			return new Resp(true, CodeDef.SUCCESS);
 		}
 		return new Resp(CodeDef.ERROR);
 	}
-	
-	private String getPortPath(String url){
-		Pattern p = Pattern.compile("[a-zA-z]+://[^/]*");
-		Matcher matcher = p.matcher(url);  
-		if(matcher.find()){
-			return matcher.group();  
+
+	private void setPhotoUrl(String url, List<AppUser> list) {
+		String projectPath = StringUtil.getProjectPath(url);
+		for (AppUser appUser : list) {
+			if (appUser.getPhotoUrl() != null && !appUser.getPhotoUrl().contains("http"))
+				appUser.setPhotoUrl(projectPath + appUser.getPhotoUrl());
 		}
-		return null;
 	}
 }

@@ -12,21 +12,19 @@
     <script src="{=ctx}/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="{=ctx}/js/commons.js"></script>
 </head>
-
 <body>
     <section class="out-wrap">
-        <div class="header-main">
+       <!--  <div class="header-main">
              <section class="header">
-                  <div class="child return f34"><a href="#"><i></i>我</a></div>
                   <div class="child date">
                      <em class="f38" id="ymym">关于</em>
                   </div>
              </section>
-        </div>
+        </div> -->
         <section class="content">
         	<section class="version">
-            	  <div class="version-icon"></div>
-                  <p>版本号：1.0</p>
+            	  <div class="version-icon"><img alt="" src="{=ctx}/images/logo.png" height="" style="width:0.6rem; height: 0.6rem;" /></div>
+                  <p id = "versionNumber">版本号：1.0</p>
             </section>
             <section class="list">
                 <ul class="clearfix f30">
@@ -34,21 +32,21 @@
                     	<p>
                         	<i></i>
                         </p>
-                    	<a href="#" class="flex">微信：微信搜索“金融监管报表”</a>
+                    	<a href="weiXin.html" class="flex">微信：微信搜索“金融监管报表”</a>
                         <span class="return-r"></span>
                     </li>
                     <li class="email">
                     	<p>
                         	<i></i>
                         </p>
-                        <a href="#" class="flex">邮箱：marketing@riking.net</a>
+                        <a href="mailto:marketing@riking.net" class="flex">邮箱：marketing@riking.net</a>
                         <span class="return-r"></span>
                     </li>
                     <li class="tel">
                     	<p>
                         	<i></i>
                         </p>
-                   		<a href="#" class="flex">客服热线：400 921 0806</a>
+                   		<a href="tel:400 921 0806" class="flex">客服热线：400 921 0806</a>
                         <span class="return-r"></span>
                     </li>
                 </ul>
@@ -62,9 +60,18 @@
             <p>Copyright © RIKING., All Rights Reserved.</p>
         </section>
         <section class="prorup"></section>
-        <!-- 弹窗 -->
         <div class="tc"></div>
     </section>
 </body>
+<script type="text/javascript" >
 
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+var versionNumber = GetQueryString("versionNumber");
+document.getElementById("versionNumber").innerHTML="版本号："+versionNumber;
+</script>
 </html>

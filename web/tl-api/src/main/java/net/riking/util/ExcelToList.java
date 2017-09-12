@@ -28,8 +28,7 @@ public class ExcelToList {
 		List<T> list = new ArrayList<T>();
 
 		BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
-		PropertyDescriptor[] propertyDescriptors = beanInfo
-				.getPropertyDescriptors();
+		PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 		for (int numSheet = 0; numSheet < xssfWorkbook
 				.getNumberOfSheets(); numSheet++) {
 			XSSFSheet sheetAt = xssfWorkbook.getSheetAt(numSheet);

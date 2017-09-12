@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     android:orientation="horizontal"
     sml:sml_auto_open_percent="0.2"
-    sml:sml_scroller_duration="250"
+    sml:sml_scroller_duration="50"
     sml:sml_scroller_interpolator="@android:anim/bounce_interpolator">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="19dp"
             android:layout_marginRight="19dp"
-            android:textColor="@color/color_888888"
+            android:textColor="@color/color_background_b6b6b6"
             android:textSize="16sp" />
 
         <TextView
@@ -34,12 +34,13 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/time"
-            android:textColor="@color/color_888888"
+            android:textColor="@color/color_323232"
             android:textSize="16sp" />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/divider_height"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="10dp"

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pdf页面</title>
+    <link rel="stylesheet" href="{=ctx}/css/commons.css">
+    <link rel="stylesheet" href="{=ctx}/css/indexs.css">
+    <script src="{=ctx}/js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="{=ctx}/js/commons.js"></script>
+    <script type="text/javascript" src="{=ctx}/layui/layui.all.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/utils.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/base.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/base64_utf8.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/tmplUtils.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/view.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/iframe.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/html5.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/iefix.js"></script>
+</head>
+
+<body>
+	<iframe id="pdfModel" src="" height="100%" width="100%"></iframe>
+</body>
+<script type="text/javascript">
+var src = View.getQStr("src");
+	$(function(){
+		$("#pdfModel").attr("src",parent.src);
+	});
+</script>
+</html>

@@ -1,11 +1,16 @@
 package com.riking.calendar.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,45 +23,51 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
+import com.riking.calendar.adapter.ReportOnlineAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.pojo.QueryReport;
-import com.riking.calendar.pojo.QueryReportModel;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.AppUserReportCompleteRel;
+import com.riking.calendar.pojo.QueryReportContainer;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.DateUtil;
-import com.riking.calendar.util.LunarCalendar;
+import com.riking.calendar.util.Preference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -65,35 +76,46 @@ import retrofit2.Response;
 public class FirstFragment extends Fragment {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
+    public RealmResults<Reminder> reminders;
+    public ArrayList<String> notRepeatRemindDaysOfMonth = new ArrayList<>();
+    public String repeatWeekReminds;
+    public HashMap<String, Date> weeks = new HashMap<>();//weekly repeat reminders
+    public Date ealiestRemindWorkDate;//work day repeat reminders
+    public Date ealiestRemindHolidayDate;//holiday repeat reminders
+    public ArrayList<String> workOnWeekendDates = new ArrayList<>();//work on saturday or sunday
+    public ArrayList<String> notWorkOnWorkDates = new ArrayList<>();//not work on monday to friday
     ViewPagerActivity a;
     RecyclerView recyclerView;
     RecyclerView taskRecyclerView;
     RecyclerView reportRecyclerView;
-    TextView timeView;
-    TextView weekDayView;
     ReminderAdapter reminderAdapter;
+    CardView firstCardView;
+    CardView secondCardView;
+    CardView thirdCardView;
     TaskAdapter taskAdapter;
     Realm realm;
-    APIInterface apiInterface;
+    //current year month
+    String yearMonth;
+    ReportOnlineAdapter reportOnlineAdapter;
+    View v;
     private GestureDetector gestureDetector = null;
     private CalendarGridViewAdapter calV = null;
     private ViewFlipper flipper = null;
     private GridView gridView = null;
     //current year
     private int year_c = 0;
-    //current month
-    private int month_c = 0;
-    //current day
-    private int day_c = 0;
-    /**
-     * 上个月
-     */
-//    private ImageView prevMonth;
     /**
      * 下个月
      */
 //    private ImageView nextMonth;
-    private String currentDate = "";
+    //current month
+    private int month_c = 0;
+    /**
+     * 上个月
+     */
+//    private ImageView prevMonth;
+    //current day
+    private int day_c = 0;
     /**
      * 每次添加gridview到viewflipper中时给的标记
      */
@@ -136,7 +158,7 @@ public class FirstFragment extends Fragment {
         Log.d("zzw", this + " onCreate");
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
-        currentDate = sdf.format(date); // 当期日期
+        String currentDate = sdf.format(date); // 当期日期
         year_c = Integer.parseInt(currentDate.split("-")[0]);
         month_c = Integer.parseInt(currentDate.split("-")[1]);
         day_c = Integer.parseInt(currentDate.split("-")[2]);
@@ -145,13 +167,17 @@ public class FirstFragment extends Fragment {
     }
 
     public void enterCurrentMonth() {
-        if (calV.currentFlag > 0) {
+        if (calV.realCurrentDayPositionFlag > 0) {
+            if (calV.realCurrentDayPositionFlag != calV.currentFlag) {
+                calV.currentFlag = calV.realCurrentDayPositionFlag;
+                calV.notifyDataSetChanged();
+            }
             //do nothing if already in current month.
             return;
         }
         addGridView(); // 添加一个gridView
         //current month
-        calV = new CalendarGridViewAdapter(a, a.getResources(), 0, 0, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(this, a.getResources(), 0, 0, year_c, month_c, day_c);
         gridView.setAdapter(calV);
         addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
         flipper.addView(gridView, 1);
@@ -169,23 +195,54 @@ public class FirstFragment extends Fragment {
         jumpMonth = 0;
         jumpYear = 0;
         flipper.removeViewAt(0);
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                //The days of current month need to using 6 row of grid view to showing the days
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+                }
+                //The days of current month need to using 5 rows of grid view too showing days
+                //by the way one row have 7 columns.
+                else {
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+                flipper.invalidate();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("zzw", this + " onCreateView");
-        View v = inflater.inflate(R.layout.first_fragment, container, false);
-        timeView = (TextView) v.findViewById(R.id.time);
-        weekDayView = (TextView) v.findViewById(R.id.week_day);
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
+        if (v != null) {
+            return v;
+        }
+
+        Logger.d("zzw", " realm file name: " + realm.getConfiguration().getRealmFileName());
+        v = inflater.inflate(R.layout.first_fragment, container, false);
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         add = v.findViewById(R.id.add);
+        firstCardView = (CardView) v.findViewById(R.id.first_cardview);
+        secondCardView = (CardView) v.findViewById(R.id.second_cardview);
+        thirdCardView = (CardView) v.findViewById(R.id.third_cardview);
         setListener();
         currentMonth = (TextView) v.findViewById(R.id.currentMonth);
         TextView todayButton = (TextView) v.findViewById(R.id.today_button);
         todayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.d("zzw", "click today button.");
                 enterCurrentMonth();
             }
         });
@@ -193,13 +250,33 @@ public class FirstFragment extends Fragment {
         gestureDetector = new GestureDetector(a, new FirstFragment.MyGestureListener());
         flipper = (ViewFlipper) v.findViewById(R.id.flipper);
         flipper.removeAllViews();
-        calV = new CalendarGridViewAdapter(a, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(this, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         addGridView();
         gridView.setAdapter(calV);
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+                } else {
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+            }
+        });
+
+//            flipper.invalidate();
+        Logger.d("zzw", "after reset layout params flipper height: " + flipper.getLayoutParams().height);
+
         flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
-        // Create the Realm instance
-        realm = Realm.getDefaultInstance();
+
         //insert  to realm
         // All writes must be wrapped in a transaction to facilitate safe multi threading
 //        realm.executeTransaction(new Realm.Transaction() {
@@ -218,80 +295,262 @@ public class FirstFragment extends Fragment {
         reportRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         recyclerView.setLayoutManager(new LinearLayoutManager(a));
+        initReminderAdapter();
 
-        final Date date = new Date();
+        //only show the not complete tasks
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).notEqualTo(Task.DELETESTATE, CONST.DELETE).findAll();
+        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        taskAdapter = new TaskAdapter(tasks, realm);
+        taskRecyclerView.setAdapter(taskAdapter);
+        if (taskAdapter.getItemCount() == 0) {
+            secondCardView.setVisibility(View.GONE);
+        }
+
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                if (taskAdapter.getItemCount() == 0) {
+                    secondCardView.setVisibility(View.GONE);
+                } else {
+                    secondCardView.setVisibility(View.VISIBLE);
+                }
+                //the data is changed.
+                taskAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //what the fuck logic,
+        updateReportAdapter(new Date());
+
+        RealmResults<WorkDateRealm> works = realm.where(WorkDateRealm.class).findAll();
+        for (WorkDateRealm w : works) {
+            int weekDay = Integer.parseInt(w.weekday);
+            //not work on work day
+            if (w.isWork == 0 && weekDay < 6) {
+                notWorkOnWorkDates.add(w.date);
+            }
+            //work on weekends
+            else if (w.isWork == 1 && weekDay > 5) {
+                workOnWeekendDates.add(w.date);
+            }
+        }
+
+        //set the layout params
+        FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
+        CoordinatorLayout.LayoutParams paramss = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
+        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+        paramss.setMargins(0, 0, 0, marginBottom);
+        scrollView.setLayoutParams(paramss);
+        return v;
+    }
+
+    public boolean isNetAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) a.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        return info != null && info.isConnectedOrConnecting();
+    }
+
+    public void updateReportsWithLocalRealm() {
+        RealmConfiguration.Builder defaultRealmConfiguration = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded().name(CONST.DEFAUT_REALM_DATABASE_NAME);
+        Realm r = Realm.getInstance(defaultRealmConfiguration.build());
+        RealmResults<QueryReportContainerRealmModel> reports = r.where(QueryReportContainerRealmModel.class).findAll();
+        Logger.d("zzw", "report adapter size: " + reports.size());
+        final ReportAdapter reportAdapter = new ReportAdapter(reports);
+        reportRecyclerView.setAdapter(reportAdapter);
+        realm.addChangeListener(new RealmChangeListener<Realm>() {
+            @Override
+            public void onChange(Realm realm) {
+                reportAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void updateReportAdapter(Date date) {
+        if (reportRecyclerView == null) {
+            return;
+        }
+
+        if (Preference.pref.getBoolean(Const.IS_LOGIN, false) && isNetAvailable()) {
+            AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
+            requestBody.appUserId = Preference.pref.getString(Const.USER_ID, "");
+            requestBody.completeDate = new SimpleDateFormat(Const.yyyyMMdd).format(date);
+            APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
+                @Override
+                public void callBack(ResponseModel<ArrayList<QueryReportContainer>> response) {
+                    final ArrayList<QueryReportContainer> reportContainers = response._data;
+                    reportOnlineAdapter = new ReportOnlineAdapter(reportContainers);
+                    reportRecyclerView.setAdapter(reportOnlineAdapter);
+                }
+            });
+        } else {
+            updateReportsWithLocalRealm();
+        }
+    }
+
+    /**
+     * get today's reminders.
+     */
+    public void initReminderAdapter() {
         final Calendar c = Calendar.getInstance();
-        c.setTime(date);
+        c.setTime(new Date());
+        updateReminderAdapter(c);
+    }
 
+    public void getRemindDaysOfMonth(String yearMonth) {
+        //reset the values
+        notRepeatRemindDaysOfMonth.clear();
+        repeatWeekReminds = "";
+        weeks.clear();
+        ealiestRemindHolidayDate = null;
+        ealiestRemindWorkDate = null;
+
+        if (realm.isClosed()) {
+            realm = Realm.getDefaultInstance();
+        }
+        RealmResults<Reminder> reminders = realm.where(Reminder.class)
+                .beginGroup()
+                .beginsWith("day", yearMonth)//this month
+                .equalTo("repeatFlag", 0)//not repeat reminders.
+                .endGroup().findAllSorted("time", Sort.ASCENDING);
+        Calendar c = Calendar.getInstance();
+        for (Reminder r : reminders) {
+            if (r.reminderTime != null) {
+                c.setTime(r.reminderTime);
+                notRepeatRemindDaysOfMonth.add(String.valueOf(c.get(Calendar.DATE)));
+            }
+        }
+
+        //find the repeat week days
+        RealmResults<Reminder> weekRepeatReminders = realm.where(Reminder.class)
+                .beginGroup()
+                .equalTo("repeatFlag", 3)
+                .endGroup().findAll();
+
+        for (Reminder r : weekRepeatReminders) {
+            if (r.repeatWeek != null) {
+                for (char ch : r.repeatWeek.toCharArray()) {
+                    String key = String.valueOf(ch);
+                    if (weeks.get(key) == null || r.reminderTime.before(weeks.get(key))) {
+                        Logger.d("zzw", "put week repeat remind: " + ch + " : " + r.reminderTime);
+                        weeks.put(key, r.reminderTime);
+                    }
+                }
+            }
+        }
+
+        for (String key : weeks.keySet()) {
+            repeatWeekReminds = repeatWeekReminds + key;
+        }
+
+        //find work day reminds
+        RealmResults<Reminder> workDayReminds = realm.where(Reminder.class)
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)//work day
+                .findAll();
+        for (Reminder r : workDayReminds) {
+            //keep the workRemind time as the earliest.
+            if (ealiestRemindWorkDate == null || r.reminderTime.before(ealiestRemindWorkDate)) {
+                ealiestRemindWorkDate = r.reminderTime;
+            }
+        }
+
+        //find holiday reminds
+        RealmResults<Reminder> holidayReminds = realm.where(Reminder.class)
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)//holiday
+                .findAll();
+        for (Reminder r : holidayReminds) {
+            if (ealiestRemindHolidayDate == null || r.reminderTime.before(ealiestRemindHolidayDate)) {
+                ealiestRemindHolidayDate = r.reminderTime;
+            }
+        }
+    }
+
+    public void getRemindDaysOfMonth(Date date) {
+        SimpleDateFormat monthFormat = new SimpleDateFormat("yyyyMM");
+        getRemindDaysOfMonth(monthFormat.format(date));
+
+    }
+
+    public void updateReminderAdapter(Calendar c) {
+        if (recyclerView == null) {
+            return;
+        }
         int weekDay = c.get(Calendar.DAY_OF_WEEK);
         if (weekDay == Calendar.SUNDAY) {
             weekDay = 7;
         } else {
             weekDay--;
         }
-        LunarCalendar lc = new LunarCalendar();
-        SimpleDateFormat chineseFormat = new SimpleDateFormat("yyyy年MM月dd日");
-        timeView.setText(chineseFormat.format(date));
-        String weekNo = "第" + c.get(Calendar.WEEK_OF_YEAR) + "周";
-        weekDayView.setText(weekNo + "   " + DateUtil.getWeekNameInChinese(weekDay)
-                + " " + lc.getLunarDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), false));
+        //Fix the reminder time is not before the current day
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
 
+        Date date = c.getTime();
         SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-        final RealmResults<Reminder> reminders = realm.where(Reminder.class).beginGroup().equalTo("day", dayFormat.format(new Date())).equalTo("repeatFlag", 0).endGroup()
+        String currentDay = dayFormat.format(date);
+        RealmQuery<Reminder> query = realm.where(Reminder.class).beginGroup().equalTo("day", currentDay).equalTo("repeatFlag", 0).endGroup()
                 .or().beginGroup()
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WEEK)
                 .contains("repeatWeek", String.valueOf(weekDay))
-                .endGroup()
-                .findAllSorted("time", Sort.ASCENDING);
+                .lessThan("reminderTime", date)
+                .endGroup();
+
+        boolean isTodayWorkDay;
+        //weekends
+        if (weekDay > 5) {
+            if (workOnWeekendDates.contains(currentDay)) {
+                isTodayWorkDay = true;
+            } else {
+                isTodayWorkDay = false;
+            }
+        } else {
+            if (notWorkOnWorkDates.contains(currentDay)) {
+                isTodayWorkDay = false;
+            } else {
+                isTodayWorkDay = true;
+            }
+        }
+
+        //find the work day repeat reminders
+        if (isTodayWorkDay) {
+            query.or()
+                    .beginGroup()
+                    .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)
+                    .lessThanOrEqualTo("reminderTime", date)
+                    .endGroup();
+        } else {
+            query.or()
+                    .beginGroup()
+                    .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)
+                    .lessThanOrEqualTo("reminderTime", date)
+                    .endGroup();
+        }
+
+        query.equalTo("deleteState", 0);
+
+        reminders = query.findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
         recyclerView.setAdapter(reminderAdapter);
+        if (reminders.size() == 0) {
+            firstCardView.setVisibility(View.GONE);
+        } else {
+            firstCardView.setVisibility(View.VISIBLE);
+        }
+
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
+                if (reminderAdapter.getItemCount() == 0) {
+                    firstCardView.setVisibility(View.GONE);
+                } else {
+                    firstCardView.setVisibility(View.VISIBLE);
+                }
+
                 reminderAdapter.notifyDataSetChanged();
+                getRemindDaysOfMonth(yearMonth);
+                calV.notifyDataSetChanged();
             }
         });
-
-        //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
-        taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        taskAdapter = new TaskAdapter(tasks, realm);
-        taskRecyclerView.setAdapter(taskAdapter);
-
-        apiInterface = APIClient.getClient().create(APIInterface.class);
-
-        realm.addChangeListener(new RealmChangeListener<Realm>() {
-            @Override
-            public void onChange(Realm realm) {
-                //the data is changed.
-                taskAdapter.notifyDataSetChanged();
-            }
-        });
-     /*   LinkedHashMap<String, List<Report>> reports = new LinkedHashMap<String, List<Report>>();
-        ArrayList<Report> list = new ArrayList<>();
-        Report r = new Report();
-        r.id = "ida";
-        r.moduleType = "module type";
-        r.reportCode = "report code";
-        r.reportName = "report name";
-        list.add(r);
-        reports.put("title", list);
-        reportRecyclerView.setAdapter(new ReportAdapter(reports));*/
-
-        apiInterface.getAllReports(new QueryReport()).enqueue(new Callback<QueryReportModel>() {
-            @Override
-            public void onResponse(Call<QueryReportModel> call, Response<QueryReportModel> response) {
-                QueryReportModel reports = response.body();
-                Logger.d("zzw", "success loaded reports: " + reports);
-                reportRecyclerView.setAdapter(new ReportAdapter(reports));
-            }
-
-            @Override
-            public void onFailure(Call<QueryReportModel> call, Throwable t) {
-                Logger.d("zzw", "reports loaded failed: " + t.getMessage());
-            }
-        });
-        return v;
     }
 
     /**
@@ -302,11 +561,29 @@ public class FirstFragment extends Fragment {
     private void enterNextMonth(int gvFlag) {
         addGridView(); // 添加一个gridView
         jumpMonth++; // 下一个月
-
-        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         gridView.setAdapter(calV);
         addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
         gvFlag++;
+
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+                } else {
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+            }
+        });
+
         flipper.addView(gridView, gvFlag);
         flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
         flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_out));
@@ -322,11 +599,30 @@ public class FirstFragment extends Fragment {
     private void enterPrevMonth(int gvFlag) {
         addGridView(); // 添加一个gridView
         jumpMonth--; // 上一个月
-
-        calV = new CalendarGridViewAdapter(a, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
         gridView.setAdapter(calV);
         gvFlag++;
-        addTextToTopTextView(currentMonth); // 移动到上一月后，将当月显示在头标题中
+        addTextToTopTextView(currentMonth);// 移动到上一月后，将当月显示在头标题中
+
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+                Logger.d("zzw", "flipper height: " + params.height);
+                if (calV.getCount() > 35) {
+                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+                } else {
+                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+                }
+                Logger.d("zzw", "reset flipper height: " + params.height);
+                flipper.setLayoutParams(params);
+                flipper.invalidate();
+            }
+        });
+
         //addView 方法中的index越大，View显示越上面。
         flipper.addView(gridView, gvFlag);
 
@@ -350,7 +646,7 @@ public class FirstFragment extends Fragment {
     }
 
     private void addGridView() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         // 取得屏幕的宽度和高度
         WindowManager windowManager = a.getWindowManager();
         Display display = windowManager.getDefaultDisplay();
@@ -359,11 +655,11 @@ public class FirstFragment extends Fragment {
 
         gridView = new GridView(a);
         gridView.setNumColumns(7);
-        gridView.setColumnWidth(40);
+//        gridView.setColumnWidth(40);
         // gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-        if (Width == 720 && Height == 1280) {
-            gridView.setColumnWidth(40);
-        }
+//        if (Width == 720 && Height == 1280) {
+//            gridView.setColumnWidth(40);
+//        }
         gridView.setGravity(Gravity.CENTER_VERTICAL);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         // 去除gridView边框
@@ -396,7 +692,18 @@ public class FirstFragment extends Fragment {
                     // //这一天的阴历
                     String scheduleYear = calV.getShowYear();
                     String scheduleMonth = calV.getShowMonth();
-                    Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
+                    calV.currentFlag = position;
+                    calV.notifyDataSetChanged();
+
+                    final Calendar c = Calendar.getInstance();
+                    c.set(Calendar.YEAR, Integer.parseInt(scheduleYear));
+                    c.set(Calendar.MONTH, Integer.parseInt(scheduleMonth) - 1);
+                    c.set(Calendar.DATE, Integer.parseInt(scheduleDay));
+
+                    updateReminderAdapter(c);
+                    updateReportAdapter(c.getTime());
+
+//                    Toast.makeText(a, scheduleYear + "-" + scheduleMonth + "-" + scheduleDay, Toast.LENGTH_LONG).show();
                     // Toast.makeText(CalendarActivity.this, "点击了该条目",
                     // Toast.LENGTH_SHORT).show();z
                 }

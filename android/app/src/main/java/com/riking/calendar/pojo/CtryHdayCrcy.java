@@ -1,7 +1,5 @@
 package com.riking.calendar.pojo;
 
-import java.util.Date;
-
 public class CtryHdayCrcy {
     //query string
     public String queryParam;
@@ -17,9 +15,12 @@ public class CtryHdayCrcy {
     public String hdayNameValue;
 
     //	@Comment("节假日时间")
-//	@Temporal(TemporalType.DATE)
-//	@DateTimeFormat(pattern = "yyyyMMdd")
-//	@Column(name = "hday_date")
+    //@Temporal(TemporalType.DATE)
+    //@DateTimeFormat(pattern = "yyyyMMdd")
+    //	@Column(name = "hday_date")
+    //yyyy representing whole year reports
+    //yyyyMM representing whole month reports query
+    //yyyyMMdd representing a specific day query
     public String hdayDate;
 
     //	@Comment("币种")
@@ -36,9 +37,9 @@ public class CtryHdayCrcy {
     public String deleteState;
 
     //	@Transient
-    public String iconUrl;
-    public byte pindex;
-    public byte pcount;
+    public String flagUrl;
+    public byte pindex = 1;
+    public byte pcount = 30;
 
     @Override
     public String toString() {
@@ -50,7 +51,7 @@ public class CtryHdayCrcy {
                 ", crcy='" + crcy + '\'' +
                 ", remark='" + remark + '\'' +
                 ", deleteState='" + deleteState + '\'' +
-                ", iconUrl='" + iconUrl + '\'' +
+                ", flagUrl='" + flagUrl + '\'' +
                 '}';
     }
 }

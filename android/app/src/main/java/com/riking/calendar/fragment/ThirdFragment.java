@@ -19,30 +19,29 @@ import com.riking.calendar.activity.AddRemindActivity;
  */
 
 public class ThirdFragment extends Fragment implements View.OnClickListener {
+    View v;
     private ViewPager mViewPager;
     private View add;
-    private View cancel;
     private View done;
-    private View title;
-
     private MyPagerAdapter mAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.third_fragment, container, false);
+        if (v != null) {
+            return v;
+        }
+        v = inflater.inflate(R.layout.third_fragment, container, false);
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         add = v.findViewById(R.id.add);
-        cancel = v.findViewById(R.id.cancel);
         done = v.findViewById(R.id.done);
-        title = v.findViewById(R.id.title);
         add.setOnClickListener(this);
 
         //adding view pager to the slidingTabLayout
         SlidingTabLayout topTabLayout = (SlidingTabLayout) v.findViewById(R.id.top_tab_layout);
         topTabLayout.setViewPager(mViewPager);
+
         return v;
     }
 
@@ -65,13 +64,11 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
             }
             case R.id.cancel: {
                 done.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
                 add.setVisibility(View.VISIBLE);
                 break;
             }
             case R.id.done: {
                 done.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
                 add.setVisibility(View.VISIBLE);
                 break;
             }

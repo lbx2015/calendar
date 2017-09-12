@@ -22,8 +22,11 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AliSme;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserReportRel;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.service.repo.AppUserReportRelRepo;
+import net.riking.service.repo.ReportListRepo;
 import net.riking.util.SmsUtil;
 
 /**
@@ -42,6 +45,12 @@ public class LoginServer {
 
 	@Autowired
 	SysDataService sysDataService;
+	
+	@Autowired
+	ReportListRepo reportListRepo;
+	
+	@Autowired
+	AppUserReportRelRepo appUserReportRelRepo;
 
 	@Autowired
 	SmsUtil smsUtil;
@@ -61,9 +70,13 @@ public class LoginServer {
 		if (appUser2 != null) {
 			session.setAttribute("currentUser", appUser2);
 			return new AppResp(appUser2, CodeDef.SUCCESS);
-		} else {
-			return new AppResp(CodeDef.ERROR);
 		}
+		List<AppUser> list = appUserRepo.findByDeleteStateAndTelephone("1", appUser.getTelephone());
+		if(null!=list&&list.size()>0){
+			return new AppResp(CodeDef.EMP.USER_PASS_ERR);
+		}
+		return new AppResp(CodeDef.EMP.DATA_NOT_FOUND);
+		
 	}
 
 	@ApiOperation(value = "发送验证码", notes = "POST")
@@ -90,7 +103,7 @@ public class LoginServer {
 			HttpSession session) {
 		AppUser user = sysDataService.getAppUser(appUser);
 		if (user == null) {
-			return new AppResp(user, CodeDef.SUCCESS);
+			return new AppResp(user, CodeDef.EMP.CHECK_CODE_TIME_OUT);
 		}
 		List<AppUser> list;
 		AppUser appUser2 = null ;
@@ -102,14 +115,19 @@ public class LoginServer {
 			}
 			if (appUser2==null) {
 				AppUser appUser3 = new AppUser(appUser.getTelephone(),
-						appUser.getTelephone(), "123456", user.getPhoneSeqNum(),
+						appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
 						"1", "1","0800");
 				appUser2 = appUserRepo.save(appUser3);
+				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
+				for (AppUserReportRel appUserReportRel : appUserReportRels) {
+					appUserReportRel.setAppUserId(appUser2.getId());
+				}
+				appUserReportRelRepo.save(appUserReportRels);
 				logger.info("{}注册成功", appUser.getName());
 			}
-		}
-		if (appUser2 != null) {
 			sysDataService.delAppUser(user);
+		}else{
+			return new AppResp(appUser2, CodeDef.EMP.CHECK_CODE_ERR);
 		}
 		session.setAttribute("currentUser", appUser2);
 		return new AppResp(appUser2, CodeDef.SUCCESS);
