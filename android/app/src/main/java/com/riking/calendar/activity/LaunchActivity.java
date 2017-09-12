@@ -17,6 +17,7 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.DownLoadApk;
 import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.Preference;
@@ -28,7 +29,6 @@ import com.riking.calendar.util.Preference;
 public class LaunchActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
-    private AlertDialog.Builder mDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,27 +65,6 @@ public class LaunchActivity extends AppCompatActivity {
         }
         APIClient.getWorkDays();
 
-
-//        APIClient.checkUpdate(new CheckCallBack() {
-//            @Override
-//            public void onSuccess(AppVersionResult updateInfo) {
-//                Logger.d("zzw", "on Success");
-//                forceUpdate(updateInfo);
-//                //返回0当前为最新版本，返回1有版本更新，返回2需要强制更新
-//                if (updateInfo.type.equals("2")) {
-//
-//                } else if (updateInfo.type.equals("1")) {
-//                } else {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onError() {
-//
-//            }
-//        });
-//        NetStateReceiver.registerNetworkStateReceiver(this);//初始化网络监听
         //register observer
         NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
             @Override
@@ -100,18 +79,6 @@ public class LaunchActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "disconnected.", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void forceUpdate(final AppVersionResult updateInfo) {
-        mDialog = new AlertDialog.Builder(this);
-        mDialog.setTitle(BuildConfig.APPLICATION_ID + "又更新咯！");
-        mDialog.setMessage(updateInfo.msg);
-        mDialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                DownLoadApk.download(LaunchActivity.this, updateInfo.APKUrl, updateInfo.msg);
-            }
-        }).setCancelable(false).create().show();
     }
 
     @Override

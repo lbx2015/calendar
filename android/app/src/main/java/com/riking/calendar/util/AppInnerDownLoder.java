@@ -49,7 +49,7 @@ public class AppInnerDownLoder {
                     sleep(3000);
                     installApk(mContext, file);
                     // 结束掉进度条对话框
-//                    pd.dismiss();
+                    pd.dismiss();
                 } catch (Exception e) {
                     Logger.d("zzw", " exception: " + e.getMessage());
                     pd.dismiss();

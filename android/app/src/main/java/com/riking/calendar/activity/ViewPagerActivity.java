@@ -26,8 +26,11 @@ import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.SecondFragment;
 import com.riking.calendar.fragment.ThirdFragment;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.TabEntity;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.DownLoadApk;
 import com.riking.calendar.util.ViewFindUtils;
 
@@ -134,8 +137,24 @@ public class ViewPagerActivity extends FragmentActivity {
 //        AppVersionResult u = new AppVersionResult();
 //        u.type = "2";
 //        u.msg = "test update";
-//        u.APKUrl = "http://192.168.23.1:8080/MylocalServer/app_debug.apk";
+//        u.apkUrl = "http://192.168.23.1:8080/MylocalServer/app_debug.apk";
 //        forceUpdate(u);
+        APIClient.checkUpdate(new CheckCallBack() {
+            @Override
+            public void onSuccess(AppVersionResult updateInfo) {
+                Logger.d("zzw", "on Success");
+                //返回0当前为最新版本，返回1有版本更新，返回2需要强制更新
+                if (updateInfo.type.equals("2")) {
+                    forceUpdate(updateInfo);
+                } else if (updateInfo.type.equals("1")) {
+                    normalUpdate(updateInfo);
+                }
+            }
+
+            @Override
+            public void onError() {
+            }
+        });
     }
 
     public void forceUpdate(final AppVersionResult updateInfo) {
@@ -146,10 +165,26 @@ public class ViewPagerActivity extends FragmentActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Logger.d("zzw", "on click download");
-                DownLoadApk.download(ViewPagerActivity.this, updateInfo.APKUrl, updateInfo.msg);
-//                AppInnerDownLoder.downLoadApk(ViewPagerActivity.this, updateInfo.APKUrl, updateInfo.msg);
+                AppInnerDownLoder.downLoadApk(ViewPagerActivity.this, updateInfo.apkUrl, updateInfo.msg);
             }
         }).setCancelable(false).create().show();
+    }
+
+    public void normalUpdate(final AppVersionResult updateInfo) {
+        mDialog = new AlertDialog.Builder(this);
+        mDialog.setTitle(BuildConfig.APPLICATION_ID + "又更新咯！");
+        mDialog.setMessage(updateInfo.msg);
+        mDialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DownLoadApk.download(ViewPagerActivity.this, updateInfo.apkUrl, updateInfo.msg);
+            }
+        }).setCancelable(true).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

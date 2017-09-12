@@ -5,5 +5,5 @@ public class AppVersionResult {
 	public String type;
 	public String msg;
 	public String versionNumber;
-	public String APKUrl;
+	public String apkUrl;
 }
