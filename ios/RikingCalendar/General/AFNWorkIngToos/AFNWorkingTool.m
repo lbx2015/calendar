@@ -10,6 +10,8 @@
 #import "AFNetworking.h"
 #import "UIKit+AFNetworking.h"
 #import "INSPECTIONSessionWrapperOperation.h"
+#import "AppDelegate.h"
+
 static BOOL isFirst = NO;
 static BOOL canCHeckNetwork = NO;
 
@@ -39,6 +41,8 @@ static AFNWorkingTool *_manager = nil;
 #pragma mark - AFN GET请求
 -(void)AFNHttpRequestGETWithUrlstring:(NSString *)url timeout:(NSInteger)timeout success:(void(^)(id responseDic))success failure:(void (^)(NSError *error))failue
 {
+    
+
     if (!_session)
     {
         _session = [AFHTTPSessionManager manager];
@@ -128,6 +132,63 @@ static AFNWorkingTool *_manager = nil;
 }
 
 
+#pragma mark - AFN POST请求
+-(void)AFNHttpPOSTWithUrlstring:(NSString *)urlString
+                              parameters:(id)parameters
+                           success:(void(^)(NSDictionary *dictData))success
+                           failure:(void (^)(NSError *error))failue
+{
+    
+    NSString *boundaryString = @"-----------------------------7db372eb000e2";
+    
+    if (!_session)
+    {
+        _session = [AFHTTPSessionManager manager];
+    }
+    
+    _session.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    _session.requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    _session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"text/json",@"application/json",@"text/javascript",@"text/html", @"application/javascript", @"text/js", nil];
+    
+    [_session.requestSerializer setValue:[NSString stringWithFormat:@"application/json;boundary=%@",boundaryString] forHTTPHeaderField:@"Content-Type"];
+    
+    [_session POST:urlString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        //        NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        
+        NSDictionary *dict = (NSDictionary *)responseObject;
+        RKLog(@"请求的URL:\n********%@********",task.response.URL);
+        RKLog(@"Message:\n********%@********",dict[@"Message"]);
+        RKLog(@"%@",dict);
+        if (success)
+        {
+            success(dict);
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        RKLog(@"**********%@**********",error);
+        if (failue)
+        {
+            failue(error);
+        }
+        
+    }];
+    
+}
+
+
+#pragma mark - 获取当前网路状态
+- (int)networkStatus
+{
+    int status = 0;
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    status = [app.networkReachability intValue];
+    return status;
+}
 
 
 //实现断点下载
@@ -315,7 +376,72 @@ static AFNWorkingTool *_manager = nil;
     }];
     
 }
-
+- (void)INSNSOperationQueueWithDataArray:(NSArray *)array urlStringArray:(NSArray *)urlStringArray methodArray:(NSArray *)methodArray success:(void(^)(id dictData,NSInteger row))success failure:(void (^)(NSError *error,NSString *message,NSInteger row))failue AllSuccess:(void(^)(id responseObject))allSuccess{
+    
+    NSMutableArray* result = [NSMutableArray array];
+    
+    for (NSInteger i = 0; i < array.count; i++){
+        [result addObject:[NSNull null]];
+    }
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    queue.maxConcurrentOperationCount = 3;
+    
+    NSBlockOperation *completionOperation = [NSBlockOperation blockOperationWithBlock:^{
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{ // 回到主线程执行，方便更新 UI 等
+            RKLog(@"全部上传完成!");
+            if (allSuccess) {
+                allSuccess(@"完成");
+            }
+            //            for (id response in result) {
+            //                NSLog(@"%@", response);
+            //            }
+        }];
+    }];
+    
+    for (NSInteger i = 0; i < array.count; i++) {
+        
+        NSURLSessionUploadTask* uploadTask = [self upLoadTaskWithUrl:urlStringArray[i] parameters:array[i] method:methodArray[i] completion:^(NSURLResponse *response, id responseObject, NSError *error) {
+            
+            NSInteger row = (int)i;
+            
+            if (error) {
+                RKLog(@"第 %d 个上传失败: %@", (int)i + 1, error);
+                if (failue) {
+                    failue(error,[Utils getMessageError:error],row);
+                }
+            } else {
+                
+                NSDictionary *dictData = (NSDictionary *)responseObject;
+                RKLog(@"%@",dictData);
+                if ([dictData[@"code"]isEqualToNumber:@200]) {
+                    RKLog(@"第 %d 个上传成功: %@,Message:%@", (int)i + 1, responseObject,dictData[@"codeDesc"]);
+                    if (success) {
+                        success(responseObject,row);
+                    }
+                }else{
+                    RKLog(@"%@",dictData[@"Message"]);
+                    if (failue) {
+                        failue(error,dictData[@"Message"],row);
+                    }
+                }
+                
+                @synchronized (result) { // NSMutableArray 是线程不安全的，所以加个同步锁
+                    result[i] = responseObject;
+                }
+                
+            }
+            
+        }];
+        
+        INSPECTIONSessionWrapperOperation *uploadOperation = [INSPECTIONSessionWrapperOperation operationWithURLSessionTask:uploadTask];
+        
+        [completionOperation addDependency:uploadOperation];
+        [queue addOperation:uploadOperation];
+    }
+    
+    [queue addOperation:completionOperation];
+}
 
 
 - (void)INSNSOperationQueueWithDataArray:(NSArray *)array urlString:(NSString *)urlString method:(NSString *)method success:(void(^)(id dictData,NSInteger row))success failure:(void (^)(NSError *error,NSString *message,NSInteger row))failue AllSuccess:(void(^)(id responseObject))allSuccess
@@ -335,9 +461,6 @@ static AFNWorkingTool *_manager = nil;
             if (allSuccess) {
                 allSuccess(@"完成");
             }
-//            for (id response in result) {
-//                NSLog(@"%@", response);
-//            }
         }];
     }];
     
@@ -388,18 +511,12 @@ static AFNWorkingTool *_manager = nil;
 
 - (NSURLSessionUploadTask *)upLoadTaskWithUrl:(NSString *)url parameters:(id)parameters method:(NSString *)method completion:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completionBlock
 {
-//    NSError* error = NULL;
-//    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:method URLString:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//        
-//        
-//    } error:&error];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     
     NSString *boundaryString = @"-----------------------------7db372eb000e2";
     
     [request addValue:[NSString stringWithFormat:@"application/json;boundary=%@",boundaryString] forHTTPHeaderField:@"Content-Type"];
-    
     
     [request setHTTPMethod:method];
     

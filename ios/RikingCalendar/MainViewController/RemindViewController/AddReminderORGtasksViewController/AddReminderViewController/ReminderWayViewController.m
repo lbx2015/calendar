@@ -23,15 +23,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    self.title = @"提醒方式";
-    [self setRightButtonWithTitle:@[@"确定"]];
+    self.title = NSLocalizedString(@"remind_way_title", nil);
+    [self setRightButtonWithTitle:@[NSLocalizedString(@"sure", nil)]];
     [self initData];
     [self.view addSubview:self.dataTabView];
     
 }
 
 - (void)initData{
-    _titieArray = [NSMutableArray arrayWithObjects:@"不提醒",@"正点提醒",@"自定义", nil];
+    _titieArray = [NSMutableArray arrayWithObjects:NSLocalizedString(@"not_remind", nil),NSLocalizedString(@"punctual_remind", nil),NSLocalizedString(@"custom", nil), nil];
     _chooseWay = [NSMutableArray array];
     [_chooseWay addObject:@"1"];
     _rModel = [[ReminderModel alloc]init];
@@ -65,7 +65,7 @@
     if (indexPath.row==2) {
         
         if (_rModel.beforeTime>0) {
-            titleLabel.text = [NSString stringWithFormat:@"提前%d分",_rModel.beforeTime];
+            titleLabel.text = [NSString stringWithFormat:@"%@%d%@",NSLocalizedString(@"advance_remind", nil),_rModel.beforeTime,NSLocalizedString(@"minute", nil)];
         }
     }
     
@@ -107,9 +107,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
  
-    if (_chooseWay.count==1 && [[_chooseWay lastObject] integerValue]==indexPath.row) {
-        return;
-    }
+//    if (_chooseWay.count==1 && [[_chooseWay lastObject] integerValue]==indexPath.row) {
+//        return;
+//    }
     
     [_chooseWay removeAllObjects];
     [_chooseWay addObject:[NSString stringWithFormat:@"%ld",indexPath.row]];
@@ -132,9 +132,9 @@
 #pragma mark - 选择提醒方式
 - (void)chooseWay:(UIButton *)sender{
     
-    if (_chooseWay.count==1 && [[_chooseWay lastObject] integerValue]==sender.tag) {
-        return;
-    }
+//    if (_chooseWay.count==1 && [[_chooseWay lastObject] integerValue]==sender.tag) {
+//        return;
+//    }
     sender.selected = !sender.selected;
     [_chooseWay removeAllObjects];
     [_chooseWay addObject:[NSString stringWithFormat:@"%ld",sender.tag]];
@@ -165,14 +165,17 @@
 - (void)chooseTime{
     ReminderDatePickerView *reminderVC = [[ReminderDatePickerView alloc]init];
     
-    [reminderVC setDateStyle:ReminderStyleShowMinute CompleteBlock:^(NSString *time) {
-        
+    [reminderVC setDateStyle:ReminderStyleShowMinute selectTime:[NSString stringWithFormat:@"%d",_rModel.beforeTime] CompleteBlock:^(NSString *time) {
         _rModel.beforeTime = [time intValue];
         [self.dataTabView reloadData];
     }];
     
+    
     [reminderVC show];
 }
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

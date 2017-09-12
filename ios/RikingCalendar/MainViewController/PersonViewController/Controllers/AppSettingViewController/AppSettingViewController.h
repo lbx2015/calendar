@@ -10,4 +10,7 @@
 
 @interface AppSettingViewController : RKBaseTabViewController
 
+
+@property (nonatomic,copy)void(^userOutLogin)();
+
 @end

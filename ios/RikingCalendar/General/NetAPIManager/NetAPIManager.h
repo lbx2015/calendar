@@ -15,11 +15,14 @@
 @interface NetAPIManager : NSObject
 
 
-#define ServreUrl               @"http://172.16.64.85:8281"//liuyao
-
-//#define ServreUrl               @"http://172.16.64.96:8281"
 
 
+
+//#define ServreUrl                                 @"http://172.16.64.85:8281"//liuyao
+
+//#define ServreUrl                                 @"http://172.16.64.96:8281"
+
+#define ServreUrl                                   @"http://172.16.32.14:6061/tl-api"
 
 
 
@@ -33,6 +36,13 @@
  验证验证码
  */
 #define checkValiCode                               @"/checkValiCode"
+
+
+/**
+ 用户服务协议
+ */
+#define userRegisterAgree                           @"/appAboutApp/agreementHtml"
+
 
 //获取系统版本
 #define getappVersion                               @"/common/getappVersion"
@@ -53,6 +63,12 @@
 //同步提醒信息
 #define synchronousReminds                          @"/synchronous/synchronousReminds"
 
+
+/**
+ 获取所有的提醒
+ */
+#define getAllRemind                                @"/synchronous/synchronousRemindToApp"
+
 //新增/修改提醒历史
 #define saveRemindHistory                           @"/reminHisApp/save"
 
@@ -70,12 +86,28 @@
 //获取待办信息
 #define getTodo                                     @"/Todo/getTodo"
 
-//获取待办历史信息
+/**
+ 同步待办信息
+ */
+#define synchronousTodos                            @"/synchronous/synchronousTodos"
+
+
+/**
+ 获取用户所有的待办
+ */
+#define getAllGtasks                                @"/synchronous/synchronousTodoToApp"
+
+/**
+ 获取待办历史信息(弃用)
+ */
 #define getTodoHistory                              @"/Todo/getTodoHis"
 
 
 
-
+/**
+ 同步所有信息
+ */
+#define synchronousAll                              @"/synchronous/synchronousAll"
 
 
 
@@ -95,13 +127,45 @@
 #define synchronousBusinessDay                      @"/synchronous/synchronousBusinessDay"
 
 #define synchronousDate                             @"/synchronous/synchronousDate"
-//app获取所有的报表
+
+
+/**
+ 获取所有的报表
+ */
 #define getAllReport                                @"/reportListApp/getAllReport"
 
+/**
+ 显示报表详情
+ */
 #define showReportDetail                            @"/appAboutApp/reportHtml"
 
-//app获取用户下的报表
+
+
+
+/**
+ 获取用户下的所有报表
+ */
 #define getUserRepor                                @"/appUserReport/getUserRepor"
+
+/**
+ 新增用户完成报表
+ {
+ "appUserId": "string",
+ "completeDate": "string",
+ "completeId": "string",
+ "isComplete": 0,
+ "reportId": "string"
+ }
+ */
+#define userReportSave                              @"/appUserReportCompleteRel/save"
+
+/**
+ 获取用户所有报表完成的情况
+ */
+#define getUserAllCompleteReport                    @"/appUserReportCompleteRel/getAllReport"
+
+
+
 
 //更新用户手机设备信息
 #define IsChangeMac                                 @"/appUserApp/IsChangeMac"
@@ -115,5 +179,5 @@
 #define uploadUserImage                             @"/appUserApp/upLoad"
 
 
-#define aboutUrl                                    @"/aboutHtml"
+#define aboutUrl                                    @"/appAboutApp/aboutHtml"
 @end

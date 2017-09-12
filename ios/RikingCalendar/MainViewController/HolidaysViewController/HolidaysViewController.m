@@ -45,8 +45,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setRightButton:@[@"btn_search_icon"]];
-    
     [self initData];
+    [self getMenuData];
     [self getData];
     [self createMenuUI];
 }
@@ -58,11 +58,16 @@
     [self.view addSubview:self.dataTabView];
     [self updateTabViewFrameWithTop:40 left:0 right:0 bottom:-49];
     
+    self.dataTabView.header = self.kkRefreshHeader;
+    self.dataTabView.footer = self.diyRefreshFooter;
+    
+    
     NSMutableArray *btnArray = [NSMutableArray array];
     _btnBgView = [[UIView alloc]init];
+    _btnBgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_btnBgView];
     
-    NSMutableArray *titleArray = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"%@",[Utils getCurrentTimeWithTimeFormat:@"yyyy-MM"]],@"国家/地区",@"币种",@"节假日", nil];
+    NSMutableArray *titleArray = [NSMutableArray arrayWithObjects:[NSString stringWithFormat:@"%@",[Utils getCurrentTimeWithTimeFormat:@"yyyy年"]],@"国家/地区",@"币种",@"节假日", nil];
     @KKWeak(self);
     [_btnBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         @KKStrong(self);
@@ -70,6 +75,7 @@
         make.right.equalTo(self.view).offset(0);
         make.height.mas_equalTo(40);
     }];
+    
     for (int i = 0; i<4; i++) {
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -83,11 +89,13 @@
         [btn setTitleColor:dt_text_main_color forState:UIControlStateNormal];
         [btn setImage:[UIImage imageNamed:@"down_icon"] forState:UIControlStateNormal];
         [btn setImage:[UIImage imageNamed:@"up_icon"] forState:UIControlStateSelected];
+        btn.titleLabel.font = fiveClassTextFont;
         btn.selected = NO;
         if (i==0) {
             
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.left.bottom.equalTo(_btnBgView).offset(0);
+                make.top.left.equalTo(_btnBgView).offset(0);
+                make.bottom.equalTo(_btnBgView).offset(-0.5);
                 make.width.equalTo(_btnBgView.mas_width).multipliedBy(0.35);
                 
             }];
@@ -96,7 +104,8 @@
             
             UIButton *button = _btnBgView.subviews[i-1];
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.bottom.equalTo(_btnBgView).offset(0);
+                make.top.equalTo(_btnBgView).offset(0);
+                make.bottom.equalTo(_btnBgView).offset(-0.5);
                 make.left.equalTo(button.mas_right).offset(0.5);
                 make.width.equalTo(_btnBgView.mas_width).multipliedBy(0.25);
                 
@@ -105,7 +114,8 @@
             
             UIButton *button = _btnBgView.subviews[i-1];
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.bottom.equalTo(_btnBgView).offset(0);
+                make.top.equalTo(_btnBgView).offset(0);
+                make.bottom.equalTo(_btnBgView).offset(-0.5);
                 make.left.equalTo(button.mas_right).offset(0.5);
                 make.width.equalTo(_btnBgView.mas_width).multipliedBy(0.2);
                 
@@ -131,6 +141,16 @@
             }];
         }
     }
+    
+    //添加底线
+    UIView *btnBgViewLine = [[UIView alloc]init];
+    btnBgViewLine.backgroundColor = dt_line_color;
+    [_btnBgView addSubview:btnBgViewLine];
+    [btnBgViewLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(_btnBgView).offset(0);
+        make.top.equalTo(_btnBgView).offset(39.5);
+        make.bottom.equalTo(_btnBgView).offset(0);
+    }];
 }
 
 - (void)initData{
@@ -139,13 +159,18 @@
     self.holidayArray = [NSMutableArray array];
     self.criteriaModel = [[CriteriaModel alloc]init];
     self.isMonth = YES;
-    self.criteriaModel.hdayDate = [Utils getCurrentTimeWithTimeFormat:@"yyyyMM"];
+    self.criteriaModel.hdayDate = [Utils getCurrentTimeWithTimeFormat:@"yyyy"];
+    self.page = 1;
 }
 
 - (void)getData{
     
     [self getHolidayList];
-    [self getMenuData];
+}
+
+- (void)criteriaSelectHoliday{
+    self.page=1;
+    [self getHolidayList];
 }
 
 #pragma mark - 获取条件
@@ -209,11 +234,12 @@
     
     NSString *url = [NSString stringWithFormat:@"%@%@",ServreUrl,getHolidays];
     
-    NSDictionary *param = [self.criteriaModel mj_keyValues];
-    
+    NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:[self.criteriaModel mj_keyValues]];
+    [param setValue:[NSNumber numberWithInteger:self.page] forKey:@"pindex"];
+    [param setValue:@20 forKey:@"pcount"];
     [self requestWithHTTPMethod:POST urlString:url parm:param showWaitAlertTitile:@"" isAfterDelay:YES success:^(id dictData) {
         
-        if (self.dataArray.count >0) {
+        if (self.dataArray.count >0 && self.page == 1) {
             [self.dataArray removeAllObjects];
         }
         
@@ -228,10 +254,20 @@
     
         }
         
+        [self.kkRefreshHeader endRefreshing];
+        
+        if (self.page >= [dict[@"totalPages"] integerValue]) {
+            [self.diyRefreshFooter endRefreshingWithNoMoreData];
+        }else{
+            [self.diyRefreshFooter endRefreshing];
+        }
+        
         [self.dataTabView reloadData];
         
         
     } failure:^(NSString *message) {
+        [self.kkRefreshHeader endRefreshing];
+        [self.diyRefreshFooter endRefreshing];
         
     }];
     
@@ -245,30 +281,43 @@
 }
 
 
-
+#pragma mark - 选择条件
 - (void)tapAction:(UIButton *)button{
     
-    self.selectButton.selected = NO;
-    [self.menuView dismiss];
-    button.selected = !button.selected;
-    self.selectButton = button;
+    if (self.selectButton == button) {
+        button.selected = !button.selected;
+        if (!self.selectButton.selected) {
+            [self.menuView dismiss];
+            return;
+        }
+        
+    }else{
+        
+        if (self.selectButton.selected) {
+            [self.menuView dismiss];
+        }
+        self.selectButton.selected = NO;
+        button.selected = !button.selected;
+        self.selectButton = button;
+    }
+    
     //时间
     if (button.tag==0) {
         
         WSDatePickerView *datepicker = [[WSDatePickerView alloc] init];
         datepicker.isShouWeek = NO;
-        datepicker.scrollToDate =  [[NSDate date:self.criteriaModel.hdayDate WithFormat:@"yyyy年MM月dd日"] dateWithFormatter:@"yyyy-MM-dd"];
+        datepicker.scrollToDate =  [[NSDate date:self.criteriaModel.hdayDate WithFormat:@"yyyy"] dateWithFormatter:@"yyyy-MM-dd"];
         @KKWeak(self);
-        [datepicker setDateStyle:DateStyleShowMonthOrShowYearMonthDay isMonth:self.isMonth completeBlock:^(NSDate *date, BOOL isMonth) {
+        [datepicker setDateStyle:DateStyleShowYear isMonth:self.isMonth completeBlock:^(NSDate *date, BOOL isMonth) {
             @KKStrong(self);
             self.isMonth = isMonth;
             NSString *dateStr = @"";
             if (isMonth) {
-                dateStr = [Utils transformDateWithFormatter:@"yyyy-MM" date:date];
-                self.criteriaModel.hdayDate = [Utils transformDateWithFormatter:@"yyyyMM" date:date];
+                dateStr = [Utils transformDateWithFormatter:@"yyyy年" date:date];
+                self.criteriaModel.hdayDate = [Utils transformDateWithFormatter:@"yyyy" date:date];
             }else{
-                dateStr = [Utils transformDateWithFormatter:@"yyyy-MM-dd" date:date];
-                self.criteriaModel.hdayDate = [Utils transformDateWithFormatter:@"yyyyMMdd" date:date];
+                dateStr = [Utils transformDateWithFormatter:@"yyyy年MM月" date:date];
+                self.criteriaModel.hdayDate = [Utils transformDateWithFormatter:@"yyyyMM" date:date];
             }
             
             [button setTitle:dateStr forState:UIControlStateNormal];
@@ -277,6 +326,9 @@
             CGFloat labelWidth = button.titleLabel.bounds.size.width;
             button.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+3, 0, -labelWidth);
             button.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth+3);
+            
+            //查询节假日
+            [self criteriaSelectHoliday];
         }];
         
         datepicker.disMiss= ^(){
@@ -320,7 +372,7 @@
                     self.selectCountryModel = model;
                     self.criteriaModel.ctryName = model.ke;
                     if ([model.valu isEqualToString:@"国家/地区"]) {
-                        self.criteriaModel.hdayName = @"";
+                        self.criteriaModel.ctryName = @"";
                     }
                     
                     break;
@@ -329,7 +381,7 @@
                     self.selecctCurrencyModel = model;
                     self.criteriaModel.crcy = model.ke;
                     if ([model.valu isEqualToString:@"币种"]) {
-                        self.criteriaModel.hdayName = @"";
+                        self.criteriaModel.crcy = @"";
                     }
                     
                     break;
@@ -352,7 +404,7 @@
             CGFloat labelWidth = button.titleLabel.bounds.size.width;
             button.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+3, 0, -labelWidth);
             button.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth+3);
-            [self getHolidayList];
+            [self criteriaSelectHoliday];
             
             
         }];
@@ -385,28 +437,51 @@
     HolidayModel *hModel = self.dataArray[indexPath.row];
     
     //日期
-    UILabel *timeLable = [self createMainLabelWithText:hModel.hdayDate];
+    UILabel *timeLable = [self createMainLabelWithText:[Utils setOldStringTime:hModel.hdayDate inputFormat:@"yyyyMMdd" outputFormat:@"yyyy年MM月dd日"]];
+    timeLable.textAlignment = NSTextAlignmentCenter;
+    timeLable.font = sixClassTextFont;
+//    timeLable.backgroundColor = [UIColor redColor];
     [cell.contentView addSubview:timeLable];
     
     //国家
     UIView *countryView = [[UIView alloc]init];
+//    countryView.backgroundColor = [UIColor orangeColor];
     [cell.contentView addSubview:countryView];
     
+    
+    
+//    //先计算国家名和图片总的宽度
+//    CGFloat countyrLbaleWith = [Utils setWidthForText:hModel.ctryNameValue fontSize:14 labelSize:45 isGetHight:NO].width;
+//    CGFloat countyrwith = countyrLbaleWith+20+3;//国家名+图片+间隔
+    
+    UIView *bgView = [[UIView alloc]init];
+//    bgView.backgroundColor = [UIColor purpleColor];
+    [countryView addSubview:bgView];
+    
     UIImageView *countryImageView = [[UIImageView  alloc]init];
-    [Utils setImageView:countryImageView imageUrl:hModel.iconUrl placeholderImage:@""];
-    [countryView addSubview:countryImageView];
+    [Utils setImageView:countryImageView imageUrl:hModel.flagUrl placeholderImage:@""];
+    [bgView addSubview:countryImageView];
     
     UILabel *countyrLbale = [self createMainLabelWithText:hModel.ctryNameValue];
-    [countryView addSubview:countyrLbale];
+    countyrLbale.font = sixClassTextFont;
+    countyrLbale.numberOfLines = 0;
+    [bgView addSubview:countyrLbale];
     
     
     //币种
     UILabel *currencyLabel = [self createMainLabelWithText:hModel.crcy];
+//    currencyLabel.backgroundColor = [UIColor purpleColor];
+    currencyLabel.textAlignment = NSTextAlignmentCenter;
+    currencyLabel.font = sixClassTextFont;
     [cell.contentView addSubview:currencyLabel];
     
     
     //节假日
     UILabel *holidayLabel = [self createMainLabelWithText:hModel.hdayNameValue];
+//    holidayLabel.backgroundColor = [UIColor blueColor];
+    holidayLabel.textAlignment = NSTextAlignmentCenter;
+    holidayLabel.numberOfLines = 0;
+    holidayLabel.font = sixClassTextFont;
     [cell.contentView addSubview:holidayLabel];
     
    
@@ -415,7 +490,7 @@
     [timeLable mas_makeConstraints:^(MASConstraintMaker *make) {
        
         make.top.bottom.equalTo(cell.contentView).offset(0);
-        make.left.equalTo(cell.contentView).offset(10);
+        make.left.equalTo(cell.contentView).offset(0);
         make.width.mas_equalTo(cell.contentView.mas_width).multipliedBy(0.35);
         
     }];
@@ -427,20 +502,30 @@
         make.width.mas_equalTo(cell.contentView.mas_width).multipliedBy(0.25);
     }];
     
+    //图片和国家名背景
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.centerX.equalTo(countryView);
+        make.top.bottom.equalTo(countryView).offset(0);
+        make.left.equalTo(countryView).offset(5);
+        make.right.equalTo(countryView).offset(-5);
+    }];
+    
+    
     [countryImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(countryView).offset(16);
-        make.bottom.equalTo(countryView).offset(-16);
-        make.left.equalTo(countryView).offset(8);
+        make.top.equalTo(bgView).offset(16);
+        make.bottom.equalTo(bgView).offset(-16);
+        make.left.equalTo(bgView).offset(0);
         make.width.mas_equalTo(20);
         
     }];
     
     [countyrLbale mas_makeConstraints:^(MASConstraintMaker *make) {
        
-        make.top.equalTo(countryView).offset(0);
-        make.bottom.equalTo(countryView).offset(0);
+        make.top.equalTo(bgView).offset(0);
+        make.bottom.equalTo(bgView).offset(0);
         make.left.equalTo(countryImageView.mas_right).offset(3);
-        make.right.equalTo(countryView).offset(-8);
+        make.right.equalTo(bgView).offset(0);
 
     }];
     
@@ -459,7 +544,6 @@
         make.width.mas_equalTo(cell.contentView.mas_width).multipliedBy(0.2);
     }];
     
-    
 }
 
 
@@ -471,6 +555,10 @@
 
 
 - (void)doRightAction:(UIButton *)sender{
+    
+    self.selectButton.selected = NO;
+    [self.menuView dismiss];
+    
     SearchViewController *searchVC = [[SearchViewController alloc]init];
     searchVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:searchVC animated:YES];

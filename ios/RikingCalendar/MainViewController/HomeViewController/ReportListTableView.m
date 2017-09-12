@@ -30,14 +30,20 @@
     if (self) {
         self.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight-kBottomBarHeight-64-kTopBarHeight);
         
-        _btnArray = [NSMutableArray arrayWithObjects:@"0",@"0",@"0",@"0",@"0", nil];
+        _btnArray = [NSMutableArray array];
         
         _dataArray = [NSMutableArray arrayWithArray:dataModel];
+        
+        for (int i = 0; i<_dataArray.count; i++) {
+            
+            [_btnArray addObject:@"0"];
+        }
         
         
         self.reportTableView = [[UITableView alloc]initWithFrame:self.frame style:UITableViewStylePlain];
         self.reportTableView.delegate = self;
         self.reportTableView.dataSource = self;
+        self.reportTableView.showsVerticalScrollIndicator = NO;
         self.reportTableView.showsHorizontalScrollIndicator = NO;
         self.reportTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.reportTableView.backgroundColor = dt_F2F2F2_color;
@@ -60,7 +66,7 @@
         NSString *canScroll = userInfo[@"canScroll"];
         if ([canScroll isEqualToString:@"1"]) {
             self.canScroll = YES;
-            self.reportTableView.showsVerticalScrollIndicator = YES;
+            self.reportTableView.showsVerticalScrollIndicator = NO;
         }
     }else if([notificationName isEqualToString:kLeaveTopNotificationName]){
         self.reportTableView.contentOffset = CGPointZero;
@@ -134,6 +140,8 @@
     }
     tapBtn.userInteractionEnabled = NO;
     [view addSubview:tapBtn];
+    
+
     return view;
 }
 
@@ -152,24 +160,53 @@
     ReportModel *Rmodel = _dataArray[indexPath.section];
     ReportlistModel *listModel = Rmodel.result[indexPath.row+1];
     
+    
+    //背景
+    
+    UIView *bgView = [[UIView alloc]init];
+    bgView.backgroundColor = [UIColor whiteColor];
+    [cell.contentView addSubview:bgView];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+    }];
+    
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 0, 0)];
     label.themeMap = @{kThemeMapKeyColorName : normalText_main_color};
     label.font = threeClassTextFont;
     label.textAlignment = NSTextAlignmentLeft;
     label.text = listModel.reportName;
-    [cell.contentView addSubview:label];
+    [bgView addSubview:label];
     
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsMake(0, 30, 0.5, 15));
     }];
     
+    //分割线
     UIView *lineView = [[UIView alloc]init];
     lineView.backgroundColor = dt_line_color;
-    [cell.contentView addSubview:lineView];
+    [bgView addSubview:lineView];
     
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsMake(49.5, 30, 0, 0));
     }];
+    
+//    RKLog(@"%ld",indexPath.section);
+//    RKLog(@"%ld",indexPath.row);
+//    RKLog(@"%ld",Rmodel.result.count);
+//    
+    if (indexPath.section==_dataArray.count-1) {
+        
+        if (indexPath.row == Rmodel.result.count-2) {
+            lineView.hidden = YES;
+            
+//            //添加影音
+//            bgView.layer.shadowColor = [UIColor redColor].CGColor;//shadowColor阴影颜色
+//            bgView.layer.shadowOffset = CGSizeMake(0,3);//shadowOffset阴影偏移,x向右偏移4，y向下偏移4，默认(0, -3),这个跟shadowRadius配合使用
+//            bgView.layer.shadowOpacity = 0.8;//阴影透明度，默认0
+//            bgView.layer.shadowRadius = 4;
+            
+        }
+    }
     
     return cell;
 }
@@ -203,10 +240,71 @@
 }
 
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+//    if (isUser) {
+//        return YES;
+//    }
+//    else{
+//        return NO;
+//    }
+    
+    return YES;
+}
 
 
-
-
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    ReportModel *Rmodel = _dataArray[indexPath.section];
+    ReportlistModel *listModel = Rmodel.result[indexPath.row+1];
+    
+    
+    UITableViewRowAction *editRowAction = [UITableViewRowAction  rowActionWithStyle:UITableViewRowActionStyleDefault title:@"完成" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        
+        if (self.delegate) {
+            [self.delegate editActionsForRowAtIndexPath:indexPath btnType:0];
+        }
+        
+    }];
+    
+    editRowAction.backgroundColor = dt_app_main_color;
+    
+    
+    
+    UITableViewRowAction *cancleRowAction = [UITableViewRowAction  rowActionWithStyle:UITableViewRowActionStyleDefault title:@"取消" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        if (self.delegate) {
+            [self.delegate editActionsForRowAtIndexPath:indexPath btnType:1];
+        }
+        
+    }];
+    
+    cancleRowAction.backgroundColor = dt_textLightgrey_color;
+    
+    
+    return @[editRowAction,cancleRowAction];
+    
+    
+//    if (isUser) {
+//        
+//        UITableViewRowAction *cancleRowAction = [UITableViewRowAction  rowActionWithStyle:UITableViewRowActionStyleDefault title:@"取消" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+//            if (self.delegate) {
+//                [self.delegate editActionsForRowAtIndexPath:indexPath btnType:1];
+//            }
+//            
+//        }];
+//        
+//        cancleRowAction.backgroundColor = dt_textLightgrey_color;
+//        
+//        
+//        return @[editRowAction,cancleRowAction];
+//    }
+//    
+//    
+//    
+//    return @[editRowAction];
+    
+}
 
 
 

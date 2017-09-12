@@ -21,8 +21,8 @@
 
 
 @interface CriteriaModel : RKBaseModel
-@property (nonatomic,copy)NSString *ctryName;
-@property (nonatomic,copy)NSString *hdayDate;
-@property (nonatomic,copy)NSString *crcy;
-@property (nonatomic,copy)NSString *hdayName;
+@property (nonatomic,copy)NSString *ctryName;//国家地区
+@property (nonatomic,copy)NSString *hdayDate;//日期
+@property (nonatomic,copy)NSString *crcy;//币种
+@property (nonatomic,copy)NSString *hdayName;//节假日
 @end

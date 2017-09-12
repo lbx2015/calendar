@@ -36,9 +36,9 @@
         cameraBtn.frame = CGRectMake(0, 0, kScreenSize.width, 49);
         cameraBtn.backgroundColor = [UIColor whiteColor];
         cameraBtn.tag = 1;
-        [cameraBtn setTitle:ID==1?@"拍照":@"男" forState:UIControlStateNormal];
+        [cameraBtn setTitle:ID==1?NSLocalizedString(@"Camera", nil):NSLocalizedString(@"man", nil) forState:UIControlStateNormal];
         if (ID==3) {
-            [cameraBtn setTitle:@"周一" forState:UIControlStateNormal];
+            [cameraBtn setTitle:NSLocalizedString(@"on_Monday", nil) forState:UIControlStateNormal];
         }
         [cameraBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [cameraBtn addTarget:self action:@selector(selectPerHeaderIcon:) forControlEvents:UIControlEventTouchUpInside];
@@ -48,9 +48,9 @@
         photoBtn.tag = 2;
         photoBtn.backgroundColor = [UIColor whiteColor];
         [photoBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [photoBtn setTitle:ID==1?@"从相册选择":@"女" forState:UIControlStateNormal];
+        [photoBtn setTitle:ID==1?NSLocalizedString(@"select_from_photos", nil):NSLocalizedString(@"woman", nil) forState:UIControlStateNormal];
         if (ID==3) {
-            [photoBtn setTitle:@"周日" forState:UIControlStateNormal];
+            [photoBtn setTitle:NSLocalizedString(@"on_Sunday", nil) forState:UIControlStateNormal];
         }
         [photoBtn addTarget:self action:@selector(selectPerHeaderIcon:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -59,7 +59,7 @@
         cancelBtn.tag = 3;
         cancelBtn.backgroundColor = [UIColor whiteColor];
         [cancelBtn setTitleColor:RGBA(73, 154, 242, 1) forState:UIControlStateNormal];
-        [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+        [cancelBtn setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
         [cancelBtn addTarget:self action:@selector(selectPerHeaderIcon:) forControlEvents:UIControlEventTouchUpInside];
         
         UIView *lineVi1 = [[UIView alloc] initWithFrame:CGRectMake(10, 49, kScreenSize.width-20, 1)];

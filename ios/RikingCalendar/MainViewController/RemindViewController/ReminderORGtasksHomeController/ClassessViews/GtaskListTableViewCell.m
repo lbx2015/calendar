@@ -14,6 +14,8 @@ typedef void(^didSelectBtn)(int buttonType,BOOL buttonStatus);//buttonType:1:是
 
 @property (nonatomic,strong)didSelectBtn didSelectBtn;
 
+@property (nonatomic,strong)GtasksModel *gModel;
+
 @end
 
 
@@ -33,6 +35,8 @@ typedef void(^didSelectBtn)(int buttonType,BOOL buttonStatus);//buttonType:1:是
 
 
 - (void)loadDataWith:(GtasksModel *)gModel didSelectBtn:(void(^)(int buttonType,BOOL buttonStatus))didSelectBtn{
+
+    _gModel = gModel;
     
     self.GtaskLabel.text = gModel.content;
     self.GtaskLabel.font = threeClassTextFont;
@@ -40,7 +44,6 @@ typedef void(^didSelectBtn)(int buttonType,BOOL buttonStatus);//buttonType:1:是
     [self.finshBtn addTarget:self action:@selector(finshAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.finshBtn setImage:[UIImage imageNamed:@"gtask_unfinish"] forState:UIControlStateNormal];
     [self.finshBtn setImage:[UIImage imageNamed:@"gtaskFinsh"] forState:UIControlStateSelected];
-    self.finshBtn.selected = NO;
     [self.isImportantBtn setImage:[UIImage imageNamed:@"programme_Important_normalStars"] forState:UIControlStateNormal];
     [self.isImportantBtn setImage:[UIImage imageNamed:@"programme_Important_selectStars"] forState:UIControlStateSelected];
     
@@ -52,6 +55,13 @@ typedef void(^didSelectBtn)(int buttonType,BOOL buttonStatus);//buttonType:1:是
         self.isImportantBtn.selected = NO;
     }
     
+    if (gModel.isComplete) {
+        self.finshBtn.selected = YES;
+    }else{
+        self.finshBtn.selected = NO;
+    }
+    
+    self.lineView.backgroundColor = dt_line_color;
     
     if (didSelectBtn) {
         self.didSelectBtn = ^(int buttonType,BOOL buttonStatus){
@@ -64,19 +74,38 @@ typedef void(^didSelectBtn)(int buttonType,BOOL buttonStatus);//buttonType:1:是
     
     sender.selected = !sender.selected;
     
-    if (self.didSelectBtn) {
-        self.didSelectBtn(1,sender.selected);
-    }
+    _gModel.isComplete = sender.selected;
+    _gModel.completeDate = [Utils getCurrentTime];
+    
+    @KKWeak(self);
+    [[RemindAndGtasksDBManager shareManager] doSaveGtasksNetWorkWithGtasksModel:_gModel editType:2 success:^(BOOL ret) {
+        @KKStrong(self);
+        
+        if (self.didSelectBtn) {
+            self.didSelectBtn(1,sender.selected);
+        }
+    }];
+    
+    
     
 }
 
 - (void)isImportant:(UIButton *)sender;{
     
     sender.selected = !sender.selected;
+    _gModel.isImportant = sender.selected;
     
-    if (self.didSelectBtn) {
-        self.didSelectBtn(2,sender.selected);
-    }
+    @KKWeak(self);
+    [[RemindAndGtasksDBManager shareManager] doSaveGtasksNetWorkWithGtasksModel:_gModel editType:2 success:^(BOOL ret) {
+        @KKStrong(self);
+        
+        if (self.didSelectBtn) {
+            self.didSelectBtn(2,sender.selected);
+        }
+    }];
+    
+    
+    
     
 }
 

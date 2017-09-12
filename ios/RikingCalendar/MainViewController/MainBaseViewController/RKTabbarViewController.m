@@ -34,7 +34,7 @@
     
     NSArray *vcArray = @[@"HomeViewController",@"HolidaysViewController",@"RemindViewController",@"PersonViewController"];
     
-    NSArray *titleArray = @[@"工作台",@"节假日",@"提醒",@"我"];
+    NSArray *titleArray = @[NSLocalizedString(@"tabbar01", nil),NSLocalizedString(@"tabbar02", nil),NSLocalizedString(@"tabbar03", nil),NSLocalizedString(@"tabbar04", nil)];
     
     self.tabBar.themeMap = @{kThemeTabBarTintColor : app_main_color};
     

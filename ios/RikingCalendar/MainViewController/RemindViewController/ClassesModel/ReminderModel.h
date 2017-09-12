@@ -23,4 +23,7 @@
 @property (nonatomic, assign)   int         currWeek;//当前星期数（0,6）
 @property (nonatomic, assign)   int         clientType;//客户端类型 1:iOS 2:android 3 web
 @property (nonatomic, assign)   int         isRemind;//是否提醒;0-不提醒；1-提醒
+@property (nonatomic, assign)   int         syncStatus;//同步的状态0:同步,1未同步
+@property (nonatomic, assign)   int         deleteState;//0不删除,1删除
+@property (nonatomic, assign)   int         loactionStatus;//0:本地和服务器都有,1:只有本地有
 @end

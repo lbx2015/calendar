@@ -394,6 +394,13 @@
     }
 }
 
+- (void)setWorkWeekdayTextColor:(UIColor *)workWeekdayTextColor{
+    if (![_workWeekdayTextColor isEqual:workWeekdayTextColor]) {
+        _workWeekdayTextColor = workWeekdayTextColor;
+        [self.calendar configureAppearance];
+    }
+}
+
 - (void)setHeaderTitleColor:(UIColor *)color
 {
     if (![_headerTitleColor isEqual:color]) {

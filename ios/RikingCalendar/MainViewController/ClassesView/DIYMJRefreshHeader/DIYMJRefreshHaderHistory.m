@@ -61,7 +61,7 @@
 
 - (void)historyAction{
     
-    NSLog(@"查看历史");
+    RKLog(@"查看历史");
     
     if (self.delegate) {
         [self.delegate showHistory];
@@ -72,7 +72,7 @@
 #pragma mark 监听scrollView的contentOffset改变
 - (void)scrollViewContentOffsetDidChange:(NSDictionary *)change
 {
-    NSLog(@"~~~~~~~~~~~~~~~~~~~%@",change);
+//    NSLog(@"~~~~~~~~~~~~~~~~~~~%@",change);
     
     [super scrollViewContentOffsetDidChange:change];
     
@@ -118,7 +118,7 @@
 - (void)setPullingPercent:(CGFloat)pullingPercent
 {
     
-    NSLog(@"**************%f",pullingPercent);
+//    NSLog(@"**************%f",pullingPercent);
     
     [super setPullingPercent:pullingPercent];
     

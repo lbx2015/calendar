@@ -1,0 +1,142 @@
+/* 
+  Localizable.strings
+  RikingCalendar
+
+  Created by jinglun liang on 2017/8/29.
+  Copyright © 2017年 liangjinglun. All rights reserved.
+*/
+
+
+
+"tabbar01"                          = "工作台";
+"tabbar02"                          = "节假日";
+"tabbar03"                          = "提醒";
+"tabbar04"                          = "我";
+"homeLeftBtnName"                   = "今天";
+
+//==================================提醒模块===========================
+"done"                              = "完成";
+"remind_title"                      = "提醒";
+"remind_placeholder"                = "输入提醒内容";
+"remind_allDay"                     = "全天";
+"remind_way_title"                  = "提醒方式";
+"punctual_remind"                   = "正点提醒";
+"not_remind"                        = "不提醒";
+"custom"                            = "自定义";
+"advance_remind"                    = "提前";
+"minute"                            = "分";
+"hour"                              = "时";
+"day"                               = "日";
+"month"                             = "月";
+"year"                              = "年";
+"sure"                              = "确定";
+"Monday"                            = "每周一";
+"Tuesday"                           = "每周二";
+"Wednesday"                         = "每周三";
+"Thursday"                          = "每周四";
+"Friday"                            = "每周五";
+"Saturday"                          = "每周六";
+"Sunday"                            = "每周日";
+"Worksday"                          = "法定工作日重复(智能跳过节假日)";
+"Legalholiday"                      = "法定节假日重复(智能跳过工作日)";
+"not_repeat"                        = "不重复";
+"showRemindHistory"                 = "查看提醒历史";
+"all_day_message01"                 = "全天默认提醒为";
+"all_day_message02"                 = "可以在设置中进行修改";
+"OK"                                = "知道了";
+"Repeated_legal_working_days"       = "法定工作日重复";
+"Repeated_legal_holidays"           = "法定节假日重复";
+"Repeat_every_day"                  = "每天重复";
+"Working_days_repeat"               = "工作日重复";
+"Weekend_repeat"                    = "周末重复";
+"Mon"                               = "一";
+"Tues"                              = "二";
+"Wed"                               = "三";
+"Thur"                              = "四";
+"Fri"                               = "五";
+"Sat"                               = "六";
+"Sun"                               = "日";
+"Every_week"                        = "每周";
+"repeat_time"                       = "重复时间";
+"notRemindMessage"                  = "目前没有提醒,不要错过重要的事情哦";
+"today"                             = "今天";
+"tomorrow"                          = "明天";
+"after"                             = "以后";
+"remind_content_cannotempty"        = "提醒内容不能为空哦";
+"Remind_history"                    = "提醒历史"; 
+
+
+//===================================待办模块=============================
+"todo_title"                        = "待办";
+"todo_placeholder"                  = "请输入待办内容";
+"todo_isImport"                     = "重要";
+"todo_remind"                       = "待办提醒";
+"todo_speed_add"                    = "快速创建";
+"showGtasksHistory"                 = "查看待办历史";
+"todo_add"                          = "创建";
+"addRemindAndGtasks_title"          = "新建日程";
+"todo_content_cannotempty"          = "待办内容不能为空";
+"finished"                          = "已完成";
+"unfinished"                        = "未完成";
+"Completed"                         = "完成于";
+"To_do_history"                     = "待办历史";
+
+
+//===================================我====================================
+
+"Personal_information"              = "个人信息";
+"userName"                          = "未登录";
+"head_portrait"                     = "头像";
+"name"                              = "名字";
+"e_mail"                            = "公司邮箱";
+"department"                        = "部门";
+"more"                              = "更多";
+"sex"                               = "性别";
+"address"                           = "地区";
+"birthday"                          = "生日";
+"signature"                         = "个性签名";
+
+"Click_login"                       = "点击登录";
+"settings"                          = "设置";
+"comment"                           = "评价我们";
+"about"                             = "关于";
+"Click_edit_character_signature"    = "点击编辑个性签名";
+
+"edit"                              = "编辑";
+"delete"                            = "删除";
+
+//==================================设置====================================
+"firstWeekday"                      = "周首日";
+"Event_remind_time_the_all_day"     = "全天事件提醒时间";
+"Mobile_phone_number"               = "手机号";
+"unbounded"                         = "未绑定";
+"Clear_the_cache"                   = "清理缓存";
+"Confirm_to_empty_all_cached_data"  = "确认清空所有缓存数据";
+"Clear_the_cache_data"              = "清空缓存数据";
+"cancel"                            = "取消";
+"Log_out"                           = "退出登录";
+"Clearance_to_complete"             = "清除完成";
+"Synchronous_not_remind"            = "您的本地有未同步的提醒和待办";
+"Give_up"                           = "放弃";
+"Sync"                              = "同步";
+"Camera"                            = "拍照";
+"select_from_photos"                = "相册";
+"man"                               = "男";
+"woman"                             = "女";
+"No_Internet_service"               = "无网络服务";
+"syncing"                           = "同步中...";
+"sync_complete"                     = "同步完成";
+
+"on_Monday"                         = "周一";
+"on_Tuesday"                        = "周二";
+"on_Wednesday"                      = "周三";
+"on_Thursday"                       = "周四";
+"on_Friday"                         = "周五";
+"on_Saturday"                       = "周六";
+"on_Sunday"                         = "周日";
+
+
+"Load_failed"                       = "网络不给力,点击屏幕重试";
+"back"                              = "返回";
+
+

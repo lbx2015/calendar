@@ -15,7 +15,8 @@ typedef enum{
     DateStyleShowYearMonthDay,
     DateStyleShowMonthDay,
     DateStyleShowHourMinute,
-    DateStyleShowMonthOrShowYearMonthDay
+    DateStyleShowMonthOrShowYearMonthDay,
+    DateStyleShowYear
 }WSDateStyle;
 
 
@@ -39,6 +40,7 @@ typedef enum{
 
 - (void)show;
 
+-(void)dismiss;
 
 @end
 

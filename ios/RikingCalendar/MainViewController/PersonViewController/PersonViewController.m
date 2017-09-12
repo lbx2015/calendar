@@ -30,27 +30,29 @@
     // Do any additional setup after loading the view.
     
     [self initData];
-    
+    [self refreshUserMessage];
     [self.view addSubview:self.dataTabView];
     if ([ self.dataTabView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.dataTabView   setSeparatorInset:UIEdgeInsetsMake(0, 59, 0, 0)];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUserMessage) name:@"userMessage" object:nil];
 }
 
 
 - (void)initData{
     
-    NSArray *titleArray = @[@[@"个人"],@[@"设置",@"求好评"],@[@"关于"]];
+    NSArray *titleArray = @[@[@""],@[NSLocalizedString(@"settings", nil),NSLocalizedString(@"comment", nil)],@[NSLocalizedString(@"about", nil)]];
     self.imageArray = @[@[@""],@[@"mine_steup_icon",@"mine_goodcomment_icon"],@[@"mine_about_icon"]];
-    
     self.mineArray = [NSMutableArray arrayWithArray:titleArray];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+}
+
+#pragma mark - 刷新个人信息
+- (void)refreshUserMessage{
     //显示个人信息
     if (isUser) {
         if (!_uModel) {
@@ -59,6 +61,11 @@
         [_uModel setValuesForKeysWithDictionary:isUser];
         [self.dataTabView reloadData];
     }
+}
+
+#pragma mark - 切换用户
+- (void)userSwitch{
+    [self refreshUserMessage];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -97,29 +104,31 @@
         _imageView.layer.borderWidth = 0.5;
         _imageView.layer.borderColor = dt_textLightgrey_color.CGColor;
         _imageView.layer.masksToBounds = YES;
-        [Utils setImageView:_imageView imageUrl:@"" placeholderImage:@"outLogin_icon"];
+        [Utils setImageView:_imageView imageUrl:@"" placeholderImage:@"default_user_image"];
         [cell.contentView addSubview:_imageView];
         
-        UILabel *userName = [self createMainLabelWithText:@"张三"];
+        UILabel *userName = [self createMainLabelWithText:@""];
         [cell.contentView addSubview:userName];
         
-        UILabel *signature = [self createMainLabelWithText:@"好好工作,天天向上"];
+        UILabel *signature = [self createMainLabelWithText:@""];
         signature.font = sevenClassTextFont;
         [cell.contentView addSubview:signature];
         
         if (isUser) {
-            [Utils setImageView:_imageView imageUrl:_uModel.photoUrl placeholderImage:@"outLogin_icon"];
+            [Utils setImageView:_imageView imageUrl:_uModel.photoUrl placeholderImage:@"default_user_image"];
             userName.text = _uModel.name;
             signature.text = _uModel.remark;
             
             if ([Utils isBlankString:_uModel.remark]) {
-                signature.text = @"点击编辑个性签名";
+                //"Click_edit_character_signature"    = "点击编辑个性签名";
+                signature.text = NSLocalizedString(@"Click_edit_character_signature", nil);
                 signature.userInteractionEnabled = YES;
                 [signature addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editRemark)]];
             }
             
         }else{
-            userName.text = @"点击登录";
+            //"Click_login"                       = "点击登录";
+            userName.text = NSLocalizedString(@"Click_login", nil);
             signature.text = @"";
         }
         
@@ -187,6 +196,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //用户信息
     if (indexPath.section==0) {
         
         if (isUser) {
@@ -200,26 +210,34 @@
             [self.navigationController pushViewController:detailVC animated:YES];
         }else{
             UserLoginViewController *login = [[UserLoginViewController alloc]initWithNibName:@"UserLoginViewController" bundle:[NSBundle mainBundle]];
-            login.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:login animated:YES];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:login];
+            
+            [self presentViewController:nav animated:YES completion:^{
+                
+            }];
         }
         
     
     }else if (indexPath.section==1){
         
+        //设置
         if (indexPath.row == 0) {
             
             AppSettingViewController *setVC = [AppSettingViewController new];
+            setVC.userOutLogin = ^(){
+                [tableView reloadData];
+            };
             setVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:setVC animated:YES];
         }
     }else{
         
-        
-        [self requestWithHTTPMethod:POST urlString:requestUrl(aboutUrl) parm:nil isHaveAlert:NO waitTitle:nil success:^(id dictData) {
+
+        //关于
+        [self requestWithHTTPMethod:POST urlString:[NSString stringWithFormat:@"%@?versionNumber=%@",requestUrl(aboutUrl),[Utils getAppVersion]] parm:nil isHaveAlert:NO waitTitle:nil success:^(id dictData) {
             
             WebViewController *webVC = [[WebViewController alloc]init];
-            webVC.Url = (NSString *)dictData;
+            webVC.htmlUrl = (NSString *)dictData;
             webVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:webVC animated:YES];
             

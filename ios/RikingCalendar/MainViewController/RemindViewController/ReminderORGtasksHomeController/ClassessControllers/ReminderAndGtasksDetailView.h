@@ -12,7 +12,9 @@
 
 @interface ReminderAndGtasksDetailView : UIView
 
-- (void)setDetailViewWithModel:(RKBaseModel *)model type:(int)type clickBtnType:(void(^)(int buttonType))clickBtnType;//type:1:提醒;2:待办
+- (void)setDetailViewWithModel:(RKBaseModel *)model
+                          type:(int)type
+                  clickBtnType:(void(^)(int buttonType))clickBtnType;//type:1:提醒;2:待办;buttonType:2:编辑,3:删除
 
 //显示
 -(void)show;

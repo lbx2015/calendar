@@ -18,7 +18,10 @@ typedef NS_ENUM(NSUInteger, DateFormatStyle) {
     DateFormatYearMonthDayHourMintesecond,
     DateFormatYearMonthDayHourMintesecondMillisecond,
     DateFormatYearMonthDayWithChineseAndHourMinute24HR,
-    DateFormatYearMonthDayHourMinute
+    DateFormatYearMonthDayHourMinute,
+    DateFormatYearMonthDayHourMinute1,
+    DateFormatHourMinute01,
+    DateFormatYearMonthDay01
 };
 
 
@@ -207,4 +210,10 @@ typedef NS_ENUM(NSUInteger, SaveDateFormatStyle) {
  解析json
  */
 + (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString;
+
+
+/**
+ 判断手机号码是否有效
+ */
++ (BOOL)isNumText:(NSString *)str;
 @end

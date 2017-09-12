@@ -11,7 +11,7 @@
 @interface GtasksViewController ()
 
 
-<UITextViewDelegate>
+<UITextViewDelegate,UIGestureRecognizerDelegate>
 
 {
     
@@ -40,8 +40,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *line01;
 
-
 @property (weak, nonatomic) IBOutlet UIView *line02;
+
 
 
 
@@ -53,68 +53,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"待办";
-    [self setRightButtonWithTitle:@[@"完成"]];
+    self.title = NSLocalizedString(@"todo_title",nil);
+    [self setRightButtonWithTitle:@[NSLocalizedString(@"done", nil)]];
     [self initData];
-    
-    self.textViewBgView.layer.borderWidth = 1;
-    self.textViewBgView.layer.cornerRadius = 5;
-    self.textViewBgView.layer.borderWidth = 1;
-    self.textViewBgView.layer.borderColor = dt_line_color.CGColor;
-    [self setViewShadowWithView:self.textViewBgView];
-    
-    self.gtasksTextView.delegate = self;
-    self.gtasksTextView.placeholder = @"请输入待办内容";
-    self.gtasksTextView.font = threeClassTextFont;
-    self.gtasksTextView.textColor = dt_text_main_color;
-    self.gtasksTextView.text = _gModel.content;
-    
-    //是否标记重要
-    self.importantLable.textColor = dt_textLightgrey_color;
-    self.importantLable.font = threeClassTextFont;
-    self.importantLable.text = @"重要";
-    
-    
-    
-    self.importantStars.selected = NO;
-    [self.importantStars setImage:[UIImage imageNamed:@"programme_Important_normalStars"] forState:UIControlStateNormal];
-    [self.importantStars setImage:[UIImage imageNamed:@"programme_Important_selectStars"] forState:UIControlStateSelected];
-    [self.importantStars addTarget:self action:@selector(importantAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    if (_gModel.isImportant) {
-        self.importantLable.textColor = dt_text_main_color;
-        self.importantStars.selected = YES;
-    }
-    
-    //是否开启待办提醒
-    [self setViewShadowWithView: self.importantReminderTimeBgView];
-    
-    self.gtasksReminderLabel.textColor = dt_text_main_color;
-    self.gtasksReminderLabel.themeMap = @{kThemeMapKeyColorName : normalText_main_color};
-    self.gtasksReminderLabel.font = threeClassTextFont;
-    self.gtasksReminderLabel.text = @"待办提醒";
-
-    self.improtantReminderTime.textColor = dt_text_main_color;
-    self.improtantReminderTime.font = threeClassTextFont;
-    self.improtantReminderTime.backgroundColor = [UIColor whiteColor];
-    self.improtantReminderTime.userInteractionEnabled = YES;
-    [self.improtantReminderTime addGestureRecognizer: [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTime)]];
-    self.improtantReminderTime.text = [Utils setOldStringTime:_gModel.strDate inputFormat:@"yyyyMMddHHmm" outputFormat:@"yyyy年MM月dd日 HH:mm"];
-    
-    
-    self.gtaskSwich.onTintColor = dt_app_main_color;
-    [self.gtaskSwich addTarget:self action:@selector(openGtasksReminder:) forControlEvents:UIControlEventValueChanged];
-    
-    if (_gModel.isOpen) {
-        self.gtaskSwich.on = YES;
-    }
-    
-    
-    
-    self.line01.backgroundColor = dt_line_color;
-    self.line02.backgroundColor = dt_line_color;
-    
-    
+    [self createMainView];
 }
 
 - (void)initData{
@@ -135,8 +77,78 @@
     
 }
 
+- (void)createMainView{
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissTextView)];
+    tap.delegate = self;
+    [self.view addGestureRecognizer:tap];
+    
+    self.textViewBgView.layer.borderWidth = 1;
+    self.textViewBgView.layer.cornerRadius = 5;
+    self.textViewBgView.layer.borderWidth = 1;
+    self.textViewBgView.layer.borderColor = dt_line_color.CGColor;
+    [self setViewShadowWithView:self.textViewBgView];
+    
+    self.gtasksTextView.delegate = self;
+    self.gtasksTextView.placeholder = NSLocalizedString(@"todo_placeholder", nil);
+    self.gtasksTextView.font = threeClassTextFont;
+    self.gtasksTextView.textColor = dt_text_main_color;
+    self.gtasksTextView.text = _gModel.content;
+    
+    //是否标记重要
+    self.importantLable.textColor = dt_textLightgrey_color;
+    self.importantLable.font = threeClassTextFont;
+    self.importantLable.text = NSLocalizedString(@"todo_isImport", nil);
+    
+    
+    
+    self.importantStars.selected = NO;
+    [self.importantStars setImage:[UIImage imageNamed:@"programme_Important_normalStars"] forState:UIControlStateNormal];
+    [self.importantStars setImage:[UIImage imageNamed:@"programme_Important_selectStars"] forState:UIControlStateSelected];
+    [self.importantStars addTarget:self action:@selector(importantAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    if (_gModel.isImportant) {
+        self.importantLable.textColor = dt_text_main_color;
+        self.importantStars.selected = YES;
+    }
+    
+    //是否开启待办提醒
+    [self setViewShadowWithView: self.importantReminderTimeBgView];
+    
+    self.gtasksReminderLabel.textColor = dt_text_main_color;
+    self.gtasksReminderLabel.themeMap = @{kThemeMapKeyColorName : normalText_main_color};
+    self.gtasksReminderLabel.font = threeClassTextFont;
+    self.gtasksReminderLabel.text = NSLocalizedString(@"todo_remind", nil);
+    
+    self.improtantReminderTime.textColor = dt_text_main_color;
+    self.improtantReminderTime.font = threeClassTextFont;
+    self.improtantReminderTime.backgroundColor = [UIColor whiteColor];
+    self.improtantReminderTime.userInteractionEnabled = YES;
+    [self.improtantReminderTime addGestureRecognizer: [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTime)]];
+    self.improtantReminderTime.text = [Utils setOldStringTime:_gModel.strDate inputFormat:@"yyyyMMddHHmm" outputFormat:@"yyyy年MM月dd日 HH:mm"];
+    
+    
+    self.gtaskSwich.onTintColor = dt_app_main_color;
+    [self.gtaskSwich addTarget:self action:@selector(openGtasksReminder:) forControlEvents:UIControlEventValueChanged];
+    
+    if (_gModel.isOpen) {
+        self.gtaskSwich.on = YES;
+        self.isOnImportantReminder.constant = 0;
+    }
+    
+    
+    
+    self.line01.backgroundColor = dt_line_color;
+    self.line02.backgroundColor = dt_line_color;
+    
+}
+
+
 
 - (void)importantAction:(UIButton *)sender{
+    
+    //放弃第一响应者,收起键盘
+    [self.gtasksTextView resignFirstResponder];
     
     sender.selected = !sender.selected;
     _gModel.isImportant = sender.selected;
@@ -153,11 +165,14 @@
 - (void)openGtasksReminder:(UISwitch *)sender{
     RKLog(@"开启提醒");
     
+    //放弃第一响应者,收起键盘
+    [self.gtasksTextView resignFirstResponder];
+    
     if (sender.on) {
         
         _gModel.isOpen = YES;
         self.improtantReminderTime.text = [Utils getCurrentTimeWithTimeFormat:@"yyyy年MM月dd日 HH:mm"];
-        if ([self isBlankString:_gModel.strDate]) {
+        if ([Utils isBlankString:_gModel.strDate]) {
             _gModel.strDate = [Utils getCurrentTime];
         }
         
@@ -182,6 +197,9 @@
 
 - (void)tapTime{
     RKLog(@"请选择时间");
+    
+    //放弃第一响应者,收起键盘
+    [self.gtasksTextView resignFirstResponder];
     WSDatePickerView *datepicker = [[WSDatePickerView alloc] init];
     datepicker.isShouWeek = YES;
     
@@ -207,82 +225,21 @@
 - (void)doSaveGtasks{
     RKLog(@"保存待办");
     
-    if ([self isBlankString:_gModel.content]) {
-        [Utils showMsg:@"待办内容不能为空"];
+    if ([Utils isBlankString:_gModel.content]) {
+        [Utils showMsg:NSLocalizedString(@"todo_content_cannotempty", @"To Do Content Cannot Empty")];
         return;
         
     }
     
-    BOOL ret = NO;
-    
-    if (_isEdit) {
-         ret =  [_gModel update];
-    }else{
-        _gModel.appCreatedTime = [Utils getCurrentTime];
-        _gModel.todoId = [Utils getCurrentTimeWithTimeFormat:@"yyyyMMddHHmmssSSS"];
-        _gModel.clientType = 1;
-        _gModel.isComplete = NO;
-        _gModel.userId = isUser?UserID:@"";
-        if (!_gModel.strDate) {
-            _gModel.strDate = @"";
-        }
-        
-         ret = [_gModel save];
-    }
-    
-    [self doSaveRemindAndGtasksWithRequestStyle:gtasksSaveUpdate model:_gModel isHaveAlert:NO waitTitle:nil success:^(id dictData) {
-        
-    } failure:^(NSString *message) {
-        
-    }];
-    
-    if (ret) {
-        
-        if (_gModel.isOpen) {
-            
-        }
-        
-        if (_isEdit) {
-            [[LocalNotificationManager shareManager] cancelLocalNotificationsWithKey:@"todoId" value:_gModel.todoId];
-        }
-        
-        [[LocalNotificationManager shareManager] scheduleNotificationWithAlertBody:_gModel.content userInfo:[_gModel mj_keyValues] repeatInterVal:0 fireDate:[Utils getDataString:_gModel.strDate formatter:@"yyyyMMddHHmm"]];
-        
+    [[RemindAndGtasksDBManager shareManager] doSaveGtasksNetWorkWithGtasksModel:_gModel editType:_isEdit?2:1 success:^(BOOL ret) {
         
         if (self.editGtask) {
             self.editGtask();
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"addGtask" object:nil];
         [self.navigationController popViewControllerAnimated:YES];
-    }
-    
-    
-}
+    }];
 
-- (BOOL) isBlankString:(NSString *)string {
-    
-    if (string == nil || string == NULL) {
-        
-        return YES;
-        
-    }
-    
-    if ([string isKindOfClass:[NSNull class]]) {
-        
-        return YES;
-        
-    }
-    
-    if ([[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0) {
-        
-        return YES;
-        
-    }
-    
-    return NO;
-    
 }
-
 
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -300,6 +257,24 @@
     self.textViewBgviewHeight.constant = size.height+10;
     
 }
+
+
+- (void)dismissTextView{
+    
+    [self.gtasksTextView resignFirstResponder];
+    
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if( [touch.view isDescendantOfView:self.textViewBgView]) {
+        return NO;
+    }
+    return YES;
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

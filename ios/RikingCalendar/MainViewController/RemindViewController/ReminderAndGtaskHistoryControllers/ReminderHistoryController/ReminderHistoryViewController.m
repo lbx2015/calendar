@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"提醒历史";
+    self.title = NSLocalizedString(@"Remind_history", nil);
     [self initData];
     [self.view addSubview:self.dataTabView];
     
@@ -118,25 +118,28 @@
     timeLabel.font = threeClassTextFont;
     [cell.contentView addSubview:timeLabel];
     
-    ReminderModel *rModel = self.dataArray[indexPath.section][indexPath.row];
-    
-    NSString *title = [NSString stringWithFormat:@"%@  %@",rModel.startTime,rModel.content];
-    if (rModel.isAllday) {
-        title = [NSString stringWithFormat:@"全天  %@",rModel.content];
-        NSMutableAttributedString* deliveryAttrString = [[NSMutableAttributedString alloc]initWithString:title];
-        [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_888888_color range:NSMakeRange(0, 2)];
-        [deliveryAttrString addAttribute:NSFontAttributeName value:eightClassTextFont range:NSMakeRange(0, 2)];
-        [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_main_color range:NSMakeRange(4, rModel.content.length)];
-        [deliveryAttrString addAttribute:NSFontAttributeName value:threeClassTextFont range:NSMakeRange(4, rModel.content.length)];
-        timeLabel.attributedText = deliveryAttrString;
-    }else{
-        NSMutableAttributedString* deliveryAttrString = [[NSMutableAttributedString alloc]initWithString:title];
-        [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_888888_color range:NSMakeRange(0, 5)];
-        [deliveryAttrString addAttribute:NSFontAttributeName value:eightClassTextFont range:NSMakeRange(0, 5)];
-        [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_main_color range:NSMakeRange(7, rModel.content.length)];
-        [deliveryAttrString addAttribute:NSFontAttributeName value:threeClassTextFont range:NSMakeRange(7, rModel.content.length)];
-        timeLabel.attributedText = deliveryAttrString;
+    if (self.dataArray.count>0) {
+        ReminderModel *rModel = self.dataArray[indexPath.section][indexPath.row];
+        
+        NSString *title = [NSString stringWithFormat:@"%@  %@",[Utils transformDate:rModel.startTime dateFormatStyle:DateFormatHourMinuteWith24HR],rModel.content];
+        if (rModel.isAllday) {
+            title = [NSString stringWithFormat:@"%@  %@",NSLocalizedString(@"remind_allDay", nil),rModel.content];
+            NSMutableAttributedString* deliveryAttrString = [[NSMutableAttributedString alloc]initWithString:title];
+            [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_888888_color range:NSMakeRange(0, 2)];
+            [deliveryAttrString addAttribute:NSFontAttributeName value:eightClassTextFont range:NSMakeRange(0, 2)];
+            [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_main_color range:NSMakeRange(4, rModel.content.length)];
+            [deliveryAttrString addAttribute:NSFontAttributeName value:threeClassTextFont range:NSMakeRange(4, rModel.content.length)];
+            timeLabel.attributedText = deliveryAttrString;
+        }else{
+            NSMutableAttributedString* deliveryAttrString = [[NSMutableAttributedString alloc]initWithString:title];
+            [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_888888_color range:NSMakeRange(0, 5)];
+            [deliveryAttrString addAttribute:NSFontAttributeName value:eightClassTextFont range:NSMakeRange(0, 5)];
+            [deliveryAttrString addAttribute:NSForegroundColorAttributeName value:dt_text_main_color range:NSMakeRange(7, rModel.content.length)];
+            [deliveryAttrString addAttribute:NSFontAttributeName value:threeClassTextFont range:NSMakeRange(7, rModel.content.length)];
+            timeLabel.attributedText = deliveryAttrString;
+        }
     }
+    
     
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsMake(0, 15, 0, 15));
@@ -146,21 +149,25 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    
     UIView *view = [[UIView alloc]init];
     view.backgroundColor =[UIColor whiteColor];
-    UILabel *timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth-100, 0, 100, 32)];
+    UILabel *timeLabel = [[UILabel alloc]init];
     timeLabel.font = sevenClassTextFont;
     timeLabel.textColor = dt_text_818181_color;
-    timeLabel.textAlignment = NSTextAlignmentLeft;
-    
-    
-    
+    timeLabel.textAlignment = NSTextAlignmentRight;
     NSArray *array = self.dataArray[section];
     ReminderModel *hModel = [array firstObject];
-    NSString *dateStr = [Utils setOldStringTime:hModel.strDate inputFormat:@"yyyyMMdd" outputFormat:@"MM月dd日"];
+    NSString *dateStr = [Utils transformDate:hModel.strDate dateFormatStyle:DateFormatMonthDayWithChinese];
     NSString *weekDay = [Utils getWeekDayWithDateStr:hModel.strDate formatter:@"yyyyMMdd"];
     timeLabel.text = [NSString stringWithFormat:@"%@ %@",dateStr,weekDay];
     [view addSubview:timeLabel];
+    
+    [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(view).offset(0);
+        make.right.equalTo(view).offset(-10);
+    }];
+    
     
     return view;
 }
@@ -177,20 +184,21 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        BOOL ret = [hModel deleteObject];
-        
-        if (ret) {
+        @KKWeak(self);
+        [[RemindAndGtasksDBManager shareManager] doSaveRemindWithRemindModel:hModel editType:3 success:^(BOOL ret) {
+            @KKStrong(self);
             
-            [array removeObject:hModel];
-            
+            if (array.count>0) {
+                [array removeObject:hModel];
+            }
+
             if (array.count==0) {
                 [self.dataArray removeObjectAtIndex:indexPath.section];
             }
             
-            [self.dataTabView reloadData];
-            
-        }
-        
+            [tableView reloadData];
+        }];
+    
         
     }
     
@@ -198,7 +206,7 @@
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return @"删除";
+    return NSLocalizedString(@"delete", nil);
 }
 
 

@@ -20,10 +20,9 @@
 
 @interface ReminderViewController ()
 <UITextViewDelegate>
-
-
 {
     ReminderModel *_rModel;
+    BOOL _isShow;
 }
 @property (nonatomic, strong) IQTextView *reminderTxetView;
 @property (nonatomic, strong) UIView *textViewBg;
@@ -31,7 +30,7 @@
 @property (nonatomic, strong) UILabel *chooseTimeLabel;
 @property (nonatomic, strong) UILabel *reminderLabel;//提醒方式
 @property (nonatomic, strong) UILabel *repeatBtnLabel;
-
+@property (nonatomic, strong) UIAlertView *showAllDayTime;
 @end
 
 @implementation ReminderViewController
@@ -39,12 +38,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"新建日程";
-    [self setRightButtonWithTitle:@[@"完成"]];
+    [self setRightButtonWithTitle:@[NSLocalizedString(@"done", nil)]];
+    NSString *languageName = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
+    RKLog(@"%@",languageName);
     
     [self initData];
     [self createMainUI];
-    
     
 }
 
@@ -59,8 +58,8 @@
         _rModel.repeatFlag = 0;
         _rModel.repeatValue = @"0";
         _rModel.isRemind = 1;
-        _rModel.strDate = [Utils getCurrentTimeWithDateStyle:DateFormatYearMonthDayHourMinute];//[Utils getCurrentTimeWithTimeFormat:@"yyyy年MM月dd日 HH:mm"];
-        _rModel.startTime = [Utils getCurrentTimeWithDateStyle:DateFormatHourMinuteWith24HR];
+        _rModel.strDate = [Utils getCurrentTimeWithDateStyle:DateFormatYearMonthDay01];
+        _rModel.startTime = [Utils getCurrentTimeWithDateStyle:DateFormatHourMinute01];
     }
 
 }
@@ -97,7 +96,7 @@
     }];
     
     self.reminderTxetView = [[IQTextView alloc]init];
-    self.reminderTxetView.placeholder = @"输入提醒内容";
+    self.reminderTxetView.placeholder = NSLocalizedString(@"remind_placeholder", nil);
     self.reminderTxetView.font = threeClassTextFont;
     self.reminderTxetView.delegate = self;
     self.reminderTxetView.text = _rModel.content;
@@ -121,11 +120,11 @@
     
     self.chooseTimeLabel = [self createLabelFrame:CGRectMake(CGRectGetMaxX(btn.frame)+15, 0, kScreenWidth-CGRectGetMaxX(btn.frame)-15-25, spaceHeight) text:nil font:threeClassTextFont textColor:[UIColor hex_colorWithHex:@"#323232"] textAlignment:NSTextAlignmentLeft];
     
-    self.chooseTimeLabel.text = [Utils transformDate:_rModel.strDate dateFormatStyle:DateFormatYearMonthDayWithChinese];
+    
     if (!_rModel.isAllday) {
-        self.chooseTimeLabel.text = [NSString stringWithFormat:@"%@ %@",self.chooseTimeLabel.text,_rModel.startTime];
+        self.chooseTimeLabel.text = [Utils transformDate:[NSString stringWithFormat:@"%@%@",_rModel.strDate,_rModel.startTime] dateFormatStyle:DateFormatYearMonthDayHourMinute1];
     }else{
-        
+        self.chooseTimeLabel.text = [Utils transformDate:_rModel.strDate dateFormatStyle:DateFormatYearMonthDayWithChinese];
     }
     self.chooseTimeLabel.userInteractionEnabled = YES;
     [self.chooseTimeLabel addGestureRecognizer: [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(chooseTimeAction)]];
@@ -197,7 +196,7 @@
     
     
     //全天
-    UILabel *chooseAllDay = [self createLabelFrame:CGRectMake(CGRectGetMaxX(btn.frame)+15, 0, kScreenWidth-CGRectGetMaxX(btn.frame)-15-25, spaceHeight) text:@"全天" font:threeClassTextFont textColor:[UIColor hex_colorWithHex:@"#323232"] textAlignment:NSTextAlignmentLeft];
+    UILabel *chooseAllDay = [self createLabelFrame:CGRectMake(CGRectGetMaxX(btn.frame)+15, 0, kScreenWidth-CGRectGetMaxX(btn.frame)-15-25, spaceHeight) text:NSLocalizedString(@"remind_allDay", nil) font:threeClassTextFont textColor:[UIColor hex_colorWithHex:@"#323232"] textAlignment:NSTextAlignmentLeft];
     chooseAllDay.userInteractionEnabled = YES;
     [chooseAllDay addGestureRecognizer: [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(chooseAllDay)]];
     [self.chooseTime addSubview:chooseAllDay];
@@ -248,7 +247,7 @@
     
 
     //提醒方式图片
-    UIButton *reminderBtn = [self createButtonFrame:CGRectMake(15, 0, 29, spaceHeight) normalImage:@"programme_chooseTime" selectImage:nil isBackgroundImage:NO title:nil target:self action:@selector(reminderTime)];
+    UIButton *reminderBtn = [self createButtonFrame:CGRectMake(15, 0, 29, spaceHeight) normalImage:@"remind_way" selectImage:nil isBackgroundImage:NO title:nil target:self action:@selector(reminderTime)];
     [repeatView addSubview:reminderBtn];
     
     
@@ -259,9 +258,9 @@
     [repeatView addSubview:self.reminderLabel];
     
     if (_rModel.isRemind==0) {
-        self.reminderLabel.text = @"不提醒";
+        self.reminderLabel.text = NSLocalizedString(@"not_remind", nil);
     }else{
-        self.reminderLabel.text = _rModel.beforeTime>0?[NSString stringWithFormat:@"提前%d分",_rModel.beforeTime] : @"正点提醒";
+        self.reminderLabel.text = _rModel.beforeTime>0?[NSString stringWithFormat:@"%@%d%@",NSLocalizedString(@"advance_remind", nil),_rModel.beforeTime,NSLocalizedString(@"minute", nil)] : NSLocalizedString(@"punctual_remind", nil);
     }
     
     //向右箭头
@@ -376,57 +375,29 @@
 - (void)chooseTimeAction{
     RKLog(@"请选择时间");
     
+    //放弃第一响应者,收起键盘
+    [self.reminderTxetView resignFirstResponder];
+    
     WSDatePickerView *datepicker = [[WSDatePickerView alloc] init];
     datepicker.isShouWeek = YES;
     
-    NSString *chooseTime = self.chooseTimeLabel.text;
-    
-    datepicker.scrollToDate =  [[NSDate date:chooseTime WithFormat:@"yyyy年MM月dd日"] dateWithFormatter:@"yyyy-MM-dd"];
+    datepicker.scrollToDate = [Utils getDataString:[NSString stringWithFormat:@"%@%@",_rModel.strDate,_rModel.startTime] formatter:@"yyyyMMddHHmm"];
     
     datepicker.isShouWeek = YES;
     
     [datepicker setDateStyle:DateStyleShowYearMonthDayHourMinute CompleteBlock:^(NSDate *startDate) {
         NSString *date = [Utils transformDate:startDate dateFormatStyle:DateFormatYearMonthDayHourMinute];//[startDate stringWithFormat:@"yyyyMMddHHmmss"];
         _rModel.strDate = date;
-        _rModel.startTime = [Utils transformDate:startDate dateFormatStyle:DateFormatHourMinuteWith24HR];;
+        _rModel.startTime = [Utils transformDate:startDate dateFormatStyle:DateFormatHourMinute01];;
         RKLog(@"时间： %@",date);
         if (_rModel.isAllday) {
             self.chooseTimeLabel.text = [Utils transformDate:startDate dateFormatStyle:DateFormatYearMonthDayWithChinese];
         }else{
-            self.chooseTimeLabel.text = [startDate stringWithFormat:@"yyyy年MM月dd日 HH:mm"];
+            self.chooseTimeLabel.text = [Utils transformDate:startDate dateFormatStyle:DateFormatYearMonthDayHourMinute1];//[startDate stringWithFormat:@"yyyy年MM月dd日 HH:mm"];
         }
         
     }];
     [datepicker show];
-    
-    
-    
-    
-    
-    
-//    WSDatePickerView *datepicker = [[WSDatePickerView alloc] init];
-//    datepicker.isShouWeek = NO;
-//    
-//    NSString *chooseTime = self.chooseTimeLabel.text;
-//    
-//    datepicker.scrollToDate =  [[NSDate date:chooseTime WithFormat:@"yyyy年MM月dd日"] dateWithFormatter:@"yyyy-MM-dd"];
-//    
-//    datepicker.isShouWeek = YES;
-//    
-//    [datepicker setDateStyle:DateStyleShowMonthOrShowYearMonthDay CompleteBlock:^(NSDate *startDate) {
-//        NSString *date = [startDate stringWithFormat:@"yyyyMMdd"];
-//        _rModel.strDate = date;
-//        _rModel.startTime = [startDate stringWithFormat:@"HH:mm"];
-//        RKLog(@"时间： %@",date);
-//        
-//        
-//    }];
-//    [datepicker show];
-    
-    
-    
-    
-    
 }
 
 
@@ -434,29 +405,50 @@
 #pragma mark - 是否全天
 - (void)chooseAllDay{
     RKLog(@"选择全天");
+    //放弃第一响应者,收起键盘
+    [self.reminderTxetView resignFirstResponder];
+    
     _rModel.isAllday = !_rModel.isAllday;
     self.chooseTimeLabel.text = [Utils transformDate:_rModel.strDate dateFormatStyle:DateFormatYearMonthDayWithChinese];
     if (_rModel.isAllday) {
         if (isAllDayRemindTime) {
-            self.reminderLabel.text = [NSString stringWithFormat:@"正点提醒(%@)",isAllDayRemindTime];
+            self.reminderLabel.text = [NSString stringWithFormat:@"%@(%@)",NSLocalizedString(@"punctual_remind", nil),[Utils transformDate:isAllDayRemindTime dateFormatStyle:DateFormatHourMinuteWith24HR]];
+            if (!_isShow) {
+                [self.showAllDayTime show];
+            }
+//            [Utils showMsg:[NSString stringWithFormat:@"全天默认提醒为%@,可以在设置中进行修改",isAllDayRemindTime]];
         }else{
-            self.reminderLabel.text = [NSString stringWithFormat:@"正点提醒(%@)",@"08:00"];
+            
+            //本地没有全天提醒事件时间
+            [kNSUserDefaults setObject:@"0800" forKey:allDayRemindTimeKey];
+            [kNSUserDefaults synchronize];
+            self.reminderLabel.text = [NSString stringWithFormat:@"%@(%@)",NSLocalizedString(@"punctual_remind", nil),[Utils transformDate:isAllDayRemindTime dateFormatStyle:DateFormatHourMinuteWith24HR]];
         }
         
     }else{
-        self.chooseTimeLabel.text = [NSString stringWithFormat:@"%@ %@",self.chooseTimeLabel.text,_rModel.startTime];
-        self.reminderLabel.text = _rModel.beforeTime>0?[NSString stringWithFormat:@"提前%d分",_rModel.beforeTime] : @"正点提醒";
+        self.chooseTimeLabel.text = [Utils transformDate:[NSString stringWithFormat:@"%@%@",_rModel.strDate,_rModel.startTime] dateFormatStyle:DateFormatYearMonthDayHourMinute1];;
+        self.reminderLabel.text = _rModel.beforeTime>0?[NSString stringWithFormat:@"%@%d%@",NSLocalizedString(@"advance_remind", nil),_rModel.beforeTime,NSLocalizedString(@"minute", nil)] : NSLocalizedString(@"punctual_remind", nil);
     }
     
     
 }
 
+- (UIAlertView *)showAllDayTime{
+    if (!_showAllDayTime) {
+        _showAllDayTime = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@%@,%@",NSLocalizedString(@"all_day_message01", nil),[Utils transformDate:isAllDayRemindTime dateFormatStyle:DateFormatHourMinuteWith24HR],NSLocalizedString(@"all_day_message02", nil)] delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+    }
+    _isShow = YES;
+    return _showAllDayTime;
+}
 
 
 #pragma mark - 提醒方式
 - (void)reminderTime{
     
     RKLog(@"提醒方式");
+    
+    //放弃第一响应者,收起键盘
+    [self.reminderTxetView resignFirstResponder];
     
     ReminderWayViewController *wayVC = [[ReminderWayViewController alloc]init];
     
@@ -469,14 +461,11 @@
         _rModel.isRemind = model.isRemind;
         _rModel.beforeTime = model.beforeTime;
         
+        
         if (_rModel.isRemind==0) {
-            self.reminderLabel.text = @"不提醒";
+            self.reminderLabel.text = NSLocalizedString(@"not_remind", nil);
         }else{
-            if (_rModel.beforeTime>0) {
-                self.reminderLabel.text = [NSString stringWithFormat:@"提前%d分",_rModel.beforeTime];
-            }else{
-                self.reminderLabel.text = @"正点提醒";
-            }
+            self.reminderLabel.text = _rModel.beforeTime>0?[NSString stringWithFormat:@"%@%d%@",NSLocalizedString(@"advance_remind", nil),_rModel.beforeTime,NSLocalizedString(@"minute", nil)] : NSLocalizedString(@"punctual_remind", nil);
         }
         
     };
@@ -487,10 +476,12 @@
 #pragma mark - 是否重复
 - (void)chooseRepeat{
     RKLog(@"是否重复");
+    
+    //放弃第一响应者,收起键盘
+    [self.reminderTxetView resignFirstResponder];
+    
     ChooseRepeatViewController *vc = [[ChooseRepeatViewController alloc]init];
-    
     vc.reminderModel = _rModel;
-    
     @KKWeak(self)
     vc.chooseRepeatTime = ^(NSString *repeatTime){
         @KKStrong(self)
@@ -521,23 +512,29 @@
     
     
     if (flag==0) {
-        return @"不重复";
+        return NSLocalizedString(@"not_repeat", nil);
     }else if (flag==1){
-        return @"法定工作日重复";
+        return NSLocalizedString(@"Repeated_legal_working_days", nil);
     }else if (flag==2){
-        return @"法定节假日重复";
+        return NSLocalizedString(@"Repeated_legal_holidays", nil);
     }else{
         NSArray *array = [NSArray arrayWithArray:[repeat_value componentsSeparatedByString:@","]];
         
         if ([repeat_value containsString:@"1,2,3,4,5,6,7"] && array.count==7){
-            return repeatStr = @"每天重复";
+            return repeatStr = NSLocalizedString(@"Repeat_every_day", nil);
         }else if ([repeat_value containsString:@"1,2,3,4,5"] && array.count==5){
-            return repeatStr = @"工作日重复";
+            return repeatStr = NSLocalizedString(@"Working_days_repeat", nil);
         }else if ([repeat_value containsString:@"6,7"] && array.count==2){
-            return repeatStr = @"周末重复";
+            return repeatStr = NSLocalizedString(@"Weekend_repeat", nil);
         }else{
-            
-            NSDictionary *dict = @{@"1":@"一",@"2":@"二",@"3":@"三",@"4":@"四",@"5":@"五",@"6":@"六",@"7":@"日"};
+            //            "Mon"                               = "一";
+            //            "Tues"                              = "二";
+            //            "Wed"                               = "三";
+            //            "Thur"                              = "四";
+            //            "Fri"                               = "五";
+            //            "Sat"                               = "六";
+            //            "Sun"                               = "日";
+            NSDictionary *dict = @{@"1":NSLocalizedString(@"Mon", nil),@"2":NSLocalizedString(@"Tues", nil),@"3":NSLocalizedString(@"Wed", nil),@"4":NSLocalizedString(@"Thur", nil),@"5":NSLocalizedString(@"Fri", nil),@"6":NSLocalizedString(@"Sat", nil),@"7":NSLocalizedString(@"Sun", nil)};
             
             NSString *newTime = @"";
             
@@ -553,15 +550,18 @@
                 
             }
             
-            return repeatStr = [NSString stringWithFormat:@"每周%@",newTime];
+            return repeatStr = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"Every_week", nil),newTime];
+        }
     }
-}
-
+    
 }
 
 #pragma mark - 保存提醒
 
 - (void)doRightAction:(UIButton *)sender{
+    //放弃第一响应者,收起键盘
+    [self.reminderTxetView resignFirstResponder];
+    
     [self doSaveReminder];
 }
 
@@ -569,268 +569,23 @@
      RKLog(@"保存提醒");
     
     if ([Utils isBlankString:_rModel.content]) {
-        [Utils showMsg:@"提醒内容不能为空哦"];
+        [Utils showMsg:NSLocalizedString(@"remind_content_cannotempty", nil)];
         return;
     }
     
-    if (!_isEdit) {
-        _rModel.reminderId = [Utils getCurrentTimeWithDateStyle:DateFormatYearMonthDayHourMintesecondMillisecond];
-        _rModel.clientType = 1;
-        if (isUser) {
-            _rModel.userId = UserID;
-        }
-    }
-    NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:[_rModel mj_keyValues]];
-    [param removeObjectForKey:@"propertyNames"];
-    [param removeObjectForKey:@"pk"];
-    [param removeObjectForKey:@"columeTypes"];
-    [param removeObjectForKey:@"columeNames"];
-    
-    if (self.networkStatus) {
-        [self kkRequestWithHTTPMethod:POST urlString:[NSString stringWithFormat:@"%@%@",ServreUrl,saveReminder] parm:param success:^(NSDictionary *dictData) {
-            
-        } failure:^(NSError *error) {
-            
-        }];
-    }
-    
-    
-    BOOL ret = NO;
-    
-    if (_isEdit) {
-        ret = [_rModel update];
-    }else{
-        ret = [_rModel save];
-    }
-    
-    //添加提醒
-    if (ret) {
-    
-        if (_isEdit) {
-            NSArray *arrLocalNotifis = [[UIApplication sharedApplication] scheduledLocalNotifications];//获取所有本地通知
-            for (UILocalNotification *localNoti in arrLocalNotifis)//遍历
-            {
-                NSDictionary *userInfo = localNoti.userInfo;//获取通知附带的信息
-                if (userInfo)
-                {
-                    if ([(NSString *)userInfo[@"reminderId"] isEqualToString:_rModel.reminderId])//前面保存在userInfo中的内容
-                    {
-                        [[UIApplication sharedApplication] cancelLocalNotification:localNoti];//这句代码会删除所有本地通知中的特定一条，并切不会再推送这一条
-                    }
-                }
-            }
+    //保存提醒
+    @KKWeak(self);
+    [[RemindAndGtasksDBManager shareManager] doSaveRemindWithRemindModel:_rModel editType:_isEdit?2:1 success:^(BOOL ret) {
+        @KKStrong(self);
+        if (self.updateReminder) {
+            self.updateReminder();
         }
         
-
-        NSString *curronDateStr = _rModel.strDate;
-        NSString *startTimeStr = [NSString stringWithFormat:@"%@%@",[Utils setOldStringTime:_rModel.startTime inputFormat:@"HH:mm" outputFormat:@"HHmm"],@"00"];
-        NSDate *curronDate = [Utils getDataString:[NSString stringWithFormat:@"%@%@",curronDateStr,startTimeStr] formatter:@"yyyyMMddHHmmss"];
-        NSInteger beforeTime = 0;
-        
-        if (_rModel.isAllday) {
-            
-            if (isAllDayRemindTime) {
-               curronDate = [Utils getDataString:[NSString stringWithFormat:@"%@%@",[_rModel.strDate substringToIndex:8],[Utils setOldStringTime:[NSString stringWithFormat:@"%@%@",isAllDayRemindTime,@":00"] inputFormat:@"HH:mm:ss" outputFormat:@"HHmmss"]] formatter:@"yyyyMMddHHmmss"];
-            }else{
-                curronDate = [Utils getDataString:[NSString stringWithFormat:@"%@%@",[_rModel.strDate substringToIndex:8],[Utils setOldStringTime:[NSString stringWithFormat:@"%@%@",@"08:00",@":00"] inputFormat:@"HH:mm:ss" outputFormat:@"HHmmss"]] formatter:@"yyyyMMddHHmmss"];
-            }
-            
-        }
-        if (_rModel.beforeTime>0) {
-            beforeTime = _rModel.beforeTime*60;
-            NSInteger selectTimestamp = [Utils timeSwitchTimestamp:[NSString stringWithFormat:@"%@",curronDate] andFormatter:@"yyyyMMddHHmmss"] - beforeTime;
-            NSDate *beforeDate = [Utils getDataString:[Utils timestampSwitchTime:selectTimestamp andFormatter:@"yyyyMMddHHmmss"] formatter:@"yyyyMMddHHmmss"];
-            curronDate = beforeDate;
-        }
-        NSCalendar *calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-        NSDateComponents *comps = [[NSDateComponents alloc] init];
-        NSInteger unitFlags = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal | NSCalendarUnitQuarter;
-        comps = [calendar components:unitFlags fromDate:curronDate];
-        
-        if (_rModel.repeatFlag == 0) {
-            
-            if ([Utils timeSwitchTimestamp:[Utils transformDate:curronDate dateFormatStyle:DateFormatYearMonthDayHourMinute] andFormatter:@"yyyyMMddHHmmss"]>[Utils timeSwitchTimestamp:[Utils transformDate:[NSDate date] dateFormatStyle:DateFormatYearMonthDayHourMinute] andFormatter:@"yyyyMMddHHmmss"]) {
-                
-                [self scheduleNotificationWithAlertBody:_rModel.content userInfo:param repeatInterVal:0 fireDate:curronDate];
-            }
-        }else if (_rModel.repeatFlag==1){
-            
-            NSArray *dayData = [CalendarModel selectDataWithSql:[NSString stringWithFormat:@"select *from CalendarModel where date>='%@' and remark='1' order by date",[Utils getCurrentTimeWithDay]]];
-            
-            if (dayData.count>0) {
-                
-                for (CalendarModel *cModel in dayData) {
-                    NSString *remindDateStr = [NSString stringWithFormat:@"%@%@",cModel.date,[Utils transformDateWithFormatter:@"HHmmss" date:curronDate]];
-                    NSDate *remindDate = [Utils getDataString:remindDateStr formatter:@"yyyyMMddHHmmss"];
-                    [self scheduleNotificationWithAlertBody:_rModel.content userInfo:param repeatInterVal:0 fireDate:remindDate];
-                    
-                }
-                
-            }
-            
-            
-        }else if (_rModel.repeatFlag==2){
-            
-            
-            NSArray *dayData = [CalendarModel selectDataWithSql:[NSString stringWithFormat:@"select *from CalendarModel where date>='%@' and remark='0' order by date",[Utils getCurrentTimeWithDay]]];
-            
-            if (dayData.count>0) {
-                
-                for (CalendarModel *cModel in dayData) {
-                    NSString *remindDateStr = [NSString stringWithFormat:@"%@%@",cModel.date,[Utils transformDateWithFormatter:@"HHmmss" date:curronDate]];
-                    NSDate *remindDate = [Utils getDataString:remindDateStr formatter:@"yyyyMMddHHmmss"];
-                    [self scheduleNotificationWithAlertBody:_rModel.content userInfo:param repeatInterVal:0 fireDate:remindDate];
-                    
-                }
-                
-            }
-            
-            
-        }else{
-            for (int i=0; i<7; i++) {
-                
-                //i==0,当天的时间
-                NSDate *myDate = [curronDate dateByAddingTimeInterval:3600 * 24 * i];
-                NSString *weekDay = [Utils getWeekDayWithDate:myDate];
-                
-                if ([_rModel.repeatValue rangeOfString:weekDay].location!=NSNotFound) {
-                    
-                    [self scheduleNotificationWithAlertBody:_rModel.content userInfo:param repeatInterVal:kCFCalendarUnitWeek fireDate:myDate];
-                }
-            }
-        }
-        
-        
-       
-        
-        
-        
-        
-        
-        
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
     
-        
-        
-        
-        
-//        for (int newWeekDay =2; newWeekDay<=6; newWeekDay++) {
-//            
-//            NSInteger temp = 0;
-//            NSInteger days = 0;
-//            
-//            temp = newWeekDay - comps.weekday;
-//            days = (temp >= 0 ? temp : temp + 7);
-//            
-//            NSDate *newFireDate = [[calendar dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
-//            [self scheduleNotificationWithItem:_rModel.content fireDate:newFireDate];
-//            
-//            
-//        }
-        
-        
-        
-        
-//        NSCalendar *calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-//        NSDateComponents *comps = [[NSDateComponents alloc] init]; NSInteger unitFlags = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal | NSCalendarUnitQuarter;
-//        comps = [calendar components:unitFlags fromDate:[NSDate date]];
-//        for (int i = 0; i <10; i++) {
-//            NSDate *newFireDate = [calendar dateFromComponents:comps];//[ dateByAddingTimeInterval:3*i];
-//            UILocalNotification *newNotification = [[UILocalNotification alloc] init];
-//            if (newNotification) {
-//                
-//                newNotification.fireDate = newFireDate;
-//                newNotification.alertBody = @"哈哈"; newNotification.soundName = @"呵呵";
-//                newNotification.applicationIconBadgeNumber=1;//应用程序图标右上角显示的消息数
-//            newNotification.alertAction = @"查看闹钟"; newNotification.userInfo =@{@"id":@1,@"user":@"Kenshin Cui"};//绑定到通知上的其他附加信息;
-//            [[UIApplication sharedApplication] scheduleLocalNotification:newNotification];
-//        }
-//        
-//    }
-        
-        
-        
-        
-        
-        
-//        // 申请通知权限
-//        [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-//            // A Boolean value indicating whether authorization was granted. The value of this parameter is YES when authorization for the requested options was granted. The value is NO when authorization for one or more of the options is denied.
-//            if (granted) {
-//                // 1、创建通知内容，注：这里得用可变类型的UNMutableNotificationContent，否则内容的属性是只读的
-//                UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-//                // 标题
-//                content.title = @"通知到啦";
-//                //次标题 content.subtitle = @"柯梵办公室通知";
-//                //内容
-//                content.body = _rModel.content;
-//                // app显示通知数量的角标
-//                content.badge = @1;
-//                // 通知的提示声音，这里用的默认的声音
-//                content.sound = [UNNotificationSound defaultSound];
-//                
-//                // 附件 可以是音频、图片、视频 这里是一张图片
-//                //                NSURL *imageUrl = [[NSBundle mainBundle] URLForResource:@"jianglai" withExtension:@"jpg"];
-//                //                UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"imageIndetifier" URL:imageUrl options:nil error:nil];
-//                //                content.attachments = @[attachment];
-//                // 标识符
-//                content.categoryIdentifier = _rModel.reminderId;
-//                // 2、创建通知触发
-//                /* 触发器分三种：
-//                 UNTimeIntervalNotificationTrigger : 在一定时间后触发，如果设置重复的话，timeInterval不能小于60
-//                 UNCalendarNotificationTrigger : 在某天某时触发，可重复
-//                 UNLocationNotificationTrigger : 进入或离开某个地理区域时触发 */
-//                
-//                NSCalendar *calendar=[[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-//                NSDateComponents *comps = [[NSDateComponents alloc] init];
-//                NSInteger unitFlags = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal | NSCalendarUnitQuarter;
-//                comps = [calendar components:unitFlags fromDate:curronDate];
-//                comps.weekday = 2|3|4;
-//                comps.year = curronDate.year;
-//                comps.month = curronDate.month;
-//                comps.hour = curronDate.hour;
-//                comps.minute = curronDate.minute;
-//                comps.second = 0;
-//                UNCalendarNotificationTrigger *trigger2 = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:comps repeats:YES];
-//                
-//                // 3、创建通知请求
-//                UNNotificationRequest *notificationRequest = [UNNotificationRequest requestWithIdentifier:@"KFGroupNotification" content:content trigger:trigger2];
-//                // 4、将请求加入通知中心
-//                [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:notificationRequest withCompletionHandler:^(NSError * _Nullable error) { if (error == nil) { NSLog(@"已成功加推送%@",notificationRequest.identifier);
-//                }
-//                }];
-//            }
-//        }];
-        
-        
-    }
     
-    if (self.updateReminder) {
-        self.updateReminder();
-    }
-
-    [self.navigationController popViewControllerAnimated:YES];
 }
-
-- (void)scheduleNotificationWithAlertBody:(NSString *)alertBody userInfo:(NSDictionary *)userInfo repeatInterVal:(NSCalendarUnit)repeatInterVal fireDate:(NSDate*)date
-{
-    //初始化
-    UILocalNotification *locationNotification = [[UILocalNotification alloc]init];
-    locationNotification.fireDate =date;
-    //设置重复周期
-    locationNotification.repeatInterval = repeatInterVal;
-    //设置通知的音乐
-    locationNotification.soundName = UILocalNotificationDefaultSoundName;
-    //设置通知内容
-    locationNotification.alertBody = alertBody;
-    //设置推送实体
-    locationNotification.userInfo = userInfo;
-    //应用程序图标右上角显示的消息数
-    locationNotification.applicationIconBadgeNumber=1;
-    //执行本地推送
-    [[UIApplication sharedApplication] scheduleLocalNotification:locationNotification];
-}
-
-
 
 
 - (void)textViewDidChange:(UITextView *)textView

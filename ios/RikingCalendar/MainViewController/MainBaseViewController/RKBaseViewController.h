@@ -10,7 +10,7 @@
 #import "YPTabBarController.h"
 #import "MJRefresh.h"
 #import "RKBaseScrollview.h"
-
+#import "DIYRefreshAutoFooter.h"
 
 typedef NS_ENUM(NSUInteger, RGRequestStyle) {
     remindSaveUpdate  = 0,
@@ -25,6 +25,8 @@ typedef NS_ENUM(NSUInteger, RGRequestStyle) {
 @property (nonatomic,strong) MJRefreshNormalHeader *kkRefreshHeader;
 
 @property (nonatomic,strong) MJRefreshBackNormalFooter *kkRefreshFooter;
+
+@property (nonatomic,strong) DIYRefreshAutoFooter *diyRefreshFooter;
 
 @property (nonatomic,assign) NSInteger page;
 

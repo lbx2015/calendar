@@ -12,7 +12,7 @@
 
 
 
-- (void)loadDataWithReminderModel:(ReminderModel *)rModel indexPath:(NSIndexPath *)indexPath;
+- (void)loadDataWithReminderModel:(ReminderModel *)rModel indexPath:(NSIndexPath *)indexPath remindArray:(NSArray *)remindArray;
 
 - (void)loadHomeDataWithReminderModel:(ReminderModel *)rModel;
 

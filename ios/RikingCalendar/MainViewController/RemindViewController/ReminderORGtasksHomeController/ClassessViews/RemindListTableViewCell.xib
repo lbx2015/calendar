@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22:29" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mZy-RD-4YQ">
-                        <rect key="frame" x="15" y="0.0" width="50" height="43.5"/>
+                        <rect key="frame" x="15" y="1" width="50" height="41.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="aKL-gm-vct"/>
                         </constraints>
@@ -28,23 +28,35 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我是一个提醒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p7U-yx-CzM">
-                        <rect key="frame" x="80" y="0.0" width="225" height="43.5"/>
+                        <rect key="frame" x="80" y="1" width="225" height="41.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yhx-Fw-sPq">
+                        <rect key="frame" x="80" y="42.5" width="240" height="1"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="bfK-eP-gan"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="mZy-RD-4YQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="D6D-cw-UtZ"/>
-                    <constraint firstAttribute="bottom" secondItem="mZy-RD-4YQ" secondAttribute="bottom" id="OVJ-5A-Oth"/>
+                    <constraint firstAttribute="bottom" secondItem="mZy-RD-4YQ" secondAttribute="bottom" constant="1" id="OVJ-5A-Oth"/>
+                    <constraint firstAttribute="trailing" secondItem="yhx-Fw-sPq" secondAttribute="trailing" id="Pxr-GH-ei4"/>
                     <constraint firstAttribute="trailing" secondItem="p7U-yx-CzM" secondAttribute="trailing" constant="15" id="Rnc-1w-OSV"/>
                     <constraint firstItem="p7U-yx-CzM" firstAttribute="leading" secondItem="mZy-RD-4YQ" secondAttribute="trailing" constant="15" id="U2t-MB-cZG"/>
-                    <constraint firstAttribute="bottom" secondItem="p7U-yx-CzM" secondAttribute="bottom" id="XIK-7I-MMh"/>
-                    <constraint firstItem="mZy-RD-4YQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="YkI-wg-Vqc"/>
-                    <constraint firstItem="p7U-yx-CzM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="tub-mp-OkM"/>
+                    <constraint firstAttribute="bottom" secondItem="p7U-yx-CzM" secondAttribute="bottom" constant="1" id="XIK-7I-MMh"/>
+                    <constraint firstItem="mZy-RD-4YQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="YkI-wg-Vqc"/>
+                    <constraint firstItem="yhx-Fw-sPq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="80" id="aNc-cT-4eD"/>
+                    <constraint firstItem="p7U-yx-CzM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="tub-mp-OkM"/>
+                    <constraint firstAttribute="bottom" secondItem="yhx-Fw-sPq" secondAttribute="bottom" id="yb2-qo-Hur"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="lineView" destination="yhx-Fw-sPq" id="UzA-b0-WNm"/>
+                <outlet property="lineViewLeftLayout" destination="aNc-cT-4eD" id="Y7N-Zh-626"/>
                 <outlet property="remindConment" destination="p7U-yx-CzM" id="6Z2-nd-Pub"/>
                 <outlet property="remindTime" destination="mZy-RD-4YQ" id="LRP-m3-6KW"/>
             </connections>

@@ -14,18 +14,23 @@
 static NSString *const kGoTopNotificationName = @"goTop";//进入置顶命令
 static NSString *const kLeaveTopNotificationName = @"leaveTop";//离开置顶命令
 static NSString *const kUserSwitchNotificationName = @"userSwitch";//切换用户
+static NSString *const kRefreshRemindAndGtasksName = @"refreshRemindAndGtasks";//刷新首页的日历和提醒待办信息
+static NSString *const kRefreshUserMessageName = @"userMessage";//刷新个人界面的个人信息(在个人信息修改成功之后)
+static NSString *const kRefreshRemindName = @"refreshRemind";//刷新提醒
+static NSString *const kRefreshGtasksName = @"refreshGtasks";//刷新待办
 
 
 static NSString *const UserKey = @"User";//user
 static NSString *const allDayRemindTimeKey = @"allDayRemindTime";//全天事件提醒时间
+static NSString *const kAppVersionMessage  = @"appVersionMessage";//app版本信息
 
-
-static CGFloat const kTopBarHeight = 83.3;
+static CGFloat const kTopBarHeight = 83.3+10;
 static CGFloat const kBottomBarHeight = 49;
 static CGFloat const kTabTitleViewHeight = 45.;
 
 
 //appdelegate
+#define defaultLanguageName          [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0]
 #define kAPPDELEGATE                 (AppDelegate *)[[UIApplication sharedApplication] delegate]
 #define kNSUserDefaults              [NSUserDefaults standardUserDefaults]
 
