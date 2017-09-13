@@ -36,6 +36,8 @@ import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
 import com.riking.calendar.util.Preference;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -98,7 +100,7 @@ public class APIClient {
                         for (Reminder r : reminders) {
                             r.syncStatus = 0;
                             if (r.deleteState != 0) {
-                                cancelReminds(r.requestCode);
+                                cancelAlarm(r.requestCode);
                                 r.deleteFromRealm();
                             }
                         }
@@ -172,12 +174,14 @@ public class APIClient {
                                 task.deleteState = 1;
                                 task.syncStatus = 1;
                             } else {
+                                cancelAlarm(task.requestCode);
                                 task.deleteFromRealm();
                             }
                         } else {
                             if (failed) {
                                 task.syncStatus = 1;
                             } else {
+                                addAlarm4Task(task);
                             }
                         }
                     }
@@ -218,7 +222,7 @@ public class APIClient {
                                 if (callBack != null) {
                                     callBack.success();
                                 }
-                                cancelReminds(r.requestCode);
+                                cancelAlarm(r.requestCode);
                                 r.deleteFromRealm();
                             }
                         } else if (operationType == CONST.UPDATE) {
@@ -236,7 +240,7 @@ public class APIClient {
         });
     }
 
-    public static void cancelReminds(int requestCode) {
+    public static void cancelAlarm(int requestCode) {
         Intent intent = new Intent(MyApplication.APP, ReminderService.class);
         PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
@@ -250,6 +254,21 @@ public class APIClient {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         addAlarm(r, c);
+    }
+
+    public static void addAlarm4Task(Task task) {
+        if (task.isOpen == 1) {
+            SimpleDateFormat sdf = new SimpleDateFormat(Const.yyyyMMddHHmm);
+            AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(MyApplication.APP, ReminderService.class);
+            intent.putExtra(Const.REMINDER_TITLE, task.title);
+            PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, task.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            try {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, sdf.parse(task.strDate).getTime(), pendingIntent);
+            } catch (ParseException e) {
+                Logger.d("zzw", "parse failed.");
+            }
+        }
     }
 
     /**
@@ -356,15 +375,18 @@ public class APIClient {
                         //delete those which is from server
                         for (String id : remindIds) {
                             Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
-                            cancelReminds(r.requestCode);
+                            cancelAlarm(r.requestCode);
                             r.deleteFromRealm();
                         }
 
                         if (tasks != null) {
                             for (TaskModel m : tasks) {
                                 Task t = new Task(m);
+                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todo_Id).findFirst().requestCode;
+                                t.requestCode = requestCode;
                                 taskIds.remove(t.todo_Id);
                                 realm.copyToRealmOrUpdate(t);
+                                addAlarm4Task(t);
                             }
                         }
 

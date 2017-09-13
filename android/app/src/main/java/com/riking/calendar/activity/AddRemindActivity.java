@@ -1,9 +1,5 @@
 package com.riking.calendar.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,15 +17,12 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
-import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
-import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -97,11 +90,13 @@ public class AddRemindActivity extends AppCompatActivity {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Number maxRequestCode = realm.where(Reminder.class).max("requestCode");
+                int maxRemindCode = maxRequestCode == null ? 0 : maxRequestCode.intValue() + 1;
+                Number maxTaskCode = realm.where(Reminder.class).max("requesetCode");
+                int maxTaskAlarmCode = maxTaskCode == null ? 0 : maxTaskCode.intValue() + 1;
+                int requestCode = Math.max(maxRemindCode, maxTaskAlarmCode);
                 //remind fragment
                 if (viewPager.getCurrentItem() == 0) {
-                    Number maxRequestCode = realm.where(Reminder.class).max("requestCode");
-                    int requestCode = maxRequestCode == null ? 0 : maxRequestCode.intValue() + 1;
                     // Add a remind
                     final Reminder reminder = realm.createObject(Reminder.class, id);
                     SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
@@ -134,14 +129,8 @@ public class AddRemindActivity extends AppCompatActivity {
                     task.title = taskTitle;
                     task.userId = userId;
                     if (task.isOpen == 1) {
-                        Intent intent = new Intent(AddRemindActivity.this, ReminderService.class);
-                        intent.putExtra(Const.REMINDER_TITLE, task.title);
-                        PendingIntent pendingIntent = PendingIntent.getService(AddRemindActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        try {
-                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, sdf.parse(task.strDate).getTime(), pendingIntent);
-                        } catch (ParseException e) {
-                            Logger.d("zzw", "parse failed.");
-                        }
+                        task.requestCode = requestCode;
+                        APIClient.addAlarm4Task(task);
                     }
                 }
             }

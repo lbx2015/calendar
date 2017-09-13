@@ -1,6 +1,7 @@
 package com.riking.calendar.util;
 
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 
 import io.realm.Realm;
@@ -18,7 +19,13 @@ public class ZDB {
         RealmResults<Reminder> reminders = realm.where(Reminder.class).findAll();
         if (reminders != null) {
             for (Reminder r : reminders) {
-                APIClient.cancelReminds(r.requestCode);
+                APIClient.cancelAlarm(r.requestCode);
+            }
+        }
+        RealmResults<Task> tasks = realm.where(Task.class).findAll();
+        if (tasks != null) {
+            for (Task t : tasks) {
+                APIClient.cancelAlarm(t.requestCode);
             }
         }
     }

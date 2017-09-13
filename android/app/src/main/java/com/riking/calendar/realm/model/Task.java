@@ -61,7 +61,8 @@ public class Task extends RealmObject {
     //    @Transient
     public int deleteState;
     public byte syncStatus;//同步的状态0:同步,1待同步
-
+    //used to set alarm, the request code should not same.
+    public int requestCode;
     public Task() {
     }
 
