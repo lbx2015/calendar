@@ -21,7 +21,7 @@ public class ReminderModel {
     //the day of the reminder(yyyyMMdd)
     @SerializedName("strDate")
     public String day;
-    //the time of the reminder(HHmm)
+    //the reminderTimeCalendar of the reminder(HHmm)
     @SerializedName("startTime")
     public String time;
     //0,1,2,3

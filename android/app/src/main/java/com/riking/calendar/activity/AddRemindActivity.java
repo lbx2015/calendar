@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
-import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.Reminder;
@@ -29,13 +28,10 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.DateUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import io.realm.Realm;
 
@@ -111,7 +107,7 @@ public class AddRemindActivity extends AppCompatActivity {
                     SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
                     reminder.title = reminderTitle;
-                    Date reminderDate = reminderFragment.time.getTime();
+                    Date reminderDate = reminderFragment.reminderTimeCalendar.getTime();
                     reminder.day = dayFormat.format(reminderDate);
                     reminder.time = timeFormat.format(reminderDate);
                     Log.d("zzw", "reminder time" + reminder.time);
@@ -123,44 +119,7 @@ public class AddRemindActivity extends AppCompatActivity {
                     reminder.reminderTime = reminderDate;
                     reminder.requestCode = requestCode;
                     reminder.userId = userId;
-                    //set reminder
-                    Intent intent = new Intent(MyApplication.APP, ReminderService.class);
-                    intent.putExtra(Const.REMINDER_TITLE, reminder.title);
-                    PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    //alarmManager.cancel(pendingIntent);
-                    Calendar reminderCalendar = reminderFragment.time;
-                    // 这里时区需要设置一下，不然可能个别手机会有8个小时的时间差
-                    reminderCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-                    reminderCalendar.set(java.util.Calendar.MINUTE, reminderFragment.time.get(java.util.Calendar.MINUTE) - reminder.aheadTime);
-                    //下面这两个看字面意思也知道
-                    reminderCalendar.set(Calendar.SECOND, 0);
-                    reminderCalendar.set(Calendar.MILLISECOND, 0);
-                    Logger.d("zzw", "提醒时间1-->" + DateUtil.getCustonFormatTime(reminderCalendar.getTimeInMillis(), "yyyy/MM/dd/HH/mm"));
-                    if (reminder.isRemind == 1 && reminder.repeatFlag == 0) {
-                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderCalendar.getTimeInMillis(), pendingIntent);
-//                        long intervalMillis = 1000;
-//                        alarmManager.setWindow(AlarmManager.RTC_WAKEUP, reminderCalendar.getTimeInMillis(),
-//                                intervalMillis, pendingIntent);
-                    } else if (reminder.isRemind == 1 && reminder.repeatFlag == 3) {
-                        String repeatWeek = reminder.repeatWeek;
-                        long intervalMillis = 0;
-                        long remindTime;
-                        //repeat each day
-                        if (repeatWeek.length() == 7) {
-                            intervalMillis = 24 * 3600 * 1000;
-                            remindTime = DateUtil.getRepeatReminderTime(0, reminderCalendar.getTimeInMillis());
-                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, remindTime, intervalMillis, pendingIntent);
-                        } else {
-                            //repeat the alarm on each week days selected.
-                            intervalMillis = 24 * 3600 * 1000 * 7;
-                            for (int i = 1; i <= 7; i++) {
-                                if (repeatWeek.contains(String.valueOf(i))) {
-                                    remindTime = DateUtil.getRepeatReminderTime(i, reminderCalendar.getTimeInMillis());
-                                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, remindTime, intervalMillis, pendingIntent);
-                                }
-                            }
-                        }
-                    }
+                    APIClient.addAlarm(reminder, reminderFragment.reminderTimeCalendar);
                 }
                 //task fragment
                 else {

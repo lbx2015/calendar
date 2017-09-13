@@ -21,7 +21,7 @@ public class Reminder extends RealmObject {
     public String title;
     //the day of the reminder(yyyyMMdd)
     public String day;
-    //the time of the reminder(HHmm)
+    //the reminderTimeCalendar of the reminder(HHmm)
     public String time;
     public Date reminderTime;
     //o false 1 yes

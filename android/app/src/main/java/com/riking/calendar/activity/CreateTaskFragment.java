@@ -25,12 +25,12 @@ import java.util.Date;
  */
 
 public class CreateTaskFragment extends Fragment implements View.OnClickListener {
-    //whether the task need to remind at a specific time
+    //whether the task need to remind at a specific reminderTimeCalendar
     public boolean needToRemind;
     //whether the task is an important task
     public byte isImportant;
     public EditText title;
-    //time
+    //reminderTimeCalendar
     public Calendar calendar;
     public TextView remindTime;
     public Switch aSwitch;
@@ -59,7 +59,7 @@ public class CreateTaskFragment extends Fragment implements View.OnClickListener
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        //set the default time to be 2 hours later comparing current time.
+        //set the default reminderTimeCalendar to be 2 hours later comparing current reminderTimeCalendar.
         calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 2);
         calendar.set(Calendar.MINUTE, 0);
         remindTime.setText(sdf.format(calendar.getTime()));

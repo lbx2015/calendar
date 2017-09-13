@@ -55,7 +55,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     View birthDayRelative;
     View sexRelativeLayout;
     BirthdayPickerDialog datePickerDialog;
-    //time
+    //reminderTimeCalendar
     Calendar calendar;
     OptionsPickerView pvOptions;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();

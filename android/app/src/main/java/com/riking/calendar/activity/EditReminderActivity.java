@@ -8,12 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.fragment.CreateReminderFragment;
-import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -79,7 +76,7 @@ public class EditReminderActivity extends AppCompatActivity {
                 SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
                 reminder.title = reminderFragment.remindTitle.getText().toString();
-                Date reminderDate = reminderFragment.time.getTime();
+                Date reminderDate = reminderFragment.reminderTimeCalendar.getTime();
                 reminder.day = dayFormat.format(reminderDate);
                 reminder.time = timeFormat.format(reminderDate);
                 Log.d("zzw", "saved day : " + reminder.day + " saved time: " + reminder.time);

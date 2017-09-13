@@ -15,7 +15,7 @@ public class DateUtil {
 
     /**
      * return ture if date1 is before date2
-     * The compare will ignore the time information.
+     * The compare will ignore the reminderTimeCalendar information.
      *
      * @param date1
      * @param date2

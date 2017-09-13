@@ -471,7 +471,7 @@ public class FirstFragment extends Fragment {
                 .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)//work day
                 .findAll();
         for (Reminder r : workDayReminds) {
-            //keep the workRemind time as the earliest.
+            //keep the workRemind reminderTimeCalendar as the earliest.
             if (ealiestRemindWorkDate == null || r.reminderTime.before(ealiestRemindWorkDate)) {
                 ealiestRemindWorkDate = r.reminderTime;
             }
@@ -504,7 +504,7 @@ public class FirstFragment extends Fragment {
         } else {
             weekDay--;
         }
-        //Fix the reminder time is not before the current day
+        //Fix the reminder reminderTimeCalendar is not before the current day
         c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
 

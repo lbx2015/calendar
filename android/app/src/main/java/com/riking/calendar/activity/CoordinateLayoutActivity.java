@@ -191,7 +191,7 @@ public class CoordinateLayoutActivity extends AppCompatActivity {
 //            public void execute(Realm realm) {
 //                // Add a person
 //                Reminder person = realm.createObject(Reminder.class);
-//                person.time = new Date();
+//                person.reminderTimeCalendar = new Date();
 //                person.title = "Don't forget to clock off";
 //            }
 //        });

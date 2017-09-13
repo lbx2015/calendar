@@ -32,11 +32,15 @@ import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
 import com.riking.calendar.util.Preference;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -203,7 +207,7 @@ public class APIClient {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        if (operationType == 1) {
+                        if (operationType == CONST.DELETE) {
                             if (failed) {
                                 if (callBack != null) {
                                     callBack.fail();
@@ -222,6 +226,7 @@ public class APIClient {
                                 Toast.makeText(MyApplication.APP, "上传失败", Toast.LENGTH_LONG).show();
                                 r.syncStatus = 1;
                             } else {
+                                addAlarm(r, r.reminderTime);
                                 Toast.makeText(MyApplication.APP, "上传成功", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -236,6 +241,60 @@ public class APIClient {
         PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+    }
+
+    /**
+     * create alarm
+     */
+    public static void addAlarm(Reminder r, Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        addAlarm(r, c);
+    }
+
+    /**
+     * create alarm
+     */
+    public static void addAlarm(Reminder r, Calendar time) {
+        AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
+        //set reminder
+        Intent intent = new Intent(MyApplication.APP, ReminderService.class);
+        intent.putExtra(Const.REMINDER_TITLE, r.title);
+        PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, r.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //alarmManager.cancel(pendingIntent);
+        Calendar reminderCalendar = time;
+        // 这里时区需要设置一下，不然可能个别手机会有8个小时的时间差
+        reminderCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        reminderCalendar.set(java.util.Calendar.MINUTE, time.get(java.util.Calendar.MINUTE) - r.aheadTime);
+        //下面这两个看字面意思也知道
+        reminderCalendar.set(Calendar.SECOND, 0);
+        reminderCalendar.set(Calendar.MILLISECOND, 0);
+        Logger.d("zzw", "提醒时间1-->" + DateUtil.getCustonFormatTime(reminderCalendar.getTimeInMillis(), "yyyy/MM/dd/HH/mm"));
+        if (r.isRemind == 1 && r.repeatFlag == 0) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderCalendar.getTimeInMillis(), pendingIntent);
+//                        long intervalMillis = 1000;
+//                        alarmManager.setWindow(AlarmManager.RTC_WAKEUP, reminderCalendar.getTimeInMillis(),
+//                                intervalMillis, pendingIntent);
+        } else if (r.isRemind == 1 && r.repeatFlag == 3) {
+            String repeatWeek = r.repeatWeek;
+            long intervalMillis = 0;
+            long remindTime;
+            //repeat each day
+            if (repeatWeek.length() == 7) {
+                intervalMillis = 24 * 3600 * 1000;
+                remindTime = DateUtil.getRepeatReminderTime(0, reminderCalendar.getTimeInMillis());
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, remindTime, intervalMillis, pendingIntent);
+            } else {
+                //repeat the alarm on each week days selected.
+                intervalMillis = 24 * 3600 * 1000 * 7;
+                for (int i = 1; i <= 7; i++) {
+                    if (repeatWeek.contains(String.valueOf(i))) {
+                        remindTime = DateUtil.getRepeatReminderTime(i, reminderCalendar.getTimeInMillis());
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, remindTime, intervalMillis, pendingIntent);
+                    }
+                }
+            }
+        }
     }
 
     public static void synchAll() {
@@ -285,15 +344,20 @@ public class APIClient {
                         List<TaskModel> tasks = response._data.todo;
                         if (reminders != null) {
                             for (ReminderModel m : reminders) {
+                                int requestCode = realm.where(Reminder.class).equalTo("id", m.id).findFirst().requestCode;
                                 Reminder r = new Reminder(m);
                                 remindIds.remove(r.id);
+                                r.requestCode = requestCode;
                                 realm.copyToRealmOrUpdate(r);
+                                addAlarm(r, r.reminderTime);
                             }
                         }
 
                         //delete those which is from server
                         for (String id : remindIds) {
-                            realm.where(Reminder.class).equalTo("id", id).findFirst().deleteFromRealm();
+                            Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
+                            cancelReminds(r.requestCode);
+                            r.deleteFromRealm();
                         }
 
                         if (tasks != null) {

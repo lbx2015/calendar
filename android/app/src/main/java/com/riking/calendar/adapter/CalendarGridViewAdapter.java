@@ -270,7 +270,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 }
             }
 
-            //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder time)
+            //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder reminderTimeCalendar)
             if (reminders.contains(d) || (fragment.repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition)) && afterRemindTime)
                     || (isTodayWorkDay && workDayAfterRemindTime) || (holidayAfterRemindTime && !isTodayWorkDay)) {
                 Logger.d("zww", " show circle point remind day " + d);
