@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
+import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.realm.model.Reminder;
@@ -34,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import io.realm.Realm;
 
@@ -102,7 +104,8 @@ public class AddRemindActivity extends AppCompatActivity {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 //remind fragment
                 if (viewPager.getCurrentItem() == 0) {
-
+                    Number maxRequestCode = realm.where(Reminder.class).max("requestCode");
+                    int requestCode = maxRequestCode == null ? 0 : maxRequestCode.intValue() + 1;
                     // Add a remind
                     final Reminder reminder = realm.createObject(Reminder.class, id);
                     SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
@@ -118,14 +121,21 @@ public class AddRemindActivity extends AppCompatActivity {
                     reminder.isRemind = reminderFragment.isRemind;
                     reminder.isAllDay = reminderFragment.isAllDay;
                     reminder.reminderTime = reminderDate;
+                    reminder.requestCode = requestCode;
                     reminder.userId = userId;
-//set reminder
-                    Intent intent = new Intent(AddRemindActivity.this, ReminderService.class);
+                    //set reminder
+                    Intent intent = new Intent(MyApplication.APP, ReminderService.class);
                     intent.putExtra(Const.REMINDER_TITLE, reminder.title);
-                    PendingIntent pendingIntent = PendingIntent.getService(AddRemindActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                    alarmManager.cancel(pendingIntent);
+                    PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    //alarmManager.cancel(pendingIntent);
                     Calendar reminderCalendar = reminderFragment.time;
+                    // 这里时区需要设置一下，不然可能个别手机会有8个小时的时间差
+                    reminderCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                     reminderCalendar.set(java.util.Calendar.MINUTE, reminderFragment.time.get(java.util.Calendar.MINUTE) - reminder.aheadTime);
+                    //下面这两个看字面意思也知道
+                    reminderCalendar.set(Calendar.SECOND, 0);
+                    reminderCalendar.set(Calendar.MILLISECOND, 0);
+                    Logger.d("zzw", "提醒时间1-->" + DateUtil.getCustonFormatTime(reminderCalendar.getTimeInMillis(), "yyyy/MM/dd/HH/mm"));
                     if (reminder.isRemind == 1 && reminder.repeatFlag == 0) {
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderCalendar.getTimeInMillis(), pendingIntent);
 //                        long intervalMillis = 1000;

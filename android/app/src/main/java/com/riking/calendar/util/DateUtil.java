@@ -125,4 +125,8 @@ public class DateUtil {
         }
         return null;
     }
+
+    public static String getCustonFormatTime(long timeInMillis, String s) {
+        return new SimpleDateFormat(s).format(new Date(timeInMillis));
+    }
 }

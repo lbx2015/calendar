@@ -240,6 +240,10 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                 weekDayOfCurrentPosition = 7;
             }
 
+            if (currentDate == null) {
+                currentDate = Calendar.getInstance();
+            }
+
             currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(d));
             Date cDate = currentDate.getTime();
             Date earliestWeekDate = fragment.weeks.get(String.valueOf(weekDayOfCurrentPosition));

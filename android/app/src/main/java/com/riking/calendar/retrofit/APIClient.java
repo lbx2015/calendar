@@ -1,5 +1,9 @@
 package com.riking.calendar.retrofit;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
@@ -26,6 +30,7 @@ import com.riking.calendar.realm.model.QueryReportRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
+import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.GsonStringConverterFactory;
 import com.riking.calendar.util.Preference;
@@ -208,6 +213,10 @@ public class APIClient {
                                 if (callBack != null) {
                                     callBack.success();
                                 }
+                                Intent intent = new Intent(MyApplication.APP, ReminderService.class);
+                                PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, r.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
+                                alarmManager.cancel(pendingIntent);
                                 r.deleteFromRealm();
                             }
                         } else if (operationType == CONST.UPDATE) {

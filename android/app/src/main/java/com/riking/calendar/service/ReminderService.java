@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.MainActivity;
+import com.riking.calendar.activity.ViewPagerActivity;
 
 /**
  * Created by zw.zhang on 2017/7/10.
@@ -66,10 +67,10 @@ public class ReminderService extends Service {
                     }
                 });
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                Intent intent2 = new Intent(ReminderService.this, MainActivity.class);
+                Intent intent2 = new Intent(ReminderService.this, ViewPagerActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(), 0, intent2, 0);
                 Notification notify = new NotificationCompat.Builder(getApplication())
-                        .setSmallIcon(R.drawable.cat_1)
+                        .setSmallIcon(R.mipmap.launcher_icon)
                         .setTicker(reminderTitle)
                         .setContentTitle(reminderTitle)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(reminderTitle))

@@ -40,6 +40,8 @@ public class Reminder extends RealmObject {
     public byte isRemind = 1;
     public byte clientType = 2;
     public byte syncStatus;//同步的状态0:同步,1待同步
+    //used to set alarm, the request code should not same.
+    public int requestCode;
 
     public Reminder() {
     }
