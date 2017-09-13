@@ -269,6 +269,10 @@ public class APIClient {
                 Logger.d("zzw", "parse failed.");
             }
         }
+        //cancel the task
+        else if (task.requestCode > 0) {
+            cancelAlarm(task.requestCode);
+        }
     }
 
     /**
