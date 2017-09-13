@@ -21,6 +21,7 @@ import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZDB;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
 import java.io.File;
@@ -93,7 +94,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.commit();
-
+                //cancel the alarms
+                ZDB.Instance.cancelAlarmsWhenLoginOut();
                 //change realm database
                 RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
                         .deleteRealmIfMigrationNeeded();
