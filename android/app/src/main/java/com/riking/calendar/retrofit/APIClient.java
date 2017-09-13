@@ -94,6 +94,7 @@ public class APIClient {
                         for (Reminder r : reminders) {
                             r.syncStatus = 0;
                             if (r.deleteState != 0) {
+                                cancelReminds(r.requestCode);
                                 r.deleteFromRealm();
                             }
                         }
@@ -213,10 +214,7 @@ public class APIClient {
                                 if (callBack != null) {
                                     callBack.success();
                                 }
-                                Intent intent = new Intent(MyApplication.APP, ReminderService.class);
-                                PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, r.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
-                                alarmManager.cancel(pendingIntent);
+                                cancelReminds(r.requestCode);
                                 r.deleteFromRealm();
                             }
                         } else if (operationType == CONST.UPDATE) {
@@ -231,6 +229,13 @@ public class APIClient {
                 });
             }
         });
+    }
+
+    public static void cancelReminds(int requestCode) {
+        Intent intent = new Intent(MyApplication.APP, ReminderService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 
     public static void synchAll() {
