@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.MainActivity;
+import com.riking.calendar.jiguang.Logger;
 
 /**
  * Created by zw.zhang on 2017/7/10.
@@ -50,7 +52,8 @@ public class AlarmService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, final int startId) {
+        Logger.d("zzw", "startId: " + startId);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -64,15 +67,33 @@ public class AlarmService extends Service {
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 Intent intent2 = new Intent(AlarmService.this, MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(), 0, intent2, 0);
+                // Start without a delay
+// Each element then alternates between vibrate, sleep, vibrate, sleep...
+                long[] pattern1 = {0, 100, 1000, 300, 200, 100, 500, 200, 100};
                 Notification notify = new NotificationCompat.Builder(getApplication())
                         .setSmallIcon(R.drawable.cat_1)
                         .setTicker("您的***项目即将到期，请及时处理！")
                         .setContentTitle("项目到期提醒")
                         .setStyle(new NotificationCompat.BigTextStyle().bigText("此处注明的是有关需要提醒项目的某些重要内容"))
                         .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
+//                        .setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setVibrate(pattern1)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        // High priority.
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+
+                        // Public visibility means that the notification will appear even with screen locked.
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+                        // Setting a category for notification.
+                        .setCategory(NotificationCompat.CATEGORY_ALARM)
+
+                        // Keep the notification alive until you manually dismiss it
+                        .setOngoing(true)
+
                         .build();
-                manager.notify(1, notify);
+                manager.notify(startId, notify);
             }
         }).start();
         return super.onStartCommand(intent, flags, startId);
