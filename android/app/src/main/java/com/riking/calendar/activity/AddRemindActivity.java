@@ -92,7 +92,7 @@ public class AddRemindActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 Number maxRequestCode = realm.where(Reminder.class).max("requestCode");
                 int maxRemindCode = maxRequestCode == null ? 0 : maxRequestCode.intValue() + 1;
-                Number maxTaskCode = realm.where(Reminder.class).max("requesetCode");
+                Number maxTaskCode = realm.where(Task.class).max("requestCode");
                 int maxTaskAlarmCode = maxTaskCode == null ? 0 : maxTaskCode.intValue() + 1;
                 int requestCode = Math.max(maxRemindCode, maxTaskAlarmCode);
                 //remind fragment

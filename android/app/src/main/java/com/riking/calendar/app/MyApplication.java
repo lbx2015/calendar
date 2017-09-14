@@ -1,8 +1,10 @@
 package com.riking.calendar.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import com.ldf.calendar.Const;
 import com.riking.calendar.jiguang.Logger;
@@ -20,10 +22,51 @@ import io.realm.RealmConfiguration;
 public class MyApplication extends Application {
     public static Context APP;
     public static SharedPreferences preferences;
-
+    public static Activity mCurrentActivity = null;
     @Override
     public void onCreate() {
         super.onCreate();
+        this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                Logger.v(activity, "onActivityStopped");
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                Logger.v(activity, "onActivityStarted");
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+                Logger.v(activity, "onActivitySaveInstanceState");
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                Logger.v(activity, "onActivityResumed");
+                mCurrentActivity = activity;
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                mCurrentActivity = null;
+                Logger.v(activity, "onActivityPaused");
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                mCurrentActivity = null;
+                Logger.v(activity, "onActivityDestroyed");
+            }
+
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                Logger.v(activity, "onActivityCreated");
+            }
+        });
+
         APP = getApplicationContext();
         preferences = MyApplication.APP.getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         JPushInterface.setDebugMode(true);
