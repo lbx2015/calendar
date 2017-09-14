@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
+import com.riking.calendar.jiguang.Logger;
 
 /**
  * Created by zw.zhang on 2017/7/10.
@@ -56,7 +57,8 @@ public class ReminderService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, final int startId) {
+        Logger.d("zzw", "startId: " + startId);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -82,6 +84,14 @@ public class ReminderService extends Service {
                         // Each element then alternates between vibrate, sleep, vibrate, sleep...
                         .setVibrate(pattern1)
                         .setOnlyAlertOnce(true)
+                        // High priority.
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+
+                        // Public visibility means that the notification will appear even with screen locked.
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+                        // Setting a category for notification.
+                        .setCategory(NotificationCompat.CATEGORY_ALARM)
 //                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setSound(Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.nice_ringtone_2017))
                         .build();
@@ -92,7 +102,7 @@ public class ReminderService extends Service {
                 notify.ledOnMS = 1000;// 指定 LED 灯亮起的时长，以毫秒为单位
                 notify.ledOffMS = 1000;// 指定 LED 灯暗去的时长，也是以毫秒为单位
                 notify.flags = Notification.FLAG_SHOW_LIGHTS;// 指定通知的一些行为，其中就包括显示
-                manager.notify(1, notify);
+                manager.notify(startId, notify);
             }
         }).start();
         return super.onStartCommand(intent, flags, startId);
