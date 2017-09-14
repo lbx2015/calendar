@@ -71,7 +71,7 @@ public class ReminderService extends Service {
                 });
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 Intent intent2 = new Intent(ReminderService.this, ViewPagerActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(), 0, intent2, 0);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(), 0, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
                 // Each element then alternates between vibrate, sleep, vibrate, sleep...
                 long[] pattern1 = {0, 100, 1000, 300, 200, 100, 500, 200, 100, 100, 1000, 300, 200, 100, 500, 200, 100};
                 Notification notify = new NotificationCompat.Builder(getApplication())
@@ -79,7 +79,7 @@ public class ReminderService extends Service {
                         .setTicker(reminderTitle)
                         .setContentTitle(reminderTitle)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(reminderTitle))
-//                        .setContentIntent(pendingIntent)
+                        .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         // Each element then alternates between vibrate, sleep, vibrate, sleep...
                         .setVibrate(pattern1)
@@ -101,7 +101,8 @@ public class ReminderService extends Service {
                 notify.ledARGB = Color.GREEN;// 控制 LED 灯的颜色，一般有红绿蓝三种颜色可选
                 notify.ledOnMS = 1000;// 指定 LED 灯亮起的时长，以毫秒为单位
                 notify.ledOffMS = 1000;// 指定 LED 灯暗去的时长，也是以毫秒为单位
-                notify.flags = Notification.FLAG_SHOW_LIGHTS;// 指定通知的一些行为，其中就包括显示
+                notify.flags |= Notification.FLAG_SHOW_LIGHTS;// 指定通知的一些行为，其中就包括显示
+                notify.flags |= Notification.FLAG_AUTO_CANCEL;
                 manager.notify(startId, notify);
             }
         }).start();
