@@ -54,7 +54,6 @@
         </activity>
         <activity
             android:name=".activity.WelcomeActivity"
-            android:launchMode="singleTop"
             android:theme="@style/AppTheme.FullScreen"></activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.RealmIntroActivity" />

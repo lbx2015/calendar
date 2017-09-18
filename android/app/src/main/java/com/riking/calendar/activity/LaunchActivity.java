@@ -42,8 +42,6 @@ public class LaunchActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (Preference.pref.getBoolean(Const.NEED_WELCOME_ACTIVITY, true)) {
-                    //Welcome activity only need once
-                    Preference.put(Const.NEED_WELCOME_ACTIVITY, false);
                     Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
                     startActivity(i);
                     finish();
@@ -85,18 +83,5 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onDestroy() {
 //        NetStateReceiver.unRegisterNetworkStateReceiver(this);
         super.onDestroy();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
-                startActivity(i);
-                finish();
-            }
-        }, 2000);
     }
 }
