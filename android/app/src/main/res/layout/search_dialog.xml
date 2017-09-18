@@ -25,6 +25,7 @@
             android:paddingTop="9dp">
 
             <ImageView
+                android:id="@+id/voice_search_button"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_gravity="center_vertical"

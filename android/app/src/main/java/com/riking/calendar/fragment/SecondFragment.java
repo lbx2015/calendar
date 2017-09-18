@@ -1,7 +1,10 @@
 package com.riking.calendar.fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -44,6 +47,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.riking.calendar.widget.dialog.SearchDialog.check;
+
 /**
  * Created by zw.zhang on 2017/7/11.
  */
@@ -75,6 +80,17 @@ public class SecondFragment extends Fragment {
     DatePickerDialog dialog;
     View v;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if (requestCode == check && resultCode == Activity.RESULT_OK) {
+            performSearch(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
+            //results.addAll(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS));
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -300,35 +316,7 @@ public class SecondFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Log.d("zzw", "click search Button");
-                        final CtryHdayCrcy searchRequest = new CtryHdayCrcy();
-                        searchRequest.queryParam = dialog.editText.getText().toString();
-                        apiInterface.getVagueQuery(searchRequest).enqueue(new Callback<CtryHdayCryCondition>() {
-                            @Override
-                            public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
-                                if (recyclerView == null) {
-                                    return;
-                                }
-                                CtryHdayCryCondition ctryHdayCryCondition = response.body();
-                                if (ctryHdayCryCondition == null) {
-                                    Toast.makeText(getContext(), getString(R.string.no_found), Toast.LENGTH_SHORT);
-                                    return;
-                                } else {
-                                    holidayTextView.setText(mHolidayDatas.get(0).valu);
-                                    countryTextView.setText(mCountryDatas.get(0).valu);
-                                    concurrencyTextView.setText(mConcurrencyDatas.get(0).valu);
-                                    requestBoday = new CtryHdayCrcy();
-                                }
-
-                                VocationRecyclerViewAdapter adapter = new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content);
-                                adapter.setFootViewText("加载中。。。", SecondFragment.this);
-                                recyclerView.setAdapter(adapter);
-                            }
-
-                            @Override
-                            public void onFailure(Call<CtryHdayCryCondition> call, Throwable t) {
-
-                            }
-                        });
+                        performSearch(dialog.editText.getText().toString());
                         dialog.dismiss();
                     }
                 };
@@ -474,6 +462,38 @@ public class SecondFragment extends Fragment {
 
 
         return v;
+    }
+
+    public void performSearch(String searchCondition) {
+        final CtryHdayCrcy searchRequest = new CtryHdayCrcy();
+        searchRequest.queryParam = searchCondition;
+        apiInterface.getVagueQuery(searchRequest).enqueue(new Callback<CtryHdayCryCondition>() {
+            @Override
+            public void onResponse(Call<CtryHdayCryCondition> call, Response<CtryHdayCryCondition> response) {
+                if (recyclerView == null) {
+                    return;
+                }
+                CtryHdayCryCondition ctryHdayCryCondition = response.body();
+                if (ctryHdayCryCondition == null) {
+                    Toast.makeText(getContext(), getString(R.string.no_found), Toast.LENGTH_SHORT);
+                    return;
+                } else {
+                    holidayTextView.setText(mHolidayDatas.get(0).valu);
+                    countryTextView.setText(mCountryDatas.get(0).valu);
+                    concurrencyTextView.setText(mConcurrencyDatas.get(0).valu);
+                    requestBoday = new CtryHdayCrcy();
+                }
+
+                VocationRecyclerViewAdapter adapter = new VocationRecyclerViewAdapter(ctryHdayCryCondition._data.content);
+                adapter.setFootViewText("加载中。。。", SecondFragment.this);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<CtryHdayCryCondition> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
