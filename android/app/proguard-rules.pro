@@ -42,3 +42,7 @@
 -keep class com.google.protobuf.** {*;}
 -keep class com.iflytek.**{*;}
 -keepattributes Signature
+
+#=================hyphenate IM===============
+-keep class com.hyphenate.** {*;}
+-dontwarn  com.hyphenate.**
