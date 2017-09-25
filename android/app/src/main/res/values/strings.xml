@@ -88,6 +88,7 @@
     <string name="error_tag_empty">tag不能为空</string>
     <string name="error_tag_gs_empty">格式不对</string>
     <string name="error_network">网络连接异常,初始化失败 请检查网络！</string>
+    <string name="error_server">Server Error！</string>
     <string name="logining">程序在后台执行, 请查看日志！</string>
     <string name="setting_su">设置成功</string>
     <string name="no_found">No records found</string>
@@ -133,4 +134,9 @@
     <string name="net_not_connected">Offline</string>
     <string name="refresh_success">Refresh success</string>
     <string name="server_error">Server error</string>
+    <string name="error_password">Password is not right</string>
+    <string name="check_code_password">Check code error</string>
+    <string name="check_code_time_out">Check code time out</string>
+    <string name="data_not_found">Data not found</string>
+    <string name="error_login_time_out">Login time out</string>
 </resources>

@@ -208,7 +208,9 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         TextView textView = (TextView) convertView.findViewById(R.id.tvtext);
         TextView nTextView = (TextView) convertView.findViewById(R.id.n_tvtext);
         View point = convertView.findViewById(R.id.remind_circle);
+        //阳历
         String d = dayNumber[position].split("\\.")[0];
+        //农历
         String dv = dayNumber[position].split("\\.")[1];
 
 //        SpannableString sp = new SpannableString(d + "\n" + dv);
