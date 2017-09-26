@@ -219,6 +219,5 @@ public class AddRemindActivity extends AppCompatActivity {
 
             return null;
         }
-
     }
 }

@@ -43,23 +43,25 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
 
         //adding view pager to the slidingTabLayout
         TabLayout topTabLayout = v.findViewById(R.id.top_tab_layout);
-        topTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(topTabLayout));
+        topTabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
         //set custom layout to adding divider
-        for (int i = 0; i < topTabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = topTabLayout.getTabAt(i);
+        for (int i = 0; i < 2; i++) {
+            TabLayout.Tab tab = topTabLayout.newTab();
             RelativeLayout relativeLayout = (RelativeLayout)
-                    getActivity().getLayoutInflater().inflate(R.layout.third_fragment_tab_custom, topTabLayout, false);
+                    getActivity().getLayoutInflater().inflate(R.layout.third_fragment_tab_custom, null);
 
             TextView tabTextView = (TextView) relativeLayout.findViewById(R.id.tab_title);
             View divider = relativeLayout.findViewById(R.id.divider);
             if (i == 0) {
                 divider.setVisibility(View.GONE);
+                tabTextView.setText(R.string.reminder);
+            } else {
+                tabTextView.setText(R.string.to_do);
             }
-
-            //tab.getText() is from tagGetPageTitle
-            tabTextView.setText(tab.getText());
             tab.setCustomView(relativeLayout);
-            tab.select();
+            topTabLayout.addTab(tab);
         }
         return v;
     }
@@ -109,7 +111,7 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public Fragment getItem(int position) {
-            Log.d("zzw","getItem: " + position);
+            Log.d("zzw", "getItem: " + position);
             switch (position) {
                 case 0:
                     return new ReminderFragment();
@@ -121,7 +123,7 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Log.d("zzw","instantiateItem: " + position);
+            Log.d("zzw", "instantiateItem: " + position);
 
             return super.instantiateItem(container, position);
         }
