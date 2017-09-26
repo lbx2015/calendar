@@ -118,24 +118,9 @@
         <activity
             android:name=".activity.WelcomeActivity"
             android:theme="@style/AppTheme.FullScreen"></activity>
-        <activity android:name=".activity.RetrofitActivity" />
-        <activity android:name=".activity.RealmIntroActivity" />
         <activity
             android:name=".activity.ViewPagerActivity"
             android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.NoActionBarActivity"
-            android:theme="@style/AppThemeNoActionBar"
-            tools:ignore="UnusedAttribute">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
-        </activity>
-        <activity android:name=".activity.DrawerActivity" />
-        <activity android:name=".activity.MainActivity" />
-        <activity
-            android:name=".activity.CoordinateLayoutActivity"
-            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />
@@ -177,11 +162,6 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <service
-            android:name=".service.AlarmService"
-            android:enabled="true"
-            android:process="system" />
-
-        <service
             android:name=".service.ReminderService"
             android:enabled="true"
             android:process="system" />
@@ -212,10 +192,6 @@
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
             android:theme="@style/MyDialogStyle"></activity>
-
-        <activity
-            android:name=".activity.AboutActivity"
-            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activity.WebviewActivity"
             android:theme="@style/AppThemeNoActionBar" />
