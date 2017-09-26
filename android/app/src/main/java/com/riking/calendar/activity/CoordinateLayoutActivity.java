@@ -209,7 +209,7 @@ public class CoordinateLayoutActivity extends AppCompatActivity {
             @Override
             public void onHide() {
                 flipper.setVisibility(View.VISIBLE);
-                a.bottomTabs.setVisibility(View.GONE);
+                mTabLayout.setVisibility(View.GONE);
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
                 params.setMargins(0, 0, 0, 0);
                 recyclerView.setLayoutParams(params);

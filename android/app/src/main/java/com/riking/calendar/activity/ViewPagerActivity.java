@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +12,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flyco.tablayout.CommonTabLayout;
-import com.flyco.tablayout.listener.CustomTabEntity;
-import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FirstFragment;
@@ -28,31 +29,25 @@ import com.riking.calendar.fragment.ThirdFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.pojo.AppVersionResult;
-import com.riking.calendar.pojo.TabEntity;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.DownLoadApk;
-import com.riking.calendar.util.ViewFindUtils;
-
-import java.util.ArrayList;
 
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
 public class ViewPagerActivity extends FragmentActivity {
-    public CommonTabLayout bottomTabs;
+    //Tab 图片
+    private final int[] TAB_IMGS = new int[]{R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
+    //Fragment 数组
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new FirstFragment(), new SecondFragment(), new ThirdFragment(), new FourthFragment()};
+    //Tab 数目
+    private final int COUNT = 4;
+    public TabLayout mTabLayout;
     MyPagerAdapter adapter;
     boolean doubleBackToExitPressedOnce = false;
     private String[] mTitles;
-    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private View mDecorView;
-    private int[] mIconUnselectIds = {
-            R.drawable.work_page_unselected, R.drawable.holiday_page_unselected,
-            R.drawable.remind_page_unselected, R.drawable.me_page_unselected};
-    private int[] mIconSelectIds = {
-            R.drawable.work_page_selected, R.drawable.holiday_page_selected,
-            R.drawable.remind_page_selected, R.drawable.me_page_selected};
     private AlertDialog.Builder mDialog;
 
     @Override
@@ -78,47 +73,7 @@ public class ViewPagerActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewpager);
-        final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-        adapter = new MyPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(adapter);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                bottomTabs.setCurrentTab(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        mTitles = getResources().getStringArray(R.array.subTittles);
-
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
-        }
-
-        mDecorView = getWindow().getDecorView();
-        /** indicator圆角色块 */
-        bottomTabs = ViewFindUtils.find(mDecorView, R.id.tl_3);
-        bottomTabs.setTabData(mTabEntities);
-        bottomTabs.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelect(int position) {
-                pager.setCurrentItem(position);
-            }
-
-            @Override
-            public void onTabReselect(int position) {
-
-            }
-        });
-
+        initViews();
 
         Window window = getWindow();
 
@@ -155,6 +110,37 @@ public class ViewPagerActivity extends FragmentActivity {
             public void onError() {
             }
         });
+    }
+
+    private void initViews() {
+        mTitles = getResources().getStringArray(R.array.subTittles);
+        final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+
+        mTabLayout = (TabLayout) findViewById(R.id.tablayout);
+        setTabs(mTabLayout, this.getLayoutInflater(), mTitles, TAB_IMGS);
+
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
+    }
+
+
+    /**
+     * @description: 设置添加Tab
+     */
+    private void setTabs(TabLayout tabLayout, LayoutInflater inflater, String[] tabTitlees, int[] tabImgs) {
+        for (int i = 0; i < tabImgs.length; i++) {
+            TabLayout.Tab tab = tabLayout.newTab();
+            View view = inflater.inflate(R.layout.tab_custom, null);
+            tab.setCustomView(view);
+
+            TextView tvTitle = (TextView) view.findViewById(R.id.tv_tab);
+            tvTitle.setText(tabTitlees[i]);
+            ImageView imgTab = (ImageView) view.findViewById(R.id.img_tab);
+            imgTab.setImageResource(tabImgs[i]);
+            tabLayout.addTab(tab);
+        }
     }
 
     public void forceUpdate(final AppVersionResult updateInfo) {
@@ -195,28 +181,12 @@ public class ViewPagerActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int pos) {
-            switch (pos) {
-                case 0:
-                    return new FirstFragment();
-                case 1:
-                    return new SecondFragment();
-                case 2:
-                    return new ThirdFragment();
-                case 3:
-                    return new FourthFragment();
-                default:
-                    return new ThirdFragment();
-            }
+            return TAB_FRAGMENTS[pos];
         }
 
         @Override
         public int getCount() {
             return 4;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page" + position;
         }
     }
 }

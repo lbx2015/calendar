@@ -111,7 +111,7 @@ public class ReminderFragment extends Fragment {
                 if (checkHistoryButton.getVisibility() == View.VISIBLE) {
                     checkHistoryButton.setVisibility(View.GONE);
                 }
-//                a.bottomTabs.setVisibility(View.GONE);
+//                a.mTabLayout.setVisibility(View.GONE);
             }
 
             @Override
@@ -120,14 +120,14 @@ public class ReminderFragment extends Fragment {
 //                if (viewHolder == null || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
 //                checkHistoryButton.setVisibility(View.VISIBLE);
 //                }
-//                a.bottomTabs.setVisibility(View.VISIBLE);
+//                a.mTabLayout.setVisibility(View.VISIBLE);
             }
         };
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        final int marginBottom = a.bottomTabs.getMeasuredHeight();
-        params.setMargins(0, 0, 0, marginBottom);
-        root.setLayoutParams(params);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        final int marginBottom = a.mTabLayout.getMeasuredHeight();
+//        params.setMargins(0, 0, 0, marginBottom);
+//        root.setLayoutParams(params);
 
         checkHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override

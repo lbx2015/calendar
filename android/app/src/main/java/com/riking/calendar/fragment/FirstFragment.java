@@ -357,7 +357,7 @@ public class FirstFragment extends Fragment {
         //set the layout params
         FrameLayout scrollView = (FrameLayout) v.findViewById(R.id.nested_recyclerview);
 //        CoordinatorLayout.LayoutParams paramss = (CoordinatorLayout.LayoutParams) scrollView.getLayoutParams();
-//        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+//        final int marginBottom = mTabLayout.getMeasuredHeight();
 //        paramss.setMargins(0, 0, 0, marginBottom);
 //        scrollView.setLayoutParams(paramss);
         return v;

@@ -163,10 +163,10 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        final int marginBottom = a.bottomTabs.getMeasuredHeight();
-        params.setMargins(0, 0, 0, marginBottom);
-        root.setLayoutParams(params);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        final int marginBottom = a.mTabLayout.getMeasuredHeight();
+//        params.setMargins(0, 0, 0, marginBottom);
+//        root.setLayoutParams(params);
         return v;
     }
 

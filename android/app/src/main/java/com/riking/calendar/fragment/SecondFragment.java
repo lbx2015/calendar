@@ -342,7 +342,7 @@ public class SecondFragment extends Fragment {
         };
         recyclerView.setLayoutManager(new LinearLayoutManager(a));
 //        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-//        final int marginBottom = a.bottomTabs.getMeasuredHeight();
+//        final int marginBottom = mTabLayout.getMeasuredHeight();
 //        params.setMargins(0, 0, 0, marginBottom);
 //        recyclerView.setLayoutParams(params);
 //        List<Vocation> vocations = realm.where(Vocation.class).findAll();
