@@ -1,1 +1,1 @@
-include ':app', ":drawerLibrary", ":FlycoTabLayout_Lib", ":calendar",'library',':pickerview'
+include ':app', ":drawerLibrary", ":calendar",'library',':pickerview'

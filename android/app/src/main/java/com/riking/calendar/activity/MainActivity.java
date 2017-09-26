@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case MENU_TAB_LAYOUT: {
-                startActivity(new Intent(this, CommonTabActivity.class));
                 break;
             }
             case MENU_COORDINATE_LAYOUT: {
@@ -208,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case MENU_CUSTOM_BEHAVIOR:{
-                startActivity(new Intent(this,CustomBehaviorActivity.class));
             }
         }
         return super.onOptionsItemSelected(item);

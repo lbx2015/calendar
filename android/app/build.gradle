@@ -74,7 +74,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
 
     compile project(':drawerLibrary')
-    compile project(':FlycoTabLayout_Lib')
     compile project(path: ':calendar')
     compile project(':library')
     compile project(':pickerview')

@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flyco.tablayout.SlidingTabLayout;
 import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
@@ -61,7 +60,7 @@ public class AddRemindActivity extends AppCompatActivity {
         //set custom layout to adding divider
         for (int i = 0; i < topTabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = topTabLayout.getTabAt(i);
-            RelativeLayout relativeLayout = (RelativeLayout)getLayoutInflater().inflate(R.layout.third_fragment_tab_custom, topTabLayout, false);
+            RelativeLayout relativeLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.third_fragment_tab_custom, topTabLayout, false);
 
             TextView tabTextView = (TextView) relativeLayout.findViewById(R.id.tab_title);
             View divider = relativeLayout.findViewById(R.id.divider);
