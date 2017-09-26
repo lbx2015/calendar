@@ -21,6 +21,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.riking.calendar"
         minSdkVersion 21
         targetSdkVersion 26
