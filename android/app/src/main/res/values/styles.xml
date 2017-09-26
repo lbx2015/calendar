@@ -116,6 +116,7 @@
     </style>
     <style name="thirdFragmentTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@color/color_29a1f7</item>
+        <item name="tabBackground">@drawable/bg_tab_bottom_border_selecter</item>
         <item name="tabTextColor">@color/tab_tv_normal</item>
         <item name="tabSelectedTextColor">@color/tab_tv_selected</item>
         <item name="android:paddingTop">0dp</item>

@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/page_tab_height"
         android:background="@color/white"
-        app:tabBackground="@android:color/white"
+        app:tabBackground="@drawable/bg_tab_bottom_border_selecter"
         app:tabIndicatorColor="@color/color_29a1f7"
         app:tabIndicatorHeight="2dp"
         app:tabPaddingEnd="0dp"
