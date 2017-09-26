@@ -41,8 +41,17 @@
             android:textSize="@dimen/normal_font_size_18" />
 
     </FrameLayout>
-
-    <com.flyco.tablayout.SlidingTabLayout
+    <android.support.design.widget.TabLayout
+        android:id="@+id/top_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/page_tab_height"
+        style="@style/thirdFragmentTab"
+        app:tabIndicatorColor="@color/color_29a1f7"
+        app:tabIndicatorHeight="2dp"
+        app:tabPaddingStart="0dp"
+        app:tabPaddingEnd="0dp"
+        app:tabBackground="@android:color/white"></android.support.design.widget.TabLayout>
+   <!-- <com.flyco.tablayout.SlidingTabLayout
         android:id="@+id/top_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/page_tab_height"
@@ -57,7 +66,7 @@
         app:tl_textUnselectColor="@color/color_323232"
         app:tl_textsize="@dimen/normal_font_size_18"
         app:tl_underline_color="@color/divider_color_d9d9d9"
-        app:tl_underline_height="1dp" />
+        app:tl_underline_height="1dp" />-->
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"

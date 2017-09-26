@@ -2,15 +2,18 @@ package com.riking.calendar.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.flyco.tablayout.SlidingTabLayout;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
 
@@ -39,9 +42,25 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
         add.setOnClickListener(this);
 
         //adding view pager to the slidingTabLayout
-        SlidingTabLayout topTabLayout = (SlidingTabLayout) v.findViewById(R.id.top_tab_layout);
-        topTabLayout.setViewPager(mViewPager);
+        TabLayout topTabLayout = v.findViewById(R.id.top_tab_layout);
+        topTabLayout.setupWithViewPager(mViewPager);
+        //set custom layout to adding divider
+        for (int i = 0; i < topTabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = topTabLayout.getTabAt(i);
+            RelativeLayout relativeLayout = (RelativeLayout)
+                    getActivity().getLayoutInflater().inflate(R.layout.third_fragment_tab_custom, topTabLayout, false);
 
+            TextView tabTextView = (TextView) relativeLayout.findViewById(R.id.tab_title);
+            View divider = relativeLayout.findViewById(R.id.divider);
+            if (i == 0) {
+                divider.setVisibility(View.GONE);
+            }
+
+            //tab.getText() is from tagGetPageTitle
+            tabTextView.setText(tab.getText());
+            tab.setCustomView(relativeLayout);
+            tab.select();
+        }
         return v;
     }
 
@@ -90,6 +109,7 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public Fragment getItem(int position) {
+            Log.d("zzw","getItem: " + position);
             switch (position) {
                 case 0:
                     return new ReminderFragment();
@@ -101,6 +121,8 @@ public class ThirdFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+            Log.d("zzw","instantiateItem: " + position);
+
             return super.instantiateItem(container, position);
         }
 

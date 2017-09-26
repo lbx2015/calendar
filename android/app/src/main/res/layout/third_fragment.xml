@@ -31,22 +31,32 @@
                 android:src="@drawable/ic_add_black_24dp" />
         </FrameLayout>
 
-        <com.flyco.tablayout.SlidingTabLayout
+        <android.support.design.widget.TabLayout
             android:id="@+id/top_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/page_tab_height"
-            android:background="@android:color/white"
-            app:tl_divider_color="@color/divider_color_d9d9d9"
-            app:tl_divider_width="1.3dp"
-            app:tl_indicator_color="@color/color_29a1f7"
-            app:tl_indicator_height="2dp"
-            app:tl_indicator_width_equal_title="false"
-            app:tl_tab_space_equal="true"
-            app:tl_textSelectColor="@color/color_29a1f7"
-            app:tl_textUnselectColor="@color/color_323232"
-            app:tl_textsize="14sp"
-            app:tl_underline_color="@color/divider_color_d9d9d9"
-            app:tl_underline_height="0.3dp" />
+            style="@style/thirdFragmentTab"
+            app:tabIndicatorColor="@color/color_29a1f7"
+            app:tabIndicatorHeight="2dp"
+            app:tabPaddingStart="0dp"
+            app:tabPaddingEnd="0dp"
+            app:tabBackground="@android:color/white"></android.support.design.widget.TabLayout>
+        <!-- <com.flyco.tablayout.SlidingTabLayout
+             android:id="@+id/top_tab_layout"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/page_tab_height"
+             android:background="@android:color/white"
+             app:tl_divider_color="@color/divider_color_d9d9d9"
+             app:tl_divider_width="1.3dp"
+             app:tl_indicator_color="@color/color_29a1f7"
+             app:tl_indicator_height="2dp"
+             app:tl_indicator_width_equal_title="false"
+             app:tl_tab_space_equal="true"
+             app:tl_textSelectColor="@color/color_29a1f7"
+             app:tl_textUnselectColor="@color/color_323232"
+             app:tl_textsize="14sp"
+             app:tl_underline_color="@color/divider_color_d9d9d9"
+             app:tl_underline_height="0.3dp" />-->
     </android.support.design.widget.AppBarLayout>
 
     <com.riking.calendar.view.CustomViewPager xmlns:android="http://schemas.android.com/apk/res/android"
