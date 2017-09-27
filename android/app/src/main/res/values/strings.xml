@@ -1,4 +1,7 @@
 <resources>
+    <string name="illegal_date">日期不在许可范围内!</string>
+    <string name="range_date">日期范围不合法!</string>
+
     <string name="app_name">RikingCalendar</string>
     <string name="calendar">Calendar</string>
     <string name="add_schedule">Add schedule</string>

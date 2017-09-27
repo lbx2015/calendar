@@ -117,6 +117,7 @@ public class ViewPagerActivity extends FragmentActivity {
         final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
+        pager.setOffscreenPageLimit(3);
 
         mTabLayout = (TabLayout) findViewById(R.id.tablayout);
         setTabs(mTabLayout, this.getLayoutInflater(), mTitles, TAB_IMGS);

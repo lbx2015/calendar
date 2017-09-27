@@ -35,6 +35,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.ldf.calendar.Const;
+import com.necer.ncalendar.calendar.NCalendar;
+import com.necer.ncalendar.listener.OnCalendarChangedListener;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
@@ -56,11 +58,15 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
 
+import org.joda.time.DateTime;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -73,7 +79,7 @@ import io.realm.Sort;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements OnCalendarChangedListener {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
     public RealmResults<Reminder> reminders;
@@ -99,10 +105,10 @@ public class FirstFragment extends Fragment {
     ReportOnlineAdapter reportOnlineAdapter;
     View v;
     Date currentDay;
-    private GestureDetector gestureDetector = null;
-    private CalendarGridViewAdapter calV = null;
-    private ViewFlipper flipper = null;
-    private GridView gridView = null;
+//    private GestureDetector gestureDetector = null;
+//    private CalendarGridViewAdapter calV = null;
+//    private ViewFlipper flipper = null;
+//    private GridView gridView = null;
     //current year
     private int year_c = 0;
     /**
@@ -127,6 +133,8 @@ public class FirstFragment extends Fragment {
     private TextView currentMonth;
     private View add;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private NCalendar ncalendar;
 
     private void setListener() {
         View.OnClickListener c = new View.OnClickListener() {
@@ -169,69 +177,150 @@ public class FirstFragment extends Fragment {
     }
 
     public void enterCurrentMonth() {
-        if (calV.realCurrentDayPositionFlag > 0) {
-            if (calV.realCurrentDayPositionFlag != calV.currentFlag) {
-                calV.currentFlag = calV.realCurrentDayPositionFlag;
-                calV.notifyDataSetChanged();
-            }
-            //do nothing if already in current month.
-            return;
-        }
-        addGridView(); // 添加一个gridView
-        //current month
-        calV = new CalendarGridViewAdapter(this, a.getResources(), 0, 0, year_c, month_c, day_c);
-        gridView.setAdapter(calV);
-        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
-        flipper.addView(gridView, 1);
-        Log.d("zzw", jumpMonth + "jumpMonth + month_c" + (jumpMonth + month_c));
-        if (jumpMonth > 0) {
-            flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_in));
-            flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_out));
-            flipper.showPrevious();
-        } else if (jumpMonth < 0) {
-            flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
-            flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_out));
-            flipper.showNext();
-        }
-        //restore the jumpMonth and jumpYear to zero
-        jumpMonth = 0;
-        jumpYear = 0;
-        flipper.removeViewAt(0);
-        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
-                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
-                ViewGroup.LayoutParams params = flipper.getLayoutParams();
-                Logger.d("zzw", "flipper height: " + params.height);
-                //The days of current month need to using 6 row of grid view to showing the days
-                if (calV.getCount() > 35) {
-                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
-                }
-                //The days of current month need to using 5 rows of grid view too showing days
-                //by the way one row have 7 columns.
-                else {
-                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
-                }
-                Logger.d("zzw", "reset flipper height: " + params.height);
-                flipper.setLayoutParams(params);
-                flipper.invalidate();
-            }
-        });
+        ncalendar.toToday();
+//        if (calV.realCurrentDayPositionFlag > 0) {
+//            if (calV.realCurrentDayPositionFlag != calV.currentFlag) {
+//                calV.currentFlag = calV.realCurrentDayPositionFlag;
+//                calV.notifyDataSetChanged();
+//            }
+//            //do nothing if already in current month.
+//            return;
+//        }
+//        addGridView(); // 添加一个gridView
+//        //current month
+//        calV = new CalendarGridViewAdapter(this, a.getResources(), 0, 0, year_c, month_c, day_c);
+//        gridView.setAdapter(calV);
+//        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
+//        flipper.addView(gridView, 1);
+//        Log.d("zzw", jumpMonth + "jumpMonth + month_c" + (jumpMonth + month_c));
+//        if (jumpMonth > 0) {
+//            flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_in));
+//            flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_out));
+//            flipper.showPrevious();
+//        } else if (jumpMonth < 0) {
+//            flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
+//            flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_out));
+//            flipper.showNext();
+//        }
+//        //restore the jumpMonth and jumpYear to zero
+//        jumpMonth = 0;
+//        jumpYear = 0;
+//        flipper.removeViewAt(0);
+//        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+//                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+//                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+//                Logger.d("zzw", "flipper height: " + params.height);
+//                //The days of current month need to using 6 row of grid view to showing the days
+//                if (calV.getCount() > 35) {
+//                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+//                }
+//                //The days of current month need to using 5 rows of grid view too showing days
+//                //by the way one row have 7 columns.
+//                else {
+//                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+//                }
+//                Logger.d("zzw", "reset flipper height: " + params.height);
+//                flipper.setLayoutParams(params);
+//                flipper.invalidate();
+//            }
+//        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("zzw", this + " onCreateView");
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
         if (v != null) {
             return v;
         }
 
-        Logger.d("zzw", " realm file name: " + realm.getConfiguration().getRealmFileName());
         v = inflater.inflate(R.layout.first_fragment, container, false);
+        ncalendar = (NCalendar) v.findViewById(R.id.ncalendar);
+        ncalendar.setWorkFragment(this);
+        ncalendar.setOnCalendarChangedListener(this);
+        //set fragment
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                List<String> list = new ArrayList<>();
+//                list.add("2017-09-21");
+//                list.add("2017-10-21");
+//                list.add("2017-10-1");
+//                list.add("2017-10-15");
+//                list.add("2017-10-18");
+//                list.add("2017-10-26");
+//                list.add("2017-11-21");
+
+                //reset the values
+                notRepeatRemindDaysOfMonth.clear();
+                Log.d("zzw","set repeatWeekReminds");
+                repeatWeekReminds = "";
+                weeks.clear();
+                ealiestRemindHolidayDate = null;
+                ealiestRemindWorkDate = null;
+
+                if (realm.isClosed()) {
+                    realm = Realm.getDefaultInstance();
+                }
+                RealmResults<Reminder> reminders = realm.where(Reminder.class)
+                        .beginGroup()
+                        .beginsWith("day", yearMonth)//this month
+                        .equalTo("repeatFlag", 0)//not repeat reminders.
+                        .endGroup().findAllSorted("time", Sort.ASCENDING);
+                for (Reminder r : reminders) {
+                    if (r.reminderTime != null) {
+                        list.add(dateFormat.format(r.reminderTime));
+                        ncalendar.setPoint(list);
+                    }
+                }
+
+                //find the repeat week days
+                RealmResults<Reminder> weekRepeatReminders = realm.where(Reminder.class)
+                        .beginGroup()
+                        .equalTo("repeatFlag", 3)
+                        .endGroup().findAll();
+
+                for (Reminder r : weekRepeatReminders) {
+                    if (r.repeatWeek != null) {
+                        for (char ch : r.repeatWeek.toCharArray()) {
+                            String key = String.valueOf(ch);
+                            if (weeks.get(key) == null || r.reminderTime.before(weeks.get(key))) {
+                                Logger.d("zzw", "put week repeat remind: " + ch + " : " + r.reminderTime);
+                                weeks.put(key, r.reminderTime);
+                            }
+                        }
+                    }
+                }
+
+                for (String key : weeks.keySet()) {
+                    repeatWeekReminds = repeatWeekReminds + key;
+                }
+
+                //find work day reminds
+                RealmResults<Reminder> workDayReminds = realm.where(Reminder.class)
+                        .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)//work day
+                        .findAll();
+                for (Reminder r : workDayReminds) {
+                    //keep the workRemind reminderTimeCalendar as the earliest.
+                    if (ealiestRemindWorkDate == null || r.reminderTime.before(ealiestRemindWorkDate)) {
+                        ealiestRemindWorkDate = r.reminderTime;
+                    }
+                }
+
+                //find holiday reminds
+                RealmResults<Reminder> holidayReminds = realm.where(Reminder.class)
+                        .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)//holiday
+                        .findAll();
+                for (Reminder r : holidayReminds) {
+                    if (ealiestRemindHolidayDate == null || r.reminderTime.before(ealiestRemindHolidayDate)) {
+                        ealiestRemindHolidayDate = r.reminderTime;
+                    }
+                }
+
+
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         add = v.findViewById(R.id.add);
@@ -249,34 +338,34 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        gestureDetector = new GestureDetector(a, new FirstFragment.MyGestureListener());
-        flipper = (ViewFlipper) v.findViewById(R.id.flipper);
-        flipper.removeAllViews();
-        calV = new CalendarGridViewAdapter(this, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
-        addGridView();
-        gridView.setAdapter(calV);
-        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
-                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
-                ViewGroup.LayoutParams params = flipper.getLayoutParams();
-                Logger.d("zzw", "flipper height: " + params.height);
-                if (calV.getCount() > 35) {
-                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
-                } else {
-                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
-                }
-                Logger.d("zzw", "reset flipper height: " + params.height);
-                flipper.setLayoutParams(params);
-            }
-        });
+//        gestureDetector = new GestureDetector(a, new FirstFragment.MyGestureListener());
+//        flipper = (ViewFlipper) v.findViewById(R.id.flipper);
+//        flipper.removeAllViews();
+//        calV = new CalendarGridViewAdapter(this, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+//        addGridView();
+//        gridView.setAdapter(calV);
+//        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+//                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+//                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+//                Logger.d("zzw", "flipper height: " + params.height);
+//                if (calV.getCount() > 35) {
+//                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+//                } else {
+//                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+//                }
+//                Logger.d("zzw", "reset flipper height: " + params.height);
+//                flipper.setLayoutParams(params);
+//            }
+//        });
 
 //            flipper.invalidate();
-        Logger.d("zzw", "after reset layout params flipper height: " + flipper.getLayoutParams().height);
+//        Logger.d("zzw", "after reset layout params flipper height: " + flipper.getLayoutParams().height);
 
-        flipper.addView(gridView, 0);
+//        flipper.addView(gridView, 0);
         addTextToTopTextView(currentMonth);
 
         //insert  to realm
@@ -571,89 +660,89 @@ public class FirstFragment extends Fragment {
 
                 reminderAdapter.notifyDataSetChanged();
                 getRemindDaysOfMonth(yearMonth);
-                calV.notifyDataSetChanged();
+//                calV.notifyDataSetChanged();
             }
         });
     }
-
-    /**
-     * 移动到下一个月
-     *
-     * @param gvFlag
-     */
-    private void enterNextMonth(int gvFlag) {
-        addGridView(); // 添加一个gridView
-        jumpMonth++; // 下一个月
-        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
-        gridView.setAdapter(calV);
-        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
-        gvFlag++;
-
-        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
-                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
-                ViewGroup.LayoutParams params = flipper.getLayoutParams();
-                Logger.d("zzw", "flipper height: " + params.height);
-                if (calV.getCount() > 35) {
-                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
-                } else {
-                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
-                }
-                Logger.d("zzw", "reset flipper height: " + params.height);
-                flipper.setLayoutParams(params);
-            }
-        });
-
-        flipper.addView(gridView, gvFlag);
-        flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
-        flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_out));
-        flipper.showNext();
-        flipper.removeViewAt(0);
-    }
+//
+//    /**
+//     * 移动到下一个月
+//     *
+//     * @param gvFlag
+//     */
+//    private void enterNextMonth(int gvFlag) {
+//        addGridView(); // 添加一个gridView
+//        jumpMonth++; // 下一个月
+//        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+//        gridView.setAdapter(calV);
+//        addTextToTopTextView(currentMonth); // 移动到下一月后，将当月显示在头标题中
+//        gvFlag++;
+//
+//        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+//                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+//                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+//                Logger.d("zzw", "flipper height: " + params.height);
+//                if (calV.getCount() > 35) {
+//                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+//                } else {
+//                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+//                }
+//                Logger.d("zzw", "reset flipper height: " + params.height);
+//                flipper.setLayoutParams(params);
+//            }
+//        });
+//
+//        flipper.addView(gridView, gvFlag);
+//        flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_in));
+//        flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_left_out));
+//        flipper.showNext();
+//        flipper.removeViewAt(0);
+//    }
 
     /**
      * 移动到上一个月
      *
      * @param gvFlag
      */
-    private void enterPrevMonth(int gvFlag) {
-        addGridView(); // 添加一个gridView
-        jumpMonth--; // 上一个月
-        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
-        gridView.setAdapter(calV);
-        gvFlag++;
-        addTextToTopTextView(currentMonth);// 移动到上一月后，将当月显示在头标题中
-
-        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
-                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
-                ViewGroup.LayoutParams params = flipper.getLayoutParams();
-                Logger.d("zzw", "flipper height: " + params.height);
-                if (calV.getCount() > 35) {
-                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
-                } else {
-                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
-                }
-                Logger.d("zzw", "reset flipper height: " + params.height);
-                flipper.setLayoutParams(params);
-                flipper.invalidate();
-            }
-        });
-
-        //addView 方法中的index越大，View显示越上面。
-        flipper.addView(gridView, gvFlag);
-
-        flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_in));
-        flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_out));
-        flipper.showPrevious();
-        flipper.removeViewAt(0);
-    }
+//    private void enterPrevMonth(int gvFlag) {
+//        addGridView(); // 添加一个gridView
+//        jumpMonth--; // 上一个月
+//        calV = new CalendarGridViewAdapter(this, this.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+//        gridView.setAdapter(calV);
+//        gvFlag++;
+//        addTextToTopTextView(currentMonth);// 移动到上一月后，将当月显示在头标题中
+//
+//        gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                gridView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                View lastChild = gridView.getChildAt(gridView.getChildCount() - 1);
+//                Logger.d("zzw", "enterNextMonth calV.dayOfWeek " + calV.dayOfWeek + " calV.daysOfCurrentMonth: " + calV.daysOfCurrentMonth.size());
+//                ViewGroup.LayoutParams params = flipper.getLayoutParams();
+//                Logger.d("zzw", "flipper height: " + params.height);
+//                if (calV.getCount() > 35) {
+//                    params.height = lastChild.getMeasuredHeight() * 6 + gridView.getPaddingTop();
+//                } else {
+//                    params.height = lastChild.getMeasuredHeight() * 5 + gridView.getPaddingTop();
+//                }
+//                Logger.d("zzw", "reset flipper height: " + params.height);
+//                flipper.setLayoutParams(params);
+//                flipper.invalidate();
+//            }
+//        });
+//
+//        //addView 方法中的index越大，View显示越上面。
+//        flipper.addView(gridView, gvFlag);
+//
+//        flipper.setInAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_in));
+//        flipper.setOutAnimation(AnimationUtils.loadAnimation(a, R.anim.push_right_out));
+//        flipper.showPrevious();
+//        flipper.removeViewAt(0);
+//    }
 
     /**
      * 添加头部的年份 闰哪月等信息
@@ -664,10 +753,10 @@ public class FirstFragment extends Fragment {
         StringBuffer textDate = new StringBuffer();
         // draw = getResources().getDrawable(R.drawable.top_day);
         // view.setBackgroundDrawable(draw);
-        textDate.append(calV.getShowYear()).append("年").append(calV.getShowMonth()).append("月").append("\t");
+//        textDate.append(calV.getShowYear()).append("年").append(calV.getShowMonth()).append("月").append("\t");
         view.setText(textDate);
     }
-
+/*
     private void addGridView() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         // 取得屏幕的宽度和高度
@@ -734,14 +823,26 @@ public class FirstFragment extends Fragment {
             }
         });
         gridView.setLayoutParams(params);
+    }*/
+
+    @Override
+    public void onCalendarChanged(DateTime dateTime) {
+        StringBuffer textDate = new StringBuffer();
+        textDate.append(dateTime.getYear()).append("年").append(dateTime.getMonthOfYear()).append("月").append("\t");
+        currentMonth.setText(textDate);
+        updateReminderAdapter(dateTime.toCalendar(Locale.getDefault()));
+        updateReportAdapter(dateTime.toDate());
+//        tv_month.setText(dateTime.getMonthOfYear() + "月");
+//        tv_date.setText(dateTime.getYear() + "年" + dateTime.getMonthOfYear() + "月" + dateTime.getDayOfMonth() + "日");
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         realm.close();
     }
-
+/*
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -757,5 +858,5 @@ public class FirstFragment extends Fragment {
             }
             return false;
         }
-    }
+    }*/
 }
