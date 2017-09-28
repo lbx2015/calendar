@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorBackground">@color/color_background_f2f2f2</item>
     </style>
     <!-- Base application theme. -->
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -114,6 +115,7 @@
         <item name="android:textSize">9sp</item>
         <item name="android:paddingBottom">0dp</item>
     </style>
+
     <style name="thirdFragmentTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@color/color_29a1f7</item>
         <item name="tabBackground">@drawable/bg_tab_bottom_border_selecter</item>
