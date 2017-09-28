@@ -38,7 +38,7 @@ public abstract class CalendarPager extends ViewPager {
 
     protected boolean isPagerChanged = true;//是否是手动翻页
     protected DateTime lastSelectDateTime;//上次选中的datetime
-    protected boolean isDefaultSelect = false;//是否默认选中
+    protected boolean isDefaultSelect = true;//是否默认选中
 
     public CalendarPager(Context context) {
         this(context, null);

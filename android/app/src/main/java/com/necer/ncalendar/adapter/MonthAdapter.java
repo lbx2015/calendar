@@ -31,9 +31,9 @@ public class MonthAdapter extends CalendarAdapter {
             DateTime dateTime = this.mDateTime.plusMonths(i);
             nMonthView = new MonthView(mContext, dateTime, mOnClickMonthViewListener);
             mCalendarViews.put(position, nMonthView);
-            //riking adding fragment
-            nMonthView.fragment = fragment;
         }
+        //riking adding fragment
+        nMonthView.fragment = fragment;
         container.addView(nMonthView);
         return nMonthView;
     }

@@ -8,16 +8,12 @@ import android.graphics.Rect;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.ldf.calendar.Const;
 import com.necer.ncalendar.listener.OnClickMonthViewListener;
 import com.necer.ncalendar.utils.Attrs;
 import com.necer.ncalendar.utils.Utils;
-import com.riking.calendar.util.DateUtil;
 
 import org.joda.time.DateTime;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -33,31 +29,7 @@ public class MonthView extends CalendarView {
 
     private int mRowNum;
     private OnClickMonthViewListener mOnClickMonthViewListener;
-    private GestureDetector mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
 
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            for (int i = 0; i < mRectList.size(); i++) {
-                Rect rect = mRectList.get(i);
-                if (rect.contains((int) e.getX(), (int) e.getY())) {
-                    DateTime selectDateTime = dateTimes.get(i);
-                    if (Utils.isLastMonth(selectDateTime, mInitialDateTime)) {
-                        mOnClickMonthViewListener.onClickLastMonth(selectDateTime);
-                    } else if (Utils.isNextMonth(selectDateTime, mInitialDateTime)) {
-                        mOnClickMonthViewListener.onClickNextMonth(selectDateTime);
-                    } else {
-                        mOnClickMonthViewListener.onClickCurrentMonth(selectDateTime);
-                    }
-                    break;
-                }
-            }
-            return true;
-        }
-    });
 
     public MonthView(Context context, DateTime dateTime, OnClickMonthViewListener onClickMonthViewListener) {
         super(context);
@@ -80,7 +52,6 @@ public class MonthView extends CalendarView {
         mWidth = getWidth();
         //绘制高度
         mHeight = getDrawHeight();
-
         mRectList.clear();
         for (int i = 0; i < mRowNum; i++) {
             for (int j = 0; j < 7; j++) {
@@ -157,12 +128,12 @@ public class MonthView extends CalendarView {
         return (int) (getMonthHeight() - Utils.dp2px(getContext(), 10));
     }
 
+
     private void drawLunar(Canvas canvas, Rect rect, int baseline, int color, int i, int j) {
         if (isShowLunar) {
             mLunarPaint.setColor(color);
             String lunar = lunarList.get(i * 7 + j);
-            //矩形的高可能不同，但宽一定相同
-            canvas.drawText(lunar, rect.centerX(), baseline + rect.width() / 4, mLunarPaint);
+            canvas.drawText(lunar, rect.centerX(), baseline + getMonthHeight() / 20, mLunarPaint);
         }
     }
 
@@ -170,15 +141,41 @@ public class MonthView extends CalendarView {
         if (isShowHoliday) {
             if (holidayList.contains(dateTime.toLocalDate().toString())) {
                 mLunarPaint.setColor(mHolidayColor);
-                canvas.drawText("休", rect.centerX() + rect.width() / 4, baseline - rect.width() / 5, mLunarPaint);
+                canvas.drawText("休", rect.centerX() + rect.width() / 4, baseline - getMonthHeight() / 20, mLunarPaint);
 
             } else if (workdayList.contains(dateTime.toLocalDate().toString())) {
                 mLunarPaint.setColor(mWorkdayColor);
-                canvas.drawText("班", rect.centerX() + rect.width() / 4, baseline - rect.width() / 5, mLunarPaint);
+                canvas.drawText("班", rect.centerX() + rect.width() / 4, baseline - getMonthHeight() / 20, mLunarPaint);
             }
         }
     }
 
+
+    private GestureDetector mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            for (int i = 0; i < mRectList.size(); i++) {
+                Rect rect = mRectList.get(i);
+                if (rect.contains((int) e.getX(), (int) e.getY())) {
+                    DateTime selectDateTime = dateTimes.get(i);
+                    if (Utils.isLastMonth(selectDateTime, mInitialDateTime)) {
+                        mOnClickMonthViewListener.onClickLastMonth(selectDateTime);
+                    } else if (Utils.isNextMonth(selectDateTime, mInitialDateTime)) {
+                        mOnClickMonthViewListener.onClickNextMonth(selectDateTime);
+                    } else {
+                        mOnClickMonthViewListener.onClickCurrentMonth(selectDateTime);
+                    }
+                    break;
+                }
+            }
+            return true;
+        }
+    });
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

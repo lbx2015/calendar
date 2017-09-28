@@ -24,6 +24,7 @@ import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FirstFragment;
 import com.riking.calendar.fragment.FourthFragment;
+import com.riking.calendar.fragment.HomeFragment;
 import com.riking.calendar.fragment.SecondFragment;
 import com.riking.calendar.fragment.ThirdFragment;
 import com.riking.calendar.jiguang.Logger;
@@ -39,9 +40,9 @@ import com.riking.calendar.util.DownLoadApk;
 
 public class ViewPagerActivity extends FragmentActivity {
     //Tab 图片
-    private final int[] TAB_IMGS = new int[]{R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
+    private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector,R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new FirstFragment(), new SecondFragment(), new ThirdFragment(), new FourthFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new FirstFragment(), new SecondFragment(), new ThirdFragment(), new FourthFragment()};
     //Tab 数目
     private final int COUNT = 4;
     public TabLayout mTabLayout;

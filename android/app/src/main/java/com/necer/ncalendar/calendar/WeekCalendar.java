@@ -16,7 +16,6 @@ import com.necer.ncalendar.view.WeekView;
 import com.riking.calendar.R;
 
 import org.joda.time.DateTime;
-
 import java.util.List;
 
 /**
@@ -27,7 +26,6 @@ import java.util.List;
 public class WeekCalendar extends CalendarPager implements OnClickWeekViewListener {
 
     private OnWeekCalendarChangedListener onWeekCalendarChangedListener;
-    private int lastPosition = -1;
 
     public WeekCalendar(Context context) {
         super(context);
@@ -45,6 +43,9 @@ public class WeekCalendar extends CalendarPager implements OnClickWeekViewListen
 
         return new WeekAdapter(getContext(), mPageSize, mCurrPage, mInitialDateTime, this);
     }
+
+
+    private int lastPosition = -1;
 
     @Override
     protected void initCurrentCalendarView(int position) {

@@ -24,6 +24,7 @@ import java.util.List;
 
 public class WeekView extends CalendarView {
 
+
     private OnClickWeekViewListener mOnClickWeekViewListener;
     private List<String> lunarList;
     private List<String> localDateList;
@@ -86,7 +87,7 @@ public class WeekView extends CalendarView {
         if (isShowLunar) {
             mLunarPaint.setColor(mLunarTextColor);
             String lunar = lunarList.get(i);
-            canvas.drawText(lunar, rect.centerX(), baseline + rect.width() / 4, mLunarPaint);
+            canvas.drawText(lunar, rect.centerX(), baseline + getHeight() / 4, mLunarPaint);
         }
     }
 
@@ -95,22 +96,14 @@ public class WeekView extends CalendarView {
         if (isShowHoliday) {
             if (holidayList.contains(dateTime.toLocalDate().toString())) {
                 mLunarPaint.setColor(mHolidayColor);
-                canvas.drawText("休", rect.centerX() + rect.width() / 4, baseline - rect.width() / 5, mLunarPaint);
+                canvas.drawText("休", rect.centerX() + rect.width() / 4, baseline - getHeight() / 4, mLunarPaint);
 
             } else if (workdayList.contains(dateTime.toLocalDate().toString())) {
                 mLunarPaint.setColor(mWorkdayColor);
-                canvas.drawText("班", rect.centerX() + rect.width() / 4, baseline - rect.width() / 5, mLunarPaint);
+                canvas.drawText("班", rect.centerX() + rect.width() / 4, baseline - getHeight() / 4, mLunarPaint);
             }
         }
     }
-
-//    public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
-//        if (pointList != null && pointList.contains(dateTime.toLocalDate().toString())) {
-//            mLunarPaint.setColor(mPointColor);
-//            canvas.drawCircle(rect.centerX(), baseline - rect.width() / 3, mPointSize, mLunarPaint);
-//        }
-//    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
