@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.riking.calendar">
 
     <uses-sdk
@@ -47,8 +46,8 @@
 
     <uses-permission android:name="com.riking.calendar.permission.MIPUSH_RECEIVE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    
-    
+
+
     <!-- Required  一些系统要求的权限，如访问网络等-->
     <!--连接网络权限，用于执行云端语音能力 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -120,6 +119,7 @@
             android:theme="@style/AppTheme.FullScreen"></activity>
         <activity
             android:name=".activity.ViewPagerActivity"
+            android:configChanges="orientation|screenSize|locale"
             android:launchMode="singleTop" />
         <activity
             android:name=".activity.AddRemindActivity"
@@ -294,22 +294,26 @@
             android:value="f7ac0692d540d2a7e15613bb" /> <!--  </>值来自开发者平台取得的AppKey-->
 
         <!-- 设置环信应用的AppKey -->
-        <meta-data android:name="EASEMOB_APPKEY"  android:value="1196170921115949#rikingcalendar" />
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="1196170921115949#rikingcalendar" />
         <!-- 声明SDK所需的service SDK核心功能-->
-        <service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>
-        <service android:name="com.hyphenate.chat.EMJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <service
+            android:name="com.hyphenate.chat.EMJobService"
             android:exported="true"
-            />
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <!-- 声明SDK所需的receiver -->
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-                <data android:scheme="package"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
             </intent-filter>
             <!-- 可选filter -->
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
