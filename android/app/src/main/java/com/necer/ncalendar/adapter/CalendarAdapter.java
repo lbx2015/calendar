@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 
 public abstract class CalendarAdapter extends PagerAdapter {
 
+    //riking adding the fragment
     public FirstFragment fragment;
     protected Context mContext;
     protected int mCount;//总页数

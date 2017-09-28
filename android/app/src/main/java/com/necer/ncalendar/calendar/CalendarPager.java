@@ -5,11 +5,11 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 
 import com.necer.ncalendar.adapter.CalendarAdapter;
 import com.necer.ncalendar.utils.Attrs;
+import com.necer.ncalendar.utils.MyLog;
 import com.necer.ncalendar.utils.Utils;
 import com.necer.ncalendar.view.CalendarView;
 import com.riking.calendar.R;
@@ -32,10 +32,13 @@ public abstract class CalendarPager extends ViewPager {
     protected DateTime endDateTime;
     protected int mPageSize;
     protected int mCurrPage;
-    protected DateTime setDateTime; //setdatetime的DateTime
     protected DateTime mInitialDateTime;//日历初始化datetime，即今天
     protected DateTime mSelectDateTime;//当前页面选中的datetime
     protected List<String> pointList;//圆点
+
+    protected boolean isPagerChanged = true;//是否是手动翻页
+    protected DateTime lastSelectDateTime;//上次选中的datetime
+    protected boolean isDefaultSelect = false;//是否默认选中
 
     public CalendarPager(Context context) {
         this(context, null);
@@ -127,12 +130,23 @@ public abstract class CalendarPager extends ViewPager {
 
     protected abstract void setDateTime(DateTime dateTime);
 
-    protected void toNextMonth() {
-        setDateTime(mSelectDateTime.plusMonths(1));
+    public void toToday() {
+        setDateTime(new DateTime(new DateTime().toLocalDate().toString()));
     }
 
-    protected void toLastMonth() {
-        setDateTime(mSelectDateTime.plusMonths(-1));
+
+    /**
+     * 下一页，月日历即是下一月，周日历即是下一周
+     */
+    public void toNextPager() {
+        setCurrentItem(getCurrentItem() + 1, true);
+    }
+
+    /**
+     * 上一页
+     */
+    public void toLastPager() {
+        setCurrentItem(getCurrentItem() - 1, true);
     }
 
     //设置日期
@@ -156,14 +170,18 @@ public abstract class CalendarPager extends ViewPager {
         calendarView.setPointList(formatList);
     }
 
+    public void setDefaultSelect(boolean defaultSelect) {
+        isDefaultSelect = defaultSelect;
+    }
+
+    //riking
     public void setWorkFragment(FirstFragment fragment) {
         calendarAdapter.fragment = fragment;
         CalendarView calendarView = calendarAdapter.getCalendarViews().get(getCurrentItem());
         if (calendarView == null) {
-            Log.d("zzw", "set workFragment fail");
+            MyLog.d("set workFragment fail");
             return;
         }
-        Log.d("zzw", "set workFragment");
         calendarView.fragment = fragment;
     }
 }

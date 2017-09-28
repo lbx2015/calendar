@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
 import com.necer.ncalendar.listener.OnCalendarChangedListener;
 import com.necer.ncalendar.listener.OnMonthCalendarChangedListener;
 import com.necer.ncalendar.listener.OnWeekCalendarChangedListener;
@@ -22,7 +21,6 @@ import com.necer.ncalendar.view.MonthView;
 import com.riking.calendar.fragment.FirstFragment;
 
 import org.joda.time.DateTime;
-
 import java.util.List;
 
 /**
@@ -32,13 +30,13 @@ import java.util.List;
 
 public class NCalendar extends FrameLayout implements NestedScrollingParent, ValueAnimator.AnimatorUpdateListener, OnWeekCalendarChangedListener, OnMonthCalendarChangedListener {
 
-    public static final int MONTH = 100;
-    public static final int WEEK = 200;
-    private static int STATE = 100;//默认月
     private WeekCalendar weekCalendar;
     private MonthCalendar monthCalendar;
     private View childView;//NCalendar内部包含的直接子view，直接子view并不一定是NestScrillChild
     private View targetView;//嵌套滑动的目标view，即RecyclerView等
+    public static final int MONTH = 100;
+    public static final int WEEK = 200;
+    private static int STATE = 100;//默认月
     private int weekHeigh;//周日历的高度
     private int monthHeigh;//月日历的高度,是日历整个的高度，并非是月日历绘制区域的高度
 
@@ -54,11 +52,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
     private Rect weekRect;//周日历大小的矩形 ，用于判断点击事件是否在日历的范围内
 
     private OnCalendarChangedListener onCalendarChangedListener;
-    private int dowmY;
-    private int downX;
-    private int lastY;//上次的y
-    private int verticalY = 50;//竖直方向上滑动的临界值，大于这个值认为是竖直滑动
-    private boolean isFirstScroll = true; //第一次手势滑动，因为第一次滑动的偏移量大于verticalY，会出现猛的一划，这里只对第一次滑动做处理
+
 
     public NCalendar(Context context) {
         this(context, null);
@@ -82,8 +76,8 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         STATE = Attrs.defaultCalendar;
 
         weekHeigh = monthHeigh / 5;
-        monthCalendar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, monthHeigh));
-        weekCalendar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, weekHeigh));
+        monthCalendar.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, monthHeigh));
+        weekCalendar.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, weekHeigh));
 
         addView(monthCalendar);
         addView(weekCalendar);
@@ -135,6 +129,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
             }
         });
     }
+
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
@@ -266,12 +261,14 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         return 0;
     }
 
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         ViewGroup.LayoutParams layoutParams = childView.getLayoutParams();
         layoutParams.height = getMeasuredHeight() - weekHeigh;
     }
+
 
     @Override
     protected void onFinishInflate() {
@@ -287,6 +284,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
             throw new RuntimeException("NCalendar中的子类中必须要有NestedScrollingChild的实现类！");
         }
     }
+
 
     /**
      * 得到NestedScrollingChild的实现类
@@ -309,6 +307,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         return null;
     }
 
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
@@ -327,6 +326,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         weekCalendar.layout(0, 0, r, weekHeigh);
 
     }
+
 
     //月日历需要滑动的距离，
     private int getMonthCalendarOffset() {
@@ -355,6 +355,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
     public void setOnCalendarChangedListener(OnCalendarChangedListener onCalendarChangedListener) {
         this.onCalendarChangedListener = onCalendarChangedListener;
     }
+
 
     /**
      * 防止滑动过快越界
@@ -410,6 +411,13 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
             }
         }
     }
+
+
+    private int dowmY;
+    private int downX;
+    private int lastY;//上次的y
+    private int verticalY = 50;//竖直方向上滑动的临界值，大于这个值认为是竖直滑动
+    private boolean isFirstScroll = true; //第一次手势滑动，因为第一次滑动的偏移量大于verticalY，会出现猛的一划，这里只对第一次滑动做处理
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -483,10 +491,14 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
     }
 
 
+
+
+
+
     /**
      * 跳转制定日期
      *
-     * @param formatDate yyyy-MM-dd
+     * @param formatDate  yyyy-MM-dd
      */
     public void setDate(String formatDate) {
         DateTime dateTime = new DateTime(formatDate);
@@ -530,33 +542,33 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         }
     }
 
-    public void toNextMonth() {
-        if (STATE == MONTH) {
-            monthCalendar.toNextMonth();
-        } else {
-            weekCalendar.toNextMonth();
-        }
-    }
-
-    public void toLastMonth() {
-        if (STATE == MONTH) {
-            monthCalendar.toLastMonth();
-        } else {
-            weekCalendar.toLastMonth();
-        }
-    }
-
-
     /**
      * 设置指示圆点
-     *
-     * @param pointList fragment;//去做周重复，节假日工作重复提醒的小点显示用
+     * @param pointList
      */
     public void setPoint(List<String> pointList) {
         monthCalendar.setPointList(pointList);
         weekCalendar.setPointList(pointList);
     }
 
+    public void toNextPager() {
+        if (STATE == MONTH) {
+            monthCalendar.toNextPager();
+        } else {
+            weekCalendar.toNextPager();
+        }
+
+    }
+
+    public void toLastPager() {
+        if (STATE == MONTH) {
+            monthCalendar.toLastPager();
+        } else {
+            weekCalendar.toLastPager();
+        }
+    }
+
+    //riking adding the method
     public void setWorkFragment(FirstFragment fragment) {
         monthCalendar.setWorkFragment(fragment);
         weekCalendar.setWorkFragment(fragment);
