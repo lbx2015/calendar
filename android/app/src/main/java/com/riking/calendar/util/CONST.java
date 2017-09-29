@@ -14,4 +14,12 @@ public class CONST {
     public static final byte DELETE = 1;
     public static final byte ADD = 2;
     public static final byte UPDATE = 3;
+
+    //滚动事件
+    public enum ScrollDirection {
+        UP,
+        DOWN,
+        SAME
+    }
+
 }

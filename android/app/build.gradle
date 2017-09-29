@@ -89,4 +89,9 @@ dependencies {
     //Optional compile for GCM (Google Cloud Messaging).
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
     compile 'com.hyphenate:hyphenate-sdk:3.3.0'
+
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    compile files('libs/nineoldandroids-2.4.0.jar')
 }
