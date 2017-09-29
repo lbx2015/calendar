@@ -24,7 +24,6 @@ import com.riking.calendar.view.PullToLoadView;
 public class TopicFragment extends Fragment {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
-    RecyclerView recyclerView;
     HomeAdapter mAdapter;
     private PullToLoadView mPullToLoadView;
     private boolean isLoading = false;
