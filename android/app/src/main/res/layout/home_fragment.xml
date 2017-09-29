@@ -6,54 +6,60 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginBottom="9dp"
-            android:layout_marginLeft="9dp"
-            android:layout_marginRight="7dp"
-            android:background="@drawable/rounded_rectangle"
-            android:orientation="horizontal"
-            android:paddingBottom="9dp"
-            android:paddingTop="9dp">
-
-            <ImageView
-                android:id="@+id/voice_search_button"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="9dp"
-                android:layout_marginRight="9dp"
-                android:src="@drawable/grey_search" />
-
-            <TextView
-                android:id="@+id/search_edit_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="香蕉和枣一起吃，亲身.."
-                android:maxLines="1"
-                android:singleLine="true" />
-        </LinearLayout>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/top_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabIndicatorHeight="2dp"
-            app:tabPaddingEnd="0dp"
-            app:tabPaddingStart="0dp"
-            app:tabSelectedTextColor="@android:color/white"
-            app:tabTextColor="#66ffffff"></android.support.design.widget.TabLayout>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="9dp"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/rounded_rectangle"
+                android:orientation="horizontal"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp">
+
+                <ImageView
+                    android:id="@+id/voice_search_button"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:src="@drawable/grey_search" />
+
+                <TextView
+                    android:id="@+id/search_edit_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="香蕉和枣一起吃，亲身.."
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/top_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                app:tabIndicatorColor="@android:color/white"
+                app:tabIndicatorHeight="2dp"
+                app:tabPaddingEnd="0dp"
+                app:tabPaddingStart="0dp"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextColor="#66ffffff"></android.support.design.widget.TabLayout>
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"

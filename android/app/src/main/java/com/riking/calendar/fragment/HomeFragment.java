@@ -76,11 +76,6 @@ public class HomeFragment extends Fragment {
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(container);//删除页卡
-        }
-
-        @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:

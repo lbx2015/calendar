@@ -1,44 +1,50 @@
 package com.riking.calendar.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.ldf.calendar.Const;
-import com.ldf.calendar.Utils;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.RemindHistoryActivity;
-import com.riking.calendar.activity.ViewPagerActivity;
-import com.riking.calendar.adapter.ReminderAdapter;
-import com.riking.calendar.realm.model.Reminder;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
-import com.riking.calendar.view.CustomLinearLayout;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
-import io.realm.Sort;
+import com.riking.calendar.adapter.NewsAdapter;
 
 /**
  * Created by zw.zhang on 2017/7/17.
  */
 
 public class FinanceNewsFragment extends Fragment {
+
+    protected SwipeRefreshLayout swipeRefreshLayout;
+    RecyclerView recyclerView;
+    View v;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (v != null) return v;
+        v = inflater.inflate(R.layout.finances_news, container, false);
+
+        //set recycler view
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new NewsAdapter());
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
+        return v;
+    }
 }
