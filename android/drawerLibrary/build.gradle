@@ -7,7 +7,7 @@ def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.1'
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 21

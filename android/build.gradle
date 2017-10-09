@@ -11,6 +11,7 @@ buildscript {
         maven {
             url "https://maven.google.com"
         }
+        google()
     }
 
     /** The dependencies block configures the dependencies Gradle needs to use
@@ -37,6 +38,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
