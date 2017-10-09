@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 
 /**
@@ -38,7 +40,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
                 "CardView_contentPaddingTop 内容的上padding\n" +
                 "CardView_contentPaddingRight 内容的右padding\n" +
                 "CardView_contentPaddingBottom 内容的底padding  l");
-        holder.personPhoto.setImageResource(R.drawable.default_user_icon);
+//        holder.personPhoto.setImageResource(R.drawable.default_user_icon);
+        RequestOptions options = new RequestOptions();
+        Glide.with(holder.personPhoto.getContext()).load(R.drawable.default_user_icon)
+                .apply(options.centerCrop())
+                .into(holder.personPhoto);
 //        holder.cv.setBackgroundColor(Color.WHITE);
     }
 
