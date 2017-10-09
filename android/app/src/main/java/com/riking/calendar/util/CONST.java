@@ -21,5 +21,38 @@ public class CONST {
         DOWN,
         SAME
     }
+    public final static int TOTAL_COL = 7;
+    public final static int TOTAL_ROW = 6;
+    public final static int CURRENT_PAGER_INDEX = 1000;
+    public final static String BASE_URL = "http://172.16.64.96:8281/";
+    public final static String PREFERENCE_FILE_NAME = "MyPref";
+    // All Shared Preferences Keys
+    public static final String IS_LOGIN = "IsLoggedIn";
+    public static final String NEED_WELCOME_ACTIVITY = "NEED_WELCOME_ACTIVITY";
+    public static final String WHOLE_DAY_EVENT_HOUR = "WHOLE_DAY_EVENT_HOUR";
+    public static final String WHOLE_DAY_EVENT_MINUTE = "WHOLE_DAY_EVENT_MINUTE";
+    public static final String USER_IMAGE_URL = "USER_IMAGE_URL";
+    public static final String USER_ID = "UserId";
+    public static final String PHONE_NUMBER = "PhoneNumber";
+    public static final String PHONE_SEQ_NUMBER = "phoneSeqNum";
+    public static final String USER_NAME = "phoneSeqNum";
+    public static final String USER_COMMENTS = "USER_COMMENTS";
+    public static final String USER_EMAIL = "USER_EMAIL";
+    public static final String USER_PASSWORD = "USER_PASSWORD";
+    public static final String USER_DEPT = "USER_DEPT";
+    public static final String USER_ADDRESS = "USER_ADDRESS";
+    public static final String USER_BIRTHDAY = "USER_BIRTHDAY";
+    public static final String USER_SEX = "user_sex";
 
+    //image path external storage
+    public static final String IMAGE_PATH = "/rikingImage";
+
+    public static final String REMINDER_TITLE = "Reminder title";
+
+    //Date formats
+    public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
+    public static final String yyyyMMdd = "yyyyMMdd";
+    public static final String birthDayFormat = "yyyy-MM-dd";
+
+    public static final String WEB_URL = "WEB_URL";
 }

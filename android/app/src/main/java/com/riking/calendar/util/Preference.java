@@ -3,7 +3,7 @@ package com.riking.calendar.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.app.MyApplication;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 
 public class Preference {
-    public static SharedPreferences pref = MyApplication.APP.getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+    public static SharedPreferences pref = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
 
     public static <T> void put(String key, T val) {
         SharedPreferences.Editor editor = pref.edit();

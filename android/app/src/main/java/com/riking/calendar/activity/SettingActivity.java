@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
@@ -48,21 +48,21 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferences = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        preferences = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_setting);
         cacheSizeTextview = (TextView) findViewById(R.id.cache_size);
         bindedPhone = (TextView) findViewById(R.id.binded);
         //set the image cache file size
-        long imageSize = FileUtil.getFileSize(new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH));
+        long imageSize = FileUtil.getFileSize(new File(Environment.getExternalStorageDirectory(), CONST.IMAGE_PATH));
         if (imageSize > 0) {
             cacheSizeTextview.setText(FileUtil.formatFileSize(imageSize));
         } else {
             cacheSizeTextview.setText(getString(R.string.no_need_to_clear));
         }
 
-        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             findViewById(R.id.login_out_card_view).setVisibility(View.VISIBLE);
-            bindedPhone.setText(Preference.pref.getString(Const.PHONE_NUMBER, ""));
+            bindedPhone.setText(Preference.pref.getString(CONST.PHONE_NUMBER, ""));
         } else {
             bindedPhone.setText(getString(R.string.not_binded));
         }
@@ -74,8 +74,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.bind_phone_relative_layout).setOnClickListener(this);
 
         wholeDayEventTime = (TextView) findViewById(R.id.event_time);
-        if (preferences.getString(Const.WHOLE_DAY_EVENT_MINUTE, null) != null) {
-            wholeDayEventTime.setText(preferences.getString(Const.WHOLE_DAY_EVENT_HOUR, "") + ":" + preferences.getString(Const.WHOLE_DAY_EVENT_MINUTE, ""));
+        if (preferences.getString(CONST.WHOLE_DAY_EVENT_MINUTE, null) != null) {
+            wholeDayEventTime.setText(preferences.getString(CONST.WHOLE_DAY_EVENT_HOUR, "") + ":" + preferences.getString(CONST.WHOLE_DAY_EVENT_MINUTE, ""));
         }
 
         pickerDialog = new TimeClockPickerDialog(this);
@@ -122,14 +122,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
                 pickerDialog.dismiss();
                 AppUser user = new AppUser();
-                user.id = preferences.getString(Const.USER_ID, null);
+                user.id = preferences.getString(CONST.USER_ID, null);
                 user.allDayReminderTime = hour + minute;
                 apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(Const.WHOLE_DAY_EVENT_HOUR, hour);
-                        editor.putString(Const.WHOLE_DAY_EVENT_MINUTE, minute);
+                        editor.putString(CONST.WHOLE_DAY_EVENT_HOUR, hour);
+                        editor.putString(CONST.WHOLE_DAY_EVENT_MINUTE, minute);
                         wholeDayEventTime.setText(hour + ":" + minute);
                         editor.commit();
                     }
@@ -146,7 +146,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            File imageDirectory = new File(Environment.getExternalStorageDirectory(), Const.IMAGE_PATH);
+                            File imageDirectory = new File(Environment.getExternalStorageDirectory(), CONST.IMAGE_PATH);
                             for (File f : imageDirectory.listFiles()) {
                                 f.delete();
                             }
@@ -176,7 +176,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.bind_phone_relative_layout: {
-                String phoneNumber = preferences.getString(Const.PHONE_NUMBER, "");
+                String phoneNumber = preferences.getString(CONST.PHONE_NUMBER, "");
                 if (!phoneNumber.equals("")) {
                     // 1. Instantiate an AlertDialog.Builder with its constructor
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);

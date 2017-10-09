@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
-import com.ldf.calendar.Const;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.NetStateReceiver;
@@ -85,7 +84,7 @@ public class MyApplication extends Application {
         });
 
         APP = getApplicationContext();
-        preferences = MyApplication.APP.getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+        preferences = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
 
@@ -94,9 +93,9 @@ public class MyApplication extends Application {
         RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded();
 
-        if (preferences.getBoolean(Const.IS_LOGIN, false)) {
-            Logger.d("zzw", "set user id : " + preferences.getString(Const.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
-            builder.name(preferences.getString(Const.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
+        if (preferences.getBoolean(CONST.IS_LOGIN, false)) {
+            Logger.d("zzw", "set user id : " + preferences.getString(CONST.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
+            builder.name(preferences.getString(CONST.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
         } else {
             builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);
         }

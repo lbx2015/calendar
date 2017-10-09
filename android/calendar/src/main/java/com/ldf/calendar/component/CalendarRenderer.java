@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.ldf.calendar.Const;
+
 import com.ldf.calendar.Utils;
 import com.ldf.calendar.interf.IDayRenderer;
 import com.ldf.calendar.interf.OnSelectDateListener;
@@ -18,7 +18,7 @@ import com.ldf.calendar.view.Week;
  */
 
 public class CalendarRenderer {
-    private Week weeks[] = new Week[Const.TOTAL_ROW];	// 行数组，每个元素代表一行
+    private Week weeks[] = new Week[CONST.TOTAL_ROW];	// 行数组，每个元素代表一行
     private Calendar calendar;
     private CalendarAttr attr;
     private IDayRenderer dayRenderer;
@@ -35,9 +35,9 @@ public class CalendarRenderer {
     }
 
     public void draw(Canvas canvas) {
-        for (int row = 0; row < Const.TOTAL_ROW; row++) {
+        for (int row = 0; row < CONST.TOTAL_ROW; row++) {
 			if (weeks[row] != null) {
-                for (int col = 0; col < Const.TOTAL_COL; col ++) {
+                for (int col = 0; col < CONST.TOTAL_COL; col ++) {
                     if (weeks[row].days[col] != null) {
                         dayRenderer.drawDay(canvas , weeks[row].days[col]);
                     }
@@ -47,7 +47,7 @@ public class CalendarRenderer {
     }
 
     public void onClickDate(int col, int row) {
-        if (col >= Const.TOTAL_COL || row >= Const.TOTAL_ROW)
+        if (col >= CONST.TOTAL_COL || row >= CONST.TOTAL_ROW)
             return;
         if (weeks[row] != null) {
             if(attr.getCalendarType() == CalendarAttr.CalendayType.MONTH) {
@@ -86,7 +86,7 @@ public class CalendarRenderer {
             currentWeekLastDay = Utils.getSunday(seedDate);
         }
         int day = currentWeekLastDay.day;
-        for (int i = Const.TOTAL_COL - 1; i >= 0 ; i --) {
+        for (int i = CONST.TOTAL_COL - 1; i >= 0 ; i --) {
             CalendarDate date = currentWeekLastDay.modifyDay(day);
             if(weeks[rowIndex] == null) {
                 weeks[rowIndex] = new Week(rowIndex);
@@ -116,14 +116,14 @@ public class CalendarRenderer {
         int firstDayPosition = Utils.getFirstDayWeekPosition(seedDate.year, seedDate.month , CalendarViewAdapter.weekArrayType);
 
         int day = 0;
-        for (int row = 0; row < Const.TOTAL_ROW; row++) {
+        for (int row = 0; row < CONST.TOTAL_ROW; row++) {
             day = fillWeek(lastMonthDays, currentMonthDays, firstDayPosition, day, row);
         }
     }
 
     private int fillWeek(int lastMonthDays, int currentMonthDays, int firstDayWeek, int day, int row) {
-        for (int col = 0; col < Const.TOTAL_COL; col++) {
-            int position = col + row * Const.TOTAL_COL;	// 单元格位置
+        for (int col = 0; col < CONST.TOTAL_COL; col++) {
+            int position = col + row * CONST.TOTAL_COL;	// 单元格位置
             if (position >= firstDayWeek && position < firstDayWeek + currentMonthDays) {	// 本月的
                 day ++;
                 fillCurrentMonthDate(day, row, col);
@@ -215,9 +215,9 @@ public class CalendarRenderer {
     }
 
     public void cancelSelectState(){
-        for (int i = 0; i < Const.TOTAL_ROW; i++) {
+        for (int i = 0; i < CONST.TOTAL_ROW; i++) {
             if (weeks[i] != null){
-                for (int j = 0; j < Const.TOTAL_COL; j++){
+                for (int j = 0; j < CONST.TOTAL_COL; j++){
                     if(weeks[i].days[j].getState() == State.SELECT){
                         weeks[i].days[j].setState(State.CURRENT_MONTH);
                         resetSelectedRowIndex();

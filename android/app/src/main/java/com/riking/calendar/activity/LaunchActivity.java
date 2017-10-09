@@ -11,13 +11,14 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.AppInnerDownLoder;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DownLoadApk;
 import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.Preference;
@@ -41,7 +42,7 @@ public class LaunchActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (Preference.pref.getBoolean(Const.NEED_WELCOME_ACTIVITY, true)) {
+                if (Preference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
                     Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
                     startActivity(i);
                     finish();
@@ -55,7 +56,7 @@ public class LaunchActivity extends AppCompatActivity {
         }, 2000);
 
         //if the user is not login
-        if (!Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+        if (!Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             APIClient.getAllReports();
         } else {
             //get reminders and tasks of user from server

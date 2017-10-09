@@ -15,10 +15,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.CONST;
 
 /**
  * Created by zw.zhang on 2017/7/10.
@@ -51,7 +52,7 @@ public class ReminderService extends Service {
     public void onStart(Intent intent, int startId) {
         // TODO Auto-generated method stub
         super.onStart(intent, startId);
-        reminderTitle = intent.getExtras().getString(Const.REMINDER_TITLE);
+        reminderTitle = intent.getExtras().getString(CONST.REMINDER_TITLE);
         Toast.makeText(this, reminderTitle + " ServiceClass.onStart()", Toast.LENGTH_LONG).show();
         Log.d("zzw", reminderTitle + "Service got started");
     }

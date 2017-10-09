@@ -1,6 +1,6 @@
 package com.riking.calendar.util;
 
-import com.ldf.calendar.Const;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ public class DateUtil {
      * @return
      */
     public static boolean before(Date date1, Date date2) {
-        SimpleDateFormat s = new SimpleDateFormat(Const.yyyyMMdd);
+        SimpleDateFormat s = new SimpleDateFormat(CONST.yyyyMMdd);
         return s.format(date1).compareTo(s.format(date2)) <= 0;
     }
 

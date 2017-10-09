@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
@@ -89,7 +88,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 i.putExtra("is_remind", r.isOpen);
                 if (r.isOpen == 1) {
                     try {
-                        i.putExtra("remind_time", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(Const.yyyyMMddHHmm).parse(r.strDate)));
+                        i.putExtra("remind_time", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(CONST.yyyyMMddHHmm).parse(r.strDate)));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -152,7 +151,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                                         if (completed) {
                                             t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
                                             t.isComplete = 1;
-                                            t.completeDate = new SimpleDateFormat(Const.yyyyMMddHHmm).format(new Date());
+                                            t.completeDate = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(new Date());
                                         }
                                     }
                                 });

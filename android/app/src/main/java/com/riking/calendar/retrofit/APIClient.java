@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
@@ -258,10 +258,10 @@ public class APIClient {
 
     public static void addAlarm4Task(Task task) {
         if (task.isOpen == 1) {
-            SimpleDateFormat sdf = new SimpleDateFormat(Const.yyyyMMddHHmm);
+            SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
             AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(MyApplication.APP, ReminderService.class);
-            intent.putExtra(Const.REMINDER_TITLE, task.title);
+            intent.putExtra(CONST.REMINDER_TITLE, task.title);
             PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, task.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             try {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, sdf.parse(task.strDate).getTime(), pendingIntent);
@@ -282,7 +282,7 @@ public class APIClient {
         AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
         //set reminder
         Intent intent = new Intent(MyApplication.APP, ReminderService.class);
-        intent.putExtra(Const.REMINDER_TITLE, r.title);
+        intent.putExtra(CONST.REMINDER_TITLE, r.title);
         PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, r.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //alarmManager.cancel(pendingIntent);
         Calendar reminderCalendar = time;
@@ -341,7 +341,7 @@ public class APIClient {
 
     public static void getReminderAndTasksFromServer() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id", Preference.pref.getString(Const.USER_ID, ""));
+        jsonObject.addProperty("id", Preference.pref.getString(CONST.USER_ID, ""));
         //get user's reminders and tasks
         APIClient.apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
             @Override

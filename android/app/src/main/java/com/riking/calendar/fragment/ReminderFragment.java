@@ -12,11 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ldf.calendar.Const;
-import com.ldf.calendar.Utils;
+import com.necer.ncalendar.utils.Utils;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RemindHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
@@ -83,7 +81,7 @@ public class ReminderFragment extends Fragment {
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
-                if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+                if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
                     //get reminders and tasks of user from server
                     APIClient.synchAll();
                 }

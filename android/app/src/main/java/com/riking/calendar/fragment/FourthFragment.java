@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginActivity;
@@ -27,6 +27,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.MarketUtils;
 
@@ -47,7 +48,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
         if(v!=null){
             return v;
         }
-        sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         View v = inflater.inflate(R.layout.fourth_fragment, container, false);
         v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
         v.findViewById(R.id.set_layout).setOnClickListener(this);
@@ -57,12 +58,12 @@ public class FourthFragment extends Fragment implements OnClickListener {
 
         userName = (TextView) v.findViewById(R.id.user_name);
         myPhoto = (ImageView) v.findViewById(R.id.my_photo);
-        if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+        if (sharedPreferences.getBoolean(CONST.IS_LOGIN, false)) {
             loginState = 1;
-            userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
-                    sharedPreferences.getString(Const.USER_COMMENTS, ""));
+            userName.setText(sharedPreferences.getString(CONST.USER_NAME, null) + "\n" +
+                    sharedPreferences.getString(CONST.USER_COMMENTS, ""));
 
-            String imageUrl = sharedPreferences.getString(Const.USER_IMAGE_URL, null);
+            String imageUrl = sharedPreferences.getString(CONST.USER_IMAGE_URL, null);
             String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
             if (FileUtil.imageExists(imageName)) {
                 Logger.d("zzw", "no need load url: " + imageName);
@@ -84,16 +85,16 @@ public class FourthFragment extends Fragment implements OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+        if (sharedPreferences.getBoolean(CONST.IS_LOGIN, false)) {
             //Login state changed.
             if ((loginState ^ 1) == 1) {
                 //refresh the activity
                 getActivity().recreate();
                 loginState = 1;
-                userName.setText(sharedPreferences.getString(Const.USER_NAME, null) + "\n" +
-                        sharedPreferences.getString(Const.USER_COMMENTS, ""));
+                userName.setText(sharedPreferences.getString(CONST.USER_NAME, null) + "\n" +
+                        sharedPreferences.getString(CONST.USER_COMMENTS, ""));
 
-                String imageUrl = sharedPreferences.getString(Const.USER_IMAGE_URL, null);
+                String imageUrl = sharedPreferences.getString(CONST.USER_IMAGE_URL, null);
                 if (imageUrl != null && imageUrl.length() > 0) {
                     LoadUserImageTask myTask = new LoadUserImageTask();
                     myTask.imageView = myPhoto;
@@ -116,7 +117,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
         switch (v.getId()) {
             case R.id.my_photo_layout: {
 
-                if (sharedPreferences.getBoolean(Const.IS_LOGIN, false)) {
+                if (sharedPreferences.getBoolean(CONST.IS_LOGIN, false)) {
                     startActivity(new Intent(getContext(), UserInfoActivity.class));
                 } else {
                     startActivity((new Intent(getContext(), LoginActivity.class)));
@@ -133,7 +134,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(getContext(), WebviewActivity.class);
-                        i.putExtra(Const.WEB_URL, response._data);
+                        i.putExtra(CONST.WEB_URL, response._data);
                         startActivity(i);
                     }
                 });

@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
@@ -32,6 +32,7 @@ import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StringUtil;
 
 import java.util.List;
@@ -142,23 +143,23 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void callBack(ResponseModel<AppUser> response) {
                         AppUser u = response._data;
-                        SharedPreferences pref = getApplicationContext().getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
                         SharedPreferences.Editor e = pref.edit();
-                        e.putBoolean(Const.IS_LOGIN, true);
-                        e.putString(Const.USER_ID, u.id);
-                        e.putString(Const.USER_IMAGE_URL, u.photoUrl);
-                        e.putString(Const.PHONE_NUMBER, u.telephone);
-                        e.putString(Const.USER_EMAIL, u.email);
-                        e.putString(Const.PHONE_SEQ_NUMBER, u.phoneSeqNum);
-                        e.putString(Const.USER_NAME, u.name);
-                        e.putString(Const.USER_PASSWORD, u.passWord);
-                        e.putString(Const.USER_DEPT, u.dept);
-                        e.putInt(Const.USER_SEX, u.sex);
-                        e.putString(Const.USER_COMMENTS, u.remark);
-                        e.putString(Const.USER_COMMENTS, u.remark);
+                        e.putBoolean(CONST.IS_LOGIN, true);
+                        e.putString(CONST.USER_ID, u.id);
+                        e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
+                        e.putString(CONST.PHONE_NUMBER, u.telephone);
+                        e.putString(CONST.USER_EMAIL, u.email);
+                        e.putString(CONST.PHONE_SEQ_NUMBER, u.phoneSeqNum);
+                        e.putString(CONST.USER_NAME, u.name);
+                        e.putString(CONST.USER_PASSWORD, u.passWord);
+                        e.putString(CONST.USER_DEPT, u.dept);
+                        e.putInt(CONST.USER_SEX, u.sex);
+                        e.putString(CONST.USER_COMMENTS, u.remark);
+                        e.putString(CONST.USER_COMMENTS, u.remark);
                         if (u.allDayReminderTime != null) {
-                            e.putString(Const.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
-                            e.putString(Const.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
+                            e.putString(CONST.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
+                            e.putString(CONST.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
                         }
                         e.commit();
 
@@ -214,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(LoginActivity.this, WebviewActivity.class);
-                        i.putExtra(Const.WEB_URL, response._data);
+                        i.putExtra(CONST.WEB_URL, response._data);
                         startActivity(i);
                     }
                 });

@@ -7,9 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class LoadUserImageTask extends AsyncTask<String, Void, Bitmap> {
     public ImageView imageView;
     public String imageName;
     public boolean imageFileExists;
-    public SharedPreferences preferences = MyApplication.APP.getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+    public SharedPreferences preferences = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
     public File file;
 
     @Override

@@ -11,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CompletedTaskAdapter;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.util.CONST;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,7 +57,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             Task t = tasks.get(i);
             Date completeDay = null;
-            SimpleDateFormat sdf = new SimpleDateFormat(Const.yyyyMMddHHmm);
+            SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
             try {
                 completeDay = sdf.parse(t.completeDate);
 

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.bean.JsonBean;
 import com.riking.calendar.jiguang.Logger;
@@ -26,6 +26,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.GetJsonDataUtil;
 import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.dialog.BirthdayPickerDialog;
@@ -113,13 +114,13 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 if (departName.length() > 0) {
                     AppUser user = new AppUser();
                     user.address = departName;
-                    user.id = preference.getString(Const.USER_ID, null);
+                    user.id = preference.getString(CONST.USER_ID, null);
 
                     apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                         @Override
                         public void callBack(ResponseModel<String> response) {
                             SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(Const.USER_ADDRESS, departName);
+                            editor.putString(CONST.USER_ADDRESS, departName);
                             //save the changes.
                             editor.commit();
                             addressTextView.setText(departName);
@@ -223,7 +224,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preference = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_more_user_info);
         sexTextView = (TextView) findViewById(R.id.sex);
         addressTextView = (TextView) findViewById(R.id.address);
@@ -244,15 +245,15 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         calendar.set(Calendar.MONTH, Integer.parseInt(datePickerDialog.wheelDatePicker.month) - 1);
                         calendar.set(Calendar.DATE, Integer.parseInt(datePickerDialog.wheelDatePicker.day) - 1);
                         AppUser user = new AppUser();
-                        user.id = preference.getString(Const.USER_ID, null);
-                        user.birthday = new SimpleDateFormat(Const.yyyyMMdd).format(calendar.getTime());
+                        user.id = preference.getString(CONST.USER_ID, null);
+                        user.birthday = new SimpleDateFormat(CONST.yyyyMMdd).format(calendar.getTime());
                         apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                             @Override
                             public void callBack(ResponseModel<String> response) {
                                 Logger.d("zzw", "request success");
                                 SharedPreferences.Editor editor = preference.edit();
-                                String birthDay = new SimpleDateFormat(Const.birthDayFormat).format(calendar.getTime());
-                                editor.putString(Const.USER_BIRTHDAY, birthDay);
+                                String birthDay = new SimpleDateFormat(CONST.birthDayFormat).format(calendar.getTime());
+                                editor.putString(CONST.USER_BIRTHDAY, birthDay);
                                 editor.commit();
                                 birthDayTextView.setText(birthDay);
                             }
@@ -294,7 +295,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
 
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                final int sex = preference.getInt(Const.USER_SEX, 0);
+                final int sex = preference.getInt(CONST.USER_SEX, 0);
                 if (sex == 1) {
                     if (!maleButton.isChecked()) {
                         maleButton.toggle();
@@ -316,14 +317,14 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         }
                         if (sex != newSex) {
                             final AppUser user = new AppUser();
-                            user.id = preference.getString(Const.USER_ID, null);
+                            user.id = preference.getString(CONST.USER_ID, null);
                             user.sex = newSex;
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
                                     SharedPreferences.Editor editor = preference.edit();
-                                    editor.putInt(Const.USER_SEX, user.sex);
+                                    editor.putInt(CONST.USER_SEX, user.sex);
                                     editor.commit();
 
                                     if (user.sex == 1) {
@@ -365,7 +366,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                String addressText = preference.getString(Const.USER_ADDRESS, "");
+                String addressText = preference.getString(CONST.USER_ADDRESS, "");
                 input.setText(addressText);
                 input.setSelection(addressText.length());
 
@@ -382,13 +383,13 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         if (departName.length() > 0) {
                             AppUser user = new AppUser();
                             user.address = departName;
-                            user.id = preference.getString(Const.USER_ID, null);
+                            user.id = preference.getString(CONST.USER_ID, null);
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
                                     SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(Const.USER_ADDRESS, departName);
+                                    editor.putString(CONST.USER_ADDRESS, departName);
                                     //save the changes.
                                     editor.commit();
                                     addressTextView.setText(departName);
@@ -408,9 +409,9 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        addressTextView.setText(preference.getString(Const.USER_ADDRESS, ""));
-        commentsTextView.setText(preference.getString(Const.USER_COMMENTS, ""));
-        birthDayTextView.setText(preference.getString(Const.USER_BIRTHDAY, ""));
+        addressTextView.setText(preference.getString(CONST.USER_ADDRESS, ""));
+        commentsTextView.setText(preference.getString(CONST.USER_COMMENTS, ""));
+        birthDayTextView.setText(preference.getString(CONST.USER_BIRTHDAY, ""));
         commentsRelativeLayout = findViewById(R.id.comments_relative_layout);
         commentsRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -424,8 +425,8 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                input.setText(preference.getString(Const.USER_COMMENTS, ""));
-                input.setSelection(preference.getString(Const.USER_COMMENTS, "").length());
+                input.setText(preference.getString(CONST.USER_COMMENTS, ""));
+                input.setSelection(preference.getString(CONST.USER_COMMENTS, "").length());
                 // Set up the buttons
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -440,14 +441,14 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
 
                             AppUser user = new AppUser();
                             user.remark = newComments;
-                            user.id = preference.getString(Const.USER_ID, null);
+                            user.id = preference.getString(CONST.USER_ID, null);
 
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
                                     SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(Const.USER_COMMENTS, newComments);
+                                    editor.putString(CONST.USER_COMMENTS, newComments);
                                     //save the changes.
                                     editor.commit();
                                     commentsTextView.setText(newComments);
@@ -467,7 +468,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        if (preference.getInt(Const.USER_SEX, 1) == 1) {
+        if (preference.getInt(CONST.USER_SEX, 1) == 1) {
             sexTextView.setText(getString(R.string.male));
         } else {
             sexTextView.setText(getString(R.string.female));

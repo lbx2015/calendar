@@ -13,10 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FirstFragment;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.LunarCalendar;
 import com.riking.calendar.util.SpecialCalendar;
@@ -256,7 +257,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             boolean holidayAfterRemindTime = currentDate == null ? false : fragment.ealiestRemindHolidayDate == null ? false : DateUtil.before(fragment.ealiestRemindHolidayDate, cDate);
 
             boolean isTodayWorkDay = false;//the today is current day not real today
-            String workDay = new SimpleDateFormat(Const.yyyyMMdd).format(cDate);
+            String workDay = new SimpleDateFormat(CONST.yyyyMMdd).format(cDate);
             //weekends
             if (weekDayOfCurrentPosition > 5) {
                 if (fragment.workOnWeekendDates.contains(workDay)) {

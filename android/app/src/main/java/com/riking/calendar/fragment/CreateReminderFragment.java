@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RemindRepeatActivity;
 import com.riking.calendar.activity.RemindWayActivity;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.widget.dialog.TimePickerDialog;
 
 import java.text.ParseException;
@@ -103,7 +103,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         pickerDialog.btnSubmit.setOnClickListener(this);
         pickerDialog.btnCancel.setOnClickListener(this);
         repeat.setOnClickListener(this);
-        preference = getActivity().getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        preference = getActivity().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
 
         allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             boolean skipFirstTime;
@@ -168,8 +168,8 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 reminderTimeCalendar.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day));
                 if (isAllDay == 1) {
                     //24 hour format
-                    reminderTimeCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(preference.getString(Const.WHOLE_DAY_EVENT_HOUR, null)));
-                    reminderTimeCalendar.set(Calendar.MINUTE, Integer.parseInt(preference.getString(Const.WHOLE_DAY_EVENT_MINUTE, null)));
+                    reminderTimeCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(preference.getString(CONST.WHOLE_DAY_EVENT_HOUR, null)));
+                    reminderTimeCalendar.set(Calendar.MINUTE, Integer.parseInt(preference.getString(CONST.WHOLE_DAY_EVENT_MINUTE, null)));
                 } else {
                     reminderTimeCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
                     reminderTimeCalendar.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));

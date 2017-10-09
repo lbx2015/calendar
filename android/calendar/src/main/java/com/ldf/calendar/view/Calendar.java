@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.ldf.calendar.Const;
+
 import com.ldf.calendar.interf.IDayRenderer;
 import com.ldf.calendar.interf.OnAdapterSelectListener;
 import com.ldf.calendar.component.CalendarAttr;
@@ -59,8 +59,8 @@ public class Calendar extends View {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldW, int oldH) {
 		super.onSizeChanged(w, h, oldW, oldH);
-		cellHeight = h / Const.TOTAL_ROW;
-		cellWidth = w / Const.TOTAL_COL;
+		cellHeight = h / CONST.TOTAL_ROW;
+		cellWidth = w / CONST.TOTAL_COL;
 		calendarAttr.setCellHeight(cellHeight);
 		calendarAttr.setCellWidth(cellWidth);
 		renderer.setAttr(calendarAttr);

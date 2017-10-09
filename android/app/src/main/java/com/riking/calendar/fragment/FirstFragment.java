@@ -34,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.ldf.calendar.Const;
 import com.necer.ncalendar.calendar.NCalendar;
 import com.necer.ncalendar.listener.OnCalendarChangedListener;
 import com.riking.calendar.R;
@@ -479,10 +478,10 @@ public class FirstFragment extends Fragment implements OnCalendarChangedListener
             return;
         }
 
-        if (Preference.pref.getBoolean(Const.IS_LOGIN, false) && isNetAvailable()) {
+        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false) && isNetAvailable()) {
             AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
-            requestBody.appUserId = Preference.pref.getString(Const.USER_ID, "");
-            requestBody.completeDate = new SimpleDateFormat(Const.yyyyMMdd).format(date);
+            requestBody.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+            requestBody.completeDate = new SimpleDateFormat(CONST.yyyyMMdd).format(date);
             APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<QueryReportContainer>> response) {

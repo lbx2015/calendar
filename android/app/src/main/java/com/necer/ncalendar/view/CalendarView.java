@@ -6,10 +6,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.View;
 
-import com.ldf.calendar.Const;
 import com.necer.ncalendar.utils.Attrs;
 import com.necer.ncalendar.utils.Utils;
 import com.riking.calendar.fragment.FirstFragment;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 
 import org.joda.time.DateTime;
@@ -101,7 +101,7 @@ public abstract class CalendarView extends View {
         boolean holidayAfterRemindTime = fragment.ealiestRemindHolidayDate == null ? false : DateUtil.before(fragment.ealiestRemindHolidayDate, currentDate);
 
         boolean isTodayWorkDay = false;//the today is current day not real today
-        String workDay = new SimpleDateFormat(Const.yyyyMMdd).format(currentDate);
+        String workDay = new SimpleDateFormat(CONST.yyyyMMdd).format(currentDate);
         //weekends
         if (weekDayOfCurrentPosition > 5) {
             if (fragment.workOnWeekendDates.contains(workDay)) {

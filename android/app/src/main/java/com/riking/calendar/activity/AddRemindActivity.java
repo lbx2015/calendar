@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
 import com.riking.calendar.realm.model.Reminder;
@@ -74,8 +73,8 @@ public class AddRemindActivity extends AppCompatActivity {
             tab.select();
         }
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        preference = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
-        userId = preference.getString(Const.USER_ID, null);
+        preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        userId = preference.getString(CONST.USER_ID, null);
     }
 
     public void onClickCancel(View v) {
@@ -138,7 +137,7 @@ public class AddRemindActivity extends AppCompatActivity {
                 else {
                     Task task = realm.createObject(Task.class, id);
                     task.isImportant = taskFragment.isImportant;
-                    SimpleDateFormat sdf = new SimpleDateFormat(Const.yyyyMMddHHmm);
+                    SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
                     task.appCreatedTime = sdf.format(new Date());
                     if (taskFragment.needToRemind) {
                         task.isOpen = 1;
@@ -155,7 +154,7 @@ public class AddRemindActivity extends AppCompatActivity {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                if (preference.getBoolean(Const.IS_LOGIN, false)) {
+                if (preference.getBoolean(CONST.IS_LOGIN, false)) {
                     //remind fragment
                     if (viewPager.getCurrentItem() == 0) {
                         Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();

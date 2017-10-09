@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
@@ -18,6 +18,7 @@ import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
@@ -55,7 +56,7 @@ public class ReportOnlineItemAdapter extends RecyclerView.Adapter<ReportOnlineIt
         holder.title.setText(r.reportName);
 
         //not enable the swipe function when user is not logged.
-        if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             holder.sml.setSwipeEnable(true);
         } else {
             holder.sml.setSwipeEnable(false);
@@ -104,7 +105,7 @@ public class ReportOnlineItemAdapter extends RecyclerView.Adapter<ReportOnlineIt
                             Logger.d("zzw", "report Url : " + reportUrl);
                             if (reportUrl != null) {
                                 Intent i = new Intent(title.getContext(), WebviewActivity.class);
-                                i.putExtra(Const.WEB_URL, reportUrl);
+                                i.putExtra(CONST.WEB_URL, reportUrl);
                                 title.getContext().startActivity(i);
                             }
                         }

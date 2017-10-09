@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
@@ -97,12 +97,12 @@ public class TaskFragment extends Fragment {
                         Date date = new Date();
                         Task task = realm.createObject(Task.class, simpleDateFormat.format(date));
                         task.title = quickAddEditor.getText().toString();
-                        task.appCreatedTime = new SimpleDateFormat(Const.yyyyMMddHHmm).format(date);
+                        task.appCreatedTime = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(date);
                         task.isComplete = 0;
                         task.isOpen = 0;
                         task.isImportant = 0;
-                        SharedPreferences pref = getActivity().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
-                        task.userId = pref.getString(Const.USER_ID, null);
+                        SharedPreferences pref = getActivity().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+                        task.userId = pref.getString(CONST.USER_ID, null);
                     }
                 });
                 quickAddEditor.setText(null);
@@ -125,7 +125,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
-                if (Preference.pref.getBoolean(Const.IS_LOGIN, false)) {
+                if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
                     //get reminders and tasks of user from server
                     APIClient.synchAll();
                 }

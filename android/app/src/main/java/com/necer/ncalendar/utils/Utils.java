@@ -15,7 +15,11 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static com.riking.calendar.R.style.weekName;
 
 /**
  * Created by necer on 2017/6/9.
@@ -461,6 +465,15 @@ public class Utils {
         }
         return json;
     }
-
+    public static final String[] weekName = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+    public static String getWeekdayPosition(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int week_index = cal.get(Calendar.DAY_OF_WEEK) + 5;
+        if (week_index >= 7) {
+            week_index -= 7;
+        }
+        return weekName[week_index];
+    }
 
 }

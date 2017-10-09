@@ -12,9 +12,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.CONST;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -30,7 +31,7 @@ public class WebviewActivity extends AppCompatActivity {
         WebView webview = (WebView) findViewById(R.id.web_view);
 
         Bundle bundle = getIntent().getExtras();
-        webview.loadUrl(bundle.getString(Const.WEB_URL, null));
+        webview.loadUrl(bundle.getString(CONST.WEB_URL, null));
 
         WebSettings settings = webview.getSettings();
         webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

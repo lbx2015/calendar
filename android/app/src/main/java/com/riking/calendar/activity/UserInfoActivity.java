@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.listener.CustomListener;
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.bean.DictionaryBean;
 import com.riking.calendar.jiguang.Logger;
@@ -30,6 +30,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.view.OptionsPickerView;
@@ -71,16 +72,16 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preference = getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_user_info);
         myPhoto = (ImageView) findViewById(R.id.my_photo);
         findViewById(R.id.back).setOnClickListener(this);
         userName = (TextView) findViewById(R.id.name);
         email = (TextView) findViewById(R.id.email);
         department = (TextView) findViewById(R.id.depart);
-        userName.setText(preference.getString(Const.USER_NAME, ""));
-        email.setText(preference.getString(Const.USER_EMAIL, ""));
-        department.setText(preference.getString(Const.USER_DEPT, ""));
+        userName.setText(preference.getString(CONST.USER_NAME, ""));
+        email.setText(preference.getString(CONST.USER_EMAIL, ""));
+        department.setText(preference.getString(CONST.USER_DEPT, ""));
         userNameRelativeLayout = findViewById(R.id.user_name_relative_layout);
         emailRelativeLayout = findViewById(R.id.email_row_relative_layout);
         departmentRelativeLayout = findViewById(R.id.depart_row_relative_layout);
@@ -97,7 +98,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         // width and height will be at least 600px long (optional).
         ImagePicker.setMinQuality(600, 600);
 
-        String imageUrl = preference.getString(Const.USER_IMAGE_URL, null);
+        String imageUrl = preference.getString(CONST.USER_IMAGE_URL, null);
         if (imageUrl == null) {
             return;
         }
@@ -162,9 +163,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         RequestBody reqFile = RequestBody.create(MediaType.parse("image"), mFile2);
         MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", mFile2.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
-//        Logger.d("zzw", "userId: " + preference.getString(Const.USER_ID, null));
+//        Logger.d("zzw", "userId: " + preference.getString(CONST.USER_ID, null));
 
-        apiInterface.postImage(body, preference.getString(Const.USER_ID, null)).enqueue(new Callback<UploadImageModel>() {
+        apiInterface.postImage(body, preference.getString(CONST.USER_ID, null)).enqueue(new Callback<UploadImageModel>() {
             @Override
             public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
                 final UploadImageModel r = response.body();
@@ -172,7 +173,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 if (r != null) {
 //                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
                     SharedPreferences.Editor editor = preference.edit();
-                    editor.putString(Const.USER_IMAGE_URL, r._data);
+                    editor.putString(CONST.USER_IMAGE_URL, r._data);
                     editor.commit();
                     new Thread(new Runnable() {
                         @Override
@@ -226,7 +227,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                String name = preference.getString(Const.USER_NAME, "");
+                String name = preference.getString(CONST.USER_NAME, "");
                 input.setText(name);
                 input.setSelection(name.length());
 
@@ -244,14 +245,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                             userName.setText(newName);
                             AppUser user = new AppUser();
                             user.name = newName;
-                            user.id = preference.getString(Const.USER_ID, null);
+                            user.id = preference.getString(CONST.USER_ID, null);
 
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
                                     SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(Const.USER_NAME, newName);
+                                    editor.putString(CONST.USER_NAME, newName);
                                     //save the changes.
                                     editor.commit();
                                 }
@@ -279,7 +280,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final EmailAutoCompleteTextView input = (EmailAutoCompleteTextView) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                String name = preference.getString(Const.USER_EMAIL, "");
+                String name = preference.getString(CONST.USER_EMAIL, "");
                 input.setText(name);
                 input.setSelection(name.length());
 
@@ -297,14 +298,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                             email.setText(emailText);
                             AppUser user = new AppUser();
                             user.email = emailText;
-                            user.id = preference.getString(Const.USER_ID, null);
+                            user.id = preference.getString(CONST.USER_ID, null);
 
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
                                     SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(Const.USER_EMAIL, emailText);
+                                    editor.putString(CONST.USER_EMAIL, emailText);
                                     //save the changes.
                                     editor.commit();
                                 }
@@ -353,7 +354,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 //                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
 //                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
 //                builder.setView(viewInflated);
-//                String name = preference.getString(Const.USER_DEPT, "");
+//                String name = preference.getString(CONST.USER_DEPT, "");
 //                input.setText(name);
 //                input.setSelection(name.length());
 //
@@ -371,14 +372,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 //                            department.setText(departName);
 //                            AppUser user = new AppUser();
 //                            user.dept = departName;
-//                            user.id = preference.getString(Const.USER_ID, null);
+//                            user.id = preference.getString(CONST.USER_ID, null);
 //
 //
 //                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
 //                                @Override
 //                                public void callBack(ResponseModel<String> response) {
 //                                    SharedPreferences.Editor editor = preference.edit();
-//                                    editor.putString(Const.USER_DEPT, departName);
+//                                    editor.putString(CONST.USER_DEPT, departName);
 //                                    //save the changes.
 //                                    editor.commit();
 //                                }
@@ -419,13 +420,13 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final String departName = cardItem.get(options1).getPickerViewText();
                 AppUser user = new AppUser();
                 user.dept = departName;
-                user.id = preference.getString(Const.USER_ID, null);
+                user.id = preference.getString(CONST.USER_ID, null);
                 Logger.d("zzw", "depart selected: " + departName);
                 apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         SharedPreferences.Editor editor = preference.edit();
-                        editor.putString(Const.USER_DEPT, departName);
+                        editor.putString(CONST.USER_DEPT, departName);
                         //save the changes.
                         editor.commit();
                         department.setText(departName);
