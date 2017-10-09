@@ -1,8 +1,5 @@
 package com.riking.calendar.adapter;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,21 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.EditReminderActivity;
-import com.riking.calendar.app.MyApplication;
-import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.listener.ZRequestCallBack;
-import com.riking.calendar.realm.model.Reminder;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.DateUtil;
-import com.riking.calendar.widget.dialog.LookReminderDialog;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by zw.zhang on 2017/7/12.
@@ -60,7 +44,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 100;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
