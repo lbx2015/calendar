@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
-        TabLayout tabLayout = v.findViewById(R.id.top_tab_layout);
+        TabLayout tabLayout = (TabLayout) v.findViewById(R.id.top_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
 
         return v;

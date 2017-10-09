@@ -1,8 +1,6 @@
 package com.riking.calendar.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +16,11 @@ import java.util.List;
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
-   private Context context;
+    private Context context;
     private List<String> mList;
 
     public HomeAdapter(Context context) {
-       this.context=context;
+        this.context = context;
         mList = new ArrayList<>();
     }
 
@@ -35,17 +33,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public void onBindViewHolder(HomeViewHolder cellHolder, int i) {
-         if (getItemCount()%2==1){
-             cellHolder.itemCator.setText("热门回答");
-         }else {
-             cellHolder.itemCator.setText("知乎回答");
-         }
-       cellHolder.itemView.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        if (getItemCount() % 2 == 1) {
+            cellHolder.itemCator.setText("热门回答");
+        } else {
+            cellHolder.itemCator.setText("知乎回答");
+        }
+//        cellHolder.itemImage.setBorderWidth(2);
+//        cellHolder.itemImage.setBorderColor(cellHolder.itemImage.getResources().getColor(R.color.colorPrimary));
+        cellHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //             context.startActivity(new Intent(context, DetailsActivity.class));
-           }
-       });
+            }
+        });
 
     }
 
