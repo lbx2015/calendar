@@ -19,6 +19,8 @@ import com.riking.calendar.R;
  */
 
 public class HomeFragment extends Fragment {
+    //Fragment 数组
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new TopicFragment(), new FinanceNewsFragment()};
     View v;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
@@ -59,13 +61,7 @@ public class HomeFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             Log.d("zzw", "getItem: " + position);
-            switch (position) {
-                case 0:
-                    return new TopicFragment();
-                case 1:
-                    return new FinanceNewsFragment();
-            }
-            return null;
+            return TAB_FRAGMENTS[position];
         }
 
         @Override
