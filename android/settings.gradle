@@ -1,1 +1,1 @@
-include ':app', ":drawerLibrary", ":calendar",'library',':pickerview'
+include ':app', ":calendar",'library',':pickerview'

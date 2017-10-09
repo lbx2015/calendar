@@ -15,8 +15,7 @@
         android:background="@drawable/input_text_background"
         android:hint="@string/input_rememinds"
         android:padding="10dp"
-        android:textColorHint="@color/color_background_b6b6b6"
-        android:textSize="@dimen/normal_text_size" />
+        android:textColorHint="@color/color_background_b6b6b6" />
 
     <RelativeLayout
         android:layout_width="match_parent"
