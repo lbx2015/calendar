@@ -178,9 +178,11 @@ public class ExampleUnitTest {
         //223434
         System.out.println(numberRefined);
     }
+
     @Test
-    public void testDateTime(){
+    public void testDateTime() {
         System.out.println(new DateTime());
+        System.out.println(DateTime.now().withTimeAtStartOfDay());
         System.out.print(new DateTime(new DateTime().toLocalDate().toString()));
     }
 }
