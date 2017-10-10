@@ -87,6 +87,7 @@ dependencies {
     //Optional compile for GCM (Google Cloud Messaging).
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
     compile 'com.hyphenate:hyphenate-sdk:3.3.0'
+    compile project(':easeui')
 
     //butter knife
     compile 'com.jakewharton:butterknife:8.8.1'
