@@ -9,6 +9,7 @@ import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.util.Debug;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -176,5 +177,10 @@ public class ExampleUnitTest {
 //        String numberRefined = s.replaceAll("[^\\d]", "");
         //223434
         System.out.println(numberRefined);
+    }
+    @Test
+    public void testDateTime(){
+        System.out.println(new DateTime());
+        System.out.print(new DateTime(new DateTime().toLocalDate().toString()));
     }
 }
