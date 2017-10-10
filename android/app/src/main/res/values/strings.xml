@@ -101,7 +101,6 @@
     <string name="login_with_phone_number">Login With Phone Number</string>
     <string name="phone_number">Phone Number</string>
     <string name="verification_code">Verification Code</string>
-    <string name="login">Login</string>
     <string name="please_input_phone_number">Please input phone number</string>
     <string name="please_input_verification_code">Please input the verification code</string>
     <string name="get_verification_code">Get Verification Code</string>

@@ -63,7 +63,6 @@
     <string name="login_with_phone_number">手机号码登录</string>
     <string name="phone_number">手机号</string>
     <string name="verification_code">验证码</string>
-    <string name="login">登录</string>
     <string name="please_input_phone_number">手机号码</string>
     <string name="please_input_verification_code">验证码</string>
     <string name="get_verification_code">发送验证码</string>

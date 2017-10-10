@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.hyphenate.chatuidemo.DemoHelper;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.riking.calendar.jiguang.Logger;
@@ -83,7 +84,7 @@ public class MyApplication extends Application {
             }
         });
 
-        APP = getApplicationContext();
+        APP = this;
         preferences = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
@@ -103,5 +104,8 @@ public class MyApplication extends Application {
         RealmConfiguration realmConfiguration = builder.build();
 //        Realm.deleteRealm(realmConfiguration); // Clean slate
         Realm.setDefaultConfiguration(realmConfiguration);
+
+        //init hyphenate demo helper
+        DemoHelper.getInstance().init(this);
     }
 }

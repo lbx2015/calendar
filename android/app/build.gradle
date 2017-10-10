@@ -86,8 +86,9 @@ dependencies {
     //huanxin
     //Optional compile for GCM (Google Cloud Messaging).
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
-    compile 'com.hyphenate:hyphenate-sdk:3.3.0'
+//    compile 'com.hyphenate:hyphenate-sdk:3.3.4'
     compile project(':easeui')
+    compile 'com.parse:parse-android:1.13.1'
 
     //butter knife
     compile 'com.jakewharton:butterknife:8.8.1'
@@ -96,9 +97,9 @@ dependencies {
     compile files('libs/nineoldandroids-2.4.0.jar')
 
     //adding glide library
-    compile('com.github.bumptech.glide:glide:4.2.0', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:support-v4:26.1.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+//    compile('com.github.bumptech.glide:glide:4.2.0', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+//    compile 'com.android.support:support-v4:26.1.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
 }
