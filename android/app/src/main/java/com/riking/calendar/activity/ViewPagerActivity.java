@@ -1,7 +1,10 @@
 package com.riking.calendar.activity;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -26,10 +30,13 @@ import com.hyphenate.EMClientListener;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chatuidemo.Constant;
 import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.chatuidemo.db.InviteMessgeDao;
 import com.hyphenate.chatuidemo.ui.ContactListFragment;
 import com.hyphenate.chatuidemo.ui.ConversationListFragment;
+import com.hyphenate.chatuidemo.ui.GroupsActivity;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
@@ -65,22 +72,9 @@ public class ViewPagerActivity extends FragmentActivity {
     public TabLayout mTabLayout;
     public MyPagerAdapter adapter;
     boolean doubleBackToExitPressedOnce = false;
+    ViewPager pager;
     // textview for unread message count
     private TextView unreadLabel;
-    // textview for unread event message
-    private TextView unreadAddressLable;
-    private Button[] mTabs;
-    private ContactListFragment contactListFragment;
-    private Fragment[] fragments;
-    private int index;
-    private int currentTabIndex;
-    // user account was removed
-    private boolean isCurrentAccountRemoved = false;
-    private InviteMessgeDao inviteMessgeDao;
-    private android.app.AlertDialog.Builder exceptionBuilder;
-    private boolean isExceptionDialogShow = false;
-    private BroadcastReceiver internalDebugReceiver;
-    private ConversationListFragment conversationListFragment;
     EMClientListener clientListener = new EMClientListener() {
         @Override
         public void onMigrate2x(boolean success) {
@@ -123,6 +117,16 @@ public class ViewPagerActivity extends FragmentActivity {
         public void onMessageChanged(EMMessage message, Object change) {
         }
     };
+    // textview for unread event message
+    private TextView unreadAddressLable;
+    private Button[] mTabs;
+    private ContactListFragment contactListFragment;
+    private Fragment[] fragments;
+    private int index;
+    private int currentTabIndex;
+    // user account was removed
+    private boolean isCurrentAccountRemoved = false;
+    private InviteMessgeDao inviteMessgeDao;
     private String[] mTitles;
     private AlertDialog.Builder mDialog;
 
@@ -169,7 +173,7 @@ public class ViewPagerActivity extends FragmentActivity {
 
         if (!isConflict && !isCurrentAccountRemoved) {
             //not show the unread message count for the moment
-//            updateUnreadLabel();
+            updateUnreadLabel();
 //            updateUnreadAddressLable();
         }
 
@@ -185,13 +189,15 @@ public class ViewPagerActivity extends FragmentActivity {
      * update unread message count
      */
     public void updateUnreadLabel() {
-//        int count = getUnreadMsgCountTotal();
-//        if (count > 0) {
-//            unreadLabel.setText(String.valueOf(count));
-//            unreadLabel.setVisibility(View.VISIBLE);
-//        } else {
-//            unreadLabel.setVisibility(View.INVISIBLE);
-//        }
+        int count = getUnreadMsgCountTotal();
+        if (unreadLabel != null) {
+            if (count > 0) {
+                unreadLabel.setText(String.valueOf(count));
+                unreadLabel.setVisibility(View.VISIBLE);
+            } else {
+                unreadLabel.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void refreshUIWithMessage() {
@@ -202,11 +208,11 @@ public class ViewPagerActivity extends FragmentActivity {
                 // refresh unread count
                 updateUnreadLabel();
                 Fragment f = TAB_FRAGMENTS[pager.getCurrentItem()];
-                if(f instanceof ConversationListFragment){
+                if (f instanceof ConversationListFragment) {
                     ((ConversationListFragment) f).refresh();
                 }
 //                if (currentTabIndex == 0) {
-                    // refresh conversation list
+                // refresh conversation list
 //                    if (conversationListFragment != null) {
 //                        conversationListFragment.refresh();
 //                    }
@@ -215,6 +221,45 @@ public class ViewPagerActivity extends FragmentActivity {
         });
     }
 
+    private void registerBroadcastReceiver() {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.ACTION_CONTACT_CHANAGED);
+        intentFilter.addAction(Constant.ACTION_GROUP_CHANAGED);
+        broadcastReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateUnreadLabel();
+                updateUnreadAddressLable();
+                if (currentTabIndex == 0) {
+                    // refresh conversation list
+                    if (conversationListFragment != null) {
+                        conversationListFragment.refresh();
+                    }
+                } else if (currentTabIndex == 1) {
+                    if(contactListFragment != null) {
+                        contactListFragment.refresh();
+                    }
+                }
+                String action = intent.getAction();
+                if(action.equals(Constant.ACTION_GROUP_CHANAGED)){
+                    if (EaseCommonUtils.getTopActivity(ViewPagerActivity.this).equals(GroupsActivity.class.getName())) {
+                        GroupsActivity.instance.onResume();
+                    }
+                }
+
+            }
+        };
+        broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private android.app.AlertDialog.Builder exceptionBuilder;
+    private boolean isExceptionDialogShow =  false;
+    private BroadcastReceiver internalDebugReceiver;
+    private ConversationListFragment conversationListFragment;
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager broadcastManager;
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -276,19 +321,18 @@ public class ViewPagerActivity extends FragmentActivity {
             }
         });
     }
-    ViewPager pager;
+
     private void initViews() {
         mTitles = getResources().getStringArray(R.array.subTittles);
-         pager = (ViewPager) findViewById(R.id.viewPager);
+        pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(3);
 
         mTabLayout = (TabLayout) findViewById(R.id.tablayout);
-        setTabs(mTabLayout, this.getLayoutInflater(), mTitles, TAB_IMGS);
-
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
+        setTabs(mTabLayout, this.getLayoutInflater(), mTitles, TAB_IMGS);
     }
 
     /**
@@ -299,7 +343,10 @@ public class ViewPagerActivity extends FragmentActivity {
             TabLayout.Tab tab = tabLayout.newTab();
             View view = inflater.inflate(R.layout.tab_custom, null);
             tab.setCustomView(view);
-
+            if (i == 2) {
+                MyLog.d(tabTitlees[i]);
+                unreadLabel = (TextView) view.findViewById(R.id.unread_msg_number);
+            }
             TextView tvTitle = (TextView) view.findViewById(R.id.tv_tab);
             tvTitle.setText(tabTitlees[i]);
             ImageView imgTab = (ImageView) view.findViewById(R.id.img_tab);
