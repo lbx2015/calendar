@@ -129,6 +129,12 @@ public class ViewPagerActivity extends FragmentActivity {
     private InviteMessgeDao inviteMessgeDao;
     private String[] mTitles;
     private AlertDialog.Builder mDialog;
+    private android.app.AlertDialog.Builder exceptionBuilder;
+    private boolean isExceptionDialogShow = false;
+    private BroadcastReceiver internalDebugReceiver;
+    private ConversationListFragment conversationListFragment;
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager broadcastManager;
 
     /**
      * update the total unread count
@@ -207,7 +213,7 @@ public class ViewPagerActivity extends FragmentActivity {
             public void run() {
                 // refresh unread count
                 updateUnreadLabel();
-                Fragment f = TAB_FRAGMENTS[pager.getCurrentItem()];
+                Fragment f = TAB_FRAGMENTS[2];
                 if (f instanceof ConversationListFragment) {
                     ((ConversationListFragment) f).refresh();
                 }
@@ -238,12 +244,12 @@ public class ViewPagerActivity extends FragmentActivity {
                         conversationListFragment.refresh();
                     }
                 } else if (currentTabIndex == 1) {
-                    if(contactListFragment != null) {
+                    if (contactListFragment != null) {
                         contactListFragment.refresh();
                     }
                 }
                 String action = intent.getAction();
-                if(action.equals(Constant.ACTION_GROUP_CHANAGED)){
+                if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
                     if (EaseCommonUtils.getTopActivity(ViewPagerActivity.this).equals(GroupsActivity.class.getName())) {
                         GroupsActivity.instance.onResume();
                     }
@@ -254,12 +260,6 @@ public class ViewPagerActivity extends FragmentActivity {
         broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
     }
 
-    private android.app.AlertDialog.Builder exceptionBuilder;
-    private boolean isExceptionDialogShow =  false;
-    private BroadcastReceiver internalDebugReceiver;
-    private ConversationListFragment conversationListFragment;
-    private BroadcastReceiver broadcastReceiver;
-    private LocalBroadcastManager broadcastManager;
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
