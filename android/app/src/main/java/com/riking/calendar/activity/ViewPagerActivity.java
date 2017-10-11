@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,11 +17,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hyphenate.EMClientListener;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chatuidemo.DemoHelper;
+import com.hyphenate.chatuidemo.db.InviteMessgeDao;
+import com.hyphenate.chatuidemo.ui.ContactListFragment;
 import com.hyphenate.chatuidemo.ui.ConversationListFragment;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FourthFragment;
@@ -34,22 +44,176 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.DownLoadApk;
 
+import java.util.List;
+
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
 public class ViewPagerActivity extends FragmentActivity {
+    //huanxin start
+    protected static final String TAG = "ViewPagerActivity";
+    //huanxin end
     //Tab 图片
     private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //Fragment 数组
     private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new SecondFragment(), new ConversationListFragment(), new ThirdFragment(), new FourthFragment()};
     //Tab 数目
     private final int COUNT = 5;
+    // user logged into another device
+    public boolean isConflict = false;
     public TabLayout mTabLayout;
-    MyPagerAdapter adapter;
+    public MyPagerAdapter adapter;
     boolean doubleBackToExitPressedOnce = false;
+    // textview for unread message count
+    private TextView unreadLabel;
+    // textview for unread event message
+    private TextView unreadAddressLable;
+    private Button[] mTabs;
+    private ContactListFragment contactListFragment;
+    private Fragment[] fragments;
+    private int index;
+    private int currentTabIndex;
+    // user account was removed
+    private boolean isCurrentAccountRemoved = false;
+    private InviteMessgeDao inviteMessgeDao;
+    private android.app.AlertDialog.Builder exceptionBuilder;
+    private boolean isExceptionDialogShow = false;
+    private BroadcastReceiver internalDebugReceiver;
+    private ConversationListFragment conversationListFragment;
+    EMClientListener clientListener = new EMClientListener() {
+        @Override
+        public void onMigrate2x(boolean success) {
+            Toast.makeText(ViewPagerActivity.this, "onUpgradeFrom 2.x to 3.x " + (success ? "success" : "fail"), Toast.LENGTH_LONG).show();
+            if (success) {
+                refreshUIWithMessage();
+            }
+        }
+    };
+    EMMessageListener messageListener = new EMMessageListener() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> messages) {
+            // notify new message
+            for (EMMessage message : messages) {
+                DemoHelper.getInstance().getNotifier().onNewMsg(message);
+            }
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onMessageRead(List<EMMessage> messages) {
+        }
+
+        @Override
+        public void onMessageDelivered(List<EMMessage> message) {
+        }
+
+        @Override
+        public void onMessageRecalled(List<EMMessage> messages) {
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+        }
+    };
     private String[] mTitles;
     private AlertDialog.Builder mDialog;
+
+    /**
+     * update the total unread count
+     */
+    public void updateUnreadAddressLable() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                int count = getUnreadAddressCountTotal();
+                if (count > 0) {
+                    unreadAddressLable.setVisibility(View.VISIBLE);
+                } else {
+                    unreadAddressLable.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * get unread event notification count, including application, accepted, etc
+     *
+     * @return
+     */
+    public int getUnreadAddressCountTotal() {
+        int unreadAddressCountTotal = 0;
+        unreadAddressCountTotal = inviteMessgeDao.getUnreadMessagesCount();
+        return unreadAddressCountTotal;
+    }
+
+    /**
+     * get unread message count
+     *
+     * @return
+     */
+    public int getUnreadMsgCountTotal() {
+        return EMClient.getInstance().chatManager().getUnreadMsgsCount();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!isConflict && !isCurrentAccountRemoved) {
+            //not show the unread message count for the moment
+//            updateUnreadLabel();
+//            updateUnreadAddressLable();
+        }
+
+        // unregister this event listener when this activity enters the
+        // background
+        DemoHelper sdkHelper = DemoHelper.getInstance();
+        sdkHelper.pushActivity(this);
+
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
+    }
+
+    /**
+     * update unread message count
+     */
+    public void updateUnreadLabel() {
+//        int count = getUnreadMsgCountTotal();
+//        if (count > 0) {
+//            unreadLabel.setText(String.valueOf(count));
+//            unreadLabel.setVisibility(View.VISIBLE);
+//        } else {
+//            unreadLabel.setVisibility(View.INVISIBLE);
+//        }
+    }
+
+    private void refreshUIWithMessage() {
+        MyLog.d("refreshUIwithMessage");
+        new Exception().printStackTrace();
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // refresh unread count
+                updateUnreadLabel();
+                Fragment f = TAB_FRAGMENTS[pager.getCurrentItem()];
+                if(f instanceof ConversationListFragment){
+                    ((ConversationListFragment) f).refresh();
+                }
+//                if (currentTabIndex == 0) {
+                    // refresh conversation list
+//                    if (conversationListFragment != null) {
+//                        conversationListFragment.refresh();
+//                    }
+//                }
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -112,10 +276,10 @@ public class ViewPagerActivity extends FragmentActivity {
             }
         });
     }
-
+    ViewPager pager;
     private void initViews() {
         mTitles = getResources().getStringArray(R.array.subTittles);
-        final ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+         pager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(3);
@@ -126,7 +290,6 @@ public class ViewPagerActivity extends FragmentActivity {
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
     }
-
 
     /**
      * @description: 设置添加Tab
@@ -173,6 +336,16 @@ public class ViewPagerActivity extends FragmentActivity {
                 dialog.dismiss();
             }
         }).create().show();
+    }
+
+    @Override
+    protected void onStop() {
+        EMClient.getInstance().chatManager().removeMessageListener(messageListener);
+        EMClient.getInstance().removeClientListener(clientListener);
+        DemoHelper sdkHelper = DemoHelper.getInstance();
+        sdkHelper.popActivity(this);
+
+        super.onStop();
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
