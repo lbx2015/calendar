@@ -121,6 +121,7 @@
         <activity
             android:name=".activity.ViewPagerActivity"
             android:configChanges="orientation|screenSize|locale"
+            android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTop" />
         <activity
             android:name=".activity.AddRemindActivity"
