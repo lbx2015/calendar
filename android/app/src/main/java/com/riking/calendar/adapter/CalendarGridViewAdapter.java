@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.FirstFragment;
+import com.riking.calendar.fragment.WorkFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
@@ -41,7 +41,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     public int dayOfWeek = 0; // 具体某一天是星期几
     public Calendar currentDate;
     ArrayList<String> reminders = new ArrayList<>();//not repeat reminders
-    FirstFragment fragment;
+    WorkFragment fragment;
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
     private int daysOfLastMonth = 0; // 上一个月的总天数
@@ -76,7 +76,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         sys_day = sysDate.split("-")[2];
     }
 
-    public CalendarGridViewAdapter(FirstFragment fragment, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
+    public CalendarGridViewAdapter(WorkFragment fragment, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
         this();
         this.context = fragment.getContext();
         this.fragment = fragment;

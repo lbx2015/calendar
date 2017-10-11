@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.necer.ncalendar.utils.Attrs;
 import com.necer.ncalendar.utils.Utils;
-import com.riking.calendar.fragment.FirstFragment;
+import com.riking.calendar.fragment.WorkFragment;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 
@@ -25,7 +25,7 @@ import java.util.List;
  */
 
 public abstract class CalendarView extends View {
-    public FirstFragment fragment;
+    public WorkFragment fragment;
     protected DateTime mSelectDateTime;//被选中的datetime
     protected DateTime mInitialDateTime;//初始传入的datetime，
     protected int mWidth;

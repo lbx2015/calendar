@@ -13,7 +13,7 @@ import com.necer.ncalendar.utils.MyLog;
 import com.necer.ncalendar.utils.Utils;
 import com.necer.ncalendar.view.CalendarView;
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.FirstFragment;
+import com.riking.calendar.fragment.WorkFragment;
 
 import org.joda.time.DateTime;
 
@@ -176,7 +176,7 @@ public abstract class CalendarPager extends ViewPager {
     }
 
     //riking
-    public void setWorkFragment(FirstFragment fragment) {
+    public void setWorkFragment(WorkFragment fragment) {
         calendarAdapter.fragment = fragment;
         CalendarView calendarView = calendarAdapter.getCalendarViews().get(getCurrentItem());
         if (calendarView == null) {

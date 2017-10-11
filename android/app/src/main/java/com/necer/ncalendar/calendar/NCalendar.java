@@ -19,7 +19,7 @@ import com.necer.ncalendar.listener.OnMonthCalendarChangedListener;
 import com.necer.ncalendar.listener.OnWeekCalendarChangedListener;
 import com.necer.ncalendar.utils.Attrs;
 import com.necer.ncalendar.view.MonthView;
-import com.riking.calendar.fragment.FirstFragment;
+import com.riking.calendar.fragment.WorkFragment;
 
 import org.joda.time.DateTime;
 
@@ -564,7 +564,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         }
     }
     //riking adding the method
-    public void setWorkFragment(FirstFragment fragment) {
+    public void setWorkFragment(WorkFragment fragment) {
         monthCalendar.setWorkFragment(fragment);
         weekCalendar.setWorkFragment(fragment);
     }

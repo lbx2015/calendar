@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.necer.ncalendar.view.CalendarView;
-import com.riking.calendar.fragment.FirstFragment;
+import com.riking.calendar.fragment.WorkFragment;
 
 import org.joda.time.DateTime;
 
@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 public abstract class CalendarAdapter extends PagerAdapter {
 
     //riking adding the fragment
-    public FirstFragment fragment;
+    public WorkFragment fragment;
     protected Context mContext;
     protected int mCount;//总页数
     protected int mCurr;//当前位置

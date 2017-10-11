@@ -78,7 +78,7 @@ import io.realm.Sort;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class FirstFragment extends Fragment implements OnCalendarChangedListener {
+public class WorkFragment extends Fragment implements OnCalendarChangedListener {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
     public RealmResults<Reminder> reminders;
