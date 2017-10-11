@@ -2,8 +2,6 @@ package com.riking.calendar.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,31 +13,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
-import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.necer.ncalendar.calendar.NCalendar;
 import com.necer.ncalendar.listener.OnCalendarChangedListener;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
-import com.riking.calendar.adapter.CalendarGridViewAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
 import com.riking.calendar.adapter.ReportOnlineAdapter;
@@ -237,7 +221,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
             return v;
         }
 
-        v = inflater.inflate(R.layout.first_fragment, container, false);
+        v = inflater.inflate(R.layout.work_fragment, container, false);
         ncalendar = (NCalendar) v.findViewById(R.id.ncalendar);
         ncalendar.setWorkFragment(this);
         ncalendar.setOnCalendarChangedListener(this);
