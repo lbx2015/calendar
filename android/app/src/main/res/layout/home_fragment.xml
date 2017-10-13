@@ -12,20 +12,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="?attr/colorPrimary"-->
+            <!--android:orientation="vertical"-->
+            <!--app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
+            <ss.com.bannerslider.views.BannerSlider
+                android:id="@+id/banner_slider1"
+                android:layout_width="match_parent"
+                android:layout_height="165dp"
+                android:layout_gravity="center_vertical"
+                app:animateIndicators="true"
+                app:defaultIndicators="circle"
+                app:interval="10000"
+                app:layout_collapseMode="parallax"
+                app:loopSlides="true" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:minHeight="?attr/actionBarSize">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layout_collapseMode="pin">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -58,10 +74,11 @@
                             android:id="@+id/search_edit_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
+                            android:textColorHint="@android:color/white"
                             android:hint="香蕉和枣一起吃，亲身.."
                             android:maxLines="1"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:textColor="@color/translucent_white" />
                     </LinearLayout>
 
                     <TextView
@@ -71,6 +88,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginBottom="9dp"
                         android:layout_marginRight="20dp"
+                        android:textColor="@color/white"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="提问"
@@ -79,29 +97,24 @@
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.Toolbar>
 
-            <ss.com.bannerslider.views.BannerSlider
-                android:id="@+id/banner_slider1"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:animateIndicators="true"
-                app:defaultIndicators="circle"
-                app:interval="10000"
-                app:layout_collapseMode="none"
-                app:loopSlides="true" />
+            <!--</LinearLayout>-->
+        </android.support.design.widget.CollapsingToolbarLayout>
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/top_tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                app:layout_anchor="@+id/appbar"
-                app:layout_anchorGravity="bottom"
-                app:tabIndicatorColor="@android:color/white"
-                app:tabIndicatorHeight="2dp"
-                app:tabPaddingEnd="0dp"
-                app:tabPaddingStart="0dp"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextColor="#66ffffff"></android.support.design.widget.TabLayout>
-        </LinearLayout>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/top_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            app:layout_anchor="@+id/appbar"
+            app:layout_anchorGravity="bottom"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabIndicatorHeight="2dp"
+            app:tabPaddingEnd="0dp"
+            app:tabPaddingStart="0dp"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="#66ffffff"></android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
