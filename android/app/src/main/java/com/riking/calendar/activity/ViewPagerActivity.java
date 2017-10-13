@@ -286,7 +286,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_viewpager);
         initViews();
 
-        Window window = getWindow();
+  /*      Window window = getWindow();
 
 // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -297,7 +297,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 // finally change the color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+        }*/
 
         //to test the download function not use request
 //        AppVersionResult u = new AppVersionResult();
