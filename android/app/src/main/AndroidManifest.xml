@@ -105,7 +105,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/launcher_icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppThemeNoActionBar">
         <activity
             android:name=".activity.LaunchActivity"
             android:launchMode="singleTop"
@@ -122,6 +122,7 @@
             android:name=".activity.ViewPagerActivity"
             android:configChanges="orientation|screenSize|locale"
             android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppThemeNoActionBar"
             android:launchMode="singleTop" />
         <activity
             android:name=".activity.AddRemindActivity"

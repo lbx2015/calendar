@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -57,7 +58,7 @@ import java.util.List;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class ViewPagerActivity extends FragmentActivity {
+public class ViewPagerActivity extends AppCompatActivity {
     //huanxin start
     protected static final String TAG = "ViewPagerActivity";
     //huanxin end

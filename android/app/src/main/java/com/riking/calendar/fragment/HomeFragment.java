@@ -11,8 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.riking.calendar.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ss.com.bannerslider.banners.Banner;
+import ss.com.bannerslider.banners.DrawableBanner;
+import ss.com.bannerslider.banners.RemoteBanner;
+import ss.com.bannerslider.events.OnBannerClickListener;
+import ss.com.bannerslider.views.BannerSlider;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -24,11 +34,39 @@ public class HomeFragment extends Fragment {
     View v;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
+    private BannerSlider bannerSlider;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    private void setupBannerSlider() {
+        bannerSlider = (BannerSlider) v.findViewById(R.id.banner_slider1);
+        addBanners();
+
+        bannerSlider.setOnBannerClickListener(new OnBannerClickListener() {
+            @Override
+            public void onClick(int position) {
+                Toast.makeText(getContext(), "Banner with position " + String.valueOf(position) + " clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void addBanners() {
+        List<Banner> remoteBanners = new ArrayList<>();
+        //Add banners using image urls
+        remoteBanners.add(new RemoteBanner(
+                "https://assets.materialup.com/uploads/dcc07ea4-845a-463b-b5f0-4696574da5ed/preview.jpg"
+        ));
+        remoteBanners.add(new DrawableBanner(R.drawable.profile2));
+        remoteBanners.add(new DrawableBanner(R.drawable.profile3));
+        remoteBanners.add(new DrawableBanner(R.drawable.profilegoat));
+        remoteBanners.add(new DrawableBanner(R.drawable.profile));
+        bannerSlider.setBanners(remoteBanners);
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,6 +80,7 @@ public class HomeFragment extends Fragment {
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.top_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
 
+        setupBannerSlider();
         return v;
     }
 

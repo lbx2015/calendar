@@ -61,10 +61,15 @@
                     android:text="提问" />
             </LinearLayout>
 
-            <ImageView
+            <ss.com.bannerslider.views.BannerSlider
+                android:id="@+id/banner_slider1"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/profile" />
+                android:layout_height="200dp"
+                app:animateIndicators="true"
+                app:defaultIndicators="circle"
+                app:interval="2000"
+                app:loopSlides="true"
+                />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/top_tab_layout"
