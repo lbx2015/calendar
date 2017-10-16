@@ -50,17 +50,14 @@
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="368dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="G01报表话题相关标题G01报表话题相关标题G01报表话题相关标题"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_image"
-            android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/item_image" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -68,18 +65,16 @@
             android:layout_height="67dp"
             android:layout_marginTop="8dp"
             android:scaleType="fitXY"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6"
-            app:srcCompat="@drawable/img_user_head"
-            app:layout_constraintHorizontal_bias="0.0" />
+            app:srcCompat="@drawable/img_user_head" />
 
         <TextView
             android:id="@+id/item_content"
-            android:layout_width="368dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="报表名称:资产负债项目统计表 2. G01《资产负债项目统计表》填报说明第一部分:引言 本表反映填报机构在报告日的财务状况, 应当按照资产、负债和所有者权益..."
             app:layout_constraintLeft_toLeftOf="parent"
