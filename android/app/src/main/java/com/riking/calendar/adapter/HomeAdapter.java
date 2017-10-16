@@ -6,8 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
@@ -52,7 +53,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, int i) {
         if (getItemViewType(i) == REMMEND_TYPE) {
-            MyLog.d("onBindViewHolderr at " + i +" and the view type is " + getItemViewType(i));
+            MyLog.d("onBindViewHolderr at " + i + " and the view type is " + getItemViewType(i));
             RecommendedViewHolder h = (RecommendedViewHolder) cellHolder;
             h.recyclerView.setLayoutManager(new LinearLayoutManager(h.recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
             h.recyclerView.setAdapter(new RecommendedAdapter());
@@ -66,6 +67,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
             }
             h.itemImage.setBorderWidth(2);
             h.itemImage.setBorderColor(h.itemImage.getResources().getColor(R.color.colorPrimary));
+            RequestOptions options = new RequestOptions();
+            Glide.with(h.itemImage.getContext()).load(R.drawable.img_user_head)
+                    .apply(options.fitCenter())
+                    .into(h.itemImage);
             h.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
