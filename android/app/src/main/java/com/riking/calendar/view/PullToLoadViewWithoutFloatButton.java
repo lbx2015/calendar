@@ -8,55 +8,49 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.RecyclerViewPositionHelper;
 
 
-public class PullToLoadView extends FrameLayout {
+public class PullToLoadViewWithoutFloatButton extends FrameLayout {
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
     protected CONST.ScrollDirection mCurScrollingDirection;
     protected int mPrevFirstVisibleItem = 0;
-    public SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
     private PullCallback mPullCallback;
     private RecyclerViewPositionHelper mRecyclerViewHelper;
     private int mLoadMoreOffset = 5;
     private boolean mIsLoadMoreEnabled = false;
-    private ImageButton img_float_btn;
     private boolean mVisible;
 
-    public PullToLoadView(Context context) {
+    public PullToLoadViewWithoutFloatButton(Context context) {
         this(context, null);
     }
 
-    public PullToLoadView(Context context, AttributeSet attrs) {
+    public PullToLoadViewWithoutFloatButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
     @SuppressLint("NewApi")
-    public PullToLoadView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PullToLoadViewWithoutFloatButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mInflater.inflate(R.layout.loadview, this, true);
+        mInflater.inflate(R.layout.loadview_without_floatbutton, this, true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        img_float_btn = (ImageButton) findViewById(R.id.img_float_btn);
         mVisible = true;
         init();
     }
@@ -225,25 +219,6 @@ public class PullToLoadView extends FrameLayout {
                     return;
                 }
             }
-            int translationY = visible ? 0 : height + getMarginBottom();
-            if (animate) {
-                ViewPropertyAnimator.animate(img_float_btn)
-                        .setInterpolator(mInterpolator).setDuration(800)
-                        .translationY(translationY);
-            } else {
-                ViewHelper.setTranslationY(img_float_btn, translationY);
-            }
-
         }
     }
-
-    private int getMarginBottom() {
-        int marginBottom = 0;
-        final ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        if (layoutParams instanceof MarginLayoutParams) {
-            marginBottom = ((MarginLayoutParams) layoutParams).bottomMargin;
-        }
-        return marginBottom;
-    }
-
 }

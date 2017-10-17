@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.HomeAdapter;
 import com.riking.calendar.listener.PullCallback;
-import com.riking.calendar.view.PullToLoadView;
+import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -25,7 +25,7 @@ public class TopicFragment extends Fragment {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
     HomeAdapter mAdapter;
-    private PullToLoadView mPullToLoadView;
+    private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -45,7 +45,7 @@ public class TopicFragment extends Fragment {
     }
 
     private void initViews() {
-        mPullToLoadView = (PullToLoadView) v.findViewById(R.id.pullToLoadView);
+        mPullToLoadView = (PullToLoadViewWithoutFloatButton) v.findViewById(R.id.pullToLoadView);
     }
 
     private void initEvents() {
