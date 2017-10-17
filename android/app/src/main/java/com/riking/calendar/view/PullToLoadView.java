@@ -36,7 +36,7 @@ public class PullToLoadView extends FrameLayout {
     private RecyclerViewPositionHelper mRecyclerViewHelper;
     private int mLoadMoreOffset = 5;
     private boolean mIsLoadMoreEnabled = false;
-    private ImageButton img_float_btn;
+    public ImageButton img_float_btn;
     private boolean mVisible;
 
     public PullToLoadView(Context context) {

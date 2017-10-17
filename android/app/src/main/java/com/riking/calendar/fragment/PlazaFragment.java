@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,8 +15,10 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.adapter.PlazaAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.view.PullToLoadView;
 
 /**
@@ -83,6 +86,15 @@ public class PlazaFragment extends Fragment {
 
         MyLog.d("initLoad");
         mPullToLoadView.initLoad();
+
+        mPullToLoadView.img_float_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), WebviewActivity.class);
+                i.putExtra(CONST.WEB_URL, "http://ueditor.baidu.com/website/umeditor.html");
+                startActivity(i);
+            }
+        });
     }
 
     private void loadData(final int page) {
