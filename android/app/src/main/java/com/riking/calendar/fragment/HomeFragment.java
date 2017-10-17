@@ -2,6 +2,8 @@ package com.riking.calendar.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
@@ -35,6 +38,9 @@ public class HomeFragment extends Fragment {
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
     private BannerSlider bannerSlider;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    AppBarLayout appBarLayout;
+    LinearLayout search;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +85,26 @@ public class HomeFragment extends Fragment {
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.top_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
+        appBarLayout = v.findViewById(R.id.appbar);
+        search = v.findViewById(R.id.search);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
+                if (Math.abs(verticalOffset)-appBarLayout.getTotalScrollRange() == 0)
+                {
+                    //  Collapsed
+                    search.setBackground(getResources().getDrawable(R.drawable.rounded_rectangle_not_translucent_background));
+
+                }
+                else
+                {
+                    //Expanded
+                    search.setBackground(getResources().getDrawable(R.drawable.rounded_rectangle));
+
+                }
+            }
+        });
         setupBannerSlider();
         return v;
     }
