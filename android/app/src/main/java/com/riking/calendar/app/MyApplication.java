@@ -53,6 +53,7 @@ public class MyApplication extends Application {
 
             @Override
             public void onActivityStarted(Activity activity) {
+                mCurrentActivity = activity;
                 Logger.v(activity, "onActivityStarted");
             }
 
