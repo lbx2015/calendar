@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.hyphenate.chatuidemo.DemoHelper;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
+import com.lzy.ninegrid.NineGridView;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.NetStateReceiver;
@@ -111,5 +112,11 @@ public class MyApplication extends Application {
 
         //init hyphenate demo helper
         DemoHelper.getInstance().init(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NineGridView.setImageLoader(new GlidImageLoader());
+            }
+        }).start();;
     }
 }

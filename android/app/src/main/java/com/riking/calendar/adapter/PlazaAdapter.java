@@ -8,13 +8,15 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.lzy.ninegrid.ImageInfo;
+import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
 import com.riking.calendar.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlazaAdapter extends RecyclerView.Adapter {
+public class PlazaAdapter extends RecyclerView.Adapter<PlazaViewHolder> {
 
     private Context context;
     private List<String> mList;
@@ -25,15 +27,14 @@ public class PlazaAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public PlazaViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.plaza_item, viewGroup, false);
-        return new HomeViewHolder(view);
+        return new PlazaViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, int i) {
-        HomeViewHolder h = (HomeViewHolder) cellHolder;
+    public void onBindViewHolder(PlazaViewHolder h, int i) {
 
         h.itemImage.setBorderWidth(2);
         h.itemImage.setBorderColor(h.itemImage.getResources().getColor(R.color.colorPrimary));
@@ -47,6 +48,15 @@ public class PlazaAdapter extends RecyclerView.Adapter {
 //             context.startActivity(new Intent(context, DetailsActivity.class));
             }
         });
+
+        ArrayList<ImageInfo> imageInfo = new ArrayList<>();
+        for (int j = 0; j < i && j < 9; j++) {
+            ImageInfo info = new ImageInfo();
+            info.setThumbnailUrl("http://img5.cache.netease.com/m/2015/5/21/20150521105913d3770_550.jpg");
+            info.setBigImageUrl("http://img5.cache.netease.com/m/2015/5/21/20150521105913d3770_550.jpg");
+            imageInfo.add(info);
+        }
+        h.nineGridView.setAdapter(new NineGridViewClickAdapter(context, imageInfo));
 
     }
 
