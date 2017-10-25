@@ -204,7 +204,7 @@ public class PullToLoadView extends FrameLayout {
     private void toggle(final boolean visible, final boolean animate,
                         boolean force) {
 
-        Log.d("zzw", "toggle");
+//        Log.d("zzw", "toggle");
         if (mVisible != visible || force) {
             mVisible = visible;
             int height = getHeight();

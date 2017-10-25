@@ -75,7 +75,10 @@ public class MyApplication extends Application {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-                mCurrentActivity = null;
+                //The activity would call onStop and onDestroy after another activity starts.
+                if (mCurrentActivity == activity) {
+                    mCurrentActivity = null;
+                }
                 Logger.v(activity, "onActivityDestroyed");
             }
 
