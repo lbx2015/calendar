@@ -84,13 +84,6 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.8'  // 此处以JPush 3.0.3 版本为例。
     compile 'cn.jiguang.sdk:jcore:1.1.6'  // 此处以JCore 1.1.1 版本为例。
 
-    //huanxin
-    //Optional compile for GCM (Google Cloud Messaging).
-    compile 'com.google.android.gms:play-services-gcm:10.2.0'
-//    compile 'com.hyphenate:hyphenate-sdk:3.3.4'
-    compile project(':easeui')
-    compile 'com.parse:parse-android:1.13.1'
-
     //butter knife
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -104,5 +97,12 @@ dependencies {
 //        exclude group: 'com.android.support', module: 'support-annotations'
 //    })
 //    compile 'com.android.support:support-v4:26.1.0'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+
+    //huanxin
+    //Optional compile for GCM (Google Cloud Messaging).
+    compile 'com.google.android.gms:play-services-gcm:10.2.1'
+//    compile 'com.hyphenate:hyphenate-sdk:3.3.4'
+    compile project(':easeui')
+    compile 'com.parse:parse-android:1.13.1'
 }
