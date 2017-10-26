@@ -1,2 +1,3 @@
 include ':app', 'library', ':pickerview', ':easeui'
 include ':bannerslider'
+include ':photoPicker'

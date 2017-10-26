@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.WebviewActivity;
+import com.riking.calendar.activity.MomentAddActivity;
 import com.riking.calendar.adapter.PlazaAdapter;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.CONST;
@@ -90,8 +90,7 @@ public class PlazaFragment extends Fragment {
         mPullToLoadView.img_float_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), WebviewActivity.class);
-                i.putExtra(CONST.WEB_URL, "http://ueditor.baidu.com/website/umeditor.html");
+                Intent i = new Intent(getContext(), MomentAddActivity.class);
                 startActivity(i);
             }
         });

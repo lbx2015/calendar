@@ -125,6 +125,21 @@
         <item name="android:textSize">9sp</item>
         <item name="android:paddingBottom">0dp</item>
     </style>
+
+
+    <style name="AutoWrapTv" parent="AutoWrap">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:onClick">onClick</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
     <!--
    1.tabIndicatorColor：TabLayout指示器的颜色
    2.tabTextColor: tab默认字体的颜色
