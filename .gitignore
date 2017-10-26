@@ -9,3 +9,4 @@ web/tl-api/target/
 web/tl-web/target/
 .idea/
 android/easeui/build/
+android/photoPicker/build/
