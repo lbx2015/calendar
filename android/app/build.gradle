@@ -101,7 +101,7 @@ dependencies {
 
     //huanxin
     //Optional compile for GCM (Google Cloud Messaging).
-    compile 'com.google.android.gms:play-services-gcm:10.2.1'
+    compile 'com.google.android.gms:play-services-gcm:11.4.2'
 //    compile 'com.hyphenate:hyphenate-sdk:3.3.4'
     compile project(':easeui')
     compile 'com.parse:parse-android:1.13.1'
