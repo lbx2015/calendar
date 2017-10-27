@@ -106,6 +106,7 @@
             android:theme="@style/AppThemeNoActionBar"
             android:launchMode="singleTop" />
         <activity android:name=".activity.MomentAddActivity" />
+        <activity android:name=".activity.TopicActivity" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />

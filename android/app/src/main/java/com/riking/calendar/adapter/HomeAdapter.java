@@ -1,6 +1,7 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
 
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             h.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//             context.startActivity(new Intent(context, DetailsActivity.class));
+                    context.startActivity(new Intent(context, TopicActivity.class));
                 }
             });
         }
