@@ -102,6 +102,6 @@ public class QuestionsFragment extends Fragment {
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 3000);
+        }, 1000);
     }
 }

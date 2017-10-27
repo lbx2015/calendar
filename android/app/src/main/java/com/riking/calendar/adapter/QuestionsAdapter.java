@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.TopicActivity;
@@ -80,7 +78,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
 
     public void add(String s) {
         mList.add(s);
-        notifyDataSetChanged();
+        notifyItemInserted(mList.size() - 1);
     }
 
     public void clear() {
