@@ -27,6 +27,8 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
     TextView itemContent;
     @BindView(R.id.item_image)
     CircleImageView itemImage;
+    @BindView(R.id.fromPhone)
+    TextView fromPhone;
 //    @BindView(R.id.item_count)
 //    TextView itemCount;
 

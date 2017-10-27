@@ -2,6 +2,7 @@ package com.riking.calendar.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,6 +80,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     context.startActivity(new Intent(context, TopicActivity.class));
                 }
             });
+
+            h.fromPhone.setText("来自于" + Build.MANUFACTURER + Build.MODEL);
         }
 
     }
