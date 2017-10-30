@@ -9,6 +9,7 @@ import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
@@ -94,7 +96,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @SuppressLint("RestrictedApi")
                 public void onClick(View v) {
                     //Creating the instance of PopupMenu
-                    PopupMenu popup = new PopupMenu(context, h.moreAction);
+                    PopupMenu popup = new PopupMenu(context, h.moreAction, Gravity.RIGHT);
                     //Inflating the Popup using xml file
                     popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
                     //noinspection RestrictedApi
@@ -121,6 +123,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
                         }
                     });
                     popup.show();
+                }
+            });
+
+            h.itemContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.mCurrentActivity.startActivity(new Intent(context, AnswerActivity.class));
                 }
             });
 

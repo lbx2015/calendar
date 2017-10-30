@@ -118,6 +118,7 @@
         <activity
             android:name=".activity.RemindRepeatActivity"
             android:theme="@style/AppThemeNoActionBar" />
+        <activity android:name=".activity.AnswerActivity"/>
 
         <receiver android:name=".util.NetStateReceiver" />
 
