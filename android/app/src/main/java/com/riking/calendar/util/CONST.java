@@ -14,13 +14,6 @@ public class CONST {
     public static final byte DELETE = 1;
     public static final byte ADD = 2;
     public static final byte UPDATE = 3;
-
-    //滚动事件
-    public enum ScrollDirection {
-        UP,
-        DOWN,
-        SAME
-    }
     public final static int TOTAL_COL = 7;
     public final static int TOTAL_ROW = 6;
     public final static int CURRENT_PAGER_INDEX = 1000;
@@ -43,16 +36,20 @@ public class CONST {
     public static final String USER_ADDRESS = "USER_ADDRESS";
     public static final String USER_BIRTHDAY = "USER_BIRTHDAY";
     public static final String USER_SEX = "user_sex";
-
     //image path external storage
     public static final String IMAGE_PATH = "/rikingImage";
-
     public static final String REMINDER_TITLE = "Reminder title";
-
     //Date formats
     public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
     public static final String yyyyMMdd = "yyyyMMdd";
     public static final String birthDayFormat = "yyyy-MM-dd";
-
     public static final String WEB_URL = "WEB_URL";
+    public static final String IMAGE_URL = "IMAGE_URL";
+
+    //滚动事件
+    public enum ScrollDirection {
+        UP,
+        DOWN,
+        SAME
+    }
 }

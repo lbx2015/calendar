@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.util.CONST;
 
 import java.io.File;
 
@@ -88,8 +90,10 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
          */
         @JavascriptInterface
         public void showImage(String imageUrl) {
-            Toast.makeText(getBaseContext(), "showImage clicked.", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(getBaseContext(), "showImage clicked."+imageUrl, Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(AnswerActivity.this, LookImageActivity.class);
+            i.putExtra(CONST.IMAGE_URL, imageUrl);
+            startActivity(i);
         }
     }
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:activity="http://schemas.android.com/apk/res-auto"
     package="com.riking.calendar">
 
     <uses-sdk
@@ -102,13 +101,14 @@
         <activity
             android:name=".activity.ViewPagerActivity"
             android:configChanges="orientation|screenSize|locale"
-            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTop"
             android:theme="@style/AppThemeNoActionBar"
-            android:launchMode="singleTop" />
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.MomentAddActivity" />
-        <activity  android:windowSoftInputMode="adjustPan"
+        <activity
+            android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
-            android:name=".activity.TopicActivity" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />
@@ -118,7 +118,8 @@
         <activity
             android:name=".activity.RemindRepeatActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".activity.AnswerActivity"/>
+        <activity android:name=".activity.AnswerActivity" />
+        <activity android:name=".activity.LookImageActivity" />
 
         <receiver android:name=".util.NetStateReceiver" />
 
@@ -198,8 +199,8 @@
                 <category android:name="com.riking.calendar" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hyphenate.chatuidemo.ui.HyphenateLoginActivity"/>
-        <activity android:name="com.hyphenate.chatuidemo.ui.HyphenateMainActivity"/>
+        <activity android:name="com.hyphenate.chatuidemo.ui.HyphenateLoginActivity" />
+        <activity android:name="com.hyphenate.chatuidemo.ui.HyphenateMainActivity" />
         <!-- 注册 -->
         <activity
             android:name="com.hyphenate.chatuidemo.ui.RegisterActivity"
@@ -351,10 +352,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name="com.hyphenate.chatuidemo.ui.SharedFilesActivity"
+        <activity
+            android:name="com.hyphenate.chatuidemo.ui.SharedFilesActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            />
+            android:theme="@style/horizontal_slide" />
         <activity
             android:name="com.hyphenate.easeui.ui.EaseShowVideoActivity"
             android:screenOrientation="portrait"
@@ -377,13 +378,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name="com.hyphenate.chatuidemo.ui.MultiDeviceActivity"
+        <activity
+            android:name="com.hyphenate.chatuidemo.ui.MultiDeviceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name="com.hyphenate.chatuidemo.ui.NamePasswordActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.hyphenate.chatuidemo.ui.NamePasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
+            android:theme="@style/horizontal_slide" />
 
         <!-- iOS offline push nick -->
         <activity
@@ -586,20 +589,20 @@
         <receiver android:name="com.hyphenate.chat.EMHWPushReceiver">
             <intent-filter>
                 <!-- 必须,用于接收 TOKEN -->
-                <action android:name="com.huawei.android.push.intent.REGISTRATION"/>
+                <action android:name="com.huawei.android.push.intent.REGISTRATION" />
                 <!-- 必须，用于接收消息 -->
-                <action android:name="com.huawei.android.push.intent.RECEIVE"/>
+                <action android:name="com.huawei.android.push.intent.RECEIVE" />
                 <!-- 可选，用于点击通知栏或通知栏上的按钮后触发 onEvent 回调 -->
-                <action android:name="com.huawei.android.push.intent.CLICK"/>
+                <action android:name="com.huawei.android.push.intent.CLICK" />
                 <!-- 可选，查看 PUSH 通道是否连接，不查看则不需要 -->
-                <action android:name="com.huawei.intent.action.PUSH_STATE"/>
+                <action android:name="com.huawei.intent.action.PUSH_STATE" />
             </intent-filter>
         </receiver>
 
         <receiver android:name="com.huawei.hms.support.api.push.PushEventReceiver">
             <intent-filter>
                 <!-- 接收通道发来的通知栏消息，兼容老版本 PUSH -->
-                <action android:name="com.huawei.intent.action.PUSH"/>
+                <action android:name="com.huawei.intent.action.PUSH" />
             </intent-filter>
         </receiver>
         <!-- huawei push end -->
