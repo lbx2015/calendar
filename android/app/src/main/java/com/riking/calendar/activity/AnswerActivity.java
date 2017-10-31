@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.QuestionsAdapter;
+import com.riking.calendar.adapter.ReviewsAdapter;
 import com.riking.calendar.util.FileUtil;
 
 import java.io.File;
@@ -28,6 +29,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 
 public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     RecyclerView suggestionQuestionsRecyclerView;
+    RecyclerView reviewsRecyclerView;
     private WebView webView;
 
     @Override
@@ -64,6 +66,10 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         suggestionQuestionsRecyclerView = findViewById(R.id.suggestion_questions_recyclerview);
         suggestionQuestionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         suggestionQuestionsRecyclerView.setAdapter(new QuestionsAdapter(this));
+        //init reviews recycler view
+        reviewsRecyclerView = findViewById(R.id.review_recyclerview);
+        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        reviewsRecyclerView.setAdapter(new ReviewsAdapter(this));
     }
 
     private boolean isNetworkAvailable() {

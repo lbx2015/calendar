@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.riking.calendar.R;
-import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.util.CONST;
 
 /**
@@ -28,7 +28,7 @@ public class LookImageActivity extends AppCompatActivity {
         setContentView(R.layout.look_image_activity);
         imageView = findViewById(R.id.image_view);
         String imageUrl = getIntent().getExtras().getString(CONST.IMAGE_URL);
-        GlideApp.with(this).load(imageUrl).into(imageView);
+        Glide.with(this).load(imageUrl).into(imageView);
     }
 
     @Override
