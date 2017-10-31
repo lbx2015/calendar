@@ -2,7 +2,6 @@ package com.riking.calendar.util;
 
 import android.os.Environment;
 
-
 import com.riking.calendar.jiguang.Logger;
 
 import java.io.File;
@@ -16,6 +15,11 @@ import java.util.Date;
  */
 
 public class FileUtil {
+
+    public static File getImageSaveDir() {
+        File mFile1 = Environment.getExternalStorageDirectory();
+        return new File(mFile1, CONST.IMAGE_PATH);
+    }
     public static File generateImageFile() {
         File mFile1 = Environment.getExternalStorageDirectory();
         File imagePath = new File(mFile1, CONST.IMAGE_PATH);

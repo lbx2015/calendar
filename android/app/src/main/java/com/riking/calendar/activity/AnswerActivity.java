@@ -15,8 +15,11 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.FileUtil;
 
 import java.io.File;
+
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -91,9 +94,11 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         @JavascriptInterface
         public void showImage(String imageUrl) {
             Toast.makeText(getBaseContext(), "showImage clicked."+imageUrl, Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(AnswerActivity.this, LookImageActivity.class);
-            i.putExtra(CONST.IMAGE_URL, imageUrl);
-            startActivity(i);
+//            Intent i = new Intent(AnswerActivity.this, LookImageActivity.class);
+//            i.putExtra(CONST.IMAGE_URL, imageUrl);
+            // 预览单张图片
+            startActivity(BGAPhotoPreviewActivity.newIntent(AnswerActivity.this, FileUtil.getImageSaveDir(), imageUrl));
+//            startActivity(i);
         }
     }
 }
