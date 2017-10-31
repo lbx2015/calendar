@@ -20,8 +20,8 @@ import java.util.List;
 public class QuestionsAdapter extends RecyclerView.Adapter {
 
     public static final int REMMEND_TYPE = 2;
+    public List<String> mList;
     private Context context;
-    private List<String> mList;
 
     public QuestionsAdapter(Context context) {
         this.context = context;
@@ -73,7 +73,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mList.size() + 5;
     }
 
     public void add(String s) {
