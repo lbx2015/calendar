@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.hyphenate.chatuidemo.ui.HyphenateLoginActivity;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.LoginActivity;
+import com.riking.calendar.activity.LoginNavigateActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
@@ -120,8 +122,8 @@ public class FourthFragment extends Fragment implements OnClickListener {
                 if (sharedPreferences.getBoolean(CONST.IS_LOGIN, false)) {
                     startActivity(new Intent(getContext(), UserInfoActivity.class));
                 } else {
-//                    startActivity((new Intent(getContext(), LoginActivity.class)));
-                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
+                    startActivity((new Intent(getContext(), LoginNavigateActivity.class)));
+//                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
                 }
                 break;
             }

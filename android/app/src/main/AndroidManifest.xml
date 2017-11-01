@@ -106,6 +106,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.MomentAddActivity" />
         <activity
+            android:name=".activity.LoginNavigateActivity"/>
+        <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="adjustPan" />
