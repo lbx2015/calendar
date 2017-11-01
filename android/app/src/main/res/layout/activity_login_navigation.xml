@@ -36,7 +36,7 @@
         app:srcCompat="@drawable/riking" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/phone_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

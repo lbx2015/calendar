@@ -1,20 +1,29 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.util.StatusBarUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by zw.zhang on 2017/8/14.
  */
 
 public class LoginNavigateActivity extends AppCompatActivity {
+
+    @BindView(R.id.phone_login)
+    TextView loginWithPhone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,5 +35,17 @@ public class LoginNavigateActivity extends AppCompatActivity {
         }
 
         StatusBarUtil.setTranslucent(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ButterKnife.bind(this);
+        loginWithPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginNavigateActivity.this, LoginActivity.class));
+            }
+        });
     }
 }
