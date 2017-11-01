@@ -135,6 +135,11 @@ public class AppUser extends BaseEntity {
 	@Comment("全天提醒时间")
 	@Column(name = "all_day_reminder_time",length =4 )
 	private String allDayReminderTime;
+	
+	@Comment("微信openid")
+	@Column(name = "openId",length =128 )
+	private String openId;
+	
 	//验证码
 	@Transient
 	private String valiCode;
@@ -151,11 +156,9 @@ public class AppUser extends BaseEntity {
 		return allDayReminderTime;
 	}
 
-
 	public void setAllDayReminderTime(String allDayReminderTime) {
 		this.allDayReminderTime = allDayReminderTime;
 	}
-
 
 	public String getName() {
 		return name;
@@ -172,7 +175,6 @@ public class AppUser extends BaseEntity {
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}
-
 
 	public String getIdType() {
 		return idType;
@@ -303,7 +305,14 @@ public class AppUser extends BaseEntity {
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
+	
+	public String getOpenId() {
+		return openId;
+	}
 
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
 
 	@Override
 	public int hashCode() {
