@@ -144,7 +144,8 @@
             <WebView
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></WebView>
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"></WebView>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -193,7 +194,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/suggestion_questions_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -242,7 +244,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/review_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
