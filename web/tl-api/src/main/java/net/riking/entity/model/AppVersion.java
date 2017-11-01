@@ -32,8 +32,16 @@ public class AppVersion extends BaseEntity {
 	private String versionNote;
 
 	// 更新日期
-	@Column(name = "renewal_time",length = 8)
+	@Column(name = "renewal_time", length = 8)
 	private String renewalTime;
+
+	// 客户端类型：1-IOS;2-Android;3-其它
+	@Column(name = "type", length = 1)
+	private String type;
+
+	// apk路径
+	@Column(name = "apk_url", length = 128)
+	private String apkUrl;
 
 	// 删除状态 0删除 1显示
 	@Column(name = "delete_state", length = 1)
@@ -64,6 +72,22 @@ public class AppVersion extends BaseEntity {
 
 	public void setForces(String forces) {
 		this.forces = forces;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getApkUrl() {
+		return apkUrl;
+	}
+
+	public void setApkUrl(String apkUrl) {
+		this.apkUrl = apkUrl;
 	}
 
 	public String getRenewalTime() {
