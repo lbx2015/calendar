@@ -7,7 +7,7 @@
         android:width="1dp"
         android:color="@android:color/darker_gray"></stroke>
     <!-- view background color -->
-    <solid android:color="@android:color/white"></solid>
+    <solid android:color="@color/translucent_color_background"></solid>
     <!-- If you want to add some padding -->
     <!--<padding
         android:bottom="3dp"

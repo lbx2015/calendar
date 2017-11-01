@@ -171,7 +171,7 @@
     HolidayModel *hModel = self.dataArray[indexPath.row];
     
     //日期
-    UILabel *timeLable = [self createMainLabelWithText:hModel.hdayDate];
+    UILabel *timeLable = [self createMainLabelWithText:[Utils setOldStringTime:hModel.hdayDate inputFormat:@"yyyyMMdd" outputFormat:@"yyyy-MM-dd"]];
     [cell.contentView addSubview:timeLable];
     
     //国家
@@ -179,7 +179,7 @@
     [cell.contentView addSubview:countryView];
     
     UIImageView *countryImageView = [[UIImageView  alloc]init];
-    [Utils setImageView:countryImageView imageUrl:hModel.iconUrl placeholderImage:@""];
+    [Utils setImageView:countryImageView imageUrl:hModel.flagUrl placeholderImage:@""];
     [countryView addSubview:countryImageView];
     
     UILabel *countyrLbale = [self createMainLabelWithText:hModel.ctryNameValue];

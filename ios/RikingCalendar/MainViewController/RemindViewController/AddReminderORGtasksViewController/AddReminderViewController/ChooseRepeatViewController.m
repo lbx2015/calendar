@@ -28,8 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"重复时间";
-    [self setRightButtonWithTitle:@[@"确定"]];
+    self.title = NSLocalizedString(@"repeat_time", nil);
+    [self setRightButtonWithTitle:@[NSLocalizedString(@"sure", nil)]];
     [self initData];
     [self initUI];
     
@@ -59,8 +59,18 @@
     }else{
         [_repeatStrArray addObject:self.reminderModel.repeatValue];
     }
+//    "not_repeat"                        = "不重复";
+//    "Monday"                            = "每周一";
+//    "Tuesday"                           = "每周二";
+//    "Wednesday"                         = "每周三";
+//    "Thursday"                          = "每周四";
+//    "Friday"                            = "每周五";
+//    "Saturday"                          = "每周六";
+//    "Sunday"                            = "每周日";
+//    "Worksday"                          = "法定工作日重复(智能跳过节假日)";
+//    "Legalholiday"                      = "法定节假日重复(智能跳过工作日)";
     
-    self.repeatArray = [NSMutableArray arrayWithObjects:@"不重复",@"每周一",@"每周二",@"每周三",@"每周四",@"每周五",@"每周六",@"每周日",@"法定工作日重复(智能跳过节假日)",@"法定节假日重复(智能跳过工作日)", nil];
+    self.repeatArray = [NSMutableArray arrayWithObjects:NSLocalizedString(@"not_repeat", nil),NSLocalizedString(@"Monday", nil),NSLocalizedString(@"Tuesday", nil),NSLocalizedString(@"Wednesday", nil),NSLocalizedString(@"Thursday", nil),NSLocalizedString(@"Friday", nil),NSLocalizedString(@"Saturday", nil),NSLocalizedString(@"Sunday", nil),NSLocalizedString(@"Worksday", nil),NSLocalizedString(@"Legalholiday", nil), nil];
     
 }
 

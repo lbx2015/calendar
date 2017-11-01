@@ -129,6 +129,9 @@
     } failure:^(NSError *error) {
         [self hideMBManager];
         [MBManager showBriefAlert:[Utils getMessageError:error] inView:self.view];
+        [self.diyRefreshFooter endRefreshing];
+        [self.kkRefreshHeader endRefreshing];
+        [self.kkRefreshFooter endRefreshing];
     }];
 }
 
@@ -171,6 +174,9 @@
     } failure:^(NSError *error) {
         [self hideMBProgressHUD];
         [MBManager showBriefAlert:[Utils getMessageError:error] inView:self.view];
+        if (failue) {
+            failue([Utils getMessageError:error]);
+        }
     }];
 }
 
@@ -190,16 +196,19 @@
     NSMutableDictionary *parm = [NSMutableDictionary dictionary];
     
     if (requestStyle == remindSaveUpdate) {
+        requestUrl = requestUrl(saveReminder);
         
     }else if (requestStyle == remindDelete){
         
+        
     }else if (requestStyle == gtasksSaveUpdate){
         requestUrl = requestUrl(saveTodo);
-        GtasksModel *gModel = (GtasksModel *)model;
-        [parm setDictionary:[gModel mj_keyValues]];
+        
     }else{
         
     }
+    
+    [parm setDictionary:[model mj_keyValues]];
     
     if ([parm objectForKey:@"columeNames"]) {
         [parm removeObjectForKey:@"columeNames"];
@@ -238,15 +247,17 @@
         }else{
             
             NSString *message = dictData?dictData[@"codeDesc"]:@"网络链接错误";
-            [MBManager showBriefAlert:message inView:self.view];
             if (failue) {
                 failue(message);
             }
         }
         
     } failure:^(NSError *error) {
-        [self hideMBProgressHUD];
-        [MBManager showBriefAlert:[Utils getMessageError:error] inView:self.view];
+        
+        if (failue) {
+            failue([Utils getMessageError:error]);
+        }
+        
     }];
     
     
@@ -295,6 +306,7 @@
     if (!_kkRefreshHeader) {
         
         _kkRefreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(addNewData)];
+        _kkRefreshHeader.lastUpdatedTimeLabel.hidden = YES;
     }
     
     return _kkRefreshHeader;
@@ -315,12 +327,21 @@
     return _kkRefreshFooter;
 }
 
+- (DIYRefreshAutoFooter *)diyRefreshFooter{
+    
+    if (!_diyRefreshFooter) {
+        _diyRefreshFooter = [DIYRefreshAutoFooter footerWithRefreshingTarget:self refreshingAction:@selector(addMoreData)];
+    }
+    
+    return _diyRefreshFooter;
+}
 
 -(void)addNewData
 {
-    if ([self.kkRefreshFooter isRefreshing])
+    if ([self.kkRefreshFooter isRefreshing]  || [self.diyRefreshFooter isRefreshing])
     {
         [self.kkRefreshHeader endRefreshing];
+        [self.diyRefreshFooter endRefreshing];
         return;
     }
     
@@ -329,7 +350,7 @@
     self.loadingAll = NO;
     
     [self.kkRefreshFooter resetNoMoreData];
-    
+    [self.kkRefreshFooter resetNoMoreData];
     [self getData];
 }
 
@@ -338,10 +359,11 @@
     if ([self.kkRefreshHeader isRefreshing] || self.loadingAll)
     {
         [self.kkRefreshFooter endRefreshing];
-        
+        [self.diyRefreshFooter endRefreshing];
         if (self.loadingAll) {
-            [MBManager showWaitingWithTitle:@"已经到底了" inView:self.view];
+//            [MBManager showWaitingWithTitle:@"已经到底了" inView:self.view];
             [self.kkRefreshFooter endRefreshingWithNoMoreData];
+            [self.diyRefreshFooter endRefreshingWithNoMoreData];
         }
         
         return;
@@ -426,10 +448,20 @@
             [backBtn setTitle:buttonName forState:UIControlStateNormal];
             [backBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [backBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
-            [backBtn setFrame:CGRectMake(0, 0, 17*[buttonName length], 30)];
+            
+            int a = [buttonName characterAtIndex:1];
+            if( a > 0x4e00 && a < 0x9fff)//判断输入的是否是中文
+            {
+                [backBtn setFrame:CGRectMake(0, 0, 17*[buttonName length], 30)];
+            }
+            else{
+                [backBtn setFrame:CGRectMake(0, 0, 9*[buttonName length], 30)];
+            }
+            
         }
         
     }
+    backBtn.backgroundColor = [UIColor clearColor];
     [backBtn addTarget:self action:@selector(doLeftAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = leftItem;

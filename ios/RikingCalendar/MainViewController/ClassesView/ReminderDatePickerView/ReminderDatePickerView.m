@@ -40,6 +40,7 @@ typedef void(^doneBlock)(NSString *time);
 @property (nonatomic,strong) UIPickerView *reminderPickView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickViewBgBottomLayout;
 
+@property (nonatomic,copy) NSString *selectTime;
 
 
 
@@ -66,7 +67,7 @@ typedef void(^doneBlock)(NSString *time);
     return self;
 }
 
-- (void)setDateStyle:(ReminderDateStyle)datePickerStyle CompleteBlock:(void(^)(NSString *time))completeBlock{
+- (void)setDateStyle:(ReminderDateStyle)datePickerStyle selectTime:(NSString *)selectTime CompleteBlock:(void(^)(NSString *time))completeBlock{
     
 
     self.frame=CGRectMake(0, 0, kScreenWidth, kScreenHeight);
@@ -89,7 +90,7 @@ typedef void(^doneBlock)(NSString *time);
     if (self.reminderTimeLabel.text.length==0) {
         switch (self.datePickerStyle) {
             case ReminderStyleShowMinute:
-                self.reminderTimeLabel.text = @"提前1分";
+                self.reminderTimeLabel.text = [NSString stringWithFormat:@"%@1%@",NSLocalizedString(@"advance_remind", nil),NSLocalizedString(@"minute", nil)];//@"提前1分";
                 break;
             case ReminderStyleShowHourMinute:
                 self.reminderTimeLabel.text = @"提前0时1分";
@@ -115,7 +116,7 @@ typedef void(^doneBlock)(NSString *time);
         if (i<60) {
             
             if (0<i && i<60) {
-                [_minuteArray addObject:[NSString stringWithFormat:@"%@分",num]];
+                [_minuteArray addObject:[NSString stringWithFormat:@"%@%@",num,NSLocalizedString(@"minute", nil)]];
             }
             if (i<24) {
                 [_hourArray addObject:[NSString stringWithFormat:@"%@时",num]];
@@ -125,6 +126,8 @@ typedef void(^doneBlock)(NSString *time);
         }
     }
     
+    
+    self.selectTime = selectTime;
     
 }
 
@@ -196,7 +199,7 @@ typedef void(^doneBlock)(NSString *time);
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
     
-    return [UIScreen mainScreen].bounds.size.width/5;
+    return [UIScreen mainScreen].bounds.size.width/3;
 }
 
 
@@ -284,12 +287,35 @@ typedef void(^doneBlock)(NSString *time);
             break;
     }
     
-    self.reminderTimeLabel.text = [NSString stringWithFormat:@"提前%@",timeStr];
+    self.reminderTimeLabel.text = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"advance_remind", nil),timeStr];
     _didSelectTime = timeStr;
 }
 
 
-
+- (void)setSelectTime:(NSString *)selectTime{
+    
+    _selectTime = selectTime;
+    
+    switch (self.datePickerStyle) {
+        case ReminderStyleShowMinute:
+            
+            if ([_selectTime intValue]>0) {
+                _didSelectTime = [NSString stringWithFormat:@"%@%@",_selectTime,NSLocalizedString(@"minute", nil)];
+            }else{
+                _didSelectTime = [NSString stringWithFormat:@"1%@",NSLocalizedString(@"minute", nil)];
+            }
+            
+            [self.reminderPickView selectRow:[_selectTime intValue]>0?([_selectTime intValue]-1)+_minuteArray.count*(MAXNUM/2) : [_selectTime intValue]+_minuteArray.count*(MAXNUM/2) inComponent:0 animated:NO];
+            break;
+        case ReminderStyleShowHourMinute:
+            break;
+        case ReminderStyleShowDayHourMinute:
+            break;
+        default:
+            
+            break;
+    }
+}
 
 #pragma mark - Action
 -(void)show {
@@ -334,7 +360,7 @@ typedef void(^doneBlock)(NSString *time);
     return YES;
 }
 - (IBAction)showPickView:(id)sender {
-    self.doneBlock([_didSelectTime stringByReplacingOccurrencesOfString:@"分" withString:@""]);
+    self.doneBlock([_didSelectTime stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@",NSLocalizedString(@"minute", nil)] withString:@""]);
     [self dismiss];
 }
 

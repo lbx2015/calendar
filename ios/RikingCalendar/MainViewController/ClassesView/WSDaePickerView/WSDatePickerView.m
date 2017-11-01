@@ -116,11 +116,18 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
             _dateFormatter = @"HH:mm";
             break;
         case DateStyleShowMonthOrShowYearMonthDay:
-            
             if (self.selectFullMonth.selected) {
                 _dateFormatter = @"yyyy-MM";
             }else{
                 _dateFormatter = @"yyyy-MM-dd";
+            }
+            
+            break;
+        case DateStyleShowYear:
+            if (self.selectFullMonth.selected) {
+                _dateFormatter = @"yyyy";
+            }else{
+                _dateFormatter = @"yyyy-MM";
             }
             
             break;
@@ -163,13 +170,18 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
             _dateFormatter = @"HH:mm";
             break;
         case DateStyleShowMonthOrShowYearMonthDay:
-            
             if (self.selectFullMonth.selected) {
                 _dateFormatter = @"yyyy-MM";
             }else{
                 _dateFormatter = @"yyyy-MM-dd";
             }
-            
+            break;
+        case DateStyleShowYear:
+            if (self.selectFullMonth.selected) {
+                _dateFormatter = @"yyyy";
+            }else{
+                _dateFormatter = @"yyyy-MM";
+            }
             break;
         default:
             _dateFormatter = @"yyyy-MM";
@@ -217,7 +229,15 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
         [self.selectFullMonth setTitleColor:dt_app_main_color forState:UIControlStateSelected];
         self.selectFullMonth.titleLabel.font = threeClassTextFont;
         
-    }else{
+    }else if (self.datePickerStyle == DateStyleShowYear){
+        [self.selectFullMonth setImage:[UIImage imageNamed:@"selectTime_norm_icon"] forState:UIControlStateNormal];
+        [self.selectFullMonth setImage:[UIImage imageNamed:@"selectTime_selected_icon"] forState:UIControlStateSelected];
+        [self.selectFullMonth setTitle:@"整年" forState:UIControlStateNormal];
+        [self.selectFullMonth setTitleColor:dt_app_main_color forState:UIControlStateNormal];
+        [self.selectFullMonth setTitleColor:dt_app_main_color forState:UIControlStateSelected];
+        self.selectFullMonth.titleLabel.font = threeClassTextFont;
+    }
+    else{
         self.selectFullMonthBgView.hidden = YES;
         self.selectFullMonth.hidden = YES;
     }
@@ -317,6 +337,12 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
             }else{
                 return 3;
             }
+        case DateStyleShowYear:
+            if (self.selectFullMonth.selected) {
+                return 1;
+            }else{
+                return 2;
+            }
         default:
             return 0;
     }
@@ -350,6 +376,9 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
             return [numberArr[component] integerValue];
             break;
         case DateStyleShowMonthOrShowYearMonthDay:
+            return [numberArr[component] integerValue]*1000;
+            break;
+        case DateStyleShowYear:
             return [numberArr[component] integerValue]*1000;
             break;
         default:
@@ -392,6 +421,13 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
                 return @[@(yearNum),@(monthNum)];
             }else{
                 return @[@(yearNum),@(monthNum),@(dayNum)];
+            }
+            break;
+        case DateStyleShowYear:
+            if (self.selectFullMonth.selected) {
+                return @[@(yearNum)];
+            }else{
+                return @[@(yearNum),@(monthNum)];
             }
             break;
         default:
@@ -532,6 +568,22 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
                     }else{
                         title = _dayArray[row%_dayArray.count];
                     }
+                }
+            }
+            break;
+        case DateStyleShowYear:
+            
+            if (self.selectFullMonth.selected) {
+                if (component==0) {
+                    title = _yearArray[row%_yearArray.count];
+                }
+                
+            }else{
+                if (component==0) {
+                    title = _yearArray[row%_yearArray.count];
+                }
+                if (component==1) {
+                    title = _monthArray[row%_monthArray.count];
                 }
             }
             break;
@@ -682,6 +734,23 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
                 }
                 
                 [pickerView reloadComponent:2];
+            }
+            
+            break;
+        case DateStyleShowYear:
+            
+            if (self.selectFullMonth.selected) {
+                if (component == 0) {
+                    yearIndex = row%_yearArray.count;
+                }
+                
+            }else{
+                if (component == 0) {
+                    yearIndex = row%_yearArray.count;
+                }
+                if (component == 1) {
+                    monthIndex = row%_monthArray.count;
+                }
             }
             
             break;
@@ -930,6 +999,14 @@ typedef void(^chooseTime)(NSDate *date,BOOL isMonth);
             indexArray = @[@(yearIndex),@(monthIndex),@(dayIndex)];
         }
     }
+    if (self.datePickerStyle == DateStyleShowYear) {
+        if (self.selectFullMonth.selected) {
+            indexArray = @[@(yearIndex)];
+        }else{
+            indexArray = @[@(yearIndex),@(monthIndex)];
+        }
+    }
+    
 //    [self.datePicker reloadComponent:2];
     
     for (int i=0; i<indexArray.count; i++) {

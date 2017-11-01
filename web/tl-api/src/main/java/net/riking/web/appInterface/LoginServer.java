@@ -70,9 +70,13 @@ public class LoginServer {
 		if (appUser2 != null) {
 			session.setAttribute("currentUser", appUser2);
 			return new AppResp(appUser2, CodeDef.SUCCESS);
-		} else {
-			return new AppResp(CodeDef.ERROR);
 		}
+		List<AppUser> list = appUserRepo.findByDeleteStateAndTelephone("1", appUser.getTelephone());
+		if(null!=list&&list.size()>0){
+			return new AppResp(CodeDef.EMP.USER_PASS_ERR);
+		}
+		return new AppResp(CodeDef.EMP.DATA_NOT_FOUND);
+		
 	}
 
 	@ApiOperation(value = "发送验证码", notes = "POST")
@@ -99,7 +103,7 @@ public class LoginServer {
 			HttpSession session) {
 		AppUser user = sysDataService.getAppUser(appUser);
 		if (user == null) {
-			return new AppResp(user, CodeDef.SUCCESS);
+			return new AppResp(user, CodeDef.EMP.CHECK_CODE_TIME_OUT);
 		}
 		List<AppUser> list;
 		AppUser appUser2 = null ;
@@ -121,9 +125,9 @@ public class LoginServer {
 				appUserReportRelRepo.save(appUserReportRels);
 				logger.info("{}注册成功", appUser.getName());
 			}
-		}
-		if (appUser2 != null) {
 			sysDataService.delAppUser(user);
+		}else{
+			return new AppResp(appUser2, CodeDef.EMP.CHECK_CODE_ERR);
 		}
 		session.setAttribute("currentUser", appUser2);
 		return new AppResp(appUser2, CodeDef.SUCCESS);

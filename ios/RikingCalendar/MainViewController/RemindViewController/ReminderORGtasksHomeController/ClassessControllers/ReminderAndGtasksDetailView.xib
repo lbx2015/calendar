@@ -62,6 +62,10 @@
                                     <state key="normal" title="编辑">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="editButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="WJ8-TW-zt9"/>
                                     </connections>
@@ -75,6 +79,10 @@
                                     <state key="normal" title="删除">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="deleteButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="77c-QX-Wdu"/>
                                     </connections>
@@ -125,7 +133,9 @@
                 <outlet property="bgView" destination="QvS-3i-j28" id="ffk-Vb-zas"/>
                 <outlet property="bgViewBottomLayout" destination="SvQ-hI-ouG" id="tVg-d6-8Lh"/>
                 <outlet property="bgViewHight" destination="jBL-UY-mOx" id="wk4-pL-oCP"/>
+                <outlet property="deleteBtn" destination="ZCp-lO-DZ2" id="VY5-DA-inR"/>
                 <outlet property="detailTabView" destination="1uS-aj-OKX" id="upN-2G-bTt"/>
+                <outlet property="editBtn" destination="hnQ-Du-Fgs" id="Wqb-Uy-TgQ"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>

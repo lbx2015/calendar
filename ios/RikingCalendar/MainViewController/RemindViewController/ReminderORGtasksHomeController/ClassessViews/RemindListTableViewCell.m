@@ -13,7 +13,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *remindTime;
 
 @property (weak, nonatomic) IBOutlet UILabel *remindConment;
+@property (weak, nonatomic) IBOutlet UIView *lineView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineViewLeftLayout;
 
 @end
 
@@ -26,17 +28,22 @@
     // Initialization code
 }
 
-- (void)loadDataWithReminderModel:(ReminderModel *)rModel indexPath:(NSIndexPath *)indexPath{
+- (void)loadDataWithReminderModel:(ReminderModel *)rModel indexPath:(NSIndexPath *)indexPath remindArray:(NSArray *)remindArray{
     
     self.remindTime.textColor = dt_app_main_color;
     self.remindTime.font = threeClassTextFont;
-    self.remindTime.text = rModel.startTime;
+    self.remindTime.text = [Utils transformDate:rModel.startTime dateFormatStyle:DateFormatHourMinuteWith24HR];
     
     
     self.remindConment.textColor = dt_text_main_color;
     self.remindConment.font = threeClassTextFont;
     self.remindConment.text = rModel.content;
     
+    self.lineView.backgroundColor = dt_line_color;
+
+    if (indexPath.row==remindArray.count-1) {
+        self.lineViewLeftLayout.constant=0;
+    }
     
     if (rModel.isAllday) {
         self.remindTime.text = @"全天";

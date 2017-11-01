@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RemindRepeatActivity;
 import com.riking.calendar.activity.RemindWayActivity;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.widget.dialog.TimePickerDialog;
 
 import java.text.ParseException;
@@ -41,7 +41,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     public String title;
     public String remiderTime;
     //timeView
-    public Calendar time;
+    public Calendar reminderTimeCalendar;
     public EditText remindTitle;
     public byte repeatFlag;
     public byte isRemind = 1;
@@ -76,16 +76,16 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         way.setOnClickListener(this);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        time = Calendar.getInstance();
+        reminderTimeCalendar = Calendar.getInstance();
         if (remiderTime == null) {
-            time.setTime(new Date());
+            reminderTimeCalendar.setTime(new Date());
             //set the default timeView to be 2 hours later comparing current timeView.
-            time.set(Calendar.HOUR, time.get(Calendar.HOUR) + 2);
-            time.set(Calendar.MINUTE, 0);
-            remindTimeTextView.setText(sdf.format(time.getTime()));
+            reminderTimeCalendar.set(Calendar.HOUR, reminderTimeCalendar.get(Calendar.HOUR) + 2);
+            reminderTimeCalendar.set(Calendar.MINUTE, 0);
+            remindTimeTextView.setText(sdf.format(reminderTimeCalendar.getTime()));
         } else {
             try {
-                time.setTime(sdf.parse(remiderTime));
+                reminderTimeCalendar.setTime(sdf.parse(remiderTime));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -103,7 +103,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
         pickerDialog.btnSubmit.setOnClickListener(this);
         pickerDialog.btnCancel.setOnClickListener(this);
         repeat.setOnClickListener(this);
-        preference = getActivity().getSharedPreferences(Const.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        preference = getActivity().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
 
         allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             boolean skipFirstTime;
@@ -124,20 +124,20 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 if (isChecked) {
                     isAllDay = 1;
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    time = Calendar.getInstance();
-                    time.setTime(new Date());
+                    reminderTimeCalendar = Calendar.getInstance();
+                    reminderTimeCalendar.setTime(new Date());
                     //set the default timeView to be 2 hours later comparing current timeView.
-                    time.set(Calendar.HOUR, 8);
-                    remindTimeTextView.setText(sdf.format(time.getTime()));
+                    reminderTimeCalendar.set(Calendar.HOUR, 8);
+                    remindTimeTextView.setText(sdf.format(reminderTimeCalendar.getTime()));
                 } else {
                     isAllDay = 0;
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    time = Calendar.getInstance();
-                    time.setTime(new Date());
+                    reminderTimeCalendar = Calendar.getInstance();
+                    reminderTimeCalendar.setTime(new Date());
                     //set the default timeView to be 2 hours later comparing current timeView.
-                    time.set(Calendar.HOUR, time.get(Calendar.HOUR) + 2);
-                    time.set(Calendar.MINUTE, 0);
-                    remindTimeTextView.setText(sdf.format(time.getTime()));
+                    reminderTimeCalendar.set(Calendar.HOUR, reminderTimeCalendar.get(Calendar.HOUR) + 2);
+                    reminderTimeCalendar.set(Calendar.MINUTE, 0);
+                    remindTimeTextView.setText(sdf.format(reminderTimeCalendar.getTime()));
                 }
             }
         });
@@ -163,20 +163,20 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
                 break;
             }
             case R.id.btnSubmit: {
-                time.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
-                time.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
-                time.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day));
+                reminderTimeCalendar.set(Calendar.YEAR, Integer.parseInt(pickerDialog.wheelDatePicker.year));
+                reminderTimeCalendar.set(Calendar.MONTH, Integer.parseInt(pickerDialog.wheelDatePicker.month) - 1);
+                reminderTimeCalendar.set(Calendar.DATE, Integer.parseInt(pickerDialog.wheelDatePicker.day));
                 if (isAllDay == 1) {
                     //24 hour format
-                    time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(preference.getString(Const.WHOLE_DAY_EVENT_HOUR, null)));
-                    time.set(Calendar.MINUTE, Integer.parseInt(preference.getString(Const.WHOLE_DAY_EVENT_MINUTE, null)));
+                    reminderTimeCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(preference.getString(CONST.WHOLE_DAY_EVENT_HOUR, null)));
+                    reminderTimeCalendar.set(Calendar.MINUTE, Integer.parseInt(preference.getString(CONST.WHOLE_DAY_EVENT_MINUTE, null)));
                 } else {
-                    time.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
-                    time.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
+                    reminderTimeCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pickerDialog.wheelTimePicker.hour));
+                    reminderTimeCalendar.set(Calendar.MINUTE, Integer.parseInt(pickerDialog.wheelTimePicker.minute));
                 }
 
                 SimpleDateFormat sdf = isAllDay == 1 ? new SimpleDateFormat("yyyy-MM-dd") : new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                remindTimeTextView.setText(sdf.format(time.getTime()));
+                remindTimeTextView.setText(sdf.format(reminderTimeCalendar.getTime()));
                 remindTimeTextView.invalidate();
                 pickerDialog.dismiss();
                 break;

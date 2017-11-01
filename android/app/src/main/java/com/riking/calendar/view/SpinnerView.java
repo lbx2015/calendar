@@ -21,6 +21,7 @@ public class SpinnerView {
     //the position which popup window will showing
     public ViewGroup viewGroup;
     public PopupWindow mWindow;
+    public DismissListener dismissListener;
     View spinnerLinearLayout;
     private ListAdapter mAdapter;
     private OnItemClickListener mListener;
@@ -38,6 +39,13 @@ public class SpinnerView {
         this.mListener = listener;
     }
 
+    public void dismiss() {
+        mWindow.dismiss();
+        if (dismissListener != null) {
+            dismissListener.onDismiss();
+        }
+    }
+
     public void clickArrow() {
         // 点击箭头，需要弹出显示list数据的层
         if (mAdapter == null) {
@@ -50,7 +58,7 @@ public class SpinnerView {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     Log.d("zzw", "touch action:" + event.getAction());
-                    mWindow.dismiss();
+                    dismiss();
                     return false;
                 }
             });
@@ -71,10 +79,14 @@ public class SpinnerView {
     public void toggle() {
         Log.d("zzw", "toggle method is called and mWindow is  " + mWindow);
         if (mWindow != null && mWindow.isShowing()) {
-            mWindow.dismiss();
+            dismiss();
         } else {
             clickArrow();
         }
+    }
+
+    public interface DismissListener {
+        void onDismiss();
     }
 }
 

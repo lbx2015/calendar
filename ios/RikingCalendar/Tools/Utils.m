@@ -207,8 +207,22 @@ static Utils *instance = nil;
     if ([date isKindOfClass:[NSDate class]]) {
          newDate = (NSDate *)date;
     }else{
+        
+        NSString *strDate = (NSString *)date;
         NSDateFormatter *informat = [[NSDateFormatter alloc]init];
-        [informat setDateFormat:@"yyyyMMdd"];
+        if (strDate.length==8) {
+            [informat setDateFormat:@"yyyyMMdd"];
+        }else if (strDate.length==5){
+            [informat setDateFormat:@"HH:mm"];
+        }else if (strDate.length==8 && [strDate containsString:@":"]){
+            [informat setDateFormat:@"HH:mm:ss"];
+        }else if (strDate.length==4){
+            [informat setDateFormat:@"HHmm"];
+        }else if (strDate.length==6){
+            [informat setDateFormat:@"HHmmss"];
+        }else{
+            [informat setDateFormat:@"yyyyMMddHHmm"];
+        }
         newDate = [informat dateFromString:date];
     }
 
@@ -219,13 +233,25 @@ static Utils *instance = nil;
             outputFormat = @"yyyy年月MM月dd日";
             break;
         case DateFormatMonthDayWithChinese:
-            outputFormat = @"MM月dd日";
+            if ([defaultLanguageName isEqualToString:@"zh-Hans-CN"]) {
+                outputFormat = @"MM月dd日";
+            }else{
+                outputFormat = @"MM/dd";
+            }
             break;
         case DateFormatHourMinuteWith24HR:
             outputFormat = @"HH:mm";
             break;
+        case DateFormatHourMinute01:
+            outputFormat = @"HHmm";
+            break;
         case DateFormatYearMonthWithChinese:
-            outputFormat = @"yyyy年MM月";
+            if ([defaultLanguageName isEqualToString:@"zh-Hans-CN"]) {
+                outputFormat = @"yyyy年MM月";
+            }else{
+                outputFormat = @"yyyy.MM";
+            }
+            
             break;
         case DateFormatYearMonthDay:
             outputFormat = @"yyyy.MM.dd";
@@ -235,6 +261,14 @@ static Utils *instance = nil;
             break;
         case DateFormatYearMonthDayHourMinute:
             outputFormat = @"yyyyMMdd";
+            break;
+        case DateFormatYearMonthDayHourMinute1:
+            if ([defaultLanguageName isEqualToString:@"zh-Hans-CN"]) {
+                outputFormat = @"yyyy年MM月dd日 HH:mm";
+            }else{
+                outputFormat = @"yyyy/MM/dd HH:mm";
+            }
+            
             break;
         default:
             break;
@@ -253,13 +287,22 @@ static Utils *instance = nil;
             outputFormat = @"yyyy年月MM月dd日";
             break;
         case DateFormatMonthDayWithChinese:
-            outputFormat = @"MM月dd日";
+            if ([defaultLanguageName isEqualToString:@"zh-Hans-CN"]) {
+                 outputFormat = @"MM月dd日";
+            }else{
+                 outputFormat = @"MM/dd";
+            }
+           
             break;
         case DateFormatHourMinuteWith24HR:
             outputFormat = @"HH:mm";
             break;
         case DateFormatYearMonthWithChinese:
-            outputFormat = @"yyyy年MM月";
+            if ([defaultLanguageName isEqualToString:@"zh-Hans-CN"]) {
+                outputFormat = @"yyyy年MM月";
+            }else{
+                outputFormat = @"yyyy.MM";
+            }
             break;
         case DateFormatYearMonthDay:
             outputFormat = @"yyyy.MM.dd";
@@ -274,7 +317,16 @@ static Utils *instance = nil;
             outputFormat = @"yyyy年MM月dd日 HH:mm";
             break;
         case DateFormatYearMonthDayHourMinute:
+            outputFormat = @"yyyyMMddHHmm";
+            break;
+        case DateFormatYearMonthDay01:
             outputFormat = @"yyyyMMdd";
+            break;
+        case DateFormatHourMinute01:
+            outputFormat = @"HHmm";
+            break;
+        case DateFormatYearMonthDayHourMinute1:
+            outputFormat = @"yyyy年MM月dd日 HH:mm";
             break;
         default:
             break;
@@ -366,6 +418,7 @@ static Utils *instance = nil;
     
     [imageview setContentScaleFactor:[[UIScreen mainScreen] scale]];
     imageview.contentMode =  UIViewContentModeScaleAspectFill;
+    imageview.layer.masksToBounds = YES;
     
     if (![self isBlankString:imageurl]) {
         [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:placeholder] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -808,15 +861,22 @@ static Utils *instance = nil;
     NSString * nowDay = [df stringFromDate:[NSDate date]];
     NSString * lastDay = [df stringFromDate:beDate];
     
+    //"today"                             = "今天";
+    //"tomorrow"                          = "明天";
     if(distanceTime <24*60*60 ){//时间小于一天
-        distanceStr = [NSString stringWithFormat:@"今天"];
+        distanceStr = [NSString stringWithFormat:NSLocalizedString(@"today", nil)];
     }
     else{
         if ([nowDay integerValue] - [lastDay integerValue] ==1 || ([lastDay integerValue] - [nowDay integerValue] > 10 && [nowDay integerValue] == 1)) {
-            distanceStr = [NSString stringWithFormat:@"昨天 %@",timeStr];
+            distanceStr = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"tomorrow", nil),timeStr];
         }
         else{
-            [df setDateFormat:@"MM月dd日"];
+            if ([defaultLanguageName isEqualToString:@"zh-Hans-CN"]) {
+                 [df setDateFormat:@"MM月dd日"];
+            }else{
+                 [df setDateFormat:@"MM/dd"];
+            }
+           
             distanceStr = [df stringFromDate:beDate];
         }
     }
@@ -825,7 +885,14 @@ static Utils *instance = nil;
 
 + (NSString *)getWeekDayWithDateStr:(NSString *)dateStr formatter:(NSString *)formatter{
     
-    NSDictionary *weekDict = @{@"1":@"周一",@"2":@"周二",@"3":@"周三",@"4":@"周四",@"5":@"周五",@"6":@"周六",@"7":@"周日"};
+//    "on_Monday"                         = "周一";
+//    "on_Tuesday"                        = "周二";
+//    "on_Wednesday"                      = "周三";
+//    "on_Thursday"                       = "周四";
+//    "on_Friday"                         = "周五";
+//    "on_Saturday"                       = "周六";
+//    "on_Sunday"                         = "周日";
+    NSDictionary *weekDict = @{@"1":NSLocalizedString(@"on_Monday", nil),@"2":NSLocalizedString(@"on_Tuesday", nil),@"3":NSLocalizedString(@"on_Wednesday", nil),@"4":NSLocalizedString(@"on_Thursday", nil),@"5":NSLocalizedString(@"on_Friday", nil),@"6":NSLocalizedString(@"on_Saturday", nil),@"7":NSLocalizedString(@"on_Sunday", nil)};
     
     return [weekDict objectForKey:[self weekdayStringFromDate:dateStr formatter:formatter]];
 }
@@ -864,7 +931,7 @@ static Utils *instance = nil;
     
     NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:date];
     
-    RKLog(@"%ld",theComponents.weekday);
+//    RKLog(@"%ld",theComponents.weekday);
     
     return [weekdays objectAtIndex:theComponents.weekday];
     
@@ -951,6 +1018,22 @@ static Utils *instance = nil;
         return nil;
     }
     return dic;
+}
+
+
+
+/**
+ 判断手机号码是否有效
+ */
++ (BOOL)isNumText:(NSString *)str{
+    NSString * regex  = @"[1][34578]\\d{9}";
+    NSPredicate * pred  = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    BOOL isMatch   = [pred evaluateWithObject:str];
+    if (isMatch) {
+        return YES;
+    }else{
+        return NO; 
+    } 
 }
 
 @end

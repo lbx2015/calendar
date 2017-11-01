@@ -6,15 +6,18 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="13dp"
+        android:paddingTop="13dp">
 
-        <ImageView
+        <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/back"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginLeft="19dp"
             android:src="@drawable/back_icon" />
 
         <TextView
@@ -23,72 +26,72 @@
             android:layout_gravity="center"
             android:text="@string/set"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </FrameLayout>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="19dp"
             android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="48dp"
+                 android:background="@android:color/white">
 
-                <TextView
-                    android:id="@+id/first_week_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/first_week_day"
-                    android:textColor="@color/color_323232" />
+                 <TextView
+                     android:id="@+id/first_week_day"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentLeft="true"
+                     android:layout_centerVertical="true"
+                     android:layout_gravity="center_vertical"
+                     android:gravity="center"
+                     android:text="@string/first_week_day"
+                     android:textColor="@color/color_323232"
+                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/first_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_first_day"
-                    android:text="@string/sundday"
-                    android:textColor="@color/color_background_b6b6b6" />
+                 <TextView
+                     android:id="@+id/first_day"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:layout_margin="5dp"
+                     android:layout_toLeftOf="@+id/edit_first_day"
+                     android:text="@string/sundday"
+                     android:textColor="@color/color_background_b6b6b6"
+                     android:textSize="14sp" />
 
-                <ImageView
-                    android:id="@+id/edit_first_day"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
+                 <ImageView
+                     android:id="@+id/edit_first_day"
+                     android:layout_width="10dp"
+                     android:layout_height="10dp"
+                     android:layout_alignBottom="@+id/select_time"
+                     android:layout_alignParentEnd="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginEnd="9dp"
+                     android:src="@drawable/next_step" />
+             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/divider_height"
+                 android:background="@color/divider_color_d9d9d9" />-->
 
             <RelativeLayout
                 android:id="@+id/whole_day_event_time_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -102,7 +105,8 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     android:text="@string/whole_day_event_time"
-                    android:textColor="@color/color_323232" />
+                    android:textColor="@color/color_323232"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/event_time"
@@ -112,7 +116,8 @@
                     android:layout_margin="5dp"
                     android:layout_toLeftOf="@+id/look_event_time"
                     android:text="08:00"
-                    android:textColor="@color/color_background_b6b6b6" />
+                    android:textColor="@color/color_background_b6b6b6"
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/look_event_time"
@@ -124,75 +129,70 @@
                     android:src="@drawable/next_step" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
+            <!-- <View
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/divider_height"
+                 android:background="@color/divider_color_d9d9d9" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="48dp"
+                 android:background="@android:color/white">
 
-                <TextView
-                    android:id="@+id/remind_voice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/remind_voice"
-                    android:textColor="@color/color_323232" />
+                 <TextView
+                     android:id="@+id/remind_voice"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentLeft="true"
+                     android:layout_centerVertical="true"
+                     android:layout_gravity="center_vertical"
+                     android:gravity="center"
+                     android:text="@string/remind_voice"
+                     android:textColor="@color/color_323232" />
 
-                <TextView
-                    android:id="@+id/default_remind"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/look_remind_voice"
-                    android:text="@string/default_remind"
-                    android:textColor="@color/color_background_b6b6b6" />
+                 <TextView
+                     android:id="@+id/default_remind"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:layout_margin="5dp"
+                     android:layout_toLeftOf="@+id/look_remind_voice"
+                     android:text="@string/default_remind"
+                     android:textColor="@color/color_background_b6b6b6" />
 
-                <ImageView
-                    android:id="@+id/look_remind_voice"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
+                 <ImageView
+                     android:id="@+id/look_remind_voice"
+                     android:layout_width="10dp"
+                     android:layout_height="10dp"
+                     android:layout_alignBottom="@+id/select_time"
+                     android:layout_alignParentEnd="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginEnd="9dp"
+                     android:src="@drawable/next_step" />
+             </RelativeLayout>-->
         </LinearLayout>
     </android.support.v7.widget.CardView>
-
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="19dp"
             android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/bind_phone_relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+                android:layout_height="48dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:id="@+id/bind_phone"
@@ -203,7 +203,8 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     android:text="@string/bind_phone"
-                    android:textColor="@color/color_323232" />
+                    android:textColor="@color/color_323232"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/binded"
@@ -213,7 +214,8 @@
                     android:layout_margin="5dp"
                     android:layout_toLeftOf="@+id/look_binded_phone"
                     android:text="@string/binded"
-                    android:textColor="@color/color_background_b6b6b6" />
+                    android:textColor="@color/color_background_b6b6b6"
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/look_binded_phone"
@@ -226,47 +228,42 @@
                     android:src="@drawable/next_step" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
-
             <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@android:color/white"-->
-                <!--android:paddingBottom="2dp"-->
-                <!--android:paddingTop="2dp">-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:paddingBottom="2dp"-->
+            <!--android:paddingTop="2dp">-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/bind_wechat"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentLeft="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@string/bind_wechat"-->
-                    <!--android:textColor="@color/color_323232" />-->
+            <!--<TextView-->
+            <!--android:id="@+id/bind_wechat"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/bind_wechat"-->
+            <!--android:textColor="@color/color_323232" />-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/whether_wechat_binded"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--android:layout_toLeftOf="@+id/look_wechat"-->
-                    <!--android:text="@string/not_binded"-->
-                    <!--android:textColor="@color/color_background_b6b6b6" />-->
+            <!--<TextView-->
+            <!--android:id="@+id/whether_wechat_binded"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:layout_toLeftOf="@+id/look_wechat"-->
+            <!--android:text="@string/not_binded"-->
+            <!--android:textColor="@color/color_background_b6b6b6" />-->
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/look_wechat"-->
-                    <!--android:layout_width="10dp"-->
-                    <!--android:layout_height="10dp"-->
-                    <!--android:layout_alignParentEnd="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_marginEnd="9dp"-->
-                    <!--android:src="@drawable/next_step" />-->
+            <!--<ImageView-->
+            <!--android:id="@+id/look_wechat"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="10dp"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="9dp"-->
+            <!--android:src="@drawable/next_step" />-->
             <!--</RelativeLayout>-->
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -274,19 +271,17 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <RelativeLayout
             android:id="@+id/clear_cache_relatvie_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:paddingBottom="2dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="2dp">
+            android:layout_height="48dp"
+            android:layout_marginLeft="19dp"
+            android:background="@android:color/white">
 
             <TextView
                 android:id="@+id/clear_cache"
@@ -297,7 +292,8 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/clear_cache"
-                android:textColor="@color/color_323232" />
+                android:textColor="@color/color_323232"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/cache_size"
@@ -307,7 +303,8 @@
                 android:layout_margin="5dp"
                 android:layout_toLeftOf="@+id/look_clear_cache"
                 android:text="@string/no_need_to_clear"
-                android:textColor="@color/color_background_b6b6b6" />
+                android:textColor="@color/color_background_b6b6b6"
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/look_clear_cache"
@@ -321,15 +318,14 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/login_out_card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_height="48dp"
         android:background="@android:color/white"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:visibility="gone"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardUseCompatPadding="false">
 
         <TextView
             android:id="@+id/login_out_button"
@@ -337,9 +333,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:layout_toLeftOf="@id/look_clear_cache"
-            android:text="@string/login_out" />
+            android:text="@string/login_out"
+            android:textSize="16sp" />
     </android.support.v7.widget.CardView>
 </LinearLayout>

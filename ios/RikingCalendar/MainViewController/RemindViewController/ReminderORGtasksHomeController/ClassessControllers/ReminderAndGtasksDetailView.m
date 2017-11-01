@@ -16,6 +16,8 @@ typedef void(^clickBtnBlock)(int type);//type:1:编辑;2:删除
 
 
 <UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
+@property (weak, nonatomic) IBOutlet UIButton *editBtn;
 
 @property (weak, nonatomic) IBOutlet UITableView *detailTabView;
 
@@ -117,6 +119,9 @@ typedef void(^clickBtnBlock)(int type);//type:1:编辑;2:删除
     [self layoutIfNeeded];
     [[UIApplication sharedApplication].keyWindow bringSubviewToFront:self];
     
+    
+    [self.editBtn setTitle:NSLocalizedString(@"edit", nil) forState:UIControlStateNormal];
+    [self.deleteBtn setTitle:NSLocalizedString(@"delete", nil) forState:UIControlStateNormal];
 }
 
 
@@ -248,21 +253,28 @@ typedef void(^clickBtnBlock)(int type);//type:1:编辑;2:删除
                 
                 if (self.rModel.isAllday) {
                     
-                    label.text = [NSString stringWithFormat:@"%@ %@",[Utils setOldStringTime:self.rModel.strDate inputFormat:@"yyyyMMdd" outputFormat:@"yyyy年MM月dd日"],@"全天"];
+                    if ([defaultLanguageName isEqualToString:@"zh-Hans-CN"]) {
+                        label.text = [NSString stringWithFormat:@"%@ %@",[Utils setOldStringTime:self.rModel.strDate inputFormat:@"yyyyMMdd" outputFormat:@"yyyy年MM月dd日"],NSLocalizedString(@"remind_allDay", nil)];
+                    }else{
+                        label.text = [NSString stringWithFormat:@"%@ %@",[Utils setOldStringTime:self.rModel.strDate inputFormat:@"yyyyMMdd" outputFormat:@"yyyy/MM/dd"],NSLocalizedString(@"remind_allDay", nil)];
+                    }
+                    
+                    
                     
                 }else{
-                    label.text = [NSString stringWithFormat:@"%@ %@",[Utils setOldStringTime:self.rModel.strDate inputFormat:@"yyyyMMdd" outputFormat:@"yyyy年MM月dd日"],self.rModel.startTime];
                     
+                    label.text = [Utils transformDate:[NSString stringWithFormat:@"%@ %@",self.rModel.strDate,self.rModel.startTime] dateFormatStyle:DateFormatYearMonthDayHourMinute1];
+                
                 }
                 
                 
                 
             }else if (indexPath.row==2){
                 if (self.rModel.isRemind) {
-                    label.text = self.rModel.beforeTime>0?[NSString stringWithFormat:@"提前%d分",self.rModel.beforeTime]:@"正点提醒";
+                    label.text = self.rModel.beforeTime>0?[NSString stringWithFormat:@"%@%d%@",NSLocalizedString(@"advance_remind", nil),self.rModel.beforeTime,NSLocalizedString(@"minute", nil)]:NSLocalizedString(@"punctual_remind", nil);
                 
                 }else{
-                    label.text = @"不提醒";
+                    label.text = NSLocalizedString(@"not_remind", nil);
                 }
             }else{
                 label.text = [self getRepeatString:self.rModel.repeatFlag repeat_value:self.rModel.repeatValue];
@@ -270,19 +282,18 @@ typedef void(^clickBtnBlock)(int type);//type:1:编辑;2:删除
             
         }else{
             
-        
             btn.tag = indexPath.row;
             [btn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
             if (indexPath.row==1) {
                 [btn setImage:[UIImage imageNamed:@"gtaskFinsh"] forState:UIControlStateSelected];
-                label.text = @"未完成";
+                label.text = NSLocalizedString(@"unfinished", nil);
                 if (self.gModel.isComplete) {
                     btn.selected = YES;
-                    label.text = @"已完成";
+                    label.text = NSLocalizedString(@"finished", nil);
                 }
             }else{
                 [btn setImage:[UIImage imageNamed:@"programme_Important_selectStars"] forState:UIControlStateSelected];
-                label.text = @"重要";
+                label.text = NSLocalizedString(@"todo_isImport", nil);
                 if (self.gModel.isImportant) {
                     btn.selected = YES;
                     label.textColor = dt_text_main_color;
@@ -317,15 +328,14 @@ typedef void(^clickBtnBlock)(int type);//type:1:编辑;2:删除
 - (IBAction)deleteButton:(id)sender {
     
     if (self.clickBtnBlock) {
-        self.clickBtnBlock(2);
+        self.clickBtnBlock(3);
     }
-    
     [self dismiss];
 }
 
 - (IBAction)editButton:(id)sender {
     if (self.clickBtnBlock) {
-        self.clickBtnBlock(1);
+        self.clickBtnBlock(2);
     }
     
     [self dismiss];
@@ -378,23 +388,29 @@ typedef void(^clickBtnBlock)(int type);//type:1:编辑;2:删除
     
     
     if (flag==0) {
-        return @"不重复";
+        return NSLocalizedString(@"not_repeat", nil);
     }else if (flag==1){
-        return @"法定工作日重复";
+        return NSLocalizedString(@"Repeated_legal_working_days", nil);
     }else if (flag==2){
-        return @"法定节假日重复";
+        return NSLocalizedString(@"Repeated_legal_holidays", nil);
     }else{
         NSArray *array = [NSArray arrayWithArray:[repeat_value componentsSeparatedByString:@","]];
         
         if ([repeat_value containsString:@"1,2,3,4,5,6,7"] && array.count==7){
-            return repeatStr = @"每天重复";
+            return repeatStr = NSLocalizedString(@"Repeat_every_day", nil);
         }else if ([repeat_value containsString:@"1,2,3,4,5"] && array.count==5){
-            return repeatStr = @"工作日重复";
+            return repeatStr = NSLocalizedString(@"Working_days_repeat", nil);
         }else if ([repeat_value containsString:@"6,7"] && array.count==2){
-            return repeatStr = @"周末重复";
+            return repeatStr = NSLocalizedString(@"Weekend_repeat", nil);
         }else{
-            
-            NSDictionary *dict = @{@"1":@"一",@"2":@"二",@"3":@"三",@"4":@"四",@"5":@"五",@"6":@"六",@"7":@"日"};
+            //            "Mon"                               = "一";
+            //            "Tues"                              = "二";
+            //            "Wed"                               = "三";
+            //            "Thur"                              = "四";
+            //            "Fri"                               = "五";
+            //            "Sat"                               = "六";
+            //            "Sun"                               = "日";
+            NSDictionary *dict = @{@"1":NSLocalizedString(@"Mon", nil),@"2":NSLocalizedString(@"Tues", nil),@"3":NSLocalizedString(@"Wed", nil),@"4":NSLocalizedString(@"Thur", nil),@"5":NSLocalizedString(@"Fri", nil),@"6":NSLocalizedString(@"Sat", nil),@"7":NSLocalizedString(@"Sun", nil)};
             
             NSString *newTime = @"";
             
@@ -410,7 +426,7 @@ typedef void(^clickBtnBlock)(int type);//type:1:编辑;2:删除
                 
             }
             
-            return repeatStr = [NSString stringWithFormat:@"每周%@",newTime];
+            return repeatStr = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"Every_week", nil),newTime];
         }
     }
     

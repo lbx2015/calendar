@@ -160,7 +160,10 @@ public class AppUserController {
 				return new Resp(false, CodeDef.ERROR);
 			}
 		}
-		int rs = appUserRepo.updatePhoto(id, Const.TL_PHOTO_PATH + fileName);
+		//截取资源访问路径
+		String url = request.getRequestURL().toString();
+		String projectPath = StringUtil.getProjectPath(url);
+		int rs = appUserRepo.updatePhoto(id, projectPath+ Const.TL_PHOTO_PATH + fileName);
 		if (rs > 0) {
 			return new Resp(true, CodeDef.SUCCESS);
 		}

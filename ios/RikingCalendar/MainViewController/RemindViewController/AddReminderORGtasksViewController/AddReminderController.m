@@ -25,9 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"新建日程";
+    self.title = NSLocalizedString(@"addRemindAndGtasks_title", nil);
     self.index = self.selectIndex;
-    [self setRightButtonWithTitle:@[@"完成"]];
+    [self setRightButtonWithTitle:@[NSLocalizedString(@"done", nil)]];
     [self createMainView];
     
     
@@ -79,7 +79,7 @@
     _gtasksVC = [[GtasksViewController alloc]initWithNibName:@"GtasksViewController" bundle:[NSBundle mainBundle]];
     
     NSArray *controllers=@[_reminderVC,_gtasksVC];
-    NSArray *titleArray =@[@"提醒",@"待办"];
+    NSArray *titleArray =@[NSLocalizedString(@"remind_title", nil),NSLocalizedString(@"todo_title", nil)];
     
     MYSegmentView * rcs=[[MYSegmentView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) controllers:controllers titleArray:titleArray ParentController:self lineWidth:kScreenWidth/2 lineHeight:2. selectIndex:self.selectIndex];
     

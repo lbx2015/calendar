@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorBackground">@color/color_background_f2f2f2</item>
     </style>
     <!-- Base application theme. -->
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -32,6 +33,17 @@
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="AppTheme.LaunchActivity" parent="AppTheme.FullScreen">
+        <item name="android:background">@mipmap/launch_page</item>
     </style>
 
     <style name="weekName">
@@ -92,4 +104,47 @@
         <item name="android:hint">@string/tag_hint</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="CustomTab" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/tab_indicator</item>
+        <item name="tabTextColor">@color/tab_tv_normal</item>
+        <item name="tabSelectedTextColor">@color/tab_tv_selected</item>
+        <item name="tabBackground">@drawable/bg_tab_border_selecter</item>
+        <item name="tabIndicatorHeight">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+
+    <style name="thirdFragmentTab" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/color_29a1f7</item>
+        <item name="tabBackground">@drawable/bg_tab_bottom_border_selecter</item>
+        <item name="tabTextColor">@color/tab_tv_normal</item>
+        <item name="tabSelectedTextColor">@color/tab_tv_selected</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+
+
+    <style name="AutoWrapTv" parent="AutoWrap">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:onClick">onClick</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <!--
+   1.tabIndicatorColor：TabLayout指示器的颜色
+   2.tabTextColor: tab默认字体的颜色
+   3.tabSelectedTextColor：当前选择的tab的字体颜色
+   4.tabBackground：背景
+   5.tabIndicatorHeight：TabLayout指示器高度
+   -->
 </resources>

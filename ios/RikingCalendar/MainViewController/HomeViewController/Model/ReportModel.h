@@ -25,4 +25,11 @@
 @property (nonatomic,copy)NSString *moduleType;
 @property (nonatomic,copy)NSString *reportCode;
 @property (nonatomic,copy)NSString *reportName;
+
+
+//扩展字段
+@property (nonatomic,copy)NSString *completeId;
+@property (nonatomic,copy)NSString *completeDate;
+@property (nonatomic,copy)NSString *appUserId;//用户userId
+@property (nonatomic,assign)int isComplete;//0未完成1完成
 @end

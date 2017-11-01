@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.activity.LoginActivity;
+import com.riking.calendar.util.CONST;
 
 import java.util.HashMap;
 
-import static com.ldf.calendar.Const.IS_LOGIN;
+import static com.riking.calendar.util.CONST.IS_LOGIN;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -34,7 +34,7 @@ public class SessionManager {
     // Constructor
     public SessionManager(Context context) {
         this._context = context;
-        pref = _context.getSharedPreferences(Const.PREFERENCE_FILE_NAME, PRIVATE_MODE);
+        pref = _context.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
 

@@ -139,19 +139,19 @@
 	vertical-align:middle;
 }
 .content .list li.weixin i{
-	background:url(../images/ico-weixin.png) no-repeat;
+	background:url(../images/ico-weixins.png) no-repeat;
 	width:0.21rem;
 	height:0.18rem;
 	background-size:100%;
 }
 .content .list li.email i{
-	background:url(../images/ico-email.png) no-repeat;
+	background:url(../images/ico-emails.png) no-repeat;
 	width:0.21rem;
 	height:0.16rem;
 	background-size:100%;
 }
 .content .list li.tel i{
-	background:url(../images/ico-tel.png) no-repeat;
+	background:url(../images/ico-tels.png) no-repeat;
 	width:0.21rem;
 	height:0.19rem;
 	background-size:100%;
@@ -167,7 +167,7 @@
 	top:50%;
 	width:.09rem;
 	height:.15rem;
-	background:url(../images/return-r.png) no-repeat;
+	background:url(../images/return-rs.png) no-repeat;
 	background-size:100%;
 	margin-top:-.08rem;
 }
@@ -179,6 +179,61 @@
 .content .policy a{
 	font-size:.11rem;
 	color:#29a1f7;
+}
+.concernUs{
+	width:100%;
+	background:#f2f2f2;
+}
+.concernUs .content{
+	padding:.15rem .15rem .6rem;
+	line-height:.3rem;
+	color:#000;
+	font-weight:400;
+}
+.concernUs .content h3{
+	margin-top:.25rem;
+	margin-bottom:.15rem;
+	border-bottom:1px solid #29a1f7;
+}
+.concernUs .content h3 span{
+	display:block;
+	width:.75rem;
+	height:.325rem;
+	line-height:.325rem;
+	font-size:.19rem;
+	color:#fff;
+	text-align:center;
+	background:#29a1f7;
+}
+.concernUs .content .img01{
+	display:block;
+	width:2.75rem;
+	height:auto;
+	margin:.1rem auto;
+}
+.concernUs .content .img02{
+	display:block;
+	width:1.74rem;
+	height:auto;
+	margin:.15rem auto .25rem;
+}
+.concernUs .content .img03{
+	display:block;
+	width:2.75rem;
+	height:auto;
+	margin:.2rem auto;
+}
+.concernUs .content .label{
+	display:block;
+	width:.78rem;
+	height:.26rem;
+	line-height:.26rem;
+	margin-bottom:.1rem;
+	background:#29a1f7;
+	font-size:.17rem;
+	color:#fff;
+	text-align:center;
+	border-radius:.8rem;
 }
 .footer{
 	position:fixed;

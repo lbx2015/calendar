@@ -1,1 +1,3 @@
-include ':app', ":drawerLibrary", ":FlycoTabLayout_Lib", ":calendar",'library'
+include ':app', 'library', ':pickerview', ':easeui'
+include ':bannerslider'
+include ':photoPicker'

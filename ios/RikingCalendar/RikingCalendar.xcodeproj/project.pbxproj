@@ -63,6 +63,8 @@
 		8321D4971F1C58E500CBEEBC /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D45F1F1C58E500CBEEBC /* ThemeManager.m */; };
 		8321D4981F1C58E500CBEEBC /* UIView+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4611F1C58E500CBEEBC /* UIView+Theme.m */; };
 		8321D4991F1C58E500CBEEBC /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8321D4631F1C58E500CBEEBC /* Utils.m */; };
+		83252D471F554E1400DA45C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83252D491F554E1400DA45C8 /* Localizable.strings */; };
+		83252D4E1F55708900DA45C8 /* SeeProfilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83252D4D1F55708900DA45C8 /* SeeProfilesViewController.m */; };
 		836B06AC1F29D7120054DE46 /* ReminderDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 836B06AB1F29D7120054DE46 /* ReminderDatePickerView.m */; };
 		836B06AE1F29D8130054DE46 /* ReminderDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836B06AD1F29D8130054DE46 /* ReminderDatePickerView.xib */; };
 		83712CD81F35EF6E003D2316 /* LoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83712CD71F35EF6E003D2316 /* LoginModel.m */; };
@@ -128,6 +130,15 @@
 		8388C05A1F3025C900506FFA /* RKBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0591F3025C900506FFA /* RKBaseModel.m */; };
 		8388C0611F31651E00506FFA /* PersonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0601F31651E00506FFA /* PersonDetailViewController.m */; };
 		8388C0651F317B9600506FFA /* PerPickImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388C0641F317B9600506FFA /* PerPickImageView.m */; };
+		8388D19D1F5E945700283EF4 /* DIYRefreshAutoFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388D19C1F5E945700283EF4 /* DIYRefreshAutoFooter.m */; };
+		83A1E5501F4BD3CB0047D055 /* RKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E54F1F4BD3CB0047D055 /* RKWebViewController.m */; };
+		83A1E5531F4BDEC60047D055 /* WebProgressSignManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E5521F4BDEC60047D055 /* WebProgressSignManager.m */; };
+		83A1E55C1F4C03310047D055 /* address.txt in Resources */ = {isa = PBXBuildFile; fileRef = 83A1E5551F4C03310047D055 /* address.txt */; };
+		83A1E55D1F4C03310047D055 /* AddressPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E5571F4C03310047D055 /* AddressPickerView.m */; };
+		83A1E55E1F4C03310047D055 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E5591F4C03310047D055 /* City.m */; };
+		83A1E55F1F4C03310047D055 /* Province.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E55B1F4C03310047D055 /* Province.m */; };
+		83A1E5631F4E9CC70047D055 /* LaunchIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E5621F4E9CC70047D055 /* LaunchIntroductionView.m */; };
+		83A1E5661F4EB3B70047D055 /* RKPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A1E5651F4EB3B70047D055 /* RKPageControl.m */; };
 		83B9A57F1F3DDA41003F751C /* UISearchBar+Background.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B9A57E1F3DDA41003F751C /* UISearchBar+Background.m */; };
 		83D10E6A1F34088300B7A6B0 /* UserLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D10E681F34088300B7A6B0 /* UserLoginViewController.m */; };
 		83D10E6B1F34088300B7A6B0 /* UserLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D10E691F34088300B7A6B0 /* UserLoginViewController.xib */; };
@@ -306,6 +317,12 @@
 		8321D4611F1C58E500CBEEBC /* UIView+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Theme.m"; sourceTree = "<group>"; };
 		8321D4621F1C58E500CBEEBC /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		8321D4631F1C58E500CBEEBC /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		83252D431F554D1000DA45C8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		83252D441F554D1100DA45C8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		83252D481F554E1400DA45C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		83252D4A1F554E1700DA45C8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		83252D4C1F55708900DA45C8 /* SeeProfilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeeProfilesViewController.h; sourceTree = "<group>"; };
+		83252D4D1F55708900DA45C8 /* SeeProfilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeeProfilesViewController.m; sourceTree = "<group>"; };
 		8337BDA11F1C5FBB00709471 /* RKTextFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RKTextFont.h; sourceTree = "<group>"; };
 		836B06AA1F29D7120054DE46 /* ReminderDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderDatePickerView.h; sourceTree = "<group>"; };
 		836B06AB1F29D7120054DE46 /* ReminderDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderDatePickerView.m; sourceTree = "<group>"; };
@@ -433,6 +450,23 @@
 		8388C0601F31651E00506FFA /* PersonDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetailViewController.m; sourceTree = "<group>"; };
 		8388C0631F317B9600506FFA /* PerPickImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerPickImageView.h; sourceTree = "<group>"; };
 		8388C0641F317B9600506FFA /* PerPickImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerPickImageView.m; sourceTree = "<group>"; };
+		8388D19B1F5E945700283EF4 /* DIYRefreshAutoFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIYRefreshAutoFooter.h; sourceTree = "<group>"; };
+		8388D19C1F5E945700283EF4 /* DIYRefreshAutoFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIYRefreshAutoFooter.m; sourceTree = "<group>"; };
+		83A1E54E1F4BD3CB0047D055 /* RKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKWebViewController.h; sourceTree = "<group>"; };
+		83A1E54F1F4BD3CB0047D055 /* RKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKWebViewController.m; sourceTree = "<group>"; };
+		83A1E5511F4BDEC60047D055 /* WebProgressSignManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebProgressSignManager.h; sourceTree = "<group>"; };
+		83A1E5521F4BDEC60047D055 /* WebProgressSignManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebProgressSignManager.m; sourceTree = "<group>"; };
+		83A1E5551F4C03310047D055 /* address.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = address.txt; sourceTree = "<group>"; };
+		83A1E5561F4C03310047D055 /* AddressPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressPickerView.h; sourceTree = "<group>"; };
+		83A1E5571F4C03310047D055 /* AddressPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressPickerView.m; sourceTree = "<group>"; };
+		83A1E5581F4C03310047D055 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
+		83A1E5591F4C03310047D055 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
+		83A1E55A1F4C03310047D055 /* Province.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Province.h; sourceTree = "<group>"; };
+		83A1E55B1F4C03310047D055 /* Province.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Province.m; sourceTree = "<group>"; };
+		83A1E5611F4E9CC70047D055 /* LaunchIntroductionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchIntroductionView.h; sourceTree = "<group>"; };
+		83A1E5621F4E9CC70047D055 /* LaunchIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchIntroductionView.m; sourceTree = "<group>"; };
+		83A1E5641F4EB3B70047D055 /* RKPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKPageControl.h; sourceTree = "<group>"; };
+		83A1E5651F4EB3B70047D055 /* RKPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKPageControl.m; sourceTree = "<group>"; };
 		83B9A57D1F3DDA41003F751C /* UISearchBar+Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Background.h"; sourceTree = "<group>"; };
 		83B9A57E1F3DDA41003F751C /* UISearchBar+Background.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Background.m"; sourceTree = "<group>"; };
 		83D10E671F34088200B7A6B0 /* UserLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLoginViewController.h; sourceTree = "<group>"; };
@@ -619,6 +653,7 @@
 				8337BDA21F1C62E800709471 /* Resources */,
 				8315A5C41F18AE40003BECDA /* Supporting Files */,
 				83829EB81F4593BB00DF530A /* Assets.xcassets */,
+				83252D491F554E1400DA45C8 /* Localizable.strings */,
 			);
 			path = RikingCalendar;
 			sourceTree = "<group>";
@@ -1071,6 +1106,10 @@
 			children = (
 				83829D451F42DFA700DF530A /* WebViewController.h */,
 				83829D461F42DFA700DF530A /* WebViewController.m */,
+				83252D4C1F55708900DA45C8 /* SeeProfilesViewController.h */,
+				83252D4D1F55708900DA45C8 /* SeeProfilesViewController.m */,
+				83A1E5511F4BDEC60047D055 /* WebProgressSignManager.h */,
+				83A1E5521F4BDEC60047D055 /* WebProgressSignManager.m */,
 			);
 			path = WebViewController;
 			sourceTree = "<group>";
@@ -1215,6 +1254,49 @@
 				8388C0641F317B9600506FFA /* PerPickImageView.m */,
 			);
 			path = PerPickImageView;
+			sourceTree = "<group>";
+		};
+		8388D19A1F5E941D00283EF4 /* DIYRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				8388D19B1F5E945700283EF4 /* DIYRefreshAutoFooter.h */,
+				8388D19C1F5E945700283EF4 /* DIYRefreshAutoFooter.m */,
+			);
+			path = DIYRefresh;
+			sourceTree = "<group>";
+		};
+		83A1E54D1F4BD2AD0047D055 /* RKWebView */ = {
+			isa = PBXGroup;
+			children = (
+				83A1E54E1F4BD3CB0047D055 /* RKWebViewController.h */,
+				83A1E54F1F4BD3CB0047D055 /* RKWebViewController.m */,
+			);
+			path = RKWebView;
+			sourceTree = "<group>";
+		};
+		83A1E5541F4C03310047D055 /* AddressPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				83A1E5551F4C03310047D055 /* address.txt */,
+				83A1E5561F4C03310047D055 /* AddressPickerView.h */,
+				83A1E5571F4C03310047D055 /* AddressPickerView.m */,
+				83A1E5581F4C03310047D055 /* City.h */,
+				83A1E5591F4C03310047D055 /* City.m */,
+				83A1E55A1F4C03310047D055 /* Province.h */,
+				83A1E55B1F4C03310047D055 /* Province.m */,
+			);
+			path = AddressPickerView;
+			sourceTree = "<group>";
+		};
+		83A1E5601F4E9CC70047D055 /* LaunchIntroduction */ = {
+			isa = PBXGroup;
+			children = (
+				83A1E5611F4E9CC70047D055 /* LaunchIntroductionView.h */,
+				83A1E5621F4E9CC70047D055 /* LaunchIntroductionView.m */,
+				83A1E5641F4EB3B70047D055 /* RKPageControl.h */,
+				83A1E5651F4EB3B70047D055 /* RKPageControl.m */,
+			);
+			path = LaunchIntroduction;
 			sourceTree = "<group>";
 		};
 		83D10E661F34086400B7A6B0 /* RKUserLoginViewController */ = {
@@ -1369,6 +1451,10 @@
 		83D72FE51F1E0671001C1275 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				8388D19A1F5E941D00283EF4 /* DIYRefresh */,
+				83A1E5601F4E9CC70047D055 /* LaunchIntroduction */,
+				83A1E5541F4C03310047D055 /* AddressPickerView */,
+				83A1E54D1F4BD2AD0047D055 /* RKWebView */,
 				83829EBA1F459D6600DF530A /* XHLaunchAdManager */,
 				83829D481F42F48100DF530A /* JEmailPullTextfield */,
 				83829D391F41AAA900DF530A /* LocalNotificationManager */,
@@ -1564,6 +1650,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 8315A5B81F18AE40003BECDA;
 			productRefGroup = 8315A5C21F18AE40003BECDA /* Products */;
@@ -1589,6 +1676,7 @@
 				8315A5D41F18AE40003BECDA /* LaunchScreen.storyboard in Resources */,
 				8371B0621F2863F000DA7465 /* WSDatePickerView.xib in Resources */,
 				83829EB91F4593BB00DF530A /* Assets.xcassets in Resources */,
+				83A1E55C1F4C03310047D055 /* address.txt in Resources */,
 				83D1A7A01F34404F00E48A4F /* GtasksViewController.xib in Resources */,
 				83DAA26D1F398848008082FB /* ReminderAndGtasksDetailView.xib in Resources */,
 				83D1A7A71F34404F00E48A4F /* GtaskHistoryCell.xib in Resources */,
@@ -1597,6 +1685,7 @@
 				83D10E6B1F34088300B7A6B0 /* UserLoginViewController.xib in Resources */,
 				837937FB1F3C342D009011E9 /* RemindListTableViewCell.xib in Resources */,
 				837937EE1F3B1A8A009011E9 /* DropMenuTableView.xib in Resources */,
+				83252D471F554E1400DA45C8 /* Localizable.strings in Resources */,
 				83D72FD71F1CA1FE001C1275 /* res in Resources */,
 				8315A5CF1F18AE40003BECDA /* Main.storyboard in Resources */,
 			);
@@ -1777,6 +1866,7 @@
 				8321D46E1F1C58E500CBEEBC /* RKBaseViewController.m in Sources */,
 				8321D4831F1C58E500CBEEBC /* MJRefreshAutoNormalFooter.m in Sources */,
 				83829EE21F459D6600DF530A /* XHLaunchAdConfiguration.m in Sources */,
+				83A1E5661F4EB3B70047D055 /* RKPageControl.m in Sources */,
 				83829D471F42DFA700DF530A /* WebViewController.m in Sources */,
 				8379385B1F3D58C8009011E9 /* NSObject+MJProperty.m in Sources */,
 				8321D4681F1C58E500CBEEBC /* UIImage+ColorFix.m in Sources */,
@@ -1784,8 +1874,11 @@
 				8371B0601F2863F000DA7465 /* UIView+Extension.m in Sources */,
 				83829EDD1F459D6600DF530A /* NSString+XHLaunchAd.m in Sources */,
 				83DAA2631F395F8C008082FB /* LZMultiplePickerView.m in Sources */,
+				8388D19D1F5E945700283EF4 /* DIYRefreshAutoFooter.m in Sources */,
 				83011A5F1F21D78F00DBAF80 /* UIView+FontSize.m in Sources */,
+				83A1E55D1F4C03310047D055 /* AddressPickerView.m in Sources */,
 				8321D48F1F1C58E500CBEEBC /* UIView+MJExtension.m in Sources */,
+				83A1E55E1F4C03310047D055 /* City.m in Sources */,
 				8388C0551F30258600506FFA /* LKDBTool.m in Sources */,
 				83829D5A1F4425CC00DF530A /* RemindAndGtasksDBManager.m in Sources */,
 				8321D48C1F1C58E500CBEEBC /* MJRefreshConst.m in Sources */,
@@ -1804,6 +1897,7 @@
 				83D1A7AB1F34404F00E48A4F /* GtaskListTableViewCell.m in Sources */,
 				8321D4851F1C58E500CBEEBC /* MJRefreshBackGifFooter.m in Sources */,
 				8388C0541F30258600506FFA /* LKDBSQLState.m in Sources */,
+				83A1E5631F4E9CC70047D055 /* LaunchIntroductionView.m in Sources */,
 				8321D4701F1C58E500CBEEBC /* PersonViewController.m in Sources */,
 				83DAA2731F39CAD3008082FB /* SearchViewController.m in Sources */,
 				83D72FD51F1C9E6C001C1275 /* UITabBarItem+Theme.m in Sources */,
@@ -1831,6 +1925,7 @@
 				8321D46C1F1C58E500CBEEBC /* MainTabbarViewController.m in Sources */,
 				83829EE81F459D6600DF530A /* XHLaunchImageView.m in Sources */,
 				8388C0531F30258600506FFA /* LKDBModel.m in Sources */,
+				83252D4E1F55708900DA45C8 /* SeeProfilesViewController.m in Sources */,
 				830119C01F207B1A00DBAF80 /* MainTouchTableTableView.m in Sources */,
 				83DAA2651F395F8C008082FB /* LZPickViewManager.m in Sources */,
 				83D1A7A91F34404F00E48A4F /* GtaskListViewController.m in Sources */,
@@ -1874,6 +1969,7 @@
 				83829EE61F459D6600DF530A /* XHLaunchAdImageManager.m in Sources */,
 				8379385F1F3D784A009011E9 /* ReportLabel.m in Sources */,
 				83D1CFA51F38805F0009483E /* ReminderHistoryModel.m in Sources */,
+				83A1E55F1F4C03310047D055 /* Province.m in Sources */,
 				83D1A79F1F34404F00E48A4F /* GtasksViewController.m in Sources */,
 				83D1A7AD1F34404F00E48A4F /* SpeedCreateGtaskTableViewCell.m in Sources */,
 				83829EDF1F459D6600DF530A /* XHLaunchAd.m in Sources */,
@@ -1883,6 +1979,7 @@
 				8321D4801F1C58E500CBEEBC /* MJRefreshFooter.m in Sources */,
 				8321D4741F1C58E500CBEEBC /* YPTabItem.m in Sources */,
 				83DAA2611F395F8C008082FB /* LZAddressPickerView.m in Sources */,
+				83A1E5531F4BDEC60047D055 /* WebProgressSignManager.m in Sources */,
 				8371B05F1F2863F000DA7465 /* NSDate+Extension.m in Sources */,
 				8321D4721F1C58E500CBEEBC /* YPTabBar.m in Sources */,
 				83D72FDC1F1D9EB8001C1275 /* myNavigationController.m in Sources */,
@@ -1898,6 +1995,7 @@
 				837938561F3D58C8009011E9 /* MJPropertyKey.m in Sources */,
 				83D1A7A81F34404F00E48A4F /* GtaskHistoryViewController.m in Sources */,
 				83829EE11F459D6600DF530A /* XHLaunchAdCache.m in Sources */,
+				83A1E5501F4BD3CB0047D055 /* RKWebViewController.m in Sources */,
 				83829D4F1F42F48100DF530A /* JPullTableViewCell.m in Sources */,
 				83D72FDF1F1DD657001C1275 /* NSCalendar+SFHelper.m in Sources */,
 				8388C0651F317B9600506FFA /* PerPickImageView.m in Sources */,
@@ -1940,6 +2038,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				8315A5CE1F18AE40003BECDA /* Base */,
+				83252D431F554D1000DA45C8 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1948,8 +2047,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				8315A5D31F18AE40003BECDA /* Base */,
+				83252D441F554D1100DA45C8 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		83252D491F554E1400DA45C8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83252D481F554E1400DA45C8 /* en */,
+				83252D4A1F554E1700DA45C8 /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1959,6 +2068,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -2008,6 +2118,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -2056,6 +2167,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RikingCalendar/RikingCalendar.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = S5VH522992;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/RikingCalendar/PrefixHeader.pch";
@@ -2064,6 +2176,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.riking.RikingCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RikingCalendar/RikingCalendar-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -2080,6 +2193,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RikingCalendar/RikingCalendar.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = S5VH522992;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/RikingCalendar/PrefixHeader.pch";
@@ -2088,6 +2202,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.riking.RikingCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RikingCalendar/RikingCalendar-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

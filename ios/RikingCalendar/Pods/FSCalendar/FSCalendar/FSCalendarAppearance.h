@@ -98,6 +98,12 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
 
+
+/**
+ The color of workweekday text.
+ */
+@property (strong, nonatomic) UIColor  *workWeekdayTextColor;
+
 /**
  * The color of month header text.
  */

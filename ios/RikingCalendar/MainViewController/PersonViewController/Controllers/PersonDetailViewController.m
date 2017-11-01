@@ -14,10 +14,13 @@
 #import "AFNWorkingTool.h"
 #import "PersonMessageEditViewController.h"
 #import "JPullEmailTF.h"
+#import "AddressPickerView.h"
+
+
 
 @interface PersonDetailViewController ()
 
-<PerPickViewDelegate>
+<PerPickViewDelegate,AddressPickerViewDelegate>
 
 {
     NSMutableArray *_leftTitleArray;
@@ -28,31 +31,57 @@
     
     BOOL _isEdit;//是否编辑了个人信息
 }
+
+@property (nonatomic ,strong) AddressPickerView * chooseAddress;
+
 @end
 
 @implementation PersonDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"个人信息";
+    self.title = NSLocalizedString(@"Personal_information", nil);
     [self initData];
     [self.view addSubview:self.dataTabView];
 }
 
 - (void)initData{
-    
+
+//    "userName"                          = "未登录";
+//    "head_portrait"                     = "头像";
+//    "name"                              = "名字";
+//    "e_mail"                            = "公司邮箱";
+//    "department"                        = "部门";
+//    "more"                              = "更多";
+//    "sex"                               = "性别";
+//    "address"                           = "地区";
+//    "birthday"                          = "生日";
+//    "signature"                         = "个性签名";
     
     if (self.type==1) {
-       _leftTitleArray = [NSMutableArray arrayWithObjects:@"头像",@"名字",@"公司邮箱",@"部门",@"更多", nil];
+       _leftTitleArray = [NSMutableArray arrayWithObjects:NSLocalizedString(@"head_portrait", nil),NSLocalizedString(@"name", nil),NSLocalizedString(@"e_mail", nil),NSLocalizedString(@"department", nil),NSLocalizedString(@"more", nil), nil];
         _userModel = [[UserModel alloc]init];
         [_userModel setValuesForKeysWithDictionary:isUser];
     }else{
-        _leftTitleArray = [NSMutableArray arrayWithObjects:@"性别",@"地区",@"出生日期",@"个性签名", nil];
+        _leftTitleArray = [NSMutableArray arrayWithObjects:NSLocalizedString(@"sex", nil),NSLocalizedString(@"address", nil),NSLocalizedString(@"birthday", nil),NSLocalizedString(@"signature", nil), nil];
         _userModel = self.moreUserModel;
     }
-    
-    
+
 }
+
+- (AddressPickerView *)pickerView{
+    if (!_chooseAddress) {
+//        _chooseAddress = [[AddressPickerView alloc]initWithFrame:CGRectMake(0, kScreenHeight-64 , kScreenWidth, kScreenHeight-64)];
+        _chooseAddress = [[AddressPickerView alloc] initWithFrame:CGRectMake(0, kScreenHeight-64 , kScreenWidth, kScreenHeight-64) selectAddress:_userModel.address];
+        _chooseAddress.delegate = self;
+        [self.view addSubview:_chooseAddress];
+        // 关闭默认支持打开上次的结果
+//        _chooseAddress.isAutoOpenLast = NO;
+        
+    }
+    return _chooseAddress;
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _leftTitleArray.count;
@@ -82,7 +111,7 @@
        
         make.top.left.mas_equalTo(cell.contentView).offset(15);
         make.bottom.mas_equalTo(cell.contentView).offset(-15);
-        make.width.mas_equalTo(80);
+        make.width.mas_equalTo(120);
         
     }];
     
@@ -127,7 +156,7 @@
             _userImageView.layer.borderWidth = 0.5;
             _userImageView.layer.borderColor = dt_textLightgrey_color.CGColor;
             _userImageView.layer.masksToBounds = YES;
-            [Utils setImageView:_userImageView imageUrl:_userModel.photoUrl placeholderImage:@""];
+            [Utils setImageView:_userImageView imageUrl:_userModel.photoUrl placeholderImage:@"default_user_image"];
             [cell.contentView addSubview:_userImageView];
             
             [_userImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -155,7 +184,7 @@
         }];
         
         if (indexPath.row==0) {
-            content.text = _userModel.sex==0?@"女":@"男";
+            content.text = _userModel.sex==0?NSLocalizedString(@"woman", nil):NSLocalizedString(@"man", nil);
         }else if (indexPath.row==1){
             content.text = _userModel.address;
         }else if (indexPath.row == 2){
@@ -235,7 +264,11 @@
         }
         
         if (indexPath.row==1) {
-            [self goToEditViewControllerWithType:5 editMessage:_userModel.address];
+//            [self goToEditViewControllerWithType:5 editMessage:_userModel.address];
+            
+#pragma mark - 选择地区
+            [self.pickerView show];
+            
         }
         
         
@@ -313,7 +346,9 @@
     [self.navigationController pushViewController:editVC animated:YES];
     
 }
-
+- (void)cancelBtnClick{
+    
+}
 
 - (void)jumpOtherView:(UIImagePickerController *)object{
     object.allowsEditing = YES;
@@ -349,7 +384,7 @@
     }else{
         
         NSString *sex = (NSString *)icon;
-        if ([sex isEqualToString:@"男"]) {
+        if ([sex isEqualToString:NSLocalizedString(@"man", nil)]) {
             _userModel.sex = 1;
         }else{
             _userModel.sex = 0;
@@ -388,7 +423,7 @@
                     //服务器更新成功,再更新本地个人信息
                     [kNSUserDefaults setObject:param forKey:UserKey];
                     [kNSUserDefaults synchronize];
-                    
+                    postNotificationName(kRefreshUserMessageName);
                 } failure:^(NSString *message) {
                     
                 }];
@@ -396,6 +431,16 @@
             
         }
     }
+}
+
+
+#pragma mark - AddressPickerViewDelegate
+- (void)sureBtnClickReturnProvince:(NSString *)province City:(NSString *)city Area:(NSString *)area{
+    
+    _isEdit = YES;
+    _userModel.address = [NSString stringWithFormat:@"%@%@%@",province,city,area];
+    [self.dataTabView reloadData];
+    
 }
 
 

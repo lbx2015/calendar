@@ -1,5 +1,7 @@
 package com.riking.calendar.util;
 
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,6 +12,20 @@ import java.util.Date;
  */
 
 public class DateUtil {
+
+    /**
+     * return ture if date1 is before date2
+     * The compare will ignore the reminderTimeCalendar information.
+     *
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static boolean before(Date date1, Date date2) {
+        SimpleDateFormat s = new SimpleDateFormat(CONST.yyyyMMdd);
+        return s.format(date1).compareTo(s.format(date2)) <= 0;
+    }
+
     /**
      * @param weekflag 传入的是周几
      * @param dateTime 传入的是时间戳（设置当天的年月日+从选择框拿来的时分秒）
@@ -66,7 +82,8 @@ public class DateUtil {
     public static Date get(String date, String time) {
         Date dateTime = null;
         try {
-            dateTime = new SimpleDateFormat("yyyyMMddHHmm").parse(date + time);
+            String numberRefined = (date + time).replaceAll("[^\\d]", "");
+            dateTime = new SimpleDateFormat("yyyyMMddHHmm").parse(numberRefined);
         } catch (ParseException e) {
             Debug.Handle(e);
         } finally {
@@ -107,5 +124,9 @@ public class DateUtil {
             }
         }
         return null;
+    }
+
+    public static String getCustonFormatTime(long timeInMillis, String s) {
+        return new SimpleDateFormat(s).format(new Date(timeInMillis));
     }
 }

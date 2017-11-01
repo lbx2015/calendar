@@ -25,7 +25,7 @@ public class RemindHistory extends RealmObject {
     //the day of the reminder(yyyyMMdd)
     @SerializedName("star_date")
     public String day;
-    //the time of the reminder(HHmm)
+    //the reminderTimeCalendar of the reminder(HHmm)
     @SerializedName("start_time")
     public String time;
     //0 no remind, 1 remind

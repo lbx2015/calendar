@@ -11,7 +11,12 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.EditReminderActivity;
+import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.widget.dialog.LookReminderDialog;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
@@ -54,26 +59,26 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
         Date today = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         //set a different color for the future reminders.
-        if (DateUtil.get(r.day, r.time).compareTo(today) > 0 && r.day.equals(dateFormat.format(today))) {
+        if (r.repeatFlag == 0 && DateUtil.get(r.day, r.time).compareTo(today) > 0 && r.day.equals(dateFormat.format(today))) {
             holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_29a1f7));
-            holder.title.setTextColor(ContextCompat.getColor(holder.title.getContext(), R.color.color_323232));
         } else {
-            holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_888888));
-            holder.title.setTextColor(ContextCompat.getColor(holder.title.getContext(), R.color.color_888888));
+            holder.time.setTextColor(ContextCompat.getColor(holder.time.getContext(), R.color.color_background_b6b6b6));
         }
-
+        Logger.d("zzw", "r.deleteState " + r.deleteState);
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notifyItemRemoved(position);
                 holder.sml.smoothCloseMenu();
-                realm.executeTransaction(new Realm.Transaction() {
+                APIClient.synchronousReminds(r, CONST.DELETE, new ZRequestCallBack() {
                     @Override
-                    public void execute(Realm realm) {
-                        realm.where(Reminder.class).equalTo("id", r.id).findFirst().deleteFromRealm();
+                    public void success() {
+                        Toast.makeText(MyApplication.APP, "删除成功", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void fail() {
                     }
                 });
-                Toast.makeText(holder.time.getContext(), "deleted", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -116,6 +121,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.MyView
 
     @Override
     public int getItemCount() {
+        if (realm.isClosed()) {
+            return 0;
+        }
         return reminders.size();
     }
 

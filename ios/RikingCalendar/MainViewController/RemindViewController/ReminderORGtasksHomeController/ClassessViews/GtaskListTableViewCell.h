@@ -15,7 +15,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *GtaskLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *isImportantBtn;
+@property (weak, nonatomic) IBOutlet UIView *lineView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineViewLeftLayout;
 
 - (void)loadDataWith:(GtasksModel *)gModel didSelectBtn:(void(^)(int buttonType,BOOL buttonStatus))didSelectBtn;
 

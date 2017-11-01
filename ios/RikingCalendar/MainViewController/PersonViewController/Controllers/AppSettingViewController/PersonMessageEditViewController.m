@@ -12,12 +12,12 @@ typedef void(^completeEdit)(int type,NSString *userMessage);
 
 @interface PersonMessageEditViewController ()
 
-<UITextViewDelegate>
+<UITextViewDelegate,UITextFieldDelegate>
 {
     
     UIView *_textViewBg;
     
-    IQTextView *_editTxetView;
+    UITextField *_editTxetView;
     
     JPullEmailTF *_textField;
 }
@@ -65,7 +65,7 @@ typedef void(^completeEdit)(int type,NSString *userMessage);
         _textField.mailFont = [UIFont systemFontOfSize:16];
         _textField.MailFontColor = dt_text_main_color;
         _textField.mailCellColor = [UIColor whiteColor];
-        _textField.mailBgColor =[UIColor orangeColor];
+        _textField.mailBgColor =[UIColor whiteColor];
         _textField.mLeftMargin = 10;
         _textField.separatorInsets = @[@1,@0,@0,@0];
         [self.view addSubview:_textField];
@@ -81,7 +81,9 @@ typedef void(^completeEdit)(int type,NSString *userMessage);
         }];
     }else{
         
-        _editTxetView = [[IQTextView alloc]init];
+        _editTxetView = [[UITextField alloc]init];
+        _editTxetView.clearButtonMode=UITextFieldViewModeWhileEditing;
+        [_editTxetView addTarget:self action:@selector(textViewDidChange:) forControlEvents:UIControlEventEditingChanged];
         _editTxetView.placeholder = @"请输入昵称";
         _editTxetView.font = threeClassTextFont;
         _editTxetView.delegate = self;
@@ -144,21 +146,19 @@ typedef void(^completeEdit)(int type,NSString *userMessage);
 }
 
 
-- (void)textViewDidChange:(UITextView *)textView
+- (void)textViewDidChange:(UITextField *)textView
 {
-    if (textView.text.length>100) {
+    if (textView.text.length>20) {
         
-        textView.text  = [textView.text substringToIndex:100];
+        textView.text  = [textView.text substringToIndex:20];
     }
-    
-    textView.scrollEnabled = NO;
-    CGSize size = [textView sizeThatFits:CGSizeMake(CGRectGetWidth(textView.frame), MAXFLOAT)];
-    CGRect textViewbgFrame = _textViewBg.frame;
-    textViewbgFrame.size.height = size.height+10;
-    
-    [_textViewBg mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(textViewbgFrame.size.height);
-    }];
+//    CGSize size = [textView sizeThatFits:CGSizeMake(CGRectGetWidth(textView.frame), MAXFLOAT)];
+//    CGRect textViewbgFrame = _textViewBg.frame;
+//    textViewbgFrame.size.height = size.height+10;
+//    
+//    [_textViewBg mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.height.mas_equalTo(textViewbgFrame.size.height);
+//    }];
     
 }
 

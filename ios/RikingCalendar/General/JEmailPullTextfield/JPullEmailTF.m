@@ -25,7 +25,7 @@
 #pragma mark － 默认邮箱
 - (void)setUpEmailSuffixArray {
     self.mailsuffixData = @[
-                            @"@gmail.com",
+                            @"@riking.net",
                             @"@live.com",
                             @"@qq.com",
                             @"@sina.com",
@@ -38,7 +38,8 @@
                             @"@sohu.com",
                             @"@msn.com",
                             @"@138.com",
-                            @"@139.com"
+                            @"@139.com",
+                            @"@163.com"
                             ];
 }
 

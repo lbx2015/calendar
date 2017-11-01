@@ -1,4 +1,7 @@
 <resources>
+    <string name="illegal_date">日期不在许可范围内!</string>
+    <string name="range_date">日期范围不合法!</string>
+
     <string name="app_name">RikingCalendar</string>
     <string name="calendar">Calendar</string>
     <string name="add_schedule">Add schedule</string>
@@ -88,6 +91,7 @@
     <string name="error_tag_empty">tag不能为空</string>
     <string name="error_tag_gs_empty">格式不对</string>
     <string name="error_network">网络连接异常,初始化失败 请检查网络！</string>
+    <string name="error_server">Server Error！</string>
     <string name="logining">程序在后台执行, 请查看日志！</string>
     <string name="setting_su">设置成功</string>
     <string name="no_found">No records found</string>
@@ -97,7 +101,6 @@
     <string name="login_with_phone_number">Login With Phone Number</string>
     <string name="phone_number">Phone Number</string>
     <string name="verification_code">Verification Code</string>
-    <string name="login">Login</string>
     <string name="please_input_phone_number">Please input phone number</string>
     <string name="please_input_verification_code">Please input the verification code</string>
     <string name="get_verification_code">Get Verification Code</string>
@@ -107,6 +110,7 @@
     <string name="birthday">BirthDay</string>
     <string name="user_comments">Comments</string>
     <string-array name="subTittles">
+        <item>Home</item>
         <item>Job</item>
         <item>Vocation</item>
         <item>Remind</item>
@@ -120,4 +124,22 @@
     <string name="login_failed">Login Failed</string>
     <string name="cleared">Memory Cleared</string>
     <string name="whole_year">Whole Year</string>
+    <string name="welcome_page_text1">每日报表汇总，同步工作进度</string>
+    <string name="welcome_page_text2">外币交易市场币种节假日查询</string>
+    <string name="welcome_page_text3">快速建立提醒，重要事件不忘记</string>
+    <string name="welcome_page_text4">悦历——服务金融从业人员的日历</string>
+    <string name="enter">立即进入</string>
+    <string name="user_info">User Info</string>
+    <string name="no_reminds">目前没有提醒，不要错过重要的事情哦</string>
+    <string name="click_again_exit">Please click BACK again to exit</string>
+    <string name="click_again_clear_memory">Please click again to clear the memory</string>
+    <string name="net_connected">网络连接成功</string>
+    <string name="net_not_connected">Offline</string>
+    <string name="refresh_success">Refresh success</string>
+    <string name="server_error">Server error</string>
+    <string name="error_password">Password is not right</string>
+    <string name="check_code_password">Check code error</string>
+    <string name="check_code_time_out">Check code time out</string>
+    <string name="data_not_found">Data not found</string>
+    <string name="error_login_time_out">Login time out</string>
 </resources>

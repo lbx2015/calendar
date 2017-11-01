@@ -16,7 +16,7 @@
 @property (nonatomic,copy) NSString *hdayDate;
 @property (nonatomic,copy) NSString *hdayName;
 @property (nonatomic,copy) NSString *hdayNameValue;
-@property (nonatomic,copy) NSString *iconUrl;
+@property (nonatomic,copy) NSString *flagUrl;
 @property (nonatomic,copy) NSString *id;
 
 

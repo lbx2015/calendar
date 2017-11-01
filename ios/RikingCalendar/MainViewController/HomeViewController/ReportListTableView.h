@@ -11,7 +11,7 @@
 @protocol ReportListTableViewDelegate <NSObject>
 
 - (void)didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-
+- (void)editActionsForRowAtIndexPath:(NSIndexPath *)indexPath btnType:(NSInteger)btnType;//从0开始依次从右往左递增
 @end
 
 

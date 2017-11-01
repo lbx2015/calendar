@@ -1,5 +1,5 @@
 {
-	"table": "T_APP_USER",
+	"table": "T_REPORT_SUBMIT_CALIBER",
 	"groups":[{
 		"prop":"base",
 		"alias":"基础信息"
@@ -8,6 +8,7 @@
 		{
 			"prop": "reportId",
 			"hidden":"edit,preview,table",
+			"group":"base",
 			"type": "string"
 		},
 		{
@@ -52,6 +53,13 @@
 			"alias": "是否启用",
 			"type": "enum",
 			"dict_key": "T_APP_USER.ENABLED",
+			"enum_search":"1"
+		},
+		{
+			"prop": "remarks",
+			"alias": "备注信息",
+			"type": "enum",
+			"dict_key": "T_REPORT_SUBMIT.REMARK",
 			"enum_search":"1"
 		},
 		{

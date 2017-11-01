@@ -40,3 +40,17 @@
 -dontwarn com.google.**
 -keep class com.google.gson.** {*;}
 -keep class com.google.protobuf.** {*;}
+-keep class com.iflytek.**{*;}
+-keepattributes Signature
+
+#=================hyphenate IM===============
+-keep class com.hyphenate.** {*;}
+-dontwarn  com.hyphenate.**
+
+#=================glide===============
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}

@@ -18,14 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
@@ -51,11 +54,16 @@ public class TaskFragment extends Fragment {
     View quickAddFrameLayout;
     EditText quickAddEditor;
     View quickAddConfirmButton;
+    View v;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.task_fragment, container, false);
+        realm = Realm.getDefaultInstance();
+        if (v != null) {
+            return v;
+        }
+        v = inflater.inflate(R.layout.task_fragment, container, false);
         root = (CustomLinearLayout) v.findViewById(R.id.custom_linear_layout);
         quickAddButton = v.findViewById(R.id.quick_add_button);
         quickAddFrameLayout = v.findViewById(R.id.quick_add_frame_layout);
@@ -89,12 +97,12 @@ public class TaskFragment extends Fragment {
                         Date date = new Date();
                         Task task = realm.createObject(Task.class, simpleDateFormat.format(date));
                         task.title = quickAddEditor.getText().toString();
-                        task.appCreatedTime = new SimpleDateFormat(Const.yyyyMMddHHmm).format(date);
+                        task.appCreatedTime = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(date);
                         task.isComplete = 0;
                         task.isOpen = 0;
                         task.isImportant = 0;
-                        SharedPreferences pref = getActivity().getSharedPreferences(Const.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
-                        task.userId = pref.getString(Const.USER_ID, null);
+                        SharedPreferences pref = getActivity().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+                        task.userId = pref.getString(CONST.USER_ID, null);
                     }
                 });
                 quickAddEditor.setText(null);
@@ -116,7 +124,12 @@ public class TaskFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(root.getContext(), "Refresh success", Toast.LENGTH_LONG).show();
+                checkHistoryButton.setVisibility(View.VISIBLE);
+                if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+                    //get reminders and tasks of user from server
+                    APIClient.synchAll();
+                }
+//                Toast.makeText(root.getContext(), getString(R.string.refresh_success), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -128,9 +141,6 @@ public class TaskFragment extends Fragment {
             public void scrollUp() {
                 if (checkHistoryButton.getVisibility() == View.VISIBLE) {
                     // Start the animation
-//                    checkHistoryButton.animate()
-//                            .translationY(0)
-//                            .alpha(0.0f).setDuration(500);
                     checkHistoryButton.setVisibility(View.GONE);
                 }
             }
@@ -140,7 +150,7 @@ public class TaskFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
                 if ((viewHolder == null) || (viewHolder.itemView.getVisibility() == View.VISIBLE && (checkHistoryButton.getVisibility() == View.GONE || checkHistoryButton.getVisibility() == View.INVISIBLE))) {
 //                    root.animate().translationY(checkHistoryButton.getHeight()).setDuration(400);
-                    checkHistoryButton.setVisibility(View.VISIBLE);
+//                    checkHistoryButton.setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -152,15 +162,20 @@ public class TaskFragment extends Fragment {
                 startActivity(new Intent(getContext(), TaskHistoryActivity.class));
             }
         });
+
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        final int marginBottom = a.mTabLayout.getMeasuredHeight();
+//        params.setMargins(0, 0, 0, marginBottom);
+//        root.setLayoutParams(params);
         return v;
     }
 
     private void setRecyclerView(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(a.getApplicationContext()));
-        realm = Realm.getDefaultInstance();
         //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).findAll();
+        final RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).notEqualTo(Task.DELETESTATE, CONST.DELETE).findAll();
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.addItemDecoration(new DividerItemDecoration(a, LinearLayout.VERTICAL));
         adapter = new TaskAdapter(tasks, realm);

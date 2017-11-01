@@ -8,9 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.R;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -82,16 +83,16 @@ public class EditTaskActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 Task task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
                 task.isImportant = taskFragment.isImportant;
-                SimpleDateFormat sdf = new SimpleDateFormat(Const.yyyyMMddHHmm);
+                SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
                 task.appCreatedTime = sdf.format(new Date());
                 if (taskFragment.needToRemind) {
                     task.isOpen = 1;
                     task.strDate = sdf.format(taskFragment.calendar.getTime());
                 }
                 task.title = taskFragment.title.getText().toString();
+                APIClient.synchronousTasks(task, CONST.UPDATE);
             }
         });
-
         onBackPressed();
     }
 }

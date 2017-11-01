@@ -58,7 +58,7 @@ public class AppUserServer {
 		}
 		AppUser dbUser = appUserRepo.findById(appUser.getId());
 		if(null==dbUser){
-			return new AppResp(false,CodeDef.ERROR);
+			return new AppResp(false,CodeDef.EMP.DATA_NOT_FOUND);
 		}
 		try {
 			merge(dbUser,appUser);
@@ -76,6 +76,9 @@ public class AppUserServer {
 	@RequestMapping(value = "/IsChangeMac", method = RequestMethod.POST)
 	public AppResp IsChangeMac_(@RequestBody AppUser appUser) {
 		AppUser appUser2 = appUserRepo.findOne(appUser.getId());
+		if(null==appUser2){
+			return new AppResp(false,CodeDef.EMP.DATA_NOT_FOUND);
+		}
 		String seqNum = appUser.getPhoneSeqNum();
 		if(appUser2!=null && !appUser2.getPhoneSeqNum().equals(seqNum)){
 			appUser2.setPhoneSeqNum(seqNum);
@@ -83,7 +86,7 @@ public class AppUserServer {
 			appUserRepo.save(appUser2);
 			return new AppResp(true,CodeDef.SUCCESS);
 		}
-		return new AppResp(false,CodeDef.SUCCESS);
+		return new AppResp(false,CodeDef.ERROR);
 	}
 	
 	@AuthPass

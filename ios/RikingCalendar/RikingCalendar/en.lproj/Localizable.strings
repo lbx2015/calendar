@@ -1,0 +1,166 @@
+/* 
+  Localizable.strings
+  RikingCalendar
+
+  Created by jinglun liang on 2017/8/29.
+  Copyright © 2017年 liangjinglun. All rights reserved.
+*/
+
+
+"homeLeftBtnName" = "Today";
+
+
+"tabbar01" = "Workbench";
+
+"tabbar02" = "Holidays";
+
+"tabbar03" = "Remind";
+
+"tabbar04" = "Me";
+
+
+//==================================提醒模块===========================
+"done"                              = "Done";
+"remind_title"                      = "Remind";
+"remind_placeholder"                = "Input remind content";
+"remind_allDay"                     = "All day";
+"remind_way_title"                  = "Remind way";
+"punctual_remind"                   = "Punctual remind";
+"not_remind"                        = "Don't remind";
+"custom"                            = "Custom";
+"advance_remind"                    = "Before ";
+"minute"                            = " Minute";
+"hour"                              = "Hour";
+"day"                               = "Day";
+"month"                             = "Month";
+"year"                              = "Year";
+"sure"                              = "Sure";
+"Monday"                            = "Every Monday";
+"Tuesday"                           = "Every Tuesday";
+"Wednesday"                         = "Every Wednesday";
+"Thursday"                          = "Every Thursday";
+"Friday"                            = "Every Friday";
+"Saturday"                          = "Every Saturday";
+"Sunday"                            = "Every Sunday";
+"Worksday"                          = "Repeated legal working days";
+"Legalholiday"                      = "Repeated legal holidays";
+"Repeated_legal_working_days"       = "Repeated legal working days";
+"Repeated_legal_holidays"           = "Repeated legal holidays";
+"not_repeat"                        = "Don't repeat";
+"showRemindHistory"                 = "See remind history";
+"all_day_message01"                 = "The default remind all day ";
+"all_day_message02"                 = "Can be modified in the Settings";
+"OK"                                = "OK";
+
+"Repeat_every_day"                  = "Repeat every day";
+"Working_days_repeat"               = "Working days repeat";
+"Weekend_repeat"                    = "Weekend repeat";
+"Mon"                               = "Mon";
+"Tues"                              = "Tues";
+"Wed"                               = "Wed";
+"Thur"                              = "Thur";
+"Fri"                               = "Fri";
+"Sat"                               = "Sat";
+"Sun"                               = "Sun";
+"Every_week"                        = "Every Week ";
+"repeat_time"                       = "Repeat Time";
+"notRemindMessage"                  = "There are currently no remind, don't miss something important";
+"today"                             = "Today";
+"tomorrow"                          = "Tomorrow";
+"after"                             = "After";
+"remind_content_cannotempty"        = "Remind the content cannot be empty";
+"Remind_history"                    = "Remind History";
+
+
+//===================================待办模块=============================
+"todo_title"                        = "To Do";
+"todo_placeholder"                  = "Input Todo content";
+"todo_isImport"                     = "Important";
+"todo_remind"                       = "To Do Remind";
+"todo_speed_add"                    = "Quickly Create";
+"showGtasksHistory"                 = "See to do history";
+"todo_add"                          = "Create";
+"addRemindAndGtasks_title"          = "New Schedule";
+"todo_content_cannotempty"          = "To Do Content Cannot Empty";
+"finished"                          = "Finished";
+"unfinished"                        = "Unfinished";
+"Completed"                         = "Completed";
+"To_do_history"                     = "To Do History";
+
+
+//===================================我====================================
+
+"Personal_information"              = "Personal Information";
+"userName"                          = "Don't Login";
+"head_portrait"                     = "Head Portrait";
+"name"                              = "Name";
+"e_mail"                            = "Company Email";
+"department"                        = "Department";
+"more"                              = "More";
+"sex"                               = "Sex";
+"address"                           = "Address";
+"birthday"                          = "Birthday";
+"signature"                         = "Signature";
+
+"Click_login"                       = "Click Login";
+"settings"                          = "Settings";
+"comment"                           = "Comment";
+"about"                             = "About";
+
+"edit"                              = "Edit";
+"delete"                            = "Delete";
+
+//==================================设置====================================
+"firstWeekday"                      = "First Weekday";
+"Event_remind_time_the_all_day"     = "Remind all day time";
+"Mobile_phone_number"               = "Phone Number";
+"unbounded"                         = "Unbounded";
+"Clear_the_cache"                   = "Clear the cache";
+"Confirm_to_empty_all_cached_data"  = "Confirm to empty all cached data";
+"Clear_the_cache_data"              = "Clear the cache data";
+"cancel"                            = "Cancel";
+"Log_out"                           = "Log Out";
+"Clearance_to_complete"             = "Clearance to complete";
+"Synchronous_not_remind"            = "Your local have not synchronous remind and backlog";
+"Give_up"                           = "Give Up";
+"Sync"                              = "Sync";
+"Camera"                            = "Camera";
+"select_from_photos"                = "Select From Photos";
+"man"                               = "Man";
+"woman"                             = "Woman";
+"No_Internet_service"               = "No Internet service";
+"syncing"                           = "Loading...";
+"sync_complete"                     = "Sync Complete";
+
+"on_Monday"                         = "On Monday";
+"on_Tuesday"                        = "On Tuesday";
+"on_Wednesday"                      = "On Wednesday";
+"on_Thursday"                       = "On Thursday";
+"on_Friday"                         = "On Friday";
+"on_Saturday"                       = "On Saturday";
+"on_Sunday"                         = "On Sunday";
+
+
+
+"Load_failed"                       = "Retry network not to force, click on the screen";
+"back"                              = "Back";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

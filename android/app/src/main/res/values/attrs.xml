@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    //circle image
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ZEnterImageView">
+        <attr name="buttonTextSize" />
+        <attr name="buttonText" />
+    </declare-styleable>
+    <attr name="buttonTextSize" format="dimension" />
+    <attr name="buttonText" format="string" />
+
     <declare-styleable name="AbstractWheelPicker">
         <attr name="wheel_data" format="reference" />
         <attr name="wheel_style" format="enum">
@@ -30,4 +43,33 @@
         <attr name="type" />
     </declare-styleable>
 
+    <declare-styleable name="NCalendar">
+        <attr name="solarTextColor" format="color" />
+        <attr name="lunarTextColor" format="color" />
+        <attr name="hintColor" format="color" />
+        <attr name="selectCircleColor" format="color" />
+        <attr name="solarTextSize" format="dimension" />
+        <attr name="lunarTextSize" format="dimension" />
+        <attr name="selectCircleRadius" format="integer" />
+        <attr name="isShowLunar" format="boolean" />
+
+        <attr name="pointSize" format="dimension" />
+        <attr name="pointColor" format="color" />
+        <attr name="hollowCircleColor" format="color" />
+        <attr name="hollowCircleStroke" format="integer" />
+        <attr name="startDate" format="string" />
+        <attr name="endDate" format="string" />
+
+        <attr name="calendarHeight" format="dimension" />
+        <attr name="isMultiple" format="boolean" />
+        <attr name="duration" format="integer" />
+
+        <attr name="firstDayOfWeek" format="string" />
+        <attr name="defaultCalendar" format="string" />
+
+        <attr name="isShowHoliday" format="boolean" />
+        <attr name="holidayColor" format="color" />
+        <attr name="workdayColor" format="color" />
+
+    </declare-styleable>
 </resources>

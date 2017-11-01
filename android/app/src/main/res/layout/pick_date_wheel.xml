@@ -11,29 +11,23 @@
         android:background="@color/color_background_f2f2f2"
         android:gravity="center_vertical">
 
-        <Button
+        <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/margin_dp_7.5"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/cancel"
-            android:textColor="@color/color_29a1f7"
-            android:textSize="@dimen/normal_font_size_18" />
+            android:src="@drawable/cancel" />
 
-        <Button
+        <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/margin_dp_7.5"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@android:string/ok"
-            android:textColor="@color/color_29a1f7"
-            android:textSize="@dimen/normal_font_size_18" />
+            android:src="@drawable/confirm" />
     </RelativeLayout>
 
     <View
@@ -41,48 +35,49 @@
         android:layout_height="0.5dp"
         android:background="#D8D3D3" />
 
-    <RelativeLayout
+    <com.riking.calendar.widget.MinutePickRelativeLayout
+        android:id="@+id/minute_picker_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
 
-        <com.riking.calendar.widget.wheelpicker.widget.curved.WheelDatePicker
+        <com.riking.calendar.widget.wheelpicker.widget.curved.WheelYearMonthPicker
             android:id="@+id/date_picker"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginLeft="20dp"
-            android:layout_toLeftOf="@+id/switches"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal" />
+    </com.riking.calendar.widget.MinutePickRelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/switches"
+    <View
+        android:id="@+id/first_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider_color_d9d9d9" />
+
+    <LinearLayout
+        android:id="@+id/whole_month"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="19dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.riking.calendar.view.ZCenterImageView
+            android:id="@+id/whole_month_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:orientation="vertical">
+            android:layout_marginRight="4dp"
+            android:src="@drawable/not_checked_whole_month" />
 
-            <Switch
-                android:id="@+id/whole_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/whole_year"
-                android:thumbTint="@color/colorPrimary" />
-
-            <Switch
-                android:id="@+id/whole_month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/whole_month"
-                android:thumbTint="@color/colorPrimary" />
-
-            <Switch
-                android:id="@+id/clear_date_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/clear_date_filter"
-                android:thumbTint="@color/colorPrimary" />
-        </LinearLayout>
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/whole_month"
+            android:textColor="@color/color_323232"
+            android:textSize="16sp" />
+    </LinearLayout>
 </LinearLayout>

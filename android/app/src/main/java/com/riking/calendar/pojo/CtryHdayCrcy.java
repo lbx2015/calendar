@@ -37,9 +37,9 @@ public class CtryHdayCrcy {
     public String deleteState;
 
     //	@Transient
-    public String falgUrl;
-    public byte pindex;
-    public byte pcount;
+    public String flagUrl;
+    public byte pindex = 1;
+    public byte pcount = 30;
 
     @Override
     public String toString() {
@@ -51,7 +51,7 @@ public class CtryHdayCrcy {
                 ", crcy='" + crcy + '\'' +
                 ", remark='" + remark + '\'' +
                 ", deleteState='" + deleteState + '\'' +
-                ", falgUrl='" + falgUrl + '\'' +
+                ", flagUrl='" + flagUrl + '\'' +
                 '}';
     }
 }

@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="19dp"
             android:layout_marginRight="19dp"
-            android:textColor="@color/color_888888"
+            android:textColor="@color/color_background_b6b6b6"
             android:textSize="16sp" />
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/time"
-            android:textColor="@color/color_888888"
+            android:textColor="@color/color_323232"
             android:textSize="16sp" />
 
         <View

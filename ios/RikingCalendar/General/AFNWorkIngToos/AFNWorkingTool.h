@@ -41,11 +41,29 @@ typedef NS_ENUM(NSUInteger, KKHTTPMethod)
 - (void)AFNHttpRequestPOSTurlstring:(NSString *)url parm:(NSDictionary *)parm success:(void(^)(NSDictionary *dictData))success failure:(void (^)(NSError *error))failue;
 
 
+-(void)AFNHttpPOSTWithUrlstring:(NSString *)urlString
+                     parameters:(id)parameters
+                        success:(void(^)(NSDictionary *dictData))success
+                        failure:(void (^)(NSError *error))failue;
+
 -(void)UpLoadImage:(NSString *)url parm:(NSMutableDictionary *)parm images:(NSMutableArray *)imageArr success:(void(^)(NSDictionary *dictData))success   failure:(void (^)(NSError *error))failue;
 
 /**
  队列请求
  */
 - (void)INSNSOperationQueueWithDataArray:(NSArray *)array urlString:(NSString *)urlString method:(NSString *)method success:(void(^)(id dictData,NSInteger row))success failure:(void (^)(NSError *error,NSString *message,NSInteger row))failue AllSuccess:(void(^)(id responseObject))allSuccess;
+
+
+/**
+ 队列请求
+
+ @param array array description
+ @param urlStringArray urlStringArray description
+ @param methodArray methodArray description
+ @param success success description
+ @param failue failue description
+ @param allSuccess allSuccess description
+ */
+- (void)INSNSOperationQueueWithDataArray:(NSArray *)array urlStringArray:(NSArray *)urlStringArray methodArray:(NSArray *)methodArray success:(void(^)(id dictData,NSInteger row))success failure:(void (^)(NSError *error,NSString *message,NSInteger row))failue AllSuccess:(void(^)(id responseObject))allSuccess;
 
 @end

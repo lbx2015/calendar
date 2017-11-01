@@ -2,7 +2,6 @@ package com.riking.calendar.util;
 
 import android.os.Environment;
 
-import com.ldf.calendar.Const;
 import com.riking.calendar.jiguang.Logger;
 
 import java.io.File;
@@ -16,9 +15,14 @@ import java.util.Date;
  */
 
 public class FileUtil {
+
+    public static File getImageSaveDir() {
+        File mFile1 = Environment.getExternalStorageDirectory();
+        return new File(mFile1, CONST.IMAGE_PATH);
+    }
     public static File generateImageFile() {
         File mFile1 = Environment.getExternalStorageDirectory();
-        File imagePath = new File(mFile1, Const.IMAGE_PATH);
+        File imagePath = new File(mFile1, CONST.IMAGE_PATH);
         if (imagePath.exists() && imagePath.isDirectory()) {
 
         } else {
@@ -29,13 +33,13 @@ public class FileUtil {
 
     public static String getImageFilePath(String imageName) {
         File mFile1 = Environment.getExternalStorageDirectory();
-        return mFile1.getAbsolutePath() + Const.IMAGE_PATH + "/" + imageName;
+        return mFile1.getAbsolutePath() + CONST.IMAGE_PATH + "/" + imageName;
     }
 
     public static boolean imageExists(String imageName) {
         Logger.d("zzw", "imagename: " + imageName);
         File mFile = Environment.getExternalStorageDirectory();
-        File imageDirectory = new File(mFile, Const.IMAGE_PATH);
+        File imageDirectory = new File(mFile, CONST.IMAGE_PATH);
         Logger.d("zzw", "imageDirectory: " + imageDirectory);
         if (!imageDirectory.exists()) {
             Logger.d("zzw", "imageDirectory not exists: " + imageDirectory);

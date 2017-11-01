@@ -13,12 +13,18 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
 import com.riking.calendar.R;
+import com.riking.calendar.fragment.WorkFragment;
+import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.LunarCalendar;
 import com.riking.calendar.util.SpecialCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -33,6 +39,9 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     //the day number of current month plus the previous month's last several day which to make up the week blank.
     public ArrayList<String> daysOfCurrentMonth = new ArrayList<>();
     public int dayOfWeek = 0; // 具体某一天是星期几
+    public Calendar currentDate;
+    ArrayList<String> reminders = new ArrayList<>();//not repeat reminders
+    WorkFragment fragment;
     private boolean isLeapyear = false; // 是否为闰年
     private int daysOfMonth = 0; // 某月的天数
     private int daysOfLastMonth = 0; // 上一个月的总天数
@@ -48,7 +57,6 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     private String currentDay = "";
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
     private int[] schDateTagFlag = null; // 存储当月所有的日程日期
-
     private String showYear = ""; // 用于在头部显示的年份
     private String showMonth = ""; // 用于在头部显示的月份
     private String animalsYear = "";
@@ -66,6 +74,61 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         sys_year = sysDate.split("-")[0];
         sys_month = sysDate.split("-")[1];
         sys_day = sysDate.split("-")[2];
+    }
+
+    public CalendarGridViewAdapter(WorkFragment fragment, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
+        this();
+        this.context = fragment.getContext();
+        this.fragment = fragment;
+        sc = new SpecialCalendar();
+        lc = new LunarCalendar();
+        this.res = rs;
+
+        int stepYear = year_c + jumpYear;
+        int stepMonth = month_c + jumpMonth;
+        //The swiping month in current year or future
+        if (stepMonth > 0) {
+            // 往下一个月滑动
+            if (stepMonth % 12 == 0) {
+                stepYear = year_c + stepMonth / 12 - 1;
+                stepMonth = 12;
+            } else {
+                stepYear = year_c + stepMonth / 12;
+                stepMonth = stepMonth % 12;
+            }
+        }
+        //The swiping month is not in current year. It in last year or previous year.
+        else {
+            // 往上一个月滑动
+            stepYear = year_c - 1 + stepMonth / 12;
+            stepMonth = stepMonth % 12 + 12;
+            if (stepMonth % 12 == 0) {
+
+            }
+        }
+
+        //the day format in realm is yyyyMMdd so we need make sure the month have two digits
+        fragment.getRemindDaysOfMonth(stepYear + "" + String.format("%02d", stepMonth));
+        reminders = fragment.notRepeatRemindDaysOfMonth;
+        Logger.d("zzw", "notRepeatRemindDaysOfMonth: " + reminders.size());
+        currentYear = String.valueOf(stepYear); // 得到当前的年份
+        currentMonth = String.valueOf(stepMonth); // 得到本月
+        // （jumpMonth为滑动的次数，每滑动一次就增加一月或减一月）
+        currentDay = String.valueOf(day_c); // 得到当前日期是哪天
+        currentDate = Calendar.getInstance();
+        currentDate.set(Calendar.YEAR, stepYear);
+        //The month in java is from 0 to 11
+        currentDate.set(Calendar.MONTH, stepMonth - 1);
+        //current real month
+        if (jumpMonth == 0 && jumpYear == 0) {
+            currentDate.set(Calendar.DATE, day_c);
+        } else {
+            currentDate.set(Calendar.DATE, 1);
+        }
+        getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
+        //update the reminders for the first day of month
+        fragment.updateReminderAdapter(currentDate);
+        fragment.updateReportAdapter(currentDate.getTime());
     }
 
     public CalendarGridViewAdapter(Context context, Resources rs, int jumpMonth, int jumpYear, int year_c, int month_c, int day_c) {
@@ -102,9 +165,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         currentMonth = String.valueOf(stepMonth); // 得到本月
         // （jumpMonth为滑动的次数，每滑动一次就增加一月或减一月）
         currentDay = String.valueOf(day_c); // 得到当前日期是哪天
-
         getCalendar(Integer.parseInt(currentYear), Integer.parseInt(currentMonth));
-
     }
 
     public CalendarGridViewAdapter(Context context, Resources rs, int year, int month, int day) {
@@ -147,7 +208,10 @@ public class CalendarGridViewAdapter extends BaseAdapter {
         LinearLayout cellRoot = (LinearLayout) convertView.findViewById(R.id.root_linearLayout);
         TextView textView = (TextView) convertView.findViewById(R.id.tvtext);
         TextView nTextView = (TextView) convertView.findViewById(R.id.n_tvtext);
+        View point = convertView.findViewById(R.id.remind_circle);
+        //阳历
         String d = dayNumber[position].split("\\.")[0];
+        //农历
         String dv = dayNumber[position].split("\\.")[1];
 
 //        SpannableString sp = new SpannableString(d + "\n" + dv);
@@ -164,9 +228,59 @@ public class CalendarGridViewAdapter extends BaseAdapter {
             textView.setText(d);
             nTextView.setText(dv);
             // 当前月信息显示
-            textView.setTextColor(res.getColor(R.color.color_323232));// 当月字体设黑
-            nTextView.setTextColor(res.getColor(R.color.color_323232));
+            //set the text color into b6b6b6 for sunday and saturday
+//            if ((position % 7) == 0 || (position % 7) == 6) {
+//                textView.setTextColor(res.getColor(R.color.color_background_b6b6b6));// 当月字体设黑
+//                nTextView.setTextColor(res.getColor(R.color.color_background_b6b6b6));
+//            } else {
+//                textView.setTextColor(res.getColor(R.color.color_323232));// 当月字体设黑
+//                nTextView.setTextColor(res.getColor(R.color.color_323232));
+//            }
 
+            //sunday is 7,monday is 1,saturday is 6
+            int weekDayOfCurrentPosition = position % 7;
+            if (weekDayOfCurrentPosition == 0) {
+                weekDayOfCurrentPosition = 7;
+            }
+
+            if (currentDate == null) {
+                currentDate = Calendar.getInstance();
+            }
+
+            currentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(d));
+            Date cDate = currentDate.getTime();
+            Date earliestWeekDate = fragment.weeks.get(String.valueOf(weekDayOfCurrentPosition));
+            boolean afterRemindTime = currentDate == null ? false : earliestWeekDate == null ? false : DateUtil.before(earliestWeekDate, cDate);
+            Logger.d("zzw", earliestWeekDate + "afterRemindTime: " + afterRemindTime);
+
+            boolean workDayAfterRemindTime = currentDate == null ? false : fragment.ealiestRemindWorkDate == null ? false : DateUtil.before(fragment.ealiestRemindWorkDate, cDate);
+            boolean holidayAfterRemindTime = currentDate == null ? false : fragment.ealiestRemindHolidayDate == null ? false : DateUtil.before(fragment.ealiestRemindHolidayDate, cDate);
+
+            boolean isTodayWorkDay = false;//the today is current day not real today
+            String workDay = new SimpleDateFormat(CONST.yyyyMMdd).format(cDate);
+            //weekends
+            if (weekDayOfCurrentPosition > 5) {
+                if (fragment.workOnWeekendDates.contains(workDay)) {
+                    isTodayWorkDay = true;
+                } else {
+                    isTodayWorkDay = false;
+                }
+            } else {
+                if (fragment.notWorkOnWorkDates.contains(workDay)) {
+                    isTodayWorkDay = false;
+                } else {
+                    isTodayWorkDay = true;
+                }
+            }
+
+            //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder reminderTimeCalendar)
+            if (reminders.contains(d) || (fragment.repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition)) && afterRemindTime)
+                    || (isTodayWorkDay && workDayAfterRemindTime) || (holidayAfterRemindTime && !isTodayWorkDay)) {
+                Logger.d("zww", " show circle point remind day " + d);
+                point.setVisibility(View.VISIBLE);
+            } else {
+                point.setVisibility(View.GONE);
+            }
 //            drawable = res.getDrawable(R.drawable.circular_textview);
 //			drawable = res.getDrawable(R.drawable.calendar_item_selected_bg);
 //            drawable = new ColorDrawable(Color.rgb(23, 126, 214));
@@ -199,9 +313,15 @@ public class CalendarGridViewAdapter extends BaseAdapter {
                     textView.setTextColor(res.getColor(R.color.color_29a1f7));// 当天字体
                     nTextView.setTextColor(res.getColor(R.color.color_29a1f7));
                 } else {
-                    // 当前月信息显示
-                    textView.setTextColor(Color.BLACK);// 当月字体设黑
-                    nTextView.setTextColor(Color.BLACK);
+                    //set the text color into b6b6b6 for sunday and saturday
+                    if ((position % 7) == 0 || (position % 7) == 6) {
+                        textView.setTextColor(res.getColor(R.color.color_background_b6b6b6));// 当月字体设黑
+                        nTextView.setTextColor(res.getColor(R.color.color_background_b6b6b6));
+                    } else {
+                        // 当前月信息显示
+                        textView.setTextColor(Color.BLACK);// 当月字体设黑
+                        nTextView.setTextColor(Color.BLACK);
+                    }
                 }
 
                 //remove the background
@@ -218,13 +338,25 @@ public class CalendarGridViewAdapter extends BaseAdapter {
     }
 
     // 得到某年的某月的天数且这月的第一天是星期几
+
     public void getCalendar(int year, int month) {
         isLeapyear = sc.isLeapYear(year); // 是否为闰年
         daysOfMonth = sc.getDaysOfMonth(isLeapyear, month); // 某月的总天数
         dayOfWeek = sc.getWeekdayOfMonth(year, month); // 某月第一天为星期几
         daysOfLastMonth = sc.getDaysOfMonth(isLeapyear, month - 1); // 上一个月的总天数
+        //the first day of week this month is the position
+        currentFlag = dayOfWeek;
+
+        //If the previous days number showing in current month plus current month days bigger than 35
+        if (dayOfWeek + daysOfMonth > 35) {
+            dayNumber = new String[42];
+        } else {
+            dayNumber = new String[35];
+        }
+
         Log.d("DAY", isLeapyear + " ======  " + daysOfMonth + "  ============  " + dayOfWeek + "  =========   " + daysOfLastMonth);
         getweek(year, month);
+
     }
 
     // 将一个月中的每一天的值添加入数组dayNuber中
@@ -235,7 +367,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 
         // 得到当前月的所有日程日期(这些日期需要标记)
 
-        for (int i = 0; i < 42; i++) {
+        for (int i = 0; i < dayNumber.length; i++) {
             // 周一
             // if(i<7){
             // dayNumber[i]=week[i]+"."+" ";

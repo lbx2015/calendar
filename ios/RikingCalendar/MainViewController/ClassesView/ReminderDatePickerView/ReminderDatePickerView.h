@@ -20,7 +20,7 @@ typedef enum{
 
 @interface ReminderDatePickerView : UIView
 
-- (void)setDateStyle:(ReminderDateStyle)datePickerStyle CompleteBlock:(void(^)(NSString *time))completeBlock;
+- (void)setDateStyle:(ReminderDateStyle)datePickerStyle selectTime:(NSString *)selectTime CompleteBlock:(void(^)(NSString *time))completeBlock;
 
 -(void)show;
 

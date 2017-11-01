@@ -2,7 +2,7 @@ package com.ldf.calendar.view;
 
 import android.graphics.Canvas;
 
-import com.ldf.calendar.Const;
+
 import com.ldf.calendar.interf.IDayRenderer;
 
 /**
@@ -11,7 +11,7 @@ import com.ldf.calendar.interf.IDayRenderer;
 
 public class Week {
     public int row;
-    public Day[] days = new Day[Const.TOTAL_COL];
+    public Day[] days = new Day[CONST.TOTAL_COL];
 
     public Week(int row) {
         this.row = row;

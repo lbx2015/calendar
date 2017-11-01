@@ -1,8 +1,8 @@
 package com.riking.calendar.pojo;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.UUID;
+import com.riking.calendar.gson.ExcludeGsonField;
+import com.riking.calendar.realm.model.Reminder;
 
 import io.realm.annotations.PrimaryKey;
 
@@ -21,7 +21,7 @@ public class ReminderModel {
     //the day of the reminder(yyyyMMdd)
     @SerializedName("strDate")
     public String day;
-    //the time of the reminder(HHmm)
+    //the reminderTimeCalendar of the reminder(HHmm)
     @SerializedName("startTime")
     public String time;
     //0,1,2,3
@@ -42,6 +42,29 @@ public class ReminderModel {
     public byte deleteState;
     //0 no remind, 1 remind
     public byte isRemind = 1;
+    public byte clientType = 2;
+
+    @ExcludeGsonField
+    public byte operationType;
+
+    public ReminderModel() {
+    }
+
+    public ReminderModel(Reminder r) {
+        id = r.id;
+        userId = r.userId;
+        title = r.title;
+        day = r.day;
+        time = r.time.replace("[^\\d]","");
+        repeatFlag = r.repeatFlag;
+        isAllDay = r.isAllDay;
+        aheadTime = r.aheadTime;
+        endTime = r.endTime;
+        repeatWeek = r.repeatWeek;
+        currentWeek = r.currentWeek;
+        deleteState = r.deleteState;
+        isRemind = r.isRemind;
+    }
 
     @Override
     public String toString() {
@@ -62,6 +85,4 @@ public class ReminderModel {
                 ", clientType=" + clientType +
                 '}';
     }
-
-    public byte clientType = 2;
 }

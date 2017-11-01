@@ -7,7 +7,6 @@
 //
 
 #import "RKBaseViewController.h"
-
-@interface WebViewController : RKBaseViewController
-@property (nonatomic,copy)NSString *Url;
+#import "RKWebViewController.h"
+@interface WebViewController : RKWebViewController
 @end

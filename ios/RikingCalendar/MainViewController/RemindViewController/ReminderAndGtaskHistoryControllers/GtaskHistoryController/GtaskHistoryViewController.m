@@ -22,7 +22,8 @@
     
     self.title = @"待办历史";
     [self initData];
-     [self.view addSubview:self.dataTabView];
+    [self.view addSubview:self.dataTabView];
+    self.dataTabView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 
@@ -30,12 +31,14 @@
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
-        [self.dataArray removeAllObjects];
+        if (self.dataArray.count>0) {
+            [self.dataArray removeAllObjects];
+        }
         
         [self.dataArray addObjectsFromArray:[[RemindAndGtasksDBManager shareManager] getAllGtasksHistory]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            RKLog(@"%@",self.dataArray);
+            //RKLog(@"%@",self.dataArray);
             [self.dataTabView reloadData];
         });
         
@@ -85,45 +88,66 @@
             
             if (!gtaskCell) {
                 
-                gtaskCell  = [[[NSBundle mainBundle]loadNibNamed:@"GtaskListTableViewCell" owner:self options:nil]firstObject];
+                gtaskCell  = [[[NSBundle mainBundle]loadNibNamed:@"GtaskListTableViewCell" owner:self options:nil]lastObject];
             }
             gtaskCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             GtasksModel *gModel = array[indexPath.row];
+            RKLog(@"-----------------%@",gModel.content);
             
-            gtaskCell.GtaskLabel.text = gModel.content;
-            gtaskCell.GtaskLabel.font = threeClassTextFont;
-            gtaskCell.GtaskLabel.textColor = dt_text_main_color;
-            gtaskCell.finshBtn.tag = indexPath.row;
-            [gtaskCell.finshBtn addTarget:self action:@selector(finshAction:) forControlEvents:UIControlEventTouchUpInside];
-            [gtaskCell.finshBtn setImage:[UIImage imageNamed:@"gtaskFinsh"] forState:UIControlStateNormal];
-            [gtaskCell.finshBtn setImage:[UIImage imageNamed:@"gtask_unfinish"] forState:UIControlStateSelected];
-            gtaskCell.finshBtn.selected = NO;
-            
-            [gtaskCell.isImportantBtn setImage:[UIImage imageNamed:@"programme_Important_normalStars"] forState:UIControlStateNormal];
-            [gtaskCell.isImportantBtn setImage:[UIImage imageNamed:@"programme_Important_selectStars"] forState:UIControlStateSelected];
-            
-            if (gModel.isImportant) {
-                gtaskCell.isImportantBtn.selected = YES;
-            }else{
-                gtaskCell.isImportantBtn.selected = NO;
+            if (indexPath.row == array.count-1) {
+                gtaskCell.lineViewLeftLayout.constant=0;
             }
             
-            //是否开启提醒
-            if (gModel.isOpen) {
-                //gtaskCell.GtaskLabel.textColor = [UIColor orangeColor];
-            }
-            
-            
+            [gtaskCell loadDataWith:gModel didSelectBtn:^(int buttonType,BOOL buttonStatus) {
+                
+                //完成
+                if (buttonType==1) {
+                    [array removeObjectAtIndex:indexPath.row];
+                    if (array.count==0) {
+                        [self.dataArray removeObject:array];
+                    }
+                    
+                    [tableView reloadData];
+                    
+                    if (self.editGtask) {
+                        self.editGtask(YES);
+                    }
+                }
+            }];
             
             return gtaskCell;
+            
+            
+            
+//            gtaskCell.GtaskLabel.text = gModel.content;
+//            gtaskCell.GtaskLabel.font = threeClassTextFont;
+//            gtaskCell.GtaskLabel.textColor = dt_text_main_color;
+//            gtaskCell.lineView.backgroundColor = dt_line_color;
+//            gtaskCell.finshBtn.tag = indexPath.row;
+//            [gtaskCell.finshBtn addTarget:self action:@selector(finshAction:) forControlEvents:UIControlEventTouchUpInside];
+//            [gtaskCell.finshBtn setImage:[UIImage imageNamed:@"gtaskFinsh"] forState:UIControlStateNormal];
+//            [gtaskCell.finshBtn setImage:[UIImage imageNamed:@"gtask_unfinish"] forState:UIControlStateSelected];
+//            gtaskCell.finshBtn.selected = NO;
+//            
+//            [gtaskCell.isImportantBtn setImage:[UIImage imageNamed:@"programme_Important_normalStars"] forState:UIControlStateNormal];
+//            [gtaskCell.isImportantBtn setImage:[UIImage imageNamed:@"programme_Important_selectStars"] forState:UIControlStateSelected];
+//            
+//            if (gModel.isImportant) {
+//                gtaskCell.isImportantBtn.selected = YES;
+//            }else{
+//                gtaskCell.isImportantBtn.selected = NO;
+//            }
+//            
+//           
+//        
+//            return gtaskCell;
         }else{
             
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
             if (!cell) {
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID"];
             }
-            
             //为了防止重用
             for (UIView *view in cell.contentView.subviews) {
                 
@@ -135,9 +159,8 @@
             
             GtasksModel *gModel = [self.dataArray[indexPath.section] lastObject];
             
-            UILabel *timeLabel = [self createMainLabelWithText:[NSString stringWithFormat:@"完成于 %@",[Utils distanceWithBeforeTime:gModel.completeDate]]];
-            
-            
+            UILabel *timeLabel = [self createMainLabelWithText:[NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"Completed", nil),[Utils distanceWithBeforeTime:gModel.completeDate]]];
+    
             timeLabel.font = sevenClassTextFont;
             
             timeLabel.textColor = dt_textLightgrey_color;
@@ -145,7 +168,7 @@
             timeLabel.textAlignment = NSTextAlignmentRight;
             
             [cell.contentView addSubview:timeLabel];
-            
+        
             [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 
                 make.edges.mas_equalTo(UIEdgeInsetsMake(0, 20, 0, 15));
@@ -179,48 +202,47 @@
     
     NSMutableArray *array = self.dataArray[indexPath.section];
     GtasksModel *gModel = array[indexPath.row];
-    UITableViewRowAction *editRowAction = [UITableViewRowAction  rowActionWithStyle:UITableViewRowActionStyleDefault title:@"编辑" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        
-        [self.dataTabView reloadData];
-        
-        GtasksViewController *vc = [[GtasksViewController alloc]init];
-        vc.gtaskModel = gModel;
-        vc.isEdit = YES;
-        vc.editGtask = ^(){
-            
-            [self initData];
-            
-        };
-        [self.navigationController pushViewController:vc animated:YES];
-        
-        
-        
-    }];
-    
-    editRowAction.backgroundColor = dt_app_main_color;
+//    UITableViewRowAction *editRowAction = [UITableViewRowAction  rowActionWithStyle:UITableViewRowActionStyleDefault title:@"编辑" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+//        
+//        [self.dataTabView reloadData];
+//        
+//        GtasksViewController *vc = [[GtasksViewController alloc]init];
+//        vc.gtaskModel = gModel;
+//        vc.isEdit = YES;
+//        vc.editGtask = ^(){
+//            
+//            [self initData];
+//            
+//        };
+//        [self.navigationController pushViewController:vc animated:YES];
+//        
+//        
+//        
+//    }];
+//    
+//    editRowAction.backgroundColor = dt_app_main_color;
     
     UITableViewRowAction *deleteRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         
-        [self.dataTabView reloadData];
-        
-        BOOL ret = [gModel deleteObject];
-        if (ret) {
+        @KKWeak(self);
+        [[RemindAndGtasksDBManager shareManager] doSaveGtasksNetWorkWithGtasksModel:gModel editType:3 success:^(BOOL ret) {
+            @KKStrong(self);
+            
+            if (array.count>0) {
+                [array removeObjectAtIndex:indexPath.row];
+            }
+            
             if (array.count==0) {
                 [self.dataArray removeObjectAtIndex:indexPath.section];
             }
-            
-            
-        }
-        
-        [self.dataTabView reloadData];
-    
-        
+            [tableView reloadData];
+        }];
         
     }];
     
     
     if (indexPath.row<array.count) {
-        return @[deleteRowAction,editRowAction];
+        return @[deleteRowAction];
     }else{
         return nil;
     }
@@ -235,40 +257,60 @@
     sender.selected = !sender.selected;
     
     UITableViewCell *cell = (UITableViewCell *)[sender superview];
-    
     NSIndexPath *indexPath = [self.dataTabView indexPathForCell:cell];
+    GtasksModel *gModel = self.dataArray[indexPath.row];
+    gModel.isComplete = YES;
+    gModel.completeDate = [Utils getCurrentTime];
     
-    dispatch_async(dispatch_get_global_queue(0,0), ^{
-        GtasksModel *gModel = self.dataArray[indexPath.section][indexPath.row];
-        gModel.isComplete = NO;
-        gModel.completeDate = [Utils getCurrentTime];
+    @KKWeak(self);
+    [[RemindAndGtasksDBManager shareManager] doSaveGtasksNetWorkWithGtasksModel:gModel editType:2 success:^(BOOL ret) {
+        @KKStrong(self);
         
-        BOOL ret =  [gModel update];
+        [self.dataArray removeObjectAtIndex:indexPath.row];
+        [self.dataTabView reloadData];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            if (ret) {
-               
-                NSLog(@"indexPath is = %ld",indexPath.row);
-                
-                NSMutableArray *array = self.dataArray[indexPath.section];
-                [array removeObjectAtIndex:indexPath.row];
-                
-                if (array.count==0) {
-                    [self.dataArray removeObjectAtIndex:indexPath.section];
-                }
+        if (self.editGtask) {
+            self.editGtask(YES);
+        }
+    }];
     
-                [self.dataTabView reloadData];
-                
-                if (self.editGtask) {
-                    self.editGtask(YES);
-                }
-                
-            }
-            
-        });
-        
-    });
+    
+    
+//    UITableViewCell *cell = (UITableViewCell *)[sender superview];
+//    
+//    NSIndexPath *indexPath = [self.dataTabView indexPathForCell:cell];
+//    
+//    dispatch_async(dispatch_get_global_queue(0,0), ^{
+//        GtasksModel *gModel = self.dataArray[indexPath.section][indexPath.row];
+//        gModel.isComplete = NO;
+//        gModel.completeDate = [Utils getCurrentTime];
+//        
+//        BOOL ret =  [gModel update];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            
+//            if (ret) {
+//               
+//                NSLog(@"indexPath is = %ld",indexPath.row);
+//                
+//                NSMutableArray *array = self.dataArray[indexPath.section];
+//                [array removeObjectAtIndex:indexPath.row];
+//                
+//                if (array.count==0) {
+//                    [self.dataArray removeObjectAtIndex:indexPath.section];
+//                }
+//    
+//                [self.dataTabView reloadData];
+//                
+//                if (self.editGtask) {
+//                    self.editGtask(YES);
+//                }
+//                
+//            }
+//            
+//        });
+//        
+//    });
     
 }
 

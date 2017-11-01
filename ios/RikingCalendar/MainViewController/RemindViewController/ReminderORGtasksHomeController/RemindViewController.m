@@ -49,7 +49,7 @@
     addReminder.updateData = ^(){
       @KKStrong(self);
         if (self.selectIndex == 0) {
-            [reminderVC refreshReminderData];
+//            [reminderVC refreshReminderData];
         }
         
     };
@@ -67,7 +67,7 @@
     GtaskListViewController *gtasksVC = [[GtaskListViewController alloc]init];
     
     NSArray *controllers=@[reminderVC,gtasksVC];
-    NSArray *titleArray =@[@"提醒",@"待办"];
+    NSArray *titleArray =@[NSLocalizedString(@"remind_title", nil),NSLocalizedString(@"todo_title", nil)];
     
     self.rcs=[[MYSegmentView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-64-49) controllers:controllers titleArray:titleArray ParentController:self lineWidth:kScreenWidth/2 lineHeight:2. selectIndex:self.selectIndex];
     

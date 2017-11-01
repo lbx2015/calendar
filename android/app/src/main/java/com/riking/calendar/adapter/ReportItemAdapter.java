@@ -8,16 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ldf.calendar.Const;
+
 import com.riking.calendar.R;
-import com.riking.calendar.activity.ReportDetailActivity;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.realm.model.QueryReportRealmModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
@@ -28,10 +31,10 @@ import java.util.List;
 
 public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    private List<QueryReport> reports;
+    private List<QueryReportRealmModel> reports;
     private int size;
 
-    public ReportItemAdapter(List<QueryReport> r) {
+    public ReportItemAdapter(List<QueryReportRealmModel> r) {
         this.reports = r;
         size = reports.size();
     }
@@ -45,7 +48,7 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        final QueryReport r = reports.get(position);
+        final QueryReportRealmModel r = reports.get(position);
 //        if(!r.isValid()){
 //            notifyItemRemoved(position);
 //            return;
@@ -53,8 +56,19 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         holder.position = position;
         holder.title.setText(r.reportName);
 
-        holder.sml.setSwipeEnable(true);
+        //not enable the swipe function when user is not logged.
+        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+            holder.sml.setSwipeEnable(true);
+        } else {
+            holder.sml.setSwipeEnable(false);
+        }
+
         holder.r = r;
+        if (position == reports.size() - 1) {
+            holder.divider.setVisibility(View.GONE);
+        } else {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -70,24 +84,29 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         public TextView title;
         public TextView tv;
         public int position;
+        public View divider;
         SwipeHorizontalMenuLayout sml;
-        QueryReport r;
+        QueryReportRealmModel r;
 
-        public MyViewHolder(final List<QueryReport> reports, View view) {
+        public MyViewHolder(final List<QueryReportRealmModel> reports, View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
+            divider = view.findViewById(R.id.divider);
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Logger.d("zzw", "report id: " + r.id);
-                    apiInterface.getReportDetail(r).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    QueryReport report = new QueryReport();
+                    report.id = r.id;
+                    apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {
                         @Override
                         public void callBack(ResponseModel<String> response) {
                             String reportUrl = response._data;
+                            Logger.d("zzw", "report Url : " + reportUrl);
                             if (reportUrl != null) {
-                                Intent i = new Intent(title.getContext(), ReportDetailActivity.class);
-                                i.putExtra(Const.REPORT_URL, reportUrl);
+                                Intent i = new Intent(title.getContext(), WebviewActivity.class);
+                                i.putExtra(CONST.WEB_URL, reportUrl);
                                 title.getContext().startActivity(i);
                             }
                         }

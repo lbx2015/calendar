@@ -36,7 +36,7 @@ public class ReminHisServer {
 	@Autowired
 	RemindHisRepo remindHisRepo;
 	
-	@ApiOperation(value = "用户提醒历史新增", notes = "POST")
+	/*@ApiOperation(value = "用户提醒历史新增", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public AppResp save(@RequestBody RemindHis remindHis){
 		remindHis = remindHisRepo.save(remindHis);
@@ -69,5 +69,5 @@ public class ReminHisServer {
 				}
 		}
 		return new AppResp(page, CodeDef.SUCCESS);
-	}
+	}*/
 }

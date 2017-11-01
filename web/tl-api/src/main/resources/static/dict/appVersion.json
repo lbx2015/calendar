@@ -12,6 +12,14 @@
 			"group":"base"
 		},
 		{
+			"prop": "type",
+			"alias": "客户端类型",
+			"group":"base",
+			"type": "enum",
+			"dict_key": "T_APP_VERSION.TYPE",
+			"enum_search":"1"
+		},
+		{
 			"prop": "forces",
 			"alias": "是否强制更新",
 			"group":"base",
@@ -30,6 +38,12 @@
 			"alias": "版本说明",
 			"group":"base",
 			"type": "text"
+		},
+		{
+			"prop": "apkUrl",
+			"alias": "apk路径",
+			"type": "string",
+			"group":"base"
 		},
 		{
 			"prop": "deleteState",
