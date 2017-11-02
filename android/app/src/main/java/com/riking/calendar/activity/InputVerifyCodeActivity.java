@@ -1,6 +1,5 @@
 package com.riking.calendar.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -89,8 +88,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
             getVerificationCodeButton.setEnabled(true);
             getVerificationCodeButton.setClickable(true);
             //user can input the verify codes one more time
-            icv.setEnabled(true);
-            icv.setFocusable(true);
+            icv.available4Editting = true;
         }
 
         public void startTick() {
@@ -98,8 +96,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
             getVerificationCodeButton.setEnabled(false);
             getVerificationCodeButton.setClickable(false);
             //disable the editing fucntion of verify code.
-            icv.setEnabled(false);
-            icv.setFocusable(false);
+            icv.available4Editting = false;
 
             start();
         }
