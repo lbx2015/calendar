@@ -105,8 +105,11 @@
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.MomentAddActivity" />
-        <activity            android:name=".activity.LoginNavigateActivity"/>
-        <activity            android:name=".activity.InputCellPhoneNumberActivity"/>
+        <activity android:name=".activity.LoginNavigateActivity" />
+        <activity android:name=".activity.InputCellPhoneNumberActivity" />
+        <activity
+            android:name=".activity.InputVerifyCodeActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
