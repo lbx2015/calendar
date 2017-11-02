@@ -20,32 +20,23 @@ import butterknife.ButterKnife;
  * Created by zw.zhang on 2017/8/14.
  */
 
-public class LoginNavigateActivity extends AppCompatActivity {
-
-    @BindView(R.id.phone_login)
-    TextView loginWithPhone;
+public class InputCellPhoneNumberActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_navigation);
+        setContentView(R.layout.activity_login_input_phone_number);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
+        //set translucent background for the status bar
         StatusBarUtil.setTranslucent(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        ButterKnife.bind(this);
-        loginWithPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginNavigateActivity.this, InputCellPhoneNumberActivity.class));
-            }
-        });
     }
 }
