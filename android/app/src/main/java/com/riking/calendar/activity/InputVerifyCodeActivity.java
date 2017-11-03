@@ -1,8 +1,10 @@
 package com.riking.calendar.activity;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.necer.ncalendar.view.IdentifyingCodeView;
 import com.riking.calendar.R;
@@ -44,7 +47,19 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
             @Override
             public void inputComplete() {
                 if (icv.getTextContent().length() == 6) {
-                    time.startTick();
+                    final ProgressDialog dialog = new ProgressDialog(InputVerifyCodeActivity.this);
+                    dialog.setMessage("正在加载中");
+                    dialog.setCanceledOnTouchOutside(false);
+                    //disable the dialog to be cancelled on back key pressed.
+                    dialog.setCancelable(false);
+                    dialog.show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                            Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 3000);
                 }
 //                startActivity(new Intent(InputVerifyCodeActivity.this, LoginActivity.class));
             }
@@ -70,6 +85,12 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
         icv.clearAllText();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        time.startTick();
+    }
+
     class TimeCount extends CountDownTimer {
 
         public TimeCount(long millisInFuture, long countDownInterval) {
@@ -87,16 +108,12 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
             getVerificationCodeButton.setBackground(getDrawable(R.drawable.rounded_login__verify_code_color_rectangle));
             getVerificationCodeButton.setEnabled(true);
             getVerificationCodeButton.setClickable(true);
-            //user can input the verify codes one more time
-            icv.available4Editting = true;
         }
 
         public void startTick() {
             getVerificationCodeButton.setBackground(getDrawable(R.drawable.rounded_login__verify_code_rectangle));
             getVerificationCodeButton.setEnabled(false);
             getVerificationCodeButton.setClickable(false);
-            //disable the editing fucntion of verify code.
-            icv.available4Editting = false;
 
             start();
         }

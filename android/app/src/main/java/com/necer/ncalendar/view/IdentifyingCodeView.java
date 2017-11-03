@@ -26,8 +26,6 @@ import com.riking.calendar.R;
  */
 
 public class IdentifyingCodeView extends RelativeLayout {
-
-    public boolean available4Editting = true;
     private LinearLayout containerEt;
     private EditText et;
     // 输入框数量
@@ -152,7 +150,7 @@ public class IdentifyingCodeView extends RelativeLayout {
         et.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (available4Editting && keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
                     onKeyDelete();
                     return true;
                 }
