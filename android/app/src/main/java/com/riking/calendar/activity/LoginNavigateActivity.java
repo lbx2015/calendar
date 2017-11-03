@@ -98,12 +98,22 @@ public class LoginNavigateActivity extends AppCompatActivity {
                 webView.loadUrl(js);
             }
         });
-        webView.loadDataWithBaseURL(gifPath, viedo, "text/html", "utf-8", null);
+        webView.loadDataWithBaseURL(videoPath, viedo, "text/html", "utf-8", null);
         // 开启支持视频
         webSettings.setPluginState(WebSettings.PluginState.ON);
         webSettings.setGeolocationEnabled(true);
         String jsFullScreen = "javascript: var v=document.getElementsByTagName('video')[0]; " + "v.webkitEnterFullscreen(); ";
         webView.loadUrl(jsFullScreen);
 //        webView.loadUrl(gifPath);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String js = "javascript: var v=document.getElementsByTagName('video')[0]; "
+                + "v.play(); ";
+
+        //start play
+        webView.loadUrl(js);
     }
 }
