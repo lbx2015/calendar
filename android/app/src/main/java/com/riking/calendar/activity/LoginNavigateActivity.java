@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -79,25 +80,28 @@ public class LoginNavigateActivity extends AppCompatActivity {
         String viedo = "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "    <body style='margin:0'>\n" +
-                "        <video width=\"100%\" height=\"100%\" >\n" +
+                "        <video   width=\"100%\" height=\"100%\"  autoplay loop>\n" +
                 "              <source src=\"" + videoPath + "\" type=\"video/mp4\">\n" +
                 "        </video>\n" +
                 "    </body>\n" +
                 "</html>";
 
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //loaded finished
+               String js = "javascript: var v=document.getElementsByTagName('video')[0]; "
+                        + "v.play(); ";
+
+                //start play
+                webView.loadUrl(js);
+            }
+        });
         webView.loadDataWithBaseURL(gifPath, viedo, "text/html", "utf-8", null);
         // 开启支持视频
         webSettings.setPluginState(WebSettings.PluginState.ON);
         webSettings.setGeolocationEnabled(true);
-        webView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                String js = "javascript: var v=document.getElementsByTagName('video')[0]; "
-                        + "v.play(); ";
-
-                webView.loadUrl(js);
-            }
-        }, 1000);
         String jsFullScreen = "javascript: var v=document.getElementsByTagName('video')[0]; " + "v.webkitEnterFullscreen(); ";
         webView.loadUrl(jsFullScreen);
 //        webView.loadUrl(gifPath);
