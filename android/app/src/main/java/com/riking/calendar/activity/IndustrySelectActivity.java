@@ -1,42 +1,47 @@
-package com.riking.calendar.fragment;
+package com.riking.calendar.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.HomeAdapter;
-import com.riking.calendar.adapter.QuestionsAdapter;
+import com.riking.calendar.adapter.IndustryAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 /**
- * Created by zw.zhang on 2017/7/17.
+ * Created by zw.zhang on 2017/8/14.
  */
 
-public class QuestionsFragment extends Fragment {
-    View v;
-    QuestionsAdapter mAdapter;
+public class IndustrySelectActivity extends AppCompatActivity {
+    IndustryAdapter mAdapter;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (v != null) return v;
-        v = inflater.inflate(R.layout.topic_fragment, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_industry_selection);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
+        //set translucent background for the status bar
+        StatusBarUtil.setTranslucent(this);
         init();
-        return v;
     }
 
     private void init() {
@@ -45,15 +50,19 @@ public class QuestionsFragment extends Fragment {
     }
 
     private void initViews() {
-        mPullToLoadView = (PullToLoadViewWithoutFloatButton) v.findViewById(R.id.pullToLoadView);
+        mPullToLoadView = (PullToLoadViewWithoutFloatButton) findViewById(R.id.pullToLoadViewWithoutFloatButton);
     }
+
+    public void onClick(View view) {
+    }
+
 
     private void initEvents() {
         RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
+        LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new QuestionsAdapter(getContext());
+        mAdapter = new IndustryAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
         mPullToLoadView.setPullCallback(new PullCallback() {
@@ -89,14 +98,16 @@ public class QuestionsFragment extends Fragment {
             public void run() {
                 mPullToLoadView.setComplete();
                 if (page > 3) {
-                    Toast.makeText(getContext(), "没有更多数据了",
+                    Toast.makeText(IndustrySelectActivity.this, "没有更多数据了",
                             Toast.LENGTH_SHORT).show();
                     isHasLoadedAll = true;
                     return;
                 }
-                for (int i = 0; i <= 15; i++) {
-                    mAdapter.add(i + "");
+                int startPosition = mAdapter.getItemCount()-1;
+                for (int i = 0; i <= 1; i++) {
+                    mAdapter.mList.add(i + "");
                 }
+                mAdapter.notifyItemRangeInserted(startPosition,1);
 
                 isLoading = false;
                 nextPage = page + 1;
@@ -104,3 +115,4 @@ public class QuestionsFragment extends Fragment {
         }, 1000);
     }
 }
+

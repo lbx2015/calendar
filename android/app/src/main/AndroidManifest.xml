@@ -110,6 +110,7 @@
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity android:name=".activity.IndustrySelectActivity"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"

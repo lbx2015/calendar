@@ -1,6 +1,7 @@
 package com.riking.calendar.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -52,11 +53,13 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                     dialog.setCanceledOnTouchOutside(false);
                     //disable the dialog to be cancelled on back key pressed.
                     dialog.setCancelable(false);
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     dialog.show();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             dialog.dismiss();
+                            startActivity(new Intent(InputVerifyCodeActivity.this,IndustrySelectActivity.class));
                             Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         }
                     }, 3000);
