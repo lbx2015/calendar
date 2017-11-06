@@ -68,47 +68,16 @@ public class LoginNavigateActivity extends AppCompatActivity {
 //        String gifPath = "http://pic48.nipic.com/file/20140912/7487939_223919315000_2.jpg";
 //        String gifPath = "http://img.zcool.cn/community/018bcf575ed5200000018c1b264854.gif";
 
-        String gifPath = "file:///android_asset/kingfisher.jpg";
+        String gifPath = "file:///android_asset/timg.gif";
         String videoPath = "file:///android_asset/LaunchTour.mp4";
 
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
-        String data = "<HTML><div align=\"center\" margin=\"0px\"><IMG  width=\"100%\" height=\"100%\" src=\"" + gifPath + "\" margin=\"0px\"/></Div>";//设置图片位于webview的中间位置
+      String data = "<!DOCTYPE html>\n<html><body style='margin:0'><div  align=\"center\" margin=\"0px\"><IMG  width=\"100%\" height=\"100%\" src=\"" + gifPath + "\" margin=\"0px\"/></Div></body></html>";//设置图片位于webview的中间位置
 
-//        webView.loadDataWithBaseURL(gifPath, data, "text/html", "utf-8", null);
 
-        String viedo = "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "    <body style='margin:0'>\n" +
-                "        <video   width=\"100%\" height=\"100%\"  autoplay loop>\n" +
-                "              <source src=\"" + videoPath + "\" type=\"video/mp4\">\n" +
-                "        </video>\n" +
-                "    </body>\n" +
-                "</html>";
+        webView.loadDataWithBaseURL(gifPath, data, "text/html", "utf-8", null);
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //loaded finished
-               String js = "javascript: var v=document.getElementsByTagName('video')[0]; "
-                        + "v.play(); ";
-
-                //start play
-                webView.loadUrl(js);
-            }
-        });
-        webView.loadDataWithBaseURL(videoPath, viedo, "text/html", "utf-8", null);
-        // 开启支持视频
-        webSettings.setPluginState(WebSettings.PluginState.ON);
-        webSettings.setGeolocationEnabled(true);
-        String js = "javascript: var v=document.getElementsByTagName('video')[0]; "
-                + "v.play(); ";
-
-        //start play
-        webView.loadUrl(js);
-        String jsFullScreen = "javascript: var v=document.getElementsByTagName('video')[0]; " + "v.webkitEnterFullscreen(); ";
-        webView.loadUrl(jsFullScreen);
 //        webView.loadUrl(gifPath);
     }
 
