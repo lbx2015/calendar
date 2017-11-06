@@ -1,6 +1,5 @@
 package com.riking.calendar.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.IndustryAdapter;
+import com.riking.calendar.adapter.PositionAdapter;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
@@ -23,8 +22,8 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
  * Created by zw.zhang on 2017/8/14.
  */
 
-public class IndustrySelectActivity extends AppCompatActivity {
-    IndustryAdapter mAdapter;
+public class PositionSelectActivity extends AppCompatActivity {
+    PositionAdapter mAdapter;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -34,7 +33,7 @@ public class IndustrySelectActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_industry_selection);
+        setContentView(R.layout.activity_position_selection);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -54,8 +53,7 @@ public class IndustrySelectActivity extends AppCompatActivity {
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) findViewById(R.id.pullToLoadViewWithoutFloatButton);
     }
 
-    public void onClickNextStep(View view) {
-        startActivity(new Intent(this, PositionSelectActivity.class));
+    public void onClick(View view) {
     }
 
 
@@ -64,7 +62,7 @@ public class IndustrySelectActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new IndustryAdapter(this);
+        mAdapter = new PositionAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
         mPullToLoadView.setPullCallback(new PullCallback() {
@@ -100,16 +98,16 @@ public class IndustrySelectActivity extends AppCompatActivity {
             public void run() {
                 mPullToLoadView.setComplete();
                 if (page > 3) {
-                    Toast.makeText(IndustrySelectActivity.this, "没有更多数据了",
+                    Toast.makeText(PositionSelectActivity.this, "没有更多数据了",
                             Toast.LENGTH_SHORT).show();
                     isHasLoadedAll = true;
                     return;
                 }
-//                int startPosition = mAdapter.getItemCount() - 1;
+//                int startPosition = mAdapter.getItemCount()-1;
                 for (int i = 0; i <= 1; i++) {
                     mAdapter.mList.add(i + "");
                 }
-//                mAdapter.notifyItemRangeInserted(startPosition, 1);
+//                mAdapter.notifyItemRangeInserted(startPosition,1);
                 mAdapter.notifyDataSetChanged();
                 isLoading = false;
                 nextPage = page + 1;
