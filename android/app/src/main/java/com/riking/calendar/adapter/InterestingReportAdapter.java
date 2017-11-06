@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class InterestingReportAdapter extends RecyclerView.Adapter<PositionViewHolder> {
+public class InterestingReportAdapter extends RecyclerView.Adapter<InterestingReportHolder> {
 
     public List<String> mList;
     private Context context;
@@ -23,14 +23,14 @@ public class InterestingReportAdapter extends RecyclerView.Adapter<PositionViewH
     }
 
     @Override
-    public PositionViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public InterestingReportHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.intersting_report_item, viewGroup, false);
-        return new PositionViewHolder(view);
+        return new InterestingReportHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final PositionViewHolder h, int i) {
+    public void onBindViewHolder(final InterestingReportHolder h, int i) {
         if (i == 0) {
             h.industryName.setText("存款准备金+");
         } else if (i == 2) {
@@ -48,7 +48,7 @@ public class InterestingReportAdapter extends RecyclerView.Adapter<PositionViewH
                     h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.black_deep));
                 } else {
                     h.checkImage.setVisibility(View.VISIBLE);
-                    h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.holidayColor));
+                    h.root.setBackgroundColor(h.root.getResources().getColor(R.color.white));
                 }
             }
         });
