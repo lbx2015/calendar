@@ -102,6 +102,11 @@ public class LoginNavigateActivity extends AppCompatActivity {
         // 开启支持视频
         webSettings.setPluginState(WebSettings.PluginState.ON);
         webSettings.setGeolocationEnabled(true);
+        String js = "javascript: var v=document.getElementsByTagName('video')[0]; "
+                + "v.play(); ";
+
+        //start play
+        webView.loadUrl(js);
         String jsFullScreen = "javascript: var v=document.getElementsByTagName('video')[0]; " + "v.webkitEnterFullscreen(); ";
         webView.loadUrl(jsFullScreen);
 //        webView.loadUrl(gifPath);

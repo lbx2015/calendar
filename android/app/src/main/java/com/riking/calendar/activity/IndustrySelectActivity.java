@@ -10,10 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.IndustryAdapter;
+import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
@@ -28,7 +30,7 @@ public class IndustrySelectActivity extends AppCompatActivity {
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
-
+    private ImageView imageView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,8 @@ public class IndustrySelectActivity extends AppCompatActivity {
 
     private void initViews() {
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) findViewById(R.id.pullToLoadViewWithoutFloatButton);
+        imageView = findViewById(R.id.background_image);
+        GlideApp.with(this).load(R.drawable.timg).into(imageView);
     }
 
     public void onClick(View view) {
