@@ -56,7 +56,7 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mList.size() + 5;
+        return mList.size();
     }
 
 }

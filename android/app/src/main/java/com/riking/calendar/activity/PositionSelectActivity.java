@@ -106,6 +106,7 @@ public class PositionSelectActivity extends AppCompatActivity {
                     isHasLoadedAll = true;
                     return;
                 }
+                mAdapter.mList.clear();
 //                int startPosition = mAdapter.getItemCount()-1;
                 for (int i = 0; i <= 1; i++) {
                     mAdapter.mList.add(i + "");

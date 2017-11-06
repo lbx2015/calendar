@@ -62,7 +62,7 @@ public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mList.size() + 5;
+        return mList.size();
     }
 
 }
