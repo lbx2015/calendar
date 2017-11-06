@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -59,6 +60,8 @@ public class PositionSelectActivity extends AppCompatActivity {
 
     private void initEvents() {
         RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
+        //adding default divider
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);

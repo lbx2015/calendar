@@ -1,12 +1,15 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.PositionSelectActivity;
+import com.riking.calendar.app.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,8 @@ public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
                     h.checkImage.setVisibility(View.VISIBLE);
                     h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.holidayColor));
                 }
+                //go to position select page
+                MyApplication.mCurrentActivity.startActivity(new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class));
             }
         });
     }
