@@ -73,7 +73,7 @@ public class LoginNavigateActivity extends AppCompatActivity {
 
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
-      String data = "<!DOCTYPE html>\n<html><body style='margin:0'><div  align=\"center\" margin=\"0px\"><IMG  width=\"100%\" height=\"100%\" src=\"" + gifPath + "\" margin=\"0px\"/></Div></body></html>";//设置图片位于webview的中间位置
+      String data = "<body style='margin:0'><IMG  width=\"100%\" height=\"100%\" src=\"" + gifPath + "\"/></body></html>";//设置图片位于webview的中间位置
 
 
         webView.loadDataWithBaseURL(gifPath, data, "text/html", "utf-8", null);
