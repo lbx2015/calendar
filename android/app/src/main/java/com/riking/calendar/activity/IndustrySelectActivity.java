@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +26,7 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 public class IndustrySelectActivity extends AppCompatActivity {
     IndustryAdapter mAdapter;
+    RecyclerView mRecyclerView;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -60,11 +60,10 @@ public class IndustrySelectActivity extends AppCompatActivity {
         startActivity(new Intent(this, PositionSelectActivity.class));
     }
 
-
     private void initEvents() {
-        RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
+        mRecyclerView = mPullToLoadView.getRecyclerView();
         //adding default divider
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
@@ -110,8 +109,10 @@ public class IndustrySelectActivity extends AppCompatActivity {
                     return;
                 }
                 mAdapter.mList.clear();
+                //clear the recycled view pool
+                mRecyclerView.getRecycledViewPool().clear();
 //                int startPosition = mAdapter.getItemCount() - 1;
-                for (int i = 0; i <= 1; i++) {
+                for (int i = 0; i <= 3; i++) {
                     mAdapter.mList.add(i + "");
                 }
 //                mAdapter.notifyItemRangeInserted(startPosition, 1);
