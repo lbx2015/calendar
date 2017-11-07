@@ -36,19 +36,23 @@ public class InterestingReportAdapter extends RecyclerView.Adapter<InterestingRe
         } else if (i == 2) {
             h.industryName.setText("1104季1+");
         } else if (i == 3) {
-            h.industryName.setText("打集中 月1 +");
+            h.industryName.setText("打集中月1+");
         } else {
             h.industryName.setText("利率保备+");
         }
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String industryName = h.industryName.getText().toString();
                 if (h.checkImage.getVisibility() == View.VISIBLE) {
                     h.checkImage.setVisibility(View.GONE);
+                    h.industryName.setText(industryName+"+");
                     h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.black_deep));
+                    h.root.setBackground(h.root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                 } else {
                     h.checkImage.setVisibility(View.VISIBLE);
-                    h.root.setBackgroundColor(h.root.getResources().getColor(R.color.white));
+                    h.industryName.setText(industryName.subSequence(0,industryName.indexOf('+')));
+                    h.root.setBackground(h.root.getResources().getDrawable(R.drawable.selected__interesting_reports_background));
                 }
             }
         });
