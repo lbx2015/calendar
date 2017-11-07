@@ -15,9 +15,15 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.necer.ncalendar.view.IdentifyingCodeView;
 import com.riking.calendar.R;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZR;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -47,7 +53,8 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
         icv.setInputCompleteListener(new IdentifyingCodeView.InputCompleteListener() {
             @Override
             public void inputComplete() {
-                if (icv.getTextContent().length() == 6) {
+                final String verifyCodes = icv.getTextContent();
+                if (verifyCodes.length() == 6) {
                     final ProgressDialog dialog = new ProgressDialog(InputVerifyCodeActivity.this);
                     dialog.setMessage("正在加载中");
                     dialog.setCanceledOnTouchOutside(false);
@@ -59,10 +66,21 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             dialog.dismiss();
-                            startActivity(new Intent(InputVerifyCodeActivity.this,IndustrySelectActivity.class));
+                            final AppUser user = new AppUser();
+                            user.valiCode = verifyCodes;
+                            user.idCode = ZR.getDeviceId();
+                            user.idCode = Build.MANUFACTURER + Build.MODEL;
+                            APIClient.checkVarificationCode(user, new ZCallBack<ResponseModel<AppUser>>() {
+                                @Override
+                                public void callBack(ResponseModel<AppUser> response) {
+                                    Toast.makeText(getApplicationContext(), response._data.id, Toast.LENGTH_SHORT).show();
+                                    MyLog.d("checkVarificationCode");
+                                }
+                            });
+                            startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
                             Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         }
-                    }, 3000);
+                    }, 1000);
                 }
 //                startActivity(new Intent(InputVerifyCodeActivity.this, LoginActivity.class));
             }

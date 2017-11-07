@@ -1,8 +1,14 @@
 package com.riking.calendar.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import com.riking.calendar.app.MyApplication;
 
 /**
  * Created by zw.zhang on 2017/7/14.
@@ -56,5 +62,20 @@ public class ZR {
             //load a low resolution image (100x100px, for example)
         }
 
+    }
+
+    public static String getDeviceId(){
+        TelephonyManager tManager = (TelephonyManager) MyApplication.mCurrentActivity.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(MyApplication.mCurrentActivity, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return tManager.getDeviceId();
+        }
+        return "";
     }
 }
