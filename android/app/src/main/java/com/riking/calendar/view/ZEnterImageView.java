@@ -31,7 +31,8 @@ public class ZEnterImageView extends android.support.v7.widget.AppCompatImageVie
     public ZEnterImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ZEnterImageView);
-        text = a.getText(R.styleable.ZEnterImageView_buttonText).toString();
+        CharSequence charSequence = a.getText(R.styleable.ZEnterImageView_buttonText);
+        text = charSequence == null ? "立即进入" : charSequence.toString();
         init();
     }
 
