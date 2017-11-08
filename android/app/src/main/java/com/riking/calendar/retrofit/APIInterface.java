@@ -8,7 +8,6 @@ import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.GetHolidayModel;
-import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.QueryReport;
@@ -20,6 +19,7 @@ import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
@@ -142,4 +142,7 @@ public interface APIInterface {
 
     @POST("common/getappVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
+
+    @POST("appUserApp/findIndustry")
+    Call<ResponseModel<ArrayList<Industry>>> findIndustry();
 }

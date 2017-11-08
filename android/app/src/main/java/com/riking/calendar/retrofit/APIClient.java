@@ -24,6 +24,7 @@ import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.QueryReportRealmModel;
@@ -483,5 +484,12 @@ public class APIClient {
                 updateCallback.onSuccess(response._data);
             }
         });
+    }
+
+    /**
+     * get industries
+     */
+    public static void getIndustries(final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c){
+        apiInterface.findIndustry().enqueue(c);
     }
 }

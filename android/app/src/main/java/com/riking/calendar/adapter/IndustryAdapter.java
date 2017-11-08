@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.pojo.server.Industry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
 
-    public List<String> mList;
+    public List<Industry> mList;
     private Context context;
 
     public IndustryAdapter(Context context) {
@@ -34,15 +35,7 @@ public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
 
     @Override
     public void onBindViewHolder(final QuestionsViewHolder h, int i) {
-        if (i == 0) {
-            h.industryName.setText("金融");
-        } else if (i == 2) {
-            h.industryName.setText("银行");
-        } else if (i == 3) {
-            h.industryName.setText("证券");
-        } else {
-            h.industryName.setText("汽车租赁");
-        }
+        h.industryName.setText(mList.get(i).name);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

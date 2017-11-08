@@ -141,10 +141,11 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                     });
                                 }
                             });
+
+                            startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
+                            Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
-                    Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                 }
 //                startActivity(new Intent(InputVerifyCodeActivity.this, LoginActivity.class));
             }
@@ -166,9 +167,6 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
     }
 
-    public void onClick(View view) {
-        icv.clearAllText();
-    }
 
     @Override
     protected void onStart() {
