@@ -17,6 +17,7 @@ import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZRequestCallBack;
+import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
@@ -51,6 +52,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 
 /**
  * Created by zzw on 05/01/17.
@@ -78,6 +80,10 @@ public class APIClient {
                 .client(client)
                 .build();
         return retrofit;
+    }
+
+    public static void checkVarificationCode(@Body AppUser user, final ZCallBack<ResponseModel<AppUser>> callBack){
+        apiInterface.checkVarificationCode(user).enqueue(callBack);
     }
 
     public static void updatePendingReminds(final ZRequestCallBack callBack) {

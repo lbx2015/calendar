@@ -12,6 +12,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <!--
@@ -44,6 +45,10 @@
 
     <style name="AppTheme.LaunchActivity" parent="AppTheme.FullScreen">
         <item name="android:background">@mipmap/launch_page</item>
+    </style>
+    <style name="TransparentStatusBarTheme" parent="AppTheme.FullScreen">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="weekName">

@@ -107,6 +107,7 @@ public abstract class AbstractWheelPicker extends View implements IWheelPicker {
     }
 
     protected void obtainAttrs(AttributeSet attrs) {
+        int defDataID = R.array.WheelArrayDefault;
 
         int defItemIndex = 0;
         int defItemCount = 7;
@@ -121,6 +122,7 @@ public abstract class AbstractWheelPicker extends View implements IWheelPicker {
                     .obtainStyledAttributes(attrs, R.styleable.AbstractWheelPicker);
 
             int idData = a.getResourceId(R.styleable.AbstractWheelPicker_wheel_data, 0);
+            if (idData == 0) idData = defDataID;
             data = Arrays.asList(getContext().getResources().getStringArray(idData));
 
             itemIndex = a.getInt(R.styleable.AbstractWheelPicker_wheel_item_index, defItemIndex);
@@ -138,6 +140,16 @@ public abstract class AbstractWheelPicker extends View implements IWheelPicker {
             hasSameSize = a.getBoolean(R.styleable.AbstractWheelPicker_wheel_item_same_size, false);
 
             a.recycle();
+        } else {
+            data = Arrays.asList(getContext().getResources().getStringArray(defDataID));
+
+            itemIndex = defItemIndex;
+            itemCount = defItemCount;
+            itemSpace = defItemSpace;
+
+            textSize = defTextSize;
+
+            curTextColor = defCurTextColor;
         }
     }
 
