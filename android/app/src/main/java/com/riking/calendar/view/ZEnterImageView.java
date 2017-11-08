@@ -1,11 +1,13 @@
 package com.riking.calendar.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
+import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.util.ZR;
 
@@ -18,8 +20,8 @@ import com.riking.calendar.util.ZR;
 public class ZEnterImageView extends android.support.v7.widget.AppCompatImageView {
 
     float textSize;
-    String text;
     AttributeSet attrs;
+    String text = "立即进入";
 
     public ZEnterImageView(Context context) {
         super(context);
@@ -28,6 +30,8 @@ public class ZEnterImageView extends android.support.v7.widget.AppCompatImageVie
 
     public ZEnterImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ZEnterImageView);
+        text = a.getText(R.styleable.ZEnterImageView_buttonText).toString();
         init();
     }
 
@@ -39,7 +43,6 @@ public class ZEnterImageView extends android.support.v7.widget.AppCompatImageVie
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        String text = "立即进入";
         float textSize = ZR.convertDpToPx(getContext(), 17);
         TextPaint paint = new TextPaint();
         paint.setColor(Color.WHITE);
@@ -56,5 +59,6 @@ public class ZEnterImageView extends android.support.v7.widget.AppCompatImageVie
 
     private void init() {
         setScaleType(ScaleType.CENTER);
+
     }
 }
