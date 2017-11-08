@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,7 +50,8 @@ public class ReportsSelectActivity extends AppCompatActivity {
 //        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
     }
 
-    public void onClick(View view) {
+    public void onClickStart(View view) {
+        startActivity(new Intent(this,ViewPagerActivity.class));
     }
 
     private void initEvents() {

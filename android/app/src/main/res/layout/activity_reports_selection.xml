@@ -44,6 +44,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/selected__interesting_reports_background"
         android:gravity="center"
+        android:onClick="onClickStart"
         android:text="立即开始"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
