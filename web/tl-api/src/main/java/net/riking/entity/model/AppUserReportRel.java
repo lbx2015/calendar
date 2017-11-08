@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -40,6 +41,10 @@ public class AppUserReportRel extends BaseEntity {
 	// 报表ID
 	@Column(name = "report_id", length = 32)
 	private String reportId;
+	
+	// 是否完成
+	@Column(name = "is_complete", length = 32)
+	private String isComplete;//0：未完成；1：已完成
 
 	public String getId() {
 		return id;
@@ -65,9 +70,18 @@ public class AppUserReportRel extends BaseEntity {
 		this.reportId = reportId;
 	}
 
+	public String getIsComplete() {
+		return isComplete;
+	}
+
+	public void setIsComplete(String isComplete) {
+		this.isComplete = isComplete;
+	}
+
 	@Override
 	public String toString() {
-		return "AppUserReportRel [id=" + id + ", appUserId=" + appUserId + ", reportId=" + reportId + "]";
+		return "AppUserReportRel [id=" + id + ", appUserId=" + appUserId + ", reportId=" + reportId + ", isComplete="
+				+ isComplete + "]";
 	}
 
 }

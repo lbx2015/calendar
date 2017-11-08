@@ -50,4 +50,7 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	@Query(" from AppUser  where deleteState = '1' and id = ?1 ")
 	AppUser findById(String id);
+	
+	@Query(" from AppUser where openId = ?1 ")
+	AppUser findByOpenId(String openId);
 }

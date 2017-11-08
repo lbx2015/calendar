@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -133,6 +134,13 @@ public class AppUserServer {
 		if(rs>0){
 			return new AppResp(photoUrl, CodeDef.SUCCESS);
 		}
+		return new AppResp(CodeDef.ERROR);
+	}
+	
+	@ApiOperation(value = "更新用户信息", notes = "POST")
+	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+	public AppResp updateUser(@RequestBody AppUser appUser){
+		appUserRepo.save(appUser);
 		return new AppResp(CodeDef.ERROR);
 	}
 	

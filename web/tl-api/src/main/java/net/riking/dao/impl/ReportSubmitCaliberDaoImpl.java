@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -117,5 +119,27 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			e.printStackTrace();
 		}
 		return rs;
+	}
+
+	@Override
+	public List<QueryReport> findAllReport() {
+		// TODO Auto-generated method stub
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "SELECT a.id, a.report_name, substring_index(b.VALU, '-', 1) toOrgan,case when substring_index(b.VALU, '-', 1)='PBOC' then '中国人民银行监管报表' when substring_index(b.VALU, '-', 1)='CBRC' then '银监会监管报表报表' end as rptType,substring_index(b.VALU, '-', -2) rptPackage, group_concat(c.frequency ORDER BY c.frequency ASC) AS strFrequency from t_report_list a left join t_base_modelpropdict b on b.tablename='T_REPORT_LIST' and b.FIELD='MODLE_TYPE' LEFT JOIN t_report_submit_caliber c ON a.id=c.report_id where a.module_type=b.KE and a.delete_state=1 GROUP BY a.Id ";
+		PreparedStatement pstmt = null;
+		List<QueryReport> list = new ArrayList<>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				QueryReport queryReport = new QueryReport(rs.getString(1), rs.getString(2), rs.getString(3),
+						rs.getString(4), rs.getString(5),rs.getString(6),"");
+				list.add(queryReport);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

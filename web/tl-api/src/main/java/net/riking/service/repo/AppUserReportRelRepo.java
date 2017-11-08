@@ -1,5 +1,6 @@
 package net.riking.service.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +25,11 @@ public interface AppUserReportRelRepo  extends JpaRepository<AppUserReportRel, S
 	
 	@Query("select u.appUserId from AppUserReportRel u where u.reportId in ?1")
 	Set<String> findbyReportId(Set<String> reportId);
+	
+	@Query(" from AppUserReportRel u where u.appUserId = ?1")
+	List<AppUserReportRel> findUserReportList(String appUserId);
+	
+	@Query("select t.reportId from AppUserReportRel t where t.appUserId = ?1")
+	List<String> findReportByUserId(String userId);
 
 }

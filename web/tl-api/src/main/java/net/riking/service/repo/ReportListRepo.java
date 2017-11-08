@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.AppUserReportRel;
+import net.riking.entity.model.Industry;
 import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportList;
 /**
@@ -40,4 +41,5 @@ public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSp
 	
 	@Query("  select new net.riking.entity.model.AppUserReportRel(r.id) from ReportList r where r.deleteState='1' ")
 	List<AppUserReportRel> findAllId();
+
 }

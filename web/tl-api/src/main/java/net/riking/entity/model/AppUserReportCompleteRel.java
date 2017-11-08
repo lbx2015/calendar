@@ -37,11 +37,11 @@ public class AppUserReportCompleteRel extends BaseEntity {
 	// 报表完成时间（yyyyMMdd）
 	@Column(name = "complete_date", length = 8)
 	private String completeDate;
-
+/*
 	// 同步标识app端数据状态
-	@Transient
-	private Integer isComplete; 
-
+	@Column(name = "is_complete")
+	private Integer isComplete; //是否完成（0-未完成；1-已完成）
+*/
 	public String getCompleteId() {
 		return completeId;
 	}
@@ -73,13 +73,13 @@ public class AppUserReportCompleteRel extends BaseEntity {
 	public void setCompleteDate(String completeDate) {
 		this.completeDate = completeDate;
 	}
-
+/*
 	public Integer getIsComplete() {
 		return isComplete;
 	}
 
 	public void setIsComplete(Integer isComplete) {
 		this.isComplete = isComplete;
-	}
+	}*/
 
 }

@@ -38,7 +38,7 @@ public class AppUser extends BaseEntity {
 
 	
 	public AppUser(String name, String telephone, String passWord,
-			String phoneSeqNum,String deleteState, String enabled,String allDayReminderTime) {
+			String phoneSeqNum,String deleteState, String enabled,String allDayReminderTime,String openId,String isSubscribe) {
 		super();
 		this.name = name;
 		this.telephone = telephone;
@@ -47,6 +47,8 @@ public class AppUser extends BaseEntity {
 		this.enabled = enabled;
 		this.deleteState = deleteState;
 		this.allDayReminderTime = allDayReminderTime;
+		this.openId = openId;
+		this.isSubscribe = isSubscribe;
 	}
 
 
@@ -139,6 +141,18 @@ public class AppUser extends BaseEntity {
 	@Comment("微信openid")
 	@Column(name = "openId",length =128 )
 	private String openId;
+	
+	@Comment("是否已订阅")
+	@Column(name = "isSubscribe",length =1 )
+	private String isSubscribe;//0：未订阅；1：已订阅
+	
+	@Comment("行业ID")
+	@Column(name = "industryId",length =1 )
+	private String industryId;//行业ID
+	
+	@Comment("职位ID")
+	@Column(name = "positionId",length =1 )
+	private String positionId;//职位ID
 	
 	//验证码
 	@Transient
@@ -313,6 +327,34 @@ public class AppUser extends BaseEntity {
 	public void setOpenId(String openId) {
 		this.openId = openId;
 	}
+
+	public String getIsSubscribe() {
+		return isSubscribe;
+	}
+
+	public void setIsSubscribe(String isSubscribe) {
+		this.isSubscribe = isSubscribe;
+	}
+	
+	public String getIndustryId() {
+		return industryId;
+	}
+
+
+	public void setIndustryId(String industryId) {
+		this.industryId = industryId;
+	}
+
+
+	public String getPositionId() {
+		return positionId;
+	}
+
+
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
+	}
+
 
 	@Override
 	public int hashCode() {

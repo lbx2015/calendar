@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.QueryReport;
-import net.riking.entity.model.ReportResult;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.GetDateServiceImpl;
@@ -57,59 +56,48 @@ public class AppReportListServer {
 		Page<ReportList> page = reportListRepo.findAll(example, pageable);
 		return new AppResp(page, CodeDef.SUCCESS);
 	}*/
+	//第一版本的写法
+//	@ApiOperation(value = "app获取所有的报表", notes = "POST")
+//	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
+//	public AppResp getAllReport() {
+//		Set<QueryReport> set;
+//			set = reportSubmitCaliberService.findAllfromReportId();
+//		Map<String, Set<QueryReport>> map = new HashMap<>();
+//		for (QueryReport queryReport : set) {
+//													//String table, String field, String key
+//			String value = sysDataservice.getDict("T_REPORT_LIST", "MODLE_TYPE", queryReport.getModuleType()).getValu();
+//			if (!map.containsKey(value)) {
+//				Set<QueryReport> set2 = new HashSet<>();
+//				set2.add(queryReport);
+//				map.put(value,set2);
+//			}else {
+//				Set<QueryReport> set2 =map.get(value);
+//				set2.add(queryReport);
+//				map.put(value, set2);
+//			}
+//		}
+//		List<ReportResult> listes =  new ArrayList<>();
+//		for (String title : map.keySet()) {
+//			ReportResult reportResult = new ReportResult();
+//			reportResult.setTitle(title);
+//			reportResult.setResult(map.get(title));
+//			listes.add(reportResult);
+//		}
+//		return new AppResp(listes, CodeDef.SUCCESS);
+//		
+//	}
+	
+	/**
+	 * 
+	 * @author tao.yuan
+	 * @version crateTime：2017年11月6日 下午3:41:08
+	 * @used TODO
+	 * @return
+	 */
 	@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport() {
-		Set<QueryReport> set;
-			set = reportSubmitCaliberService.findAllfromReportId();
-		Map<String, Set<QueryReport>> map = new HashMap<>();
-		for (QueryReport queryReport : set) {
-			String value = sysDataservice.getDict("T_REPORT_LIST", "MODLE_TYPE", queryReport.getModuleType()).getValu();
-			if (!map.containsKey(value)) {
-				Set<QueryReport> set2 = new HashSet<>();
-				set2.add(queryReport);
-				map.put(value,set2);
-			}else {
-				Set<QueryReport> set2 =map.get(value);
-				set2.add(queryReport);
-				map.put(value, set2);
-			}
-		}
-		List<ReportResult> listes =  new ArrayList<>();
-		for (String title : map.keySet()) {
-			ReportResult reportResult = new ReportResult();
-			reportResult.setTitle(title);
-			reportResult.setResult(map.get(title));
-			listes.add(reportResult);
-		}
-		return new AppResp(listes, CodeDef.SUCCESS);
-		
+		List<QueryReport> list = reportSubmitCaliberService.findAllReport();
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
-	
-	/*@ApiOperation(value = "app获取所有的报表", notes = "POST")
-	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport() {
-		List<QueryReport>list =reportListRepo.findByDeleteState();
-		Map<String, List<QueryReport>> map = new HashMap<>();
-		for (QueryReport queryReport : list) {
-			String value = sysDataservice.getDict("T_REPORT_LIST", "MODLE_TYPE", queryReport.getModuleType()).getValu();
-			if (!map.containsKey(value)) {
-				List<QueryReport>lists = new ArrayList<>();
-				lists.add(queryReport);
-				map.put(value,lists);
-			}else {
-				List<QueryReport>lists = map.get(value);
-				lists.add(queryReport);
-				map.put(value, lists);
-			}
-		}
-		List<ReportResult> listes =  new ArrayList<>();
-		for (String title : map.keySet()) {
-			ReportResult reportResult = new ReportResult();
-			reportResult.setTitle(title);
-			reportResult.setResult(map.get(title));
-			listes.add(reportResult);
-		}
-		return new AppResp(listes, CodeDef.SUCCESS);
-	}*/
 }

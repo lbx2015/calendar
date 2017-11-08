@@ -27,6 +27,13 @@ public class AppUserReportCompleteRelServer {
 	@Autowired
 	AppUserReportCompletRelRepo appUserReportCompleteRelRepo;
 
+	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public AppResp save(@RequestBody AppUserReportCompleteRel appUserReportCompleteRel) {
+		appUserReportCompleteRelRepo.save(appUserReportCompleteRel);
+		return new AppResp(CodeDef.SUCCESS);
+	}
+	
 	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody AppUserReportCompleteRel completeRel) {
@@ -35,11 +42,12 @@ public class AppUserReportCompleteRelServer {
 		return new AppResp(completeRels, CodeDef.SUCCESS);
 
 	}
-
-	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public AppResp save(@RequestBody AppUserReportCompleteRel appUserReportCompleteRel) {
-		appUserReportCompleteRelRepo.save(appUserReportCompleteRel);
+	
+	@ApiOperation(value = "获取当天未完成和已完成的报表列表", notes = "POST")
+	@RequestMapping(value = "/getReportByIdAndTime", method = RequestMethod.POST)
+	public AppResp getReportByIdAndTime(@RequestBody AppUserReportCompleteRel completeRel){
+		//List<>
+		
 		return new AppResp(CodeDef.SUCCESS);
 	}
 }

@@ -7,10 +7,29 @@ public class QueryReport {
 	private String moduleType;
 	private String caliberType;
 	private String frequency;
+	
+	private String toOrgan;//汇报机构
+	
+	private String reportTypeName;//汇报中文名称
+	
+	private String reportPacketName;//汇报包结构中文名称
+	
+	private String strFrequency;//频度
+	
 
 	public QueryReport() {
 	}
 
+	public QueryReport(String id, String reportName,String toOrgan,String reportTypeName,String reportPacketName,String strFrequency,String str){
+		super();
+		this.id = id;
+		this.reportName = reportName;
+		this.toOrgan = toOrgan;
+		this.reportTypeName = reportTypeName;
+		this.reportPacketName = reportPacketName;
+		this.strFrequency = strFrequency;
+	}
+	
 	public QueryReport(String id, String reportName, String reportCode, String moduleType) {
 		super();
 		this.id = id;
@@ -124,4 +143,36 @@ public class QueryReport {
 		this.frequency = frequency;
 	}
 
+	public String getToOrgan() {
+		return toOrgan;
+	}
+
+	public void setToOrgan(String toOrgan) {
+		this.toOrgan = toOrgan;
+	}
+
+	public String getReportTypeName() {
+		return reportTypeName;
+	}
+
+	public void setReportTypeName(String reportTypeName) {
+		this.reportTypeName = reportTypeName;
+	}
+
+	public String getReportPacketName() {
+		return reportPacketName;
+	}
+
+	public void setReportPacketName(String reportPacketName) {
+		this.reportPacketName = reportPacketName;
+	}
+
+	public String getStrFrequency() {
+		return strFrequency;
+	}
+
+	public void setStrFrequency(String strFrequency) {
+		this.strFrequency = strFrequency;
+	}
+	
 }

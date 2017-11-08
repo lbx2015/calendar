@@ -14,13 +14,17 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.Days;
+import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.Remind;
+import net.riking.entity.model.ReportList;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
+import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
 import net.riking.service.repo.DaysRepo;
 import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
+import net.riking.service.repo.ReportListRepo;
 import net.riking.service.repo.TodoRepo;
 
 /**app和服务器的同步信息
@@ -40,6 +44,10 @@ public class SynchronousServer {
 	AppUserReportCompletRelRepo appUserReportCompletesRelRepo;
 	@Autowired
 	DaysRepo daysRepo;
+	@Autowired
+	ReportListRepo reportListRepo;
+	@Autowired
+	ReportSubmitCaliberService reportSubmitCaliberService;
 
 	@ApiOperation(value = "同步所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
@@ -47,7 +55,9 @@ public class SynchronousServer {
 		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
 		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
 		List<Days> days = daysRepo.findAll();
-		SynResult result = new SynResult(reminds, todos,days);
+		//List<ReportList> reportList = reportListRepo.findAll();//查询出所有的报表
+		List<QueryReport> reportList = reportSubmitCaliberService.findAllReport();
+		SynResult result = new SynResult(reminds, todos,days,reportList);
 		return new AppResp(result, CodeDef.SUCCESS);
 	}
 	

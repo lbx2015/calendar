@@ -1,5 +1,6 @@
 package net.riking.dao;
 
+import java.util.List;
 import java.util.Set;
 
 import net.riking.entity.model.QueryReport;
@@ -9,4 +10,7 @@ public interface ReportSubmitCaliberDao {
 	Set<QueryReport> findAllfromReportId();
 	int  updateDelayDateAfter(String type,String remarks);
 	int  updateDelayDateBefer(String type,String remarks,String frequency);
+	//查询所有的报表
+	List<QueryReport> findAllReport();
+	
 }

@@ -78,6 +78,17 @@ public class LoginServer {
 		return new AppResp(CodeDef.EMP.DATA_NOT_FOUND);
 		
 	}
+	
+	@ApiOperation(value = "根据openId查询用户信息", notes = "POST")
+	@RequestMapping(value = "/getUserByOpenId", method = RequestMethod.POST)
+	public AppResp getUserByOpenId(@RequestBody String openId,HttpSession session){
+		AppUser user = appUserRepo.findByOpenId(openId);
+		if("0".equals(user.getDeleteState()) || "0".equals(user.getEnabled())){
+			return new AppResp(user, CodeDef.ERROR);//被删除或者禁用
+		} else{
+			return new AppResp(user, CodeDef.SUCCESS);//不管用户是否存在 都直接返回
+		}
+	}
 
 	@ApiOperation(value = "发送验证码", notes = "POST")
 	@RequestMapping(value = "/getValiCode", method = RequestMethod.POST)
@@ -110,13 +121,13 @@ public class LoginServer {
 		if (appUser.getValiCode().equals(user.getValiCode())) {
 			
 			list = appUserRepo.findByDeleteStateAndTelephone("1",appUser.getTelephone());
-			if (list.size()>0) {
-				appUser2=list.get(0);
+			if (list.size() > 0) {
+				appUser2 = list.get(0);
 			}
-			if (appUser2==null) {
+			if (appUser2 == null) {
 				AppUser appUser3 = new AppUser(appUser.getTelephone(),
 						appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
-						"1", "1","0800");
+						"1", "1","0800",user.getOpenId(),user.getIsSubscribe());
 				appUser2 = appUserRepo.save(appUser3);
 				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
 				for (AppUserReportRel appUserReportRel : appUserReportRels) {

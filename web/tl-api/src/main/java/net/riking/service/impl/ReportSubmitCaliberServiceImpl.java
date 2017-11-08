@@ -1,5 +1,6 @@
 package net.riking.service.impl;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class ReportSubmitCaliberServiceImpl implements ReportSubmitCaliberServic
 	public int updateDelayDateBefer(String type,String remarks,String frequency) {
 		int count = reportSubmitCaliberDao.updateDelayDateBefer(type, remarks,frequency);
 		return count;
+	}
+	@Override
+	public List<QueryReport> findAllReport() {
+		// TODO Auto-generated method stub
+		List<QueryReport> list = reportSubmitCaliberDao.findAllReport();
+		return list;
 	}
 
 
