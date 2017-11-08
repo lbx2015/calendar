@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingParent;
@@ -32,13 +33,13 @@ import java.util.List;
 
 public class NCalendar extends FrameLayout implements NestedScrollingParent, ValueAnimator.AnimatorUpdateListener, OnWeekCalendarChangedListener, OnMonthCalendarChangedListener {
 
+    public static final int MONTH = 100;
+    public static final int WEEK = 200;
+    private static int STATE = 100;//默认月
     private WeekCalendar weekCalendar;
     private MonthCalendar monthCalendar;
     private View childView;//NCalendar内部包含的直接子view，直接子view并不一定是NestScrillChild
     private View targetView;//嵌套滑动的目标view，即RecyclerView等
-    public static final int MONTH = 100;
-    public static final int WEEK = 200;
-    private static int STATE = 100;//默认月
     private int weekHeigh;//周日历的高度
     private int monthHeigh;//月日历的高度,是日历整个的高度，并非是月日历绘制区域的高度
 
@@ -54,7 +55,11 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
     private Rect weekRect;//周日历大小的矩形 ，用于判断点击事件是否在日历的范围内
 
     private OnCalendarChangedListener onCalendarChangedListener;
-
+    private int dowmY;
+    private int downX;
+    private int lastY;//上次的y
+    private int verticalY = 50;//竖直方向上滑动的临界值，大于这个值认为是竖直滑动
+    private boolean isFirstScroll = true; //第一次手势滑动，因为第一次滑动的偏移量大于verticalY，会出现猛的一划，这里只对第一次滑动做处理
 
     public NCalendar(Context context) {
         this(context, null);
@@ -132,6 +137,15 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         });
     }
 
+    //riking added the method to fix duplicate id error
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        try {
+            super.onRestoreInstanceState(state);
+        } catch (Exception e) {
+        }
+        state = null;
+    }
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
@@ -263,14 +277,12 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         return 0;
     }
 
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         ViewGroup.LayoutParams layoutParams = childView.getLayoutParams();
         layoutParams.height = getMeasuredHeight() - weekHeigh;
     }
-
 
     @Override
     protected void onFinishInflate() {
@@ -286,7 +298,6 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
             throw new RuntimeException("NCalendar中的子类中必须要有NestedScrollingChild的实现类！");
         }
     }
-
 
     /**
      * 得到NestedScrollingChild的实现类
@@ -309,7 +320,6 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         return null;
     }
 
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
@@ -328,7 +338,6 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
         weekCalendar.layout(0, 0, r, weekHeigh);
 
     }
-
 
     //月日历需要滑动的距离，
     private int getMonthCalendarOffset() {
@@ -357,7 +366,6 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
     public void setOnCalendarChangedListener(OnCalendarChangedListener onCalendarChangedListener) {
         this.onCalendarChangedListener = onCalendarChangedListener;
     }
-
 
     /**
      * 防止滑动过快越界
@@ -411,13 +419,6 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
             }
         }
     }
-
-
-    private int dowmY;
-    private int downX;
-    private int lastY;//上次的y
-    private int verticalY = 50;//竖直方向上滑动的临界值，大于这个值认为是竖直滑动
-    private boolean isFirstScroll = true; //第一次手势滑动，因为第一次滑动的偏移量大于verticalY，会出现猛的一划，这里只对第一次滑动做处理
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -563,6 +564,7 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
             weekCalendar.toLastPager();
         }
     }
+
     //riking adding the method
     public void setWorkFragment(WorkFragment fragment) {
         monthCalendar.setWorkFragment(fragment);
