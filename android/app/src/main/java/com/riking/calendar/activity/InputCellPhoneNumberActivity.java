@@ -1,12 +1,12 @@
 package com.riking.calendar.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,18 +14,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZR;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -61,11 +56,19 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
                 final AppUser user = new AppUser();
                 user.telephone = phoneDigits;
                 user.phoneSeqNum = ZR.getDeviceId();
-                APIClient.getVarificationCode(user, new ZCallBack<ResponseModel<AppUser>>() {
+                final ProgressDialog dialog = new ProgressDialog(InputCellPhoneNumberActivity.this);
+                dialog.setMessage("正在加载中");
+                dialog.show();
+                APIClient.getVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUser>>() {
                     @Override
-                    public void callBack(ResponseModel<AppUser> response) {
-                        //Success get the verify code
-                        startActivity(new Intent(InputCellPhoneNumberActivity.this, InputVerifyCodeActivity.class));
+                    public void callBack(ResponseModel<AppUser> u) {
+                        dialog.dismiss();
+                        if (failed) {
+
+                        } else {
+                            //Success get the verify code
+                            startActivity(new Intent(InputCellPhoneNumberActivity.this, InputVerifyCodeActivity.class));
+                        }
                     }
                 });
             }

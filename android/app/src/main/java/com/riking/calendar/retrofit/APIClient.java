@@ -85,7 +85,7 @@ public class APIClient {
     public static void checkVarificationCode(@Body AppUser user, final ZCallBack<ResponseModel<AppUser>> callBack){
         apiInterface.checkVarificationCode(user).enqueue(callBack);
     }
-    public static void getVarificationCode( AppUser user, final ZCallBack<ResponseModel<AppUser>> callBack){
+    public static void getVarificationCode( AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack){
         apiInterface.getVarificationCode(user).enqueue(callBack);
     }
 

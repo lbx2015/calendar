@@ -22,7 +22,7 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
      */
     public boolean failed;
 
-    public abstract void callBack();
+    public abstract void callBack(T response);
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
@@ -31,13 +31,13 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
             failed = true;
             Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT);
         }
-        callBack();
+        callBack(response.body());
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
         failed = true;
-        callBack();
+        callBack(null);
         Logger.d("zzw", "request fail + " + call.request().toString() + t.getMessage());
         Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT);
     }
