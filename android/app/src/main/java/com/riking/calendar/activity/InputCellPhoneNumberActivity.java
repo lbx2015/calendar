@@ -18,6 +18,7 @@ import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZR;
@@ -48,7 +49,7 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
                     Toast.makeText(phoneNumber.getContext(), "电话号码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String phoneDigits = number.toString();
+                final String phoneDigits = number.toString();
                 if (!StringUtil.isMobileNO(phoneDigits)) {
                     Toast.makeText(phoneNumber.getContext(), "电话号码格式不正确", Toast.LENGTH_SHORT).show();
                     return;
@@ -66,8 +67,10 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
                         if (failed) {
 
                         } else {
+                            Intent i = new Intent(InputCellPhoneNumberActivity.this, InputVerifyCodeActivity.class);
+                            i.putExtra(CONST.PHONE_NUMBER,phoneDigits);
                             //Success get the verify code
-                            startActivity(new Intent(InputCellPhoneNumberActivity.this, InputVerifyCodeActivity.class));
+                            startActivity(i);
                         }
                     }
                 });

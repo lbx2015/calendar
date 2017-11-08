@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
@@ -82,10 +81,11 @@ public class APIClient {
         return retrofit;
     }
 
-    public static void checkVarificationCode(@Body AppUser user, final ZCallBack<ResponseModel<AppUser>> callBack){
+    public static void checkVarificationCode(@Body AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
         apiInterface.checkVarificationCode(user).enqueue(callBack);
     }
-    public static void getVarificationCode( AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack){
+
+    public static void getVarificationCode(AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
         apiInterface.getVarificationCode(user).enqueue(callBack);
     }
 
@@ -172,7 +172,7 @@ public class APIClient {
         tasks.add(t);
         apiInterface.synchronousTasks(tasks).enqueue(new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
-            public void callBack() {
+            public void callBack(ResponseModel<String> s) {
                 Realm realm = Realm.getDefaultInstance();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -215,7 +215,7 @@ public class APIClient {
         reminderModels.add(m);
         APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
-            public void callBack() {
+            public void callBack(ResponseModel<String> s) {
                 Realm realm = Realm.getDefaultInstance();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -444,16 +444,18 @@ public class APIClient {
         APIClient.apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
             @Override
             public void callBack(final ResponseModel<ArrayList<QueryReportContainer>> response) {
-                final Realm realm = Realm.getDefaultInstance();
-                realm.executeTransaction(new Realm.Transaction() {
+                final Realm realm = Realm.getDefaultInstance();realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
                         ArrayList<QueryReportContainer> reportContainers = response._data;
                         Logger.d("zzw", "report size" + reportContainers.size());
                         for (QueryReportContainer c : reportContainers) {
+
                             QueryReportContainerRealmModel queryReportContainerRealmModel = new QueryReportContainerRealmModel();
                             queryReportContainerRealmModel.title = c.title;
                             queryReportContainerRealmModel.result = new RealmList<>();
+                            //adding null protection
+                            if(c.result == null) continue;
                             for (QueryReport q : c.result) {
                                 QueryReportRealmModel reportRealmModel = new QueryReportRealmModel();
                                 reportRealmModel.id = q.id;
