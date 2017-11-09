@@ -497,7 +497,7 @@ public class APIClient {
     /**
      * get positions
      */
-    public static void getPositions(final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
-        apiInterface.getPositionByIndustry().enqueue(c);
+    public static void getPositions(long industryId,final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
+        apiInterface.getPositionByIndustry(industryId).enqueue(c);
     }
 }

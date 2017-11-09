@@ -19,6 +19,7 @@ import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -102,10 +103,11 @@ public class PositionSelectActivity extends AppCompatActivity {
 
     private void loadData(final int page) {
         isLoading = true;
-        APIClient.getPositions(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+
+        APIClient.getPositions(getIntent().getExtras().getLong(CONST.INDUSTRY_ID), new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) {
-                    mPullToLoadView.setComplete();
+                mPullToLoadView.setComplete();
                 if (failed) {
 
                 } else {

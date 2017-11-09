@@ -147,9 +147,9 @@ public interface APIInterface {
     Call<ResponseModel<ArrayList<Industry>>> findIndustry();
 
     /**
-     * get positions
+     * get positions for one industry
      * @return
      */
     @POST("appUserApp/getPositionByIndustry")
-    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry();
+    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Query("id") long industryId);
 }

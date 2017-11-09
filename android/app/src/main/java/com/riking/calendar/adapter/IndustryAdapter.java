@@ -11,6 +11,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.util.CONST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,8 @@ public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
 
     @Override
     public void onBindViewHolder(final QuestionsViewHolder h, int i) {
-        h.industryName.setText(mList.get(i).name);
+        final Industry industry = mList.get(i);
+        h.industryName.setText(industry.name);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,8 +48,11 @@ public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
                     h.checkImage.setVisibility(View.VISIBLE);
                     h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.holidayColor));
                 }
+
+                Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
+                i.putExtra(CONST.INDUSTRY_ID,industry.id);
                 //go to position select page
-                MyApplication.mCurrentActivity.startActivity(new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class));
+                MyApplication.mCurrentActivity.startActivity(i);
             }
         });
     }

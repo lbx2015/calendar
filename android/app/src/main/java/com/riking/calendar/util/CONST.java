@@ -46,6 +46,7 @@ public class CONST {
     public static final String birthDayFormat = "yyyy-MM-dd";
     public static final String WEB_URL = "WEB_URL";
     public static final String IMAGE_URL = "IMAGE_URL";
+    public static final String INDUSTRY_ID = "INDUSTRY_ID";
 
     //滚动事件
     public enum ScrollDirection {
