@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
+import com.riking.calendar.pojo.QueryReport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class InterestingReportAdapter extends RecyclerView.Adapter<InterestingReportHolder> {
 
-    public List<String> mList;
+    public List<QueryReport> mList;
     private Context context;
 
     public InterestingReportAdapter(Context context) {
@@ -31,27 +32,20 @@ public class InterestingReportAdapter extends RecyclerView.Adapter<InterestingRe
 
     @Override
     public void onBindViewHolder(final InterestingReportHolder h, int i) {
-        if (i == 0) {
-            h.industryName.setText("存款准备金+");
-        } else if (i == 2) {
-            h.industryName.setText("1104季1+");
-        } else if (i == 3) {
-            h.industryName.setText("打集中月1+");
-        } else {
-            h.industryName.setText("利率保备+");
-        }
+        QueryReport c = mList.get(i);
+        h.industryName.setText(c.reportName + " +");
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String industryName = h.industryName.getText().toString();
                 if (h.checkImage.getVisibility() == View.VISIBLE) {
                     h.checkImage.setVisibility(View.GONE);
-                    h.industryName.setText(industryName+"+");
+                    h.industryName.setText(industryName + "+");
                     h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.black_deep));
                     h.root.setBackground(h.root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                 } else {
                     h.checkImage.setVisibility(View.VISIBLE);
-                    h.industryName.setText(industryName.subSequence(0,industryName.indexOf('+')));
+                    h.industryName.setText(industryName.subSequence(0, industryName.indexOf('+')));
                     h.root.setBackground(h.root.getResources().getDrawable(R.drawable.selected__interesting_reports_background));
                 }
             }

@@ -3,9 +3,7 @@ package com.riking.calendar.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +11,17 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.InterestingReportAdapter;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.QueryReportContainer;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.StatusBarUtil;
+
+import java.util.ArrayList;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -51,7 +57,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
     }
 
     public void onClickStart(View view) {
-        startActivity(new Intent(this,ViewPagerActivity.class));
+        startActivity(new Intent(this, ViewPagerActivity.class));
     }
 
     private void initEvents() {
@@ -74,19 +80,18 @@ public class ReportsSelectActivity extends AppCompatActivity {
     }
 
     private void loadData(final int page) {
-        new Handler().postDelayed(new Runnable() {
+        APIClient.getAllReports(new ZCallBackWithFail<ResponseModel<ArrayList<QueryReport>>>() {
             @Override
-            public void run() {
-//                swipeRefreshLayout.setRefreshing(false);
+            public void callBack(ResponseModel<ArrayList<QueryReport>> response) {
                 mAdapter.mList.clear();
                 //clear the recycled view pool
                 mRecyclerView.getRecycledViewPool().clear();
-                for (int i = 0; i <= 3; i++) {
-                    mAdapter.mList.add(i + "");
-                }
+                mAdapter.mList = response._data;
                 mAdapter.notifyDataSetChanged();
             }
-        }, 1000);
+        });
+//                swipeRefreshLayout.setRefreshing(false);
+
     }
 }
 

@@ -24,6 +24,7 @@ import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -103,8 +104,9 @@ public class PositionSelectActivity extends AppCompatActivity {
 
     private void loadData(final int page) {
         isLoading = true;
-
-        APIClient.getPositions(getIntent().getExtras().getLong(CONST.INDUSTRY_ID), new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+        HashMap<String, Long> hashMap = new HashMap<>();
+        hashMap.put("id", getIntent().getExtras().getLong(CONST.INDUSTRY_ID));
+        APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) {
                 mPullToLoadView.setComplete();

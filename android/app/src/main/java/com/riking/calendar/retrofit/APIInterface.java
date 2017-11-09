@@ -23,6 +23,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -101,6 +102,14 @@ public interface APIInterface {
     Call<ResponseModel<ArrayList<QueryReportContainer>>> getAllReports(@Query("id") String notUsed);
 
     /**
+     * get all reports when user not login
+     *
+     * @return
+     */
+    @POST("reportListApp/getAllReport")
+    Call<ResponseModel<ArrayList<QueryReport>>> queryAllReports();
+
+    /**
      * get all reports of user
      *
      * @param body
@@ -151,5 +160,5 @@ public interface APIInterface {
      * @return
      */
     @POST("appUserApp/getPositionByIndustry")
-    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Query("id") long industryId);
+    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String,Long> industryId);
 }
