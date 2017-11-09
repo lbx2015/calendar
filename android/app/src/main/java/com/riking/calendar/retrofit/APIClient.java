@@ -445,7 +445,8 @@ public class APIClient {
         APIClient.apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
             @Override
             public void callBack(final ResponseModel<ArrayList<QueryReportContainer>> response) {
-                final Realm realm = Realm.getDefaultInstance();realm.executeTransaction(new Realm.Transaction() {
+                final Realm realm = Realm.getDefaultInstance();
+                realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
                         ArrayList<QueryReportContainer> reportContainers = response._data;
@@ -456,7 +457,7 @@ public class APIClient {
                             queryReportContainerRealmModel.title = c.title;
                             queryReportContainerRealmModel.result = new RealmList<>();
                             //adding null protection
-                            if(c.result == null) continue;
+                            if (c.result == null) continue;
                             for (QueryReport q : c.result) {
                                 QueryReportRealmModel reportRealmModel = new QueryReportRealmModel();
                                 reportRealmModel.id = q.id;
@@ -489,7 +490,14 @@ public class APIClient {
     /**
      * get industries
      */
-    public static void getIndustries(final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c){
+    public static void getIndustries(final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
         apiInterface.findIndustry().enqueue(c);
+    }
+
+    /**
+     * get positions
+     */
+    public static void getPositions(final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
+        apiInterface.getPositionByIndustry().enqueue(c);
     }
 }

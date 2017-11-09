@@ -3,7 +3,6 @@ package com.riking.calendar.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,13 +11,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.PositionAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.util.ArrayList;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -26,6 +30,7 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 public class PositionSelectActivity extends AppCompatActivity {
     PositionAdapter mAdapter;
+    RecyclerView mRecyclerView;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -56,14 +61,13 @@ public class PositionSelectActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        startActivity(new Intent(this,ReportsSelectActivity.class));
+        startActivity(new Intent(this, ReportsSelectActivity.class));
     }
 
-    RecyclerView mRecyclerView;
     private void initEvents() {
-         mRecyclerView = mPullToLoadView.getRecyclerView();
+        mRecyclerView = mPullToLoadView.getRecyclerView();
         //adding default divider
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
@@ -98,29 +102,24 @@ public class PositionSelectActivity extends AppCompatActivity {
 
     private void loadData(final int page) {
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
+        APIClient.getPositions(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
-            public void run() {
-                mPullToLoadView.setComplete();
-                if (page > 3) {
-                    Toast.makeText(PositionSelectActivity.this, "没有更多数据了",
-                            Toast.LENGTH_SHORT).show();
-                    isHasLoadedAll = true;
-                    return;
-                }
-                mAdapter.mList.clear();
-                //clear the recycled view pool
-                mRecyclerView.getRecycledViewPool().clear();
-//                int startPosition = mAdapter.getItemCount()-1;
-                for (int i = 0; i <= 3; i++) {
-                    mAdapter.mList.add(i + "");
-                }
+            public void callBack(ResponseModel<ArrayList<Industry>> response) {
+                    mPullToLoadView.setComplete();
+                if (failed) {
+
+                } else {
+                    mAdapter.mList.clear();
+                    //clear the recycled view pool
+                    mRecyclerView.getRecycledViewPool().clear();
+                    mAdapter.mList = response._data;
 //                mAdapter.notifyItemRangeInserted(startPosition,1);
-                mAdapter.notifyDataSetChanged();
-                isLoading = false;
-                nextPage = page + 1;
+                    mAdapter.notifyDataSetChanged();
+                    isLoading = false;
+                    nextPage = 1;
+                }
             }
-        }, 1000);
+        });
     }
 }
 

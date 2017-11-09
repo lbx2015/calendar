@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ReportsSelectActivity;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.pojo.server.Industry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class PositionAdapter extends RecyclerView.Adapter<PositionViewHolder> {
 
-    public List<String> mList;
+    public List<Industry> mList;
     private Context context;
 
     public PositionAdapter(Context context) {
@@ -34,24 +35,16 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionViewHolder> {
 
     @Override
     public void onBindViewHolder(final PositionViewHolder h, int i) {
-        if (i == 0) {
-            h.industryName.setText("经理");
-        } else if (i == 2) {
-            h.industryName.setText("总监");
-        } else if (i == 3) {
-            h.industryName.setText("会计");
-        } else {
-            h.industryName.setText("实习");
-        }
+        h.positionName.setText(mList.get(i).name);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (h.checkImage.getVisibility() == View.VISIBLE) {
                     h.checkImage.setVisibility(View.GONE);
-                    h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.black_deep));
+                    h.positionName.setTextColor(h.positionName.getResources().getColor(R.color.black_deep));
                 } else {
                     h.checkImage.setVisibility(View.VISIBLE);
-                    h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.holidayColor));
+                    h.positionName.setTextColor(h.positionName.getResources().getColor(R.color.holidayColor));
                 }
                 MyApplication.mCurrentActivity.startActivity(new Intent(MyApplication.mCurrentActivity, ReportsSelectActivity.class));
             }

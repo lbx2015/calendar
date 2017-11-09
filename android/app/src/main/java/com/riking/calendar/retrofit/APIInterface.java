@@ -145,4 +145,11 @@ public interface APIInterface {
 
     @POST("appUserApp/findIndustry")
     Call<ResponseModel<ArrayList<Industry>>> findIndustry();
+
+    /**
+     * get positions
+     * @return
+     */
+    @POST("appUserApp/getPositionByIndustry")
+    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry();
 }
