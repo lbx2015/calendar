@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +24,6 @@ import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.AppUserReportRel;
 import net.riking.entity.model.AppUserReportResult;
 import net.riking.entity.model.Days;
-import net.riking.entity.model.Industry;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportList;
@@ -30,6 +31,7 @@ import net.riking.entity.model.ReportResult;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.GetDateServiceImpl;
+import net.riking.service.repo.AppUserReportCompletRelRepo;
 import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.DaysRepo;
 import net.riking.service.repo.IndustryRepo;
@@ -57,6 +59,8 @@ public class AppUserReportRelServer {
 	DaysRepo daysRepo;
 	@Autowired
 	IndustryRepo industryRepo;
+	@Autowired
+	AppUserReportCompletRelRepo appUserReportCompletRelRepo;
 	
 
 	@ApiOperation(value = "app获取用户下的报表", notes = "POST")
@@ -107,18 +111,18 @@ public class AppUserReportRelServer {
 		return new AppResp(reportLists, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "获取行业列表", notes = "POST")
-	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
-	public AppResp findIndustry(){
-		//List<Industry> list = industryRepo.findIndustry("0");//查询行业
-		return new AppResp(industryRepo.findIndustry(0),CodeDef.SUCCESS);
-	}
-	
-	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
-	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
-	public AppResp getPositionByIndustry(@RequestParam("id") Long id){
-		return new AppResp(industryRepo.findPositionByIndustry(id),CodeDef.SUCCESS);
-	}
+//	@ApiOperation(value = "获取行业列表", notes = "POST")
+//	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
+//	public AppResp findIndustry(){
+//		//List<Industry> list = industryRepo.findIndustry("0");//查询行业
+//		return new AppResp(industryRepo.findIndustry(0),CodeDef.SUCCESS);
+//	}
+//	
+//	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
+//	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
+//	public AppResp getPositionByIndustry(@RequestParam("id") Long id){
+//		return new AppResp(industryRepo.findPositionByIndustry(id),CodeDef.SUCCESS);
+//	}
 //	
 //	@ApiOperation(value = "获取职位关联的订阅", notes = "POST")
 //	@RequestMapping(value = "/getReportList", method = RequestMethod.POST)
@@ -139,29 +143,46 @@ public class AppUserReportRelServer {
 	public AppResp userAddReportEdit(@RequestBody AppUserReportResult appUserReportResult){
 		//根据userId查询出数据库里订阅的List
 		//List<AppUserReportRel> list = appUserReportRepo.findUserReportList(appUserReportResult.getUserId());
-		List<String> list = appUserReportRepo.findReportByUserId(appUserReportResult.getUserId());
-		
 		List<String> idList = appUserReportResult.getList();//传过来的id集合
 		
-		//传过来的集合 和 数据库集合 差集
-		idList.removeAll(list);
+		//根据id查询用户订阅的报表
+		List<String> list = appUserReportRepo.findReportByUserId(appUserReportResult.getUserId());
+		
 		AppUserReportRel appUserReportRel = null;
-		
-		for (String string : idList) {
-			appUserReportRel = new AppUserReportRel();
-			appUserReportRel.setAppUserId(appUserReportResult.getUserId());
-			appUserReportRel.setReportId(string);
-			appUserReportRel.setIsComplete("0");//未完成
-			appUserReportRepo.save(appUserReportRel);
+		if(list != null && list.size() > 0){//之前有订阅
+			//传过来的集合 和 数据库集合 差集
+			idList.removeAll(list);
+			for (String string : idList) {
+				appUserReportRel = new AppUserReportRel();
+				appUserReportRel.setAppUserId(appUserReportResult.getUserId());
+				appUserReportRel.setReportId(string);
+				appUserReportRel.setIsComplete("0");//未完成
+				appUserReportRepo.save(appUserReportRel);
+			}
+			
+			List<String> idList2 = appUserReportResult.getList();//传过来的id集合
+			list.removeAll(idList2);
+			for(String str : list){
+				appUserReportRepo.delete(str);//数据库存在的数据 跟 传过来的值 比较 如果没有 则 删除
+			}
+		}else{//没有订阅过
+			for (String string : idList) {
+				appUserReportRel = new AppUserReportRel();
+				appUserReportRel.setAppUserId(appUserReportResult.getUserId());
+				appUserReportRel.setReportId(string);
+				appUserReportRel.setIsComplete("0");//未完成
+				appUserReportRepo.save(appUserReportRel);
+			}
 		}
 		
-		List<String> idList2 = appUserReportResult.getList();//传过来的id集合
-		list.removeAll(idList2);
-		for(String str : list){
-			appUserReportRepo.delete(str);//数据库存在的数据 跟 传过来的值 比较 如果没有 则 删除
-		}
 		return new AppResp(CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "历史核销和逾期报表", notes = "POST")
+	@RequestMapping(value = "/findAllUserReport", method = RequestMethod.POST)
+	public AppResp findAllUserReport(@RequestBody AppUserReportCompleteRel appUserReportCompleteRel,Pageable pageable){
+		 List<AppUserReportCompleteRel> list = reportSubmitCaliberService.findAllUserReport(appUserReportCompleteRel);
+		 return new AppResp(list,CodeDef.SUCCESS);
+	}
 	
 }

@@ -31,5 +31,9 @@ public interface AppUserReportRelRepo  extends JpaRepository<AppUserReportRel, S
 	
 	@Query("select t.reportId from AppUserReportRel t where t.appUserId = ?1")
 	List<String> findReportByUserId(String userId);
+	
+	//查询用户订阅表未完成的报表id
+	@Query("select t.reportId from AppUserReportRel t where t.appUserId = ?1 and t.isComplete=0")
+	Set<String> findReportByUserIdAndIsComplete(String userId);
 
 }

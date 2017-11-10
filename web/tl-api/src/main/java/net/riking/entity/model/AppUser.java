@@ -154,6 +154,10 @@ public class AppUser extends BaseEntity {
 	@Column(name = "positionId",length =1 )
 	private String positionId;//职位ID
 	
+	@Comment("是否引导")
+	@Column(name = "is_guide",length =1 )
+	private String isGuide;//0：未引导；1：已引导
+	
 	//验证码
 	@Transient
 	private String valiCode;
@@ -353,6 +357,14 @@ public class AppUser extends BaseEntity {
 
 	public void setPositionId(String positionId) {
 		this.positionId = positionId;
+	}
+	
+	public String getIsGuide() {
+		return isGuide;
+	}
+	
+	public void setIsGuide(String isGuide) {
+		this.isGuide = isGuide;
 	}
 
 

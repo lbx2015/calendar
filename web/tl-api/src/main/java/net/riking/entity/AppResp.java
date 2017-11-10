@@ -1,6 +1,7 @@
 package net.riking.entity;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,10 +11,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.riking.core.entity.ILog;
 import net.riking.core.entity.LogConfig;
+import net.riking.core.entity.model.ModelPropDict;
+import net.riking.service.SysDataService;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class AppResp implements ILog {
+	
 	protected Object _data;// 返回的数据
 	protected Short code; // 状态码
 	protected String codeDesc; // 状态码描述
@@ -31,7 +35,7 @@ public class AppResp implements ILog {
 	public AppResp(Object _data) {
 		this(_data, (short) 200);
 	}
-
+	
 	public AppResp(Object _data, Short code) {
 		this(_data, code, "");
 	}

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.dao.impl.ReportSubmitCaliberDaoImpl;
+import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.QueryReport;
 import net.riking.service.ReportSubmitCaliberService;
 @Service("reportSubmitCaliberService")
@@ -40,6 +41,18 @@ public class ReportSubmitCaliberServiceImpl implements ReportSubmitCaliberServic
 	public List<QueryReport> findAllReport() {
 		// TODO Auto-generated method stub
 		List<QueryReport> list = reportSubmitCaliberDao.findAllReport();
+		return list;
+	}
+	@Override
+	public List<AppUserReportCompleteRel> findCompleteReportByIdAndTime(String userId, String time) {
+		// TODO Auto-generated method stub
+		List<AppUserReportCompleteRel> list = reportSubmitCaliberDao.findCompleteReportByIdAndTime(userId, time);
+		return list;
+	}
+	@Override
+	public List<AppUserReportCompleteRel> findAllUserReport(AppUserReportCompleteRel appUserReportCompleteRel) {
+		// TODO Auto-generated method stub
+		List<AppUserReportCompleteRel> list = reportSubmitCaliberDao.findAllUserReport(appUserReportCompleteRel);
 		return list;
 	}
 

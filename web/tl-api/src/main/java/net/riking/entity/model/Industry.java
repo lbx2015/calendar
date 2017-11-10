@@ -20,7 +20,7 @@ public class Industry extends BaseEntity{
 	//行业/职位表
 	@Id
 	@GeneratedValue
-	@Column(name = "Id")
+	@Column(name = "id")
 	private Long id;
 	
 	@Comment("行业/职位名称")

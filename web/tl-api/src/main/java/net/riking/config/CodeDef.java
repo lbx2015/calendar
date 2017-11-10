@@ -9,7 +9,7 @@ public class CodeDef {
 		public static final short NAME_IS_NULL = 1001;
 		//通用错误
 		public static final short GENERAL_ERR = -999;
-		public static final String GENERAL_ERR_DESC = "通过错误";
+		//public static final String GENERAL_ERR_DESC = "通过错误";
 		//用户密码错误
 		public static final short USER_PASS_ERR = -998;
 		//登录超时
@@ -19,7 +19,7 @@ public class CodeDef {
 		//验证码超时
 		public static final short CHECK_CODE_TIME_OUT = -995;
 		
-		//数据未找到
+		//数据未找到  
 		public static final short DATA_NOT_FOUND = -994;
 	}
 	

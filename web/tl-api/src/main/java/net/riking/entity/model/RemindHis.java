@@ -42,6 +42,9 @@ public class RemindHis extends PageQuery {
 	// 同步标识app端数据状态
 	@Transient
 	private int deleteState;
+	// 提醒日期
+	@Column(name = "report_Id", length = 17)
+	private String reportId;
 
 	// 客户端数据来源：1-IOS;2-Android;3-其它
 	@Column(name = "client_type", length = 1)
@@ -102,12 +105,20 @@ public class RemindHis extends PageQuery {
 	public void setStrDate(String strDate) {
 		this.strDate = strDate;
 	}
+	
+	public String getReportId() {
+		return reportId;
+	}
+
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
+	}
 
 	@Override
 	public String toString() {
 		return "RemindHis [remindHisId=" + remindHisId + ", userId=" + userId + ", content=" + content + ", startTime="
-				+ startTime + ", strDate=" + strDate + ", deleteState=" + deleteState + ", clientType=" + clientType
-				+ "]";
+				+ startTime + ", strDate=" + strDate + ", deleteState=" + deleteState + ", reportId=" + reportId
+				+ ", clientType=" + clientType + "]";
 	}
 
 }

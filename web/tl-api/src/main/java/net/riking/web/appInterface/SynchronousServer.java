@@ -16,6 +16,7 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.Remind;
+import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.ReportList;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
@@ -100,7 +101,7 @@ public class SynchronousServer {
 		return new AppResp(0, CodeDef.SUCCESS);
 	}
 	
-/*	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
+	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/synchronousRemindHis", method = RequestMethod.POST)
 	public AppResp synchronousRemindHis(@RequestBody List<RemindHis> remindHis) {
 		List<RemindHis> remindHisSave = new ArrayList<>(); 
@@ -115,7 +116,7 @@ public class SynchronousServer {
 		remindHis = remindHisRepo.save(remindHisSave);
 		remindHisRepo.delete(remindHisDele);
 		return new AppResp(0, CodeDef.SUCCESS);
-	}*/
+	}
 	
 /*	@ApiOperation(value = "同步用户报表完成信息", notes = "POST")
 	@RequestMapping(value = "/synchronousComplete", method = RequestMethod.POST)

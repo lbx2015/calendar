@@ -5,10 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 
+import net.riking.core.entity.PageQuery;
 import net.riking.entity.BaseEntity;
 
 /**
@@ -20,11 +19,13 @@ import net.riking.entity.BaseEntity;
  */
 @Entity
 @Table(name = "t_app_user_report_complete_rel")
-public class AppUserReportCompleteRel extends BaseEntity {
+public class AppUserReportCompleteRel extends PageQuery {
 
 	@Id
-	@Column(name = "complete_id", length = 17)
-	private String completeId;
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@Column(name = "id", length = 17)
+	private String id;
 
 	// 用户ID"
 	@Column(name = "app_user_id", length = 32)
@@ -37,17 +38,31 @@ public class AppUserReportCompleteRel extends BaseEntity {
 	// 报表完成时间（yyyyMMdd）
 	@Column(name = "complete_date", length = 8)
 	private String completeDate;
-/*
+
 	// 同步标识app端数据状态
 	@Column(name = "is_complete")
 	private Integer isComplete; //是否完成（0-未完成；1-已完成）
-*/
-	public String getCompleteId() {
-		return completeId;
+
+	private String reportName;//报表名称
+	
+	private String strFrequency;//频度
+	
+	public AppUserReportCompleteRel(String id,String appUserId,String reportId,String completeDate,Integer isComplete,String reportName,String strFrenquency){
+		this.id = id;
+		this.appUserId = appUserId;
+		this.reportId = reportId;
+		this.completeDate = completeDate;
+		this.isComplete = isComplete;
+		this.reportName = reportName;
+		this.strFrequency = strFrenquency;
+	}
+	
+	public String getId() {
+		return id;
 	}
 
-	public void setCompleteId(String completeId) {
-		this.completeId = completeId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getAppUserId() {
@@ -73,13 +88,29 @@ public class AppUserReportCompleteRel extends BaseEntity {
 	public void setCompleteDate(String completeDate) {
 		this.completeDate = completeDate;
 	}
-/*
+	
 	public Integer getIsComplete() {
 		return isComplete;
 	}
 
 	public void setIsComplete(Integer isComplete) {
 		this.isComplete = isComplete;
-	}*/
+	}
+
+	public String getReportName() {
+		return reportName;
+	}
+
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
+
+	public String getStrFrequency() {
+		return strFrequency;
+	}
+
+	public void setStrFrequency(String strFrequency) {
+		this.strFrequency = strFrequency;
+	}
 
 }

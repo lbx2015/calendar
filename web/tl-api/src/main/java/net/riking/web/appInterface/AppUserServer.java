@@ -26,7 +26,11 @@ import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.Industry;
+import net.riking.service.AppUserCommendService;
+import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
+import net.riking.service.repo.IndustryRepo;
 import net.riking.util.StringUtil;
 /**
  * app用户信息操作
@@ -39,9 +43,14 @@ import net.riking.util.StringUtil;
 public class AppUserServer {
 	@Autowired
 	AppUserRepo appUserRepo;
-	
+	@Autowired
+	IndustryRepo industryRepo;
 	@Autowired
 	HttpServletRequest request;
+	@Autowired
+	SysDataService sysDataservice;
+	@Autowired
+	AppUserCommendService appUserCommendServie;
 	
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
@@ -156,5 +165,25 @@ public class AppUserServer {
 			}
 		}
 		return dbObj;
+	}
+	
+	@AuthPass
+	@ApiOperation(value = "获取行业列表", notes = "POST")
+	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
+	public AppResp findIndustry(){
+		//List<Industry> list = industryRepo.findIndustry("0");//查询行业
+		return new AppResp(industryRepo.findIndustry(0), CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
+	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
+	public AppResp getPositionByIndustry(@RequestBody Industry industry){
+		return new AppResp(industryRepo.findPositionByIndustry(industry.getId()),CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "获取推荐报表", notes = "POST")
+	@RequestMapping(value = "/getCommend", method = RequestMethod.POST)
+	public AppResp getCommend(){
+		return new AppResp(appUserCommendServie.findALL(),CodeDef.SUCCESS);
 	}
 }

@@ -1,17 +1,10 @@
 package net.riking.web.appInterface;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
@@ -98,6 +91,7 @@ public class AppReportListServer {
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport() {
 		List<QueryReport> list = reportSubmitCaliberService.findAllReport();
+		
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
 }
