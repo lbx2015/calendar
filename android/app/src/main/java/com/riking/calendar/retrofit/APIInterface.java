@@ -8,7 +8,6 @@ import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.GetHolidayModel;
-import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.QueryReport;
@@ -20,9 +19,11 @@ import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -86,7 +87,7 @@ public interface APIInterface {
     Call<ResponseModel<AppUser>> checkVarificationCode(@Body AppUser user);
 
     @POST("getValiCode")
-    Call<GetVerificationModel> getVarificationCode(@Body AppUser user);
+    Call<ResponseModel<AppUser>> getVarificationCode(@Body AppUser user);
 
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
@@ -99,6 +100,16 @@ public interface APIInterface {
      */
     @POST("reportListApp/getAllReport")
     Call<ResponseModel<ArrayList<QueryReportContainer>>> getAllReports(@Query("id") String notUsed);
+
+    /**
+     * get all reports when user not login
+     *
+     * @return
+     */
+    @POST("reportListApp/getAllReport")
+    Call<ResponseModel<ArrayList<QueryReport>>> queryAllReports();
+    @POST("appUserApp/getCommend")
+    Call<ResponseModel<ArrayList<QueryReport>>> getPositionByIndustry();
 
     /**
      * get all reports of user
@@ -142,4 +153,16 @@ public interface APIInterface {
 
     @POST("common/getappVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
+
+    @POST("appUserApp/findIndustry")
+    Call<ResponseModel<ArrayList<Industry>>> findIndustry();
+
+    /**
+     * get positions for one industry
+     *
+     * @return
+     */
+    @POST("appUserApp/getPositionByIndustry")
+    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, Long> industryId);
+
 }

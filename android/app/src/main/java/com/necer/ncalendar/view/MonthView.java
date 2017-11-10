@@ -147,13 +147,13 @@ public class MonthView extends CalendarView {
         }
     }
 
-    //绘制圆点
-    public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
+    //riking comment out the method to use the parent 绘制圆点
+    /*public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
         if (pointList != null && pointList.contains(dateTime.toLocalDate().toString())) {
             mLunarPaint.setColor(mPointColor);
             canvas.drawCircle(rect.centerX(), baseline - getMonthHeight() / 15, mPointSize, mLunarPaint);
         }
-    }
+    }*/
 
 
     private GestureDetector mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {

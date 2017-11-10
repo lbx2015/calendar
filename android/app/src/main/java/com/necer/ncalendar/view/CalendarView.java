@@ -47,7 +47,7 @@ public abstract class CalendarView extends View {
     protected int mWorkdayColor;
 
     protected List<Rect> mRectList;//点击用的矩形集合
-    protected int mPointColor ;//圆点颜色
+    protected int mPointColor;//圆点颜色
     protected float mPointSize;//圆点大小
 
     protected int mHollowCircleColor;//空心圆颜色
@@ -87,7 +87,6 @@ public abstract class CalendarView extends View {
     }
 
 
-
     //绘制圆点
     public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
         //sunday is 7,monday is 1,saturday is 6
@@ -117,7 +116,7 @@ public abstract class CalendarView extends View {
             }
         }
 
-        //showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder reminderTimeCalendar)
+        //Riking showing circle point for not repeat reminder and repeat reminders (repeat weeks not showing point before the reminder reminderTimeCalendar)
         if ((pointList != null && pointList.contains(dateTime.toLocalDate().toString()))
                 || (fragment.repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition)) && afterRemindTime)
                 || (isTodayWorkDay && workDayAfterRemindTime) || (holidayAfterRemindTime && !isTodayWorkDay)) {
@@ -134,6 +133,7 @@ public abstract class CalendarView extends View {
         paint.setTextAlign(Paint.Align.CENTER);
         return paint;
     }
+
     public DateTime getInitialDateTime() {
         return mInitialDateTime;
     }

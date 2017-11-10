@@ -27,6 +27,25 @@ public class WeekView extends CalendarView {
 
     private OnClickWeekViewListener mOnClickWeekViewListener;
     private List<String> lunarList;
+    private GestureDetector mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            for (int i = 0; i < mRectList.size(); i++) {
+                Rect rect = mRectList.get(i);
+                if (rect.contains((int) e.getX(), (int) e.getY())) {
+                    DateTime selectDateTime = dateTimes.get(i);
+                    mOnClickWeekViewListener.onClickCurrentWeek(selectDateTime);
+                    break;
+                }
+            }
+            return true;
+        }
+    });
 
     public WeekView(Context context, DateTime dateTime, OnClickWeekViewListener onClickWeekViewListener) {
         super(context);
@@ -71,7 +90,7 @@ public class WeekView extends CalendarView {
                 mSorlarPaint.setColor(mSolarTextColor);
                 canvas.drawText(dateTime.getDayOfMonth() + "", rect.centerX(), baseline, mSorlarPaint);
                 //绘制农历
-                drawLunar(canvas, rect, baseline,i);
+                drawLunar(canvas, rect, baseline, i);
                 //绘制节假日
                 drawHolidays(canvas, rect, dateTime, baseline);
                 //绘制圆点
@@ -89,6 +108,13 @@ public class WeekView extends CalendarView {
         }
     }
 
+/*riking comment the method out to usethe parent
+    public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
+        if (pointList != null && pointList.contains(dateTime.toLocalDate().toString())) {
+            mLunarPaint.setColor(mPointColor);
+            canvas.drawCircle(rect.centerX(), baseline - getHeight() / 3, mPointSize, mLunarPaint);
+        }
+    }*/
 
     private void drawHolidays(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
         if (isShowHoliday) {
@@ -103,39 +129,10 @@ public class WeekView extends CalendarView {
         }
     }
 
-    public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
-        if (pointList != null && pointList.contains(dateTime.toLocalDate().toString())) {
-            mLunarPaint.setColor(mPointColor);
-            canvas.drawCircle(rect.centerX(), baseline - getHeight() / 3, mPointSize, mLunarPaint);
-        }
-    }
-
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return mGestureDetector.onTouchEvent(event);
     }
-
-    private GestureDetector mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            for (int i = 0; i < mRectList.size(); i++) {
-                Rect rect = mRectList.get(i);
-                if (rect.contains((int) e.getX(), (int) e.getY())) {
-                    DateTime selectDateTime = dateTimes.get(i);
-                    mOnClickWeekViewListener.onClickCurrentWeek(selectDateTime);
-                    break;
-                }
-            }
-            return true;
-        }
-    });
-
 
     public boolean contains(DateTime dateTime) {
         return dateTimes.contains(dateTime);

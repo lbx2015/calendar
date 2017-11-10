@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -222,7 +223,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
         }
 
         v = inflater.inflate(R.layout.work_fragment, container, false);
-        ncalendar = (NCalendar) v.findViewById(R.id.ncalendar);
+        ncalendar = (NCalendar) v.findViewById(R.id.n_calendar);
         ncalendar.setWorkFragment(this);
         ncalendar.setOnCalendarChangedListener(this);
         //set fragment

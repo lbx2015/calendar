@@ -1,36 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<com.riking.calendar.view.InterestingReportLinearLayout android:id="@+id/item_view"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:layout_marginRight="20dp"
     android:layout_marginBottom="20dp"
-    android:layout_marginRight="20dp">
-
-    <LinearLayout
-        android:id="@+id/item_view"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:background="@drawable/not_selected__interesting_reports_background"
-        android:orientation="horizontal">
+    android:layout_gravity="center"
+    android:background="@drawable/not_selected__interesting_reports_background"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <TextView
-            android:id="@+id/industryName"
+            android:id="@+id/interesting_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp" />
 
-        <ImageView
-            android:id="@+id/check_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:visibility="invisible"
-            app:srcCompat="@mipmap/bga_pp_ic_cb_checked" />
-    </LinearLayout>
-
-</FrameLayout>
+    <ImageView
+        android:id="@+id/check_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@mipmap/bga_pp_ic_cb_normal" />
+    </com.riking.calendar.view.InterestingReportLinearLayout>

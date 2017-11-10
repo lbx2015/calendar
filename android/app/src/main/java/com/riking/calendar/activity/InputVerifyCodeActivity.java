@@ -2,10 +2,10 @@ package com.riking.calendar.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,15 +15,27 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.necer.ncalendar.utils.MyLog;
+import com.google.gson.JsonObject;
 import com.necer.ncalendar.view.IdentifyingCodeView;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.synch.SynResult;
+import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.ZR;
+
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -38,7 +50,6 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         time = new TimeCount(60000, 1000);
-
         setContentView(R.layout.activity_login_input_phone_verify_code);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
@@ -62,25 +73,79 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                     dialog.setCancelable(false);
                     dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     dialog.show();
-                    new Handler().postDelayed(new Runnable() {
+
+                    final AppUser user = new AppUser();
+                    user.valiCode = verifyCodes;
+                    user.phoneSeqNum = ZR.getDeviceId();
+                    user.telephone = getIntent().getExtras().getString(CONST.PHONE_NUMBER);
+                    APIClient.checkVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUser>>() {
                         @Override
-                        public void run() {
+                        public void callBack(ResponseModel<AppUser> response) {
                             dialog.dismiss();
-                            final AppUser user = new AppUser();
-                            user.valiCode = verifyCodes;
-                            user.idCode = ZR.getDeviceId();
-                            user.idCode = Build.MANUFACTURER + Build.MODEL;
-                            APIClient.checkVarificationCode(user, new ZCallBack<ResponseModel<AppUser>>() {
+                            if (failed) {
+                                icv.clearAllText();
+                                Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            AppUser u = response._data;
+                            SharedPreferences pref = getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+                            SharedPreferences.Editor e = pref.edit();
+                            e.putBoolean(CONST.IS_LOGIN, true);
+                            e.putString(CONST.USER_ID, u.id);
+                            e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
+                            e.putString(CONST.PHONE_NUMBER, u.telephone);
+                            e.putString(CONST.USER_EMAIL, u.email);
+                            e.putString(CONST.PHONE_SEQ_NUMBER, u.phoneSeqNum);
+                            e.putString(CONST.USER_NAME, u.name);
+                            e.putString(CONST.USER_PASSWORD, u.passWord);
+                            e.putString(CONST.USER_DEPT, u.dept);
+                            e.putInt(CONST.USER_SEX, u.sex);
+                            e.putString(CONST.USER_COMMENTS, u.remark);
+                            e.putString(CONST.USER_COMMENTS, u.remark);
+                            if (u.allDayReminderTime != null) {
+                                e.putString(CONST.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
+                                e.putString(CONST.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
+                            }
+                            e.commit();
+
+                            //change realm database with user id
+                            RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
+                                    .deleteRealmIfMigrationNeeded();
+                            builder.name(u.id);
+                            Realm.setDefaultConfiguration(builder.build());
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("id", u.id);
+                            //get user's reminders and tasks
+                            APIClient.apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
                                 @Override
-                                public void callBack(ResponseModel<AppUser> response) {
-                                    Toast.makeText(getApplicationContext(), response._data.id, Toast.LENGTH_SHORT).show();
-                                    MyLog.d("checkVarificationCode");
+                                public void callBack(final ResponseModel<SynResult> response) {
+                                    final Realm realm = Realm.getDefaultInstance();
+                                    realm.executeTransactionAsync(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            List<ReminderModel> reminders = response._data.remind;
+                                            List<TaskModel> tasks = response._data.todo;
+                                            if (reminders != null) {
+                                                for (ReminderModel m : reminders) {
+                                                    Reminder r = new Reminder(m);
+                                                    realm.copyToRealmOrUpdate(r);
+                                                }
+                                            }
+                                            if (tasks != null) {
+                                                for (TaskModel m : tasks) {
+                                                    Task t = new Task(m);
+                                                    realm.copyToRealmOrUpdate(t);
+                                                }
+                                            }
+                                        }
+                                    });
                                 }
                             });
+
                             startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
                             Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         }
-                    }, 1000);
+                    });
                 }
 //                startActivity(new Intent(InputVerifyCodeActivity.this, LoginActivity.class));
             }
@@ -102,9 +167,6 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
     }
 
-    public void onClick(View view) {
-        icv.clearAllText();
-    }
 
     @Override
     protected void onStart() {

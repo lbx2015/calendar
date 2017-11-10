@@ -14,11 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.hyphenate.chatuidemo.ui.HyphenateLoginActivity;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.LoginActivity;
 import com.riking.calendar.activity.LoginNavigateActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
@@ -47,7 +44,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(v!=null){
+        if (v != null) {
             return v;
         }
         sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
@@ -66,7 +63,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
                     sharedPreferences.getString(CONST.USER_COMMENTS, ""));
 
             String imageUrl = sharedPreferences.getString(CONST.USER_IMAGE_URL, null);
-            String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+            String imageName = imageUrl == null ? "" : imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
             if (FileUtil.imageExists(imageName)) {
                 Logger.d("zzw", "no need load url: " + imageName);
                 Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));

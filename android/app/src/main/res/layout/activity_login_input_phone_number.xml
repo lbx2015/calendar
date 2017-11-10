@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
@@ -35,12 +36,13 @@
 
 
         <EditText
-            android:id="@+id/search_edit_view"
+            android:id="@+id/phone_number"
             android:layout_width="232dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:background="@android:color/transparent"
             android:hint="手机号码"
+            android:inputType="number"
             android:maxLines="1"
             android:singleLine="true"
             android:textSize="14dp" />
@@ -52,5 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
+        app:buttonText="获取验证码"
         android:src="@drawable/enter_button" />
 </LinearLayout>

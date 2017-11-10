@@ -15,12 +15,13 @@ import butterknife.ButterKnife;
  * Created by xiangzhihong on 2016/3/2 on 15:49.
  */
 public class InterestingReportHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.industryName)
-    public TextView industryName;
+    @BindView(R.id.interesting_report)
+    public TextView reportName;
     @BindView(R.id.check_image)
     public ImageView checkImage;
     @BindView(R.id.item_view)
-    public View root;
+    View root;
+    boolean checked = false;
 
     public InterestingReportHolder(View itemView) {
         super(itemView);

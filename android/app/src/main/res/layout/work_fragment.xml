@@ -85,10 +85,13 @@
     </LinearLayout>
 
     <com.necer.ncalendar.calendar.NCalendar
-        android:id="@+id/ncalendar"
+        android:id="@+id/n_calendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultCalendar="Month"
+        app:calendarHeight="240dp"
+        app:isShowLunar="false"
+        app:isShowHoliday="false"
         app:firstDayOfWeek="Sunday">
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

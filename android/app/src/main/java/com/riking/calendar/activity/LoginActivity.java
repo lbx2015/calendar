@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 user.telephone = phoneDigits;
                 user.phoneSeqNum = uid;
-                apiInterface.getVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
+                /*apiInterface.getVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
                     @Override
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
                         GetVerificationModel resource = response.body();
@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                         time.startTick();
                         Log.d("zzw", "failed ");
                     }
-                });
+                });*/
             }
         });
 

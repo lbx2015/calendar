@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
@@ -25,6 +24,7 @@ import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.QueryReportRealmModel;
@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -50,6 +51,7 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
@@ -82,8 +84,12 @@ public class APIClient {
         return retrofit;
     }
 
-    public static void checkVarificationCode(@Body AppUser user, final ZCallBack<ResponseModel<AppUser>> callBack){
+    public static void checkVarificationCode(@Body AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
         apiInterface.checkVarificationCode(user).enqueue(callBack);
+    }
+
+    public static void getVarificationCode(AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
+        apiInterface.getVarificationCode(user).enqueue(callBack);
     }
 
     public static void updatePendingReminds(final ZRequestCallBack callBack) {
@@ -169,7 +175,7 @@ public class APIClient {
         tasks.add(t);
         apiInterface.synchronousTasks(tasks).enqueue(new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
-            public void callBack() {
+            public void callBack(ResponseModel<String> s) {
                 Realm realm = Realm.getDefaultInstance();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -212,7 +218,7 @@ public class APIClient {
         reminderModels.add(m);
         APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
-            public void callBack() {
+            public void callBack(ResponseModel<String> s) {
                 Realm realm = Realm.getDefaultInstance();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -434,6 +440,10 @@ public class APIClient {
         });
     }
 
+    public static void getAllReports(Callback<ResponseModel<ArrayList<QueryReport>>> zCallBack) {
+        APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
+    }
+
     /**
      * when user not login ,showing all reports
      */
@@ -448,9 +458,12 @@ public class APIClient {
                         ArrayList<QueryReportContainer> reportContainers = response._data;
                         Logger.d("zzw", "report size" + reportContainers.size());
                         for (QueryReportContainer c : reportContainers) {
+
                             QueryReportContainerRealmModel queryReportContainerRealmModel = new QueryReportContainerRealmModel();
                             queryReportContainerRealmModel.title = c.title;
                             queryReportContainerRealmModel.result = new RealmList<>();
+                            //adding null protection
+                            if (c.result == null) continue;
                             for (QueryReport q : c.result) {
                                 QueryReportRealmModel reportRealmModel = new QueryReportRealmModel();
                                 reportRealmModel.id = q.id;
@@ -463,7 +476,6 @@ public class APIClient {
                         }
                     }
                 });
-
             }
         });
     }
@@ -478,5 +490,19 @@ public class APIClient {
                 updateCallback.onSuccess(response._data);
             }
         });
+    }
+
+    /**
+     * get industries
+     */
+    public static void getIndustries(final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
+        apiInterface.findIndustry().enqueue(c);
+    }
+
+    /**
+     * get positions
+     */
+    public static void getPositions(HashMap<String,Long> industryMap, final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
+        apiInterface.getPositionByIndustry(industryMap).enqueue(c);
     }
 }
