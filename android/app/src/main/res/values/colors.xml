@@ -19,6 +19,10 @@
     <color name="translucent_color_background">#33333333</color>
     <color name="translucent_white">#88ffffff</color>
     <color name="translucent_login_button_bg">#4c19c368</color>
+    <color name="input_cell_phone_text_color">#222222</color>
+    <color name="gray_text_color">#999999</color>
+    <color name="button_back">#87c8ff</color>
+    <color name="grey_border">#d2d2d2</color>
     <color name="divider_color_d9d9d9">#d9d9d9</color>
     <!--title -->
     <color name="color_666666">#666666</color>

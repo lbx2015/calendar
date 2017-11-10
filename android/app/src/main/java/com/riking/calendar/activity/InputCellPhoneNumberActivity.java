@@ -82,4 +82,8 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
     }
+
+    public void clickBackNav(View v){
+        onBackPressed();
+    }
 }

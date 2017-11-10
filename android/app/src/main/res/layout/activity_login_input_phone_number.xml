@@ -2,58 +2,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="45dp"
+        android:onClick="clickBackNav"
+        android:src="@drawable/nav_icon_back" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="20dp"
         android:text="请输入你的手机号码"
+        android:textColor="@color/input_cell_phone_text_color"
         android:textSize="24sp" />
 
     <LinearLayout
         android:id="@+id/search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/rounded_corner_about"
-        android:orientation="horizontal"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
-            android:text="+86 |" />
+            android:gravity="center"
+            android:text="+86"
+            android:textColor="@color/input_cell_phone_text_color"
+            android:textSize="17sp" />
+
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="4dp"
+            android:gravity="center"
+            android:text="|"
+            android:textColor="@color/grey_border"
+            android:textSize="17sp" />
 
 
         <EditText
             android:id="@+id/phone_number"
-            android:layout_width="232dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="20dp"
             android:background="@android:color/transparent"
             android:hint="手机号码"
             android:inputType="number"
             android:maxLines="1"
             android:singleLine="true"
-            android:textSize="14dp" />
+            android:textColorHint="@color/gray_text_color"
+            android:textSize="17sp" />
     </LinearLayout>
 
-    <com.riking.calendar.view.ZEnterImageView
+    <FrameLayout
         android:id="@+id/enter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="330dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
-        app:buttonText="获取验证码"
-        android:src="@drawable/enter_button" />
+        android:background="@drawable/new_get_verify_code_back_ground">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送验证码"
+            android:layout_gravity="center"
+            android:textSize="17sp"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
 </LinearLayout>
