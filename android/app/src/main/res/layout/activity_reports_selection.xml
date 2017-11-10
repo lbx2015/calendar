@@ -4,7 +4,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp">
+    android:layout_marginTop="60dp">
 
     <TextView
         android:id="@+id/textView18"
@@ -31,6 +31,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -41,14 +42,14 @@
         android:id="@+id/start_button"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/selected__interesting_reports_background"
         android:gravity="center"
         android:onClick="onClickStart"
         android:text="立即开始"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerView" />
