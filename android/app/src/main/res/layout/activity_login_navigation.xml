@@ -1,47 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <WebView
+    <ImageView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent"
+        android:src="@drawable/login_bgimg"></ImageView>
 
-    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/translucent_color_background"
-        android:fitsSystemWindows="true">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="130dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
 
 
         <ImageView
-            android:id="@+id/imageView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/wechat" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="130dp"
+            app:srcCompat="@drawable/login_logo" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/rounded_login__translucent_rectangle">
 
-        <TextView
-            android:id="@+id/phone_login"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/login_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2dp"
+                    app:srcCompat="@drawable/login_icon_wx" />
+
+                <TextView
+                    android:id="@+id/wechat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信登录"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="手机验证登录》"
-            android:textColor="@color/btn_gray_normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
 
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/phone_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="手机验证登录"
+                android:textSize="14sp"
+                android:textColor="@color/btn_gray_normal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/login_icon_arrow_r" />
+        </LinearLayout>
+
+    </LinearLayout>
 </FrameLayout>
