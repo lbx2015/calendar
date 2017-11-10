@@ -17,6 +17,8 @@ import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.AppUserRecommend;
+import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
@@ -440,8 +442,12 @@ public class APIClient {
         });
     }
 
-    public static void getAllReports(Callback<ResponseModel<ArrayList<QueryReport>>> zCallBack) {
+    public static void getAllReports(Callback<ResponseModel<ArrayList<AppUserRecommend>>> zCallBack) {
         APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
+    }
+
+    public static void interestingReports(AppUserReportResult result,ZCallBackWithFail<ResponseModel<Short>> zCallBackWithFail){
+        apiInterface.interestingReports(result).enqueue(zCallBackWithFail);
     }
 
     /**

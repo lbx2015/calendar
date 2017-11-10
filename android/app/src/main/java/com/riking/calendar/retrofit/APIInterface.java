@@ -2,7 +2,9 @@ package com.riking.calendar.retrofit;
 
 import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
+import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
@@ -109,7 +111,7 @@ public interface APIInterface {
     @POST("reportListApp/getAllReport")
     Call<ResponseModel<ArrayList<QueryReport>>> queryAllReports();
     @POST("appUserApp/getCommend")
-    Call<ResponseModel<ArrayList<QueryReport>>> getPositionByIndustry();
+    Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
     /**
      * get all reports of user
@@ -165,4 +167,9 @@ public interface APIInterface {
     @POST("appUserApp/getPositionByIndustry")
     Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, Long> industryId);
 
+    /**
+     * set user's interesting reports into server
+     */
+    @POST("/appUserReport/userAddReportEdit")
+    Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
 }

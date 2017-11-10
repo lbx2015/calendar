@@ -16,9 +16,12 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.InterestingReportAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.QueryReport;
+import com.riking.calendar.pojo.AppUserRecommend;
+import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.InterestingReportLinearLayout;
 import com.riking.calendar.view.ZFlowLayout;
@@ -34,6 +37,8 @@ public class ReportsSelectActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     ZFlowLayout zFlowLayout;
 //    private SwipeRefreshLayout swipeRefreshLayout;
+
+    ArrayList<String> selectedReportIds = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +66,20 @@ public class ReportsSelectActivity extends AppCompatActivity {
     }
 
     public void onClickStart(View view) {
-        startActivity(new Intent(this, ViewPagerActivity.class));
+        AppUserReportResult result = new AppUserReportResult();
+        result.setList(selectedReportIds);
+        result.setUserId(Preference.pref.getString(CONST.USER_ID, ""));
+        APIClient.interestingReports(result, new ZCallBackWithFail<ResponseModel<Short>>() {
+            @Override
+            public void callBack(ResponseModel<Short> response) {
+                if (failed) {
+                } else {
+                    startActivity(new Intent(ReportsSelectActivity.this, ViewPagerActivity.class));
+
+                }
+            }
+        });
+        ;
     }
 
     private void initEvents() {
@@ -83,9 +101,9 @@ public class ReportsSelectActivity extends AppCompatActivity {
     }
 
     private void loadData(final int page) {
-        APIClient.getAllReports(new ZCallBackWithFail<ResponseModel<ArrayList<QueryReport>>>() {
+        APIClient.getAllReports(new ZCallBackWithFail<ResponseModel<ArrayList<AppUserRecommend>>>() {
             @Override
-            public void callBack(ResponseModel<ArrayList<QueryReport>> response) {
+            public void callBack(ResponseModel<ArrayList<AppUserRecommend>> response) {
                 if (failed) {
 //                mAdapter.mList.clear();
                     //clear the recycled view pool
@@ -93,9 +111,9 @@ public class ReportsSelectActivity extends AppCompatActivity {
 //                mAdapter.mList = response._data;
 //                mAdapter.notifyDataSetChanged();
                 } else {
-                    ArrayList<QueryReport> reports = response._data;
+                    ArrayList<AppUserRecommend> reports = response._data;
                     if (reports != null) {
-                        for (QueryReport r : reports) {
+                        for (final AppUserRecommend r : reports) {
                             //inflate the item view from layout xml
                             final InterestingReportLinearLayout root = (InterestingReportLinearLayout) LayoutInflater.from(ReportsSelectActivity.this).inflate(R.layout.intersting_report_item, null);
                             //get view
@@ -110,12 +128,17 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                     if (root.checked) {
                                         //the report is not been checked
                                         root.checked = false;
+                                        //remove the report id form the result
+                                        selectedReportIds.remove(r.reportId);
                                         checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_normal));
                                         reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.black_deep));
                                         root.setBackground(root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                                     } else {
                                         //the report is been checked.
                                         root.checked = true;
+                                        //add the report id into the result
+                                        selectedReportIds.add(r.reportId);
+
                                         checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_checked));
                                         reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.white));
                                         root.setBackground(root.getResources().getDrawable(R.drawable.selected__interesting_reports_background));
