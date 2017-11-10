@@ -108,6 +108,8 @@ public interface APIInterface {
      */
     @POST("reportListApp/getAllReport")
     Call<ResponseModel<ArrayList<QueryReport>>> queryAllReports();
+    @POST("appUserApp/getCommend")
+    Call<ResponseModel<ArrayList<QueryReport>>> getPositionByIndustry();
 
     /**
      * get all reports of user
@@ -157,8 +159,10 @@ public interface APIInterface {
 
     /**
      * get positions for one industry
+     *
      * @return
      */
     @POST("appUserApp/getPositionByIndustry")
-    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String,Long> industryId);
+    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, Long> industryId);
+
 }

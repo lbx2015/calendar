@@ -441,7 +441,7 @@ public class APIClient {
     }
 
     public static void getAllReports(Callback<ResponseModel<ArrayList<QueryReport>>> zCallBack) {
-        APIClient.apiInterface.queryAllReports().enqueue(zCallBack);
+        APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
     }
 
     /**

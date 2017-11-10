@@ -39,6 +39,6 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
         failed = true;
         callBack(null);
         Logger.d("zzw", "request fail + " + call.request().toString() + t.getMessage());
-        Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT);
+        Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT).show();
     }
 }

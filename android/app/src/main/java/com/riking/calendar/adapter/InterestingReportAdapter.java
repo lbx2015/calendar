@@ -1,6 +1,7 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,19 +34,21 @@ public class InterestingReportAdapter extends RecyclerView.Adapter<InterestingRe
     @Override
     public void onBindViewHolder(final InterestingReportHolder h, int i) {
         QueryReport c = mList.get(i);
-        h.industryName.setText(c.reportName + " +");
-        h.itemView.setOnClickListener(new View.OnClickListener() {
+        h.reportName.setText(c.reportName + " +");
+        h.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String industryName = h.industryName.getText().toString();
-                if (h.checkImage.getVisibility() == View.VISIBLE) {
-                    h.checkImage.setVisibility(View.GONE);
-                    h.industryName.setText(industryName + "+");
-                    h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.black_deep));
+                if (h.checked) {
+                    //the report is not been checked
+                    h.checked = false;
+                    h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_normal));
+                    h.reportName.setTextColor(h.reportName.getResources().getColor(R.color.black_deep));
                     h.root.setBackground(h.root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                 } else {
-                    h.checkImage.setVisibility(View.VISIBLE);
-                    h.industryName.setText(industryName.subSequence(0, industryName.indexOf('+')));
+                    //the report is been checked.
+                    h.checked = true;
+                    h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_checked));
+                    h.reportName.setTextColor(h.reportName.getResources().getColor(R.color.white));
                     h.root.setBackground(h.root.getResources().getDrawable(R.drawable.selected__interesting_reports_background));
                 }
             }
