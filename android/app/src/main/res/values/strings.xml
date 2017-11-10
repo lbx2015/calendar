@@ -112,9 +112,9 @@
     <string-array name="subTittles">
         <item>Home</item>
         <item>Job</item>
-        <item>Vocation</item>
-        <item>Remind</item>
-        <item>Info</item>
+        <!--<item>Vocation</item>-->
+        <item>Voice</item>
+        <item>My</item>
 
     </string-array>
 

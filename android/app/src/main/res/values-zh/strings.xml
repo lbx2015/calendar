@@ -74,7 +74,7 @@
     <string name="app_name">悦历</string>
     <string-array name="subTittles">
         <item>首页</item>
-        <item>广场</item>
+        <!--<item>广场</item>-->
         <item>工作</item>
         <item>消息</item>
         <item>我的</item>
