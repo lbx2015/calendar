@@ -70,7 +70,7 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity implements T
                 } else {
                     backspacingFlag = false;
                 }
-                phoneNumberBeforeChanged = s.toString().replaceAll("[^\\d]", "");
+                phoneNumberBeforeChanged = s.toString();
             }
 
             @Override
@@ -80,44 +80,51 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity implements T
 
             @Override
             public void afterTextChanged(Editable s) {
-                String string = s.toString();
-                //what matters are the phone digits beneath the mask, so we always work with a raw string with only digits
-                String phone = string.replaceAll("[^\\d]", "");
-
-                //if the text was just edited, :afterTextChanged is called another time... so we need to verify the flag of edition
-                //if the flag is false, this is a original user-typed entry. so we go on and do some magic
-                if (!editedFlag) {
-
-                    //we start verifying the worst case, many characters mask need to be added
-                    //example: 999999999 <- 6+ digits already typed
-                    // masked: (999) 999-999
-                    if (phone.length() >= 7 && !backspacingFlag) {
-                        //we will edit. next call on this textWatcher will be ignored
-                        editedFlag = true;
-                        //here is the core. we substring the raw digits and add the mask as convenient
-                        String ans = phone.substring(0, 3) + " " + phone.substring(3, 7) + " " + phone.substring(7);
-                        phoneNumber.setText(ans);
-                        //we deliver the cursor to its original position relative to the end of the string
-                        phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
-
-                        //we end at the most simple case, when just one character mask is needed
-                        //example: 99999 <- 3+ digits already typed
-                        // masked: (999) 99
-                    } else if (phone.length() >= 3 && !backspacingFlag) {
-                        editedFlag = true;
-                        String ans = phone.substring(0, 3) + " " + phone.substring(3);
-                        phoneNumber.setText(ans);
-                        phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
-                    }else  if (backspacingFlag) {
-                        if (phoneNumberBeforeChanged.equals(s.toString().replaceAll("[^\\d]", ""))) {
-                            //delete the phone number ignore the blanks
-                            phoneNumber.setText(s.toString().substring(0,s.length()-1));
-                            phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
-                        }
-                    }
-                    // We just edited the field, ignoring this cicle of the watcher and getting ready for the next
+                //not keep inputting
+                if (s.length() > 13) {
+                    phoneNumber.setText(phoneNumberBeforeChanged);
+                    phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
                 } else {
-                    editedFlag = false;
+                    String string = s.toString();
+                    //what matters are the phone digits beneath the mask, so we always work with a raw string with only digits
+                    String phone = string.replaceAll("[^\\d]", "");
+
+                    //if the text was just edited, :afterTextChanged is called another time... so we need to verify the flag of edition
+                    //if the flag is false, this is a original user-typed entry. so we go on and do some magic
+                    if (!editedFlag) {
+
+                        //we start verifying the worst case, many characters mask need to be added
+                        //example: 999999999 <- 6+ digits already typed
+                        // masked: (999) 999-999
+                        if (phone.length() >= 7 && !backspacingFlag) {
+                            //we will edit. next call on this textWatcher will be ignored
+                            editedFlag = true;
+                            //here is the core. we substring the raw digits and add the mask as convenient
+                            String ans = phone.substring(0, 3) + " " + phone.substring(3, 7) + " " + phone.substring(7);
+                            phoneNumber.setText(ans);
+                            //we deliver the cursor to its original position relative to the end of the string
+                            phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
+
+                            //we end at the most simple case, when just one character mask is needed
+                            //example: 99999 <- 3+ digits already typed
+                            // masked: (999) 99
+                        } else if (phone.length() >= 3 && !backspacingFlag) {
+                            editedFlag = true;
+                            String ans = phone.substring(0, 3) + " " + phone.substring(3);
+                            phoneNumber.setText(ans);
+                            phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
+                        } else if (backspacingFlag) {
+                            String beforeText = phoneNumberBeforeChanged.toString().replaceAll("[^\\d]", "");
+                            if (beforeText.equals(s.toString().replaceAll("[^\\d]", ""))) {
+                                //delete the phone number ignore the blanks
+                                phoneNumber.setText(s.toString().substring(0, s.length() - 1));
+                                phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
+                            }
+                        }
+                        // We just edited the field, ignoring this cicle of the watcher and getting ready for the next
+                    } else {
+                        editedFlag = false;
+                    }
                 }
             }
         });
