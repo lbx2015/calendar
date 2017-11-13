@@ -68,7 +68,7 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
 
                         } else {
                             Intent i = new Intent(InputCellPhoneNumberActivity.this, InputVerifyCodeActivity.class);
-                            i.putExtra(CONST.PHONE_NUMBER,phoneDigits);
+                            i.putExtra(CONST.PHONE_NUMBER, phoneDigits);
                             //Success get the verify code
                             startActivity(i);
                         }
@@ -83,7 +83,7 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    public void clickBackNav(View v){
+    public void clickBackNav(View v) {
         onBackPressed();
     }
 }

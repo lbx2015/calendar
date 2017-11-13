@@ -108,7 +108,9 @@
         <activity
             android:name=".activity.LoginNavigateActivity"
             android:hardwareAccelerated="true" />
-        <activity android:name=".activity.InputCellPhoneNumberActivity" />
+        <activity
+            android:windowSoftInputMode="stateAlwaysVisible"
+            android:name=".activity.InputCellPhoneNumberActivity" />
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
