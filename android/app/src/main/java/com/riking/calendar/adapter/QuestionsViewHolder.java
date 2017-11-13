@@ -19,8 +19,6 @@ import butterknife.ButterKnife;
 public class QuestionsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.industryName)
     public TextView industryName;
-    @BindView(R.id.check_image)
-    public ImageView checkImage;
 
     public QuestionsViewHolder(View itemView) {
         super(itemView);

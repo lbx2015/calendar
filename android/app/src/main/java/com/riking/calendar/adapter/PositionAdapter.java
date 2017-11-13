@@ -47,13 +47,6 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionViewHolder> {
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (h.checkImage.getVisibility() == View.VISIBLE) {
-                    h.checkImage.setVisibility(View.GONE);
-                    h.positionName.setTextColor(h.positionName.getResources().getColor(R.color.black_deep));
-                } else {
-                    h.checkImage.setVisibility(View.VISIBLE);
-                    h.positionName.setTextColor(h.positionName.getResources().getColor(R.color.holidayColor));
-                }
                 Intent it = new Intent(MyApplication.mCurrentActivity, ReportsSelectActivity.class);
                 MyApplication.mCurrentActivity.startActivity(it);
 

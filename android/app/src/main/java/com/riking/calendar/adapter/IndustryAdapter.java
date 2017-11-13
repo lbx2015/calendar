@@ -47,14 +47,6 @@ public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (h.checkImage.getVisibility() == View.VISIBLE) {
-                    h.checkImage.setVisibility(View.GONE);
-                    h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.black_deep));
-                } else {
-                    h.checkImage.setVisibility(View.VISIBLE);
-                    h.industryName.setTextColor(h.industryName.getResources().getColor(R.color.holidayColor));
-                }
-
                 Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
                 i.putExtra(CONST.INDUSTRY_ID,industry.id);
                 //go to position select page

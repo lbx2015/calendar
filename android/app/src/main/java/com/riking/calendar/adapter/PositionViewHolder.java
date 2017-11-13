@@ -17,8 +17,6 @@ import butterknife.ButterKnife;
 public class PositionViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.industryName)
     public TextView positionName;
-    @BindView(R.id.check_image)
-    public ImageView checkImage;
 
     public PositionViewHolder(View itemView) {
         super(itemView);
