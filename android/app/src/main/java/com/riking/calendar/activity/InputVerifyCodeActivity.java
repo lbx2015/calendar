@@ -43,6 +43,8 @@ import io.realm.RealmConfiguration;
 
 public class InputVerifyCodeActivity extends AppCompatActivity {
     public TextView getVerificationCodeButton;
+    TextView phoneNumberTV;
+    String phoneNumber;
     private IdentifyingCodeView icv;
     private TimeCount time;
 
@@ -58,9 +60,12 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
         //set translucent background for the status bar
         StatusBarUtil.setTranslucent(this);
+        phoneNumber = getIntent().getExtras().getString(CONST.PHONE_NUMBER);
 
+        phoneNumberTV = findViewById(R.id.cell_phone_nubmer);
         icv = (IdentifyingCodeView) findViewById(R.id.icv);
 
+        phoneNumberTV.setText(phoneNumber);
         icv.setInputCompleteListener(new IdentifyingCodeView.InputCompleteListener() {
             @Override
             public void inputComplete() {
@@ -77,7 +82,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                     final AppUser user = new AppUser();
                     user.valiCode = verifyCodes;
                     user.phoneSeqNum = ZR.getDeviceId();
-                    user.telephone = getIntent().getExtras().getString(CONST.PHONE_NUMBER);
+                    user.telephone = phoneNumber;
                     APIClient.checkVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUser>>() {
                         @Override
                         public void callBack(ResponseModel<AppUser> response) {
@@ -167,6 +172,9 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
     }
 
+    public void clickBackNav(View v) {
+        onBackPressed();
+    }
 
     @Override
     protected void onStart() {
@@ -188,13 +196,13 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
         @Override
         public void onFinish() {
             getVerificationCodeButton.setText("重新获取");
-            getVerificationCodeButton.setBackground(getDrawable(R.drawable.rounded_login__verify_code_color_rectangle));
+            getVerificationCodeButton.setTextColor(getVerificationCodeButton.getResources().getColor(R.color.button_enabled));
             getVerificationCodeButton.setEnabled(true);
             getVerificationCodeButton.setClickable(true);
         }
 
         public void startTick() {
-            getVerificationCodeButton.setBackground(getDrawable(R.drawable.rounded_login__verify_code_rectangle));
+            getVerificationCodeButton.setTextColor(getVerificationCodeButton.getResources().getColor(R.color.grey_border));
             getVerificationCodeButton.setEnabled(false);
             getVerificationCodeButton.setClickable(false);
 

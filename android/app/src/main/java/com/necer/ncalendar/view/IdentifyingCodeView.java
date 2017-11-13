@@ -70,7 +70,7 @@ public class IdentifyingCodeView extends RelativeLayout {
         mEtNumber = typedArray.getInteger(R.styleable.IdentifyingCodeView_icv_et_number, 1);
         mEtWidth = typedArray.getDimensionPixelSize(R.styleable.IdentifyingCodeView_icv_et_width, 42);
         mEtDividerDrawable = typedArray.getDrawable(R.styleable.IdentifyingCodeView_icv_et_divider_drawable);
-        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.IdentifyingCodeView_icv_et_text_size, 16);
+        mEtTextSize = typedArray.getDimensionPixelSize(R.styleable.IdentifyingCodeView_icv_et_text_size, 30);
         mEtTextColor = typedArray.getColor(R.styleable.IdentifyingCodeView_icv_et_text_color, Color.WHITE);
         mEtBackgroundDrawableFocus = typedArray.getDrawable(R.styleable.IdentifyingCodeView_icv_et_bg_focus);
         mEtBackgroundDrawableNormal = typedArray.getDrawable(R.styleable.IdentifyingCodeView_icv_et_bg_normal);

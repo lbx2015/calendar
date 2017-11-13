@@ -61,7 +61,7 @@
             android:layout_marginLeft="20dp"
             android:background="@android:color/transparent"
             android:hint="手机号码"
-            android:inputType="number"
+            android:inputType="phone"
             android:maxLines="1"
             android:focusedByDefault="true"
             android:singleLine="true"

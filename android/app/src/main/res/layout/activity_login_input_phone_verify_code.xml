@@ -7,50 +7,66 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="45dp"
+        android:onClick="clickBackNav"
+        android:src="@drawable/nav_icon_back" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:text="请输入手机验证码"
+        android:textColor="@color/input_cell_phone_text_color"
         android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="验证码已发送至手机："
-            android:textColor="@android:color/darker_gray" />
+            android:text="验证码已发送至："
+            android:textColor="@color/gray_text_color"
+            android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/cell_phone_nubmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+86 136 6188 6157" />
+            android:textColor="@color/input_cell_phone_text_color"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <com.necer.ncalendar.view.IdentifyingCodeView
         android:id="@+id/icv"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         app:icv_et_bg_focus="@drawable/shape_icv_et_bg_focus"
         app:icv_et_bg_normal="@drawable/shape_icv_et_bg_normal"
         app:icv_et_divider_drawable="@drawable/shape_divider_identifying"
         app:icv_et_number="6"
-        app:icv_et_text_color="#000000"
-        app:icv_et_width="50dp" />
+        app:icv_et_text_color="@color/input_cell_phone_text_color"
+        app:icv_et_width="48dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="27dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
@@ -79,13 +95,12 @@
         android:id="@+id/get_verification_code_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/rounded_login__verify_code_color_rectangle"
+        android:layout_gravity="center_horizontal"
         android:paddingBottom="10dp"
         android:paddingLeft="11dp"
         android:paddingRight="11dp"
         android:paddingTop="10dp"
         android:text="@string/get_verification_code"
-        android:textColor="@android:color/white"
-        android:textSize="10dp" />
+        android:textColor="@color/gray_text_color"
+        android:textSize="14dp" />
 </LinearLayout>
