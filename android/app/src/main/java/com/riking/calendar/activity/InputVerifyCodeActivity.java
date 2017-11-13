@@ -104,7 +104,9 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                             e.putString(CONST.USER_NAME, u.name);
                             e.putString(CONST.USER_PASSWORD, u.passWord);
                             e.putString(CONST.USER_DEPT, u.dept);
-                            e.putInt(CONST.USER_SEX, u.sex);
+                            if (u.sex != null) {
+                                e.putInt(CONST.USER_SEX, u.sex);
+                            }
                             e.putString(CONST.USER_COMMENTS, u.remark);
                             e.putString(CONST.USER_COMMENTS, u.remark);
                             if (u.allDayReminderTime != null) {
@@ -147,7 +149,11 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 }
                             });
 
-                            startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
+                            if (u.isGuide == null || u.isGuide.equals("0")) {
+                                startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
+                            } else {
+                                startActivity(new Intent(InputVerifyCodeActivity.this, ViewPagerActivity.class));
+                            }
                             Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         }
                     });

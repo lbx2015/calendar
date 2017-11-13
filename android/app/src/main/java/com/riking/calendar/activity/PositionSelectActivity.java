@@ -105,7 +105,9 @@ public class PositionSelectActivity extends AppCompatActivity {
     private void loadData(final int page) {
         isLoading = true;
         HashMap<String, Long> hashMap = new HashMap<>();
+        Long industryId = getIntent().getExtras().getLong(CONST.INDUSTRY_ID);
         hashMap.put("id", getIntent().getExtras().getLong(CONST.INDUSTRY_ID));
+        mAdapter.industryId = industryId;
         APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) {

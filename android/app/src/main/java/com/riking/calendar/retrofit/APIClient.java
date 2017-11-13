@@ -511,4 +511,8 @@ public class APIClient {
     public static void getPositions(HashMap<String,Long> industryMap, final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
         apiInterface.getPositionByIndustry(industryMap).enqueue(c);
     }
+
+    public static void updateUserInfo(AppUser user,ZCallBackWithFail<ResponseModel<String>> callBackWithFail) {
+        apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
+    }
 }

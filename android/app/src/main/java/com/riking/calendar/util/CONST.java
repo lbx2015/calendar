@@ -47,6 +47,7 @@ public class CONST {
     public static final String WEB_URL = "WEB_URL";
     public static final String IMAGE_URL = "IMAGE_URL";
     public static final String INDUSTRY_ID = "INDUSTRY_ID";
+    public static final String POSITION_ID = "POSITION_ID";
 
     //滚动事件
     public enum ScrollDirection {
