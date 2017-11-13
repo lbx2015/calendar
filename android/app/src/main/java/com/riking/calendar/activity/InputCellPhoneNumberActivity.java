@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,7 +28,10 @@ import com.riking.calendar.util.ZR;
  * Created by zw.zhang on 2017/8/14.
  */
 
-public class InputCellPhoneNumberActivity extends AppCompatActivity {
+public class InputCellPhoneNumberActivity extends AppCompatActivity implements TextWatcher {
+    EditText phoneNumber;
+    View enterButton;
+    boolean buttonAvailable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,10 +44,17 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
 
         //set translucent background for the status bar
         StatusBarUtil.setTranslucent(this);
-        findViewById(R.id.enter_button).setOnClickListener(new View.OnClickListener() {
+        phoneNumber = (EditText) findViewById(R.id.phone_number);
+        //adding text change listener
+        phoneNumber.addTextChangedListener(InputCellPhoneNumberActivity.this);
+        enterButton = findViewById(R.id.enter_button);
+        enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText phoneNumber = (EditText) findViewById(R.id.phone_number);
+                if (!buttonAvailable) {
+                    return;
+                }
+
                 Editable number = phoneNumber.getText();
                 if (number == null) {
                     Toast.makeText(phoneNumber.getContext(), "电话号码不能为空", Toast.LENGTH_SHORT).show();
@@ -85,5 +96,27 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity {
 
     public void clickBackNav(View v) {
         onBackPressed();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (StringUtil.isMobileNO(s)) {
+            buttonAvailable = true;
+            //enable the button
+            enterButton.setBackground(getDrawable(R.drawable.new_get_verify_code_back_ground_enabled));
+        } else {
+            buttonAvailable = false;
+            enterButton.setBackground(getDrawable(R.drawable.new_get_verify_code_back_ground));
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }

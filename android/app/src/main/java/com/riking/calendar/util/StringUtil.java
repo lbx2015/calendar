@@ -22,4 +22,11 @@ public class StringUtil {
         if (TextUtils.isEmpty(mobiles)) return false;
         else return mobiles.trim().matches(telRegex);
     }
+
+    public static boolean isMobileNO(CharSequence mobiles){
+        if(mobiles== null){
+            return false;
+        }
+        return isMobileNO(mobiles.toString());
+    }
 }
