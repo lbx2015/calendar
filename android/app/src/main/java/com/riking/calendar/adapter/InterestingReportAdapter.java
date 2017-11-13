@@ -41,13 +41,13 @@ public class InterestingReportAdapter extends RecyclerView.Adapter<InterestingRe
                 if (h.checked) {
                     //the report is not been checked
                     h.checked = false;
-                    h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_normal));
+                    h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.drawable.login_icon_add));
                     h.reportName.setTextColor(h.reportName.getResources().getColor(R.color.black_deep));
                     h.root.setBackground(h.root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                 } else {
                     //the report is been checked.
                     h.checked = true;
-                    h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_checked));
+                    h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.drawable.login_icon_dh));
                     h.reportName.setTextColor(h.reportName.getResources().getColor(R.color.white));
                     h.root.setBackground(h.root.getResources().getDrawable(R.drawable.selected__interesting_reports_background));
                 }

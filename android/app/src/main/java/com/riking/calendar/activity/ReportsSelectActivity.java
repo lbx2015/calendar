@@ -66,20 +66,21 @@ public class ReportsSelectActivity extends AppCompatActivity {
     }
 
     public void onClickStart(View view) {
-        AppUserReportResult result = new AppUserReportResult();
-        result.setList(selectedReportIds);
-        result.setUserId(Preference.pref.getString(CONST.USER_ID, ""));
-        APIClient.interestingReports(result, new ZCallBackWithFail<ResponseModel<Short>>() {
-            @Override
-            public void callBack(ResponseModel<Short> response) {
-                if (failed) {
-                } else {
-                    startActivity(new Intent(ReportsSelectActivity.this, ViewPagerActivity.class));
+        if (selectedReportIds.size() > 0) {
+            AppUserReportResult result = new AppUserReportResult();
+            result.setList(selectedReportIds);
+            result.setUserId(Preference.pref.getString(CONST.USER_ID, ""));
+            APIClient.interestingReports(result, new ZCallBackWithFail<ResponseModel<Short>>() {
+                @Override
+                public void callBack(ResponseModel<Short> response) {
+                    if (failed) {
+                    } else {
+                        startActivity(new Intent(ReportsSelectActivity.this, ViewPagerActivity.class));
 
+                    }
                 }
-            }
-        });
-        ;
+            });
+        }
     }
 
     private void initEvents() {
@@ -130,8 +131,8 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                         root.checked = false;
                                         //remove the report id form the result
                                         selectedReportIds.remove(r.reportId);
-                                        checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_normal));
-                                        reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.black_deep));
+                                        checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.drawable.login_icon_add));
+                                        reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.input_cell_phone_text_color));
                                         root.setBackground(root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                                     } else {
                                         //the report is been checked.
@@ -139,7 +140,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                         //add the report id into the result
                                         selectedReportIds.add(r.reportId);
 
-                                        checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.mipmap.bga_pp_ic_cb_checked));
+                                        checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.drawable.login_icon_dh));
                                         reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.white));
                                         root.setBackground(root.getResources().getDrawable(R.drawable.selected__interesting_reports_background));
                                     }

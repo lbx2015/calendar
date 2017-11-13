@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.riking.calendar.util.ZR;
+
 /**
  * Created by zw.zhang on 2017/11/10.
  */
@@ -88,7 +90,8 @@ public class ZFlowLayout  extends ViewGroup {
 
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
-        return new LayoutParams(100, 100); // default of 1px spacing
+        int spacing = (int) ZR.convertDpToPx(getContext(),20);
+        return new LayoutParams(spacing, spacing); // default of 1px spacing
     }
 
     @Override

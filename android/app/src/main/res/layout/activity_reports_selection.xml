@@ -3,20 +3,17 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="84dp"
     android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="跳过" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
+        android:textSize="24sp"
+        android:textColor="@color/input_cell_phone_text_color"
         android:text="订阅感兴趣的报表" />
 
     <!--    <android.support.v4.widget.SwipeRefreshLayout
@@ -44,19 +41,19 @@
         android:id="@+id/flow_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"></com.riking.calendar.view.ZFlowLayout>
+        android:layout_marginLeft="15dp"></com.riking.calendar.view.ZFlowLayout>
 
     <TextView
         android:id="@+id/start_button"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="330dp"
+        android:layout_height="49dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="82dp"
         android:background="@drawable/selected__interesting_reports_background"
         android:gravity="center"
         android:onClick="onClickStart"
         android:text="立即开始"
+        android:textSize="17sp"
         android:textColor="@android:color/white" />
 
 </LinearLayout>
