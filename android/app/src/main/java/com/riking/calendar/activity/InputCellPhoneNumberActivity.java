@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
@@ -58,6 +56,10 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity implements T
             //we need to mark the cursor position and restore it after the edition
             private int cursorComplement;
 
+            //text before changed
+            private String phoneNumberBeforeChanged;
+            private String phoneNumberAfterChanged;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //we store the cursor local relative to the end of the string in the EditText before the edition
@@ -68,6 +70,7 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity implements T
                 } else {
                     backspacingFlag = false;
                 }
+                phoneNumberBeforeChanged = s.toString().replaceAll("[^\\d]", "");
             }
 
             @Override
@@ -105,6 +108,12 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity implements T
                         String ans = phone.substring(0, 3) + " " + phone.substring(3);
                         phoneNumber.setText(ans);
                         phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
+                    }else  if (backspacingFlag) {
+                        if (phoneNumberBeforeChanged.equals(s.toString().replaceAll("[^\\d]", ""))) {
+                            //delete the phone number ignore the blanks
+                            phoneNumber.setText(s.toString().substring(0,s.length()-1));
+                            phoneNumber.setSelection(phoneNumber.getText().length() - cursorComplement);
+                        }
                     }
                     // We just edited the field, ignoring this cicle of the watcher and getting ready for the next
                 } else {
