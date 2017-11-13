@@ -16,10 +16,12 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.PositionAdapter;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -62,8 +64,17 @@ public class PositionSelectActivity extends AppCompatActivity {
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) findViewById(R.id.pullToLoadViewWithoutFloatButton);
     }
 
-    public void onClick(View view) {
-        startActivity(new Intent(this, ReportsSelectActivity.class));
+    public void onClickNextStep(View view) {
+            AppUser result = new AppUser();
+            result.isGuide = "1";
+            result.id = (Preference.pref.getString(CONST.USER_ID, ""));
+            APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
+                @Override
+                public void callBack(ResponseModel<String> response) {
+
+                }
+            });
+            startActivity(new Intent(this, ViewPagerActivity.class));
     }
 
     private void initEvents() {
