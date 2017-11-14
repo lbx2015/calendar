@@ -313,6 +313,14 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
         thirdCardView = (CardView) v.findViewById(R.id.third_cardview);
         setListener();
         currentMonth = (TextView) v.findViewById(R.id.currentMonth);
+
+        currentMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        
         TextView todayButton = (TextView) v.findViewById(R.id.today_button);
         todayButton.setOnClickListener(new View.OnClickListener() {
             @Override

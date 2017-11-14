@@ -14,11 +14,10 @@
         android:left="22dp"
         android:right="22dp"
         android:top="12dp"></padding>
-<!--    <corners
-        android:bottomLeftRadius="20dp"
-        android:bottomRightRadius="20dp"
-        android:topLeftRadius="20dp"
-        android:topRightRadius="4dp" />-->
-<corners
-    android:radius="22dp"   />
+    <!--    <corners
+            android:bottomLeftRadius="20dp"
+            android:bottomRightRadius="20dp"
+            android:topLeftRadius="20dp"
+            android:topRightRadius="4dp" />-->
+    <corners android:radius="26dp" />
 </shape>

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.riking.calendar.view.InterestingReportLinearLayout android:id="@+id/item_view"
+<com.riking.calendar.view.InterestingReportLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/not_selected__interesting_reports_background"
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/interesting_report"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/input_cell_phone_text_color"
-            android:layout_gravity="center_vertical" />
+    <TextView
+        android:id="@+id/interesting_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/input_cell_phone_text_color"
+        android:textSize="17sp" />
 
     <ImageView
         android:id="@+id/check_image"
@@ -22,4 +23,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         app:srcCompat="@drawable/login_icon_add" />
-    </com.riking.calendar.view.InterestingReportLinearLayout>
+</com.riking.calendar.view.InterestingReportLinearLayout>

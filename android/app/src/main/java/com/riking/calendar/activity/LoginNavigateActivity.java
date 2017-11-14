@@ -49,6 +49,5 @@ public class LoginNavigateActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginNavigateActivity.this, InputCellPhoneNumberActivity.class));
             }
         });
-
     }
 }

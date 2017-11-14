@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="2014年6月"
+            android:text="2014年6月 "
             android:textColor="@android:color/white"
             android:textSize="18dp" />
 
