@@ -34,7 +34,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.view.SpinnerView;
 import com.riking.calendar.view.ZRecyclerView;
-import com.riking.calendar.widget.dialog.DatePickerDialog;
+import com.riking.calendar.widget.dialog.ZDatePickerDialog;
 import com.riking.calendar.widget.dialog.SearchDialog;
 
 import java.io.IOException;
@@ -77,7 +77,7 @@ public class SecondFragment extends Fragment {
     List<ModelPropDict> mCountryDatas;
     List<ModelPropDict> mHolidayDatas;
     List<ModelPropDict> mConcurrencyDatas;
-    DatePickerDialog dialog;
+    ZDatePickerDialog dialog;
     View v;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -226,7 +226,7 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (dialog == null) {
-                    dialog = new DatePickerDialog(getContext());
+                    dialog = new ZDatePickerDialog(getContext());
                     dialog.btnSubmit.setOnClickListener(listener);
                     dialog.btnCancel.setOnClickListener(listener);
                 }

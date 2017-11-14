@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 
 import com.necer.ncalendar.calendar.NCalendar;
 import com.necer.ncalendar.listener.OnCalendarChangedListener;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
@@ -41,6 +41,7 @@ import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
+import com.riking.calendar.widget.TimePickerDialog;
 
 import org.joda.time.DateTime;
 
@@ -63,7 +64,7 @@ import io.realm.Sort;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class WorkFragment extends Fragment implements OnCalendarChangedListener {
+public class WorkFragment extends Fragment implements OnCalendarChangedListener, TimePickerDialog.TimePickerDialogInterface {
     private static int jumpMonth = 0; // 每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0; // 滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
     public RealmResults<Reminder> reminders;
@@ -89,7 +90,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
     ReportOnlineAdapter reportOnlineAdapter;
     View v;
     Date currentDay;
-//    private GestureDetector gestureDetector = null;
+    TimePickerDialog timePickerDialog;
+    //    private GestureDetector gestureDetector = null;
 //    private CalendarGridViewAdapter calV = null;
 //    private ViewFlipper flipper = null;
 //    private GridView gridView = null;
@@ -117,7 +119,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
     private TextView currentMonth;
     private View add;
     private SwipeRefreshLayout swipeRefreshLayout;
-
     private NCalendar ncalendar;
 
     private void setListener() {
@@ -228,8 +229,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
         ncalendar.setOnCalendarChangedListener(this);
         //set fragment
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                List<String> list = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> list = new ArrayList<>();
 //                list.add("2017-09-21");
 //                list.add("2017-10-21");
 //                list.add("2017-10-1");
@@ -238,71 +239,71 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
 //                list.add("2017-10-26");
 //                list.add("2017-11-21");
 
-                //reset the values
-                notRepeatRemindDaysOfMonth.clear();
-                Log.d("zzw","set repeatWeekReminds");
-                repeatWeekReminds = "";
-                weeks.clear();
-                ealiestRemindHolidayDate = null;
-                ealiestRemindWorkDate = null;
+        //reset the values
+        notRepeatRemindDaysOfMonth.clear();
+        Log.d("zzw", "set repeatWeekReminds");
+        repeatWeekReminds = "";
+        weeks.clear();
+        ealiestRemindHolidayDate = null;
+        ealiestRemindWorkDate = null;
 
-                if (realm.isClosed()) {
-                    realm = Realm.getDefaultInstance();
-                }
-                RealmResults<Reminder> reminders = realm.where(Reminder.class)
-                        .beginGroup()
-                        .beginsWith("day", yearMonth)//this month
-                        .equalTo("repeatFlag", 0)//not repeat reminders.
-                        .endGroup().findAllSorted("time", Sort.ASCENDING);
-                for (Reminder r : reminders) {
-                    if (r.reminderTime != null) {
-                        list.add(dateFormat.format(r.reminderTime));
-                        ncalendar.setPoint(list);
+        if (realm.isClosed()) {
+            realm = Realm.getDefaultInstance();
+        }
+        RealmResults<Reminder> reminders = realm.where(Reminder.class)
+                .beginGroup()
+                .beginsWith("day", yearMonth)//this month
+                .equalTo("repeatFlag", 0)//not repeat reminders.
+                .endGroup().findAllSorted("time", Sort.ASCENDING);
+        for (Reminder r : reminders) {
+            if (r.reminderTime != null) {
+                list.add(dateFormat.format(r.reminderTime));
+                ncalendar.setPoint(list);
+            }
+        }
+
+        //find the repeat week days
+        RealmResults<Reminder> weekRepeatReminders = realm.where(Reminder.class)
+                .beginGroup()
+                .equalTo("repeatFlag", 3)
+                .endGroup().findAll();
+
+        for (Reminder r : weekRepeatReminders) {
+            if (r.repeatWeek != null) {
+                for (char ch : r.repeatWeek.toCharArray()) {
+                    String key = String.valueOf(ch);
+                    if (weeks.get(key) == null || r.reminderTime.before(weeks.get(key))) {
+                        Logger.d("zzw", "put week repeat remind: " + ch + " : " + r.reminderTime);
+                        weeks.put(key, r.reminderTime);
                     }
                 }
+            }
+        }
 
-                //find the repeat week days
-                RealmResults<Reminder> weekRepeatReminders = realm.where(Reminder.class)
-                        .beginGroup()
-                        .equalTo("repeatFlag", 3)
-                        .endGroup().findAll();
+        for (String key : weeks.keySet()) {
+            repeatWeekReminds = repeatWeekReminds + key;
+        }
 
-                for (Reminder r : weekRepeatReminders) {
-                    if (r.repeatWeek != null) {
-                        for (char ch : r.repeatWeek.toCharArray()) {
-                            String key = String.valueOf(ch);
-                            if (weeks.get(key) == null || r.reminderTime.before(weeks.get(key))) {
-                                Logger.d("zzw", "put week repeat remind: " + ch + " : " + r.reminderTime);
-                                weeks.put(key, r.reminderTime);
-                            }
-                        }
-                    }
-                }
+        //find work day reminds
+        RealmResults<Reminder> workDayReminds = realm.where(Reminder.class)
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)//work day
+                .findAll();
+        for (Reminder r : workDayReminds) {
+            //keep the workRemind reminderTimeCalendar as the earliest.
+            if (ealiestRemindWorkDate == null || r.reminderTime.before(ealiestRemindWorkDate)) {
+                ealiestRemindWorkDate = r.reminderTime;
+            }
+        }
 
-                for (String key : weeks.keySet()) {
-                    repeatWeekReminds = repeatWeekReminds + key;
-                }
-
-                //find work day reminds
-                RealmResults<Reminder> workDayReminds = realm.where(Reminder.class)
-                        .equalTo("repeatFlag", CONST.REPEAT_FLAG_WORK_DAY)//work day
-                        .findAll();
-                for (Reminder r : workDayReminds) {
-                    //keep the workRemind reminderTimeCalendar as the earliest.
-                    if (ealiestRemindWorkDate == null || r.reminderTime.before(ealiestRemindWorkDate)) {
-                        ealiestRemindWorkDate = r.reminderTime;
-                    }
-                }
-
-                //find holiday reminds
-                RealmResults<Reminder> holidayReminds = realm.where(Reminder.class)
-                        .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)//holiday
-                        .findAll();
-                for (Reminder r : holidayReminds) {
-                    if (ealiestRemindHolidayDate == null || r.reminderTime.before(ealiestRemindHolidayDate)) {
-                        ealiestRemindHolidayDate = r.reminderTime;
-                    }
-                }
+        //find holiday reminds
+        RealmResults<Reminder> holidayReminds = realm.where(Reminder.class)
+                .equalTo("repeatFlag", CONST.REPEAT_FLAG_HOLIDAY)//holiday
+                .findAll();
+        for (Reminder r : holidayReminds) {
+            if (ealiestRemindHolidayDate == null || r.reminderTime.before(ealiestRemindHolidayDate)) {
+                ealiestRemindHolidayDate = r.reminderTime;
+            }
+        }
 
 
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
@@ -317,10 +318,29 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
         currentMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                timePickerDialog = new TimePickerDialog(WorkFragment.this);
+                timePickerDialog.showDatePickerDialog();
+                // calender class's instance and get current date , month and year from calender
+             /*   final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
 
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();*/
+                /*android.support.v4.app.DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getChildFragmentManager(), "datePicker");*/
             }
         });
-        
+
         TextView todayButton = (TextView) v.findViewById(R.id.today_button);
         todayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -819,6 +839,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
 
     @Override
     public void onCalendarChanged(DateTime dateTime) {
+        MyLog.d("Date Time: " + "onCalendarChanged");
         StringBuffer textDate = new StringBuffer();
         textDate.append(dateTime.getYear()).append("年").append(dateTime.getMonthOfYear()).append("月").append("\t");
         currentMonth.setText(textDate);
@@ -833,6 +854,17 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener 
     public void onDestroyView() {
         super.onDestroyView();
         realm.close();
+    }
+
+    @Override
+    public void positiveListener() {
+        onCalendarChanged(new DateTime(timePickerDialog.getSelectedTime()));
+        ncalendar.setDate(timePickerDialog.getSelectedTime());
+    }
+
+    @Override
+    public void negativeListener() {
+
     }
 /*
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {

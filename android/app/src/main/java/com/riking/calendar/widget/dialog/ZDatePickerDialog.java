@@ -16,7 +16,7 @@ import com.riking.calendar.widget.wheelpicker.widget.curved.WheelYearMonthPicker
  * Created by zw.zhang on 2017/7/26.
  */
 
-public class DatePickerDialog extends BottomSheetDialog implements AbstractWheelPicker.OnWheelChangeListener {
+public class ZDatePickerDialog extends BottomSheetDialog implements AbstractWheelPicker.OnWheelChangeListener {
     public WheelYearMonthPicker wheelDatePicker;
     public View btnSubmit, btnCancel;
     public View wholeMonth;
@@ -24,7 +24,7 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
     public ImageView wholeMonthImage;
     private String currentData;
 
-    public DatePickerDialog(@NonNull Context context) {
+    public ZDatePickerDialog(@NonNull Context context) {
         super(context);
         setContentView(R.layout.pick_date_wheel);
 
@@ -56,11 +56,11 @@ public class DatePickerDialog extends BottomSheetDialog implements AbstractWheel
         });
     }
 
-    public DatePickerDialog(@NonNull Context context, int theme) {
+    public ZDatePickerDialog(@NonNull Context context, int theme) {
         super(context, theme);
     }
 
-    protected DatePickerDialog(@NonNull Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected ZDatePickerDialog(@NonNull Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 

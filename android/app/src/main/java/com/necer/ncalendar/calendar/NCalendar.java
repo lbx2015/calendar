@@ -507,6 +507,18 @@ public class NCalendar extends FrameLayout implements NestedScrollingParent, Val
     }
 
     /**
+     * Riking adding this method
+     *
+     * @param formatDate
+     */
+    public void jumpToDate(String formatDate) {
+        DateTime dateTime = new DateTime(formatDate);
+        monthCalendar.setDateTime(dateTime);
+        weekCalendar.setDateTime(dateTime);
+    }
+
+
+    /**
      * 由周日历转换到月日历
      */
     public void toMonth() {
