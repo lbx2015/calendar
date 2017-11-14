@@ -5,7 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorBackground">@color/color_background_f2f2f2</item>
+        <item name="android:colorBackground">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
     <!-- Base application theme. -->
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -13,6 +14,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/white</item>
     </style>
 
     <!--
@@ -57,8 +59,8 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_weight">1.0</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/color_323232</item>
-        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/color_workday_name</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="AppTheme3" parent="AppBaseThemeDrawer">

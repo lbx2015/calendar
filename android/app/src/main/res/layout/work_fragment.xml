@@ -6,57 +6,68 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="44dp"
         android:background="?attr/colorPrimary">
 
         <TextView
             android:id="@+id/today_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="19dp"
+            android:layout_marginLeft="15dp"
             android:text="@string/today"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/currentMonth"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="2014年6月 "
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/work_icon_arrowd_w"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/currentMonth"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="19dp"
-            android:src="@drawable/ic_add_black_24dp" />
-    </RelativeLayout>
+            android:layout_marginRight="15dp"
+            android:src="@drawable/nav_icon_more"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        android:paddingBottom="4dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="4dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             style="@style/weekName"
             android:text="日"
-            android:textColor="@color/color_background_b6b6b6" />
+            android:textColor="@color/color_weekend_name" />
 
         <TextView
             style="@style/weekName"
@@ -81,18 +92,18 @@
         <TextView
             style="@style/weekName"
             android:text="六"
-            android:textColor="@color/color_background_b6b6b6" />
+            android:textColor="@color/color_weekend_name"/>
     </LinearLayout>
 
     <com.necer.ncalendar.calendar.NCalendar
         android:id="@+id/n_calendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultCalendar="Month"
         app:calendarHeight="240dp"
-        app:isShowLunar="false"
+        app:defaultCalendar="Week"
+        app:firstDayOfWeek="Sunday"
         app:isShowHoliday="false"
-        app:firstDayOfWeek="Sunday">
+        app:isShowLunar="false">
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipeRefreshLayout"

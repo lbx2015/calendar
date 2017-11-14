@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1b82d2</color>
-    <color name="colorPrimaryDark">#1b82d2</color>
+    <color name="colorPrimary">#489dff</color>
+    <color name="colorPrimaryDark">#489dff</color>
     <color name="dialogColorPrimary">#efeff4</color>
     <color name="dialogColorPrimaryDark">#efeff4</color>
     <color name="color_accent">#FF3D00</color>
@@ -15,6 +15,8 @@
     <!--background color-->
     <color name="color_background_f2f2f2">#f2f2f2</color>
     <color name="color_background_b6b6b6">#b6b6b6</color>
+    <color name="color_weekend_name">#ffab40</color>
+    <color name="color_workday_name">#96999d</color>
     <color name="color_divider_a5a5a5">#a5a5a5</color>
     <color name="translucent_color_background">#33333333</color>
     <color name="translucent_white">#88ffffff</color>
