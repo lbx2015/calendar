@@ -102,6 +102,7 @@
         app:calendarHeight="240dp"
         app:defaultCalendar="Week"
         app:firstDayOfWeek="Sunday"
+        app:hintColor="@color/hint_color"
         app:isShowHoliday="false"
         app:isShowLunar="false"
         app:pointColor="@color/colorPrimary"
