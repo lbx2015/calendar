@@ -92,7 +92,7 @@
         <TextView
             style="@style/weekName"
             android:text="六"
-            android:textColor="@color/color_weekend_name"/>
+            android:textColor="@color/color_weekend_name" />
     </LinearLayout>
 
     <com.necer.ncalendar.calendar.NCalendar
@@ -103,7 +103,11 @@
         app:defaultCalendar="Week"
         app:firstDayOfWeek="Sunday"
         app:isShowHoliday="false"
-        app:isShowLunar="false">
+        app:isShowLunar="false"
+        app:pointColor="@color/colorPrimary"
+        app:selectCircleColor="@color/colorPrimary"
+        app:solarTextColor="@color/input_cell_phone_text_color"
+        app:solarTextSize="17sp">
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipeRefreshLayout"

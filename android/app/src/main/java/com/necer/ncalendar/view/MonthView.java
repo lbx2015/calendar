@@ -7,9 +7,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 
 import com.necer.ncalendar.listener.OnClickMonthViewListener;
 import com.necer.ncalendar.utils.Attrs;
+import com.necer.ncalendar.utils.MyLog;
 import com.necer.ncalendar.utils.Utils;
 
 import org.joda.time.DateTime;
@@ -47,6 +49,9 @@ public class MonthView extends CalendarView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mWidth = getWidth();
+        WindowManager wm = (WindowManager) getContext()
+                .getSystemService(Context.WINDOW_SERVICE);
+        MyLog.d("MonthView width: " + mWidth + "Screen width: " + wm.getDefaultDisplay().getWidth() );
         //绘制高度
         mHeight = getDrawHeight();
         mRectList.clear();

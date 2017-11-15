@@ -2,9 +2,11 @@ package com.necer.ncalendar.adapter;
 
 import android.content.Context;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.necer.ncalendar.listener.OnClickWeekViewListener;
 import com.necer.ncalendar.view.WeekView;
+import com.riking.calendar.util.ZR;
 
 import org.joda.time.DateTime;
 
@@ -32,7 +34,14 @@ public class WeekAdapter extends CalendarAdapter {
             mCalendarViews.put(position, nWeekView);
             nWeekView.fragment = fragment;
         }
-        container.addView(mCalendarViews.get(position));
-        return mCalendarViews.get(position);
+        //Riking adding a parent ViewGroup for the week view
+        LinearLayout f = new LinearLayout(mContext);
+        LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        int m = (int) ZR.convertDpToPx(mContext, 10);
+        f.setPadding(m, 0, m, 0);
+        f.setLayoutParams(l);
+        f.addView(nWeekView);
+        container.addView(f);
+        return f;
     }
 }

@@ -2,9 +2,11 @@ package com.necer.ncalendar.adapter;
 
 import android.content.Context;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.necer.ncalendar.listener.OnClickMonthViewListener;
 import com.necer.ncalendar.view.MonthView;
+import com.riking.calendar.util.ZR;
 
 import org.joda.time.DateTime;
 
@@ -31,10 +33,17 @@ public class MonthAdapter extends CalendarAdapter {
             DateTime dateTime = this.mDateTime.plusMonths(i);
             nMonthView = new MonthView(mContext, dateTime, mOnClickMonthViewListener);
             mCalendarViews.put(position, nMonthView);
+            nMonthView.fragment = fragment;
         }
-        //riking adding fragment
-        nMonthView.fragment = fragment;
-        container.addView(nMonthView);
-        return nMonthView;
+
+        //Riking adding a parent view group for the month view
+        LinearLayout f = new LinearLayout(mContext);
+        LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        int m = (int) ZR.convertDpToPx(mContext, 10);
+        f.setPadding(m, 0, m, 0);
+        f.setLayoutParams(l);
+        f.addView(nMonthView);
+        container.addView(f);
+        return f;
     }
 }
