@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -8,12 +9,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -24,7 +30,7 @@ import com.necer.ncalendar.calendar.NCalendar;
 import com.necer.ncalendar.listener.OnCalendarChangedListener;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.AddRemindActivity;
+import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
@@ -46,6 +52,8 @@ import com.riking.calendar.widget.TimePickerDialog;
 
 import org.joda.time.DateTime;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -126,6 +134,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     private void setListener() {
         View.OnClickListener c = new View.OnClickListener() {
             @Override
+            @SuppressLint("RestrictedApi")
             public void onClick(View v) {
                 switch (v.getId()) {
 //                    case R.id.nextMonth: // 下一个月
@@ -135,7 +144,40 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 //                        enterPrevMonth(gvFlag);
 //                        break;
                     case R.id.add: {
-                        startActivity(new Intent(getActivity(), AddRemindActivity.class));
+                        //Creating the instance of PopupMenu
+                        PopupMenu popup = new PopupMenu(getContext(), v, Gravity.RIGHT | Gravity.END);
+                        //Inflating the Popup using xml file
+                        popup.getMenuInflater().inflate(R.menu.work_page_menu, popup.getMenu());
+
+                        //noinspection RestrictedApi
+                        MenuPopupHelper menuHelper = new MenuPopupHelper(getContext(), (MenuBuilder) popup.getMenu(), v);
+                        menuHelper.setForceShowIcon(true);
+
+                        //registering popup with OnMenuItemClickListener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.order_reports: {
+                                        break;
+                                    }
+                                    case R.id.overdue_task: {
+                                        break;
+                                    }
+                                    case R.id.history_done: {
+                                        break;
+                                    }
+                                    case R.id.history_task: {
+                                        //open the task history page
+                                        startActivity(new Intent(getContext(), TaskHistoryActivity.class));
+                                        break;
+                                    }
+                                }
+                                return true;
+                            }
+                        });
+                        popup.show();
+
                         break;
                     }
                     default:

@@ -12,7 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.EditTaskActivity;
+import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
@@ -53,7 +55,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                     .inflate(R.layout.create_task_footer_row, parent, false);
         }
 
-        return new MyViewHolder(itemView,viewType);
+        return new MyViewHolder(itemView, viewType);
     }
 
     @Override
@@ -116,7 +118,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 holder.divider.setVisibility(View.VISIBLE);
             }*/
         } else {
-
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //adding to do s
+                    MyApplication.mCurrentActivity.startActivity(new Intent(v.getContext(), AddRemindActivity.class));
+                }
+            });
         }
     }
 
@@ -148,7 +156,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public TextView deleteButton;
         public TextView editButton;
         SwipeHorizontalMenuLayout sml;
-//        View divider;
+        //        View divider;
         boolean completed = false;
 
         public MyViewHolder(View view, int type) {
