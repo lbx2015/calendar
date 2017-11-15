@@ -16,9 +16,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +56,6 @@ import com.riking.calendar.widget.TimePickerDialog;
 
 import org.joda.time.DateTime;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -146,8 +148,32 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     case R.id.add: {
                         //Creating the instance of PopupMenu
                         PopupMenu popup = new PopupMenu(getContext(), v, Gravity.RIGHT | Gravity.END);
+                        Menu menu = popup.getMenu();
                         //Inflating the Popup using xml file
-                        popup.getMenuInflater().inflate(R.menu.work_page_menu, popup.getMenu());
+                        popup.getMenuInflater().inflate(R.menu.work_page_menu, menu);
+
+                        MenuItem orderReportMenu = menu.findItem(R.id.order_reports);
+                        MenuItem overdueTaskMenu = menu.findItem(R.id.overdue_task);
+                        MenuItem completeReportMenu = menu.findItem(R.id.history_done);
+                        MenuItem historyTodoMenu = menu.findItem(R.id.history_task);
+
+                        //This solution is great
+                        SpannableStringBuilder orderReportMenuBuilder = new SpannableStringBuilder("*  订阅报表");
+                        SpannableStringBuilder overdueTaskMenuBuilder = new SpannableStringBuilder("*  逾期任务");
+                        SpannableStringBuilder completeReportMenuBuilder = new SpannableStringBuilder("*  历史核销");
+                        SpannableStringBuilder historyTodoMenuBuilder = new SpannableStringBuilder("*  历史任务");
+
+                        //replace "*" with icon
+                        orderReportMenuBuilder.setSpan(new ImageSpan(getContext(), R.drawable.work_more_icon_add), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        overdueTaskMenuBuilder.setSpan(new ImageSpan(getContext(), R.drawable.work_more_icon_yq), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        completeReportMenuBuilder.setSpan(new ImageSpan(getContext(), R.drawable.work_more_icon_hx), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        historyTodoMenuBuilder.setSpan(new ImageSpan(getContext(), R.drawable.work_more_icon_db), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                        //set menu titles
+                        orderReportMenu.setTitle(orderReportMenuBuilder);
+                        overdueTaskMenu.setTitle(overdueTaskMenuBuilder);
+                        completeReportMenu.setTitle(completeReportMenuBuilder);
+                        historyTodoMenu.setTitle(historyTodoMenuBuilder);
 
                         //noinspection RestrictedApi
                         MenuPopupHelper menuHelper = new MenuPopupHelper(getContext(), (MenuBuilder) popup.getMenu(), v);
