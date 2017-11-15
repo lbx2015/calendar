@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -76,7 +76,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     public ArrayList<String> workOnWeekendDates = new ArrayList<>();//work on saturday or sunday
     public ArrayList<String> notWorkOnWorkDates = new ArrayList<>();//not work on monday to friday
     ViewPagerActivity a;
-    RecyclerView recyclerView;
+    RecyclerView notDoneReportsRecyclerView;
     RecyclerView taskRecyclerView;
     RecyclerView reportRecyclerView;
     ReminderAdapter reminderAdapter;
@@ -386,12 +386,12 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 //            }
 //        });
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        notDoneReportsRecyclerView = (RecyclerView) v.findViewById(R.id.not_done_report_recycler_view);
         taskRecyclerView = (RecyclerView) v.findViewById(R.id.task_recycler_view);
         reportRecyclerView = (RecyclerView) v.findViewById(R.id.report_recycler_view);
         reportRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(a));
-        recyclerView.setLayoutManager(new LinearLayoutManager(a));
+        notDoneReportsRecyclerView.setLayoutManager(new LinearLayoutManager(a));
         initReminderAdapter();
 
         //only show the not complete tasks
@@ -399,6 +399,9 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
         taskAdapter = new TaskAdapter(tasks, realm);
         taskRecyclerView.setAdapter(taskAdapter);
+        //adding default divider
+        taskRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
         if (taskAdapter.getItemCount() == 0) {
 //            secondCardView.setVisibility(View.GONE);
         }
@@ -463,14 +466,14 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         return info != null && info.isConnectedOrConnecting();
     }
-
+    ReportAdapter reportAdapter;
     public void updateReportsWithLocalRealm() {
         RealmConfiguration.Builder defaultRealmConfiguration = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded().name(CONST.DEFAUT_REALM_DATABASE_NAME);
         Realm r = Realm.getInstance(defaultRealmConfiguration.build());
         RealmResults<QueryReportContainerRealmModel> reports = r.where(QueryReportContainerRealmModel.class).findAll();
         Logger.d("zzw", "report adapter size: " + reports.size());
-        final ReportAdapter reportAdapter = new ReportAdapter(reports);
+       reportAdapter = new ReportAdapter(reports);
         reportRecyclerView.setAdapter(reportAdapter);
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
@@ -496,6 +499,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     final ArrayList<QueryReportContainer> reportContainers = response._data;
                     reportOnlineAdapter = new ReportOnlineAdapter(reportContainers);
                     reportRecyclerView.setAdapter(reportOnlineAdapter);
+                    //put the not done reports here  firstly. changed it later.
+                    notDoneReportsRecyclerView.setAdapter(reminderAdapter);
                 }
             });
         } else {
@@ -590,7 +595,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     }
 
     public void updateReminderAdapter(Calendar c) {
-        if (recyclerView == null) {
+        if (notDoneReportsRecyclerView == null) {
             return;
         }
         int weekDay = c.get(Calendar.DAY_OF_WEEK);
@@ -648,7 +653,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 
         reminders = query.findAllSorted("time", Sort.ASCENDING);
         reminderAdapter = new ReminderAdapter(reminders, realm);
-        recyclerView.setAdapter(reminderAdapter);
         if (reminders.size() == 0) {
 //            firstCardView.setVisibility(View.GONE);
         } else {

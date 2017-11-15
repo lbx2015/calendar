@@ -4,7 +4,6 @@
     android:id="@+id/sml"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:orientation="horizontal"
     sml:sml_auto_open_percent="0.2"
     sml:sml_scroller_duration="50"
@@ -42,13 +41,13 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="19dp" />
 
-        <View
+  <!--      <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="54dp"
-            android:background="@color/divider_color_d9d9d9" />
+            android:background="@color/divider_color_d9d9d9" />-->
     </RelativeLayout>
 
     <TextView
