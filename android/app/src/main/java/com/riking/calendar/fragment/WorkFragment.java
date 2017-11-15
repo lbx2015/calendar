@@ -80,9 +80,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     RecyclerView taskRecyclerView;
     RecyclerView reportRecyclerView;
     ReminderAdapter reminderAdapter;
-    CardView firstCardView;
-    CardView secondCardView;
-    CardView thirdCardView;
     TaskAdapter taskAdapter;
     Realm realm;
     //current year month
@@ -309,9 +306,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 //        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
 //        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
         add = v.findViewById(R.id.add);
-        firstCardView = (CardView) v.findViewById(R.id.first_cardview);
-        secondCardView = (CardView) v.findViewById(R.id.second_cardview);
-        thirdCardView = (CardView) v.findViewById(R.id.third_cardview);
         setListener();
         currentMonth = (TextView) v.findViewById(R.id.currentMonth);
 
@@ -406,16 +400,16 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         taskAdapter = new TaskAdapter(tasks, realm);
         taskRecyclerView.setAdapter(taskAdapter);
         if (taskAdapter.getItemCount() == 0) {
-            secondCardView.setVisibility(View.GONE);
+//            secondCardView.setVisibility(View.GONE);
         }
 
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
                 if (taskAdapter.getItemCount() == 0) {
-                    secondCardView.setVisibility(View.GONE);
+//                    secondCardView.setVisibility(View.GONE);
                 } else {
-                    secondCardView.setVisibility(View.VISIBLE);
+//                    secondCardView.setVisibility(View.VISIBLE);
                 }
                 //the data is changed.
                 taskAdapter.notifyDataSetChanged();
@@ -656,18 +650,18 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         reminderAdapter = new ReminderAdapter(reminders, realm);
         recyclerView.setAdapter(reminderAdapter);
         if (reminders.size() == 0) {
-            firstCardView.setVisibility(View.GONE);
+//            firstCardView.setVisibility(View.GONE);
         } else {
-            firstCardView.setVisibility(View.VISIBLE);
+//            firstCardView.setVisibility(View.VISIBLE);
         }
 
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
             public void onChange(Realm realm) {
                 if (reminderAdapter.getItemCount() == 0) {
-                    firstCardView.setVisibility(View.GONE);
+//                    firstCardView.setVisibility(View.GONE);
                 } else {
-                    firstCardView.setVisibility(View.VISIBLE);
+//                    firstCardView.setVisibility(View.VISIBLE);
                 }
 
                 reminderAdapter.notifyDataSetChanged();

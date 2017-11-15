@@ -114,7 +114,7 @@
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_background_f2f2f2"
+            android:background="@color/background_color"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v4.widget.NestedScrollView
@@ -127,54 +127,60 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/seperate_line"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="代办事项"
+                        android:textColor="@color/gray_text_color"
+                        android:textSize="14sp" />
 
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/first_cardview"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/task_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_marginTop="10dp"
-                        app:cardElevation="1dp"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                        android:text="未完成的报表"
+                        android:textColor="@color/gray_text_color"
+                        android:textSize="14sp" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="vertical"
-                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/second_cardview"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_marginTop="10dp"
-                        app:cardElevation="1dp"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                        android:text="已完成的报表"
+                        android:textColor="@color/gray_text_color"
+                        android:textSize="14sp" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/task_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="vertical"
-                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/third_cardview"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/report_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:cardElevation="1dp"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/report_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="vertical"
-                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                    </android.support.v7.widget.CardView>
+                        android:scrollbars="vertical"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
