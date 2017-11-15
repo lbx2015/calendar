@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.necer.ncalendar.calendar.NCalendar;
@@ -88,6 +89,10 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     View v;
     Date currentDay;
     TimePickerDialog timePickerDialog;
+    TextView doneReportTextView;
+    LinearLayout emptyView;
+    TextView notDoneReportTextView;
+    ReportAdapter reportAdapter;
     //    private GestureDetector gestureDetector = null;
 //    private CalendarGridViewAdapter calV = null;
 //    private ViewFlipper flipper = null;
@@ -221,6 +226,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         }
 
         v = inflater.inflate(R.layout.work_fragment, container, false);
+        init();
         ncalendar = (NCalendar) v.findViewById(R.id.n_calendar);
         ncalendar.setWorkFragment(this);
         ncalendar.setOnCalendarChangedListener(this);
@@ -461,19 +467,25 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         return v;
     }
 
+    private void init() {
+        notDoneReportTextView = v.findViewById(R.id.not_done_reports_tv);
+        doneReportTextView = v.findViewById(R.id.done_reports_tv);
+        emptyView = v.findViewById(R.id.empty);
+    }
+
     public boolean isNetAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) a.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         return info != null && info.isConnectedOrConnecting();
     }
-    ReportAdapter reportAdapter;
+
     public void updateReportsWithLocalRealm() {
         RealmConfiguration.Builder defaultRealmConfiguration = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded().name(CONST.DEFAUT_REALM_DATABASE_NAME);
         Realm r = Realm.getInstance(defaultRealmConfiguration.build());
         RealmResults<QueryReportContainerRealmModel> reports = r.where(QueryReportContainerRealmModel.class).findAll();
         Logger.d("zzw", "report adapter size: " + reports.size());
-       reportAdapter = new ReportAdapter(reports);
+        reportAdapter = new ReportAdapter(reports);
         reportRecyclerView.setAdapter(reportAdapter);
         realm.addChangeListener(new RealmChangeListener<Realm>() {
             @Override
@@ -500,7 +512,9 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     reportOnlineAdapter = new ReportOnlineAdapter(reportContainers);
                     reportRecyclerView.setAdapter(reportOnlineAdapter);
                     //put the not done reports here  firstly. changed it later.
-                    notDoneReportsRecyclerView.setAdapter(reminderAdapter);
+                    notDoneReportsRecyclerView.setAdapter(reportOnlineAdapter);
+                    //check empty reports
+                    checkEmpty();
                 }
             });
         } else {
@@ -508,6 +522,29 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                 swipeRefreshLayout.setRefreshing(false);
             }
             updateReportsWithLocalRealm();
+            //check empty reports
+            checkEmpty();
+        }
+    }
+
+    private void checkEmpty() {
+        byte isEmpty = 0;
+        if ((notDoneReportsRecyclerView.getAdapter() == null || notDoneReportsRecyclerView.getAdapter().getItemCount() == 0)
+                && (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0)) {
+            notDoneReportTextView.setVisibility(View.GONE);
+            isEmpty++;
+        }
+
+        if (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0) {
+            doneReportTextView.setVisibility(View.GONE);
+            isEmpty++;
+        }
+
+        MyLog.d("isEmpty " + isEmpty);
+        if (isEmpty == 2) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
         }
     }
 

@@ -24,6 +24,7 @@
     <color name="translucent_login_button_bg">#4c19c368</color>
     <color name="background_color">#f5f5f5</color>
     <color name="seperate_line">#e2e2e2</color>
+    <color name="not_order_report_color">#b3b3b3</color>
     <color name="input_cell_phone_text_color">#222222</color>
     <color name="gray_text_color">#999999</color>
     <color name="button_back">#87c8ff</color>
