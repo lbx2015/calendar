@@ -20,6 +20,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -146,8 +147,10 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 //                        enterPrevMonth(gvFlag);
 //                        break;
                     case R.id.add: {
+                        //adding divider for the popup window by this way.
+                        Context wrapper = new ContextThemeWrapper(getContext(), R.style.bluetooth_popup);
                         //Creating the instance of PopupMenu
-                        PopupMenu popup = new PopupMenu(getContext(), v, Gravity.RIGHT | Gravity.END);
+                        PopupMenu popup = new PopupMenu(wrapper, v, Gravity.RIGHT | Gravity.END);
                         Menu menu = popup.getMenu();
                         //Inflating the Popup using xml file
                         popup.getMenuInflater().inflate(R.menu.work_page_menu, menu);

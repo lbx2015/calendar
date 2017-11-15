@@ -48,6 +48,7 @@
     <style name="AppTheme.LaunchActivity" parent="AppTheme.FullScreen">
         <item name="android:background">@mipmap/launch_page</item>
     </style>
+
     <style name="TransparentStatusBarTheme" parent="AppTheme.FullScreen">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
@@ -147,11 +148,10 @@
         <item name="android:paddingBottom">8dp</item>
     </style>
 
-    <!--
-   1.tabIndicatorColor：TabLayout指示器的颜色
-   2.tabTextColor: tab默认字体的颜色
-   3.tabSelectedTextColor：当前选择的tab的字体颜色
-   4.tabBackground：背景
-   5.tabIndicatorHeight：TabLayout指示器高度
-   -->
+    <style name="bluetooth_popup" >
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:itemBackground">@drawable/popup_divider</item>
+    </style>
 </resources>
