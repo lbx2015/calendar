@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -162,8 +159,9 @@ public class AppUserReportRelServer {
 			
 			List<String> idList2 = appUserReportResult.getList();//传过来的id集合
 			list.removeAll(idList2);
-			for(String str : list){
-				appUserReportRepo.delete(str);//数据库存在的数据 跟 传过来的值 比较 如果没有 则 删除
+			if(list !=null && list.size() > 0){
+				String strList = String.join(",", list);
+				appUserReportRepo.deleteReportRel(appUserReportResult.getUserId(), strList);
 			}
 		}else{//没有订阅过
 			for (String string : idList) {
@@ -178,9 +176,16 @@ public class AppUserReportRelServer {
 		return new AppResp(CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "新增报表订阅", notes = "POST")
+	@RequestMapping(value = "/updateUserReportRelById", method = RequestMethod.POST)
+	public AppResp updateUserReportRelById(@RequestBody AppUserReportRel appUserReportRel){
+		appUserReportRepo.save(appUserReportRel);
+		 return new AppResp(CodeDef.SUCCESS);
+	}
+	
 	@ApiOperation(value = "历史核销和逾期报表", notes = "POST")
 	@RequestMapping(value = "/findAllUserReport", method = RequestMethod.POST)
-	public AppResp findAllUserReport(@RequestBody AppUserReportCompleteRel appUserReportCompleteRel,Pageable pageable){
+	public AppResp findAllUserReport(@RequestBody AppUserReportCompleteRel appUserReportCompleteRel){
 		 List<AppUserReportCompleteRel> list = reportSubmitCaliberService.findAllUserReport(appUserReportCompleteRel);
 		 return new AppResp(list,CodeDef.SUCCESS);
 	}

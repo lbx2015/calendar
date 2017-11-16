@@ -3,8 +3,11 @@ package net.riking.service.repo;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -35,5 +38,10 @@ public interface AppUserReportRelRepo  extends JpaRepository<AppUserReportRel, S
 	//查询用户订阅表未完成的报表id
 	@Query("select t.reportId from AppUserReportRel t where t.appUserId = ?1 and t.isComplete=0")
 	Set<String> findReportByUserIdAndIsComplete(String userId);
-
+	
+	@Transactional
+	@Modifying
+	@Query("delete from AppUserReportRel b where b.appUserId = ?1 and b.reportId in(?2)")
+	public int deleteReportRel(String userId,String reportId);
+	
 }

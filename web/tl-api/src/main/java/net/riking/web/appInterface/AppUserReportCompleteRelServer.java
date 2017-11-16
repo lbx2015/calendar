@@ -84,13 +84,19 @@ public class AppUserReportCompleteRelServer {
 	@ApiOperation(value = "获取当天之后的打点日期", notes = "POST")
 	@RequestMapping(value = "/getDatedot", method = RequestMethod.POST)
 	public AppResp getDatedot(@RequestBody AppUser appUser) throws ParseException{
-		List<String> list = getDateByToDay();//获取当日之后的一年日期
+		//List<String> list = getDateByToDay();//获取当日之后的一年日期
 		List<String> allList = new ArrayList<>();//存日期 返回
 		Set<String> result = new HashSet<String>();//取交集用
-		//根据userId去用户订阅表里查询未完成的 报表id 集合
+		
+		//获取当月的打点数据 如果只打点当月之后的数据
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		//sdf.parse(str);
+		List<String> dateList = getAllTheDateOftheMonth(sdf.parse(appUser.getAllDayReminderTime()));
+		
+		//根据userId去用户订阅表里查询未完成的 报表id 集合 
 		Set<String>  userSetList = appUserReportRelRepo.findReportByUserIdAndIsComplete(appUser.getId());
 		//循环日期 根据当天日期去查询 报送口径表 相符合的报表id集合
-		for (String date : list) {
+		for (String date : dateList) {
 			Set<String> setList = getReportList(date);//计算出的reportId集合
 			result.clear();
 			result.addAll(userSetList);
@@ -99,7 +105,23 @@ public class AppUserReportCompleteRelServer {
 				allList.add(date);
 			}
 		}
+		
 		return new AppResp(allList,CodeDef.SUCCESS);
+	}
+	
+	private List<String> getAllTheDateOftheMonth(Date date) { 
+		List<String> list = new ArrayList<String>();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.DATE, 1);
+		int month = cal.get(Calendar.MONTH);
+		SimpleDateFormat sdf = null;
+		while(cal.get(Calendar.MONTH) == month){
+			sdf= new SimpleDateFormat("yyyyMMdd");
+			list.add(sdf.format(cal.getTime()));
+			cal.add(Calendar.DATE, 1);
+		}
+		return list;
 	}
 	
 	public List<String> getDateByToDay() throws ParseException{

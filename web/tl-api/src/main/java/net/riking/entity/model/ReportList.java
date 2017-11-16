@@ -88,7 +88,7 @@ public class ReportList extends PageQuery {
 	// 删除状态 0删除 1显示
 	@Column(name = "delete_state", length = 1)
 	private String deleteState;
-
+	
 	public String getId() {
 		return id;
 	}
@@ -219,11 +219,12 @@ public class ReportList extends PageQuery {
 
 	@Override
 	public String toString() {
-		return "ReportList [id=" + id + ", reportName=" + reportName + ", reportCode=" + reportCode + ", reportBrief="
-				+ reportBrief + ", reportOrganization=" + reportOrganization + ", reportFrequency=" + reportFrequency
-				+ ", reportStyle=" + reportStyle + ", reportUnit=" + reportUnit + ", reportRound=" + reportRound
-				+ ", reportCurrency=" + reportCurrency + ", reportNote=" + reportNote + ", reportRule=" + reportRule
-				+ ", moduleType=" + moduleType + ", downloadUrl=" + downloadUrl + ", deleteState=" + deleteState + "]";
+		return "ReportList [id=" + id + ", reportTitle=" + reportTitle + ", reportName=" + reportName + ", reportCode="
+				+ reportCode + ", reportBrief=" + reportBrief + ", reportOrganization=" + reportOrganization
+				+ ", reportFrequency=" + reportFrequency + ", reportStyle=" + reportStyle + ", reportUnit=" + reportUnit
+				+ ", reportRound=" + reportRound + ", reportCurrency=" + reportCurrency + ", reportNote=" + reportNote
+				+ ", reportRule=" + reportRule + ", moduleType=" + moduleType + ", downloadUrl=" + downloadUrl
+				+ ", deleteState=" + deleteState + "]";
 	}
 
 }
