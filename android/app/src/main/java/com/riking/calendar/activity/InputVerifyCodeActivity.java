@@ -202,7 +202,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
         @Override
         public void onFinish() {
             getVerificationCodeButton.setText("重新获取");
-            getVerificationCodeButton.setTextColor(getVerificationCodeButton.getResources().getColor(R.color.button_enabled));
+            getVerificationCodeButton.setTextColor(getVerificationCodeButton.getResources().getColor(R.color.color_489dfff));
             getVerificationCodeButton.setEnabled(true);
             getVerificationCodeButton.setClickable(true);
         }

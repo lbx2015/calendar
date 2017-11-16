@@ -7,7 +7,7 @@
     <!--android:width="1dp"-->
     <!--android:color="@android:color/darker_gray"></stroke>-->
     <!-- view background color -->
-    <solid android:color="@color/button_enabled"></solid>
+    <solid android:color="@color/color_489dfff"></solid>
     <!-- If you want to add some padding -->
     <padding
         android:bottom="12dp"
