@@ -8,14 +8,14 @@ public class BaseModelPropdict {
 	
 	private String ke;
 	
-	private String value;
+	private String valueName;
 	
 	public List<ReportFrequency> list;
 	
-	public BaseModelPropdict(String id,String ke,String value){
+	public BaseModelPropdict(String id,String ke,String valueName){
 		this.id = id;
 		this.ke = ke;
-		this.value = value;
+		this.valueName = valueName;
 	}
 
 	public String getId() {
@@ -34,12 +34,12 @@ public class BaseModelPropdict {
 		this.ke = ke;
 	}
 
-	public String getValue() {
-		return value;
+	public String getValueName() {
+		return valueName;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setValueName(String valueName) {
+		this.valueName = valueName;
 	}
 
 	public List<ReportFrequency> getList() {
