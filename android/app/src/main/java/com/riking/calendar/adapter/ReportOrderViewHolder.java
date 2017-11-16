@@ -20,6 +20,11 @@ public class ReportOrderViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.report_name)
     public TextView reportName;
 
+    @BindView(R.id.order)
+    public TextView orderButton;
+
+    public boolean checked;
+
     public ReportOrderViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);

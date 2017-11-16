@@ -45,6 +45,20 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
         final ReportFrequency r = mList.get(i);
         h.reportTitle.setText(r.reportTitle);
         h.reportName.setText(r.reportName);
+        h.orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (h.checked) {
+                    h.checked = false;
+                    h.orderButton.setText("已订阅");
+                    h.orderButton.setBackgroundColor(h.orderButton.getResources().getColor(R.color.white));
+                } else {
+                    h.checked = true;
+                    h.orderButton.setText("订阅");
+                    h.orderButton.setBackground(h.orderButton.getResources().getDrawable(R.drawable.rounded_order_button));
+                }
+            }
+        });
         MyLog.d("reportName: " + h.reportName);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
