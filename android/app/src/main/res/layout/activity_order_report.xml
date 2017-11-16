@@ -48,7 +48,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -79,9 +80,9 @@
                 android:id="@+id/flow_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:translationY="-4dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:translationY="-4dp"
                 app:layout_scrollFlags="scroll|enterAlways"></com.riking.calendar.view.ZReportFlowLayout>
         </android.support.design.widget.AppBarLayout>
 
@@ -90,10 +91,90 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="telkjdf" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/color_background_f2f2f2"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="订阅报表" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="CBRC"
+                            android:textColor="@color/color_489dfff"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:background="@color/color_489dfff" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="PBOC"
+                            android:textColor="@color/color_222222"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="2dp"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:background="@color/color_489dfff"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:background="@color/color_e2e2e2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/report_frequency_recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"></android.support.v7.widget.RecyclerView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/report_recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"></android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
