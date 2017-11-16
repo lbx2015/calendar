@@ -8,13 +8,13 @@ public class BaseModelPropdict {
 
 	public String ke;
 
-	public String value;
+	public String valueName;
 	
 	public List<ReportFrequency> list;
 	
 	public BaseModelPropdict(String id,String ke,String value){
 		this.id = id;
 		this.ke = ke;
-		this.value = value;
+		this.valueName = value;
 	}
 }

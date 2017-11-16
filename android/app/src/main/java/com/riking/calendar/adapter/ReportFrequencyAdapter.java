@@ -38,21 +38,21 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHo
     @Override
     public QuestionsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.industry_item, viewGroup, false);
+                R.layout.report_frequency_item, viewGroup, false);
         return new QuestionsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final QuestionsViewHolder h, int i) {
-        final BaseModelPropdict industry = mList.get(i);
-        h.industryName.setText(industry.value);
+        final BaseModelPropdict m = mList.get(i);
+        h.industryName.setText(m.valueName);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
 //                i.putExtra(CONST.INDUSTRY_ID, industry.id);
                 //go to position select page
-                MyApplication.mCurrentActivity.startActivity(i);
+//                MyApplication.mCurrentActivity.startActivity(i);
                 AppUser result = new AppUser();
 //                result.industryId = industry.id;
                 result.isGuide = "1";
@@ -70,6 +70,7 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHo
 
     @Override
     public int getItemCount() {
+        //TODO neeed to remove the +1(test only)
         return mList.size();
     }
 

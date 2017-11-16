@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ReportsOrderAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
+public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHolder> {
 
     public List<ReportFrequency> mList;
     private Context context;
@@ -34,23 +34,25 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<QuestionsViewHolde
     }
 
     @Override
-    public QuestionsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ReportOrderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.industry_item, viewGroup, false);
-        return new QuestionsViewHolder(view);
+                R.layout.report_order_item, viewGroup, false);
+        return new ReportOrderViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final QuestionsViewHolder h, int i) {
-        final ReportFrequency industry = mList.get(i);
-        h.industryName.setText(industry.reportTitle);
+    public void onBindViewHolder(final ReportOrderViewHolder h, int i) {
+        final ReportFrequency r = mList.get(i);
+        h.reportTitle.setText(r.reportTitle);
+        h.reportName.setText(r.reportName);
+        MyLog.d("reportName: " + h.reportName);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
-                i.putExtra(CONST.INDUSTRY_ID,industry.reportId);
+//                i.putExtra(CONST.INDUSTRY_ID,r.reportId);
                 //go to position select page
-                MyApplication.mCurrentActivity.startActivity(i);
+//                MyApplication.mCurrentActivity.startActivity(i);
                 AppUser result = new AppUser();
 //                result.industryId = industry.reportId;
                 result.isGuide = "1";
@@ -73,5 +75,6 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<QuestionsViewHolde
 
     public void setData(List<ReportFrequency> data) {
         this.mList = data;
+        notifyDataSetChanged();
     }
 }

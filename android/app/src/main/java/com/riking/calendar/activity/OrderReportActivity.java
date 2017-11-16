@@ -15,11 +15,14 @@ import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.BaseModelPropdict;
 import com.riking.calendar.pojo.server.ReportAgence;
+import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,6 +109,24 @@ public class OrderReportActivity extends AppCompatActivity {
         //set adapters
         reportFrequencyRecyclerView.setAdapter(reportFrequencyAdapter);
         reportsRecyclerViews.setAdapter(reportsOrderAdapter);
+
+/*
+        //Todo test only
+        List<ReportAgence> reportAgences = new ArrayList<>();
+        ReportAgence reportAgence = new ReportAgence();
+        List<BaseModelPropdict> list = new ArrayList<>();
+        BaseModelPropdict baseModelPropdict = new BaseModelPropdict("id", "key", "BASE 月");
+        List<ReportFrequency> reportFrequencies = new ArrayList<>();
+        ReportFrequency reportFrequency = new ReportFrequency("reportId", "G0100", "资产负债项目统计", "isComplete", "strFrency");
+        reportFrequencies.add(reportFrequency);
+        baseModelPropdict.list = reportFrequencies;
+        list.add(baseModelPropdict);
+        reportAgence.list = list;
+        reportAgence.agenceName = "CBRC";
+        reportAgences.add(reportAgence);
+
+        reportFrequencyAdapter.setData(reportAgences.get(0).list);
+        reportsOrderAdapter.setData(reportAgences.get(0).list.get(0).list);*/
 
         APIClient.getAllReports(new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
             @Override
