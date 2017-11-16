@@ -74,8 +74,8 @@ public class ZReportFlowLayout extends ViewGroup {
 
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
-        int vSpacing = (int) ZR.convertDpToPx(getContext(), 10);
-        int hSspacing = (int) ZR.convertDpToPx(getContext(), 80);
+        int vSpacing = (int) ZR.convertDpToPx(getContext(), 4);
+        int hSspacing = (int) ZR.convertDpToPx(getContext(), 2);
         return new LayoutParams(hSspacing, vSpacing); // default of 1px spacing
     }
 

@@ -3,11 +3,11 @@ package com.riking.calendar.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.view.InterestingReportLinearLayout;
+import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
 /**
@@ -16,24 +16,50 @@ import com.riking.calendar.view.ZReportFlowLayout;
 
 public class OrderReportActivity extends AppCompatActivity {
     ZReportFlowLayout zReportFlowLayout;
+    TextView button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_report);
-        zReportFlowLayout = findViewById(R.id.flow_layout);
+        init();
         /*//change the status bar color
         getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         StatusBarUtil.setTranslucent(this);*/
         for (int i = 0; i < 5; i++) {
             //inflate the item view from layout xml
-            final InterestingReportLinearLayout root = (InterestingReportLinearLayout) LayoutInflater.from(this).inflate(R.layout.intersting_report_item, null);
-            //get view
-            final TextView reportNameTV = root.findViewById(R.id.interesting_report);
-            final ImageView checkImage = root.findViewById(R.id.check_image);
+            final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(this).inflate(R.layout.my_order_report_item, null);
+            root.init();
             //set data
-            reportNameTV.setText("G01000");
+            root.reportNameTV.setText("G01000");
             zReportFlowLayout.addView(root);
         }
+    }
+
+    void init() {
+        initViews();
+        initEvents();
+    }
+
+    private void initEvents() {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = zReportFlowLayout.getChildCount();
+                for (int i = 0; i < size; i++) {
+                    OrderReportFrameLayout f = (OrderReportFrameLayout) zReportFlowLayout.getChildAt(i);
+                    if (f.checkImage.getVisibility() == View.VISIBLE) {
+                        f.checkImage.setVisibility(View.GONE);
+                    } else {
+                        f.checkImage.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+    }
+
+    private void initViews() {
+        zReportFlowLayout = findViewById(R.id.flow_layout);
+        button = findViewById(R.id.button);
     }
 }
