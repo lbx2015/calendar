@@ -125,9 +125,8 @@ public class LoginServer {
 				appUser2 = list.get(0);
 			}
 			if (appUser2 == null) {
-				AppUser appUser3 = new AppUser(appUser.getTelephone(),
-						appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
-						"1", "1","0800",user.getOpenId(),user.getIsSubscribe());
+				AppUser appUser3 = new AppUser(appUser.getTelephone(),appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
+						"1", "1","0800",user.getOpenId(),user.getIsSubscribe(),user.getIsGuide());
 				appUser2 = appUserRepo.save(appUser3);
 				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
 				for (AppUserReportRel appUserReportRel : appUserReportRels) {

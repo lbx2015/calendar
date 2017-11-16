@@ -28,6 +28,7 @@ public class AppUserReportRel extends BaseEntity {
 	}
 
 	public AppUserReportRel() {
+		// TODO Auto-generated constructor stub
 	}
 	@Id
 	@Column(name = "Id", length = 32)

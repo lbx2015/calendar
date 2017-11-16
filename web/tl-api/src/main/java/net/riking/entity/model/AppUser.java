@@ -38,7 +38,7 @@ public class AppUser extends BaseEntity {
 
 	
 	public AppUser(String name, String telephone, String passWord,
-			String phoneSeqNum,String deleteState, String enabled,String allDayReminderTime,String openId,String isSubscribe) {
+			String phoneSeqNum,String deleteState, String enabled,String allDayReminderTime,String openId,String isSubscribe,String isGuide) {
 		super();
 		this.name = name;
 		this.telephone = telephone;
@@ -49,6 +49,7 @@ public class AppUser extends BaseEntity {
 		this.allDayReminderTime = allDayReminderTime;
 		this.openId = openId;
 		this.isSubscribe = isSubscribe;
+		this.isGuide = isGuide;
 	}
 
 
@@ -147,12 +148,12 @@ public class AppUser extends BaseEntity {
 	private String isSubscribe;//0：未订阅；1：已订阅
 	
 	@Comment("行业ID")
-	@Column(name = "industryId",length =1 )
-	private String industryId;//行业ID
+	@Column(name = "industryId",length =32 )
+	private Long industryId;//行业ID
 	
 	@Comment("职位ID")
-	@Column(name = "positionId",length =1 )
-	private String positionId;//职位ID
+	@Column(name = "positionId",length =32 )
+	private Long positionId;//职位ID
 	
 	@Comment("是否引导")
 	@Column(name = "is_guide",length =1 )
@@ -340,25 +341,22 @@ public class AppUser extends BaseEntity {
 		this.isSubscribe = isSubscribe;
 	}
 	
-	public String getIndustryId() {
+	public Long getIndustryId() {
 		return industryId;
 	}
 
-
-	public void setIndustryId(String industryId) {
+	public void setIndustryId(Long industryId) {
 		this.industryId = industryId;
 	}
 
-
-	public String getPositionId() {
+	public Long getPositionId() {
 		return positionId;
 	}
 
-
-	public void setPositionId(String positionId) {
+	public void setPositionId(Long positionId) {
 		this.positionId = positionId;
 	}
-	
+
 	public String getIsGuide() {
 		return isGuide;
 	}
