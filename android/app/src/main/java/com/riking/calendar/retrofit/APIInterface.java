@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
@@ -172,4 +173,11 @@ public interface APIInterface {
      */
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
+
+    /**
+     * used to order reports
+     * @return
+     */
+    @POST("reportListApp/getAllReport")
+    Call<ResponseModel<List<ReportAgence>>> getAllReports();
 }

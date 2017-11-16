@@ -9,11 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.ReportAgence;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -100,5 +107,18 @@ public class OrderReportActivity extends AppCompatActivity {
         reportFrequencyRecyclerView.setAdapter(reportFrequencyAdapter);
         reportsRecyclerViews.setAdapter(reportsOrderAdapter);
 
+        APIClient.getAllReports(new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
+            @Override
+            public void callBack(ResponseModel<List<ReportAgence>> response) {
+                if (failed) {
+
+                } else {
+                    List<ReportAgence> reportAgences = response._data;
+                    MyLog.d("reportAgences: " + reportAgences);
+                    reportFrequencyAdapter.setData(reportAgences.get(0).list);
+                    reportsOrderAdapter.setData(reportAgences.get(0).list.get(0).list);
+                }
+            }
+        });
     }
 }

@@ -12,8 +12,11 @@ import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.BaseModelPropdict;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
@@ -24,7 +27,7 @@ import java.util.List;
 
 public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
 
-    public List<Industry> mList;
+    public List<BaseModelPropdict> mList;
     private Context context;
 
     public ReportFrequencyAdapter(Context context) {
@@ -41,17 +44,17 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHo
 
     @Override
     public void onBindViewHolder(final QuestionsViewHolder h, int i) {
-        final Industry industry = mList.get(i);
-        h.industryName.setText(industry.name);
+        final BaseModelPropdict industry = mList.get(i);
+        h.industryName.setText(industry.value);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
-                i.putExtra(CONST.INDUSTRY_ID,industry.id);
+//                i.putExtra(CONST.INDUSTRY_ID, industry.id);
                 //go to position select page
                 MyApplication.mCurrentActivity.startActivity(i);
                 AppUser result = new AppUser();
-                result.industryId = industry.id;
+//                result.industryId = industry.id;
                 result.isGuide = "1";
                 result.id = (Preference.pref.getString(CONST.USER_ID, ""));
                 APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
@@ -70,4 +73,8 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHo
         return mList.size();
     }
 
+    public void setData(List<BaseModelPropdict> list) {
+        mList = list;
+        notifyDataSetChanged();
+    }
 }

@@ -14,6 +14,7 @@ import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class ReportsOrderAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
 
-    public List<Industry> mList;
+    public List<ReportFrequency> mList;
     private Context context;
 
     public ReportsOrderAdapter(Context context) {
@@ -41,17 +42,17 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<QuestionsViewHolde
 
     @Override
     public void onBindViewHolder(final QuestionsViewHolder h, int i) {
-        final Industry industry = mList.get(i);
-        h.industryName.setText(industry.name);
+        final ReportFrequency industry = mList.get(i);
+        h.industryName.setText(industry.reportTitle);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
-                i.putExtra(CONST.INDUSTRY_ID,industry.id);
+                i.putExtra(CONST.INDUSTRY_ID,industry.reportId);
                 //go to position select page
                 MyApplication.mCurrentActivity.startActivity(i);
                 AppUser result = new AppUser();
-                result.industryId = industry.id;
+//                result.industryId = industry.reportId;
                 result.isGuide = "1";
                 result.id = (Preference.pref.getString(CONST.USER_ID, ""));
                 APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
@@ -70,4 +71,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<QuestionsViewHolde
         return mList.size();
     }
 
+    public void setData(List<ReportFrequency> data) {
+        this.mList = data;
+    }
 }
