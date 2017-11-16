@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"
-        android:textColor="@color/input_cell_phone_text_color"
+        android:textColor="@color/color_222222"
         android:textSize="17sp" />
 
     <ImageView

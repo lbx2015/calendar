@@ -208,7 +208,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
         }
 
         public void startTick() {
-            getVerificationCodeButton.setTextColor(getVerificationCodeButton.getResources().getColor(R.color.grey_border));
+            getVerificationCodeButton.setTextColor(getVerificationCodeButton.getResources().getColor(R.color.color_d2d2d2));
             getVerificationCodeButton.setEnabled(false);
             getVerificationCodeButton.setClickable(false);
 

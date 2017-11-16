@@ -13,7 +13,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="30dp"
         android:textSize="24sp"
-        android:textColor="@color/input_cell_phone_text_color"
+        android:textColor="@color/color_222222"
         android:text="订阅感兴趣的报表" />
 
     <!--    <android.support.v4.widget.SwipeRefreshLayout

@@ -132,7 +132,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                         //remove the report id form the result
                                         selectedReportIds.remove(r.reportId);
                                         checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.drawable.login_icon_add));
-                                        reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.input_cell_phone_text_color));
+                                        reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.color_222222));
                                         root.setBackground(root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                                     } else {
                                         //the report is been checked.

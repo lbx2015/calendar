@@ -107,7 +107,7 @@
         app:isShowLunar="false"
         app:pointColor="@color/colorPrimary"
         app:selectCircleColor="@color/colorPrimary"
-        app:solarTextColor="@color/input_cell_phone_text_color"
+        app:solarTextColor="@color/color_222222"
         app:solarTextSize="17sp">
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

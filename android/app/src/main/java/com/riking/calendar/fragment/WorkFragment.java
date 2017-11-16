@@ -35,6 +35,7 @@ import com.necer.ncalendar.calendar.NCalendar;
 import com.necer.ncalendar.listener.OnCalendarChangedListener;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
@@ -188,6 +189,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                             public boolean onMenuItemClick(MenuItem item) {
                                 switch (item.getItemId()) {
                                     case R.id.order_reports: {
+                                        startActivity(new Intent(getContext(), OrderReportActivity.class));
                                         break;
                                     }
                                     case R.id.overdue_task: {

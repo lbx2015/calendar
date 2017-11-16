@@ -21,7 +21,7 @@
         android:layout_marginBottom="15dp"
         android:layout_marginTop="20dp"
         android:text="请输入你的手机号码"
-        android:textColor="@color/input_cell_phone_text_color"
+        android:textColor="@color/color_222222"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -40,7 +40,7 @@
             android:layout_marginLeft="4dp"
             android:gravity="center"
             android:text="+86"
-            android:textColor="@color/input_cell_phone_text_color"
+            android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
 
@@ -50,7 +50,7 @@
             android:layout_marginLeft="4dp"
             android:gravity="center"
             android:text="|"
-            android:textColor="@color/grey_border"
+            android:textColor="@color/color_d2d2d2"
             android:textSize="17sp" />
 
 

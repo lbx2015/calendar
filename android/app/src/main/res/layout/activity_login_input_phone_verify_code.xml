@@ -23,7 +23,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         android:text="请输入手机验证码"
-        android:textColor="@color/input_cell_phone_text_color"
+        android:textColor="@color/color_222222"
         android:textSize="24sp" />
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:id="@+id/cell_phone_nubmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/input_cell_phone_text_color"
+            android:textColor="@color/color_222222"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -60,7 +60,7 @@
         app:icv_et_bg_normal="@drawable/shape_icv_et_bg_normal"
         app:icv_et_divider_drawable="@drawable/shape_divider_identifying"
         app:icv_et_number="6"
-        app:icv_et_text_color="@color/input_cell_phone_text_color"
+        app:icv_et_text_color="@color/color_222222"
         app:icv_et_width="48dp" />
 
     <LinearLayout
