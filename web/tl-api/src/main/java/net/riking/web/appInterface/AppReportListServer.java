@@ -102,7 +102,7 @@ public class AppReportListServer {
 	 */
 	@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport(@RequestBody AppUser appUser) {
+	public AppResp getAllReport() {
 		//List<QueryReport> list = reportSubmitCaliberService.findAllReport();
 		List<ReportAgence> reportAgenceList = new ArrayList<>();//保存集合数据 传给移动端
 		Set<String> agenceList = reportAgenceFrencyService.findALLAgence();//查询所有的汇报机构
