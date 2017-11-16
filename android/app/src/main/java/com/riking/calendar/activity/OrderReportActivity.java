@@ -17,6 +17,7 @@ import com.riking.calendar.view.ZReportFlowLayout;
 public class OrderReportActivity extends AppCompatActivity {
     ZReportFlowLayout zReportFlowLayout;
     TextView button;
+    boolean cancelOrder = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,13 @@ public class OrderReportActivity extends AppCompatActivity {
             final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(this).inflate(R.layout.my_order_report_item, null);
             root.init();
             //set data
-            root.reportNameTV.setText("G01000");
+            root.reportNameTV.setText("G010" + i);
+            root.checkImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    zReportFlowLayout.removeView(root);
+                }
+            });
             zReportFlowLayout.addView(root);
         }
     }
@@ -45,6 +52,13 @@ public class OrderReportActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (cancelOrder) {
+                    cancelOrder = false;
+                    button.setText("编辑");
+                } else {
+                    button.setText("保存");
+                    cancelOrder = true;
+                }
                 int size = zReportFlowLayout.getChildCount();
                 for (int i = 0; i < size; i++) {
                     OrderReportFrameLayout f = (OrderReportFrameLayout) zReportFlowLayout.getChildAt(i);
