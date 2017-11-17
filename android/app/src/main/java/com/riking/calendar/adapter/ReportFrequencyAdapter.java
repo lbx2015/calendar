@@ -1,22 +1,14 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.PositionSelectActivity;
-import com.riking.calendar.app.MyApplication;
-import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.BaseModelPropdict;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.OneTextViewHolder;
 
 import java.util.ArrayList;
@@ -27,6 +19,8 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
 
     public List<BaseModelPropdict> mList;
     private Context context;
+    //the default checked position is 0;
+    private int checkedPosition = 0;
 
     public ReportFrequencyAdapter(Context context) {
         this.context = context;
@@ -41,30 +35,35 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
     }
 
     @Override
-    public void onBindViewHolder(final OneTextViewHolder h, int i) {
+    public void onBindViewHolder(final OneTextViewHolder h, final int i) {
         final BaseModelPropdict m = mList.get(i);
         h.textView.setText(m.valueName);
+        setColors(h, i);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
-//                i.putExtra(CONST.INDUSTRY_ID, industry.id);
-                //go to position select page
-//                MyApplication.mCurrentActivity.startActivity(i);
-                AppUser result = new AppUser();
-//                result.industryId = industry.id;
-                result.isGuide = "1";
-                result.id = (Preference.pref.getString(CONST.USER_ID, ""));
-                APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
-                    @Override
-                    public void callBack(ResponseModel<String> response) {
-
-                    }
-                });
+            public void onClick(final View v) {
+                final int temp = checkedPosition;
+                checkedPosition = i;
+                //only update the the two columns
+                notifyItemChanged(checkedPosition);
+                notifyItemChanged(temp);
             }
         });
     }
 
+    private void setColors(OneTextViewHolder h, int position) {
+        if (checkedPosition == position) {
+            //set the background color
+            h.itemView.setBackgroundColor(ZR.getColor(R.color.white));
+            //set the text color
+            h.textView.setTextColor(ZR.getColor(R.color.color_222222));
+        } else {
+            //set the background color
+            h.itemView.setBackgroundColor(ZR.getColor(R.color.color_f4f4f4));
+            //set the text color
+            h.textView.setTextColor(ZR.getColor(R.color.color_666666));
+        }
+    }
 
     @Override
     public int getItemCount() {

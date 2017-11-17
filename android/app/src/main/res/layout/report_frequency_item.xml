@@ -5,7 +5,6 @@
     android:id="@+id/item_view"
     android:layout_width="match_parent"
     android:layout_height="59dp"
-    android:background="@color/color_f4f4f4"
     tools:layout_editor_absoluteY="25dp">
 
     <TextView
