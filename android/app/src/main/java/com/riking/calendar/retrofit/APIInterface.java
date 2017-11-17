@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
+import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
@@ -165,4 +166,9 @@ public interface APIInterface {
      */
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
+    /**
+     * find the repords of user ordered
+     */
+    @POST("/appUserReport/findUserReportList")
+    Call<ResponseModel<List<AppUserReportRel>>>  findUserReportList(@Body AppUser user);
 }

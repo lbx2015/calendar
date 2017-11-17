@@ -15,6 +15,7 @@ import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.retrofit.APIClient;
@@ -54,20 +55,6 @@ public class OrderReportActivity extends AppCompatActivity {
         /*//change the status bar color
         getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         StatusBarUtil.setTranslucent(this);*/
-        for (int i = 0; i < 5; i++) {
-            //inflate the item view from layout xml
-            final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(this).inflate(R.layout.my_order_report_item, null);
-            root.init();
-            //set data
-            root.reportNameTV.setText("G010" + i);
-            root.checkImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    zReportFlowLayout.removeView(root);
-                }
-            });
-            zReportFlowLayout.addView(root);
-        }
     }
 
     void init() {
@@ -164,24 +151,7 @@ public class OrderReportActivity extends AppCompatActivity {
         reportFrequencyRecyclerView.setAdapter(reportFrequencyAdapter);
         reportsRecyclerViews.setAdapter(reportsOrderAdapter);
 
-/*
-        //Todo test only
-        List<ReportAgence> reportAgences = new ArrayList<>();
-        ReportAgence reportAgence = new ReportAgence();
-        List<BaseModelPropdict> list = new ArrayList<>();
-        BaseModelPropdict baseModelPropdict = new BaseModelPropdict("id", "key", "BASE 月");
-        List<ReportFrequency> reportFrequencies = new ArrayList<>();
-        ReportFrequency reportFrequency = new ReportFrequency("reportId", "G0100", "资产负债项目统计", "isComplete", "strFrency");
-        reportFrequencies.add(reportFrequency);
-        baseModelPropdict.list = reportFrequencies;
-        list.add(baseModelPropdict);
-        reportAgence.list = list;
-        reportAgence.agenceName = "CBRC";
-        reportAgences.add(reportAgence);
-
-        reportFrequencyAdapter.setData(reportAgences.get(0).list);
-        reportsOrderAdapter.setData(reportAgences.get(0).list.get(0).list);*/
-
+        //request all reports
         AppUser u = new AppUser();
         //set user id
         u.id = Preference.pref.getString(CONST.USER_ID, "");
@@ -196,6 +166,32 @@ public class OrderReportActivity extends AppCompatActivity {
                     secondGroupTv.setText(reportAgences.get(1).agenceName);
                     MyLog.d("reportAgences: " + reportAgences);
                     updateReportAgences();
+                }
+            }
+        });
+
+        APIClient.findUserReportList(u, new ZCallBackWithFail<ResponseModel<List<AppUserReportRel>>>() {
+            @Override
+            public void callBack(ResponseModel<List<AppUserReportRel>> response) {
+                if (failed) {
+
+                } else {
+                    List<AppUserReportRel> appUserReportRels = response._data;
+                    for (int i = 0; i < appUserReportRels.size(); i++) {
+                        AppUserReportRel appUserReportRel = appUserReportRels.get(i);
+                        //inflate the item view from layout xml
+                        final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(OrderReportActivity.this).inflate(R.layout.my_order_report_item, null);
+                        root.init();
+                        //set data
+                        root.reportNameTV.setText(appUserReportRel.reportId);
+                        root.checkImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                zReportFlowLayout.removeView(root);
+                            }
+                        });
+                        zReportFlowLayout.addView(root);
+                    }
                 }
             }
         });
