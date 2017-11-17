@@ -3,6 +3,7 @@ package com.riking.calendar.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +53,13 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
                 if (h.checked) {
                     h.checked = false;
                     h.orderButton.setText("已订阅");
+                    h.orderButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+                    h.orderButton.setTextColor(ZR.getColor(R.color.color_999999));
                     h.orderButton.setBackgroundColor(h.orderButton.getResources().getColor(R.color.white));
                 } else {
                     h.checked = true;
                     h.orderButton.setText("订阅");
+                    h.orderButton.setTextColor(ZR.getColor(R.color.color_489dfff));
                     h.orderButton.setBackground(h.orderButton.getResources().getDrawable(R.drawable.rounded_order_button));
                 }
             }
