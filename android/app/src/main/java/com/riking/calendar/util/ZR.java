@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -77,5 +79,10 @@ public class ZR {
             return tManager.getDeviceId();
         }
         return "";
+    }
+
+    @ColorInt
+    public static int getColor(@ColorRes int resId) {
+        return MyApplication.APP.getResources().getColor(resId);
     }
 }

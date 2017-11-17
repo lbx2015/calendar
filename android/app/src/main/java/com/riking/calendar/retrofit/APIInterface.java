@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
+import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
@@ -22,6 +23,7 @@ import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
@@ -97,19 +99,11 @@ public interface APIInterface {
     /**
      * get all reports when user not login
      *
-     * @param notUsed
      * @return
      */
     @POST("reportListApp/getAllReport")
-    Call<ResponseModel<ArrayList<QueryReportContainer>>> getAllReports(@Query("id") String notUsed);
+    Call<ResponseModel<List<ReportAgence>>> getAllReports(@Body AppUser user);
 
-    /**
-     * get all reports when user not login
-     *
-     * @return
-     */
-    @POST("reportListApp/getAllReport")
-    Call<ResponseModel<ArrayList<QueryReport>>> queryAllReports();
     @POST("appUserApp/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
@@ -172,4 +166,9 @@ public interface APIInterface {
      */
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
+    /**
+     * find the repords of user ordered
+     */
+    @POST("/appUserReport/findUserReportList")
+    Call<ResponseModel<List<AppUserReportRel>>>  findUserReportList(@Body AppUser user);
 }

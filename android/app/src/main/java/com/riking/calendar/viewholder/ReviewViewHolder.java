@@ -1,4 +1,4 @@
-package com.riking.calendar.adapter;
+package com.riking.calendar.viewholder;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +16,9 @@ import butterknife.ButterKnife;
  */
 public class ReviewViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.cardView)
-    CardView cardView;
+    public CardView cardView;
     @BindView(R.id.item_image)
-    CircleImageView userIcon;
+    public CircleImageView userIcon;
 
     public ReviewViewHolder(View itemView) {
         super(itemView);

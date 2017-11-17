@@ -48,7 +48,7 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "SELECT t.ID,t.KE,t.VALU FROM t_base_modelpropdict t WHERE t.VALU LIKE '%"+value+"%'";
+		String sql = "SELECT t.ID,t.KE,SUBSTRING_INDEX(t.VALU,'-',-2) as VALU FROM t_base_modelpropdict t WHERE t.VALU LIKE '%"+value+"%'";
 		PreparedStatement pstmt = null;
 		List<BaseModelPropdict> list = new ArrayList<>();
 		try {

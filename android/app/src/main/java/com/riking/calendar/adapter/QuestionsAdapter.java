@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.viewholder.OneTextViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
         } else {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                     R.layout.question_item, viewGroup, false);
-            return new QuestionsViewHolder(view);
+            return new OneTextViewHolder(view);
         }
     }
 
@@ -59,7 +60,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
             h.recyclerView.setAdapter(new RecommendedAdapter());
 
         } else {
-            QuestionsViewHolder h = (QuestionsViewHolder) cellHolder;
+            OneTextViewHolder h = (OneTextViewHolder) cellHolder;
             h.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -3,7 +3,7 @@
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_background_f2f2f2"
+    android:background="@color/color_f2f2f2"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -52,6 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="12dp"
-        android:background="@color/color_background_f2f2f2"
+        android:background="@color/color_f2f2f2"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"></com.riking.calendar.view.CustomViewPager>
 </LinearLayout>

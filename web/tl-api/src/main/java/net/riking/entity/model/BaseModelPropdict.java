@@ -49,5 +49,5 @@ public class BaseModelPropdict {
 	public void setList(List<ReportFrequency> list) {
 		this.list = list;
 	}
-	
+
 }

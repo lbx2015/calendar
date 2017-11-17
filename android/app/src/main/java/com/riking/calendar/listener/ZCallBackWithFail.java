@@ -1,5 +1,8 @@
 package com.riking.calendar.listener;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
@@ -16,16 +19,38 @@ import retrofit2.Response;
  */
 
 public abstract class ZCallBackWithFail<T extends ResponseModel> implements Callback<T> {
-
     /**
      * override this method to do some thing after fail.
      */
     public boolean failed;
+    private ProgressDialog mProgressDialog;
+
+    public ZCallBackWithFail() {
+        new android.os.Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mProgressDialog = new ProgressDialog(MyApplication.mCurrentActivity);
+                mProgressDialog.setMessage("正在加载中");
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
+            }
+        });
+    }
+
+    public ZCallBackWithFail(Context t) {
+        mProgressDialog = new ProgressDialog(t);
+        mProgressDialog.setMessage("正在加载中");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+    }
 
     public abstract void callBack(T response);
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
         Logger.d("zzw", "request ok + " + call.request().toString());
         if (response == null || response.body() == null || response.body().code != 200) {
             failed = true;
@@ -36,6 +61,10 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+
         failed = true;
         callBack(null);
         Logger.d("zzw", "request fail + " + call.request().toString() + t.getMessage());

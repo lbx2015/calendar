@@ -1,4 +1,4 @@
-package com.riking.calendar.adapter;
+package com.riking.calendar.viewholder;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -18,20 +18,20 @@ import butterknife.ButterKnife;
 public class HomeViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.item_view)
-    View itemView;
+    public View itemView;
     @BindView(R.id.item_cator)
-    TextView itemCator;
+    public TextView itemCator;
     @BindView(R.id.cardView)
-    CardView cardView;
+    public CardView cardView;
     @BindView(R.id.item_content)
-    TextView itemContent;
+    public TextView itemContent;
     @BindView(R.id.item_image)
-    CircleImageView itemImage;
+    public CircleImageView itemImage;
     @BindView(R.id.fromPhone)
-    TextView fromPhone;
+    public TextView fromPhone;
 
     @BindView(R.id.more_action)
-    TextView moreAction;
+    public TextView moreAction;
 //    @BindView(R.id.item_count)
 //    TextView itemCount;
 

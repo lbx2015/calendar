@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserReportCompleteRel;
 import net.riking.entity.model.AppUserReportRel;
 import net.riking.entity.model.AppUserReportResult;
@@ -25,6 +26,7 @@ import net.riking.entity.model.Period;
 import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.ReportList;
 import net.riking.entity.model.ReportResult;
+import net.riking.service.ReportLisService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.GetDateServiceImpl;
@@ -58,6 +60,8 @@ public class AppUserReportRelServer {
 	IndustryRepo industryRepo;
 	@Autowired
 	AppUserReportCompletRelRepo appUserReportCompletRelRepo;
+	@Autowired
+	ReportLisService  reportLisService;
 	
 
 	@ApiOperation(value = "app获取用户下的报表", notes = "POST")
@@ -130,8 +134,9 @@ public class AppUserReportRelServer {
 	
 	@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
 	@RequestMapping(value = "/findUserReportList", method = RequestMethod.POST)
-	public AppResp findUserReportList(@ModelAttribute String appUserId){
-		List<AppUserReportRel> list = appUserReportRepo.findUserReportList(appUserId);
+	public AppResp findUserReportList(@RequestBody AppUser appUser){
+		//List<AppUserReportRel> list = appUserReportRepo.findUserReportList(appUser.getId());
+		List<AppUserReportRel> list = reportLisService.findAppUserReportById(appUser.getId());
 		return new AppResp(list,CodeDef.SUCCESS);
 	}
 	

@@ -18,18 +18,16 @@ import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
+import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
-import com.riking.calendar.pojo.QueryReport;
-import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.synch.SynResult;
-import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
-import com.riking.calendar.realm.model.QueryReportRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
@@ -49,7 +47,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -446,7 +443,7 @@ public class APIClient {
         APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
     }
 
-    public static void interestingReports(AppUserReportResult result,ZCallBackWithFail<ResponseModel<Short>> zCallBackWithFail){
+    public static void interestingReports(AppUserReportResult result, ZCallBackWithFail<ResponseModel<Short>> zCallBackWithFail) {
         apiInterface.interestingReports(result).enqueue(zCallBackWithFail);
     }
 
@@ -454,7 +451,7 @@ public class APIClient {
      * when user not login ,showing all reports
      */
     public static void getAllReports() {
-        APIClient.apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
+       /* APIClient.apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
             @Override
             public void callBack(final ResponseModel<ArrayList<QueryReportContainer>> response) {
                 final Realm realm = Realm.getDefaultInstance();
@@ -483,7 +480,7 @@ public class APIClient {
                     }
                 });
             }
-        });
+        });*/
     }
 
     public static void checkUpdate(final CheckCallBack updateCallback) {
@@ -508,11 +505,19 @@ public class APIClient {
     /**
      * get positions
      */
-    public static void getPositions(HashMap<String,Long> industryMap, final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
+    public static void getPositions(HashMap<String, Long> industryMap, final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
         apiInterface.getPositionByIndustry(industryMap).enqueue(c);
     }
 
-    public static void updateUserInfo(AppUser user,ZCallBackWithFail<ResponseModel<String>> callBackWithFail) {
+    public static void updateUserInfo(AppUser user, ZCallBackWithFail<ResponseModel<String>> callBackWithFail) {
         apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
+    }
+
+    public static void getAllReports(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportAgence>>> c) {
+        apiInterface.getAllReports(user).enqueue(c);
+    }
+
+    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<AppUserReportRel>>> c) {
+        apiInterface.findUserReportList(user).enqueue(c);
     }
 }

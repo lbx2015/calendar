@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -33,29 +34,144 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.3dp"
         android:background="@color/color_d2d2d2" />
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:text="我的订阅"
-            android:textColor="@color/color_222222"
-            android:textSize="15sp" />
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:text="我的订阅"
+                    android:textColor="@color/color_222222"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:text="编辑"
+                    android:textColor="@color/color_489dfff"
+                    android:textSize="15sp" />
+            </FrameLayout>
+
+            <com.riking.calendar.view.ZReportFlowLayout
+                android:id="@+id/flow_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:translationY="-4dp"
+                app:layout_scrollFlags="scroll|enterAlways"></com.riking.calendar.view.ZReportFlowLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/color_f2f2f2"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="订阅报表"
+                android:textColor="@color/color_666666" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/first_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="CBRC"
+                        android:textColor="@color/color_489dfff"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:id="@+id/first_group_divider"
+                        android:layout_width="60dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:background="@color/color_489dfff" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/second_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="PBOC"
+                        android:textColor="@color/color_222222"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:id="@+id/second_group_divider"
+                        android:layout_width="60dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:background="@color/color_489dfff"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/color_e2e2e2" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|right"
-            android:text="编辑"
-            android:textColor="@color/color_489dfff"
-            android:textSize="15sp" />
-    </FrameLayout>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/report_frequency_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/report_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

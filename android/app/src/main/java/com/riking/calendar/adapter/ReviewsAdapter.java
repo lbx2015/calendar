@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.riking.calendar.R;
 import com.riking.calendar.app.GlideApp;
+import com.riking.calendar.viewholder.ReviewViewHolder;
 
 import java.util.ArrayList;
 

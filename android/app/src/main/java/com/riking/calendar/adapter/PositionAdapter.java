@@ -17,12 +17,13 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
+import com.riking.calendar.viewholder.OneTextViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PositionAdapter extends RecyclerView.Adapter<PositionViewHolder> {
+public class PositionAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
     //position list, position and industry have the same data structure.
     public List<Industry> mList;
@@ -35,15 +36,15 @@ public class PositionAdapter extends RecyclerView.Adapter<PositionViewHolder> {
     }
 
     @Override
-    public PositionViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public OneTextViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.industry_item, viewGroup, false);
-        return new PositionViewHolder(view);
+        return new OneTextViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final PositionViewHolder h, final int i) {
-        h.positionName.setText(mList.get(i).name);
+    public void onBindViewHolder(final OneTextViewHolder h, final int i) {
+        h.textView.setText(mList.get(i).name);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

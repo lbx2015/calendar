@@ -104,7 +104,9 @@
             android:launchMode="singleTop"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.OrderReportActivity"/>
+        <activity
+            android:theme="@style/AppThemeNoActionBar"
+            android:name=".activity.OrderReportActivity"/>
         <activity android:name=".activity.MomentAddActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"

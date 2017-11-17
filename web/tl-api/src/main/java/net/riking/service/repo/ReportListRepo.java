@@ -37,5 +37,5 @@ public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSp
 	
 	@Query("  select new net.riking.entity.model.AppUserReportRel(r.id) from ReportList r where r.deleteState='1' ")
 	List<AppUserReportRel> findAllId();
-
+	
 }
