@@ -46,6 +46,16 @@ public class AppUserReportRel extends BaseEntity {
 	// 是否完成
 	@Column(name = "is_complete", length = 32)
 	private String isComplete;//0：未完成；1：已完成
+	
+	private String reportName;//报表名称
+	
+	public AppUserReportRel(String appUserId,String reportId,String isComplete,String reportName){
+		this.appUserId = appUserId;
+		this.reportId = reportId;
+		this.isComplete = isComplete;
+		this.reportName = reportName;
+	}
+	
 
 	public String getId() {
 		return id;
@@ -77,6 +87,14 @@ public class AppUserReportRel extends BaseEntity {
 
 	public void setIsComplete(String isComplete) {
 		this.isComplete = isComplete;
+	}
+	
+	public String getReportName() {
+		return reportName;
+	}
+
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
 	}
 
 	@Override
