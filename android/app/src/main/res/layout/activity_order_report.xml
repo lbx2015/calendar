@@ -48,7 +48,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -83,6 +84,68 @@
                 android:layout_marginRight="10dp"
                 android:translationY="-4dp"
                 app:layout_scrollFlags="scroll|enterAlways"></com.riking.calendar.view.ZReportFlowLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/color_f2f2f2"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="订阅报表"
+                android:textColor="@color/color_666666" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="CBRC"
+                        android:textColor="@color/color_489dfff"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:background="@color/color_489dfff" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="PBOC"
+                        android:textColor="@color/color_222222"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:background="@color/color_489dfff"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/color_e2e2e2" />
+
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
@@ -94,67 +157,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/color_f2f2f2"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:text="订阅报表" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="CBRC"
-                            android:textColor="@color/color_489dfff"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="60dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="bottom|center_horizontal"
-                            android:background="@color/color_489dfff" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="PBOC"
-                            android:textColor="@color/color_222222"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="60dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="bottom|center_horizontal"
-                            android:background="@color/color_489dfff"
-                            android:visibility="gone" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.3dp"
-                    android:background="@color/color_e2e2e2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
