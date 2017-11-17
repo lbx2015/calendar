@@ -14,9 +14,13 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
@@ -35,7 +39,12 @@ public class OrderReportActivity extends AppCompatActivity {
     public ReportFrequencyAdapter reportFrequencyAdapter = new ReportFrequencyAdapter(this);
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
     public List<ReportAgence> reportAgences;
+    //0 meansing CBOC , 1 means PBRC
     public int orgonizeType = 0;
+    TextView firstGroupTv;
+    TextView secondGroupTv;
+    View firstGroupDivider;
+    View secondGroupDivider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +76,60 @@ public class OrderReportActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        firstGroupTv = findViewById(R.id.first_group);
+        secondGroupTv = findViewById(R.id.second_group);
+        firstGroupDivider = findViewById(R.id.first_group_divider);
+        secondGroupDivider = findViewById(R.id.second_group_divider);
+
         zReportFlowLayout = findViewById(R.id.flow_layout);
         button = findViewById(R.id.button);
         reportFrequencyRecyclerView = findViewById(R.id.report_frequency_recycler_view);
         reportsRecyclerViews = findViewById(R.id.report_recycler_view);
     }
 
+    private void setClickListeners4Group() {
+        firstGroupTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (orgonizeType == 1) {
+                    //change the organization name
+                    orgonizeType = 0;
+                    secondGroupDivider.setVisibility(View.GONE);
+                    secondGroupTv.setTextColor(ZR.getColor(R.color.color_222222));
+                    firstGroupDivider.setVisibility(View.VISIBLE);
+                    firstGroupTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+                    //update the adapter
+                    updateReportAgences();
+                }
+            }
+        });
+
+        secondGroupTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (orgonizeType == 0) {
+                    //change the organization name
+                    orgonizeType = 1;
+                    firstGroupDivider.setVisibility(View.GONE);
+                    firstGroupTv.setTextColor(ZR.getColor(R.color.color_222222));
+                    secondGroupTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+                    secondGroupDivider.setVisibility(View.VISIBLE);
+                    //update the adapter
+                    updateReportAgences();
+                }
+            }
+        });
+    }
+
+    private void updateReportAgences() {
+        if (reportAgences != null) {
+            reportFrequencyAdapter.setData(reportAgences.get(orgonizeType).list);
+        }
+    }
+
     private void initEvents() {
         setRecyclerView();
+        setClickListeners4Group();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +182,10 @@ public class OrderReportActivity extends AppCompatActivity {
         reportFrequencyAdapter.setData(reportAgences.get(0).list);
         reportsOrderAdapter.setData(reportAgences.get(0).list.get(0).list);*/
 
-        APIClient.getAllReports(new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
+        AppUser u = new AppUser();
+        //set user id
+        u.id = Preference.pref.getString(CONST.USER_ID, "");
+        APIClient.getAllReports(u, new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportAgence>> response) {
                 if (failed) {
@@ -135,8 +193,7 @@ public class OrderReportActivity extends AppCompatActivity {
                 } else {
                     reportAgences = response._data;
                     MyLog.d("reportAgences: " + reportAgences);
-                    reportFrequencyAdapter.setData(reportAgences.get(0).list);
-                    reportsOrderAdapter.setData(reportAgences.get(0).list.get(0).list);
+                    updateReportAgences();
                 }
             }
         });

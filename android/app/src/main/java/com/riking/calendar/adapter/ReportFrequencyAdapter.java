@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.pojo.server.BaseModelPropdict;
-import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.OneTextViewHolder;
 
@@ -48,8 +47,6 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
                 //only update the the two columns
                 notifyItemChanged(checkedPosition);
                 notifyItemChanged(temp);
-                //update the report list
-                activity.reportsOrderAdapter.setData(activity.reportAgences.get(activity.orgonizeType).list.get(i).list);
             }
         });
     }
@@ -60,6 +57,9 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
             h.itemView.setBackgroundColor(ZR.getColor(R.color.white));
             //set the text color
             h.textView.setTextColor(ZR.getColor(R.color.color_222222));
+
+            //update the report list
+            activity.reportsOrderAdapter.setData(activity.reportAgences.get(activity.orgonizeType).list.get(position).list);
         } else {
             //set the background color
             h.itemView.setBackgroundColor(ZR.getColor(R.color.color_f4f4f4));

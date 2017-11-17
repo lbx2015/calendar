@@ -455,7 +455,7 @@ public class APIClient {
      * when user not login ,showing all reports
      */
     public static void getAllReports() {
-        APIClient.apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
+       /* APIClient.apiInterface.getAllReports(null).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
             @Override
             public void callBack(final ResponseModel<ArrayList<QueryReportContainer>> response) {
                 final Realm realm = Realm.getDefaultInstance();
@@ -484,7 +484,7 @@ public class APIClient {
                     }
                 });
             }
-        });
+        });*/
     }
 
     public static void checkUpdate(final CheckCallBack updateCallback) {
@@ -517,7 +517,7 @@ public class APIClient {
         apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
     }
 
-    public static void getAllReports( ZCallBackWithFail<ResponseModel<List<ReportAgence>>> c) {
-        apiInterface.getAllReports().enqueue(c);
+    public static void getAllReports( AppUser user,ZCallBackWithFail<ResponseModel<List<ReportAgence>>> c) {
+        apiInterface.getAllReports(user).enqueue(c);
     }
 }

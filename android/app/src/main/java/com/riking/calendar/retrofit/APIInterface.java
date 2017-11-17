@@ -98,19 +98,11 @@ public interface APIInterface {
     /**
      * get all reports when user not login
      *
-     * @param notUsed
      * @return
      */
     @POST("reportListApp/getAllReport")
-    Call<ResponseModel<ArrayList<QueryReportContainer>>> getAllReports(@Query("id") String notUsed);
+    Call<ResponseModel<List<ReportAgence>>> getAllReports(@Body AppUser user);
 
-    /**
-     * get all reports when user not login
-     *
-     * @return
-     */
-    @POST("reportListApp/getAllReport")
-    Call<ResponseModel<ArrayList<QueryReport>>> queryAllReports();
     @POST("appUserApp/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
@@ -173,11 +165,4 @@ public interface APIInterface {
      */
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
-
-    /**
-     * used to order reports
-     * @return
-     */
-    @POST("reportListApp/getAllReport")
-    Call<ResponseModel<List<ReportAgence>>> getAllReports();
 }

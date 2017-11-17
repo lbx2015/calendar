@@ -105,6 +105,7 @@
                     android:layout_weight="1">
 
                     <TextView
+                        android:id="@+id/first_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -112,7 +113,8 @@
                         android:textColor="@color/color_489dfff"
                         android:textSize="15sp" />
 
-                    <TextView
+                    <View
+                        android:id="@+id/first_group_divider"
                         android:layout_width="60dp"
                         android:layout_height="2dp"
                         android:layout_gravity="bottom|center_horizontal"
@@ -125,6 +127,7 @@
                     android:layout_weight="1">
 
                     <TextView
+                        android:id="@+id/second_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -132,7 +135,8 @@
                         android:textColor="@color/color_222222"
                         android:textSize="15sp" />
 
-                    <TextView
+                    <View
+                        android:id="@+id/second_group_divider"
                         android:layout_width="60dp"
                         android:layout_height="2dp"
                         android:layout_gravity="bottom|center_horizontal"
