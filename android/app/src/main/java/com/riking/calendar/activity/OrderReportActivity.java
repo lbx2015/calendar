@@ -192,6 +192,8 @@ public class OrderReportActivity extends AppCompatActivity {
 
                 } else {
                     reportAgences = response._data;
+                    firstGroupTv.setText(reportAgences.get(0).agenceName);
+                    secondGroupTv.setText(reportAgences.get(1).agenceName);
                     MyLog.d("reportAgences: " + reportAgences);
                     updateReportAgences();
                 }
