@@ -15,14 +15,11 @@ import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.BaseModelPropdict;
 import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,13 +27,15 @@ import java.util.List;
  */
 
 public class OrderReportActivity extends AppCompatActivity {
-    ZReportFlowLayout zReportFlowLayout;
-    TextView button;
-    boolean cancelOrder = false;
-    RecyclerView reportFrequencyRecyclerView;
-    RecyclerView reportsRecyclerViews;
-    ReportFrequencyAdapter reportFrequencyAdapter = new ReportFrequencyAdapter(this);
-    ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
+    public ZReportFlowLayout zReportFlowLayout;
+    public TextView button;
+    public boolean cancelOrder = false;
+    public RecyclerView reportFrequencyRecyclerView;
+    public RecyclerView reportsRecyclerViews;
+    public ReportFrequencyAdapter reportFrequencyAdapter = new ReportFrequencyAdapter(this);
+    public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
+    public List<ReportAgence> reportAgences;
+    public int orgonizeType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +133,7 @@ public class OrderReportActivity extends AppCompatActivity {
                 if (failed) {
 
                 } else {
-                    List<ReportAgence> reportAgences = response._data;
+                    reportAgences = response._data;
                     MyLog.d("reportAgences: " + reportAgences);
                     reportFrequencyAdapter.setData(reportAgences.get(0).list);
                     reportsOrderAdapter.setData(reportAgences.get(0).list.get(0).list);

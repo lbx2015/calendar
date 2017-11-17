@@ -1,13 +1,14 @@
 package com.riking.calendar.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.pojo.server.BaseModelPropdict;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.OneTextViewHolder;
 
@@ -18,12 +19,12 @@ import java.util.List;
 public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
     public List<BaseModelPropdict> mList;
-    private Context context;
+    private OrderReportActivity activity;
     //the default checked position is 0;
     private int checkedPosition = 0;
 
-    public ReportFrequencyAdapter(Context context) {
-        this.context = context;
+    public ReportFrequencyAdapter(OrderReportActivity activity) {
+        this.activity = activity;
         mList = new ArrayList<>();
     }
 
@@ -47,6 +48,8 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
                 //only update the the two columns
                 notifyItemChanged(checkedPosition);
                 notifyItemChanged(temp);
+                //update the report list
+                activity.reportsOrderAdapter.setData(activity.reportAgences.get(activity.orgonizeType).list.get(i).list);
             }
         });
     }

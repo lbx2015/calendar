@@ -5,6 +5,8 @@ package com.riking.calendar.util;
  */
 
 public class CONST {
+    public static final int CBRC = 0;
+    public static final int PBOC = 1;
     public static final byte REPEAT_FLAG_WEEK = 3;
     public static final byte REPEAT_FLAG_WORK_DAY = 1;
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
