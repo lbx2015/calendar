@@ -12,6 +12,8 @@ public class ReportFrequency {
 	
 	private String strFrency;
 	
+	private String isSubscribe;//用户是否订阅
+	
 	public ReportFrequency(String reportId,String reportName,String reportTitle,String isComplete,String strFrency){
 		this.reportId = reportId;
 		this.reportName = reportName;
@@ -58,6 +60,14 @@ public class ReportFrequency {
 
 	public void setStrFrency(String strFrency) {
 		this.strFrency = strFrency;
+	}
+
+	public String getIsSubscribe() {
+		return isSubscribe;
+	}
+
+	public void setIsSubscribe(String isSubscribe) {
+		this.isSubscribe = isSubscribe;
 	}
 	
 }
