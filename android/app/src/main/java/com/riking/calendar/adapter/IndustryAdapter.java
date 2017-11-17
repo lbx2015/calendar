@@ -12,18 +12,18 @@ import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
+import com.riking.calendar.viewholder.OneTextViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
+public class IndustryAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
     public List<Industry> mList;
     private Context context;
@@ -34,16 +34,16 @@ public class IndustryAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
     }
 
     @Override
-    public QuestionsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public OneTextViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.industry_item, viewGroup, false);
-        return new QuestionsViewHolder(view);
+        return new OneTextViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final QuestionsViewHolder h, int i) {
+    public void onBindViewHolder(final OneTextViewHolder h, int i) {
         final Industry industry = mList.get(i);
-        h.industryName.setText(industry.name);
+        h.textView.setText(industry.name);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

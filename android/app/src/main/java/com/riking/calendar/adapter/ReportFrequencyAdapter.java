@@ -12,20 +12,18 @@ import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.BaseModelPropdict;
-import com.riking.calendar.pojo.server.Industry;
-import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
+import com.riking.calendar.viewholder.OneTextViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHolder> {
+public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
     public List<BaseModelPropdict> mList;
     private Context context;
@@ -36,16 +34,16 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHo
     }
 
     @Override
-    public QuestionsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public OneTextViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.report_frequency_item, viewGroup, false);
-        return new QuestionsViewHolder(view);
+        return new OneTextViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final QuestionsViewHolder h, int i) {
+    public void onBindViewHolder(final OneTextViewHolder h, int i) {
         final BaseModelPropdict m = mList.get(i);
-        h.industryName.setText(m.valueName);
+        h.textView.setText(m.valueName);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +68,6 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<QuestionsViewHo
 
     @Override
     public int getItemCount() {
-        //TODO neeed to remove the +1(test only)
         return mList.size();
     }
 

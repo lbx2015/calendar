@@ -14,7 +14,7 @@
     <!--unselected page tab -->
     <color name="color_323232">#323232</color>
     <!--background color-->
-    <color name="color_background_f2f2f2">#f2f2f2</color>
+    <color name="color_f2f2f2">#f2f2f2</color>
     <color name="color_background_b6b6b6">#b6b6b6</color>
     <color name="hint_color">#cccccc</color>
     <color name="color_weekend_name">#ffab40</color>

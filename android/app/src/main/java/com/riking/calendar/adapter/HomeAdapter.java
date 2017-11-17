@@ -22,6 +22,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
 
 import java.util.ArrayList;
