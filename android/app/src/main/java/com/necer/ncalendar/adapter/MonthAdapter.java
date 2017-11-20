@@ -26,7 +26,6 @@ public class MonthAdapter extends CalendarAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        container.removeAllViews();//clear children firstly
         MonthView nMonthView = (MonthView) mCalendarViews.get(position);
         if (nMonthView == null) {
             int i = position - mCurr;
@@ -36,13 +35,18 @@ public class MonthAdapter extends CalendarAdapter {
             nMonthView.fragment = fragment;
         }
 
-        //Riking adding a parent view group for the month view
-        LinearLayout f = new LinearLayout(mContext);
-        LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        int m = (int) ZR.convertDpToPx(mContext, 10);
-        f.setPadding(m, 0, m, 0);
-        f.setLayoutParams(l);
-        f.addView(nMonthView);
+        LinearLayout f;
+        f = mCalendarLinearLayouts.get(position);
+        if (f == null) {
+            //Riking adding a parent view group for the month view
+            f = new LinearLayout(mContext);
+            LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            int m = (int) ZR.convertDpToPx(mContext, 10);
+            f.setPadding(m, 0, m, 0);
+            f.setLayoutParams(l);
+            f.addView(nMonthView);
+            mCalendarLinearLayouts.put(position, f);
+        }
         container.addView(f);
         return f;
     }

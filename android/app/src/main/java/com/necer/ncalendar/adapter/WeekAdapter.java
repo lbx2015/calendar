@@ -27,21 +27,26 @@ public class WeekAdapter extends CalendarAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        //clear children firstly
-        container.removeAllViews();
         WeekView nWeekView = (WeekView) mCalendarViews.get(position);
         if (nWeekView == null) {
             nWeekView = new WeekView(mContext, mDateTime.plusDays((position - mCurr) * 7), mOnClickWeekViewListener);
             mCalendarViews.put(position, nWeekView);
             nWeekView.fragment = fragment;
         }
-        //Riking adding a parent ViewGroup for the week view
-        LinearLayout f = new LinearLayout(mContext);
-        LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        int m = (int) ZR.convertDpToPx(mContext, 10);
-        f.setPadding(m, 0, m, 0);
-        f.setLayoutParams(l);
-        f.addView(nWeekView);
+
+
+        LinearLayout f;
+        f = mCalendarLinearLayouts.get(position);
+        if (f == null) {
+            //Riking adding a parent ViewGroup for the week view
+            f = new LinearLayout(mContext);
+            LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            int m = (int) ZR.convertDpToPx(mContext, 10);
+            f.setPadding(m, 0, m, 0);
+            f.setLayoutParams(l);
+            f.addView(nWeekView);
+            mCalendarLinearLayouts.put(position, f);
+        }
         container.addView(f);
         return f;
     }

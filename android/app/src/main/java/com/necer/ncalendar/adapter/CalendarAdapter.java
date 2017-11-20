@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.necer.ncalendar.view.CalendarView;
 import com.riking.calendar.fragment.WorkFragment;
@@ -24,6 +25,8 @@ public abstract class CalendarAdapter extends PagerAdapter {
     protected int mCount;//总页数
     protected int mCurr;//当前位置
     protected SparseArray<CalendarView> mCalendarViews;
+    //riking
+    protected SparseArray<LinearLayout> mCalendarLinearLayouts;
     protected DateTime mDateTime;
 
     public CalendarAdapter(Context mContext, int count, int curr, DateTime dateTime) {
@@ -32,6 +35,7 @@ public abstract class CalendarAdapter extends PagerAdapter {
         this.mCurr = curr;
         this.mCount = count;
         mCalendarViews = new SparseArray<>();
+        mCalendarLinearLayouts = new SparseArray<>();
     }
 
     @Override
