@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -28,10 +28,10 @@ import java.util.List;
 public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHolder> {
 
     public List<ReportFrequency> mList;
-    private OrderReportActivity activity;
+    private SubscribeReport subscribeReportListener;
 
-    public ReportsOrderAdapter(OrderReportActivity activity) {
-        this.activity = activity;
+    public ReportsOrderAdapter(SubscribeReport subscribeReportListener) {
+        this.subscribeReportListener = subscribeReportListener;
         mList = new ArrayList<>();
     }
 
@@ -47,9 +47,9 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
         final ReportFrequency r = mList.get(i);
         h.reportTitle.setText(r.reportTitle);
         h.reportName.setText(r.reportName);
-        if(r.isSubscribe.equals("0")){
-            h.subscribed =false;
-        }else {
+        if (r.isSubscribe == null || r.isSubscribe.equals("0")) {
+            h.subscribed = false;
+        } else {
             h.subscribed = true;
         }
 
@@ -80,9 +80,9 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
                 }
                 //update my orders
                 if (h.subscribed) {
-                    activity.orderReport(r);
+                    subscribeReportListener.orderReport(r);
                 } else {
-                    activity.unorderReport(r);
+                    subscribeReportListener.unorderReport(r);
                 }
             }
         });

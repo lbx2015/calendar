@@ -16,6 +16,7 @@ import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
+import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportRel;
@@ -37,7 +38,7 @@ import java.util.List;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class OrderReportActivity extends AppCompatActivity {
+public class OrderReportActivity extends AppCompatActivity implements SubscribeReport {
     public ZReportFlowLayout zReportFlowLayout;
     public TextView editButton;
     public boolean editMode = false;

@@ -27,6 +27,7 @@ import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportAgence;
+import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -521,7 +522,11 @@ public class APIClient {
         apiInterface.findUserReportList(user).enqueue(c);
     }
 
-    public static void userAddReportEdit( AppUserReportResult reportResult,ZCallBackWithFail<ResponseModel<Short>> z){
+    public static void userAddReportEdit(AppUserReportResult reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
         apiInterface.userAddReportEdit(reportResult).enqueue(z);
+    }
+
+    public static void getReportByName(HashMap<String, String> reportName, ZCallBackWithFail<ResponseModel<List<ReportFrequency>>> c) {
+        apiInterface.getReportByName(reportName).enqueue(c);
     }
 }
