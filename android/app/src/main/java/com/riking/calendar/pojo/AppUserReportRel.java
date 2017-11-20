@@ -24,6 +24,7 @@ public class AppUserReportRel {
     // 是否完成
 //	@Column(name = "is_complete", length = 32)
     public String isComplete;//0：未完成；1：已完成
+    public String reportName;//
     public AppUserReportRel(String reportId) {
         super();
         this.reportId = reportId;

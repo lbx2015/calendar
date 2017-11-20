@@ -43,10 +43,10 @@ public class ZDatePickerDialog extends BottomSheetDialog implements AbstractWhee
                     wheelDatePicker.pickerMonth.setVisibility(View.GONE);
                     isWholeMonth = false;
                     wholeMonthImage.setImageDrawable(getContext().getDrawable(R.drawable.not_checked_whole_month));
-                    Logger.d("zzw", "whole month not checked");
+                    Logger.d("zzw", "whole month not subscribed");
 
                 } else {
-                    Logger.d("zzw", "whole month checked");
+                    Logger.d("zzw", "whole month subscribed");
                     isWholeMonth = true;
                     wholeMonthImage.setImageDrawable(getContext().getDrawable(R.drawable.checked_whole_month));
                     //show month

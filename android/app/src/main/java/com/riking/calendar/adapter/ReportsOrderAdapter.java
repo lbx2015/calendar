@@ -1,6 +1,5 @@
 package com.riking.calendar.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -10,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.listener.ZCallBackWithFail;
@@ -28,10 +28,10 @@ import java.util.List;
 public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHolder> {
 
     public List<ReportFrequency> mList;
-    private Context context;
+    private OrderReportActivity activity;
 
-    public ReportsOrderAdapter(Context context) {
-        this.context = context;
+    public ReportsOrderAdapter(OrderReportActivity activity) {
+        this.activity = activity;
         mList = new ArrayList<>();
     }
 
@@ -47,20 +47,42 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
         final ReportFrequency r = mList.get(i);
         h.reportTitle.setText(r.reportTitle);
         h.reportName.setText(r.reportName);
+        if(r.isSubscribe.equals("0")){
+            h.subscribed =false;
+        }else {
+            h.subscribed = true;
+        }
+
+        //show subscribe or not subscribed.
+        if (h.subscribed) {
+            h.orderButton.setText("已订阅");
+            h.orderButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            h.orderButton.setTextColor(ZR.getColor(R.color.color_999999));
+            h.orderButton.setBackgroundColor(h.orderButton.getResources().getColor(R.color.white));
+        } else {
+            h.orderButton.setText("订阅");
+            h.orderButton.setTextColor(ZR.getColor(R.color.color_489dfff));
+            h.orderButton.setBackground(h.orderButton.getResources().getDrawable(R.drawable.rounded_order_button));
+        }
         h.orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (h.checked) {
-                    h.checked = false;
-                    h.orderButton.setText("已订阅");
-                    h.orderButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
-                    h.orderButton.setTextColor(ZR.getColor(R.color.color_999999));
-                    h.orderButton.setBackgroundColor(h.orderButton.getResources().getColor(R.color.white));
-                } else {
-                    h.checked = true;
+                if (h.subscribed) {
+                    h.subscribed = false;
                     h.orderButton.setText("订阅");
                     h.orderButton.setTextColor(ZR.getColor(R.color.color_489dfff));
                     h.orderButton.setBackground(h.orderButton.getResources().getDrawable(R.drawable.rounded_order_button));
+                } else {
+                    h.subscribed = true;
+                    h.orderButton.setText("已订阅");
+                    h.orderButton.setTextColor(ZR.getColor(R.color.color_999999));
+                    h.orderButton.setBackgroundColor(h.orderButton.getResources().getColor(R.color.white));
+                }
+                //update my orders
+                if (h.subscribed) {
+                    activity.orderReport(r);
+                } else {
+                    activity.unorderReport(r);
                 }
             }
         });

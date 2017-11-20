@@ -19,7 +19,7 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
 
     public List<BaseModelPropdict> mList;
     private OrderReportActivity activity;
-    //the default checked position is 0;
+    //the default subscribed position is 0;
     private int checkedPosition = 0;
 
     public ReportFrequencyAdapter(OrderReportActivity activity) {

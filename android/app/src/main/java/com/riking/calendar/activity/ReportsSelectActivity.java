@@ -127,7 +127,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     if (root.checked) {
-                                        //the report is not been checked
+                                        //the report is not been subscribed
                                         root.checked = false;
                                         //remove the report id form the result
                                         selectedReportIds.remove(r.reportId);
@@ -135,7 +135,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                         reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.color_222222));
                                         root.setBackground(root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                                     } else {
-                                        //the report is been checked.
+                                        //the report is been subscribed.
                                         root.checked = true;
                                         //add the report id into the result
                                         selectedReportIds.add(r.reportId);
