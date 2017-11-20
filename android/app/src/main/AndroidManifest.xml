@@ -105,15 +105,17 @@
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:theme="@style/AppThemeNoActionBar"
-            android:name=".activity.OrderReportActivity"/>
+            android:name=".activity.OrderReportActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.SearchReportActivity" />
         <activity android:name=".activity.MomentAddActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"
             android:hardwareAccelerated="true" />
         <activity
-            android:windowSoftInputMode="stateAlwaysVisible"
-            android:name=".activity.InputCellPhoneNumberActivity" />
+            android:name=".activity.InputCellPhoneNumberActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />

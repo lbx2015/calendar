@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -54,6 +55,7 @@ public class OrderReportActivity extends AppCompatActivity {
     //user subscriber reports
     List<AppUserReportRel> appUserReportRels;
     FrameLayout myOrderLayout;
+    View searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class OrderReportActivity extends AppCompatActivity {
         reportFrequencyRecyclerView = findViewById(R.id.report_frequency_recycler_view);
         reportsRecyclerViews = findViewById(R.id.report_recycler_view);
         myOrderLayout = findViewById(R.id.my_order_title);
+        searchButton = findViewById(R.id.search_button);
     }
 
     private void setClickListeners4Group() {
@@ -131,6 +134,12 @@ public class OrderReportActivity extends AppCompatActivity {
             public void onClick(View v) {
                 saveSubscribedReports();
                 updateEditMode();
+            }
+        });
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OrderReportActivity.this, SearchReportActivity.class));
             }
         });
     }
