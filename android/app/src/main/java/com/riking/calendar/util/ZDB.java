@@ -29,4 +29,8 @@ public class ZDB {
             }
         }
     }
+
+    public Realm getRealm(){
+        return Realm.getDefaultInstance();
+    }
 }

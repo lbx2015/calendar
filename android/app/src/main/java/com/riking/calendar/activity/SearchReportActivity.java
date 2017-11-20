@@ -5,40 +5,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.ReportFrequencyAdapter;
-import com.riking.calendar.adapter.ReportsOrderAdapter;
-import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
-import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
-import com.riking.calendar.util.ZR;
-import com.riking.calendar.view.OrderReportFrameLayout;
-import com.riking.calendar.view.ZReportFlowLayout;
-import com.riking.calendar.widget.dialog.SearchDialog;
+import com.riking.calendar.adapter.LocalSearchConditionAdapter;
+import com.riking.calendar.realm.model.SearchConditions;
+import com.riking.calendar.util.ZDB;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.realm.RealmResults;
 
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
 public class SearchReportActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    View localSearchTitle;
+    LocalSearchConditionAdapter localSearchConditionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +44,22 @@ public class SearchReportActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        recyclerView = findViewById(R.id.recycler_view);
+        localSearchTitle = findViewById(R.id.local_search_title);
     }
 
+    private void setRecyclerView() {
+        //set layout manager for the recycler view.
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //adding dividers.
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //set adapters
+        RealmResults<SearchConditions> realmResults = ZDB.Instance.getRealm().where(SearchConditions.class).findAll();
+        localSearchConditionAdapter = new LocalSearchConditionAdapter(this, realmResults);
+        recyclerView.setAdapter(localSearchConditionAdapter);
+    }
+
+    public void localSearchConditionIsEmpty() {
+
+    }
 }
