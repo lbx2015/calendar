@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
@@ -17,6 +18,7 @@ import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportRel;
+import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
@@ -27,6 +29,7 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +51,7 @@ public class OrderReportActivity extends AppCompatActivity {
     TextView secondGroupTv;
     View firstGroupDivider;
     View secondGroupDivider;
+    //user subscriber reports
     List<AppUserReportRel> appUserReportRels;
     FrameLayout myOrderLayout;
 
@@ -125,9 +129,33 @@ public class OrderReportActivity extends AppCompatActivity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDeleteMode();
+                saveSubscribedReports();
+                updateEditMode();
             }
         });
+    }
+
+    private void saveSubscribedReports() {
+        if (editMode) {
+            AppUserReportResult appUserReportResult = new AppUserReportResult();
+            appUserReportResult.userId = Preference.pref.getString(CONST.USER_ID, "");
+            appUserReportResult.list = new ArrayList<>();
+
+            for (AppUserReportRel r : appUserReportRels) {
+                appUserReportResult.list.add(r.reportId);
+            }
+
+            APIClient.userAddReportEdit(appUserReportResult, new ZCallBackWithFail<ResponseModel<Short>>() {
+                @Override
+                public void callBack(ResponseModel<Short> response) {
+                    if (failed) {
+                        Toast.makeText(OrderReportActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(OrderReportActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     private void setRecyclerView() {
@@ -225,13 +253,13 @@ public class OrderReportActivity extends AppCompatActivity {
         drawMyOrders();
         //enter edit mode if not.
         if (!editMode) {
-            updateDeleteMode();
+            updateEditMode();
         }
         //show the check image
         showCheckImage();
     }
 
-    public void updateDeleteMode() {
+    public void updateEditMode() {
         if (editMode) {
             editMode = false;
             editButton.setText("编辑");

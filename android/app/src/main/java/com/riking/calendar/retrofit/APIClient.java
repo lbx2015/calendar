@@ -520,4 +520,8 @@ public class APIClient {
     public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<AppUserReportRel>>> c) {
         apiInterface.findUserReportList(user).enqueue(c);
     }
+
+    public static void userAddReportEdit( AppUserReportResult reportResult,ZCallBackWithFail<ResponseModel<Short>> z){
+        apiInterface.userAddReportEdit(reportResult).enqueue(z);
+    }
 }

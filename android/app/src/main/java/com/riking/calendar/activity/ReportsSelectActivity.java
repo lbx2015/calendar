@@ -68,8 +68,8 @@ public class ReportsSelectActivity extends AppCompatActivity {
     public void onClickStart(View view) {
         if (selectedReportIds.size() > 0) {
             AppUserReportResult result = new AppUserReportResult();
-            result.setList(selectedReportIds);
-            result.setUserId(Preference.pref.getString(CONST.USER_ID, ""));
+            result.list=selectedReportIds;
+            result.userId = Preference.pref.getString(CONST.USER_ID, "");
             APIClient.interestingReports(result, new ZCallBackWithFail<ResponseModel<Short>>() {
                 @Override
                 public void callBack(ResponseModel<Short> response) {

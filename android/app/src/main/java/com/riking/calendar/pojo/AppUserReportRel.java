@@ -14,7 +14,7 @@ public class AppUserReportRel {
 //	@Column(name = "Id", length = 32)
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 //	@GeneratedValue(generator = "system-uuid")
-    public String id;
+//    public String id;
     // 用户ID
 //	@Column(name = "appUser_id", length = 32)
     public String appUserId;
