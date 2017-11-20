@@ -159,6 +159,10 @@ public class AppUser extends BaseEntity {
 	@Column(name = "is_guide",length =1 )
 	private String isGuide;//0：未引导；1：已引导
 	
+	private String page;//页数
+	
+	private String sTime;//查询时间
+	
 	//验证码
 	@Transient
 	private String valiCode;
@@ -363,6 +367,25 @@ public class AppUser extends BaseEntity {
 	
 	public void setIsGuide(String isGuide) {
 		this.isGuide = isGuide;
+	}
+	
+	public String getPage() {
+		return page;
+	}
+
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+
+	public String getsTime() {
+		return sTime;
+	}
+
+
+	public void setsTime(String sTime) {
+		this.sTime = sTime;
 	}
 
 
