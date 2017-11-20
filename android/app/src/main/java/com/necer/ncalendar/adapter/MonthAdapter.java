@@ -26,7 +26,7 @@ public class MonthAdapter extends CalendarAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
+        container.removeAllViews();//clear children firstly
         MonthView nMonthView = (MonthView) mCalendarViews.get(position);
         if (nMonthView == null) {
             int i = position - mCurr;

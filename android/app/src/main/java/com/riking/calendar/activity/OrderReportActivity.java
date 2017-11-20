@@ -209,7 +209,7 @@ public class OrderReportActivity extends AppCompatActivity {
         if (appUserReportRels.size() > 0) {
             myOrderLayout.setVisibility(View.VISIBLE);
             for (int i = 0; i < appUserReportRels.size(); i++) {
-                AppUserReportRel appUserReportRel = appUserReportRels.get(i);
+                final AppUserReportRel appUserReportRel = appUserReportRels.get(i);
                 //inflate the item view from layout xml
                 final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(OrderReportActivity.this).inflate(R.layout.my_order_report_item, null);
                 root.init();
@@ -219,6 +219,13 @@ public class OrderReportActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         zReportFlowLayout.removeView(root);
+                        appUserReportRels.remove(appUserReportRel);
+                        if (appUserReportRels.size() == 0) {
+                            //save the update when delete all the subscribed reports
+                            saveSubscribedReports();
+                            //hide the title
+                            myOrderLayout.setVisibility(View.GONE);
+                        }
                     }
                 });
                 zReportFlowLayout.addView(root);
