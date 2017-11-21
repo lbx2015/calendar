@@ -40,6 +40,7 @@ import io.realm.RealmResults;
 public class SearchReportActivity extends AppCompatActivity implements SubscribeReport {
 
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
+    public boolean editMode = false;
     RecyclerView recyclerView;
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
@@ -53,6 +54,8 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_report);
         init();
+
+        editMode = getIntent().getExtras().getBoolean(CONST.EDIT_MODE, false);
         /*//change the status bar color
         getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         StatusBarUtil.setTranslucent(this);*/
@@ -168,5 +171,15 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
 
             }
         });
+    }
+
+    @Override
+    public boolean isAddedToMyOrder(ReportFrequency report) {
+        return false;
+    }
+
+    @Override
+    public boolean isInEditMode() {
+        return editMode;
     }
 }

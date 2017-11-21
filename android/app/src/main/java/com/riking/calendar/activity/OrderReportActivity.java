@@ -141,7 +141,9 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrderReportActivity.this, SearchReportActivity.class));
+                Intent i = new Intent(OrderReportActivity.this, SearchReportActivity.class);
+                i.putExtra(CONST.EDIT_MODE, editMode);
+                startActivity(i);
             }
         });
     }
@@ -240,6 +242,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             Preference.pref.edit().remove(CONST.ORDER_REPORTS_CHANGED).commit();
             Preference.pref.edit().remove(CONST.ORDER_REPORTS).commit();
             Preference.pref.edit().remove(CONST.DIS_ORDER_REPORTS).commit();
+            reportsOrderAdapter.notifyDataSetChanged();
         }
 
     }
@@ -294,6 +297,18 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
                     public void onClick(View v) {
                         zReportFlowLayout.removeView(root);
                         appUserReportRels.remove(appUserReportRel);
+                        int changedPosition = -1;
+                        for (int i = 0; i < reportsOrderAdapter.mList.size(); i++) {
+                            ReportFrequency reportFrequency = reportsOrderAdapter.mList.get(i);
+                            if (reportFrequency.reportId.equals(appUserReportRel.reportId)) {
+                                changedPosition = i;
+                            }
+                        }
+
+                        //keep the status of subscribe to be consistent in the page.
+                        if (changedPosition > -1) {
+                            reportsOrderAdapter.notifyItemChanged(changedPosition);
+                        }
                         if (appUserReportRels.size() == 0) {
                             //save the update when delete all the subscribed reports
                             saveSubscribedReports();
@@ -327,6 +342,25 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             }
         }
         enterEditMode();
+    }
+
+    @Override
+    public boolean isAddedToMyOrder(ReportFrequency report) {
+        boolean added = false;
+        if (appUserReportRels != null) {
+            for (AppUserReportRel r : appUserReportRels) {
+                if (r.reportId.equals(report.reportId)) {
+                    added = true;
+                    break;
+                }
+            }
+        }
+        return added;
+    }
+
+    @Override
+    public boolean isInEditMode() {
+        return editMode;
     }
 
     public void enterEditMode() {
