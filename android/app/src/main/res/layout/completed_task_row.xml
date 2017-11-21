@@ -14,24 +14,29 @@
         android:id="@+id/smContentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/done"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/not_done" />
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/work_icon_checkbox_s" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginTop="18dp"
             android:layout_toEndOf="@+id/done"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_999999"
+            android:textSize="17sp" />
 
         <ImageView
             android:id="@+id/image_star"
@@ -41,7 +46,8 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:src="@drawable/not_important" />
+            android:src="@drawable/not_important"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
