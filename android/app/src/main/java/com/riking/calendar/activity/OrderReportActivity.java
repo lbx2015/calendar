@@ -59,6 +59,10 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     FrameLayout myOrderLayout;
     View searchButton;
 
+    public void clickBack(final View view) {
+        onBackPressed();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
