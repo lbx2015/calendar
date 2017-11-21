@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
@@ -17,7 +16,6 @@ import net.riking.entity.model.Days;
 import net.riking.entity.model.QueryReport;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
-import net.riking.entity.model.ReportList;
 import net.riking.entity.model.SynResult;
 import net.riking.entity.model.Todo;
 import net.riking.service.ReportSubmitCaliberService;

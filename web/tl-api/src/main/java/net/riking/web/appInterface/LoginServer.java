@@ -14,15 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.aliyuncs.exceptions.ClientException;
-
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AliSme;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserReportRel;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.service.repo.AppUserReportRelRepo;
@@ -128,11 +125,11 @@ public class LoginServer {
 				AppUser appUser3 = new AppUser(appUser.getTelephone(),appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
 						"1", "1","0800",user.getOpenId(),user.getIsSubscribe(),user.getIsGuide());
 				appUser2 = appUserRepo.save(appUser3);
-				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
-				for (AppUserReportRel appUserReportRel : appUserReportRels) {
-					appUserReportRel.setAppUserId(appUser2.getId());
-				}
-				appUserReportRelRepo.save(appUserReportRels);
+//				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
+//				for (AppUserReportRel appUserReportRel : appUserReportRels) {
+//					appUserReportRel.setAppUserId(appUser2.getId());
+//				}
+//				appUserReportRelRepo.save(appUserReportRels);
 				logger.info("{}注册成功", appUser.getName());
 			}
 			sysDataService.delAppUser(user);

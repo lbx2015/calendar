@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
@@ -25,6 +26,7 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
 import com.riking.calendar.util.ZDB;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,6 +44,9 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
+    List<AppUserReportRel> orderReports;
+    List<AppUserReportRel> disOrderReports;
+    private boolean subscribedReportsChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,17 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         /*//change the status bar color
         getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         StatusBarUtil.setTranslucent(this);*/
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (subscribedReportsChanged) {
+            Gson gson = new Gson();
+            Preference.put(CONST.ORDER_REPORTS_CHANGED, true);
+            Preference.put(CONST.ORDER_REPORTS, gson.toJson(orderReports));
+            Preference.put(CONST.DIS_ORDER_REPORTS, gson.toJson(disOrderReports));
+        }
     }
 
     void init() {
@@ -80,7 +96,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
                 if (s.length() > 0) {
                     HashMap<String, String> reportName = new LinkedHashMap<>(1);
                     reportName.put("reportName", s.toString());
-                    reportName.put("userId", Preference.pref.getString(CONST.USER_ID,""));
+                    reportName.put("userId", Preference.pref.getString(CONST.USER_ID, ""));
                     APIClient.getReportByName(reportName, new ZCallBackWithFail<ResponseModel<List<ReportFrequency>>>() {
                         @Override
                         public void callBack(ResponseModel<List<ReportFrequency>> response) {
@@ -113,11 +129,17 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     public void orderReport(ReportFrequency report) {
+        if (orderReports == null) {
+            orderReports = new ArrayList<>();
+        }
+
+        subscribedReportsChanged = true;
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
-
+        a.type = "1";
+        orderReports.add(a);
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
@@ -127,6 +149,24 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     public void unorderReport(ReportFrequency report) {
-    }
+        if (disOrderReports == null) {
+            disOrderReports = new ArrayList<>();
+        }
 
+        subscribedReportsChanged = true;
+        AppUserReportRel a = new AppUserReportRel();
+        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+        a.reportId = report.reportId;
+        a.reportName = report.reportName;
+        a.type = "0";
+
+        disOrderReports.add(a);
+
+        APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+
+            }
+        });
+    }
 }

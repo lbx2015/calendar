@@ -6,14 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
@@ -24,7 +21,6 @@ import net.riking.entity.model.AppUserReportResult;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.QueryReport;
-import net.riking.entity.model.ReportList;
 import net.riking.entity.model.ReportResult;
 import net.riking.service.ReportLisService;
 import net.riking.service.ReportSubmitCaliberService;

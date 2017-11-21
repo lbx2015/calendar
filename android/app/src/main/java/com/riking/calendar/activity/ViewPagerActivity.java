@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,14 +38,16 @@ import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.HomeFragment;
-import com.riking.calendar.fragment.PlazaFragment;
 import com.riking.calendar.fragment.WorkFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.AppInnerDownLoder;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DownLoadApk;
+import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZGoto;
 
 import java.util.List;
 
@@ -60,10 +61,10 @@ public class ViewPagerActivity extends AppCompatActivity {
     //huanxin end
     //Tab 图片
     private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
-//    private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
+    //    private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(),new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
-//    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new PlazaFragment(), new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
+    //    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new PlazaFragment(), new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
     //Tab 数目
     private final int COUNT = TAB_FRAGMENTS.length;
     // user logged into another device
@@ -332,6 +333,28 @@ public class ViewPagerActivity extends AppCompatActivity {
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
         setTabs(mTabLayout, this.getLayoutInflater(), mTitles, TAB_IMGS);
+
+        //adding page change listener
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1) {
+                    if (!Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+                        ZGoto.toLoginActivity(ViewPagerActivity.this);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /**

@@ -957,7 +957,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 //        tv_date.setText(dateTime.getYear() + "年" + dateTime.getMonthOfYear() + "月" + dateTime.getDayOfMonth() + "日");
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
