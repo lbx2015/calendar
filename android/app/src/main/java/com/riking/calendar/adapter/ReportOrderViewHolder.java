@@ -23,7 +23,7 @@ public class ReportOrderViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.order)
     public TextView orderButton;
 
-    public boolean checked;
+    public boolean subscribed;
 
     public ReportOrderViewHolder(View itemView) {
         super(itemView);

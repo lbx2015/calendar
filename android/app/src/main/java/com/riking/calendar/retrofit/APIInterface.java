@@ -24,6 +24,7 @@ import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportAgence;
+import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
@@ -171,4 +172,13 @@ public interface APIInterface {
      */
     @POST("/appUserReport/findUserReportList")
     Call<ResponseModel<List<AppUserReportRel>>>  findUserReportList(@Body AppUser user);
+
+    @POST("/appUserReport/userAddReportEdit")
+    Call<ResponseModel<Short>>   userAddReportEdit(@Body AppUserReportResult reportResult);
+
+    @POST("/reportListApp/getReportByName")
+    Call<ResponseModel<List<ReportFrequency>>> getReportByName(@Body HashMap<String,String> reporName);
+    @POST("/appUserReport/updateuserReportRelById")
+    Call<ResponseModel<String>>  updateUserReportRelById(@Body AppUserReportRel reportRel);
+
 }

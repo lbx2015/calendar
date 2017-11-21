@@ -39,13 +39,13 @@ public class InterestingReportAdapter extends RecyclerView.Adapter<InterestingRe
             @Override
             public void onClick(View v) {
                 if (h.checked) {
-                    //the report is not been checked
+                    //the report is not been subscribed
                     h.checked = false;
                     h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.drawable.login_icon_add));
                     h.reportName.setTextColor(h.reportName.getResources().getColor(R.color.black_deep));
                     h.root.setBackground(h.root.getResources().getDrawable(R.drawable.not_selected__interesting_reports_background));
                 } else {
-                    //the report is been checked.
+                    //the report is been subscribed.
                     h.checked = true;
                     h.checkImage.setImageDrawable(h.checkImage.getResources().getDrawable(R.drawable.login_icon_dh));
                     h.reportName.setTextColor(h.reportName.getResources().getColor(R.color.white));

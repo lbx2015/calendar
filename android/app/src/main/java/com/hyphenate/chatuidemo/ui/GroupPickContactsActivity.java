@@ -175,7 +175,7 @@ public class GroupPickContactsActivity extends BaseActivity {
 
 					}
 				});
-				// keep exist members checked
+				// keep exist members subscribed
 				if (existMembers.contains(username)) {
 						checkBox.setChecked(true);
 						isCheckedArray[position] = true;

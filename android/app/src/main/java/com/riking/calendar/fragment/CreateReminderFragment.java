@@ -109,7 +109,7 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
             boolean skipFirstTime;
 
             {
-                //Fix the first timeView when call switch toggle method , the checked method is invoked.
+                //Fix the first timeView when call switch toggle method , the subscribed method is invoked.
                 if (isAllDay == 1) {
                     skipFirstTime = true;
                 }

@@ -14,7 +14,7 @@ import com.riking.calendar.R;
  */
 
 public class OrderReportFrameLayout extends FrameLayout {
-    //Whether the report is checked
+    //Whether the report is subscribed
     public boolean checked;
     public TextView reportNameTV;
     public ImageView checkImage;
