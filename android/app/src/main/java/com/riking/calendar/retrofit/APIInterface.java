@@ -178,4 +178,7 @@ public interface APIInterface {
 
     @POST("/reportListApp/getReportByName")
     Call<ResponseModel<List<ReportFrequency>>> getReportByName(@Body HashMap<String,String> reporName);
+    @POST("/appUserReport/updateuserReportRelById")
+    Call<ResponseModel<String>>  updateUserReportRelById(@Body AppUserReportRel reportRel);
+
 }

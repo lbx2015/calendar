@@ -529,4 +529,8 @@ public class APIClient {
     public static void getReportByName(HashMap<String, String> reportName, ZCallBackWithFail<ResponseModel<List<ReportFrequency>>> c) {
         apiInterface.getReportByName(reportName).enqueue(c);
     }
+
+    public static void updateUserReportRelById( AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c){
+        apiInterface.updateUserReportRelById(reportRel).enqueue(c);
+    }
 }

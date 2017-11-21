@@ -14,6 +14,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.interfeet.SubscribeReport;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -68,12 +69,10 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -81,6 +80,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
                 if (s.length() > 0) {
                     HashMap<String, String> reportName = new LinkedHashMap<>(1);
                     reportName.put("reportName", s.toString());
+                    reportName.put("userId", Preference.pref.getString(CONST.USER_ID,""));
                     APIClient.getReportByName(reportName, new ZCallBackWithFail<ResponseModel<List<ReportFrequency>>>() {
                         @Override
                         public void callBack(ResponseModel<List<ReportFrequency>> response) {
@@ -117,6 +117,13 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
+
+        APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+
+            }
+        });
     }
 
     public void unorderReport(ReportFrequency report) {
