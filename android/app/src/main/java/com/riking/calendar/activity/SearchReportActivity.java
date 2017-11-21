@@ -117,6 +117,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
+        a.type="1";
 
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
@@ -127,6 +128,18 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     public void unorderReport(ReportFrequency report) {
+        AppUserReportRel a = new AppUserReportRel();
+        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+        a.reportId = report.reportId;
+        a.reportName = report.reportName;
+        a.type= "0";
+
+        APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+
+            }
+        });
     }
 
 }
