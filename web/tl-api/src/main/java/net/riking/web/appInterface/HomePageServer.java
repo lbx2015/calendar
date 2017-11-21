@@ -1,20 +1,16 @@
 package net.riking.web.appInterface;
 
 import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.TopicFollow;
 import net.riking.entity.model.TopicQuestionResult;
 import net.riking.service.HomePageService;
 import net.riking.service.repo.ScreenRepo;
@@ -82,9 +78,9 @@ public class HomePageServer {
 	
 	//查询关注的好友赞的回答
 	public void findUserFollowQuestion(AppUser appUser){
-		String userId = appUser.getId();
-		String page = appUser.getPage();//页数
-		String sTime = appUser.getsTime();
+//		String userId = appUser.getId();
+//		String page = appUser.getPage();//页数
+//		String sTime = appUser.getsTime();
 		
 //		SELECT
 //		p.id,
