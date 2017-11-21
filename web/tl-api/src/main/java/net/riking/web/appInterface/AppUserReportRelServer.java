@@ -6,11 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
@@ -21,6 +23,7 @@ import net.riking.entity.model.AppUserReportResult;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.QueryReport;
+import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportResult;
 import net.riking.service.ReportLisService;
 import net.riking.service.ReportSubmitCaliberService;
@@ -131,8 +134,8 @@ public class AppUserReportRelServer {
 	@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
 	@RequestMapping(value = "/findUserReportList", method = RequestMethod.POST)
 	public AppResp findUserReportList(@RequestBody AppUser appUser){
-		//List<AppUserReportRel> list = appUserReportRepo.findUserReportList(appUser.getId());
-		List<AppUserReportRel> list = reportLisService.findAppUserReportById(appUser.getId());
+		//List<Report> list = appUserReportRepo.findUserReportList(appUser.getId());
+		List<ReportFrequency> list = reportLisService.findAppUserReportById(appUser.getId());
 		return new AppResp(list,CodeDef.SUCCESS);
 	}
 	

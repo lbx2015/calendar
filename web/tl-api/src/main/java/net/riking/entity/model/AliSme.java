@@ -9,7 +9,7 @@ public class AliSme {
 	private String templateCode;
 	// 验证码
 	private String verificationCode;
-
+	
 	public AliSme() {
 		super();
 	}
