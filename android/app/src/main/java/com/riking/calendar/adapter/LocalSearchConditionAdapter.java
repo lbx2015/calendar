@@ -39,6 +39,9 @@ public class LocalSearchConditionAdapter extends RecyclerView.Adapter<OneTextVie
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                activity.reportSearchCondition = m.name;
+                activity.performSearch();
+                activity.saveToRealm();
             }
         });
     }
@@ -47,7 +50,7 @@ public class LocalSearchConditionAdapter extends RecyclerView.Adapter<OneTextVie
     public int getItemCount() {
         int size = mList.size();
         //empty notice
-        if(size == 0){
+        if (size == 0) {
             activity.localSearchConditionIsEmpty();
         }
         return size;

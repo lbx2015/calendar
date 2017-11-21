@@ -526,7 +526,7 @@ public class APIClient {
         apiInterface.userAddReportEdit(reportResult).enqueue(z);
     }
 
-    public static void getReportByName(HashMap<String, String> reportName, ZCallBackWithFail<ResponseModel<List<ReportFrequency>>> c) {
+    public static void getReportByName(HashMap<String, String> reportName, ZCallBack<ResponseModel<List<ReportFrequency>>> c) {
         apiInterface.getReportByName(reportName).enqueue(c);
     }
 
