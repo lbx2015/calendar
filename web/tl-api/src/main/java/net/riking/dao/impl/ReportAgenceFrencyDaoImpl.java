@@ -92,7 +92,7 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "SELECT t.Id,t.report_name,t.report_title,group_concat(c.frequency ORDER BY c.frequency ASC) AS strFrequency FROM t_report_list t LEFT JOIN t_report_submit_caliber c ON t.Id = c.report_id WHERE (t.report_name LIKE CONCAT('','"+reportName+"','%') OR t.report_title LIKE CONCAT('','"+reportName+"','%')) GROUP BY t.id";
+		String sql = "SELECT t.Id,t.report_name,t.report_title,group_concat(c.frequency ORDER BY c.frequency ASC) AS strFrequency FROM t_report_list t LEFT JOIN t_report_submit_caliber c ON t.Id = c.report_id WHERE (t.report_name LIKE CONCAT('%','"+reportName+"','%') OR t.report_title LIKE CONCAT('%','"+reportName+"','%')) GROUP BY t.id";
 		PreparedStatement pstmt = null;
 		List<ReportFrequency> list = new ArrayList<>();
 		try {

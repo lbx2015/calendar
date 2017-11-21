@@ -104,13 +104,13 @@ public class AppUserReportRelServer {
 		return new AppResp(listes, CodeDef.SUCCESS);
 	}
 	
-	@ApiOperation(value = "用户添加所属报表", notes = "POST")
-	@RequestMapping(value = "/userAddReport", method = RequestMethod.POST)
-	public AppResp userAddReport_(@ModelAttribute String appUserId){
-		Set<String>  reportIds = appUserReportRepo.findbyAppUserId(appUserId);
-		List<ReportList> reportLists = reportListRepo.findByReoprtId(reportIds);
-		return new AppResp(reportLists, CodeDef.SUCCESS);
-	}
+//	@ApiOperation(value = "用户添加所属报表", notes = "POST")
+//	@RequestMapping(value = "/userAddReport", method = RequestMethod.POST)
+//	public AppResp userAddReport_(@ModelAttribute String appUserId){
+//		Set<String>  reportIds = appUserReportRepo.findbyAppUserId(appUserId);
+//		List<ReportList> reportLists = reportListRepo.findByReoprtId(reportIds);
+//		return new AppResp(reportLists, CodeDef.SUCCESS);
+//	}
 	
 //	@ApiOperation(value = "获取行业列表", notes = "POST")
 //	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
@@ -146,41 +146,53 @@ public class AppUserReportRelServer {
 		//根据userId查询出数据库里订阅的List
 		//List<AppUserReportRel> list = appUserReportRepo.findUserReportList(appUserReportResult.getUserId());
 		List<String> idList = appUserReportResult.getList();//传过来的id集合
-		if(idList.size() == 0){
-			//全部删除
-			appUserReportRepo.deleteReportRelByUserId(appUserReportResult.getUserId());
-		}else{
-			//根据id查询用户订阅的报表
-			List<String> list = appUserReportRepo.findReportByUserId(appUserReportResult.getUserId());
-			
-			AppUserReportRel appUserReportRel = null;
-			if(list != null && list.size() > 0){//之前有订阅
-				//传过来的集合 和 数据库集合 差集
-				idList.removeAll(list);
-				for (String string : idList) {
-					appUserReportRel = new AppUserReportRel();
-					appUserReportRel.setAppUserId(appUserReportResult.getUserId());
-					appUserReportRel.setReportId(string);
-					appUserReportRel.setIsComplete("0");//未完成
-					appUserReportRepo.save(appUserReportRel);
-				}
-				
-				List<String> idList2 = appUserReportResult.getList();//传过来的id集合
-				list.removeAll(idList2);
-				if(list !=null && list.size() > 0){
-					String strList = String.join(",", list);
-					appUserReportRepo.deleteReportRel(appUserReportResult.getUserId(), strList);
-				}
-			}else{//没有订阅过
-				for (String string : idList) {
-					appUserReportRel = new AppUserReportRel();
-					appUserReportRel.setAppUserId(appUserReportResult.getUserId());
-					appUserReportRel.setReportId(string);
-					appUserReportRel.setIsComplete("0");//未完成
-					appUserReportRepo.save(appUserReportRel);
-				}
-			}
+		//全部删除
+		appUserReportRepo.deleteReportRelByUserId(appUserReportResult.getUserId());
+		
+		//批量插入
+		AppUserReportRel appUserReportRel = null;
+		for (String string : idList) {
+			appUserReportRel = new AppUserReportRel();
+			appUserReportRel.setAppUserId(appUserReportResult.getUserId());
+			appUserReportRel.setReportId(string);
+			appUserReportRel.setIsComplete("0");//未完成
+			appUserReportRepo.save(appUserReportRel);
 		}
+//		if(idList.size() == 0){
+//			//全部删除
+//			appUserReportRepo.deleteReportRelByUserId(appUserReportResult.getUserId());
+//		}else{
+//			//根据id查询用户订阅的报表
+//			List<String> list = appUserReportRepo.findReportByUserId(appUserReportResult.getUserId());
+//			
+//			AppUserReportRel appUserReportRel = null;
+//			if(list != null && list.size() > 0){//之前有订阅
+//				List<String> idList2 = appUserReportResult.getList();//传过来的id集合
+//				//传过来的集合 和 数据库集合 差集
+//				idList.removeAll(list);
+//				for (String string : idList) {
+//					appUserReportRel = new AppUserReportRel();
+//					appUserReportRel.setAppUserId(appUserReportResult.getUserId());
+//					appUserReportRel.setReportId(string);
+//					appUserReportRel.setIsComplete("0");//未完成
+//					appUserReportRepo.save(appUserReportRel);
+//				}
+//				
+//				list.removeAll(idList2);
+//				if(list !=null && list.size() > 0){
+//					String strList = String.join(",", list);
+//					appUserReportRepo.deleteReportRel(appUserReportResult.getUserId(), strList);
+//				}
+//			}else{//没有订阅过
+//				for (String string : idList) {
+//					appUserReportRel = new AppUserReportRel();
+//					appUserReportRel.setAppUserId(appUserReportResult.getUserId());
+//					appUserReportRel.setReportId(string);
+//					appUserReportRel.setIsComplete("0");//未完成
+//					appUserReportRepo.save(appUserReportRel);
+//				}
+//			}
+//		}
 		
 		return new AppResp(CodeDef.SUCCESS);
 	}
@@ -188,7 +200,13 @@ public class AppUserReportRelServer {
 	@ApiOperation(value = "新增报表订阅", notes = "POST")
 	@RequestMapping(value = "/updateUserReportRelById", method = RequestMethod.POST)
 	public AppResp updateUserReportRelById(@RequestBody AppUserReportRel appUserReportRel){
-		appUserReportRepo.save(appUserReportRel);
+		if(appUserReportRel.getType().equals("0")){//取消订阅
+			appUserReportRepo.deleteReportRelByUserIdAndReportId(appUserReportRel.getAppUserId(),appUserReportRel.getReportId());
+		}else{
+			appUserReportRel.setIsComplete("1");
+			appUserReportRepo.save(appUserReportRel);
+		}
+		
 		 return new AppResp(CodeDef.SUCCESS);
 	}
 	

@@ -49,6 +49,8 @@ public class AppUserReportRel extends BaseEntity {
 	
 	private String reportName;//报表名称
 	
+	private String type;
+	
 	public AppUserReportRel(String appUserId,String reportId,String isComplete,String reportName){
 		this.appUserId = appUserId;
 		this.reportId = reportId;
@@ -95,6 +97,14 @@ public class AppUserReportRel extends BaseEntity {
 
 	public void setReportName(String reportName) {
 		this.reportName = reportName;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Override

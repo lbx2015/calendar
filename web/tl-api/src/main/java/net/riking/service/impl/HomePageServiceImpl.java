@@ -21,9 +21,9 @@ public class HomePageServiceImpl implements HomePageService{
 	}
 
 	@Override
-	public List<TopicQuestionResult> findNotTopicQuestion(String page, String pageCount, String sTime,String strList) {
+	public List<TopicQuestionResult> findNotTopicQuestion(String userId, String page,String pageCount,String sTime) {
 		// TODO Auto-generated method stub
-		return homePageDao.findNotTopicQuestion(page, pageCount, sTime,strList);
+		return homePageDao.findNotTopicQuestion(userId, page,pageCount,sTime);
 	}
 	
 }

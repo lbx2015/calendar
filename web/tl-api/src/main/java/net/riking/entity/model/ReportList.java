@@ -89,6 +89,8 @@ public class ReportList extends PageQuery {
 	@Column(name = "delete_state", length = 1)
 	private String deleteState;
 	
+	private String userId;
+	
 	public String getId() {
 		return id;
 	}
@@ -215,6 +217,14 @@ public class ReportList extends PageQuery {
 
 	public void setReportTitle(String reportTitle) {
 		this.reportTitle = reportTitle;
+	}
+	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	@Override

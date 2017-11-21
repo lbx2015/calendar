@@ -153,9 +153,24 @@ public class AppReportListServer {
 	 */
 	@ApiOperation(value = "根据报表名称查询报表列表", notes = "POST")
 	@RequestMapping(value = "/getReportByName", method = RequestMethod.POST)
-	public AppResp getReportByName(@RequestBody ReportList reportList ){
+	public AppResp getReportByName(@RequestBody ReportList reportList){
 		//List<ReportList> list = reportListRepo.findReportByreportName(reportList.getReportName());
 		List<ReportFrequency> list = reportAgenceFrencyService.findReportListByName(reportList.getReportName());
+		if(StringUtils.isNotBlank(reportList.getUserId())){//用户id 不为空 判断报表是否订阅
+			AppUserReportRel appUserReportRel = null;
+			if(list != null && list.size() > 0){
+				for (ReportFrequency frency : list) {
+					//根据用户id和 报表id 查询 此用户是否订阅
+					appUserReportRel = appUserReportRepo.findByUserIdAndReportId(reportList.getUserId(), frency.getReportId());
+					if(null != appUserReportRel){//不为空 则是已经订阅的
+						frency.setIsSubscribe("1");
+					}else{//为空
+						frency.setIsSubscribe("0");
+					}
+				}
+			}
+		}
+	
 		return new AppResp(list,CodeDef.SUCCESS);
 	}
 }
