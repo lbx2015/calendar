@@ -14,15 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.aliyuncs.exceptions.ClientException;
-
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AliSme;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserReportRel;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.service.repo.AppUserReportRelRepo;
