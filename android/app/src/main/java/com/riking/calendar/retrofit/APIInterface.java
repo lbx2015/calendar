@@ -171,7 +171,7 @@ public interface APIInterface {
      * find the repords of user ordered
      */
     @POST("/appUserReport/findUserReportList")
-    Call<ResponseModel<List<AppUserReportRel>>>  findUserReportList(@Body AppUser user);
+    Call<ResponseModel<List<ReportFrequency>>>  findUserReportList(@Body AppUser user);
 
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>>   userAddReportEdit(@Body AppUserReportResult reportResult);

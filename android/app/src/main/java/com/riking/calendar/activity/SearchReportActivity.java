@@ -45,8 +45,8 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
-    List<AppUserReportRel> orderReports;
-    List<AppUserReportRel> disOrderReports;
+    List<ReportFrequency> orderReports;
+    List<ReportFrequency> disOrderReports;
     private boolean subscribedReportsChanged = false;
 
     @Override
@@ -142,7 +142,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         a.reportId = report.reportId;
         a.reportName = report.reportName;
         a.type = "1";
-        orderReports.add(a);
+        orderReports.add(report);
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
@@ -163,7 +163,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         a.reportName = report.reportName;
         a.type = "0";
 
-        disOrderReports.add(a);
+        disOrderReports.add(report);
 
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override

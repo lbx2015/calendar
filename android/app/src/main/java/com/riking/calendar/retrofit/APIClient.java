@@ -518,7 +518,7 @@ public class APIClient {
         apiInterface.getAllReports(user).enqueue(c);
     }
 
-    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<AppUserReportRel>>> c) {
+    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportFrequency>>> c) {
         apiInterface.findUserReportList(user).enqueue(c);
     }
 
