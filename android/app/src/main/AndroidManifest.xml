@@ -107,8 +107,8 @@
         <activity
             android:name=".activity.OrderReportActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".activity.SearchReportActivity" />
+        <activity android:name=".activity.SearchReportActivity" />
+        <activity android:name=".activity.CreateTaskActivity" />
         <activity android:name=".activity.MomentAddActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"

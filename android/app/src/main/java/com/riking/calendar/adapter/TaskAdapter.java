@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.AddRemindActivity;
+import com.riking.calendar.activity.CreateTaskActivity;
 import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
@@ -122,7 +122,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 @Override
                 public void onClick(View v) {
                     //adding to do s
-                    MyApplication.mCurrentActivity.startActivity(new Intent(v.getContext(), AddRemindActivity.class));
+                    MyApplication.mCurrentActivity.startActivity(new Intent(v.getContext(), CreateTaskActivity.class));
+//                    MyApplication.mCurrentActivity.startActivity(new Intent(v.getContext(), AddRemindActivity.class));
                 }
             });
         }
