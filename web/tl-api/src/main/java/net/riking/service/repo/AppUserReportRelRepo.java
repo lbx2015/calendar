@@ -44,7 +44,7 @@ public interface AppUserReportRelRepo  extends JpaRepository<AppUserReportRel, S
 	@Query("delete from AppUserReportRel b where b.appUserId = ?1 and b.reportId in(?2)")
 	public int deleteReportRel(String userId,String reportId);
 	
-	@Query(" from AppUserReportRel t where t.appUserId = ?1 and t.reportId =?2")
+	@Query("select t.id,t.appUserId,t.reportId,t.isComplete from AppUserReportRel t where t.appUserId = ?1 and t.reportId =?2")
 	AppUserReportRel findByUserIdAndReportId(String userId,String reportId);
 	
 	@Transactional
