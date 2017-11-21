@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.ReportFrequencyAdapter;
@@ -181,6 +182,69 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
 
         reportsRecyclerViews.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
+        loadReport();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateOrderReports();
+    }
+
+    private void updateOrderReports() {
+        if (Preference.pref.getBoolean(CONST.ORDER_REPORTS_CHANGED, false)) {
+            Preference.put(CONST.ORDER_REPORTS_CHANGED, false);
+
+            Gson gson = new Gson();
+            final AppUserReportRel[] orderReports = gson.fromJson(Preference.pref.getString(CONST.ORDER_REPORTS, ""), AppUserReportRel[].class);
+            final AppUserReportRel[] disOrderReports = gson.fromJson(Preference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), AppUserReportRel[].class);
+            boolean reportAdded = false;
+            if (orderReports != null) {
+                for (int i = 0; i < orderReports.length; i++) {
+                    if (appUserReportRels == null) {
+                        break;
+                    }
+                    reportAdded = false;
+                    for (AppUserReportRel r : appUserReportRels) {
+                        if (r.reportId.equals(orderReports[i].reportId)) {
+                            reportAdded = true;
+                            break;
+                        }
+                    }
+
+                    //if not added to my subscribed, add it
+                    if (!reportAdded) {
+                        appUserReportRels.add(orderReports[i]);
+                    }
+
+                }
+            }
+
+            if (disOrderReports != null) {
+                for (int i = 0; i < disOrderReports.length; i++) {
+                    if (appUserReportRels == null) {
+                        break;
+                    }
+                    for (AppUserReportRel r : appUserReportRels) {
+                        if (r.reportId.equals(disOrderReports[i].reportId)) {
+                            appUserReportRels.remove(r);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            enterEditMode();
+
+            //delete the preference for temp transfer value
+            Preference.pref.edit().remove(CONST.ORDER_REPORTS_CHANGED).commit();
+            Preference.pref.edit().remove(CONST.ORDER_REPORTS).commit();
+            Preference.pref.edit().remove(CONST.DIS_ORDER_REPORTS).commit();
+        }
+
+    }
+
+    private void loadReport() {
         //request all reports
         AppUser u = new AppUser();
         //set user id
@@ -266,7 +330,10 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     }
 
     public void enterEditMode() {
-
+        //adding null protection
+        if (appUserReportRels == null) {
+            return;
+        }
         drawMyOrders();
         //enter edit mode if not.
         if (!editMode) {

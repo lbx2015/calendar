@@ -12,7 +12,7 @@ public class CONST {
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
     public static final byte NOT_REPEAT_FLAG_WEEK = 0;
     public static final String URL_BASE = "http://172.16.64.185:8281/";
-//    public static final String URL_BASE = "http://172.16.32.14:6061/tl-api/";
+    //    public static final String URL_BASE = "http://172.16.32.14:6061/tl-api/";
     public static final String DEFAUT_REALM_DATABASE_NAME = "rkdb";
     public static final byte DELETE = 1;
     public static final byte ADD = 2;
@@ -50,6 +50,10 @@ public class CONST {
     public static final String IMAGE_URL = "IMAGE_URL";
     public static final String INDUSTRY_ID = "INDUSTRY_ID";
     public static final String POSITION_ID = "POSITION_ID";
+    public static final String ORDER_REPORTS = "ORDER_REPORTS";
+    public static final String DIS_ORDER_REPORTS = "DIS_ORDER_REPORTS";
+    public static final String ORDER_REPORTS_CHANGED = "ORDER_REPORTS_CHANGED";
+    public  static  final int REQUEST_CODE = 1;
 
     //滚动事件
     public enum ScrollDirection {
