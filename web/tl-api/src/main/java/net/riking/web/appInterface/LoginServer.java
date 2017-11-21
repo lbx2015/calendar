@@ -128,11 +128,11 @@ public class LoginServer {
 				AppUser appUser3 = new AppUser(appUser.getTelephone(),appUser.getTelephone(), appUser.getTelephone().substring(5), user.getPhoneSeqNum(),
 						"1", "1","0800",user.getOpenId(),user.getIsSubscribe(),user.getIsGuide());
 				appUser2 = appUserRepo.save(appUser3);
-				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
-				for (AppUserReportRel appUserReportRel : appUserReportRels) {
-					appUserReportRel.setAppUserId(appUser2.getId());
-				}
-				appUserReportRelRepo.save(appUserReportRels);
+//				List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
+//				for (AppUserReportRel appUserReportRel : appUserReportRels) {
+//					appUserReportRel.setAppUserId(appUser2.getId());
+//				}
+//				appUserReportRelRepo.save(appUserReportRels);
 				logger.info("{}注册成功", appUser.getName());
 			}
 			sysDataService.delAppUser(user);
