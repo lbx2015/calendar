@@ -50,49 +50,6 @@ public class AppReportListServer {
 	DaysRepo daysRepo;
 	@Autowired
 	ReportAgenceFrencyService reportAgenceFrencyService;
-
-	/*@ApiOperation(value = "app获取所有的报表", notes = "POST")
-	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport(@RequestBody ReportList reportList) {
-		reportList.setDeleteState("1");
-		PageRequest pageable = new PageRequest(reportList.getPcount(), reportList.getPindex(), null);
-		if (StringUtils.isEmpty(reportList.getDeleteState())) {
-			reportList.setDeleteState("1");
-		}
-		Example<ReportList> example = Example.of(reportList, ExampleMatcher.matchingAll());
-		Page<ReportList> page = reportListRepo.findAll(example, pageable);
-		return new AppResp(page, CodeDef.SUCCESS);
-	}*/
-	//第一版本的写法
-//	@ApiOperation(value = "app获取所有的报表", notes = "POST")
-//	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-//	public AppResp getAllReport() {
-//		Set<QueryReport> set;
-//			set = reportSubmitCaliberService.findAllfromReportId();
-//		Map<String, Set<QueryReport>> map = new HashMap<>();
-//		for (QueryReport queryReport : set) {
-//													//String table, String field, String key
-//			String value = sysDataservice.getDict("T_REPORT_LIST", "MODLE_TYPE", queryReport.getModuleType()).getValu();
-//			if (!map.containsKey(value)) {
-//				Set<QueryReport> set2 = new HashSet<>();
-//				set2.add(queryReport);
-//				map.put(value,set2);
-//			}else {
-//				Set<QueryReport> set2 =map.get(value);
-//				set2.add(queryReport);
-//				map.put(value, set2);
-//			}
-//		}
-//		List<ReportResult> listes =  new ArrayList<>();
-//		for (String title : map.keySet()) {
-//			ReportResult reportResult = new ReportResult();
-//			reportResult.setTitle(title);
-//			reportResult.setResult(map.get(title));
-//			listes.add(reportResult);
-//		}
-//		return new AppResp(listes, CodeDef.SUCCESS);
-//		
-//	}
 	
 	/**
 	 * 
