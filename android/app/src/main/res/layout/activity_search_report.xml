@@ -29,7 +29,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/work_icon_search_s" />
+                android:src="@drawable/nav_icon_search" />
 
             <EditText
                 android:id="@+id/search_edit_view"
