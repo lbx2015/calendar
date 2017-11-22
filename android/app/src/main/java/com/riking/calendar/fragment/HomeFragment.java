@@ -87,24 +87,6 @@ public class HomeFragment extends Fragment {
         tabLayout.setupWithViewPager(mViewPager);
         appBarLayout = v.findViewById(R.id.appbar);
         search = v.findViewById(R.id.search);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-
-                if (Math.abs(verticalOffset)-appBarLayout.getTotalScrollRange() == 0)
-                {
-                    //  Collapsed
-                    search.setBackground(getResources().getDrawable(R.drawable.rounded_rectangle_not_translucent_background));
-
-                }
-                else
-                {
-                    //Expanded
-                    search.setBackground(getResources().getDrawable(R.drawable.rounded_rectangle));
-
-                }
-            }
-        });
         setupBannerSlider();
         return v;
     }

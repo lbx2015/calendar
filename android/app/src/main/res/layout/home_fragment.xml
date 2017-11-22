@@ -5,14 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/search"
             android:layout_width="264dp"
             android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="15dp"
@@ -42,32 +45,23 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <LinearLayout
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/home_nav_icon_ask" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/home_nav_icon_ask" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="9dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:text="提问"
-                android:textColor="@color/color_489dfff"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="提问"
+            android:textColor="@color/color_489dfff"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
