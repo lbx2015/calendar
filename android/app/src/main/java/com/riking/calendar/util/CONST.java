@@ -54,6 +54,7 @@ public class CONST {
     public static final String DIS_ORDER_REPORTS = "DIS_ORDER_REPORTS";
     public static final String ORDER_REPORTS_CHANGED = "ORDER_REPORTS_CHANGED";
     public  static  final int REQUEST_CODE = 1;
+    public static final String EDIT_MODE = "EDIT_MODE";
 
     //滚动事件
     public enum ScrollDirection {

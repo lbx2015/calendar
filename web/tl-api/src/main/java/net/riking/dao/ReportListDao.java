@@ -2,9 +2,9 @@ package net.riking.dao;
 
 import java.util.List;
 
-import net.riking.entity.model.AppUserReportRel;
+import net.riking.entity.model.ReportFrequency;
 
 public interface ReportListDao {
-	List<AppUserReportRel> findAppUserReportById(String userId);
+	List<ReportFrequency> findAppUserReportById(String userId);
 
 }

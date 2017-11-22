@@ -52,6 +52,13 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
         } else {
             h.subscribed = true;
         }
+        if (subscribeReportListener.isInEditMode()) {
+            if (subscribeReportListener.isAddedToMyOrder(r)) {
+                h.subscribed = true;
+            } else {
+                h.subscribed = false;
+            }
+        }
 
         //show subscribe or not subscribed.
         if (h.subscribed) {

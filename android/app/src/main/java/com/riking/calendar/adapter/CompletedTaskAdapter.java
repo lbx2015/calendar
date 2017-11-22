@@ -63,11 +63,11 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
         }
 
         if (r.isComplete == 1) {
-            holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
-            holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
+//            holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
             holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
-            holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+//            holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
         holder.task = r;

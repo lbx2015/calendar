@@ -16,7 +16,6 @@ import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportFrequency;
@@ -27,11 +26,14 @@ import com.riking.calendar.util.Preference;
 import com.riking.calendar.util.ZDB;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -40,12 +42,14 @@ import io.realm.RealmResults;
 public class SearchReportActivity extends AppCompatActivity implements SubscribeReport {
 
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
+    public boolean editMode = false;
     RecyclerView recyclerView;
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
-    List<AppUserReportRel> orderReports;
-    List<AppUserReportRel> disOrderReports;
+    List<ReportFrequency> orderReports;
+    List<ReportFrequency> disOrderReports;
+    public String reportSearchCondition;
     private boolean subscribedReportsChanged = false;
 
     @Override
@@ -53,6 +57,8 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_report);
         init();
+
+        editMode = getIntent().getExtras().getBoolean(CONST.EDIT_MODE, false);
         /*//change the status bar color
         getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         StatusBarUtil.setTranslucent(this);*/
@@ -94,21 +100,22 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    HashMap<String, String> reportName = new LinkedHashMap<>(1);
-                    reportName.put("reportName", s.toString());
-                    reportName.put("userId", Preference.pref.getString(CONST.USER_ID, ""));
-                    APIClient.getReportByName(reportName, new ZCallBackWithFail<ResponseModel<List<ReportFrequency>>>() {
-                        @Override
-                        public void callBack(ResponseModel<List<ReportFrequency>> response) {
-                            if (failed) {
-
-                            } else {
-                                reportsOrderAdapter.mList = response._data;
-                                recyclerView.setAdapter(reportsOrderAdapter);
-                            }
-                        }
-                    });
+                    reportSearchCondition = s.toString();
+                    performSearch();
                 }
+            }
+        });
+    }
+
+    public void performSearch() {
+        HashMap<String, String> reportName = new LinkedHashMap<>(1);
+        reportName.put("reportName", reportSearchCondition);
+        reportName.put("userId", Preference.pref.getString(CONST.USER_ID, ""));
+        APIClient.getReportByName(reportName, new ZCallBack<ResponseModel<List<ReportFrequency>>>() {
+            @Override
+            public void callBack(ResponseModel<List<ReportFrequency>> response) {
+                reportsOrderAdapter.mList = response._data;
+                recyclerView.setAdapter(reportsOrderAdapter);
             }
         });
     }
@@ -119,7 +126,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         //adding dividers.
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //set adapters
-        RealmResults<SearchConditions> realmResults = ZDB.Instance.getRealm().where(SearchConditions.class).findAll();
+        RealmResults<SearchConditions> realmResults = ZDB.Instance.getRealm().where(SearchConditions.class).findAllSorted("updateTime", Sort.DESCENDING);
         localSearchConditionAdapter = new LocalSearchConditionAdapter(this, realmResults);
         recyclerView.setAdapter(localSearchConditionAdapter);
     }
@@ -129,6 +136,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     public void orderReport(ReportFrequency report) {
+        saveToRealm();
         if (orderReports == null) {
             orderReports = new ArrayList<>();
         }
@@ -139,7 +147,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         a.reportId = report.reportId;
         a.reportName = report.reportName;
         a.type = "1";
-        orderReports.add(a);
+        orderReports.add(report);
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
@@ -149,6 +157,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     public void unorderReport(ReportFrequency report) {
+        saveToRealm();
         if (disOrderReports == null) {
             disOrderReports = new ArrayList<>();
         }
@@ -160,7 +169,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         a.reportName = report.reportName;
         a.type = "0";
 
-        disOrderReports.add(a);
+        disOrderReports.add(report);
 
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
@@ -168,5 +177,27 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
 
             }
         });
+    }
+
+    public void saveToRealm() {
+        ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                SearchConditions s = new SearchConditions();
+                s.name = reportSearchCondition;
+                s.updateTime = new Date();
+                SearchConditions c = realm.copyToRealmOrUpdate(s);
+            }
+        });
+    }
+
+    @Override
+    public boolean isAddedToMyOrder(ReportFrequency report) {
+        return false;
+    }
+
+    @Override
+    public boolean isInEditMode() {
+        return editMode;
     }
 }

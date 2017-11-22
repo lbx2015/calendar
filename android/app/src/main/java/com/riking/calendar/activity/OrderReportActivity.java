@@ -55,9 +55,13 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     View firstGroupDivider;
     View secondGroupDivider;
     //user subscriber reports
-    List<AppUserReportRel> appUserReportRels;
+    List<ReportFrequency> mySubscribedReports;
     FrameLayout myOrderLayout;
     View searchButton;
+
+    public void clickBack(final View view) {
+        onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +145,9 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrderReportActivity.this, SearchReportActivity.class));
+                Intent i = new Intent(OrderReportActivity.this, SearchReportActivity.class);
+                i.putExtra(CONST.EDIT_MODE, editMode);
+                startActivity(i);
             }
         });
     }
@@ -152,7 +158,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             appUserReportResult.userId = Preference.pref.getString(CONST.USER_ID, "");
             appUserReportResult.list = new ArrayList<>();
 
-            for (AppUserReportRel r : appUserReportRels) {
+            for (ReportFrequency r : mySubscribedReports) {
                 appUserReportResult.list.add(r.reportId);
             }
 
@@ -196,25 +202,23 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             Preference.put(CONST.ORDER_REPORTS_CHANGED, false);
 
             Gson gson = new Gson();
-            final AppUserReportRel[] orderReports = gson.fromJson(Preference.pref.getString(CONST.ORDER_REPORTS, ""), AppUserReportRel[].class);
-            final AppUserReportRel[] disOrderReports = gson.fromJson(Preference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), AppUserReportRel[].class);
+            final ReportFrequency[] orderReports = gson.fromJson(Preference.pref.getString(CONST.ORDER_REPORTS, ""), ReportFrequency[].class);
+            final ReportFrequency[] disOrderReports = gson.fromJson(Preference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), ReportFrequency[].class);
             boolean reportAdded = false;
             if (orderReports != null) {
                 for (int i = 0; i < orderReports.length; i++) {
-                    if (appUserReportRels == null) {
+                    if (mySubscribedReports == null) {
                         break;
                     }
                     reportAdded = false;
-                    for (AppUserReportRel r : appUserReportRels) {
-                        if (r.reportId.equals(orderReports[i].reportId)) {
-                            reportAdded = true;
-                            break;
-                        }
+
+                    if (mySubscribedReports.contains(orderReports[i])) {
+                        reportAdded = true;
                     }
 
                     //if not added to my subscribed, add it
                     if (!reportAdded) {
-                        appUserReportRels.add(orderReports[i]);
+                        mySubscribedReports.add(orderReports[i]);
                     }
 
                 }
@@ -222,27 +226,23 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
 
             if (disOrderReports != null) {
                 for (int i = 0; i < disOrderReports.length; i++) {
-                    if (appUserReportRels == null) {
+                    if (mySubscribedReports == null) {
                         break;
                     }
-                    for (AppUserReportRel r : appUserReportRels) {
-                        if (r.reportId.equals(disOrderReports[i].reportId)) {
-                            appUserReportRels.remove(r);
-                            break;
-                        }
-                    }
+                    mySubscribedReports.remove(disOrderReports[i]);
                 }
             }
-
-            enterEditMode();
-
-            //delete the preference for temp transfer value
-            Preference.pref.edit().remove(CONST.ORDER_REPORTS_CHANGED).commit();
-            Preference.pref.edit().remove(CONST.ORDER_REPORTS).commit();
-            Preference.pref.edit().remove(CONST.DIS_ORDER_REPORTS).commit();
         }
 
+        enterEditMode();
+
+        //delete the preference for temp transfer value
+        Preference.pref.edit().remove(CONST.ORDER_REPORTS_CHANGED).commit();
+        Preference.pref.edit().remove(CONST.ORDER_REPORTS).commit();
+        Preference.pref.edit().remove(CONST.DIS_ORDER_REPORTS).commit();
+        reportsOrderAdapter.notifyDataSetChanged();
     }
+
 
     private void loadReport() {
         //request all reports
@@ -264,13 +264,13 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             }
         });
 
-        APIClient.findUserReportList(u, new ZCallBackWithFail<ResponseModel<List<AppUserReportRel>>>() {
+        APIClient.findUserReportList(u, new ZCallBackWithFail<ResponseModel<List<ReportFrequency>>>() {
             @Override
-            public void callBack(ResponseModel<List<AppUserReportRel>> response) {
+            public void callBack(ResponseModel<List<ReportFrequency>> response) {
                 if (failed) {
 
                 } else {
-                    appUserReportRels = response._data;
+                    mySubscribedReports = response._data;
                     drawMyOrders();
                 }
             }
@@ -280,10 +280,10 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     public void drawMyOrders() {
         //redraw the reports
         zReportFlowLayout.removeAllViews();
-        if (appUserReportRels.size() > 0) {
+        if (mySubscribedReports.size() > 0) {
             myOrderLayout.setVisibility(View.VISIBLE);
-            for (int i = 0; i < appUserReportRels.size(); i++) {
-                final AppUserReportRel appUserReportRel = appUserReportRels.get(i);
+            for (int i = 0; i < mySubscribedReports.size(); i++) {
+                final ReportFrequency appUserReportRel = mySubscribedReports.get(i);
                 //inflate the item view from layout xml
                 final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(OrderReportActivity.this).inflate(R.layout.my_order_report_item, null);
                 root.init();
@@ -293,8 +293,14 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
                     @Override
                     public void onClick(View v) {
                         zReportFlowLayout.removeView(root);
-                        appUserReportRels.remove(appUserReportRel);
-                        if (appUserReportRels.size() == 0) {
+                        mySubscribedReports.remove(appUserReportRel);
+                        int changedPosition = reportsOrderAdapter.mList.indexOf(appUserReportRel);
+
+                        //keep the status of subscribe to be consistent in the page.
+                        if (changedPosition > -1) {
+                            reportsOrderAdapter.notifyItemChanged(changedPosition);
+                        }
+                        if (mySubscribedReports.size() == 0) {
                             //save the update when delete all the subscribed reports
                             saveSubscribedReports();
                             //hide the title
@@ -315,23 +321,42 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
-        appUserReportRels.add(a);
+        mySubscribedReports.add(report);
         enterEditMode();
     }
 
     public void unorderReport(ReportFrequency report) {
-        for (AppUserReportRel r : appUserReportRels) {
+        for (ReportFrequency r : mySubscribedReports) {
             if (r.reportId.equals(report.reportId)) {
-                appUserReportRels.remove(r);
+                mySubscribedReports.remove(r);
                 break;
             }
         }
         enterEditMode();
     }
 
+    @Override
+    public boolean isAddedToMyOrder(ReportFrequency report) {
+        boolean added = false;
+        if (mySubscribedReports != null) {
+            for (ReportFrequency r : mySubscribedReports) {
+                if (r.reportId.equals(report.reportId)) {
+                    added = true;
+                    break;
+                }
+            }
+        }
+        return added;
+    }
+
+    @Override
+    public boolean isInEditMode() {
+        return editMode;
+    }
+
     public void enterEditMode() {
         //adding null protection
-        if (appUserReportRels == null) {
+        if (mySubscribedReports == null) {
             return;
         }
         drawMyOrders();

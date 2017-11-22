@@ -8,5 +8,9 @@ import com.riking.calendar.pojo.server.ReportFrequency;
 
 public interface SubscribeReport {
     void orderReport(ReportFrequency report);
+
     void unorderReport(ReportFrequency report);
+
+    boolean isAddedToMyOrder(ReportFrequency report);
+     boolean isInEditMode();
 }

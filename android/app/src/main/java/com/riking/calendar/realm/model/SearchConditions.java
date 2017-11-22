@@ -14,6 +14,6 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class SearchConditions implements RealmModel {
     @PrimaryKey
-    public String id = UUID.randomUUID().toString();
     public String name;
+    public Date updateTime;
 }
