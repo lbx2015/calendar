@@ -72,10 +72,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
         } else {
             final HomeViewHolder h = (HomeViewHolder) cellHolder;
-            if (getItemCount() % 2 == 1) {
-                h.itemCator.setText("热门回答");
+            if (i % 2 == 1) {
+                h.itemCator.setText("来自话题G01报表");
             } else {
-                h.itemCator.setText("知乎回答");
+                h.itemCator.setText("Lucy关注了问题");
             }
             RequestOptions options = new RequestOptions();
             Glide.with(h.itemImage.getContext()).load(R.drawable.img_user_head)

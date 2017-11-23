@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
@@ -36,6 +37,10 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+
+    public void clickBack(final View view) {
+        onBackPressed();
+    }
 
     //ViewPager适配器
     class MyPagerAdapter extends FragmentPagerAdapter {
