@@ -3,7 +3,6 @@ package com.riking.calendar.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,12 +41,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view;
         if (viewType == REMMEND_TYPE) {
-            RecyclerView recyclerView = new RecyclerView(viewGroup.getContext());
-            recyclerView.setId(R.id.recycler_view);
-            return new RecommendedViewHolder(recyclerView);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                    R.layout.topic_suggestion_item, viewGroup, false);
+            return new RecommendedViewHolder(view);
         } else {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(
                     R.layout.home_item, viewGroup, false);
             return new HomeViewHolder(view);
         }

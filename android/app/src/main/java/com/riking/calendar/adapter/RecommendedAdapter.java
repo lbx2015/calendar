@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.PlazaFragment;
 
 /**
  * Created by zw.zhang on 2017/10/11.

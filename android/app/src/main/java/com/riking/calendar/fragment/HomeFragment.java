@@ -62,12 +62,13 @@ public class HomeFragment extends Fragment {
     private void addBanners() {
         List<Banner> remoteBanners = new ArrayList<>();
         //Add banners using image urls
-        remoteBanners.add(new RemoteBanner(
+   /*     remoteBanners.add(new RemoteBanner(
                 "https://assets.materialup.com/uploads/dcc07ea4-845a-463b-b5f0-4696574da5ed/preview.jpg"
-        ));
-        remoteBanners.add(new DrawableBanner(R.drawable.profile2));
+        ));*/
+        remoteBanners.add(new DrawableBanner(R.drawable.banner));
         remoteBanners.add(new DrawableBanner(R.drawable.profile3));
         remoteBanners.add(new DrawableBanner(R.drawable.profilegoat));
+        remoteBanners.add(new DrawableBanner(R.drawable.banner));
         remoteBanners.add(new DrawableBanner(R.drawable.profile));
         bannerSlider.setBanners(remoteBanners);
 
