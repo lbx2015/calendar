@@ -5,12 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import net.riking.core.annos.Comment;
+import net.riking.entity.BaseProp;
 
 @Comment("资讯评论回复信息 表")
 @Entity
 @Table(name = "t_ncomment_reply_info")
-public class NCommentReplyInfo {
+public class NCommentReplyInfo extends BaseProp{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5652341254448442067L;
+
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
