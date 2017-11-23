@@ -77,7 +77,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             } else {
                 h.itemCator.setText("知乎回答");
             }
-            h.itemImage.setBorderWidth(2);
+            h.itemImage.setBorderWidth(0);
             h.itemImage.setBorderColor(h.itemImage.getResources().getColor(R.color.colorPrimary));
             RequestOptions options = new RequestOptions();
             Glide.with(h.itemImage.getContext()).load(R.drawable.img_user_head)
