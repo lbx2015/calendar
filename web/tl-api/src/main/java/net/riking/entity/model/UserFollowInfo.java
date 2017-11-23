@@ -9,8 +9,8 @@ import net.riking.entity.BaseProp;
 
 @Comment("关注用户 表")
 @Entity
-@Table(name = "t_user_flow_info")
-public class UserFlowInfo extends BaseProp{
+@Table(name = "t_user_follow_info")
+public class UserFollowInfo extends BaseProp{
 	
 	private static final long serialVersionUID = 4125640911685324258L;
 

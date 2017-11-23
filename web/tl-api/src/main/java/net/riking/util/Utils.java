@@ -143,7 +143,7 @@ public class Utils {
 		info.setAuthor("author");
 		info.setCreatedTime(new Date());
 		
-		Map<String, Object> map = objProps2Map(info, false);
+		Map<String, Object> map = objProps2Map(info, true);
 		
 		Set<String> keySet = map.keySet();
 		for (String key : keySet) {

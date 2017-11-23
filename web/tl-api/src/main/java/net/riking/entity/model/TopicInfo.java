@@ -8,16 +8,16 @@ import javax.persistence.Table;
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
 
-@Comment("资讯信息 表")
+@Comment("话题信息 表")
 @Entity
-@Table(name = "t_news_info")
-public class NewsInfo extends BaseProp {
+@Table(name = "t_topic_info")
+public class TopicInfo extends BaseProp {
 
-	private static final long serialVersionUID = 4238557791903463912L;
-	
+	private static final long serialVersionUID = -4138765413765191901L;
+
 	@Comment("标题")
 	@Column(name = "title", length = 512, nullable = false)
-	private String title;
+	private String  title;
 	
 	@Comment("内容")
 	@Lob

@@ -26,7 +26,7 @@ public class BaseProp implements Serializable {
 
 	@Comment("物理主键")
 	@Id
-	@Column(name = "Id", length = 32)
+	@Column(name = "id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
@@ -46,10 +46,10 @@ public class BaseProp implements Serializable {
 	@Column(name="last_modified_time",insertable=false, nullable = false, columnDefinition="datetime default now()")
 	private Date lastModifiedTime;
 
-	@Comment("数据是否有效 0有效，1无效")
-	@org.hibernate.annotations.ColumnDefault("0")  
-	@Column(name="invalid",insertable=false, nullable=false, precision=1)
-	private Integer invalid;
+	@Comment("数据是否有效 1有效，0无效")
+	@org.hibernate.annotations.ColumnDefault("1")  
+	@Column(name="enabled",insertable=false, nullable=false, precision=1)
+	private Integer enabled;
 
 	public String getId() {
 		return id;
@@ -75,14 +75,12 @@ public class BaseProp implements Serializable {
 		this.lastModifiedTime = lastModifiedTime;
 	}
 
-	public Integer getInvalid() {
-		return invalid;
+	public Integer getEnabled() {
+		return enabled;
 	}
 
-	public void setInvalid(Integer invalid) {
-		this.invalid = invalid;
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
-	
-	
 	
 }

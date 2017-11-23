@@ -17,6 +17,7 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserReportRel;
 import net.riking.entity.model.BaseModelPropdict;
+import net.riking.entity.model.NewsInfo;
 import net.riking.entity.model.ReportAgence;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportList;
@@ -27,6 +28,7 @@ import net.riking.service.impl.GetDateServiceImpl;
 import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.DaysRepo;
 import net.riking.service.repo.ReportListRepo;
+import net.riking.util.Utils;
 
 /**
  * app端报表配置的增删改查
