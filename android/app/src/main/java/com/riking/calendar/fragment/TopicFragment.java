@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.HomeAdapter;
 import com.riking.calendar.listener.PullCallback;
@@ -53,6 +54,8 @@ public class TopicFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
+
+        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         mAdapter = new HomeAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
