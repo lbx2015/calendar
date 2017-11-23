@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_d2d2d2"
+    android:background="@color/color_f2f2f2"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/divider_color_d9d9d9"
         android:padding="10dp">
 
         <ImageView
@@ -16,9 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/image_height_40dp"
             android:layout_gravity="left|center_vertical"
-            android:background="@color/color_d2d2d2"
             android:onClick="onClickBack"
-            android:src="@drawable/back_icon" />
+            android:src="@drawable/nav_icon_back" />
 
         <TextView
             android:id="@+id/title"
@@ -26,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/completed_task"
-            android:textColor="@android:color/white"
+            android:textColor="@color/color_222222"
             android:textSize="18sp" />
     </FrameLayout>
 
