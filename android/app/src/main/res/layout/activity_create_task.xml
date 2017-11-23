@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="15dp"
-            android:text="取消"
             android:onClick="clickBack"
+            android:text="取消"
             android:textColor="@color/color_666666"
             android:textSize="17sp" />
 
@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="15dp"
-            android:text="完成"
             android:onClick="clickFinish"
+            android:text="完成"
             android:textColor="@color/color_666666"
             android:textSize="17sp" />
     </FrameLayout>
@@ -57,10 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
-            android:hint="开始书写"
             android:background="@android:color/transparent"
+            android:hint="开始书写"
             android:textColor="@color/color_222222"
-            android:textColorHint="@color/color_999999" />
+            android:textColorHint="@color/color_999999"
+            android:textSize="17sp" />
     </FrameLayout>
 
     <FrameLayout
