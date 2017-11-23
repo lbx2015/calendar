@@ -17,21 +17,15 @@ import butterknife.ButterKnife;
  */
 public class HomeViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.item_view)
-    public View itemView;
     @BindView(R.id.item_cator)
     public TextView itemCator;
-    @BindView(R.id.cardView)
-    public CardView cardView;
     @BindView(R.id.item_content)
     public TextView itemContent;
     @BindView(R.id.item_image)
     public CircleImageView itemImage;
-    @BindView(R.id.fromPhone)
-    public TextView fromPhone;
 
     @BindView(R.id.more_action)
-    public TextView moreAction;
+    public View moreAction;
 //    @BindView(R.id.item_count)
 //    TextView itemCount;
 

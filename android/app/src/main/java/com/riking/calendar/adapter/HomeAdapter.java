@@ -77,8 +77,6 @@ public class HomeAdapter extends RecyclerView.Adapter {
             } else {
                 h.itemCator.setText("知乎回答");
             }
-            h.itemImage.setBorderWidth(0);
-            h.itemImage.setBorderColor(h.itemImage.getResources().getColor(R.color.colorPrimary));
             RequestOptions options = new RequestOptions();
             Glide.with(h.itemImage.getContext()).load(R.drawable.img_user_head)
                     .apply(options.fitCenter())
@@ -89,8 +87,6 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     context.startActivity(new Intent(context, TopicActivity.class));
                 }
             });
-
-            h.fromPhone.setText("来自于" + Build.MANUFACTURER + Build.MODEL);
 
             h.moreAction.setOnClickListener(new View.OnClickListener() {
                 @Override
