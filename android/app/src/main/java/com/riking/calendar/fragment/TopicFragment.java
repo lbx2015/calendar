@@ -55,6 +55,7 @@ public class TopicFragment extends Fragment {
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
 
+        //adding custom divider
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         mAdapter = new HomeAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);

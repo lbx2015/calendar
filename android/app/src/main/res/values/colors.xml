@@ -47,6 +47,7 @@
     <!-- White 70% -->
     <color name="text_color_secondary_3">#B3FFFFFF</color>
     <color name="divider_color_a7a7a7">#a7a7a7</color>
+    <color name="color_7fffffff">#7fffffff</color>
 
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>

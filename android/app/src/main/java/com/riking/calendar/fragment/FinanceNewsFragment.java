@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.NewsAdapter;
 
@@ -32,6 +33,9 @@ public class FinanceNewsFragment extends Fragment {
         //set recycler view
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        //adding custom divider
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recyclerView.setAdapter(new NewsAdapter());
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

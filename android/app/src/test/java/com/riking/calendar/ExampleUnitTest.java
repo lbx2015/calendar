@@ -185,4 +185,11 @@ public class ExampleUnitTest {
         System.out.println(DateTime.now().withTimeAtStartOfDay());
         System.out.print(new DateTime(new DateTime().toLocalDate().toString()));
     }
+
+    @Test
+    public void testNumberMod() {
+        for (int i = 0; i < 100; i++) {
+            System.out.println(i % 3);
+        }
+    }
 }
