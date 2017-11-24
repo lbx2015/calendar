@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
-    android:paddingTop="15dp"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -12,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="25dp"
         android:layout_weight="1"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -27,5 +27,7 @@
     <ImageView
         android:id="@+id/news_image_1"
         android:layout_width="108dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:layout_height="71dp"></ImageView>
 </LinearLayout>
