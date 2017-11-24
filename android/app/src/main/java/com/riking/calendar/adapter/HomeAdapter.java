@@ -93,7 +93,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @Override
                 @SuppressLint("RestrictedApi")
                 public void onClick(View v) {
-                    //Creating the instance of PopupMenu
+                    new ShareBottomDialog(h.moreAction.getContext()).show();
+          /*          //Creating the instance of PopupMenu
                     final PopupMenu popup = new PopupMenu(context, h.moreAction, Gravity.RIGHT);
                     //Inflating the Popup using xml file
                     popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
@@ -121,7 +122,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                             return true;
                         }
                     });
-                    popup.show();
+                    popup.show();*/
                 }
             });
 

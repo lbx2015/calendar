@@ -12,12 +12,17 @@ import com.riking.calendar.R;
  */
 
 public class ShareBottomDialog extends BottomSheetDialog {
-    public View btnCancel;
 
     public ShareBottomDialog(@NonNull Context context) {
         super(context);
         setContentView(R.layout.share_bottom_dialog);
-        btnCancel = findViewById(R.id.btnCancel);
+        findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
     }
 
     public ShareBottomDialog(@NonNull Context context, int theme) {
