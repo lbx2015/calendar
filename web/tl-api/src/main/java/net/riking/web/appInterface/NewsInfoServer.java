@@ -69,13 +69,13 @@ public class NewsInfoServer {
 	 */
 	@ApiOperation(value = "获取资讯列表", notes = "POST")
 	@RequestMapping(value = "/findNewsList", method = RequestMethod.POST)
-	public AppResp findNewsList(@RequestBody Map<String, String> params) {
+	public AppResp findNewsList(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
 		// 分页数据
 		List<NewsInfo> newsInfoList = new ArrayList<NewsInfo>();
 		// 把分页数据封装成map传入前台
-		List<Map<String, String>> newsInfoMapList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> newsInfoMapList = new ArrayList<Map<String, Object>>();
 		switch (commonParams.getDirect()) {
 			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
 			case Const.DIRECT_UP:
@@ -100,7 +100,7 @@ public class NewsInfoServer {
 			Integer count = newsCommentInfoRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
 			// 将对象转换成map
-			Map<String, String> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
+			Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
 			newsInfoMapList.add(newsInfoMapNew);
 		}
 
@@ -114,12 +114,12 @@ public class NewsInfoServer {
 	 */
 	@ApiOperation(value = "获取资讯的详情", notes = "POST")
 	@RequestMapping(value = "/getNewsInfo", method = RequestMethod.POST)
-	public AppResp getNewsInfo(@RequestBody Map<String, String> params) {
+	public AppResp getNewsInfo(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
 		NewsInfo newsInfo = newsInfoRepo.getById(commonParams.getNewsId());
 		// 将对象转换成map
-		Map<String, String> newsInfoMap = Utils.objProps2Map(newsInfo, true);
+		Map<String, Object> newsInfoMap = Utils.objProps2Map(newsInfo, true);
 		return new AppResp(newsInfoMap, CodeDef.SUCCESS);
 	}
 
@@ -130,38 +130,37 @@ public class NewsInfoServer {
 	 */
 	@ApiOperation(value = "获取资讯详情评论列表", notes = "POST")
 	@RequestMapping(value = "/findNewsCommentInfo", method = RequestMethod.POST)
-	public AppResp findNewsCommentInfo(@RequestBody Map<String, String> params) {
+	public AppResp findNewsCommentInfo(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
 		// 资讯详情评论的Map列表(把资讯详情评论对象封装成Map传进前台)
-		List<Map<String, String>> newsCommentInfoMapList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> newsCommentInfoMapList = new ArrayList<Map<String, Object>>();
 		// 根据NewsId查出资讯详情评论列表（30条）
 		List<NewsCommentInfo> newsCommentInfoList = newsCommentInfoRepo.findByNewsId(commonParams.getNewsId(),
 				new PageRequest(0, 30));
 
 		// 评论列表
 		for (NewsCommentInfo newsCommentInfoNew : newsCommentInfoList) {
-			// 回复的数据列表
-			List<Map<String, String>> nCommentReplyInfoObjMapList = new ArrayList<Map<String, String>>();
+
 			// 根据评论id取到回复列表
 			List<NCommentReplyInfo> nCommentReplyInfoList = nCommentReplyInfoRepo
 					.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCommentReplyInfo nCommentReplyInfo : nCommentReplyInfoList) {
-				Map<String, String> nCommentReplyInfoObjMap = new HashMap<String, String>();
+				Map<String, Object> nCommentReplyInfoObjMap = new HashMap<String, Object>();
 				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
 				nCommentReplyInfo.setUserName(appUser.getName());
 				// 将评论回复对象转换成map
 				nCommentReplyInfoObjMap = Utils.objProps2Map(nCommentReplyInfo, true);
-				nCommentReplyInfoObjMapList.add(nCommentReplyInfoObjMap);
+				// 回复的数据列表添加到评论类里面
+				newsCommentInfoNew.getNCommentReplyInfoList().add(nCommentReplyInfoObjMap);
 			}
 			AppUser appUser = appUserRepo.findOne(newsCommentInfoNew.getUserId());
 			newsCommentInfoNew.setUserName(appUser.getName());
 			// 点赞数
 			Integer agree = nCommentAgreeInfoRepo.commentCount(newsCommentInfoNew.getId());
 			newsCommentInfoNew.setAgreeNumber(agree);
-			Map<String, String> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
-			// TODO map里面装回复list的什么形式? json字符串还是toString,待确认
+			Map<String, Object> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
 			newsCommentInfoMapList.add(newsCommentInfoObjMap);
 		}
 		return new AppResp(newsCommentInfoMapList, CodeDef.SUCCESS);
@@ -174,7 +173,7 @@ public class NewsInfoServer {
 	 */
 	@ApiOperation(value = "资讯评论发布", notes = "POST")
 	@RequestMapping(value = "/newsCommentInfoPublish", method = RequestMethod.POST)
-	public AppResp newsCommentInfoPublish(@RequestBody Map<String, String> params) {
+	public AppResp newsCommentInfoPublish(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
 		NewsCommentInfo newsCommentInfo = new NewsCommentInfo();
@@ -192,7 +191,7 @@ public class NewsInfoServer {
 	 */
 	@ApiOperation(value = "资讯收藏", notes = "POST")
 	@RequestMapping(value = "/newsCollect", method = RequestMethod.POST)
-	public AppResp newsCollect(@RequestBody Map<String, String> params) {
+	public AppResp newsCollect(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
 		if (Const.EFFECTIVE.toString().equals(commonParams.getEnabled())) {

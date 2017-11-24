@@ -1,5 +1,9 @@
 package net.riking.entity.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -34,6 +38,17 @@ public class NewsCommentInfo extends BaseProp {
 	// 点赞数
 	@Transient
 	private Integer agreeNumber;
+
+	// 评论的回复list
+	@Transient
+	List<Map<String, Object>> nCommentReplyInfoList;
+
+	public List<Map<String, Object>> getNCommentReplyInfoList() {
+		if (nCommentReplyInfoList == null) {
+			nCommentReplyInfoList = new ArrayList<Map<String, Object>>();
+		}
+		return this.nCommentReplyInfoList;
+	}
 
 	public String getUserId() {
 		return userId;
