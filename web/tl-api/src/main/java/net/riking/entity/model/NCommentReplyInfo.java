@@ -3,6 +3,7 @@ package net.riking.entity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -10,8 +11,8 @@ import net.riking.entity.BaseProp;
 @Comment("资讯评论回复信息 表")
 @Entity
 @Table(name = "t_ncomment_reply_info")
-public class NCommentReplyInfo extends BaseProp{
-	
+public class NCommentReplyInfo extends BaseProp {
+
 	/**
 	 * 
 	 */
@@ -20,22 +21,25 @@ public class NCommentReplyInfo extends BaseProp{
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
-	
+
 	@Comment("被操作人主键  ")
 	@Column(name = "to_user_id", nullable = false)
 	private String toUserId;
-	
+
 	@Comment("目标对象评论主键")
 	@Column(name = "news_comment_id", nullable = false)
 	private String newsCommentId;
-	
+
 	@Comment("目标对象评论回复主键")
 	@Column(name = "n_comment_reply_id", nullable = false)
 	private String nCommentReplyId;
-	
+
 	@Comment("内容")
 	@Column(name = "content", nullable = false)
 	private String content;
+
+	@Transient
+	private String userName;
 
 	public String getUserId() {
 		return userId;
@@ -43,6 +47,14 @@ public class NCommentReplyInfo extends BaseProp{
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getNewsCommentId() {
@@ -76,6 +88,5 @@ public class NCommentReplyInfo extends BaseProp{
 	public void setToUserId(String toUserId) {
 		this.toUserId = toUserId;
 	}
-	
-	
+
 }

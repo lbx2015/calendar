@@ -3,6 +3,7 @@ package net.riking.entity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -13,21 +14,45 @@ import net.riking.entity.BaseProp;
 public class NewsCommentInfo extends BaseProp {
 
 	private static final long serialVersionUID = 2480706725001723561L;
-	
+
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
-	
+
 	@Comment("目标对象主键")
 	@Column(name = "news_id", nullable = false)
 	private String newsId;
-	
+
 	@Comment("内容")
 	@Column(name = "content", nullable = false)
 	private String content;
 
+	// 用户名称
+	@Transient
+	private String userName;
+
+	// 点赞数
+	@Transient
+	private Integer agreeNumber;
+
 	public String getUserId() {
 		return userId;
+	}
+
+	public Integer getAgreeNumber() {
+		return agreeNumber;
+	}
+
+	public void setAgreeNumber(Integer agreeNumber) {
+		this.agreeNumber = agreeNumber;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public void setUserId(String userId) {
