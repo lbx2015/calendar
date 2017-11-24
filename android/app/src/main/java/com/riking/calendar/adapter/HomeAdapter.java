@@ -23,6 +23,7 @@ import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
+import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @SuppressLint("RestrictedApi")
                 public void onClick(View v) {
                     //Creating the instance of PopupMenu
-                    PopupMenu popup = new PopupMenu(context, h.moreAction, Gravity.RIGHT);
+                    final PopupMenu popup = new PopupMenu(context, h.moreAction, Gravity.RIGHT);
                     //Inflating the Popup using xml file
                     popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
                     //noinspection RestrictedApi
@@ -106,10 +107,11 @@ public class HomeAdapter extends RecyclerView.Adapter {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.share: {
-                                    Intent textIntent = new Intent(Intent.ACTION_SEND);
-                                    textIntent.setType("text/plain");
-                                    textIntent.putExtra(Intent.EXTRA_TEXT, "http://www.baidu.com");
-                                    MyApplication.mCurrentActivity.startActivity(Intent.createChooser(textIntent, "分享到..."));
+                                    new ShareBottomDialog(h.moreAction.getContext()).show();
+//                                    Intent textIntent = new Intent(Intent.ACTION_SEND);
+//                                    textIntent.setType("text/plain");
+//                                    textIntent.putExtra(Intent.EXTRA_TEXT, "http://www.baidu.com");
+//                                    MyApplication.mCurrentActivity.startActivity(Intent.createChooser(textIntent, "分享到..."));
                                     break;
                                 }
                                 case R.id.prevent: {
