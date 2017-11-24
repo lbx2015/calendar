@@ -29,6 +29,9 @@ public class ZR {
     public static float convertDpToPx(Context context, float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }
+    public static float convertDpToPx( float dp) {
+        return dp * MyApplication.APP.getResources().getDisplayMetrics().density;
+    }
 
     /**
      * This method converts device specific pixels to density independent pixels.
