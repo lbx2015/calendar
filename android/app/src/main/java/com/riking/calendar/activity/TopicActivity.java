@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
+import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
 import com.riking.calendar.fragment.QuestionsFragment;
 import com.riking.calendar.fragment.TopicFragment;
 
@@ -21,7 +22,7 @@ import com.riking.calendar.fragment.TopicFragment;
  */
 
 public class TopicActivity extends AppCompatActivity { //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new TopicFragment(), new QuestionsFragment(), new TopicFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HotAnswerOfTopicFragment(), new QuestionsFragment(), new TopicFragment()};
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
 
