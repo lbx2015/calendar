@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +16,6 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.HomeAdapter;
 import com.riking.calendar.adapter.HotAnswerOfTopicAdapter;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;

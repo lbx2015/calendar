@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -53,6 +54,8 @@ public class QuestionsFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
+        //adding custom divider
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         mAdapter = new QuestionsAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
