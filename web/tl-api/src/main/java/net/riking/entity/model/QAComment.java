@@ -5,14 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseProp;
+import net.riking.entity.BaseAuditProp;
 
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
 @Comment("问题回答的评论 表")
 @Entity
-@Table(name = "t_qa_comment_info")
-public class QACommentInfo extends BaseProp {
-
-	private static final long serialVersionUID = -1678533246251001559L;
+@Table(name = "t_qa_comment")
+public class QAComment extends BaseAuditProp {
 
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)

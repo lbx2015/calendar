@@ -6,14 +6,18 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseProp;
+import net.riking.entity.BaseAuditProp;
 
-@Comment("问题信息 表")
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
+@Comment("话题的问题表")
 @Entity
-@Table(name = "t_question_info")
-public class QuestionInfo extends BaseProp {
-
-	private static final long serialVersionUID = -5590305370304645973L;
+@Table(name = "t_topic_question")
+public class TopicQuestion extends BaseAuditProp {
 
 	@Comment("标题")
 	@Column(name = "title", length = 512, nullable = false)
@@ -24,11 +28,11 @@ public class QuestionInfo extends BaseProp {
 	@Column(name = "content", nullable = false)
 	private String content;
 
-	@Comment("话题主键") // 最多3个
-	@Column(name = "topic_id", length = 99)
+	@Comment("话题主键： fk t_topic (最多3个，用','分隔开)") // 最多3个
+	@Column(name = "topic_id", length = 128, nullable = false)
 	private String topicId;
 
-	@Comment("用户主键")
+	@Comment("用户主键: fk t_app_user")
 	@Column(name = "user_id", length = 32)
 	private String userId;
 

@@ -10,20 +10,24 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseProp;
+import net.riking.entity.BaseAuditProp;
 
-@Comment("资讯评论信息 表")
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
+@Comment("行业资讯的评论表")
 @Entity
-@Table(name = "t_news_comment_info")
-public class NewsCommentInfo extends BaseProp {
+@Table(name = "t_news_comment")
+public class NewsComment extends BaseAuditProp {
 
-	private static final long serialVersionUID = 2480706725001723561L;
-
-	@Comment("操作人主键  ")
+	@Comment("操作人主键 : fk t_app_user 发表评论的用户id")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
 
-	@Comment("目标对象主键")
+	@Comment("目标对象主键: fk t_news 行业资讯id")
 	@Column(name = "news_id", nullable = false)
 	private String newsId;
 

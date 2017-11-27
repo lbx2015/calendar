@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.NewsCollectInfo;
-import net.riking.entity.model.NewsCommentInfo;
+import net.riking.entity.model.NewsRel;
+import net.riking.entity.model.NewsComment;
 
 /**
  * 
@@ -21,7 +21,7 @@ import net.riking.entity.model.NewsCommentInfo;
  */
 @Repository
 public interface NewsCollectInfoRepo
-		extends JpaRepository<NewsCollectInfo, String>, JpaSpecificationExecutor<NewsCollectInfo> {
+		extends JpaRepository<NewsRel, String>, JpaSpecificationExecutor<NewsRel> {
 	/**
 	 * 资讯收藏
 	 * @param userId
@@ -31,6 +31,6 @@ public interface NewsCollectInfoRepo
 	@Transactional
 	@Modifying
 	@Query("update NewsCollectInfo set enabled = 0  where userId =?1 and newsId = ?2")
-	NewsCommentInfo updInvalid(String userId, String newsId);
+	NewsComment updInvalid(String userId, String newsId);
 
 }

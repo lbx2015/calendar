@@ -15,13 +15,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import net.riking.core.annos.Comment;
 
 /***
- * 有审核的基类
+ * 有分页的基类
  * @author jc.tan 2017年11月27日
  * @see
  * @since 1.0
  */
 @MappedSuperclass
-public class BaseAuditProp extends BaseEntity {
+public class BasePageQueryProp extends PageQuery {
 
 	@Comment("物理主键")
 	@Id

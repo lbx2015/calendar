@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.riking.entity.model.NewsInfo;
+import net.riking.entity.model.News;
 
 public class Utils {
 	
@@ -138,7 +138,7 @@ public class Utils {
 	
 	
 	public static void main(String[] args) {
-		NewsInfo info = new NewsInfo();
+		News info = new News();
 		
 		info.setAuthor("author");
 		info.setCreatedTime(new Date());
@@ -154,7 +154,7 @@ public class Utils {
 		
 		map.remove("serialVersionUID");
 		
-		NewsInfo info2 = map2Obj(map, NewsInfo.class);
+		News info2 = map2Obj(map, News.class);
 		
 		System.out.println(info2.getId()+ "--"+info2.getAuthor()+"--"+ info.getCreatedTime());
 	}

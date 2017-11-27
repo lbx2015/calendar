@@ -12,7 +12,7 @@ import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.ReportList;
+import net.riking.entity.model.Report;
 /**
  * app关于的html5页面跳转
  * @author you.fei
@@ -42,20 +42,20 @@ public class AppAboutServer {
 	
 	@ApiOperation(value = "跳转<报文详情>html5页面", notes = "POST")
 	@RequestMapping(value = "/reportHtml", method = RequestMethod.POST)	
-	public AppResp reportApp(@RequestBody ReportList reportList) {
+	public AppResp reportApp(@RequestBody Report reportList) {
 		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + reportList.getId()+"&url="+config.getAppApiPath(),CodeDef.SUCCESS);
 	}
 	
 	
 	@ApiOperation(value = "跳转<报文详情-报文说明>html5页面", notes = "POST")
 	@RequestMapping(value = "/reportNoteHtml", method = RequestMethod.POST)	
-	public AppResp reportNoteApp(@RequestBody ReportList reportList) {
+	public AppResp reportNoteApp(@RequestBody Report reportList) {
 		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + reportList.getId()+"&type=note"+"&url="+config.getAppApiPath(),CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "跳转<报文详情-报文规则>html5页面", notes = "POST")
 	@RequestMapping(value = "/reportRuleHtml", method = RequestMethod.POST)	
-	public AppResp reportRuleApp(@RequestBody ReportList reportList) {
+	public AppResp reportRuleApp(@RequestBody Report reportList) {
 		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_RICH_TEXT_HTML5_PATH + reportList.getId()+"&type=rule"+"&url="+config.getAppApiPath(),CodeDef.SUCCESS);
 	}
 	

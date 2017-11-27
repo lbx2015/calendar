@@ -6,33 +6,34 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseProp;
+import net.riking.entity.BaseAuditProp;
 
-@Comment("资讯评论回复信息 表")
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
+@Comment("行业资讯的评论回复表")
 @Entity
-@Table(name = "t_ncomment_reply_info")
-public class NCommentReplyInfo extends BaseProp {
+@Table(name = "t_nc_reply")
+public class NCReply extends BaseAuditProp {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5652341254448442067L;
-
-	@Comment("操作人主键  ")
+	@Comment("操作人主键: fk t_app_user 发表回复的user_id")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
 
-	@Comment("被操作人主键  ")
+	@Comment("被操作人主键: fk t_app_user 被评论人ID")
 	@Column(name = "to_user_id", nullable = false)
 	private String toUserId;
 
-	@Comment("目标对象评论主键")
-	@Column(name = "news_comment_id", nullable = false)
-	private String newsCommentId;
+	@Comment("目标对象评论主键: fk t_news_comment 行业资讯的评论表")
+	@Column(name = "comment_id", nullable = false)
+	private String commentId;
 
-	@Comment("目标对象评论回复主键")
-	@Column(name = "n_comment_reply_id", nullable = false)
-	private String nCommentReplyId;
+	@Comment("目标对象评论回复主键: fk t_nc_reply 回复ID")
+	@Column(name = "reply_id", nullable = false)
+	private String replyId;
 
 	@Comment("内容")
 	@Column(name = "content", nullable = false)
@@ -57,22 +58,6 @@ public class NCommentReplyInfo extends BaseProp {
 		this.userName = userName;
 	}
 
-	public String getNewsCommentId() {
-		return newsCommentId;
-	}
-
-	public void setNewsCommentId(String newsCommentId) {
-		this.newsCommentId = newsCommentId;
-	}
-
-	public String getnCommentReplyId() {
-		return nCommentReplyId;
-	}
-
-	public void setnCommentReplyId(String nCommentReplyId) {
-		this.nCommentReplyId = nCommentReplyId;
-	}
-
 	public String getContent() {
 		return content;
 	}
@@ -87,6 +72,22 @@ public class NCommentReplyInfo extends BaseProp {
 
 	public void setToUserId(String toUserId) {
 		this.toUserId = toUserId;
+	}
+
+	public String getCommentId() {
+		return commentId;
+	}
+
+	public void setCommentId(String commentId) {
+		this.commentId = commentId;
+	}
+
+	public String getReplyId() {
+		return replyId;
+	}
+
+	public void setReplyId(String replyId) {
+		this.replyId = replyId;
 	}
 
 }

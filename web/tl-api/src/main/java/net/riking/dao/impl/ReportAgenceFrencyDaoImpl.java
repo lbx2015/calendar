@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import net.riking.dao.ReportAgenceFrencyDao;
 import net.riking.entity.model.BaseModelPropdict;
 import net.riking.entity.model.ReportFrequency;
-import net.riking.entity.model.ReportList;
+import net.riking.entity.model.Report;
 
 @Repository("reportAgenceFrencyDao")
 public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {

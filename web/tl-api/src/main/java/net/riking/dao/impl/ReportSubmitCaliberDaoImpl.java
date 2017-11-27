@@ -16,7 +16,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.ReportSubmitCaliberDao;
-import net.riking.entity.model.AppUserReportCompleteRel;
+import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.QueryReport;
 
 @Repository("reportSubmitCaliberDao")
@@ -145,20 +145,20 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 	}
 
 	@Override
-	public List<AppUserReportCompleteRel> findCompleteReportByIdAndTime(String userId, String time) {
+	public List<ReportCompletedRel> findCompleteReportByIdAndTime(String userId, String time) {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "SELECT t.id,t.app_user_id,t.report_id,t.complete_date,t.is_complete,l.report_name, group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM t_app_user_report_complete_rel t LEFT JOIN t_report_list l ON l.id = t.report_id LEFT JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.app_user_id= ? AND t.complete_date=? GROUP BY c.report_id";
 		PreparedStatement pstmt = null;
-		List<AppUserReportCompleteRel> list = new ArrayList<>();
+		List<ReportCompletedRel> list = new ArrayList<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, userId);
 			pstmt.setString(2, time);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				AppUserReportCompleteRel appUserReportCompleteRel = new AppUserReportCompleteRel(rs.getString(1), rs.getString(2), rs.getString(3),
+				ReportCompletedRel appUserReportCompleteRel = new ReportCompletedRel(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getInt(5), rs.getString(6),rs.getString(7));
 				list.add(appUserReportCompleteRel);
 			}
@@ -169,13 +169,13 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 	}
 
 	@Override
-	public List<AppUserReportCompleteRel> findAllUserReport(AppUserReportCompleteRel appUserReportCompleteRel) {
+	public List<ReportCompletedRel> findAllUserReport(ReportCompletedRel appUserReportCompleteRel) {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "SELECT t.id,t.app_user_id,t.report_id,t.complete_date,t.is_complete,l.report_name, group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM t_app_user_report_complete_rel t LEFT JOIN t_report_list l ON l.id = t.report_id LEFT JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.app_user_id= ? AND t.is_complete=? GROUP BY c.report_id LIMIT ?,?";
 		PreparedStatement pstmt = null;
-		List<AppUserReportCompleteRel> list = new ArrayList<>();
+		List<ReportCompletedRel> list = new ArrayList<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, appUserReportCompleteRel.getAppUserId());
@@ -184,7 +184,7 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			pstmt.setInt(4, appUserReportCompleteRel.getPcount());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				AppUserReportCompleteRel aurcl = new AppUserReportCompleteRel(rs.getString(1), rs.getString(2), rs.getString(3),
+				ReportCompletedRel aurcl = new ReportCompletedRel(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getInt(5), rs.getString(6),rs.getString(7));
 				list.add(aurcl);
 			}

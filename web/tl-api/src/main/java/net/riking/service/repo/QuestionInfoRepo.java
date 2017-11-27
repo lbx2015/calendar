@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.QuestionInfo;
+import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.model.Topic;
 
 /**
@@ -20,7 +20,7 @@ import net.riking.entity.model.Topic;
  * @since 1.0
  */
 @Repository
-public interface QuestionInfoRepo extends JpaRepository<QuestionInfo, String>, JpaSpecificationExecutor<QuestionInfo> {
+public interface QuestionInfoRepo extends JpaRepository<TopicQuestion, String>, JpaSpecificationExecutor<TopicQuestion> {
 
 	/**
 	 * 根据时间戳返回资讯列表（下一页数据）

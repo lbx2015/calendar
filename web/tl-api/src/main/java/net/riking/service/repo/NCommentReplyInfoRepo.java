@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.NCommentReplyInfo;
+import net.riking.entity.model.NCReply;
 
 /**
  * 
@@ -19,7 +19,7 @@ import net.riking.entity.model.NCommentReplyInfo;
  */
 @Repository
 public interface NCommentReplyInfoRepo
-		extends JpaRepository<NCommentReplyInfo, String>, JpaSpecificationExecutor<NCommentReplyInfo> {
+		extends JpaRepository<NCReply, String>, JpaSpecificationExecutor<NCReply> {
 
 	/**
 	 * 资讯回复列表
@@ -27,5 +27,5 @@ public interface NCommentReplyInfoRepo
 	 * @return
 	 */
 	@Query("select id,userId,toUserId,newsCommentId,nCommentReplyId,content from NCommentReplyInfo where enabled = 1 order by createdTime desc")
-	List<NCommentReplyInfo> findByNewsCommentId(String newsCommentId);
+	List<NCReply> findByNewsCommentId(String newsCommentId);
 }

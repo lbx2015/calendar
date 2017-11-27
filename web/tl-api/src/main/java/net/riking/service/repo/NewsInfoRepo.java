@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.NewsInfo;
+import net.riking.entity.model.News;
 
 /**
  * 
@@ -19,7 +19,7 @@ import net.riking.entity.model.NewsInfo;
  * @since 1.0
  */
 @Repository
-public interface NewsInfoRepo extends JpaRepository<NewsInfo, String>, JpaSpecificationExecutor<NewsInfo> {
+public interface NewsInfoRepo extends JpaRepository<News, String>, JpaSpecificationExecutor<News> {
 
 	/**
 	 * 根据时间戳返回资讯列表（下一页数据）
@@ -27,7 +27,7 @@ public interface NewsInfoRepo extends JpaRepository<NewsInfo, String>, JpaSpecif
 	 * @return
 	 */
 	@Query("select n.id,n.createdTime,n.title,n.author from NewsInfo n where n.createdTime < ?1 and n.enabled = 1 order by n.createdTime desc")
-	List<NewsInfo> findNewsListPageNext(String reqTimeStamp, Pageable pageable);
+	List<News> findNewsListPageNext(String reqTimeStamp, Pageable pageable);
 
 	/**
 	 * 根据时间戳返回资讯列表（刷新第一页数据顺序排列）
@@ -35,7 +35,7 @@ public interface NewsInfoRepo extends JpaRepository<NewsInfo, String>, JpaSpecif
 	 * @return
 	 */
 	@Query("select n.id,n.createdTime,n.title,n.author from NewsInfo n where n.createdTime > ?1 and n.enabled = 1 order by n.createdTime asc")
-	List<NewsInfo> findNewsListRefresh(String reqTimeStamp, Pageable pageable);
+	List<News> findNewsListRefresh(String reqTimeStamp, Pageable pageable);
 
 	/**
 	 * 资讯的详情
@@ -43,6 +43,6 @@ public interface NewsInfoRepo extends JpaRepository<NewsInfo, String>, JpaSpecif
 	 * @return
 	 */
 	@Query("select n.id,n.createdTime,n.title,n.author,n.content from NewsInfo n where n.id = ?1")
-	NewsInfo getById(String newsId);
+	News getById(String newsId);
 
 }

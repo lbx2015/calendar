@@ -5,28 +5,34 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import net.riking.core.annos.Comment;
+
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
+@Comment("系统日历表")
 @Entity
-@Table(name = "t_days")
+@Table(name = "t_sys_days")
 public class Days {
 
-	// 日期（yyyyMMdd）
+	@Comment("日期（yyyyMMdd）")
 	@Id
 	@Column(name = "dates", length = 8)
-	private String date;
-	// 星期(1-7)代表星期一到星期天
+	private String dates;
+
+	@Comment("星期(1-7)代表星期一到星期天")
 	@Column(name = "weekday", length = 1)
 	private String weekday;
-	// 工作日标识 1：工作日 0：非工作日
+
+	@Comment("工作日标识 1：工作日 0：非工作日")
 	@Column(name = "is_work")
 	private Integer isWork;
 
 	public Days() {
 
-	}
-
-	public Days(Integer isWork, String date) {
-		this.isWork = isWork;
-		this.date = date;
 	}
 
 	public String getWeekday() {
@@ -37,12 +43,12 @@ public class Days {
 		this.weekday = weekday;
 	}
 
-	public String getDate() {
-		return date;
+	public String getDates() {
+		return dates;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setDates(String dates) {
+		this.dates = dates;
 	}
 
 	public Integer getIsWork() {

@@ -33,7 +33,7 @@ import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.Resp;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.entity.PageQuery;
-import net.riking.entity.model.ReportList;
+import net.riking.entity.model.Report;
 import net.riking.service.SysDataService;
 import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.ReportListRepo;
@@ -63,28 +63,28 @@ public class ReportListController {
 	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
-		ReportList reportList = reportListRepo.findOne(id);
+		Report reportList = reportListRepo.findOne(id);
 		return new Resp(reportList, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "得到<全部>报表信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute ReportList reportList) {
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute Report reportList) {
 		reportList.setDeleteState("1");
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		Example<ReportList> example = Example.of(reportList, ExampleMatcher.matchingAll());
-		Page<ReportList> page = reportListRepo.findAll(example, pageable);
+		Example<Report> example = Example.of(reportList, ExampleMatcher.matchingAll());
+		Page<Report> page = reportListRepo.findAll(example, pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "得到用户报表信息", notes = "GET")
 	@RequestMapping(value = "/getUserReport", method = RequestMethod.GET)
-	public Resp getUserReport_(@ModelAttribute PageQuery query, @ModelAttribute ReportList reportList) {
+	public Resp getUserReport_(@ModelAttribute PageQuery query, @ModelAttribute Report reportList) {
 		Set<String> reportIds = appUserReportRepo.findbyAppUserId(reportList.getId());
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		Specification<ReportList> s1 = new Specification<ReportList>() {
+		Specification<Report> s1 = new Specification<Report>() {
 			@Override
-			public Predicate toPredicate(Root<ReportList> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<Predicate>();
 				list.add(cb.equal((root.get("deleteState").as(String.class)), "1"));
 				if (reportIds.size() > 0) {
@@ -94,17 +94,17 @@ public class ReportListController {
 				return cb.and(list.toArray(p));
 			}
 		};
-		Page<ReportList> page = reportListRepo.findAll(Specifications.where(s1), pageable);
+		Page<Report> page = reportListRepo.findAll(Specifications.where(s1), pageable);
 		return new Resp(page);
 	}
 
 	@ApiOperation(value = "新增/修改一条报表数据", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Resp save_(@RequestBody ReportList reportList) {
+	public Resp save_(@RequestBody Report reportList) {
 		if (reportList.getId() == null) {
 			reportList.setDeleteState("1");
 		}
-		ReportList pReportList = reportListRepo.save(reportList);
+		Report pReportList = reportListRepo.save(reportList);
 		return new Resp(pReportList, CodeDef.SUCCESS);
 	}
 	
@@ -117,15 +117,15 @@ public class ReportListController {
 		MultipartFile mFile = multipartRequest.getFile("file");
 		String fileName = mFile.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-		List<ReportList> list = null;
+		List<Report> list = null;
 		String[] fields = { "reportName", "reportCode", "reportBrief", "reportOrganization", "reportFrequency",
 				"reportStyle", "reportUnit", "reportRound", "reportCurrency", "downloadUrl" , "moduleType"};
 		try {
 			InputStream is = mFile.getInputStream();
 			if (suffix.equals("xlsx")) {
-				list = ExcelToList.readXlsx(is, fields, ReportList.class);
+				list = ExcelToList.readXlsx(is, fields, Report.class);
 			} else {
-				list = ExcelToList.readXls(is, fields, ReportList.class);
+				list = ExcelToList.readXls(is, fields, Report.class);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -159,7 +159,7 @@ public class ReportListController {
 	@ApiOperation(value = "得到<单个>报表详情h5页面", notes = "GET")
 	@RequestMapping(value = "/getForHtml", method = RequestMethod.GET)
 	public Resp getForHtml_(@RequestParam("id") String id) {
-		ReportList reportList = reportListRepo.findOne(id);
+		Report reportList = reportListRepo.findOne(id);
 		ModelPropDict dict = sysDataService.getDict("T_REPORT_LIST", "REPORTUNIT", reportList.getReportUnit());
 		reportList.setReportUnit(dict.getValu());
 		return new Resp(reportList, CodeDef.SUCCESS);

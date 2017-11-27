@@ -18,9 +18,9 @@ import net.riking.config.Const;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.CommonParams;
-import net.riking.entity.model.NewsInfo;
+import net.riking.entity.model.News;
 import net.riking.entity.model.QuestionIgnore;
-import net.riking.entity.model.TopicFollowInfo;
+import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.Topic;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.service.repo.QAnswerAgreeInfoRepo;
@@ -69,7 +69,7 @@ public class HomePageServer {
 
 		} else {// 查询用户自己关注类(话题、问题),自己订阅类,好友的动态,热门话题、问题、回答
 			// 分页数据
-			List<TopicFollowInfo> newsInfoList = new ArrayList<TopicFollowInfo>();
+			List<TopicRel> newsInfoList = new ArrayList<TopicRel>();
 			// 把分页数据封装成map传入前台
 			List<Map<String, Object>> newsInfoMapList = new ArrayList<Map<String, Object>>();
 
@@ -109,7 +109,7 @@ public class HomePageServer {
 					break;
 				// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
 				case Const.DIRECT_DOWN:
-					List<NewsInfo> newsInfoAscList = newsInfoRepo.findNewsListRefresh(commonParams.getReqTimeStamp(),
+					List<News> newsInfoAscList = newsInfoRepo.findNewsListRefresh(commonParams.getReqTimeStamp(),
 							new PageRequest(0, 30));
 					// 把查出来的数据按倒序重新排列
 					for (int i = 0; i < newsInfoAscList.size(); i++) {
@@ -119,7 +119,7 @@ public class HomePageServer {
 				default:
 					throw new RuntimeException("请求方向参数异常：direct:" + commonParams.getDirect());
 			}
-			for (NewsInfo newsInfo : newsInfoList) {
+			for (News newsInfo : newsInfoList) {
 				// 从数据库查询评论数插到资讯表
 				Integer count = newsCommentInfoRepo.commentCount(newsInfo.getId());
 				newsInfo.setCommentNumber(count);

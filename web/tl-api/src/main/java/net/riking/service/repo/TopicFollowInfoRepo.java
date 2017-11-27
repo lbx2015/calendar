@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.TopicFollowInfo;
+import net.riking.entity.model.TopicRel;
 
 /**
  * 
@@ -16,6 +16,6 @@ import net.riking.entity.model.TopicFollowInfo;
  */
 @Repository
 public interface TopicFollowInfoRepo
-		extends JpaRepository<TopicFollowInfo, String>, JpaSpecificationExecutor<TopicFollowInfo> {
+		extends JpaRepository<TopicRel, String>, JpaSpecificationExecutor<TopicRel> {
 
 }

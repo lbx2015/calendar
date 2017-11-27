@@ -11,6 +11,12 @@ import org.springframework.data.annotation.Transient;
 
 import net.riking.core.annos.Comment;
 
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
 @Entity
 @Table(name = "t_appuser_detail")
 public class AppUserDetail {

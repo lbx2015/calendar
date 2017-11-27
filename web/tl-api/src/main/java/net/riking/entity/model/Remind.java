@@ -6,8 +6,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import net.riking.core.annos.Comment;
 import net.riking.entity.PageQuery;
 
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
+@Comment("提醒表")
 @Entity
 @Table(name = "t_remind")
 public class Remind extends PageQuery {
@@ -15,74 +23,67 @@ public class Remind extends PageQuery {
 	/**
 	 * @author Lucky.Liu on 2017/8/05.
 	 */
-	// 手机端时间戳：yyyyMMddHHmmssSSS
+	@Comment("手机端时间戳：yyyyMMddHHmmssSSS")
 	@Id
 	@Column(name = "remind_id", length = 17)
-	private String reminderId;
+	private String remindId;
 
-	// 用户Id
+	@Comment("用户Id: pk t_app_user")
 	@Column(name = "user_id", length = 32)
 	private String userId;
 
-	// 提醒内容
+	@Comment("内容")
 	@Column(name = "content", length = 255)
 	private String content;
 
 	// 提醒时间
+	@Comment("提醒时间：HHmm")
 	@Column(name = "start_time", length = 5)
 	private String startTime;
 
 	// 提醒日期
+	@Comment("提醒时间：yyyyMMdd ")
 	@Column(name = "str_date", length = 14)
 	private String strDate;
 
-	// 是否全天提醒(0-否；1-是)
+	@Comment("是否全天提醒(0-否；1-是)")
 	@Column(name = "is_allday", length = 1)
-	private int isAllday;
+	private Integer isAllday;
 
-	// 提前提醒时间（不选默认为0）
+	@Comment("提前提醒时间（不选默认为0）")
 	@Column(name = "before_time", length = 2)
-	private int beforeTime;
+	private Integer beforeTime;
 
-	// 结束时间：HHmm
+	@Comment("结束时间：HHmm")
 	@Column(name = "end_time", length = 4)
 	private String endTime;
 
-	// 重复标识（0-不重复；1-法定工作日；2-法定节假日；3-其它）
+	@Comment("重复标识（0-不重复；1-法定工作日；2-法定节假日；3-其它）")
 	@Column(name = "repeat_flag", length = 8)
 	private int repeatFlag;
 
-	// 重复值(例如0,1,2,3,4,5,6)
+	@Comment("重复值(例如0,1,2,3,4,5,6)")
 	@Column(name = "repeat_value", length = 20)
 	private String repeatValue;
 
-	// 当前星期数（0,6）
+	@Comment("当前星期数（0,6）")
 	@Column(name = "curr_week", length = 1)
-	private int currWeek;
+	private Integer currWeek;
 
 	// 同步标识app端数据状态
 	@Transient
 	private int deleteState;
 
-	// 客户端数据来源：1-IOS;2-Android;3-其它
+	@Comment("客户端数据来源：1-IOS;2-Android;3-其它")
 	@Column(name = "client_type", length = 1)
-	private String clientType;
+	private Integer clientType;
 
-
-	public String getReminderId() {
-		return reminderId;
+	public String getRemindId() {
+		return remindId;
 	}
 
-	public void setReminderId(String reminderId) {
-		this.reminderId = reminderId;
-	}
-
-	public String getClientType() {
-		return clientType;
-	}
-
-	public void setClientType(String clientType) {
-		this.clientType = clientType;
+	public void setRemindId(String remindId) {
+		this.remindId = remindId;
 	}
 
 	public String getUserId() {
@@ -117,19 +118,19 @@ public class Remind extends PageQuery {
 		this.strDate = strDate;
 	}
 
-	public int getIsAllday() {
+	public Integer getIsAllday() {
 		return isAllday;
 	}
 
-	public void setIsAllday(int isAllday) {
+	public void setIsAllday(Integer isAllday) {
 		this.isAllday = isAllday;
 	}
 
-	public int getBeforeTime() {
+	public Integer getBeforeTime() {
 		return beforeTime;
 	}
 
-	public void setBeforeTime(int beforeTime) {
+	public void setBeforeTime(Integer beforeTime) {
 		this.beforeTime = beforeTime;
 	}
 
@@ -157,11 +158,11 @@ public class Remind extends PageQuery {
 		this.repeatValue = repeatValue;
 	}
 
-	public int getCurrWeek() {
+	public Integer getCurrWeek() {
 		return currWeek;
 	}
 
-	public void setCurrWeek(int currWeek) {
+	public void setCurrWeek(Integer currWeek) {
 		this.currWeek = currWeek;
 	}
 
@@ -173,12 +174,12 @@ public class Remind extends PageQuery {
 		this.deleteState = deleteState;
 	}
 
-	@Override
-	public String toString() {
-		return "Remind [reminderId=" + reminderId + ", userId=" + userId + ", content=" + content + ", startTime="
-				+ startTime + ", strDate=" + strDate + ", isAllday=" + isAllday + ", beforeTime=" + beforeTime
-				+ ", endTime=" + endTime + ", repeatFlag=" + repeatFlag + ", repeatValue=" + repeatValue + ", currWeek="
-				+ currWeek + ", deleteState=" + deleteState + ", clientType=" + clientType + "]";
+	public Integer getClientType() {
+		return clientType;
+	}
+
+	public void setClientType(Integer clientType) {
+		this.clientType = clientType;
 	}
 
 }
