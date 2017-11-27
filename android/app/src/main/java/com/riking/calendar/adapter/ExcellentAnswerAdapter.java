@@ -34,10 +34,11 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
     @Override
     public void onBindViewHolder(ExcellentViewHolderViewHolder h, int i) {
         h.userName.setText("周润发");
+        h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
         RequestOptions options = new RequestOptions();
         Glide.with(h.userImage.getContext()).load(R.drawable.img_user_head)
                 .apply(options.fitCenter())
-                .into(h.userImage );
+                .into(h.userImage);
     }
 
 

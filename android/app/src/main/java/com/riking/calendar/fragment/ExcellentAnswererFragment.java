@@ -55,9 +55,6 @@ public class ExcellentAnswererFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-
-        //adding custom divider
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         mAdapter = new ExcellentAnswerAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
