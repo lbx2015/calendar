@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.AppLogInfo;
+import net.riking.entity.model.AppLog;
 
 @Repository
-public interface AppLogInfoRepo extends JpaRepository<AppLogInfo, String>, JpaSpecificationExecutor<AppLogInfo>{
+public interface AppLogInfoRepo extends JpaRepository<AppLog, String>, JpaSpecificationExecutor<AppLog>{
 
 }
