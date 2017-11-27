@@ -30,7 +30,11 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="3dp"
             android:layout_toRightOf="@id/answer_author_icon"
-            android:text="关注人昵称" />
+            android:drawableRight="@drawable/com_icon_grade_v3"
+            android:paddingRight="5dp"
+            android:text="周云丽"
+            android:textColor="@color/color_333333"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/answer_update_time"
@@ -39,7 +43,7 @@
             android:layout_alignLeft="@id/answer_author_name"
             android:layout_below="@+id/answer_author_name"
             android:layout_centerVertical="true"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/answer_author_icon"
             android:text="1分钟前"
             android:textColor="@color/color_999999"
@@ -50,17 +54,19 @@
         android:id="@+id/answer_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:lineSpacingMultiplier="1.2"
         android:text="G01报表话题相关标题G01报表话题相关标题G01报表话题相关标题"
         android:textColor="@color/color_222222"
         android:textSize="17sp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -98,7 +104,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:background="@color/color_e2e2e2" />
 </LinearLayout>
