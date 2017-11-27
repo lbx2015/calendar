@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,7 @@ import net.riking.entity.BaseEntity;
  */
 @Comment("话题关注表")
 @Entity
+@IdClass(TopicRelUnionPkId.class)
 @Table(name = "t_topic_rel")
 public class TopicRel extends BaseEntity {
 

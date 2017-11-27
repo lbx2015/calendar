@@ -19,9 +19,9 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.CommonParams;
 import net.riking.entity.model.NCReply;
-import net.riking.entity.model.NewsRel;
-import net.riking.entity.model.NewsComment;
 import net.riking.entity.model.News;
+import net.riking.entity.model.NewsComment;
+import net.riking.entity.model.NewsRel;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.service.repo.NCommentAgreeInfoRepo;
 import net.riking.service.repo.NCommentReplyInfoRepo;
@@ -143,20 +143,19 @@ public class NewsInfoServer {
 		for (NewsComment newsCommentInfoNew : newsCommentInfoList) {
 
 			// 根据评论id取到回复列表
-			List<NCReply> nCommentReplyInfoList = nCommentReplyInfoRepo
-					.findByNewsCommentId(newsCommentInfoNew.getId());
+			List<NCReply> nCommentReplyInfoList = nCommentReplyInfoRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
 				Map<String, Object> nCommentReplyInfoObjMap = new HashMap<String, Object>();
 				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
-				nCommentReplyInfo.setUserName(appUser.getName());
+				nCommentReplyInfo.setUserName(appUser.getUserName());
 				// 将评论回复对象转换成map
 				nCommentReplyInfoObjMap = Utils.objProps2Map(nCommentReplyInfo, true);
 				// 回复的数据列表添加到评论类里面
 				newsCommentInfoNew.getNCommentReplyInfoList().add(nCommentReplyInfoObjMap);
 			}
 			AppUser appUser = appUserRepo.findOne(newsCommentInfoNew.getUserId());
-			newsCommentInfoNew.setUserName(appUser.getName());
+			newsCommentInfoNew.setUserName(appUser.getUserName());
 			// 点赞数
 			Integer agree = nCommentAgreeInfoRepo.commentCount(newsCommentInfoNew.getId());
 			newsCommentInfoNew.setAgreeNumber(agree);

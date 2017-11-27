@@ -18,11 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.AppUser;
-import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.QureyResulte;
+import net.riking.entity.model.ReportCompletedRel;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.impl.GetDateServiceImpl;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
@@ -67,8 +66,9 @@ public class AppUserReportCompleteRelServer {
 	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody ReportCompletedRel completeRel) {
-		List<QureyResulte> completeRels = appUserReportCompleteRelRepo.getReportId(completeRel.getAppUserId(),
-				completeRel.getCompleteDate());
+		List<QureyResulte> completeRels = new ArrayList<QureyResulte>();
+		// completeRels = appUserReportCompleteRelRepo.getReportId(completeRel.getAppUserId(),
+		// completeRel.getCompleteDate());
 		return new AppResp(completeRels, CodeDef.SUCCESS);
 
 	}
@@ -77,38 +77,41 @@ public class AppUserReportCompleteRelServer {
 	@RequestMapping(value = "/getReportByIdAndTime", method = RequestMethod.POST)
 	public AppResp getReportByIdAndTime(@RequestBody ReportCompletedRel completeRel) {
 		// List<>
-		List<ReportCompletedRel> list = reportSubmitCaliberService
-				.findCompleteReportByIdAndTime(completeRel.getAppUserId(), completeRel.getCompleteDate());
+		List<ReportCompletedRel> list = new ArrayList<ReportCompletedRel>();
+		// list = reportSubmitCaliberService
+		// .findCompleteReportByIdAndTime(completeRel.getAppUserId(),
+		// completeRel.getCompleteDate());
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
-
-	@ApiOperation(value = "获取当天之后的打点日期", notes = "POST")
-	@RequestMapping(value = "/getDatedot", method = RequestMethod.POST)
-	public AppResp getDatedot(@RequestBody AppUser appUser) throws ParseException {
-		// List<String> list = getDateByToDay();//获取当日之后的一年日期
-		List<String> allList = new ArrayList<>();// 存日期 返回
-		Set<String> result = new HashSet<String>();// 取交集用
-
-		// 获取当月的打点数据 如果只打点当月之后的数据
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-		// sdf.parse(str);
-		List<String> dateList = getAllTheDateOftheMonth(sdf.parse(appUser.getRemindTime()));
-
-		// 根据userId去用户订阅表里查询未完成的 报表id 集合
-		Set<String> userSetList = appUserReportRelRepo.findReportByUserIdAndIsComplete(appUser.getId());
-		// 循环日期 根据当天日期去查询 报送口径表 相符合的报表id集合
-		for (String date : dateList) {
-			Set<String> setList = getReportList(date);// 计算出的reportId集合
-			result.clear();
-			result.addAll(userSetList);
-			result.retainAll(setList);
-			if (result != null && !result.isEmpty()) {// 如果存在并集 则将日期存进list
-				allList.add(date);
-			}
-		}
-
-		return new AppResp(allList, CodeDef.SUCCESS);
-	}
+	// 先注释，后面要打开
+	// TODO @ApiOperation(value = "获取当天之后的打点日期", notes = "POST")
+	// @RequestMapping(value = "/getDatedot", method = RequestMethod.POST)
+	// public AppResp getDatedot(@RequestBody AppUser appUser) throws ParseException {
+	// // List<String> list = getDateByToDay();//获取当日之后的一年日期
+	// List<String> allList = new ArrayList<>();// 存日期 返回
+	// Set<String> result = new HashSet<String>();// 取交集用
+	//
+	// // 获取当月的打点数据 如果只打点当月之后的数据
+	// SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+	// // sdf.parse(str);
+	// List<String> dateList = getAllTheDateOftheMonth(sdf.parse(appUser.getRemindTime()));
+	//
+	// // 根据userId去用户订阅表里查询未完成的 报表id 集合
+	// Set<String> userSetList =
+	// appUserReportRelRepo.findReportByUserIdAndIsComplete(appUser.getId());
+	// // 循环日期 根据当天日期去查询 报送口径表 相符合的报表id集合
+	// for (String date : dateList) {
+	// Set<String> setList = getReportList(date);// 计算出的reportId集合
+	// result.clear();
+	// result.addAll(userSetList);
+	// result.retainAll(setList);
+	// if (result != null && !result.isEmpty()) {// 如果存在并集 则将日期存进list
+	// allList.add(date);
+	// }
+	// }
+	//
+	// return new AppResp(allList, CodeDef.SUCCESS);
+	// }
 
 	private List<String> getAllTheDateOftheMonth(Date date) {
 		List<String> list = new ArrayList<String>();

@@ -16,8 +16,8 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.ReportSubmitCaliberDao;
-import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.QueryReport;
+import net.riking.entity.model.ReportCompletedRel;
 
 @Repository("reportSubmitCaliberDao")
 public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
@@ -78,16 +78,16 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 	}
 
 	@Override
-	public int updateDelayDateAfter(String type,String remarks) {
+	public int updateDelayDateAfter(String type, String remarks) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = null ;
+		String sql = null;
 		if ("May".equalsIgnoreCase(type)) {
 			sql = "update t_report_submit_caliber a SET delay_dates = delay_dates+1  WHERE remarks = ?";
-		}else if ("October".equalsIgnoreCase(type)) {
+		} else if ("October".equalsIgnoreCase(type)) {
 			sql = "update t_report_submit_caliber a SET delay_dates = delay_dates+3  WHERE remarks = ?";
 		}
-		int rs = 0 ;
+		int rs = 0;
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
@@ -100,16 +100,16 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 	}
 
 	@Override
-	public int updateDelayDateBefer(String type,String remarks,String frequency) {
+	public int updateDelayDateBefer(String type, String remarks, String frequency) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = null ;
+		String sql = null;
 		if ("May".equalsIgnoreCase(type)) {
 			sql = "update t_report_submit_caliber a SET delay_dates = delay_dates-1  WHERE remarks = ? AND frequency =?";
-		}else if ("October".equalsIgnoreCase(type)) {
+		} else if ("October".equalsIgnoreCase(type)) {
 			sql = "update t_report_submit_caliber a SET delay_dates = delay_dates-3  WHERE remarks = ? AND frequency =?";
 		}
-		int rs = 0 ;
+		int rs = 0;
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
@@ -135,7 +135,7 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QueryReport queryReport = new QueryReport(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getString(5),rs.getString(6),"");
+						rs.getString(4), rs.getString(5), rs.getString(6), "");
 				list.add(queryReport);
 			}
 		} catch (SQLException e) {
@@ -146,51 +146,63 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 
 	@Override
 	public List<ReportCompletedRel> findCompleteReportByIdAndTime(String userId, String time) {
-		// TODO Auto-generated method stub
-		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
-		Connection connection = session.connection();
-		String sql = "SELECT t.id,t.app_user_id,t.report_id,t.complete_date,t.is_complete,l.report_name, group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM t_app_user_report_complete_rel t LEFT JOIN t_report_list l ON l.id = t.report_id LEFT JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.app_user_id= ? AND t.complete_date=? GROUP BY c.report_id";
-		PreparedStatement pstmt = null;
+		// // TODO Auto-generated method stub
+		// SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		// Connection connection = session.connection();
+		// String sql = "SELECT
+		// t.id,t.app_user_id,t.report_id,t.complete_date,t.is_complete,l.report_name,
+		// group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM
+		// t_app_user_report_complete_rel t LEFT JOIN t_report_list l ON l.id = t.report_id LEFT
+		// JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.app_user_id= ? AND
+		// t.complete_date=? GROUP BY c.report_id";
+		// PreparedStatement pstmt = null;
 		List<ReportCompletedRel> list = new ArrayList<>();
-		try {
-			pstmt = (PreparedStatement) connection.prepareStatement(sql);
-			pstmt.setString(1, userId);
-			pstmt.setString(2, time);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ReportCompletedRel appUserReportCompleteRel = new ReportCompletedRel(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getInt(5), rs.getString(6),rs.getString(7));
-				list.add(appUserReportCompleteRel);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		// try {
+		// pstmt = (PreparedStatement) connection.prepareStatement(sql);
+		// pstmt.setString(1, userId);
+		// pstmt.setString(2, time);
+		// ResultSet rs = pstmt.executeQuery();
+		// while (rs.next()) {
+		// ReportCompletedRel appUserReportCompleteRel = new ReportCompletedRel(rs.getString(1),
+		// rs.getString(2), rs.getString(3),
+		// rs.getString(4), rs.getInt(5), rs.getString(6),rs.getString(7));
+		// list.add(appUserReportCompleteRel);
+		// }
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// }
 		return list;
 	}
 
 	@Override
 	public List<ReportCompletedRel> findAllUserReport(ReportCompletedRel appUserReportCompleteRel) {
-		// TODO Auto-generated method stub
-		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
-		Connection connection = session.connection();
-		String sql = "SELECT t.id,t.app_user_id,t.report_id,t.complete_date,t.is_complete,l.report_name, group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM t_app_user_report_complete_rel t LEFT JOIN t_report_list l ON l.id = t.report_id LEFT JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.app_user_id= ? AND t.is_complete=? GROUP BY c.report_id LIMIT ?,?";
-		PreparedStatement pstmt = null;
+		// // TODO Auto-generated method stub
+		// SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		// Connection connection = session.connection();
+		// String sql = "SELECT
+		// t.id,t.app_user_id,t.report_id,t.complete_date,t.is_complete,l.report_name,
+		// group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM
+		// t_app_user_report_complete_rel t LEFT JOIN t_report_list l ON l.id = t.report_id LEFT
+		// JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.app_user_id= ? AND
+		// t.is_complete=? GROUP BY c.report_id LIMIT ?,?";
+		// PreparedStatement pstmt = null;
 		List<ReportCompletedRel> list = new ArrayList<>();
-		try {
-			pstmt = (PreparedStatement) connection.prepareStatement(sql);
-			pstmt.setString(1, appUserReportCompleteRel.getAppUserId());
-			pstmt.setInt(2, appUserReportCompleteRel.getIsComplete());
-			pstmt.setInt(3, appUserReportCompleteRel.getPindex());
-			pstmt.setInt(4, appUserReportCompleteRel.getPcount());
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ReportCompletedRel aurcl = new ReportCompletedRel(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getInt(5), rs.getString(6),rs.getString(7));
-				list.add(aurcl);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		// try {
+		// pstmt = (PreparedStatement) connection.prepareStatement(sql);
+		// pstmt.setString(1, appUserReportCompleteRel.getAppUserId());
+		// pstmt.setInt(2, appUserReportCompleteRel.getIsComplete());
+		// pstmt.setInt(3, appUserReportCompleteRel.getPindex());
+		// pstmt.setInt(4, appUserReportCompleteRel.getPcount());
+		// ResultSet rs = pstmt.executeQuery();
+		// while (rs.next()) {
+		// ReportCompletedRel aurcl = new ReportCompletedRel(rs.getString(1), rs.getString(2),
+		// rs.getString(3),
+		// rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7));
+		// list.add(aurcl);
+		// }
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// }
 		return list;
 	}
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 import net.riking.entity.model.News;
 
 public class Utils {
-	
+
 	/**
 	 * obj 转换成 Map
 	 * @used TODO
@@ -21,25 +21,25 @@ public class Utils {
 	 * @throws Exception
 	 */
 	public static <T extends Object> Map<String, Object> objProps2Map(T obj, boolean deep) {
-		Map<String,Object> map = new HashMap<>();
-		if(null==obj){
+		Map<String, Object> map = new HashMap<>();
+		if (null == obj) {
 			return map;
 		}
-		if(deep){
+		if (deep) {
 			objPropsDeep2Map(obj, map);
-		}else{
+		} else {
 			objPropsEasy2Map(obj, map);
 		}
 		return map;
 	}
-	
+
 	/**
 	 * 深转换
 	 * @used TODO
 	 * @param obj
 	 * @param map
 	 */
-	private static <T extends Object> void objPropsDeep2Map(T obj, Map<String,Object> map){
+	private static <T extends Object> void objPropsDeep2Map(T obj, Map<String, Object> map) {
 		try {
 			for (Class<? extends Object> clazz = obj.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
 				Field[] fields = clazz.getDeclaredFields();
@@ -48,7 +48,7 @@ public class Utils {
 					field.setAccessible(true);
 					String name = field.getName();
 					Object value = field.get(obj);
-					if(null!= value){
+					if (null != value) {
 						map.put(name, value);
 					}
 				}
@@ -57,14 +57,14 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 浅转换
 	 * @used TODO
 	 * @param obj
 	 * @param map
 	 */
-	private static <T extends Object> void objPropsEasy2Map(T obj, Map<String,Object> map){
+	private static <T extends Object> void objPropsEasy2Map(T obj, Map<String, Object> map) {
 		try {
 			Class<? extends Object> clazz = obj.getClass();
 			Field[] fields = clazz.getDeclaredFields();
@@ -73,7 +73,7 @@ public class Utils {
 				field.setAccessible(true);
 				String name = field.getName();
 				Object value = field.get(obj);
-				if(null!= value){
+				if (null != value) {
 					map.put(name, value);
 				}
 			}
@@ -81,20 +81,21 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
+
 	/**
-	 *  map 转对象
+	 * map 转对象
 	 * @used TODO
 	 * @param map
 	 * @param clazz
 	 * @return
 	 */
-	public static <T extends Object> T map2Obj(Map<String,Object> map, Class<T> clazz){
+	public static <T extends Object> T map2Obj(Map<String, Object> map, Class<T> clazz) {
 		T obj = null;
-		if(null == map || map.size()==0){
+		if (null == map || map.size() == 0) {
 			return obj;
 		}
 		try {
-			String id = clazz.getName().substring(clazz.getName().lastIndexOf(".")+1) + "Id";
+			String id = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1) + "Id";
 			Object removeValue = map.remove(id);
 			map.put("id", removeValue);
 			obj = clazz.newInstance();
@@ -102,27 +103,27 @@ public class Utils {
 			Set<String> keySet = map.keySet();
 			for (String fieldName : keySet) {
 				for (Field field : list) {
-					if(field.getName().equals(fieldName)){
+					if (field.getName().equals(fieldName)) {
 						field.set(obj, map.get(fieldName));
 					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return obj;
 	}
-	
+
 	/**
 	 * 获取所有属性
 	 * @used TODO
 	 * @param clazz
 	 * @return
 	 */
-	private static  List<Field>  getAllFields(Class<?> clazz){
+	private static List<Field> getAllFields(Class<?> clazz) {
 		List<Field> list = new ArrayList<>();
 		try {
-			for ( ; clazz != null; clazz = clazz.getSuperclass()) {
+			for (; clazz != null; clazz = clazz.getSuperclass()) {
 				Field[] fields = clazz.getDeclaredFields();
 				for (int i = 0; i < fields.length; i++) {
 					Field field = fields[i];
@@ -135,27 +136,27 @@ public class Utils {
 		}
 		return list;
 	}
-	
-	
+
 	public static void main(String[] args) {
 		News info = new News();
-		
-		info.setAuthor("author");
+
+		// info.setAuthor("author");
 		info.setCreatedTime(new Date());
-		
+
 		Map<String, Object> map = objProps2Map(info, true);
-		
+
 		Set<String> keySet = map.keySet();
 		for (String key : keySet) {
-			System.err.println(key +"--"+ map.get(key));
+			System.err.println(key + "--" + map.get(key));
 		}
-		
+
 		map.put("NewsInfoId", "12345");
-		
+
 		map.remove("serialVersionUID");
-		
+
 		News info2 = map2Obj(map, News.class);
-		
-		System.out.println(info2.getId()+ "--"+info2.getAuthor()+"--"+ info.getCreatedTime());
+
+		// System.out.println(info2.getId() + "--" + info2.getAuthor() + "--" +
+		// info.getCreatedTime());
 	}
 }

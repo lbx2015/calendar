@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,7 @@ import net.riking.entity.BaseEntity;
  */
 @Comment("用户报表订阅表")
 @Entity
+@IdClass(RSRelUnionPkId.class)
 @Table(name = "t_report_subscribe_rel")
 public class ReportSubcribeRel extends BaseEntity {
 
@@ -31,7 +33,6 @@ public class ReportSubcribeRel extends BaseEntity {
 	}
 
 	public ReportSubcribeRel() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Id

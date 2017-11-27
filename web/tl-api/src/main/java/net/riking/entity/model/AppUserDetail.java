@@ -57,8 +57,8 @@ public class AppUserDetail {
 	private String address;
 
 	@Comment("用户描述")
-	@Column(name = "describe", length = 500)
-	private String describe;
+	@Column(name = "description", length = 500)
+	private String description;
 
 	@Comment("手机Macid")
 	@Column(name = "phone_macid", length = 32)
@@ -177,12 +177,12 @@ public class AppUserDetail {
 		this.address = address;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getPhoneMacid() {

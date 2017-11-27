@@ -179,7 +179,7 @@ public class SysDataServiceImpl implements SysDataService {
 	@Override
 	public void delAppUser(AppUser user) {
 		// TODO Auto-generated method stub
-		RedisUtil.getInstall().del(user.getPhoneMacid() + ":" + user.getPhone());
+		// RedisUtil.getInstall().del(user.getPhoneMacid() + ":" + user.getPhone());
 	}
 
 	// @SuppressWarnings("static-access")

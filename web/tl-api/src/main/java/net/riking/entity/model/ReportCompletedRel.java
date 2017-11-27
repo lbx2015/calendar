@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,7 @@ import net.riking.core.entity.PageQuery;
  */
 @Comment("用户核销表")
 @Entity
+@IdClass(RCRelUnionPkId.class)
 @Table(name = "t_report_completed_rel")
 public class ReportCompletedRel extends PageQuery {
 	@Id

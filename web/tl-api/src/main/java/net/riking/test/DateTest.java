@@ -12,8 +12,6 @@ import java.util.List;
 
 import net.riking.entity.model.Days;
 
-
-
 public class DateTest {
 	public static void main(String[] args) {
 		String driver = "com.mysql.jdbc.Driver";
@@ -36,38 +34,38 @@ public class DateTest {
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(date);
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'7','" + sdf.format(date) +"',0)";
+						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES(" + "'7','"
+								+ sdf.format(date) + "',0)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'1','" + sdf.format(date) + "',1)";
+						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES(" + "'1','"
+								+ sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
-						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'2','" + sdf.format(date) + "',1)";
+						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES(" + "'2','"
+								+ sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
-						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'3','" + sdf.format(date) +"',1)";
+						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES(" + "'3','"
+								+ sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
-						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'4','" + sdf.format(date) + "',1)";
+						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES(" + "'4','"
+								+ sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
-						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'5','" + sdf.format(date) + "',1)";
+						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES(" + "'5','"
+								+ sdf.format(date) + "',1)";
 						statement.executeUpdate(insertSql);
 					}
 					if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES("
-								+ "'6','" + sdf.format(date) + "',0)";
+						String insertSql = "INSERT INTO t_days (weekday,dates,is_work) VALUES(" + "'6','"
+								+ sdf.format(date) + "',0)";
 						statement.executeUpdate(insertSql);
 					}
 
@@ -75,54 +73,54 @@ public class DateTest {
 			}
 
 			List<Days> holidays = new ArrayList<Days>();
-			holidays.add(new Days(0, "20170101"));
-			holidays.add(new Days(0, "20170102"));
-
-			holidays.add(new Days(0, "20170127"));
-			holidays.add(new Days(0, "20170128"));
-			holidays.add(new Days(0, "20170129"));
-			holidays.add(new Days(0, "20170130"));
-			holidays.add(new Days(0, "20170131"));
-			holidays.add(new Days(0, "20170201"));
-			holidays.add(new Days(0, "20170202"));
-
-			holidays.add(new Days(0, "20170402"));
-			holidays.add(new Days(0, "20170403"));
-			holidays.add(new Days(0, "20170404"));
-
-			holidays.add(new Days(0, "20170501"));
-
-			holidays.add(new Days(0, "20171001"));
-			holidays.add(new Days(0, "20171002"));
-			holidays.add(new Days(0, "20171003"));
-
-			holidays.add(new Days(0, "20171004"));
-			holidays.add(new Days(0, "20171005"));
-			holidays.add(new Days(0, "20171006"));
-
-			holidays.add(new Days(0, "20171007"));
-			holidays.add(new Days(0, "20171008"));
-			for (Days day : holidays) {
-				String updateSql = "UPDATE t_days set is_work='"
-						+ day.getIsWork() + "' where dates = '"
-						+ day.getDate() + "'";
-				statement.executeUpdate(updateSql);
-
-			}
-
-			List<Days> workDays = new ArrayList<Days>();
-			workDays.add(new Days(1,"20170122"));
-			workDays.add(new Days(1, "20170401"));
-			workDays.add(new Days(1, "20170204"));
-			workDays.add(new Days(1, "20170527"));
-			workDays.add(new Days(1, "20170930"));
-
-			for (Days day : workDays) {
-				String updateSql = "UPDATE t_days set is_work='"
-						+ day.getIsWork() + "' where dates = '"
-						+ day.getDate() + "'";
-				statement.executeUpdate(updateSql);
-			}
+			// holidays.add(new Days(0, "20170101"));
+			// holidays.add(new Days(0, "20170102"));
+			//
+			// holidays.add(new Days(0, "20170127"));
+			// holidays.add(new Days(0, "20170128"));
+			// holidays.add(new Days(0, "20170129"));
+			// holidays.add(new Days(0, "20170130"));
+			// holidays.add(new Days(0, "20170131"));
+			// holidays.add(new Days(0, "20170201"));
+			// holidays.add(new Days(0, "20170202"));
+			//
+			// holidays.add(new Days(0, "20170402"));
+			// holidays.add(new Days(0, "20170403"));
+			// holidays.add(new Days(0, "20170404"));
+			//
+			// holidays.add(new Days(0, "20170501"));
+			//
+			// holidays.add(new Days(0, "20171001"));
+			// holidays.add(new Days(0, "20171002"));
+			// holidays.add(new Days(0, "20171003"));
+			//
+			// holidays.add(new Days(0, "20171004"));
+			// holidays.add(new Days(0, "20171005"));
+			// holidays.add(new Days(0, "20171006"));
+			//
+			// holidays.add(new Days(0, "20171007"));
+			// holidays.add(new Days(0, "20171008"));
+			// for (Days day : holidays) {
+			// String updateSql = "UPDATE t_days set is_work='"
+			// + day.getIsWork() + "' where dates = '"
+			// + day.getDate() + "'";
+			// statement.executeUpdate(updateSql);
+			//
+			// }
+			//
+			// List<Days> workDays = new ArrayList<Days>();
+			// workDays.add(new Days(1,"20170122"));
+			// workDays.add(new Days(1, "20170401"));
+			// workDays.add(new Days(1, "20170204"));
+			// workDays.add(new Days(1, "20170527"));
+			// workDays.add(new Days(1, "20170930"));
+			//
+			// for (Days day : workDays) {
+			// String updateSql = "UPDATE t_days set is_work='"
+			// + day.getIsWork() + "' where dates = '"
+			// + day.getDate() + "'";
+			// statement.executeUpdate(updateSql);
+			// }
 
 			conn.close();
 		} catch (ClassNotFoundException e) {
@@ -135,8 +133,7 @@ public class DateTest {
 		}
 	}
 
-	private static List<Date> dateSplit(java.util.Date start, Date end)
-			throws Exception {
+	private static List<Date> dateSplit(java.util.Date start, Date end) throws Exception {
 		if (!start.before(end))
 			throw new Exception("");
 		Long spi = end.getTime() - start.getTime();
@@ -145,8 +142,7 @@ public class DateTest {
 		List<Date> dateList = new ArrayList<Date>();
 		dateList.add(end);
 		for (int i = 1; i <= step; i++) {
-			dateList.add(new Date(
-					dateList.get(i - 1).getTime() - (24 * 60 * 60 * 1000)));
+			dateList.add(new Date(dateList.get(i - 1).getTime() - (24 * 60 * 60 * 1000)));
 		}
 		return dateList;
 	}

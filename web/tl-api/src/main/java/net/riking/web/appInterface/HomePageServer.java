@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,14 +15,11 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.AppUser;
 import net.riking.entity.model.CommonParams;
-import net.riking.entity.model.News;
 import net.riking.entity.model.QuestionIgnore;
-import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.Topic;
+import net.riking.entity.model.TopicRel;
 import net.riking.service.repo.AppUserRepo;
-import net.riking.service.repo.QAnswerAgreeInfoRepo;
 import net.riking.service.repo.QuestionIgnoreRepo;
 import net.riking.service.repo.QuestionInfoRepo;
 import net.riking.service.repo.TopicInfoRepo;
@@ -50,9 +46,6 @@ public class HomePageServer {
 
 	@Autowired
 	QuestionInfoRepo questionInfoRepo;
-
-	@Autowired
-	QAnswerAgreeInfoRepo qAnswerAgreeInfoRepo;
 
 	/**
 	 *
@@ -85,48 +78,50 @@ public class HomePageServer {
 					questionIdList.addAll(questionId);
 				}
 			}
-			{
-				// 1.用户关注表和用户表关联查出关注用户的的列表
-				List<AppUser> appUsers = appUserRepo.findFollowInfoByUserId(commonParams.getUserId());
-				for (AppUser appUser : appUsers) {
-					// 2.根据关注的用户的Id找
-					List<String> questionIdList = qAnswerAgreeInfoRepo.findByUserId(appUser.getId());
-				}
-				// 根据用户Id找到
-				for (AppUser appUser : appUsers) {
-					// 从关注的用户表中找到用户点赞的信息
+			// {
+			// // 1.用户关注表和用户表关联查出关注用户的的列表
+			// List<AppUser> appUsers =
+			// appUserRepo.findFollowInfoByUserId(commonParams.getUserId());
+			// for (AppUser appUser : appUsers) {
+			// // 2.根据关注的用户的Id找
+			// List<String> questionIdList = qAnswerAgreeInfoRepo.findByUserId(appUser.getId());
+			// }
+			// // 根据用户Id找到
+			// for (AppUser appUser : appUsers) {
+			// // 从关注的用户表中找到用户点赞的信息
+			//
+			// appUser.getId();
+			// }
+			// }
 
-					appUser.getId();
-				}
-			}
-
-			switch (commonParams.getDirect()) {
-				// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
-				case Const.DIRECT_UP:
-
-					newsInfoList = newsInfoRepo.findNewsListPageNext(commonParams.getReqTimeStamp(),
-							new PageRequest(0, 30));
-					break;
-				// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
-				case Const.DIRECT_DOWN:
-					List<News> newsInfoAscList = newsInfoRepo.findNewsListRefresh(commonParams.getReqTimeStamp(),
-							new PageRequest(0, 30));
-					// 把查出来的数据按倒序重新排列
-					for (int i = 0; i < newsInfoAscList.size(); i++) {
-						newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i));
-					}
-					break;
-				default:
-					throw new RuntimeException("请求方向参数异常：direct:" + commonParams.getDirect());
-			}
-			for (News newsInfo : newsInfoList) {
-				// 从数据库查询评论数插到资讯表
-				Integer count = newsCommentInfoRepo.commentCount(newsInfo.getId());
-				newsInfo.setCommentNumber(count);
-				// 将对象转换成map
-				Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
-				newsInfoMapList.add(newsInfoMapNew);
-			}
+			// switch (commonParams.getDirect()) {
+			// // 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
+			// case Const.DIRECT_UP:
+			//
+			// newsInfoList = newsInfoRepo.findNewsListPageNext(commonParams.getReqTimeStamp(),
+			// new PageRequest(0, 30));
+			// break;
+			// // 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
+			// case Const.DIRECT_DOWN:
+			// List<News> newsInfoAscList =
+			// newsInfoRepo.findNewsListRefresh(commonParams.getReqTimeStamp(),
+			// new PageRequest(0, 30));
+			// // 把查出来的数据按倒序重新排列
+			// for (int i = 0; i < newsInfoAscList.size(); i++) {
+			// newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i));
+			// }
+			// break;
+			// default:
+			// throw new RuntimeException("请求方向参数异常：direct:" + commonParams.getDirect());
+			// }
+			// for (News newsInfo : newsInfoList) {
+			// // 从数据库查询评论数插到资讯表
+			// Integer count = newsCommentInfoRepo.commentCount(newsInfo.getId());
+			// newsInfo.setCommentNumber(count);
+			// // 将对象转换成map
+			// Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
+			// newsInfoMapList.add(newsInfoMapNew);
+			// }
 
 			return new AppResp(newsInfoMapList, CodeDef.SUCCESS);
 

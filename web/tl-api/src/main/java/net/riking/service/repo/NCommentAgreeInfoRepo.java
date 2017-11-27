@@ -2,7 +2,6 @@ package net.riking.service.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.NCommentAgreeInfo;
@@ -18,11 +17,11 @@ import net.riking.entity.model.NCommentAgreeInfo;
 @Repository
 public interface NCommentAgreeInfoRepo
 		extends JpaRepository<NCommentAgreeInfo, String>, JpaSpecificationExecutor<NCommentAgreeInfo> {
-	/**
-	 * 统计资讯评论点赞数
-	 * @param newsCommentId
-	 * @return
-	 */
-	@Query("select count(*) from NCommentAgreeInfo where newsCommentId = ?1 and enabled = 1")
-	Integer commentCount(String newsCommentId);
+	// /**
+	// * 统计资讯评论点赞数
+	// * @param newsCommentId
+	// * @return
+	// */
+	// @Query("select count(*) from NCommentAgreeInfo where newsCommentId = ?1 and enabled = 1")
+	// Integer commentCount(String newsCommentId);
 }
