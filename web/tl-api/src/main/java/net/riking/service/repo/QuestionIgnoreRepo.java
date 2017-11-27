@@ -8,29 +8,29 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.NewsCollectInfo;
-import net.riking.entity.model.NewsCommentInfo;
+import net.riking.entity.model.QuestionIgnore;
 
 /**
  * 
- * 〈行业资讯收藏〉
+ * 〈问题屏蔽表〉
  * 
  * @author jc.tan 2017年11月23日
  * @see
  * @since 1.0
  */
 @Repository
-public interface NewsCollectInfoRepo
-		extends JpaRepository<NewsCollectInfo, String>, JpaSpecificationExecutor<NewsCollectInfo> {
+public interface QuestionIgnoreRepo
+		extends JpaRepository<QuestionIgnore, String>, JpaSpecificationExecutor<QuestionIgnore> {
+
 	/**
-	 * 资讯收藏
+	 * 问题屏蔽或取消屏蔽
 	 * @param userId
 	 * @param newsId
 	 * @return
 	 */
 	@Transactional
 	@Modifying
-	@Query("update NewsCollectInfo set enabled = 0  where userId =?1 and newsId = ?2")
-	NewsCommentInfo updInvalid(String userId, String newsId);
+	@Query("update QuestionIgnore set enabled = 0  where userId =?1 and questionId = ?2")
+	QuestionIgnore updInvalid(String userId, String questionId);
 
 }

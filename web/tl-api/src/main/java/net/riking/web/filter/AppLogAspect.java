@@ -23,62 +23,60 @@ import net.riking.service.repo.AppLogInfoRepo;
 @Component
 public class AppLogAspect {
 	Logger logger = LogManager.getLogger("AppLogAspect");
+
 	ObjectMapper mapper = new ObjectMapper();
 
-//	@Autowired
-//	OperLogService operLogService;
-	
+	// @Autowired
+	// OperLogService operLogService;
+
 	@Autowired
 	AppLogInfoRepo appLogInfoRepo;
-	
 
 	@Pointcut("execution(* net.riking..appInterface.*.*(..))")
 	public void pointCutLogin() {
 	}
 
-//	@Autowired
-//	HttpServletRequest request;
+	// @Autowired
+	// HttpServletRequest request;
 
 	public AppLogAspect() {
 	}
 
-  
-  
 	@Around("execution(* net.riking..appInterface.LoginServer.checkValiCode_(..))")
-    public AppResp doAroundForCheckValiCode_(ProceedingJoinPoint pjp) throws Throwable { 
-		AppUser appUser = (AppUser)pjp.getArgs()[0];
-		AppResp appResp = (AppResp)pjp.proceed();
-		
-		AppUser rs =  (AppUser)appResp.get_data();
+	public AppResp doAroundForCheckValiCode_(ProceedingJoinPoint pjp) throws Throwable {
+		AppUser appUser = (AppUser) pjp.getArgs()[0];
+		AppResp appResp = (AppResp) pjp.proceed();
+
+		AppUser rs = (AppUser) appResp.get_data();
 		AppLogInfo info = new AppLogInfo();
-    	info.setAppUserId(appUser.getId());
-    	info.setCreateTime(new Date());
-		if(rs!=null&&StringUtils.isNotBlank(rs.getId())){
-	    	info.setDoThing("LoginSucc");
-	    	logger.info("{} Login Success",appUser.getTelephone());
-		}else{
+		info.setAppUserId(appUser.getId());
+		info.setCreateTime(new Date());
+		if (rs != null && StringUtils.isNotBlank(rs.getId())) {
+			info.setDoThing("LoginSucc");
+			logger.info("{} Login Success", appUser.getPhone());
+		} else {
 			info.setDoThing("LoginFail");
-			logger.info("{} Login Fail",appUser.getTelephone());
+			logger.info("{} Login Fail", appUser.getPhone());
 		}
 		appLogInfoRepo.save(info);
 		return appResp;
-    }  
-	
+	}
+
 	@Around("execution(* net.riking..appInterface.LoginServer.getValiCode_(..))")
-    public AppResp doAroundForGetValiCode_(ProceedingJoinPoint pjp) throws Throwable { 
-		AppResp appResp = (AppResp)pjp.proceed();
-		AppUser rs =  (AppUser)appResp.get_data();
+	public AppResp doAroundForGetValiCode_(ProceedingJoinPoint pjp) throws Throwable {
+		AppResp appResp = (AppResp) pjp.proceed();
+		AppUser rs = (AppUser) appResp.get_data();
 		AppLogInfo info = new AppLogInfo();
-    	info.setAppUserId(rs.getId());
-    	info.setCreateTime(new Date());
-		if(rs!=null&&StringUtils.isNotBlank(rs.getTelephone())){
-	    	info.setDoThing("getValiCodeSucc");
-	    	logger.info("{} getValiCode Success",rs.getName());
-		}else{
+		info.setAppUserId(rs.getId());
+		info.setCreateTime(new Date());
+		if (rs != null && StringUtils.isNotBlank(rs.getPhone())) {
+			info.setDoThing("getValiCodeSucc");
+			logger.info("{} getValiCode Success", rs.getUserName());
+		} else {
 			info.setDoThing("getValiCodeFail");
-			logger.info("{} getValiCode Fail",rs.getName());
+			logger.info("{} getValiCode Fail", rs.getUserName());
 		}
 		appLogInfoRepo.save(info);
 		return appResp;
-    }  
+	}
 }

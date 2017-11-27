@@ -21,15 +21,20 @@ import net.riking.entity.model.NewsCommentInfo;
 @Repository
 public interface NewsCommentInfoRepo
 		extends JpaRepository<NewsCommentInfo, String>, JpaSpecificationExecutor<NewsCommentInfo> {
-
+	/**
+	 * 统计资讯评论数
+	 * @param newsId
+	 * @return
+	 */
 	@Query("select count(*) from NewsCommentInfo where newsId = ?1 and enabled = 1")
 	Integer commentCount(String newsId);
 
 	/**
-	 * 
+	 * 资讯评论列表
 	 * @param newsId
+	 * @param pageable
 	 * @return
 	 */
-	@Query("select n.id,n.createdTime,n.userId,n.newsId,n.content from NewsCommentInfo n where createdTime < ?1 and enabled = 1 order by createdTime desc")
+	@Query("select id,createdTime,userId,newsId,content from NewsCommentInfo where createdTime < ?1 and enabled = 1 order by createdTime desc")
 	List<NewsCommentInfo> findByNewsId(String newsId, Pageable pageable);
 }

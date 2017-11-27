@@ -1,6 +1,5 @@
 package net.riking.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,13 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import net.riking.core.annos.Comment;
 
 @MappedSuperclass
-public class BaseProp implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8133896068470367793L;
-
+public class BaseProp extends BaseEntity {
 
 	@Comment("物理主键")
 	@Id
@@ -30,26 +23,33 @@ public class BaseProp implements Serializable {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
-	
-	
+
+	@Comment("创建人ID")
+	@Column(name = "created_by", updatable = false)
+	private String createdBy;
+
+	@Comment("修改人ID")
+	@Column(name = "modified_by")
+	private String modifiedBy;
+
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.CreationTimestamp
-	@Column(name="created_time",insertable=false,updatable = false , nullable = false, columnDefinition="datetime default now()")
+	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
-	@Comment("最后修改时间")
+	@Comment("修改时间")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
-	@org.hibernate.annotations.UpdateTimestamp  
-	@Column(name="last_modified_time",insertable=false, nullable = false, columnDefinition="datetime default now()")
-	private Date lastModifiedTime;
+	@org.hibernate.annotations.UpdateTimestamp
+	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")
+	private Date modifiedTime;
 
-	@Comment("数据是否有效 1有效，0无效")
-	@org.hibernate.annotations.ColumnDefault("1")  
-	@Column(name="enabled",insertable=false, nullable=false, precision=1)
-	private Integer enabled;
+	@Comment("是否删除： 0-删除，1-未删除")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "is_delete", insertable = false, nullable = false, precision = 1)
+	private Integer isDelete;
 
 	public String getId() {
 		return id;
@@ -57,6 +57,22 @@ public class BaseProp implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 
 	public Date getCreatedTime() {
@@ -67,20 +83,20 @@ public class BaseProp implements Serializable {
 		this.createdTime = createdTime;
 	}
 
-	public Date getLastModifiedTime() {
-		return lastModifiedTime;
+	public Date getModifiedTime() {
+		return modifiedTime;
 	}
 
-	public void setLastModifiedTime(Date lastModifiedTime) {
-		this.lastModifiedTime = lastModifiedTime;
+	public void setModifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
 	}
 
-	public Integer getEnabled() {
-		return enabled;
+	public Integer getIsDelete() {
+		return isDelete;
 	}
 
-	public void setEnabled(Integer enabled) {
-		this.enabled = enabled;
+	public void setIsDelete(Integer isDelete) {
+		this.isDelete = isDelete;
 	}
-	
+
 }

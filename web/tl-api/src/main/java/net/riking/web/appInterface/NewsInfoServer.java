@@ -64,7 +64,7 @@ public class NewsInfoServer {
 
 	/**
 	 * 获取资讯列表
-	 * @param commonParams
+	 * @param params[direct,reqTimeStamp]
 	 * @return
 	 */
 	@ApiOperation(value = "获取资讯列表", notes = "POST")
@@ -109,7 +109,7 @@ public class NewsInfoServer {
 
 	/**
 	 * 资讯的详情
-	 * @param commonParamsjavascript:;
+	 * @param params[newsId]
 	 * @return
 	 */
 	@ApiOperation(value = "获取资讯的详情", notes = "POST")
@@ -125,7 +125,7 @@ public class NewsInfoServer {
 
 	/**
 	 * 资讯详情评论列表
-	 * @param commonParams
+	 * @param params[newsId]
 	 * @return
 	 */
 	@ApiOperation(value = "获取资讯详情评论列表", notes = "POST")
@@ -168,7 +168,7 @@ public class NewsInfoServer {
 
 	/**
 	 * 资讯评论发布
-	 * @param commonParams
+	 * @param params[userId,newsId,content]
 	 * @return
 	 */
 	@ApiOperation(value = "资讯评论发布", notes = "POST")
@@ -186,7 +186,7 @@ public class NewsInfoServer {
 
 	/**
 	 * 资讯收藏
-	 * @param commonParams
+	 * @param params[userId,newsId,enabled]
 	 * @return
 	 */
 	@ApiOperation(value = "资讯收藏", notes = "POST")
@@ -194,17 +194,21 @@ public class NewsInfoServer {
 	public AppResp newsCollect(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
-		if (Const.EFFECTIVE.toString().equals(commonParams.getEnabled())) {
-			// 如果传过来的参数是收藏，保存新的一条收藏记录
-			NewsCollectInfo newsCollectInfo = new NewsCollectInfo();
-			newsCollectInfo.setUserId(commonParams.getUserId());
-			newsCollectInfo.setNewsId(commonParams.getNewsId());
-			newsCollectInfoRepo.save(newsCollectInfo);
-		} else if (Const.INVALID.toString().equals(commonParams.getEnabled())) {
-			// 如果传过来是取消收藏，把之前一条记录设为无效数据
-			newsCollectInfoRepo.updInvalid(commonParams.getUserId(), commonParams.getNewsId());
-		} else {
-			throw new RuntimeException("参数异常：enabled=" + commonParams.getEnabled());
+
+		switch (commonParams.getEnabled()) {
+			case Const.EFFECTIVE:
+				// 如果传过来的参数是收藏，保存新的一条收藏记录
+				NewsCollectInfo newsCollectInfo = new NewsCollectInfo();
+				newsCollectInfo.setUserId(commonParams.getUserId());
+				newsCollectInfo.setNewsId(commonParams.getNewsId());
+				newsCollectInfoRepo.save(newsCollectInfo);
+				break;
+			case Const.INVALID:
+				// 如果传过来是取消收藏，把之前一条记录设为无效数据
+				newsCollectInfoRepo.updInvalid(commonParams.getUserId(), commonParams.getNewsId());
+				break;
+			default:
+				throw new RuntimeException("参数异常：enabled=" + commonParams.getEnabled());
 		}
 		return new AppResp(CodeDef.SUCCESS);
 	}
