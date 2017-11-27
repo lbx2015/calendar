@@ -11,33 +11,32 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.entity.BaseEntity;
 
 @Entity
-@Table(name = "t_app_log_info")
-public class AppLogInfo extends BaseEntity{
+@Table(name = "t_app_log")
+public class AppLog extends BaseEntity {
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
-	
-	//app用户id
+
+	// app用户id
 	@Column(name = "app_user_id", length = 32)
 	private String appUserId;
-	
-	//创建时间
+
+	// 创建时间
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_time", length = 32)
 	private Date createTime;
-	
-	//做的什么事情
+
+	// 做的什么事情
 	@Column(name = "do_thing", length = 32)
 	private String doThing;
-	
-	//备注信息
+
+	// 备注信息
 	@Column(name = "remark", length = 500)
 	private String remark;
 
@@ -80,6 +79,5 @@ public class AppLogInfo extends BaseEntity{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
-	
+
 }

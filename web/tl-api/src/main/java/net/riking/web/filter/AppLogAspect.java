@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.riking.entity.AppResp;
-import net.riking.entity.model.AppLogInfo;
+import net.riking.entity.model.AppLog;
 import net.riking.entity.model.AppUser;
 import net.riking.service.repo.AppLogInfoRepo;
 
@@ -48,7 +48,7 @@ public class AppLogAspect {
 		AppResp appResp = (AppResp) pjp.proceed();
 
 		AppUser rs = (AppUser) appResp.get_data();
-		AppLogInfo info = new AppLogInfo();
+		AppLog info = new AppLog();
 		info.setAppUserId(appUser.getId());
 		info.setCreateTime(new Date());
 		if (rs != null && StringUtils.isNotBlank(rs.getId())) {
@@ -66,7 +66,7 @@ public class AppLogAspect {
 	public AppResp doAroundForGetValiCode_(ProceedingJoinPoint pjp) throws Throwable {
 		AppResp appResp = (AppResp) pjp.proceed();
 		AppUser rs = (AppUser) appResp.get_data();
-		AppLogInfo info = new AppLogInfo();
+		AppLog info = new AppLog();
 		info.setAppUserId(rs.getId());
 		info.setCreateTime(new Date());
 		if (rs != null && StringUtils.isNotBlank(rs.getPhone())) {
