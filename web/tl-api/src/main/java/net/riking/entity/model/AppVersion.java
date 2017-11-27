@@ -2,11 +2,7 @@ package net.riking.entity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -21,19 +17,14 @@ import net.riking.entity.BaseProp;
 @Entity
 @Table(name = "t_app_version")
 public class AppVersion extends BaseProp {
-	@Id
-	@Column(name = "Id", length = 32)
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@GeneratedValue(generator = "system-uuid")
-	private String id;
 
 	@Comment("app版本号")
 	@Column(name = "version_no", length = 32)
 	private String versionNo;
 
 	@Comment("是否强制更新(0-不强制；1-强制)")
-	@Column(name = "force")
-	private Integer force;
+	@Column(name = "enforce")
+	private Integer enforce;
 
 	// 版本说明
 	@Column(name = "remark", length = 255)
@@ -58,14 +49,6 @@ public class AppVersion extends BaseProp {
 	// @Column(name = "forces", length = 2)
 	// private String forces;
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getVersionNo() {
 		return versionNo;
 	}
@@ -74,12 +57,12 @@ public class AppVersion extends BaseProp {
 		this.versionNo = versionNo;
 	}
 
-	public Integer getForce() {
-		return force;
+	public Integer getEnforce() {
+		return enforce;
 	}
 
-	public void setForce(Integer force) {
-		this.force = force;
+	public void setEnforce(Integer enforce) {
+		this.enforce = enforce;
 	}
 
 	public String getRemark() {

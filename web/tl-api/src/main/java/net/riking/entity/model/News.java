@@ -26,7 +26,6 @@ public class News extends BaseAuditProp {
 
 	@Comment("封面位置：right；center")
 	@Lob
-	@org.hibernate.annotations.ColumnDefault("center")
 	@Column(name = "seat", length = 10)
 	private String seat;
 

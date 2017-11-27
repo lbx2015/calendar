@@ -9,42 +9,41 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.Transient;
 
+import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
-
 
 @Entity
 @Table(name = "t_app_user_recommend")
-public class AppUserRecommend extends BaseEntity{
-	
+public class AppUserRecommend extends BaseEntity {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8708349920299314670L;
 
-	//行业/职位表
+	@Comment("物理主键")
 	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private Long id;
-	
-	//报表id
-	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	private String id;
+
+	// 报表id
 	@Column(name = "report_id", length = 32)
 	private String reportId;
-	
-	@Id
+
 	@Column(name = "industry_id")
 	private Long industryId;
-	
+
 	@Transient
 	private String reportName;
-	
-	public AppUserRecommend(String reportId,String reportName,Long industryId){
+
+	public AppUserRecommend(String reportId, String reportName, Long industryId) {
 		this.reportId = reportId;
 		this.reportName = reportName;
 		this.industryId = industryId;
 	}
-	
+
 	public String getReportId() {
 		return reportId;
 	}
@@ -67,14 +66,6 @@ public class AppUserRecommend extends BaseEntity{
 
 	public void setReportName(String reportName) {
 		this.reportName = reportName;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 }

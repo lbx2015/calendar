@@ -29,7 +29,7 @@ public class RemindServer {
 	@ApiOperation(value = "用户提醒新增/修改", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public AppResp save(@RequestBody Remind remind) {
-		Remind remind2 = remindRepo.findOne(remind.getReminderId());
+		Remind remind2 = remindRepo.findOne(remind.getRemindId());
 		if (null==remind2) {
 			remind = remindRepo.save(remind);
 		}else {
