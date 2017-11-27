@@ -31,7 +31,7 @@
             android:layout_marginTop="3dp"
             android:layout_toRightOf="@id/answer_author_icon"
             android:drawableRight="@drawable/com_icon_grade_v3"
-            android:paddingRight="5dp"
+            android:drawablePadding="5dp"
             android:text="周云丽"
             android:textColor="@color/color_333333"
             android:textSize="17sp" />
@@ -43,7 +43,6 @@
             android:layout_alignLeft="@id/answer_author_name"
             android:layout_below="@+id/answer_author_name"
             android:layout_centerVertical="true"
-            android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/answer_author_icon"
             android:text="1分钟前"
             android:textColor="@color/color_999999"
