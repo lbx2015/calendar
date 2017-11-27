@@ -12,9 +12,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-/**
- * Created by xiangzhihong on 2016/3/2 on 15:49.
- */
 public class ExcellentViewHolderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.answer_summary)

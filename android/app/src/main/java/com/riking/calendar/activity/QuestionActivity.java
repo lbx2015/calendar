@@ -21,7 +21,7 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     QuestionListAdapter mAdapter;
-    private PullToLoadViewWithoutFloatButton mPullToLoadView;
+    RecyclerView recyclerView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -41,41 +41,16 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
-        mPullToLoadView = (PullToLoadViewWithoutFloatButton) findViewById(R.id.pullToLoadView);
+        recyclerView = findViewById(R.id.recycler_view);
     }
 
     private void initEvents() {
-        RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutManager(manager);
         mAdapter = new QuestionListAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
-        mPullToLoadView.isLoadMoreEnabled(true);
-        mPullToLoadView.setPullCallback(new PullCallback() {
-            @Override
-            public void onLoadMore() {
-                loadData(nextPage);
-            }
-
-            @Override
-            public void onRefresh() {
-                isHasLoadedAll = false;
-                loadData(1);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-
-            @Override
-            public boolean hasLoadedAllItems() {
-                return isHasLoadedAll;
-            }
-        });
-
-        mPullToLoadView.initLoad();
+        recyclerView.setAdapter(mAdapter);
+        loadData(1);
     }
 
     private void loadData(final int page) {
@@ -83,7 +58,6 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPullToLoadView.setComplete();
                 if (page > 3) {
                     Toast.makeText(QuestionActivity.this, "没有更多数据了",
                             Toast.LENGTH_SHORT).show();
@@ -97,7 +71,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 1000);
+        }, 1);
     }
 
     public void clickBack(final View view) {

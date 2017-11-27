@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.viewholder.AnswerListViewHolder;
 import com.riking.calendar.viewholder.HotAnswerOfTopicViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuestionListAdapter extends RecyclerView.Adapter<HotAnswerOfTopicViewHolder> {
+public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHolder> {
     private Context a;
     private List<String> mList;
 
@@ -25,19 +26,14 @@ public class QuestionListAdapter extends RecyclerView.Adapter<HotAnswerOfTopicVi
     }
 
     @Override
-    public HotAnswerOfTopicViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public AnswerListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.question_list_item, viewGroup, false);
-        return new HotAnswerOfTopicViewHolder(view);
+        return new AnswerListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(HotAnswerOfTopicViewHolder h, int i) {
-        if (i % 2 == 1) {
-            h.answerTitle.setText("什么是证券投资基金？");
-        } else {
-            h.answerTitle.setText("证券业金融机构包括哪几类？");
-        }
+    public void onBindViewHolder(AnswerListViewHolder h, int i) {
         RequestOptions options = new RequestOptions();
         Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
                 .apply(options.fitCenter())
