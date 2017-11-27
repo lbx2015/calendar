@@ -3,14 +3,9 @@ package com.riking.calendar.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
+import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.viewholder.HomeViewHolder;
@@ -89,6 +85,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 }
             });
 
+            h.title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, QuestionActivity.class));
+                }
+            });
             h.moreAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 @SuppressLint("RestrictedApi")

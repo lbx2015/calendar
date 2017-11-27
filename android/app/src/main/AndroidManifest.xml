@@ -126,6 +126,7 @@
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.QuestionActivity"/>
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />

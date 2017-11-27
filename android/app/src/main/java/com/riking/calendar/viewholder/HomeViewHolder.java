@@ -1,6 +1,5 @@
 package com.riking.calendar.viewholder;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -26,8 +25,8 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.more_action)
     public View moreAction;
-//    @BindView(R.id.item_count)
-//    TextView itemCount;
+    @BindView(R.id.title)
+    public TextView title;
 
     public HomeViewHolder(View itemView) {
         super(itemView);
