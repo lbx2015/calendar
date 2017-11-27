@@ -36,7 +36,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.3dp"
+        android:layout_height="@dimen/divider_height"
         android:background="@color/color_d2d2d2" />
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -152,7 +152,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.3dp"
+                android:layout_height="@dimen/divider_height"
                 android:background="@color/color_e2e2e2" />
 
         </android.support.design.widget.AppBarLayout>

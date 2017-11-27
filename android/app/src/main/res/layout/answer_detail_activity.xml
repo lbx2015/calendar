@@ -4,6 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="15dp"
+            android:onClick="clickBack"
+            android:src="@drawable/nav_icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="回答"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/action_bar_text_size" />
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/container"
@@ -149,7 +175,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" />
+                    android:layout_height="@dimen/divider_height" />
 
                 <WebView
                     android:id="@+id/web_view"
@@ -164,7 +190,7 @@
 
                     <View
                         android:layout_width="100dp"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/divider_height"
                         android:layout_marginBottom="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
@@ -189,7 +215,7 @@
 
                     <View
                         android:layout_width="100dp"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/divider_height"
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="8dp"
@@ -214,7 +240,7 @@
 
                     <View
                         android:layout_width="100dp"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/divider_height"
                         android:layout_marginBottom="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
@@ -239,7 +265,7 @@
 
                     <View
                         android:layout_width="100dp"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/divider_height"
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="8dp"
@@ -264,7 +290,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/divider_height"
         android:background="@color/btn_gray_normal" />
 
     <android.support.constraint.ConstraintLayout
