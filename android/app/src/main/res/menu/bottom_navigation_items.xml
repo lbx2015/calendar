@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_item1"
+        android:icon="@drawable/com_icon_comment"
+        android:title="360" />
+    <item
+        android:id="@+id/action_item2"
+        android:icon="@drawable/com_icon_zan_n"
+        android:title="1953" />
+    <item
+        android:id="@+id/action_item3"
+        android:icon="@drawable/com_toolbar_icon_collect_n"
+        android:title="收藏" />
+    <item
+        android:id="@+id/action_item4"
+        android:icon="@drawable/com_toolbar_icon_share"
+        android:title="分享" />
+
+</menu>

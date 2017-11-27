@@ -29,8 +29,8 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
  */
 
 public class AnswerActivity extends AppCompatActivity { //Fragment 数组
-    RecyclerView suggestionQuestionsRecyclerView;
-    RecyclerView reviewsRecyclerView;
+//    RecyclerView suggestionQuestionsRecyclerView;
+//    RecyclerView reviewsRecyclerView;
     private WebView webView;
 
     @Override
@@ -67,14 +67,14 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             }
         });
 
-        //init recycler view
+       /* //init recycler view
         suggestionQuestionsRecyclerView = findViewById(R.id.suggestion_questions_recyclerview);
         suggestionQuestionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         suggestionQuestionsRecyclerView.setAdapter(new QuestionsAdapter(this));
         //init reviews recycler view
         reviewsRecyclerView = findViewById(R.id.review_recyclerview);
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        reviewsRecyclerView.setAdapter(new ReviewsAdapter(this));
+        reviewsRecyclerView.setAdapter(new ReviewsAdapter(this));*/
     }
 
     private boolean isNetworkAvailable() {
