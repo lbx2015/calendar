@@ -52,7 +52,7 @@ public class BaseAuditProp extends BaseEntity {
 	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date modifiedTime;
 
-	@Comment("是否审核： 0-未审核，1-已审核")
+	@Comment("是否审核： 0-未审核，1-已审核,2-不通过")
 	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "is_aduit", nullable = false, precision = 1)
 	private Integer isAduit;
