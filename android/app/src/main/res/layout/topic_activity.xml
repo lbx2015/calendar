@@ -122,16 +122,11 @@
                     </LinearLayout>
                 </FrameLayout>
             </android.support.constraint.ConstraintLayout>
-
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways">
-
                 <com.necer.ncalendar.view.ExpandableTextView
                     android:id="@+id/expandable_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|enterAlways"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp">
 
@@ -154,7 +149,6 @@
                         android:text="展开"
                         android:textColor="@color/color_999999" />
                 </com.necer.ncalendar.view.ExpandableTextView>
-            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
