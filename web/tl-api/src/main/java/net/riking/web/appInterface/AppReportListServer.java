@@ -15,12 +15,12 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserReportRel;
+import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.model.BaseModelPropdict;
-import net.riking.entity.model.NewsInfo;
+import net.riking.entity.model.News;
 import net.riking.entity.model.ReportAgence;
 import net.riking.entity.model.ReportFrequency;
-import net.riking.entity.model.ReportList;
+import net.riking.entity.model.Report;
 import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
@@ -80,7 +80,7 @@ public class AppReportListServer {
 						frencyList = reportAgenceFrencyService.findReportByModuleType(baseModelPropdict.getKe());//根据ke去查询报表
 						//if(StringUtils.isNotBlank(appUser.getId())){//用户id不为空
 							if(frencyList != null && frencyList.size() > 0){
-								AppUserReportRel appUserReportRel = null;
+								ReportSubcribeRel appUserReportRel = null;
 								for(ReportFrequency frencey:frencyList){
 									//根据用户id和 报表id 查询 此用户是否订阅
 									appUserReportRel = appUserReportRepo.findByUserIdAndReportId(appUser.getId(), frencey.getReportId());
@@ -112,11 +112,11 @@ public class AppReportListServer {
 	 */
 	@ApiOperation(value = "根据报表名称查询报表列表", notes = "POST")
 	@RequestMapping(value = "/getReportByName", method = RequestMethod.POST)
-	public AppResp getReportByName(@RequestBody ReportList reportList){
+	public AppResp getReportByName(@RequestBody Report reportList){
 		//List<ReportList> list = reportListRepo.findReportByreportName(reportList.getReportName());
 		List<ReportFrequency> list = reportAgenceFrencyService.findReportListByName(reportList.getReportName());
 		if(StringUtils.isNotBlank(reportList.getUserId())){//用户id 不为空 判断报表是否订阅
-			AppUserReportRel appUserReportRel = null;
+			ReportSubcribeRel appUserReportRel = null;
 			if(list != null && list.size() > 0){
 				for (ReportFrequency frency : list) {
 					//根据用户id和 报表id 查询 此用户是否订阅

@@ -12,9 +12,12 @@ import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
 
 /**
- * @author Lucky.Liu on 2017/8/05.
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
  */
-
+@Comment("APP版本表")
 @Entity
 @Table(name = "t_app_version")
 public class AppVersion extends BaseProp {
@@ -61,6 +64,30 @@ public class AppVersion extends BaseProp {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getVersionNo() {
+		return versionNo;
+	}
+
+	public void setVersionNo(String versionNo) {
+		this.versionNo = versionNo;
+	}
+
+	public Integer getForce() {
+		return force;
+	}
+
+	public void setForce(Integer force) {
+		this.force = force;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

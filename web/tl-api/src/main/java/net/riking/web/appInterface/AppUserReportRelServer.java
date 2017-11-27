@@ -17,8 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserReportCompleteRel;
-import net.riking.entity.model.AppUserReportRel;
+import net.riking.entity.model.ReportCompletedRel;
+import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.model.AppUserReportResult;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Period;
@@ -65,7 +65,7 @@ public class AppUserReportRelServer {
 
 	@ApiOperation(value = "app获取用户下的报表", notes = "POST")
 	@RequestMapping(value = "/getUserRepor", method = RequestMethod.POST)
-	public AppResp getUserReport(@RequestBody AppUserReportCompleteRel appUserComplete){
+	public AppResp getUserReport(@RequestBody ReportCompletedRel appUserComplete){
 		Days day = daysRepo.findOne(appUserComplete.getCompleteDate());
 		Period period = getDateService.getDate(appUserComplete.getCompleteDate(),"1");
 		Period periods = getDateService.getDate(appUserComplete.getCompleteDate(),"0");
@@ -149,9 +149,9 @@ public class AppUserReportRelServer {
 		appUserReportRepo.deleteReportRelByUserId(appUserReportResult.getUserId());
 		
 		//批量插入
-		AppUserReportRel appUserReportRel = null;
+		ReportSubcribeRel appUserReportRel = null;
 		for (String string : idList) {
-			appUserReportRel = new AppUserReportRel();
+			appUserReportRel = new ReportSubcribeRel();
 			appUserReportRel.setAppUserId(appUserReportResult.getUserId());
 			appUserReportRel.setReportId(string);
 			appUserReportRel.setIsComplete("0");//未完成
@@ -198,7 +198,7 @@ public class AppUserReportRelServer {
 	
 	@ApiOperation(value = "新增报表订阅", notes = "POST")
 	@RequestMapping(value = "/updateUserReportRelById", method = RequestMethod.POST)
-	public AppResp updateUserReportRelById(@RequestBody AppUserReportRel appUserReportRel){
+	public AppResp updateUserReportRelById(@RequestBody ReportSubcribeRel appUserReportRel){
 		if(appUserReportRel.getType().equals("0")){//取消订阅
 			appUserReportRepo.deleteReportRelByUserIdAndReportId(appUserReportRel.getAppUserId(),appUserReportRel.getReportId());
 		}else{
@@ -211,8 +211,8 @@ public class AppUserReportRelServer {
 	
 	@ApiOperation(value = "历史核销和逾期报表", notes = "POST")
 	@RequestMapping(value = "/findAllUserReport", method = RequestMethod.POST)
-	public AppResp findAllUserReport(@RequestBody AppUserReportCompleteRel appUserReportCompleteRel){
-		 List<AppUserReportCompleteRel> list = reportSubmitCaliberService.findAllUserReport(appUserReportCompleteRel);
+	public AppResp findAllUserReport(@RequestBody ReportCompletedRel appUserReportCompleteRel){
+		 List<ReportCompletedRel> list = reportSubmitCaliberService.findAllUserReport(appUserReportCompleteRel);
 		 return new AppResp(list,CodeDef.SUCCESS);
 	}
 	

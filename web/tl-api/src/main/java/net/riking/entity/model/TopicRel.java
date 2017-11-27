@@ -20,24 +20,27 @@ import net.riking.entity.BaseEntity;
  * @see
  * @since 1.0
  */
-@Comment("关注用户 表")
+@Comment("话题关注表")
 @Entity
-@Table(name = "t_user_follow_rel")
-public class UserFollowRel extends BaseEntity {
+@Table(name = "t_topic_rel")
+public class TopicRel extends BaseEntity {
+
+	private static final long serialVersionUID = 944410490844286677L;
+
 	@Id
-	@Comment("fk t_app_user 关注的用户ID")
+	@Comment("操作人主键  fk t_app_user")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
 
 	@Id
-	@Comment("fk t_app_user 被关注的用户ID")
-	@Column(name = "to_user_id", nullable = false)
-	private String toUserId;
+	@Comment("目标对象主键 fk t_topic_info")
+	@Column(name = "topic_id", nullable = false)
+	private String topicId;
 
-	@Comment("关注状态: 0：非互相关注 1：互相关注 ")
+	@Comment("数据类型：0-关注；3-屏蔽")
 	@org.hibernate.annotations.ColumnDefault("0")
-	@Column(name = "follow_status", insertable = false, nullable = false, precision = 1)
-	private Integer followStatus;
+	@Column(name = "data_type", insertable = false, nullable = false, precision = 1)
+	private Integer dataType;
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -54,12 +57,20 @@ public class UserFollowRel extends BaseEntity {
 		this.userId = userId;
 	}
 
-	public String getToUserId() {
-		return toUserId;
+	public String getTopicId() {
+		return topicId;
 	}
 
-	public void setToUserId(String toUserId) {
-		this.toUserId = toUserId;
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
 	}
 
 	public Date getCreatedTime() {
@@ -68,14 +79,6 @@ public class UserFollowRel extends BaseEntity {
 
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
-	}
-
-	public Integer getFollowStatus() {
-		return followStatus;
-	}
-
-	public void setFollowStatus(Integer followStatus) {
-		this.followStatus = followStatus;
 	}
 
 }

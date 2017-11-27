@@ -3,7 +3,7 @@ package net.riking.service;
 import java.util.List;
 import java.util.Set;
 
-import net.riking.entity.model.AppUserReportCompleteRel;
+import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.QueryReport;
 
 public interface ReportSubmitCaliberService {
@@ -16,8 +16,8 @@ public interface ReportSubmitCaliberService {
 	List<QueryReport> findAllReport();
 	
 	//查询用户当天已完成/未完成的报表
-	List<AppUserReportCompleteRel> findCompleteReportByIdAndTime(String userId,String time);
+	List<ReportCompletedRel> findCompleteReportByIdAndTime(String userId,String time);
 	
 	//查询历史核销/逾期任务 分页
-	List<AppUserReportCompleteRel> findAllUserReport(AppUserReportCompleteRel appUserReportCompleteRel);
+	List<ReportCompletedRel> findAllUserReport(ReportCompletedRel appUserReportCompleteRel);
 }

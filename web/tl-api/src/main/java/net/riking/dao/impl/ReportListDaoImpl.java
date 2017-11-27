@@ -14,7 +14,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.ReportListDao;
-import net.riking.entity.model.AppUserReportRel;
+import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.model.ReportFrequency;
 
 @Repository("reportListDao")

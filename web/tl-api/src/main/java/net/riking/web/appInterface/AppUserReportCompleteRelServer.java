@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserReportCompleteRel;
+import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.Days;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.QureyResulte;
@@ -59,14 +59,14 @@ public class AppUserReportCompleteRelServer {
 
 	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public AppResp save(@RequestBody AppUserReportCompleteRel appUserReportCompleteRel) {
+	public AppResp save(@RequestBody ReportCompletedRel appUserReportCompleteRel) {
 		appUserReportCompleteRelRepo.save(appUserReportCompleteRel);
 		return new AppResp(CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport(@RequestBody AppUserReportCompleteRel completeRel) {
+	public AppResp getAllReport(@RequestBody ReportCompletedRel completeRel) {
 		List<QureyResulte> completeRels = appUserReportCompleteRelRepo.getReportId(completeRel.getAppUserId(),
 				completeRel.getCompleteDate());
 		return new AppResp(completeRels, CodeDef.SUCCESS);
@@ -75,9 +75,9 @@ public class AppUserReportCompleteRelServer {
 
 	@ApiOperation(value = "获取当天未完成和已完成的报表列表", notes = "POST")
 	@RequestMapping(value = "/getReportByIdAndTime", method = RequestMethod.POST)
-	public AppResp getReportByIdAndTime(@RequestBody AppUserReportCompleteRel completeRel) {
+	public AppResp getReportByIdAndTime(@RequestBody ReportCompletedRel completeRel) {
 		// List<>
-		List<AppUserReportCompleteRel> list = reportSubmitCaliberService
+		List<ReportCompletedRel> list = reportSubmitCaliberService
 				.findCompleteReportByIdAndTime(completeRel.getAppUserId(), completeRel.getCompleteDate());
 		return new AppResp(list, CodeDef.SUCCESS);
 	}

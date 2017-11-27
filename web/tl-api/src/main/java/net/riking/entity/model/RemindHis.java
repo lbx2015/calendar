@@ -6,65 +6,52 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import net.riking.core.annos.Comment;
 import net.riking.entity.PageQuery;
 
 /**
  * 
- * @author lucky.liu
- * @version crateTime：2017年8月9日 下午4:35:23
- * @used TODO
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
  */
+@Comment("提醒历史记录表")
 @Entity
 @Table(name = "t_remind_his")
 public class RemindHis extends PageQuery {
 
-	// 手机端时间戳：yyyyMMddHHmmssSSS
+	@Comment("手机端时间戳：yyyyMMddHHmmssSSS")
 	@Id
 	@Column(name = "remind_his_id", length = 17)
 	private String remindHisId;
 
-	// 用户Id
+	@Comment("用户Id")
 	@Column(name = "user_id", length = 32)
 	private String userId;
 
-	// 提醒内容
+	@Comment("提醒内容")
 	@Column(name = "content", length = 255)
 	private String content;
 
-	// 提醒时间
+	@Comment("提醒时间:HHmm")
 	@Column(name = "start_time", length = 4)
 	private String startTime;
 
-	// 提醒日期
+	@Comment("日期：yyyyMMdd")
 	@Column(name = "str_date", length = 14)
 	private String strDate;
 
 	// 同步标识app端数据状态
 	@Transient
 	private int deleteState;
-	// 提醒日期
-	@Column(name = "report_Id", length = 17)
-	private String reportId;
 
-	// 客户端数据来源：1-IOS;2-Android;3-其它
+	// // 提醒日期
+	// @Column(name = "report_Id", length = 17)
+	// private String reportId;
+
+	@Comment("客户端数据来源：1-IOS;2-Android;3-其它")
 	@Column(name = "client_type", length = 1)
-	private String clientType;
-
-	public String getClientType() {
-		return clientType;
-	}
-
-	public void setClientType(String clientType) {
-		this.clientType = clientType;
-	}
-
-	public int getDeleteState() {
-		return deleteState;
-	}
-
-	public void setDeleteState(int deleteState) {
-		this.deleteState = deleteState;
-	}
+	private Integer clientType;
 
 	public String getRemindHisId() {
 		return remindHisId;
@@ -105,20 +92,21 @@ public class RemindHis extends PageQuery {
 	public void setStrDate(String strDate) {
 		this.strDate = strDate;
 	}
-	
-	public String getReportId() {
-		return reportId;
+
+	public int getDeleteState() {
+		return deleteState;
 	}
 
-	public void setReportId(String reportId) {
-		this.reportId = reportId;
+	public void setDeleteState(int deleteState) {
+		this.deleteState = deleteState;
 	}
 
-	@Override
-	public String toString() {
-		return "RemindHis [remindHisId=" + remindHisId + ", userId=" + userId + ", content=" + content + ", startTime="
-				+ startTime + ", strDate=" + strDate + ", deleteState=" + deleteState + ", reportId=" + reportId
-				+ ", clientType=" + clientType + "]";
+	public Integer getClientType() {
+		return clientType;
+	}
+
+	public void setClientType(Integer clientType) {
+		this.clientType = clientType;
 	}
 
 }

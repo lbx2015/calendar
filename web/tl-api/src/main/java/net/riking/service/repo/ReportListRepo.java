@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import net.riking.entity.model.AppUserReportRel;
+import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.model.QueryReport;
-import net.riking.entity.model.ReportList;
+import net.riking.entity.model.Report;
 /**
  * 
  * @author lucky.liu
@@ -18,11 +18,11 @@ import net.riking.entity.model.ReportList;
  * @used TODO
  */
 @Repository
-public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSpecificationExecutor<ReportList> {
+public interface ReportListRepo extends JpaRepository<Report, String>, JpaSpecificationExecutor<Report> {
 
 
 	@Query(" from ReportList  where Id in ?1 and deleteState = '1'  ")
-	List<ReportList> findByReoprtId(Set<String> reoprtId);
+	List<Report> findByReoprtId(Set<String> reoprtId);
 	
 	@Query("select new net.riking.entity.model.QueryReport(r.id,r.reportName,r.reportCode,r.moduleType) from ReportList r where r.deleteState='1' ")
 	List<QueryReport> findByDeleteState();
@@ -36,6 +36,6 @@ public interface ReportListRepo extends JpaRepository<ReportList, String>, JpaSp
 	List<QueryReport> findByIds(Set<String> ids);
 	
 	@Query("  select new net.riking.entity.model.AppUserReportRel(r.id) from ReportList r where r.deleteState='1' ")
-	List<AppUserReportRel> findAllId();
+	List<ReportSubcribeRel> findAllId();
 	
 }

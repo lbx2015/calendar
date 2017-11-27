@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.NewsCommentInfo;
+import net.riking.entity.model.NewsComment;
 
 /**
  * 
@@ -20,7 +20,7 @@ import net.riking.entity.model.NewsCommentInfo;
  */
 @Repository
 public interface NewsCommentInfoRepo
-		extends JpaRepository<NewsCommentInfo, String>, JpaSpecificationExecutor<NewsCommentInfo> {
+		extends JpaRepository<NewsComment, String>, JpaSpecificationExecutor<NewsComment> {
 	/**
 	 * 统计资讯评论数
 	 * @param newsId
@@ -36,5 +36,5 @@ public interface NewsCommentInfoRepo
 	 * @return
 	 */
 	@Query("select id,createdTime,userId,newsId,content from NewsCommentInfo where createdTime < ?1 and enabled = 1 order by createdTime desc")
-	List<NewsCommentInfo> findByNewsId(String newsId, Pageable pageable);
+	List<NewsComment> findByNewsId(String newsId, Pageable pageable);
 }

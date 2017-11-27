@@ -18,10 +18,10 @@ import net.riking.config.Const;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.CommonParams;
-import net.riking.entity.model.NCommentReplyInfo;
-import net.riking.entity.model.NewsCollectInfo;
-import net.riking.entity.model.NewsCommentInfo;
-import net.riking.entity.model.NewsInfo;
+import net.riking.entity.model.NCReply;
+import net.riking.entity.model.NewsRel;
+import net.riking.entity.model.NewsComment;
+import net.riking.entity.model.News;
 import net.riking.service.repo.AppUserRepo;
 import net.riking.service.repo.NCommentAgreeInfoRepo;
 import net.riking.service.repo.NCommentReplyInfoRepo;
@@ -73,7 +73,7 @@ public class NewsInfoServer {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
 		// 分页数据
-		List<NewsInfo> newsInfoList = new ArrayList<NewsInfo>();
+		List<News> newsInfoList = new ArrayList<News>();
 		// 把分页数据封装成map传入前台
 		List<Map<String, Object>> newsInfoMapList = new ArrayList<Map<String, Object>>();
 		switch (commonParams.getDirect()) {
@@ -85,7 +85,7 @@ public class NewsInfoServer {
 				break;
 			// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
 			case Const.DIRECT_DOWN:
-				List<NewsInfo> newsInfoAscList = newsInfoRepo.findNewsListRefresh(commonParams.getReqTimeStamp(),
+				List<News> newsInfoAscList = newsInfoRepo.findNewsListRefresh(commonParams.getReqTimeStamp(),
 						new PageRequest(0, 30));
 				// 把查出来的数据按倒序重新排列
 				for (int i = 0; i < newsInfoAscList.size(); i++) {
@@ -95,7 +95,7 @@ public class NewsInfoServer {
 			default:
 				throw new RuntimeException("请求方向参数异常：direct:" + commonParams.getDirect());
 		}
-		for (NewsInfo newsInfo : newsInfoList) {
+		for (News newsInfo : newsInfoList) {
 			// 从数据库查询评论数插到资讯表
 			Integer count = newsCommentInfoRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
@@ -117,7 +117,7 @@ public class NewsInfoServer {
 	public AppResp getNewsInfo(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
-		NewsInfo newsInfo = newsInfoRepo.getById(commonParams.getNewsId());
+		News newsInfo = newsInfoRepo.getById(commonParams.getNewsId());
 		// 将对象转换成map
 		Map<String, Object> newsInfoMap = Utils.objProps2Map(newsInfo, true);
 		return new AppResp(newsInfoMap, CodeDef.SUCCESS);
@@ -136,17 +136,17 @@ public class NewsInfoServer {
 		// 资讯详情评论的Map列表(把资讯详情评论对象封装成Map传进前台)
 		List<Map<String, Object>> newsCommentInfoMapList = new ArrayList<Map<String, Object>>();
 		// 根据NewsId查出资讯详情评论列表（30条）
-		List<NewsCommentInfo> newsCommentInfoList = newsCommentInfoRepo.findByNewsId(commonParams.getNewsId(),
+		List<NewsComment> newsCommentInfoList = newsCommentInfoRepo.findByNewsId(commonParams.getNewsId(),
 				new PageRequest(0, 30));
 
 		// 评论列表
-		for (NewsCommentInfo newsCommentInfoNew : newsCommentInfoList) {
+		for (NewsComment newsCommentInfoNew : newsCommentInfoList) {
 
 			// 根据评论id取到回复列表
-			List<NCommentReplyInfo> nCommentReplyInfoList = nCommentReplyInfoRepo
+			List<NCReply> nCommentReplyInfoList = nCommentReplyInfoRepo
 					.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
-			for (NCommentReplyInfo nCommentReplyInfo : nCommentReplyInfoList) {
+			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
 				Map<String, Object> nCommentReplyInfoObjMap = new HashMap<String, Object>();
 				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
 				nCommentReplyInfo.setUserName(appUser.getName());
@@ -176,7 +176,7 @@ public class NewsInfoServer {
 	public AppResp newsCommentInfoPublish(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
-		NewsCommentInfo newsCommentInfo = new NewsCommentInfo();
+		NewsComment newsCommentInfo = new NewsComment();
 		newsCommentInfo.setUserId(commonParams.getUserId());
 		newsCommentInfo.setNewsId(commonParams.getNewsId());
 		newsCommentInfo.setContent(commonParams.getContent());
@@ -198,7 +198,7 @@ public class NewsInfoServer {
 		switch (commonParams.getEnabled()) {
 			case Const.EFFECTIVE:
 				// 如果传过来的参数是收藏，保存新的一条收藏记录
-				NewsCollectInfo newsCollectInfo = new NewsCollectInfo();
+				NewsRel newsCollectInfo = new NewsRel();
 				newsCollectInfo.setUserId(commonParams.getUserId());
 				newsCollectInfo.setNewsId(commonParams.getNewsId());
 				newsCollectInfoRepo.save(newsCollectInfo);

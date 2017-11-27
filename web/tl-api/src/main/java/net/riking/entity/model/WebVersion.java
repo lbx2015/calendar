@@ -9,42 +9,41 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseEntity;
+import net.riking.entity.BaseProp;
 
-@Comment("WEb版本")
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
+@Comment("Web版本")
 @Entity
 @Table(name = "t_web_version")
-public class WebVersion extends BaseEntity {
-	
+public class WebVersion extends BaseProp {
+
 	/**
 	 * @author Lucky.Liu on 2017/8/05.
 	 */
-	
+
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
 	private String id;
 
-	// WEB版本号
-	@Column(name = "version_number", length = 32)
-	private String versionNumber;
+	@Comment("WEB版本号(如V1.0.0）")
+	@Column(name = "version_no", length = 32)
+	private String versionNo;
 
-	// 数据库脚本版本号
-	@Column(name = "sql_version_number", length = 32)
-	private String sqlVersionNumber;
+	@Comment("数据库脚本版本号")
+	@Column(name = "sql_version_no", length = 32)
+	private String sqlVersionNo;
 
 	// 版本说明
-	@Column(name = "version_note", length = 255)
-	private String versionNote;
-
-	// 更新日期
-	@Column(name = "renewal_time",length = 8)
-	private String renewalTime;
-	
-	// 删除状态 0删除 1显示
-	@Column(name = "delete_state", length = 2)
-	private String deleteState;
+	@Comment("版本说明")
+	@Column(name = "remark", length = 255)
+	private String remark;
 
 	public String getId() {
 		return id;
@@ -54,51 +53,36 @@ public class WebVersion extends BaseEntity {
 		this.id = id;
 	}
 
-	public String getRenewalTime() {
-		return renewalTime;
+	public String getVersionNo() {
+		return versionNo;
 	}
 
-	public void setRenewalTime(String renewalTime) {
-		this.renewalTime = renewalTime;
+	public void setVersionNo(String versionNo) {
+		this.versionNo = versionNo;
 	}
 
-	public String getDeleteState() {
-		return deleteState;
+	public String getSqlVersionNo() {
+		return sqlVersionNo;
 	}
 
-	public void setDeleteState(String deleteState) {
-		this.deleteState = deleteState;
+	public void setSqlVersionNo(String sqlVersionNo) {
+		this.sqlVersionNo = sqlVersionNo;
 	}
 
-	public String getVersionNumber() {
-		return versionNumber;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setVersionNumber(String versionNumber) {
-		this.versionNumber = versionNumber;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
-	public String getSqlVersionNumber() {
-		return sqlVersionNumber;
-	}
-
-	public void setSqlVersionNumber(String sqlVersionNumber) {
-		this.sqlVersionNumber = sqlVersionNumber;
-	}
-
-	public String getVersionNote() {
-		return versionNote;
-	}
-
-	public void setVersionNote(String versionNote) {
-		this.versionNote = versionNote;
-	}
-
-	@Override
-	public String toString() {
-		return "WebVersion [id=" + id + ", versionNumber=" + versionNumber + ", sqlVersionNumber=" + sqlVersionNumber
-				+ ", versionNote=" + versionNote + ", renewalTime=" + renewalTime + ", deleteState=" + deleteState
-				+ "]";
-	}
+	// // 更新日期
+	// @Column(name = "renewal_time", length = 8)
+	// private String renewalTime;
+	//
+	// // 删除状态 0删除 1显示
+	// @Column(name = "delete_state", length = 2)
+	// private String deleteState;
 
 }

@@ -2,55 +2,33 @@ package net.riking.entity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import net.riking.core.annos.Comment;
-import net.riking.entity.BaseEntity;
 
+import net.riking.core.annos.Comment;
+import net.riking.entity.BaseProp;
+
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
+@Comment("行业职务表")
 @Entity
 @Table(name = "t_industry")
-public class Industry extends BaseEntity{
+public class Industry extends BaseProp {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -68360963358945117L;
-
-	//行业/职位表
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private Long id;
-	
 	@Comment("行业/职位名称")
 	@Column(name = "name", length = 32)
 	private String name;
-	
-	@Comment("父id")
+
+	@Comment("所属行业id")
 	@Column(name = "parent_id", length = 32)
-	private Long parentId;
-	
-	@Comment("所属类型")
-	@Column(name = "type", length = 1)
-	private Integer type;//0：行业；1：职位
+	private String parentId;
 
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getType() {
-		return type;
-	}
-
-	public void setType(Integer type) {
-		this.type = type;
-	}
+	@Comment("类型:0-行业；1-职位")
+	@Column(name = "data_type", length = 1)
+	private Integer dataType;// 0：行业；1：职位
 
 	public String getName() {
 		return name;
@@ -60,14 +38,20 @@ public class Industry extends BaseEntity{
 		this.name = name;
 	}
 
-	public Long getParentId() {
+	public String getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(Long parentId) {
+	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-	
-	
+
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
+	}
 
 }

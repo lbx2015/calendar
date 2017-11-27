@@ -7,12 +7,18 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseProp;
+import net.riking.entity.BaseAuditProp;
 
+/**
+ * 
+ * @author jc.tan 2017年11月27日
+ * @see
+ * @since 1.0
+ */
 @Comment("话题信息 表")
 @Entity
 @Table(name = "t_topic")
-public class Topic extends BaseProp {
+public class Topic extends BaseAuditProp {
 
 	private static final long serialVersionUID = -4138765413765191901L;
 
