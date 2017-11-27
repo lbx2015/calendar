@@ -63,7 +63,11 @@ public class PullToLoadViewWithoutFloatButton extends FrameLayout {
     }
 
     private void init() {
-
+        // Configure the refreshing colors
+        setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         mSwipeRefreshLayout
                 .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
