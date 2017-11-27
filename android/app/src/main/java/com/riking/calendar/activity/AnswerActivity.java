@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -39,6 +40,10 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         setContentView(R.layout.answer_detail_activity);
         init();
 
+    }
+
+    public void clickBack(final View view) {
+        onBackPressed();
     }
 
     void init() {
@@ -99,7 +104,6 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     class WebAppInterface {
-
 
         /**
          * Show a toast from the web page
