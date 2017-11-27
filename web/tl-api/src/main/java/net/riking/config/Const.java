@@ -46,9 +46,9 @@ public class Const {
 	// public static final String SYS_FIELD_DICT = "SYS_FIELD_DICT";
 	/** -------------------数据是否有效 1有效，0无效 begin-------------------------- */
 
-	public static final Integer EFFECTIVE = 1;// 有效数据
+	public static final int EFFECTIVE = 1;// 有效数据
 
-	public static final Integer INVALID = 0;// 无效数据
+	public static final int INVALID = 0;// 无效数据
 
 	/** -------------------数据是否有效 1有效，0无效 end-------------------------- */
 
@@ -59,5 +59,13 @@ public class Const {
 	public static final String DIRECT_DOWN = "down";
 
 	/** --------------------请求方向 end-------------------------- */
+
+	/** -------------------对象类型 begin-------------------------- */
+
+	public static final int OBJ_TYPE_1 = 1;// 问题
+
+	public static final int OBJ_TYPE_2 = 2;// 话题
+
+	/** --------------------对象类型 end-------------------------- */
 
 }

@@ -7,22 +7,21 @@ import javax.persistence.Table;
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
 
-@Comment("问题回答收藏信息 表")
+@Comment("问题回答的评论 表")
 @Entity
 @Table(name = "t_qa_comment_info")
 public class QACommentInfo extends BaseProp {
 
 	private static final long serialVersionUID = -1678533246251001559L;
-	
+
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
-	
+
 	@Comment("目标对象主键")
 	@Column(name = "question_answer_id", nullable = false)
 	private String questionAnswerId;
-	
-	
+
 	@Comment("内容")
 	@Column(name = "content", nullable = false)
 	private String content;
@@ -50,7 +49,5 @@ public class QACommentInfo extends BaseProp {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
-	
 
 }

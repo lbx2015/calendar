@@ -22,10 +22,10 @@ public interface NCommentReplyInfoRepo
 		extends JpaRepository<NCommentReplyInfo, String>, JpaSpecificationExecutor<NCommentReplyInfo> {
 
 	/**
-	 * 
-	 * @param newsId
+	 * 资讯回复列表
+	 * @param newsCommentId
 	 * @return
 	 */
-	@Query("select n.id,n.userId,n.toUserId,n.newsCommentId,n.nCommentReplyId,n.content from NCommentReplyInfo n where enabled = 1 order by createdTime desc")
+	@Query("select id,userId,toUserId,newsCommentId,nCommentReplyId,content from NCommentReplyInfo where enabled = 1 order by createdTime desc")
 	List<NCommentReplyInfo> findByNewsCommentId(String newsCommentId);
 }

@@ -19,7 +19,7 @@ import net.riking.entity.model.NCommentAgreeInfo;
 public interface NCommentAgreeInfoRepo
 		extends JpaRepository<NCommentAgreeInfo, String>, JpaSpecificationExecutor<NCommentAgreeInfo> {
 	/**
-	 * 
+	 * 统计资讯评论点赞数
 	 * @param newsCommentId
 	 * @return
 	 */

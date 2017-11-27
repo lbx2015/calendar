@@ -24,7 +24,7 @@ public class CommonParams implements Serializable {
 
 	// (0-取消；1-收藏)
 	@Transient
-	private String enabled;
+	private Integer enabled;
 
 	// 请求上翻最新时间戳
 	@Transient
@@ -34,6 +34,14 @@ public class CommonParams implements Serializable {
 	@Transient
 	private String content;
 
+	// 屏蔽问题[1-问题；2-话题]
+	@Transient
+	private Integer objType;
+
+	// 目标对象id
+	@Transient
+	private String objId;
+
 	public String getUserId() {
 		return userId;
 	}
@@ -42,11 +50,27 @@ public class CommonParams implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getEnabled() {
+	public Integer getObjType() {
+		return objType;
+	}
+
+	public void setObjType(Integer objType) {
+		this.objType = objType;
+	}
+
+	public String getObjId() {
+		return objId;
+	}
+
+	public void setObjId(String objId) {
+		this.objId = objId;
+	}
+
+	public Integer getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(String enabled) {
+	public void setEnabled(Integer enabled) {
 		this.enabled = enabled;
 	}
 
