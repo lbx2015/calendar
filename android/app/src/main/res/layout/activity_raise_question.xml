@@ -42,18 +42,32 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
-        android:background="@color/color_d2d2d2" />
+        android:background="@color/color_d2d2d2"
+        android:visibility="gone" />
 
     <android.support.design.widget.TextInputEditText
         android:id="@+id/question_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
         android:hint="填写下你的问题"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
         android:textColorHint="@color/color_999999"
         android:textSize="17sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"></android.support.v7.widget.RecyclerView>
 </LinearLayout>
