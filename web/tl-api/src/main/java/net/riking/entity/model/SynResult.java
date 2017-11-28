@@ -13,24 +13,24 @@ public class SynResult {
 
 	private List<Remind> remind;
 	private List<Todo> todo;
-	private List<Days> days;
+	private List<SysDays> days;
 	private List<QueryReport> reportList;
 
 	public SynResult() {
 	}
 
-	public SynResult(List<Remind> remind,  List<Todo> todo, List<Days> days,List<QueryReport> reportList) {
+	public SynResult(List<Remind> remind,  List<Todo> todo, List<SysDays> days,List<QueryReport> reportList) {
 		this.remind = remind;
 		this.todo = todo;
 		this.days = days;
 		this.reportList = reportList;
 	}
 
-	public List<Days> getDays() {
+	public List<SysDays> getDays() {
 		return days;
 	}
 
-	public void setDays(List<Days> days) {
+	public void setDays(List<SysDays> days) {
 		this.days = days;
 	}
 

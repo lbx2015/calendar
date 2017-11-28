@@ -16,7 +16,7 @@ import net.riking.core.annos.Comment;
 @Comment("系统日历表")
 @Entity
 @Table(name = "t_sys_days")
-public class Days {
+public class SysDays {
 
 	@Comment("日期（yyyyMMdd）")
 	@Id
@@ -25,22 +25,14 @@ public class Days {
 
 	@Comment("星期(1-7)代表星期一到星期天")
 	@Column(name = "weekday", length = 1)
-	private String weekday;
+	private Integer weekday;
 
 	@Comment("工作日标识 1：工作日 0：非工作日")
-	@Column(name = "is_work")
+	@Column(name = "iswork")
 	private Integer isWork;
 
-	public Days() {
+	public SysDays() {
 
-	}
-
-	public String getWeekday() {
-		return weekday;
-	}
-
-	public void setWeekday(String weekday) {
-		this.weekday = weekday;
 	}
 
 	public String getDates() {
@@ -51,6 +43,14 @@ public class Days {
 		this.dates = dates;
 	}
 
+	public Integer getWeekday() {
+		return weekday;
+	}
+
+	public void setWeekday(Integer weekday) {
+		this.weekday = weekday;
+	}
+
 	public Integer getIsWork() {
 		return isWork;
 	}
@@ -59,4 +59,5 @@ public class Days {
 		this.isWork = isWork;
 	}
 
+	
 }
