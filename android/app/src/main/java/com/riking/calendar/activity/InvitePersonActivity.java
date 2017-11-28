@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.ExcellentAnswerAdapter;
+import com.riking.calendar.adapter.InvitePersonAdapter;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportFrequency;
@@ -30,7 +30,7 @@ import java.util.List;
 public class InvitePersonActivity extends AppCompatActivity {
 
     public String reportSearchCondition;
-    ExcellentAnswerAdapter mAdapter;
+    InvitePersonAdapter mAdapter;
     RecyclerView recyclerView;
     View localSearchTitle;
     EditText editText;
@@ -93,13 +93,15 @@ public class InvitePersonActivity extends AppCompatActivity {
     }
 
     public void performSearch() {
+        //todo test only code (remove the following line later)
+        mAdapter.add("dd");
         HashMap<String, String> reportName = new LinkedHashMap<>(1);
         reportName.put("reportName", reportSearchCondition);
         reportName.put("userId", Preference.pref.getString(CONST.USER_ID, ""));
         APIClient.getReportByName(reportName, new ZCallBack<ResponseModel<List<ReportFrequency>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportFrequency>> response) {
-                mAdapter.add("dd");
+
             }
         });
     }
@@ -107,7 +109,7 @@ public class InvitePersonActivity extends AppCompatActivity {
     private void setRecyclerView() {
         //set layout manager for the recycler view.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ExcellentAnswerAdapter(this);
+        mAdapter = new InvitePersonAdapter(this);
         mAdapter.add("dd");
         mAdapter.add("ddlllljjijjlkkj");
         recyclerView.setAdapter(mAdapter);
