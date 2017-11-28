@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -51,8 +53,12 @@ public class TopicQuestion extends BaseAuditProp {
 	// @Column(name="answer_num",insertable=false, nullable=false)
 	// private Integer answerNum;
 
-	public TopicQuestion(String title, String content, String topicId, String userId, String userName) {
+	public TopicQuestion(String id, Date createdTime, Integer isAduit, String title, String content, String topicId,
+			String userId, String userName) {
 		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setIsAduit(isAduit);
 		this.title = title;
 		this.content = content;
 		this.topicId = topicId;

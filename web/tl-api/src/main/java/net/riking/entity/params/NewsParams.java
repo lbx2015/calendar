@@ -1,4 +1,4 @@
-package net.riking.entity.resp;
+package net.riking.entity.params;
 
 import java.io.Serializable;
 import java.util.Date;

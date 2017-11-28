@@ -24,7 +24,7 @@ import net.riking.entity.model.NCReply;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
 import net.riking.entity.model.NewsRel;
-import net.riking.entity.resp.NewsParams;
+import net.riking.entity.params.NewsParams;
 import net.riking.service.repo.NewsRelRepo;
 import net.riking.util.Utils;
 

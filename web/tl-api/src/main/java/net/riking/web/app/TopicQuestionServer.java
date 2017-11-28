@@ -13,7 +13,7 @@ import net.riking.config.CodeDef;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.TopicQuestion;
-import net.riking.entity.resp.TQuestionParams;
+import net.riking.entity.params.TQuestionParams;
 import net.riking.util.Utils;
 
 /**
@@ -46,15 +46,47 @@ public class TopicQuestionServer {
 	}
 
 	/**
-	 * 问题关注[userId,objType(1-问题；2-话题；3-用户),attentObjId（关注类型ID）,enabled（1-关注；0-取消）]
+	 * 问题，话题，用户的关注[userId,objType(1-问题；2-话题；3-用户),attentObjId（关注类型ID）,enabled（1-关注；0-取消）]
 	 * @param params
 	 * @return
 	 */
-	@ApiOperation(value = "问题的关注", notes = "POST")
-	@RequestMapping(value = "/findSearchList", method = RequestMethod.POST)
-	public AppResp findSearchList(@RequestBody Map<String, String> params) {
-		// 将map转换成参数对象
-		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+	@ApiOperation(value = "问题，话题，用户的关注", notes = "POST")
+	@RequestMapping(value = "/tQUAgree", method = RequestMethod.POST)
+	public AppResp tQUAgree(@RequestBody Map<String, Object> params) {
+		// // 将map转换成参数对象
+		// TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+		// switch (tQuestionParams.getObjType()) {
+		// // 问题关注
+		// case Const.OBJ_TYPE_1:
+		//
+		// break;
+		// // 问题关注
+		// case Const.OBJ_TYPE_2:
+		//
+		// break;
+		// // 问题关注
+		// case Const.OBJ_TYPE_3:
+		//
+		// break;
+		// default:
+		// break;
+		// }
+		// switch (tQuestionParams.getEnabled()) {
+		// case Const.EFFECTIVE:
+		// // 如果传过来的参数是关注，保存新的一条收藏记录
+		// NewsRel newsRel = new NewsRel();
+		// newsRel.setUserId(newsParams.getUserId());
+		// newsRel.setNewsId(newsParams.getNewsId());
+		// newsRelRepo.save(newsRel);
+		// break;
+		// case Const.INVALID:
+		// // 如果传过来是取消收藏，把之前一条记录物理删除
+		// newsRelRepo.deleteByUIdAndNId(newsParams.getUserId(), newsParams.getNewsId());
+		// break;
+		// default:
+		// throw new RuntimeException("参数异常：enabled=" + newsParams.getEnabled());
+		// }
+		//
 		return new AppResp(CodeDef.SUCCESS);
 	}
 }

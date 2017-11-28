@@ -66,6 +66,8 @@ public class Const {
 
 	public static final int OBJ_TYPE_2 = 2;// 话题
 
+	public static final int OBJ_TYPE_3 = 3;// 用户
+
 	/** --------------------对象类型 end-------------------------- */
 
 }
