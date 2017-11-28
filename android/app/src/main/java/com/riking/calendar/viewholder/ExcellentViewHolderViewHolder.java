@@ -28,6 +28,8 @@ public class ExcellentViewHolderViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.follow_button)
     public View followButton;
 
+    public boolean invited;
+
     public ExcellentViewHolderViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);

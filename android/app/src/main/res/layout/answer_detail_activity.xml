@@ -145,15 +145,18 @@
             </android.support.constraint.ConstraintLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <WebView
-            android:id="@+id/web_view"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/navigation"
-            android:layout_marginBottom="49dp"
-            android:nestedScrollingEnabled="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"></WebView>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/navigation"
+                android:nestedScrollingEnabled="false"></WebView>
+        </android.support.v4.widget.NestedScrollView>
         <!--<android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

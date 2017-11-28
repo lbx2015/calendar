@@ -42,11 +42,6 @@ public class HomeFragment extends Fragment {
     AppBarLayout appBarLayout;
     LinearLayout search;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     private void setupBannerSlider() {
         bannerSlider = (BannerSlider) v.findViewById(R.id.banner_slider1);
         addBanners();

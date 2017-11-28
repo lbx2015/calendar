@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.QuestionListAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 /**
@@ -78,4 +80,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         onBackPressed();
     }
 
+    public void clickInvitePerson(final View view){
+        ZGoto.to(this,InvitePersonActivity.class);
+    }
 }

@@ -80,6 +80,10 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         initEvents();
     }
 
+    public void clickCancel(View view){
+        onBackPressed();
+    }
+
     private void initEvents() {
         setRecyclerView();
     }
