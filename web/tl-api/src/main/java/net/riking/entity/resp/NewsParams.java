@@ -1,45 +1,46 @@
-package net.riking.entity.model;
+package net.riking.entity.resp;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import javax.persistence.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
 
-public class CommonParams implements Serializable {
+/**
+ * 资讯类的接收参数
+ * 
+ * @author jc.tan 2017年11月28日
+ * @see
+ * @since 1.0
+ */
+public class NewsParams implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6952211991459875719L;
 
 	// 用户Id
-	@Transient
 	private String userId;
 
 	// 请求方向（up上，down下）
-	@Transient
 	private String direct;
 
 	// 资讯信息id
-	@Transient
 	private String newsId;
 
 	// (0-取消；1-收藏)
-	@Transient
 	private Integer enabled;
 
 	// 请求上翻最新时间戳
-	@Transient
-	private String reqTimeStamp;
+	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
+	private Date reqTimeStamp;
 
 	// 评论内容
-	@Transient
 	private String content;
 
-	// 屏蔽问题[1-问题；2-话题]
-	@Transient
+	// 屏蔽问题[1-问题;2-话题;3-屏蔽]
 	private Integer objType;
 
 	// 目标对象id
-	@Transient
 	private String objId;
 
 	public String getUserId() {
@@ -98,11 +99,11 @@ public class CommonParams implements Serializable {
 		this.direct = direct;
 	}
 
-	public String getReqTimeStamp() {
+	public Date getReqTimeStamp() {
 		return reqTimeStamp;
 	}
 
-	public void setReqTimeStamp(String reqTimeStamp) {
+	public void setReqTimeStamp(Date reqTimeStamp) {
 		this.reqTimeStamp = reqTimeStamp;
 	}
 

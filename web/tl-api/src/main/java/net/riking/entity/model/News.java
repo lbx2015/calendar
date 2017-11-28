@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -43,6 +45,35 @@ public class News extends BaseAuditProp {
 	@Column(name = "issued", length = 255, nullable = false)
 	private String issued;
 
+	public News(String id, Date createdTime, String title, String seat, String coverUrls, String content, String issued,
+			String userName) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.title = title;
+		this.seat = seat;
+		this.coverUrls = coverUrls;
+		this.content = content;
+		this.issued = issued;
+		this.userName = userName;
+	}
+
+	public News(String id, Date createdTime, String title, String seat, String coverUrls, String content,
+			String issued) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.title = title;
+		this.seat = seat;
+		this.coverUrls = coverUrls;
+		this.content = content;
+		this.issued = issued;
+	}
+
+	// 用户名
+	@Transient
+	private String userName;
+
 	// 评论数
 	@Transient
 	private Integer commentNumber;
@@ -61,6 +92,14 @@ public class News extends BaseAuditProp {
 
 	public void setCommentNumber(Integer commentNumber) {
 		this.commentNumber = commentNumber;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getContent() {

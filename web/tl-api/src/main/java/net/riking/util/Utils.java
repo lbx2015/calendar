@@ -2,13 +2,10 @@ package net.riking.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import net.riking.entity.model.News;
 
 public class Utils {
 
@@ -137,26 +134,4 @@ public class Utils {
 		return list;
 	}
 
-	public static void main(String[] args) {
-		News info = new News();
-
-		// info.setAuthor("author");
-		info.setCreatedTime(new Date());
-
-		Map<String, Object> map = objProps2Map(info, true);
-
-		Set<String> keySet = map.keySet();
-		for (String key : keySet) {
-			System.err.println(key + "--" + map.get(key));
-		}
-
-		map.put("NewsInfoId", "12345");
-
-		map.remove("serialVersionUID");
-
-		News info2 = map2Obj(map, News.class);
-
-		// System.out.println(info2.getId() + "--" + info2.getAuthor() + "--" +
-		// info.getCreatedTime());
-	}
 }

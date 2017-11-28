@@ -48,8 +48,8 @@ public class BaseProp extends BaseEntity {
 
 	@Comment("是否删除： 0-删除，1-未删除")
 	@org.hibernate.annotations.ColumnDefault("1")
-	@Column(name = "is_delete", insertable = false, nullable = false, precision = 1)
-	private Integer isDelete;
+	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
+	private Integer isDeleted;
 
 	public String getId() {
 		return id;
@@ -91,12 +91,12 @@ public class BaseProp extends BaseEntity {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public Integer getIsDelete() {
-		return isDelete;
+	public Integer getIsDeleted() {
+		return isDeleted;
 	}
 
-	public void setIsDelete(Integer isDelete) {
-		this.isDelete = isDelete;
+	public void setIsDeleted(Integer isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 }
