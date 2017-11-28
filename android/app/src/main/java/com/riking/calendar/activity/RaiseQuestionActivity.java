@@ -7,9 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 
 /**
@@ -40,7 +40,7 @@ public class RaiseQuestionActivity extends AppCompatActivity {
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RaiseQuestionActivity.this, "成功", Toast.LENGTH_SHORT).show();
+                ZGoto.to(RaiseQuestionActivity.this, RelatedQuestionActivity.class);
             }
         });
         textInputEditText.addTextChangedListener(new TextWatcher() {
