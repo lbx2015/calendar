@@ -129,6 +129,7 @@
         <activity android:name=".activity.QuestionActivity" />
         <activity android:name=".activity.InvitePersonActivity" />
         <activity android:name=".activity.WriteAnswerActivity" />
+        <activity android:name=".activity.RaiseQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />
