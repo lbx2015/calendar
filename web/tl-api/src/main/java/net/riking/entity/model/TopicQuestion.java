@@ -51,10 +51,6 @@ public class TopicQuestion extends BaseAuditProp {
 	// @Column(name="answer_num",insertable=false, nullable=false)
 	// private Integer answerNum;
 
-	public String getTitle() {
-		return title;
-	}
-
 	public TopicQuestion(String title, String content, String topicId, String userId, String userName) {
 		super();
 		this.title = title;
@@ -62,6 +58,10 @@ public class TopicQuestion extends BaseAuditProp {
 		this.topicId = topicId;
 		this.userId = userId;
 		this.userName = userName;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	public void setTitle(String title) {

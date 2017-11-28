@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.resp.TQuestionParams;
 import net.riking.util.Utils;
 
@@ -30,7 +31,7 @@ public class TopicQuestionServer {
 	TopicQuestionRepo topicQuestionRepo;
 
 	/**
-	 * 问题的详情
+	 * 问题的详情[userId,tqId]
 	 * @param params
 	 * @return
 	 */
@@ -38,9 +39,11 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/getTopicQuestion", method = RequestMethod.POST)
 	public AppResp getTopicQuestion(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
-		TQuestionParams commonParams = Utils.map2Obj(params, TQuestionParams.class);
-		topicQuestionRepo.
-		return new AppResp(CodeDef.SUCCESS);
+		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId());
+		// 将对象转换成map
+		Map<String, Object> topicQuestionMap = Utils.objProps2Map(topicQuestion, true);
+		return new AppResp(topicQuestionMap, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "搜索列表（报表/话题/人脉/资讯/问题）", notes = "POST")

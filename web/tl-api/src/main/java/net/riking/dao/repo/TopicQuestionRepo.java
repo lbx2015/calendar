@@ -23,6 +23,6 @@ public interface TopicQuestionRepo
 	 * @param tqId
 	 * @return
 	 */
-	@Query("select t.id,t.createdTime,t.isAduit,t.title,t.content,t.topicId,t.userId,(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1) as userName from TopicQuestion t where tqId = ?1 ")
-	TopicQuestion getByTqId(String tqId);
+	@Query("select new TopicQuestion(t.id,t.createdTime,t.isAduit,t.title,t.content,t.topicId,t.userId,(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1) as userName) from TopicQuestion t where t.id = ?1 ")
+	TopicQuestion getById(String tqId);
 }
