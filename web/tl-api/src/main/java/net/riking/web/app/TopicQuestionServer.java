@@ -39,7 +39,7 @@ public class TopicQuestionServer {
 	public AppResp getTopicQuestion(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		TQuestionParams commonParams = Utils.map2Obj(params, TQuestionParams.class);
-		topicQuestionRepo.
+//		topicQuestionRepo.
 		return new AppResp(CodeDef.SUCCESS);
 	}
 
