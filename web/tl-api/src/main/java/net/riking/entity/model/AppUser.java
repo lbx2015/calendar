@@ -19,6 +19,11 @@ import net.riking.entity.BaseProp;
 @Table(name = "t_app_user")
 public class AppUser extends BaseProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public AppUser() {
 		super();
 	}

@@ -11,6 +11,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.riking.entity.model.Period;
+import net.riking.entity.model.SysDays;
 import net.riking.service.SysDateService;
 import net.riking.service.repo.SysDaysRepo;
 
@@ -108,7 +110,7 @@ public class SysDateServiceImpl implements SysDateService {
 	}
 	
 	/*public  Period getDate(String date,String type){
-     	Days day = daysRepo.findOne(date);
+     	SysDays day = sysDaysRepo.findOne(date);
  		Integer tenWorkDay;
  		Integer tenAllDay;
  		if (date.substring(6, 7).equals("0")) {

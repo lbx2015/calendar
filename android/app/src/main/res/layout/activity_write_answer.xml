@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/color_f8f8f8"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="clickCancel"
+            android:text="@string/cancel"
+            android:textColor="@color/color_666666"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我来回答"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/publish_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="发布"
+            android:textColor="@color/color_cccccc"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/color_f8f8f8"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="本行与他行共同去投资的联合投资计划怎么填报？"
+        android:textColor="@color/color_999999"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/answer_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="填写你的回答"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:textColorHint="@color/color_999999"
+        android:textSize="17sp" />
+</LinearLayout>

@@ -23,10 +23,12 @@ public class ExcellentViewHolderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.follow_text)
     public TextView followTv;
-    @BindView(R.id.follow_plus_icon_image)
-    public ImageView followPlusIconImage;
+//    @BindView(R.id.follow_plus_icon_image)
+//    public ImageView followPlusIconImage;
     @BindView(R.id.follow_button)
     public View followButton;
+
+    public boolean invited;
 
     public ExcellentViewHolderViewHolder(View itemView) {
         super(itemView);
