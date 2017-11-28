@@ -5,10 +5,12 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.riking.calendar.R;
@@ -17,17 +19,16 @@ import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +44,7 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
     List<ReportFrequency> mySubscribedReports;
     FrameLayout myOrderLayout;
     TextInputEditText textInputEditText;
+    TextView nextStep;
 
     public void clickBack(final View view) {
         onBackPressed();
@@ -61,6 +63,7 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
     }
 
     private void initViews() {
+        nextStep = findViewById(R.id.next_step);
         textInputEditText = findViewById(R.id.search_topic);
         zReportFlowLayout = findViewById(R.id.flow_layout);
         topicRecyclerView = findViewById(R.id.recycler_view);
@@ -69,6 +72,28 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
 
     private void initEvents() {
         setRecyclerView();
+        textInputEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    nextStep.setTextColor(ZR.getColor(R.color.color_489dfff));
+                    nextStep.setEnabled(true);
+                } else {
+                    nextStep.setTextColor(ZR.getColor(R.color.color_cccccc));
+                    nextStep.setEnabled(false);
+                }
+                //todo test only
+                mAdapter.add("a");
+            }
+        });
     }
 
 
@@ -78,7 +103,6 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
         mAdapter = new TopicsAdapter(this);
         //set adapters
         topicRecyclerView.setAdapter(mAdapter);
-        loadReport();
     }
 
     @Override
@@ -127,29 +151,6 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
     }
 
 
-    private void loadReport() {
-        //request all reports
-        AppUser u = new AppUser();
-        //set user id
-        u.id = Preference.pref.getString(CONST.USER_ID, "");
-        APIClient.getAllReports(u, new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
-            @Override
-            public void callBack(ResponseModel<List<ReportAgence>> response) {
-            }
-        });
-
-        APIClient.findUserReportList(u, new ZCallBackWithFail<ResponseModel<List<ReportFrequency>>>() {
-            @Override
-            public void callBack(ResponseModel<List<ReportFrequency>> response) {
-                if (failed) {
-
-                } else {
-                    mySubscribedReports = response._data;
-                    drawMyOrders();
-                }
-            }
-        });
-    }
 
     public void drawMyOrders() {
         //redraw the reports

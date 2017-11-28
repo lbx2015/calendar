@@ -28,7 +28,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewH
     @Override
     public ExcellentViewHolderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.excellent_answerer_item, viewGroup, false);
+                R.layout.topic_item, viewGroup, false);
         return new ExcellentViewHolderViewHolder(view);
     }
 
