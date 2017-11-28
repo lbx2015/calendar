@@ -11,13 +11,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.riking.entity.model.Days;
-import net.riking.entity.model.Period;
-import net.riking.service.getDateService;
+import net.riking.service.SysDateService;
 import net.riking.service.repo.DaysRepo;
 
-@Service("getDateService")
-public class GetDateServiceImpl implements getDateService {
+@Service("sysDateService")
+public class SysDateServiceImpl implements SysDateService {
 	
 	@Autowired 
 	DaysRepo daysRepo;
@@ -109,7 +107,7 @@ public class GetDateServiceImpl implements getDateService {
 		return str;
 	}
 	
-	public  Period getDate(String date,String type){
+	/*public  Period getDate(String date,String type){
      	Days day = daysRepo.findOne(date);
  		Integer tenWorkDay;
  		Integer tenAllDay;
@@ -159,6 +157,6 @@ public class GetDateServiceImpl implements getDateService {
 			}
 			return period;
      	
-     }
+     }*/
 
 }

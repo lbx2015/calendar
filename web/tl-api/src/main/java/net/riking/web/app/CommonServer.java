@@ -1,4 +1,4 @@
-package net.riking.web.appInterface;
+package net.riking.web.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,20 +8,22 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.service.impl.GetDateServiceImpl;
+import net.riking.service.impl.SysDateServiceImpl;
 import net.riking.service.repo.AppVersionRepo;
 import net.riking.service.repo.ReportListRepo;
 
 /**
- * app的公用接口
- * @author Lucky.Liu on 2017/8/05.
+ * 公共模块
+ * @author james.you
+ * @version crateTime：2017年11月28日 上午10:47:36
+ * @used TODO
  */
 @RestController
 @RequestMapping(value = "/common")
 public class CommonServer {
 
 	@Autowired
-	GetDateServiceImpl getDateService;
+	SysDateServiceImpl sysDateService;
 
 	@Autowired
 	AppVersionRepo appVersionRepo;
@@ -32,7 +34,7 @@ public class CommonServer {
 	@ApiOperation(value = "获取系统时间", notes = "POST")
 	@RequestMapping(value = "/getDate", method = RequestMethod.POST)
 	public AppResp getDate_() {
-		String date = getDateService.getDate();
+		String date = sysDateService.getDate();
 		return new AppResp(date, CodeDef.SUCCESS);
 	}
 
