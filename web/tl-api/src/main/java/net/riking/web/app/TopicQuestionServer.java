@@ -2,7 +2,6 @@ package net.riking.web.app;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,6 @@ public class TopicQuestionServer {
 	TopicQuestionRepo topicQuestionRepo;
 
 	/**
-	 * 问题的详情
 	 * 问题的详情[userId,tqId]
 	 * @param params
 	 * @return
@@ -40,9 +38,6 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/getTopicQuestion", method = RequestMethod.POST)
 	public AppResp getTopicQuestion(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
-//		TQuestionParams commonParams = Utils.map2Obj(params, TQuestionParams.class);
-//		topicQuestionRepo.
-//		return new AppResp(CodeDef.SUCCESS);
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
 		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId());
 		// 将对象转换成map
@@ -50,15 +45,16 @@ public class TopicQuestionServer {
 		return new AppResp(topicQuestionMap, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "搜索列表（报表/话题/人脉/资讯/问题）", notes = "POST")
+	/**
+	 * 问题关注[userId,objType(1-问题；2-话题；3-用户),attentObjId（关注类型ID）,enabled（1-关注；0-取消）]
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "问题的关注", notes = "POST")
 	@RequestMapping(value = "/findSearchList", method = RequestMethod.POST)
 	public AppResp findSearchList(@RequestBody Map<String, String> params) {
-		// 判断用户id是否为空
-		if (StringUtils.isNotBlank(params.get("userId"))) {// 为空 则是未登录 则首页数据显示的是热点数据
-
-		} else {// 搜索列表（报表/话题/人脉/资讯/问题）
-
-		}
+		// 将map转换成参数对象
+		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
 		return new AppResp(CodeDef.SUCCESS);
 	}
 }
