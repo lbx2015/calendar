@@ -9,7 +9,7 @@ import net.riking.entity.model.TopicQuestion;
 
 /**
  * 
- * 〈行业资讯评论点赞信息〉
+ * 〈话题的问题信息〉
  * 
  * @author jc.tan 2017年11月23日
  * @see
@@ -23,6 +23,6 @@ public interface TopicQuestionRepo
 	 * @param tqId
 	 * @return
 	 */
-	@Query("select new TopicQuestion(t.id,t.createdTime,t.isAduit,t.title,t.content,t.topicId,t.userId,(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1) as userName) from TopicQuestion t where t.id = ?1 ")
+	@Query("select new TopicQuestion(t.id,t.createdTime,t.modifiedTime,t.isAduit,t.title,t.content,t.topicId,t.userId,(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where t.createdBy = ap.id)) from TopicQuestion t where t.id = ?1 ")
 	TopicQuestion getById(String tqId);
 }

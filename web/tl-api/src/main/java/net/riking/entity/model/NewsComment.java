@@ -44,18 +44,25 @@ public class NewsComment extends BaseAuditProp {
 	@Transient
 	private Integer agreeNumber;
 
+	// 用户头像Url
+	@Transient
+	private String photoUrl;
+
 	// 评论的回复list
 	@Transient
 	List<Map<String, Object>> nCommentReplyInfoList;
 
-	public NewsComment(String id, Date createdTime, String userId, String newsId, String content, String userName) {
+	public NewsComment(String id, Date createdTime, Date modifiedTime, String userId, String newsId, String content,
+			String userName, String photoUrl) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
 		this.userId = userId;
 		this.newsId = newsId;
 		this.content = content;
 		this.userName = userName;
+		this.photoUrl = photoUrl;
 	}
 
 	public NewsComment() {
@@ -80,6 +87,14 @@ public class NewsComment extends BaseAuditProp {
 
 	public void setAgreeNumber(Integer agreeNumber) {
 		this.agreeNumber = agreeNumber;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	public String getUserName() {

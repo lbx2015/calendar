@@ -45,24 +45,27 @@ public class News extends BaseAuditProp {
 	@Column(name = "issued", length = 255, nullable = false)
 	private String issued;
 
-	public News(String id, Date createdTime, String title, String seat, String coverUrls, String content, String issued,
-			String userName) {
+	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
+			String content, String issued, String userName, String photoUrl) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
 		this.title = title;
 		this.seat = seat;
 		this.coverUrls = coverUrls;
 		this.content = content;
 		this.issued = issued;
 		this.userName = userName;
+		this.photoUrl = photoUrl;
 	}
 
-	public News(String id, Date createdTime, String title, String seat, String coverUrls, String content,
-			String issued) {
+	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
+			String content, String issued) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
 		this.title = title;
 		this.seat = seat;
 		this.coverUrls = coverUrls;
@@ -78,12 +81,24 @@ public class News extends BaseAuditProp {
 	@Transient
 	private Integer commentNumber;
 
+	// 用户头像Url
+	@Transient
+	private String photoUrl;
+
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	public Integer getCommentNumber() {

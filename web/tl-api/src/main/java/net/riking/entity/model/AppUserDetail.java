@@ -78,7 +78,7 @@ public class AppUserDetail {
 
 	@Comment("用户头像（存放用户头像名称）")
 	@Column(name = "photo_url", length = 128)
-	private String photo_url;
+	private String photoUrl;
 
 	@Comment("全天提醒时间 HHmm时分")
 	@Column(name = "remind_time", length = 4)
@@ -217,12 +217,12 @@ public class AppUserDetail {
 		this.experience = experience;
 	}
 
-	public String getPhoto_url() {
-		return photo_url;
+	public String getPhotoUrl() {
+		return photoUrl;
 	}
 
-	public void setPhoto_url(String photo_url) {
-		this.photo_url = photo_url;
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	public String getRemindTime() {

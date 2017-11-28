@@ -15,7 +15,7 @@ import net.riking.entity.params.SearchParams;
 import net.riking.util.Utils;
 
 /**
- * 
+ * 搜索接口
  * @author jc.tan
  * @version crateTime：2017年11月23日 上午10:46:40
  * @used 搜索列表（报表/话题/人脉/资讯/问题）结果

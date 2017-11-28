@@ -1,8 +1,11 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -30,6 +33,33 @@ public class QAComment extends BaseAuditProp {
 	@Column(name = "content", nullable = false)
 	private String content;
 
+	// 用户名
+	@Transient
+	private String userName;
+
+	// 用户头像
+	@Transient
+	private String photoUrl;
+
+	public QAComment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public QAComment(String id, Date createdTime, Date modifiedTime, Integer isAduit, String userId,
+			String questionAnswerId, String content, String userName, String photoUrl) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.setIsAduit(isAduit);
+		this.userId = userId;
+		this.questionAnswerId = questionAnswerId;
+		this.content = content;
+		this.userName = userName;
+		this.photoUrl = photoUrl;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -52,6 +82,22 @@ public class QAComment extends BaseAuditProp {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 }

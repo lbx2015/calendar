@@ -15,24 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.NCReplyRepo;
 import net.riking.dao.repo.NewsCommentRepo;
+import net.riking.dao.repo.NewsRelRepo;
 import net.riking.dao.repo.NewsRepo;
-import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.NCReply;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
 import net.riking.entity.model.NewsRel;
 import net.riking.entity.params.NewsParams;
-import net.riking.service.repo.NewsRelRepo;
 import net.riking.util.Utils;
 
 /**
  * 
  * 〈行业资讯〉
  *
- * <p>
  * 〈资讯列表，资讯详情，资讯详情评论列表，资讯评论发布，资讯收藏〉
  * @author jc.tan 2017年11月23日
  * @see
@@ -52,7 +51,7 @@ public class NewsServer {
 	NCReplyRepo nCReplyRepo;
 
 	@Autowired
-	QACAgreeRelRepo qACAgreeRelRepo;
+	NCAgreeRelRepo nCAgreeRelRepo;
 
 	@Autowired
 	NewsRelRepo newsRelRepo;
@@ -91,7 +90,7 @@ public class NewsServer {
 				throw new RuntimeException("请求方向参数异常：direct:" + newsParams.getDirect());
 		}
 		for (News newsInfo : newsInfoList) {
-			// 从数据库查询评论数插到资讯表
+			// TODO 从数据库查询评论数插到资讯表,后面从redis里面找
 			Integer count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
 			// 将对象转换成map
@@ -151,7 +150,7 @@ public class NewsServer {
 			// TODO AppUser appUser = appUserRepo.findOne(newsCommentInfoNew.getUserId());
 			// newsCommentInfoNew.setUserName(appUser.getUserName());
 			// 点赞数 TODO 后面从redis里面去找
-			Integer agree = qACAgreeRelRepo.commentCount(newsCommentInfoNew.getId());
+			Integer agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
 			Map<String, Object> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
 			newsCommentInfoMapList.add(newsCommentInfoObjMap);
@@ -165,8 +164,8 @@ public class NewsServer {
 	 * @return
 	 */
 	@ApiOperation(value = "资讯评论发布", notes = "POST")
-	@RequestMapping(value = "/newsCommentPublish", method = RequestMethod.POST)
-	public AppResp newsCommentPublish(@RequestBody Map<String, Object> params) {
+	@RequestMapping(value = "/newsCommentPub", method = RequestMethod.POST)
+	public AppResp newsCommentPub(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
 		NewsComment newsCommentInfo = new NewsComment();
@@ -198,7 +197,7 @@ public class NewsServer {
 				break;
 			case Const.INVALID:
 				// 如果传过来是取消收藏，把之前一条记录物理删除
-				newsRelRepo.deleteByUIdAndNId(newsParams.getUserId(), newsParams.getNewsId());
+				newsRelRepo.deleteByUIdAndNId(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏
 				break;
 			default:
 				throw new RuntimeException("参数异常：enabled=" + newsParams.getEnabled());

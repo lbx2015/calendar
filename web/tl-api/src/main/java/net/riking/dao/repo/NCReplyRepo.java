@@ -25,6 +25,6 @@ public interface NCReplyRepo extends JpaRepository<NCReply, String>, JpaSpecific
 	 * @param newsCommentId
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.NCReply(n.id,n.createdTime,n.userId,n.toUserId,n.commentId,n.replyId,n.content,(select a.userName from AppUser a where n.userId = a.id and a.isDeleted=1) as userName) from NCReply n where n.commentId =?1 and n.isAduit <> 2 and n.isDeleted = 1 order by n.createdTime desc")
+	@Query("select new net.riking.entity.model.NCReply(n.id,n.createdTime,n.modifiedTime,n.userId,n.toUserId,n.commentId,n.replyId,n.content,(select a.userName from AppUser a where n.userId = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.userId = ap.id)) from NCReply n where n.commentId =?1 and n.isAduit <> 2 and n.isDeleted = 1 order by n.createdTime desc")
 	List<NCReply> findByNewsCommentId(String newsCommentId);
 }

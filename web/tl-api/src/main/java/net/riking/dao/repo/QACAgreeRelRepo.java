@@ -9,7 +9,7 @@ import net.riking.entity.model.QACAgreeRel;
 
 /**
  * 
- * 〈行业资讯评论点赞信息〉
+ * 〈问题回答评论点赞信息〉
  * 
  * @author jc.tan 2017年11月23日
  * @see
@@ -18,10 +18,10 @@ import net.riking.entity.model.QACAgreeRel;
 @Repository
 public interface QACAgreeRelRepo extends JpaRepository<QACAgreeRel, String>, JpaSpecificationExecutor<QACAgreeRel> {
 	/**
-	 * 统计资讯评论点赞数
+	 * 统计回答评论点赞数
 	 * @param newsCommentId
 	 * @return
 	 */
-	@Query("select count(*) from QACAgreeRel where qacId = ?1 ")
-	Integer commentCount(String qacId);
+	@Query("select count(*) from QACAgreeRel where qacId = ?1 and dataType = ?2")
+	Integer agreeCount(String qacId, Integer dataType);
 }
