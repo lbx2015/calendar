@@ -63,7 +63,7 @@ public class WebVersionController {
 	// return new Resp(save, CodeDef.SUCCESS);
 	// }
 
-	@ApiOperation(value = "批量删除web版本信息", notes = "POST")
+	/*@ApiOperation(value = "批量删除web版本信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore(@RequestBody Set<String> ids) {
 		int rs = 0;
@@ -75,5 +75,5 @@ public class WebVersionController {
 		} else {
 			return new Resp().setCode(CodeDef.ERROR);
 		}
-	}
+	}*/
 }

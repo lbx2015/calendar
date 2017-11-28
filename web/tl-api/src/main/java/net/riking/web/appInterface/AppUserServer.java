@@ -161,13 +161,13 @@ public class AppUserServer {
 		return dbObj;
 	}
 
-	@AuthPass
+	/*@AuthPass
 	@ApiOperation(value = "获取行业列表", notes = "POST")
 	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
 	public AppResp findIndustry() {
 		// List<Industry> list = industryRepo.findIndustry("0");//查询行业
 		return new AppResp(industryRepo.findIndustry(0), CodeDef.SUCCESS);
-	}
+	}*/
 
 	// TODO 后面要打开
 	// @ApiOperation(value = "获取行业下面的职位列表", notes = "POST")

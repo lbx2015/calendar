@@ -55,7 +55,7 @@ public class ReportSubmitCaliberController {
 	// return new Resp(save, CodeDef.SUCCESS);
 	// }
 
-	@ApiOperation(value = "批量删除口径配置信息", notes = "POST")
+	/*@ApiOperation(value = "批量删除口径配置信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
@@ -67,19 +67,19 @@ public class ReportSubmitCaliberController {
 		} else {
 			return new Resp().setCode(CodeDef.ERROR);
 		}
-	}
+	}*/
 
-	@ApiOperation(value = "启用用户信息", notes = "GET")
+	/*@ApiOperation(value = "启用用户信息", notes = "GET")
 	@RequestMapping(value = "/enable", method = RequestMethod.GET)
 	public Resp enable_(@RequestParam String id) {
 		int rs = reportSubmitCaliberRepo.enable(id);
 		return new Resp(rs, CodeDef.SUCCESS);
-	}
+	}*/
 
-	@ApiOperation(value = "禁用用户信息", notes = "GET")
+	/*@ApiOperation(value = "禁用用户信息", notes = "GET")
 	@RequestMapping(value = "/unEnable", method = RequestMethod.GET)
 	public Resp unEnable_(@RequestParam String id) {
 		int rs = reportSubmitCaliberRepo.unEnable(id);
 		return new Resp(rs, CodeDef.SUCCESS);
-	}
+	}*/
 }

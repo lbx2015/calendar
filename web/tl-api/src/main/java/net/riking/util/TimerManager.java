@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import net.riking.task.BirthdayTimerTask;
 import net.riking.task.DelayDateTask;
 import net.riking.task.RemindTask;
-@Component("timerManager")
+//@Component("timerManager")
 public class TimerManager {
-	@Autowired
+/*	@Autowired
 	BirthdayTimerTask birthdayTimerTask;
 	@Autowired
 	RemindTask remindTask;
@@ -25,19 +25,19 @@ public class TimerManager {
          Calendar calendar2 = Calendar.getInstance(); 
          Calendar calendar3 = Calendar.getInstance(); 
                 
-         /*** 定制每日10:00执行生日提醒方法 ***/
+         *//*** 定制每日10:00执行生日提醒方法 ***//*
 
          calendar.set(Calendar.HOUR_OF_DAY,10 );
          calendar.set(Calendar.MINUTE, 00);
          calendar.set(Calendar.SECOND, 00);
          
-         /*** 定制每日9:00执行报表方法 ***/
+         *//*** 定制每日9:00执行报表方法 ***//*
 
          calendar2.set(Calendar.HOUR_OF_DAY,9);
          calendar2.set(Calendar.MINUTE, 00);
          calendar2.set(Calendar.SECOND, 00);
          
-         /*** 定制每日00:00执行报表方法 ***/
+         *//*** 定制每日00:00执行报表方法 ***//*
 
          calendar3.set(Calendar.HOUR_OF_DAY,17);
          calendar3.set(Calendar.MINUTE, 57);
@@ -66,7 +66,7 @@ public class TimerManager {
 
          //安排指定的任务在指定的时间开始进行重复的固定延迟执行。
          timer.schedule(birthdayTimerTask,date,PERIOD_DAY);
-         timer.schedule(remindTask, date2,PERIOD_DAY);
+//         timer.schedule(remindTask, date2,PERIOD_DAY);
          timer.schedule(delayDateTask, date3,PERIOD_DAY);
         }
 
@@ -76,5 +76,5 @@ public class TimerManager {
          startDT.setTime(date);
          startDT.add(Calendar.DAY_OF_MONTH, num);
          return startDT.getTime();
-        }  
+        }  */
 }

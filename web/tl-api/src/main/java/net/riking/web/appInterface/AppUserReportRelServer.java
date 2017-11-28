@@ -17,10 +17,10 @@ import net.riking.entity.model.ReportFrequency;
 import net.riking.service.ReportLisService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
-import net.riking.service.impl.GetDateServiceImpl;
+import net.riking.service.impl.SysDateServiceImpl;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
 import net.riking.service.repo.AppUserReportRelRepo;
-import net.riking.service.repo.DaysRepo;
+import net.riking.service.repo.SysDaysRepo;
 import net.riking.service.repo.IndustryRepo;
 import net.riking.service.repo.ReportListRepo;
 
@@ -42,13 +42,13 @@ public class AppUserReportRelServer {
 	SysDataService sysDataservice;
 
 	@Autowired
-	GetDateServiceImpl getDateService;
+	SysDateServiceImpl getDateService;
 
 	@Autowired
 	ReportSubmitCaliberService reportSubmitCaliberService;
 
 	@Autowired
-	DaysRepo daysRepo;
+	SysDaysRepo sysDaysRepo;
 
 	@Autowired
 	IndustryRepo industryRepo;

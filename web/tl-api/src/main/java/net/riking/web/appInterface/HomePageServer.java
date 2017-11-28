@@ -52,7 +52,7 @@ public class HomePageServer {
 	 * @param params[userId,direct,reqTimeStamp]
 	 * @return
 	 */
-	@ApiOperation(value = "显示首页数据", notes = "POST")
+	/*@ApiOperation(value = "显示首页数据", notes = "POST")
 	@RequestMapping(value = "/findHomePageData", method = RequestMethod.POST)
 	public AppResp findHomePageData(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
@@ -127,14 +127,14 @@ public class HomePageServer {
 
 		}
 		return new AppResp(CodeDef.SUCCESS);
-	}
+	}*/
 
 	/**
 	 * 屏蔽问题
 	 * @param params[userId,objType,objId,enabled]
 	 * @return
 	 */
-	@ApiOperation(value = "屏蔽问题", notes = "POST")
+	/*@ApiOperation(value = "屏蔽问题", notes = "POST")
 	@RequestMapping(value = "/shieldProblem", method = RequestMethod.POST)
 	public AppResp shieldProblem(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
@@ -177,6 +177,6 @@ public class HomePageServer {
 		}
 
 		return new AppResp(CodeDef.SUCCESS);
-	}
+	}*/
 
 }

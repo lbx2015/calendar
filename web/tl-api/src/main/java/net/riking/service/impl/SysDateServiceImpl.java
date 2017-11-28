@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.riking.service.SysDateService;
-import net.riking.service.repo.DaysRepo;
+import net.riking.service.repo.SysDaysRepo;
 
 @Service("sysDateService")
 public class SysDateServiceImpl implements SysDateService {
 	
 	@Autowired 
-	DaysRepo daysRepo;
+	SysDaysRepo sysDaysRepo;
 	@Override
 	public String getDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");

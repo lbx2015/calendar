@@ -127,7 +127,7 @@ public class ReportListController {
 	// return new Resp(result, CodeDef.SUCCESS);
 	// }
 
-	@ApiOperation(value = "批量删除用户信息", notes = "POST")
+	/*@ApiOperation(value = "批量删除用户信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
@@ -139,7 +139,7 @@ public class ReportListController {
 		} else {
 			return new Resp().setCode(CodeDef.ERROR);
 		}
-	}
+	}*/
 
 	// 暂时注释
 	// @AuthPass

@@ -1,32 +1,15 @@
 package net.riking.task;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TimerTask;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import net.riking.entity.model.Days;
-import net.riking.entity.model.Jdpush;
-import net.riking.entity.model.Period;
-import net.riking.service.impl.GetDateServiceImpl;
-import net.riking.service.repo.AppUserRepo;
-import net.riking.service.repo.AppUserReportRelRepo;
-import net.riking.service.repo.DaysRepo;
-import net.riking.service.repo.ReportSubmitCaliberRepo;
-import net.riking.util.JdpushUtil;
+/*@Component("remindTask")*/
+public class RemindTask /*extends TimerTask*/ {
 
-@Component("remindTask")
-public class RemindTask extends TimerTask {
-
-	@Autowired
+	/*@Autowired
 	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
 
 	@Autowired
-	GetDateServiceImpl getDateService;
+	SysDateServiceImpl sysDateService;
 
 	@Autowired
 	AppUserReportRelRepo appUserReportRelRepo;
@@ -35,19 +18,19 @@ public class RemindTask extends TimerTask {
 	AppUserRepo appUserRepo;
 
 	@Autowired
-	DaysRepo daysRepo;
-
+	SysDaysRepo sysDaysRepo;*/
+	
+	/*
 	@Override
-
 	public void run() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date d = new Date();
 		String date = sdf.format(d);
 		Days day = daysRepo.findOne(date);
 		Set<String> reportId = new HashSet<>();
-		Period periods = getDateService.getDate(date, "0");
+		Period periods = sysDateService.getDate(date, "0");
 		if (day.getIsWork() == 1) {
-			Period period = getDateService.getDate(date, "1");
+			Period period = sysDateService.getDate(date, "1");
 			reportId = reportSubmitCaliberRepo.findByWorkDatefromReportId(period.getWeek(), period.getTen(),
 					period.getMonth(), period.getSeason(), period.getHalfYear(), period.getYear());
 			Set<String> reportIdAdd = reportSubmitCaliberRepo.findByFreeDatefromReportId(periods.getWeek(),
@@ -77,6 +60,6 @@ public class RemindTask extends TimerTask {
 				JdpushUtil.sendToRegistrationId(jdpush);
 			}
 		}
-	}
+	}*/
 
 }

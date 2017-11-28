@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.Days;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.QureyResulte;
 import net.riking.entity.model.ReportCompletedRel;
+import net.riking.entity.model.SysDays;
 import net.riking.service.ReportSubmitCaliberService;
-import net.riking.service.impl.GetDateServiceImpl;
+import net.riking.service.impl.SysDateServiceImpl;
 import net.riking.service.repo.AppUserReportCompletRelRepo;
 import net.riking.service.repo.AppUserReportRelRepo;
-import net.riking.service.repo.DaysRepo;
 import net.riking.service.repo.ReportSubmitCaliberRepo;
+import net.riking.service.repo.SysDaysRepo;
 
 /***
  * 获取完成报表
@@ -51,10 +51,10 @@ public class AppUserReportCompleteRelServer {
 	AppUserReportRelRepo appUserReportRelRepo;
 
 	@Autowired
-	DaysRepo daysRepo;
+	SysDaysRepo sysDaysRepo;
 
 	@Autowired
-	GetDateServiceImpl getDateService;
+	SysDateServiceImpl sysDateService;
 
 	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -162,12 +162,12 @@ public class AppUserReportCompleteRelServer {
 		return list;
 	}
 
-	public Set<String> getReportList(String date) {
-		Days day = daysRepo.findOne(date);
+	/*public Set<String> getReportList(String date) {
+		SysDays day = sysDaysRepo.findOne(date);
 		Set<String> reportId = new HashSet<>();
-		Period periods = getDateService.getDate(date, "0");
+		Period periods = sysDateService.getDate(date, "0");
 		if (day.getIsWork() == 1) {
-			Period period = getDateService.getDate(date, "1");
+			Period period = sysDateService.getDate(date, "1");
 			reportId = reportSubmitCaliberRepo.findByWorkDatefromReportId(period.getWeek(), period.getTen(),
 					period.getMonth(), period.getSeason(), period.getHalfYear(), period.getYear());
 			Set<String> reportIdAdd = reportSubmitCaliberRepo.findByFreeDatefromReportId(periods.getWeek(),
@@ -182,5 +182,5 @@ public class AppUserReportCompleteRelServer {
 		}
 
 		return reportId;
-	}
+	}*/
 }
