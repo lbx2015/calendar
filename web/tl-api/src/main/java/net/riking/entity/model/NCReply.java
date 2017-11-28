@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -32,7 +34,7 @@ public class NCReply extends BaseAuditProp {
 	private String commentId;
 
 	@Comment("目标对象评论回复主键: fk t_nc_reply 回复ID")
-	@Column(name = "reply_id", nullable = false)
+	@Column(name = "reply_id")
 	private String replyId;
 
 	@Comment("内容")
@@ -41,6 +43,19 @@ public class NCReply extends BaseAuditProp {
 
 	@Transient
 	private String userName;
+
+	public NCReply(String id, Date createdTime, String userId, String toUserId, String commentId, String replyId,
+			String content, String userName) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.userId = userId;
+		this.toUserId = toUserId;
+		this.commentId = commentId;
+		this.replyId = replyId;
+		this.content = content;
+		this.userName = userName;
+	}
 
 	public String getUserId() {
 		return userId;

@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -36,6 +37,10 @@ public class TopicQuestion extends BaseAuditProp {
 	@Column(name = "user_id", length = 32)
 	private String userId;
 
+	// 用户名
+	@Transient
+	private String userName;
+
 	// @Comment("用户关注数")
 	// @org.hibernate.annotations.ColumnDefault("0")
 	// @Column(name="follow_num",insertable=false, nullable=false)
@@ -48,6 +53,15 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public String getTitle() {
 		return title;
+	}
+
+	public TopicQuestion(String title, String content, String topicId, String userId, String userName) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.topicId = topicId;
+		this.userId = userId;
+		this.userName = userName;
 	}
 
 	public void setTitle(String title) {

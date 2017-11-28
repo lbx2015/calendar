@@ -1,6 +1,7 @@
 package net.riking.entity.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,21 @@ public class NewsComment extends BaseAuditProp {
 	// 评论的回复list
 	@Transient
 	List<Map<String, Object>> nCommentReplyInfoList;
+
+	public NewsComment(String id, Date createdTime, String userId, String newsId, String content, String userName) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.userId = userId;
+		this.newsId = newsId;
+		this.content = content;
+		this.userName = userName;
+	}
+
+	public NewsComment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public List<Map<String, Object>> getNCommentReplyInfoList() {
 		if (nCommentReplyInfoList == null) {
