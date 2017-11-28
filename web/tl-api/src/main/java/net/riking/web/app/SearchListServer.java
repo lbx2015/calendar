@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.resp.SearchParams;
+import net.riking.entity.params.SearchParams;
 import net.riking.util.Utils;
 
 /**
