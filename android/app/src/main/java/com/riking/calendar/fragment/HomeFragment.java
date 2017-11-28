@@ -1,7 +1,6 @@
 package com.riking.calendar.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -14,16 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.RaiseQuestionActivity;
+import com.riking.calendar.util.ZGoto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ss.com.bannerslider.banners.Banner;
 import ss.com.bannerslider.banners.DrawableBanner;
-import ss.com.bannerslider.banners.RemoteBanner;
 import ss.com.bannerslider.events.OnBannerClickListener;
 import ss.com.bannerslider.views.BannerSlider;
 
@@ -35,17 +36,13 @@ public class HomeFragment extends Fragment {
     //Fragment 数组
     private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new TopicFragment(), new FinanceNewsFragment()};
     View v;
-    private ViewPager mViewPager;
-    private MyPagerAdapter mAdapter;
-    private BannerSlider bannerSlider;
     CollapsingToolbarLayout collapsingToolbarLayout;
     AppBarLayout appBarLayout;
     LinearLayout search;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private ViewPager mViewPager;
+    private MyPagerAdapter mAdapter;
+    private BannerSlider bannerSlider;
+    private TextView raiseQuestionButton;
 
     private void setupBannerSlider() {
         bannerSlider = (BannerSlider) v.findViewById(R.id.banner_slider1);
@@ -74,7 +71,6 @@ public class HomeFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (v != null) {
@@ -89,6 +85,13 @@ public class HomeFragment extends Fragment {
         appBarLayout = v.findViewById(R.id.appbar);
         search = v.findViewById(R.id.search);
         setupBannerSlider();
+        raiseQuestionButton = v.findViewById(R.id.raise_question);
+        raiseQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ZGoto.to(getActivity(), RaiseQuestionActivity.class);
+            }
+        });
         return v;
     }
 

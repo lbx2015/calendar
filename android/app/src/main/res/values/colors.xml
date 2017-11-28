@@ -17,7 +17,7 @@
     <!--background color-->
     <color name="color_f2f2f2">#f2f2f2</color>
     <color name="color_background_b6b6b6">#b6b6b6</color>
-    <color name="hint_color">#cccccc</color>
+    <color name="color_cccccc">#cccccc</color>
     <color name="color_weekend_name">#ffab40</color>
     <color name="color_f6f6f6">#f6f6f6</color>
     <color name="color_workday_name">#96999d</color>
@@ -68,7 +68,7 @@
     <color name="holidayColor">#39AF81</color>
     <color name="workdayColor">#EC7230</color>
     <color name="pointColor">#B2B2B2</color>
-    <color name="fill_verify_code">#f8f8f8</color>
+    <color name="color_f8f8f8">#f8f8f8</color>
 
     <color name="colorPrimaryDarkTrans">#CCf57257</color>
 </resources>

@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
+public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
     private Context context;
     private List<String> mList;
 
-    public ExcellentAnswerAdapter(Context context) {
+    public InvitePersonAdapter(Context context) {
         this.context = context;
         mList = new ArrayList<>();
     }
@@ -48,36 +48,18 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
                     h.invited = false;
                     h.followTv.setText("邀请");
                     h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
-                    h.followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
-                    h.followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
                     h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border));
                 } else {
                     h.invited = true;
                     h.followTv.setText("已邀请");
-                    h.followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     h.followTv.setTextColor(ZR.getColor(R.color.color_999999));
                     h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border_gray));
                 }
 
             }
         });
-        showInvited(h);
     }
 
-    private void showInvited(ExcellentViewHolderViewHolder h) {
-        if (!h.invited) {
-            h.followTv.setText("邀请");
-            h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
-            h.followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
-            h.followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
-            h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border));
-        } else {
-            h.followTv.setText("已邀请");
-            h.followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            h.followTv.setTextColor(ZR.getColor(R.color.color_999999));
-            h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border_gray));
-        }
-    }
 
     @Override
     public int getItemCount() {

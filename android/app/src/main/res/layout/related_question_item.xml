@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/question_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="1107填表填报中的透穿原则的具体内容？"
+            android:textColor="@color/color_333333"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/answer_summary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/question_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20K人关注，686个回答"
+            android:textColor="@color/color_999999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintStart_toStartOf="@+id/user_name" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginBottom="4dp"
+        android:background="@color/color_e2e2e2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/answer_summary"
+        app:layout_constraintStart_toStartOf="@+id/answer_summary"></View>
+
+
+</LinearLayout>
