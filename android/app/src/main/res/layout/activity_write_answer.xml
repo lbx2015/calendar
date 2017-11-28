@@ -34,7 +34,9 @@
             android:id="@+id/publish_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:text="发布"
             android:textColor="@color/color_cccccc"
             android:textSize="17sp" />
@@ -57,6 +59,7 @@
         android:background="@color/color_d2d2d2" />
 
     <android.support.design.widget.TextInputEditText
+        android:id="@+id/answer_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"

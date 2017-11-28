@@ -1,35 +1,25 @@
 package com.riking.calendar.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.InvitePersonAdapter;
-import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportFrequency;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import com.riking.calendar.util.ZR;
 
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
 public class WriteAnswerActivity extends AppCompatActivity {
-
+    TextInputEditText textInputEditText;
+    TextView publishButton;
 
     public void clickCancel(View view) {
         onBackPressed();
@@ -48,9 +38,37 @@ public class WriteAnswerActivity extends AppCompatActivity {
     }
 
     private void initEvents() {
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(WriteAnswerActivity.this, "成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+        textInputEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    publishButton.setTextColor(ZR.getColor(R.color.color_489dfff));
+                    publishButton.setEnabled(true);
+                } else {
+                    publishButton.setTextColor(ZR.getColor(R.color.color_cccccc));
+                    publishButton.setEnabled(false);
+                }
+            }
+        });
     }
 
     private void initViews() {
+        publishButton = findViewById(R.id.publish_button);
+        textInputEditText = findViewById(R.id.answer_input);
     }
 
 }
