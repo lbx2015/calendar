@@ -146,6 +146,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ques_icon_answer"
                     android:drawablePadding="5dp"
+                    android:onClick="clickLetMeAnswer"
                     android:text="我来回答"
                     android:textColor="@color/color_489dfff"
                     android:textSize="16sp"
