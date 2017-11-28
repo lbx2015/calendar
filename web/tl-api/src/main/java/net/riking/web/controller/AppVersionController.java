@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppVersionRepo;
 import net.riking.entity.model.AppVersion;
-import net.riking.service.repo.AppVersionRepo;
 
 /**
  * app版本的维护

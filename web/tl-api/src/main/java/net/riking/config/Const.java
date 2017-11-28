@@ -33,14 +33,19 @@ public class Const {
 	public static final String TL_REPORT_HTML5_PATH = "/reportListApp.html?id=";
 
 	public static final String TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
-
-	public static final Integer VALI_CODE_TIME = 60;
+	
+	/* 验证码有效时间 */
+	public static final String VALID_ = "VALID_";
+	
+	/* 验证码有效时间 */
+	public static final Integer VALID_CODE_TIME = 120;
 
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
+	
 
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
-
+	
 	// /* 根据tablename */
 	// public static final String SYS_CLAZZ_DICT = "SYS_CLAZZ_DICT";
 	// public static final String SYS_FIELD_DICT = "SYS_FIELD_DICT";

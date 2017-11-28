@@ -18,7 +18,6 @@ public class CodeDef {
 		public static final short CHECK_CODE_ERR = -996;
 		//验证码超时
 		public static final short CHECK_CODE_TIME_OUT = -995;
-		
 		//数据未找到  
 		public static final short DATA_NOT_FOUND = -994;
 	}

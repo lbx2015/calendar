@@ -17,37 +17,43 @@ import net.riking.entity.BaseProp;
 @Entity
 @Table(name = "t_app_version")
 public class AppVersion extends BaseProp {
+	private static final long serialVersionUID = 1L;
 
 	@Comment("app版本号")
 	@Column(name = "version_no", length = 32)
 	private String versionNo;
+	
+	@Comment("移动端：1-IOS；2-Android")
+	@Column(name = "client_type", length = 1)
+	private Integer clientType;
 
 	@Comment("是否强制更新(0-不强制；1-强制)")
 	@Column(name = "enforce")
 	private Integer enforce;
+	
+	@Comment("用户状态 0-禁用 1-启用")
+	@org.hibernate.annotations.ColumnDefault("0")
+	@Column(name = "enabled", nullable = false, precision = 1)
+	private Integer enabled;
 
-	// 版本说明
+	@Comment("下载更新地址")
+	@Column(name = "url", length = 255)
+	private String url;
+	
+	@Comment("备注")
 	@Column(name = "remark", length = 255)
 	private String remark;
+	
+	public AppVersion(){}
 
-	// // 更新日期
-	// @Column(name = "renewal_time", length = 8)
-	// private String renewalTime;
-	//
-	// // 客户端类型：1-IOS;2-Android;3-其它
-	// @Column(name = "type", length = 1)
-	// private String type;
-	//
-	// // apk路径
-	// @Column(name = "apk_url", length = 128)
-	// private String apkUrl;
-	//
-	// // 删除状态 0删除 1显示
-	// @Column(name = "delete_state", length = 1)
-	// private String deleteState;
-	//
-	// @Column(name = "forces", length = 2)
-	// private String forces;
+
+	public AppVersion(String versionNo, Integer enforce, String url, String remark) {
+		super();
+		this.versionNo = versionNo;
+		this.enforce = enforce;
+		this.url = url;
+		this.remark = remark;
+	}
 
 	public String getVersionNo() {
 		return versionNo;
@@ -55,6 +61,14 @@ public class AppVersion extends BaseProp {
 
 	public void setVersionNo(String versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	public Integer getClientType() {
+		return clientType;
+	}
+
+	public void setClientType(Integer clientType) {
+		this.clientType = clientType;
 	}
 
 	public Integer getEnforce() {
@@ -65,6 +79,14 @@ public class AppVersion extends BaseProp {
 		this.enforce = enforce;
 	}
 
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
+	}
+
 	public String getRemark() {
 		return remark;
 	}
@@ -73,4 +95,12 @@ public class AppVersion extends BaseProp {
 		this.remark = remark;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 }
