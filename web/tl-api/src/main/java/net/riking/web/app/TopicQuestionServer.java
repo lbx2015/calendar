@@ -40,9 +40,9 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/getTopicQuestion", method = RequestMethod.POST)
 	public AppResp getTopicQuestion(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
-		TQuestionParams commonParams = Utils.map2Obj(params, TQuestionParams.class);
-		topicQuestionRepo.
-		return new AppResp(CodeDef.SUCCESS);
+//		TQuestionParams commonParams = Utils.map2Obj(params, TQuestionParams.class);
+//		topicQuestionRepo.
+//		return new AppResp(CodeDef.SUCCESS);
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
 		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId());
 		// 将对象转换成map
