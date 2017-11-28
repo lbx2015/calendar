@@ -9,45 +9,41 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.TopicsAdapter;
-import com.riking.calendar.interfeet.SubscribeReport;
-import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class AddTopicActivity extends AppCompatActivity implements SubscribeReport {
+public class AddTopicActivity extends AppCompatActivity {
     public ZReportFlowLayout zReportFlowLayout;
     public boolean editMode = false;
     public RecyclerView topicRecyclerView;
     public TopicsAdapter mAdapter;
     //user subscriber reports
-    List<ReportFrequency> mySubscribedReports;
-    FrameLayout myOrderLayout;
+    List<String> mySubscribedReports = new ArrayList<>();
     TextInputEditText textInputEditText;
     TextView nextStep;
 
     public void clickBack(final View view) {
         onBackPressed();
+    }
+
+    public void clickAddTopic(String s) {
+        if (mySubscribedReports.size() == 3 || isAddedToMyOrder(s)) {
+            return;
+        }
+        mySubscribedReports.add(s);
+        enterEditMode();
     }
 
     @Override
@@ -105,65 +101,18 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
         topicRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateOrderReports();
-    }
-
-    private void updateOrderReports() {
-        if (Preference.pref.getBoolean(CONST.ORDER_REPORTS_CHANGED, false)) {
-            Preference.put(CONST.ORDER_REPORTS_CHANGED, false);
-
-            Gson gson = new Gson();
-            final ReportFrequency[] orderReports = gson.fromJson(Preference.pref.getString(CONST.ORDER_REPORTS, ""), ReportFrequency[].class);
-            final ReportFrequency[] disOrderReports = gson.fromJson(Preference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), ReportFrequency[].class);
-            boolean reportAdded = false;
-            if (orderReports != null) {
-                for (int i = 0; i < orderReports.length; i++) {
-                    if (mySubscribedReports == null) {
-                        break;
-                    }
-                    reportAdded = false;
-
-                    if (mySubscribedReports.contains(orderReports[i])) {
-                        reportAdded = true;
-                    }
-
-                    //if not added to my subscribed, add it
-                    if (!reportAdded) {
-                        mySubscribedReports.add(orderReports[i]);
-                    }
-
-                }
-            }
-
-            if (disOrderReports != null) {
-                for (int i = 0; i < disOrderReports.length; i++) {
-                    if (mySubscribedReports == null) {
-                        break;
-                    }
-                    mySubscribedReports.remove(disOrderReports[i]);
-                }
-            }
-        }
-        enterEditMode();
-    }
-
-
-
     public void drawMyOrders() {
         //redraw the reports
         zReportFlowLayout.removeAllViews();
         if (mySubscribedReports.size() > 0) {
-            myOrderLayout.setVisibility(View.VISIBLE);
+            zReportFlowLayout.setVisibility(View.VISIBLE);
             for (int i = 0; i < mySubscribedReports.size(); i++) {
-                final ReportFrequency appUserReportRel = mySubscribedReports.get(i);
+                final String appUserReportRel = mySubscribedReports.get(i);
                 //inflate the item view from layout xml
                 final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(AddTopicActivity.this).inflate(R.layout.my_order_report_item, null);
                 root.init();
                 //set data
-                root.reportNameTV.setText(appUserReportRel.reportName);
+                root.reportNameTV.setText(appUserReportRel);
                 root.checkImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -171,7 +120,7 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
                         mySubscribedReports.remove(appUserReportRel);
                         if (mySubscribedReports.size() == 0) {
                             //hide the title
-                            myOrderLayout.setVisibility(View.GONE);
+                            zReportFlowLayout.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -179,35 +128,15 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
             }
         } else {
             //hide the title of the orders
-            myOrderLayout.setVisibility(View.GONE);
+            zReportFlowLayout.setVisibility(View.GONE);
         }
     }
 
-    public void orderReport(ReportFrequency report) {
-        AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
-        a.reportId = report.reportId;
-        a.reportName = report.reportName;
-        mySubscribedReports.add(report);
-        enterEditMode();
-    }
-
-    public void unorderReport(ReportFrequency report) {
-        for (ReportFrequency r : mySubscribedReports) {
-            if (r.reportId.equals(report.reportId)) {
-                mySubscribedReports.remove(r);
-                break;
-            }
-        }
-        enterEditMode();
-    }
-
-    @Override
-    public boolean isAddedToMyOrder(ReportFrequency report) {
+    public boolean isAddedToMyOrder(String report) {
         boolean added = false;
         if (mySubscribedReports != null) {
-            for (ReportFrequency r : mySubscribedReports) {
-                if (r.reportId.equals(report.reportId)) {
+            for (String r : mySubscribedReports) {
+                if (r.equals(report)) {
                     added = true;
                     break;
                 }
@@ -216,7 +145,6 @@ public class AddTopicActivity extends AppCompatActivity implements SubscribeRepo
         return added;
     }
 
-    @Override
     public boolean isInEditMode() {
         return editMode;
     }
