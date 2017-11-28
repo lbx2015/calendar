@@ -52,7 +52,8 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/work_icon_searchbox_close" />
+                android:src="@drawable/work_icon_searchbox_close"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <TextView
@@ -62,8 +63,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="15dp"
-            android:onClick="clickCancel"
             android:gravity="center_vertical"
+            android:onClick="clickCancel"
             android:singleLine="true"
             android:text="取消"
             android:textColor="@color/color_666666"

@@ -53,6 +53,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="5dp"
+                android:visibility="gone"
                 android:src="@drawable/work_icon_searchbox_close" />
         </RelativeLayout>
 
@@ -65,6 +66,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="取消"
+            android:onClick="clickCancel"
             android:textColor="@color/color_666666"
             android:textSize="17sp" />
     </LinearLayout>

@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.riking.calendar.R;
@@ -36,7 +37,12 @@ public class InvitePersonActivity extends AppCompatActivity {
     EditText editText;
     List<ReportFrequency> orderReports;
     List<ReportFrequency> disOrderReports;
+    ImageView clearSearchInputImage;
     private boolean subscribedReportsChanged = false;
+
+    public void clickCancel(View view) {
+        onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +73,16 @@ public class InvitePersonActivity extends AppCompatActivity {
 
     private void initEvents() {
         setRecyclerView();
+        clearSearchInputImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setText("");
+            }
+        });
     }
 
     private void initViews() {
+        clearSearchInputImage = findViewById(R.id.cancel_search_button);
         recyclerView = findViewById(R.id.recycler_view);
         localSearchTitle = findViewById(R.id.local_search_title);
         editText = findViewById(R.id.search_edit_view);
@@ -87,6 +100,9 @@ public class InvitePersonActivity extends AppCompatActivity {
                 if (s.length() > 0) {
                     reportSearchCondition = s.toString();
                     performSearch();
+                    clearSearchInputImage.setVisibility(View.VISIBLE);
+                }else {
+                    clearSearchInputImage.setVisibility(View.GONE);
                 }
             }
         });
