@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,7 @@ import net.riking.util.Utils;
 @RestController
 @RequestMapping(value = "/topicQuestion")
 public class TopicQuestionServer {
+	protected final transient Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
 	TopicQuestionRepo topicQuestionRepo;
@@ -107,6 +110,7 @@ public class TopicQuestionServer {
 					tQuestionRelRepo.deleteByUIdAndTqId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
 							0);// 0-关注 3-屏蔽
 				} else {
+					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
 				}
 				break;
@@ -124,6 +128,7 @@ public class TopicQuestionServer {
 					topicRelRepo.deleteByUIdAndTopId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(), 0);// 0-关注3-屏蔽
 
 				} else {
+					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
 				}
 				break;
@@ -161,10 +166,12 @@ public class TopicQuestionServer {
 					// 如果传过来是取消关注，把之前一条记录物理删除
 					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
 				} else {
+					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
 				}
 				break;
 			default:
+				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
 				throw new RuntimeException("参数异常：objType=" + tQuestionParams.getObjType());
 		}
 
