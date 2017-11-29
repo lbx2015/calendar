@@ -3,5 +3,6 @@
     android:id="@+id/reply_tv"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-</TextView>
+    android:layout_marginBottom="8dp"
+    android:lineSpacingMultiplier="1.2"
+    android:orientation="vertical"></TextView>
