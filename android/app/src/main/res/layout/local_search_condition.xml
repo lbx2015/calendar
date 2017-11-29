@@ -15,4 +15,9 @@
         android:textColor="@color/color_222222"
         android:textSize="15sp" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
 </FrameLayout>

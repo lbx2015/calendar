@@ -42,6 +42,10 @@ public class LocalSearchConditionAdapter extends RecyclerView.Adapter<OneTextVie
                 searchListener.performSearchByLocalHistory(m.name);
             }
         });
+
+        if (h.divider != null && i == getItemCount() - 1) {
+            h.divider.setVisibility(View.GONE);
+        }
     }
 
     @Override

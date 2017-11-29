@@ -71,8 +71,6 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
     private void setRecyclerView() {
         //set layout manager for the recycler view.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //adding dividers.
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //set adapters
         RealmResults<SearchConditions> realmResults = ZDB.Instance.getRealm().where(SearchConditions.class).findAllSorted("updateTime", Sort.DESCENDING);
         localSearchConditionAdapter = new LocalSearchConditionAdapter(this, realmResults);

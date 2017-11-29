@@ -39,7 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@+id/voice_search_button"
                 android:background="@android:color/transparent"
-                android:hint="搜索报表"
+                android:hint="搜索报表/话题/人脉/资讯"
                 android:textColor="@color/color_222222"
                 android:textColorHint="@color/color_999999"
                 android:textSize="15sp" />
@@ -108,7 +108,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_marginRight="15dp"></android.support.v7.widget.RecyclerView>
 
-    </android.support.v7.widget.RecyclerView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@color/color_f2f2f2" />
 </LinearLayout>

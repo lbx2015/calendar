@@ -77,7 +77,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                     isOpened = true;
                 } else if (isOpened == true) {
                     //keyboard is down
-                    params.leftMargin = (int) ZR.convertDpToPx(15);
+                    params.leftMargin = (int) ZR.convertDpToPx(5);
                     writeComment.clearFocus();
                     answerIcon.setVisibility(View.VISIBLE);
                     isOpened = false;
@@ -96,7 +96,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                     params.leftMargin = (int) ZR.convertDpToPx(15);
                     answerIcon.setVisibility(View.GONE);
                 } else {
-                    params.leftMargin = (int) ZR.convertDpToPx(15);
+                    params.leftMargin = (int) ZR.convertDpToPx(5);
                     writeComment.clearFocus();
                     answerIcon.setVisibility(View.VISIBLE);
                 }
@@ -114,7 +114,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
+                if (s.toString().trim().length() > 0) {
                     publicButton.setTextColor(ZR.getColor(R.color.color_489dfff));
                     publicButton.setEnabled(true);
                 } else {

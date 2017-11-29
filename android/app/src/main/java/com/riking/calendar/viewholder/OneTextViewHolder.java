@@ -16,10 +16,12 @@ import butterknife.ButterKnife;
 public class OneTextViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_view)
     public TextView textView;
+    public View divider;
 
     public OneTextViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
+        textView = itemView.findViewById(R.id.text_view);
+        divider = itemView.findViewById(R.id.divider);
         itemView.setTag(this);
     }
 }
