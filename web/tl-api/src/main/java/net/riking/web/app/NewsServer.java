@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +42,7 @@ import net.riking.util.Utils;
 @RestController
 @RequestMapping(value = "/news")
 public class NewsServer {
+	protected final transient Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
 	NewsRepo newsRepo;
@@ -87,6 +90,7 @@ public class NewsServer {
 				}
 				break;
 			default:
+				logger.error("请求方向参数异常：direct:" + newsParams.getDirect());
 				throw new RuntimeException("请求方向参数异常：direct:" + newsParams.getDirect());
 		}
 		for (News newsInfo : newsInfoList) {
@@ -201,6 +205,7 @@ public class NewsServer {
 				newsRelRepo.deleteByUIdAndNId(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏
 				break;
 			default:
+				logger.error("参数异常：enabled=" + newsParams.getEnabled());
 				throw new RuntimeException("参数异常：enabled=" + newsParams.getEnabled());
 		}
 		return new AppResp(CodeDef.SUCCESS);

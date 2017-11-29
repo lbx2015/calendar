@@ -2,6 +2,8 @@ package net.riking.web.app;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,7 @@ import net.riking.util.Utils;
 @RestController
 @RequestMapping(value = "/qAnswer")
 public class QAnswerServer {
+	protected final transient Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
 	QuestionAnswerRepo questionAnswerRepo;
@@ -116,6 +119,7 @@ public class QAnswerServer {
 					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
 							Const.OBJ_OPT_GREE);// 点赞
 				} else {
+					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + qAnswerParams.getEnabled());
 				}
 				break;
@@ -133,10 +137,12 @@ public class QAnswerServer {
 					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
 							Const.OBJ_OPT_COLLECT);// 收藏
 				} else {
+					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + qAnswerParams.getEnabled());
 				}
 				break;
 			default:
+				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
 				throw new RuntimeException("参数异常：objType=" + qAnswerParams.getOptType());
 		}
 		return new AppResp(CodeDef.SUCCESS);
