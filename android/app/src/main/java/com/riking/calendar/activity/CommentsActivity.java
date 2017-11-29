@@ -110,7 +110,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickWriteComment(final String hintText) {
-        writeComment.setHint("回复" +git  hintText);
+        writeComment.setHint("回复" + hintText);
         writeComment.performClick();
         writeComment.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
