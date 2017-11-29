@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.adapter.CommentListAdapter;
 import com.riking.calendar.adapter.QuestionListAdapter;
 import com.riking.calendar.util.ZGoto;
 
@@ -19,7 +20,7 @@ import com.riking.calendar.util.ZGoto;
  */
 
 public class CommentsActivity extends AppCompatActivity { //Fragment 数组
-    QuestionListAdapter mAdapter;
+    CommentListAdapter mAdapter;
     RecyclerView recyclerView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -47,7 +48,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
-        mAdapter = new QuestionListAdapter(this);
+        mAdapter = new CommentListAdapter(this);
         recyclerView.setAdapter(mAdapter);
         loadData(1);
     }
@@ -75,13 +76,5 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
     public void clickBack(final View view) {
         onBackPressed();
-    }
-
-    public void clickInvitePerson(final View view) {
-        ZGoto.to(this, InvitePersonActivity.class);
-    }
-
-    public void clickLetMeAnswer(final View view) {
-        ZGoto.to(this, WriteAnswerActivity.class);
     }
 }
