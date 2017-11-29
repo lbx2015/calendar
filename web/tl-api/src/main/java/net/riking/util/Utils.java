@@ -1,11 +1,15 @@
 package net.riking.util;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Utils {
 
@@ -86,13 +90,13 @@ public class Utils {
 	 * @param clazz
 	 * @return
 	 */
-	public static <T extends Object> T map2Obj(Map<String, Object> map, Class<T> clazz) {
+	public static <T extends Object> T map2Obj(Map<String,Object> map, Class<T> clazz){
 		T obj = null;
-		if (null == map || map.size() == 0) {
+		if(null == map || map.size()==0){
 			return obj;
 		}
 		try {
-			String id = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1) + "Id";
+			String id = clazz.getName().substring(clazz.getName().lastIndexOf(".")+1) + "Id";
 			Object removeValue = map.remove(id);
 			map.put("id", removeValue);
 			obj = clazz.newInstance();
@@ -100,17 +104,22 @@ public class Utils {
 			Set<String> keySet = map.keySet();
 			for (String fieldName : keySet) {
 				for (Field field : list) {
-					if (field.getName().equals(fieldName)) {
+					if(field.getName().equals(fieldName)){
+						if(field.getType() == Date.class){
+							String pattern = field.getAnnotation(DateTimeFormat.class).pattern();
+							SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+							map.put(fieldName, dateFormat.parse((String)map.get(fieldName)));
+						}
 						field.set(obj, map.get(fieldName));
 					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
 		return obj;
 	}
-
+	
 	/**
 	 * 获取所有属性
 	 * @used TODO
