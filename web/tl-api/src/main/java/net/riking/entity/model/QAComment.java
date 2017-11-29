@@ -1,6 +1,9 @@
 package net.riking.entity.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,6 +43,14 @@ public class QAComment extends BaseAuditProp {
 	// 用户头像
 	@Transient
 	private String photoUrl;
+
+	// 点赞数
+	@Transient
+	private String agreeNum;
+
+	// 问题回答评论的回复list
+	@Transient
+	List<Map<String, Object>> qACReplyList;
 
 	public QAComment() {
 		super();
@@ -84,6 +95,13 @@ public class QAComment extends BaseAuditProp {
 		this.content = content;
 	}
 
+	public List<Map<String, Object>> getQACReplyList() {
+		if (qACReplyList == null) {
+			qACReplyList = new ArrayList<Map<String, Object>>();
+		}
+		return this.qACReplyList;
+	}
+
 	public String getUserName() {
 		return userName;
 	}
@@ -98,6 +116,14 @@ public class QAComment extends BaseAuditProp {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	public String getAgreeNum() {
+		return agreeNum;
+	}
+
+	public void setAgreeNum(String agreeNum) {
+		this.agreeNum = agreeNum;
 	}
 
 }

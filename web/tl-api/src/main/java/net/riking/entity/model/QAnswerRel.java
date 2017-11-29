@@ -40,7 +40,7 @@ public class QAnswerRel extends BaseEntity {
 	private String qaId;
 
 	@Comment("数据类型：数据类型：1-点赞；2-收藏；3-屏蔽")
-	@Column(name = "data_type", insertable = false, nullable = false, precision = 1)
+	@Column(name = "data_type", nullable = false, precision = 1)
 	private Integer dataType;
 
 	@Comment("创建时间")

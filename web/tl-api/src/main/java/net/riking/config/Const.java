@@ -33,19 +33,18 @@ public class Const {
 	public static final String TL_REPORT_HTML5_PATH = "/reportListApp.html?id=";
 
 	public static final String TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
-	
+
 	/* 验证码有效时间 */
 	public static final String VALID_ = "VALID_";
-	
+
 	/* 验证码有效时间 */
 	public static final Integer VALID_CODE_TIME = 120;
 
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
-	
 
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
-	
+
 	// /* 根据tablename */
 	// public static final String SYS_CLAZZ_DICT = "SYS_CLAZZ_DICT";
 	// public static final String SYS_FIELD_DICT = "SYS_FIELD_DICT";
@@ -74,5 +73,17 @@ public class Const {
 	public static final int OBJ_TYPE_3 = 3;// 用户
 
 	/** --------------------对象类型 end-------------------------- */
+
+	/** -------------------操作类型 begin-------------------------- */
+
+	public static final int OBJ_OPT_FOLLOW = 0;// 关注
+
+	public static final int OBJ_OPT_GREE = 1;// 点赞
+
+	public static final int OBJ_OPT_COLLECT = 2;// 收藏
+
+	public static final int OBJ_OPT_SHIELD = 3;// 屏蔽
+
+	/** --------------------操作类型 end-------------------------- */
 
 }
