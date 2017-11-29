@@ -17,6 +17,7 @@ import net.riking.core.annos.Comment;
  * @see
  * @since 1.0
  */
+@Comment("用户详情表")
 @Entity
 @Table(name = "t_appuser_detail")
 public class AppUserDetail {
@@ -98,6 +99,7 @@ public class AppUserDetail {
 	private Integer positionId;
 
 	@Comment("是否引导: 0-未引导；1-已引导")
+	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "is_guide")
 	private Integer isGuide;
 

@@ -52,25 +52,11 @@ public class AppUser extends BaseProp {
 	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "enabled", nullable = false, precision = 1)
 	private Integer enabled;
-	// @Comment("证件类型")
-	// @Column(name = "id_type", length = 4)
-	// private String idType;
-	//
-	// @Comment("证件号码")
-	// @Column(name = "id_code", length = 32)
-	// private String idCode;
-
-	// @Comment("备注信息")
-	// @Column(name = "remark", length = 500)
-	// private String remark;
-
-	private String page;// 页数
-
-	private String sTime;// 查询时间
-
-	// 验证码
-	@Transient
-	private String valiCode;
+	
+	/**
+	 * 用户详情信息
+	 */
+	public AppUserDetail detail;
 
 	public String getUserName() {
 		return userName;
@@ -120,28 +106,12 @@ public class AppUser extends BaseProp {
 		this.enabled = enabled;
 	}
 
-	public String getPage() {
-		return page;
+	public AppUserDetail getDetail() {
+		return detail;
 	}
 
-	public void setPage(String page) {
-		this.page = page;
+	public void setDetail(AppUserDetail detail) {
+		this.detail = detail;
 	}
-
-	public String getsTime() {
-		return sTime;
-	}
-
-	public void setsTime(String sTime) {
-		this.sTime = sTime;
-	}
-
-	public String getValiCode() {
-		return valiCode;
-	}
-
-	public void setValiCode(String valiCode) {
-		this.valiCode = valiCode;
-	}
-
+	
 }

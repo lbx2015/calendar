@@ -49,6 +49,12 @@ public class Const {
 	// /* 根据tablename */
 	// public static final String SYS_CLAZZ_DICT = "SYS_CLAZZ_DICT";
 	// public static final String SYS_FIELD_DICT = "SYS_FIELD_DICT";
+	
+	/** -------------------登录方式  begin-------------------------- */
+	public static final int LOGIN_REGIST_TYPE_PHONE = 1;//手机号
+	public static final int LOGIN_REGIST_TYPE_WECHAT = 2;//微信号
+	/** --------------------登录方式 end-------------------------- */
+	
 	/** -------------------数据是否有效 1有效，0无效 begin-------------------------- */
 
 	public static final int EFFECTIVE = 1;// 有效数据
@@ -74,5 +80,7 @@ public class Const {
 	public static final int OBJ_TYPE_3 = 3;// 用户
 
 	/** --------------------对象类型 end-------------------------- */
+	
+	
 
 }

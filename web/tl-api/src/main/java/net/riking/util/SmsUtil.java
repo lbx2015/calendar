@@ -3,6 +3,7 @@ package net.riking.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
 import net.riking.config.Config;
+import net.riking.config.Const;
 import net.riking.entity.model.AliSme;
 @Component("smsUtil")
 public class SmsUtil {
@@ -27,8 +29,15 @@ public class SmsUtil {
     //产品域名,开发者无需替换  
     static final String domain = "dysmsapi.aliyuncs.com";  
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)   
-    public  SendSmsResponse sendSms(AliSme alims) throws ClientException {  
-  
+    public  SendSmsResponse sendSms(String phone, String verifyCode) throws ClientException {  
+    	if(config.getIsOpenSms().intValue() == 0){
+    		SendSmsResponse response = new SendSmsResponse();
+    		response.setCode("OK");
+    		return response;
+    	}
+    	
+    	AliSme alims = new AliSme(phone, config.getSignName(), config.getCommonTemplateCode(), verifyCode);
+    	
         //可自助调整超时时间  
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");  
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");  
@@ -86,6 +95,28 @@ public class SmsUtil {
         QuerySendDetailsResponse querySendDetailsResponse = acsClient.getAcsResponse(request);  
   
         return querySendDetailsResponse;  
-    }  
+    }
+    
+    /***
+     * 校验验证码
+     * @author james.you
+     * @version crateTime：2017年11月29日 下午2:07:09
+     * @used TODO
+     * @param phone 手机号
+     * @param verifyCode 验证码
+     * @return
+     * @throws Exception
+     */
+    public boolean checkValidCode(String phone, String verifyCode) throws NullPointerException{
+    	if(StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(verifyCode)){
+    		String code = RedisUtil.getInstall().getString(Const.VALID_ + phone.trim());
+    		if(code.equals(verifyCode)){
+    			return true;
+    		}
+    	}else{
+    		throw new NullPointerException("phone={"+phone+"} and verifyCode={"+verifyCode+"} is empty");
+    	}
+    	return false;
+    }
   
 }

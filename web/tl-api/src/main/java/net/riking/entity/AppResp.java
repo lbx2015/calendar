@@ -1,7 +1,6 @@
 package net.riking.entity;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,8 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.riking.core.entity.ILog;
 import net.riking.core.entity.LogConfig;
-import net.riking.core.entity.model.ModelPropDict;
-import net.riking.service.SysDataService;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
@@ -44,6 +41,12 @@ public class AppResp implements ILog {
 		this._data =_data;
 		this.code = code;
 		this.codeDesc = codeDesc;
+	}
+	
+	public AppResp(Short errorCode, String errorCodeDesc) {
+		this._data = "";
+		this.code = errorCode;
+		this.codeDesc = errorCodeDesc;
 	}
 	
 	/*@JsonIgnore

@@ -17,12 +17,24 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "sys.config")
 public class Config {
 
+	/*############### 短信通道配置  #################*/
+	private Integer isOpenSms;//短信通道开关：0-关闭,1-开启
 	private String accessKeyId;
 	private String accessKeySecret;
+	private String signName;//模板签名
+	private String commonTemplateCode;//通用模板编号
+	/*############### 短信通道配置  #################*/
+	
 	private String appHtmlPath;
 	private String appApiPath;
 	
-	
+	public Integer getIsOpenSms() {
+		return isOpenSms;
+	}
+
+	public void setIsOpenSms(Integer isOpenSms) {
+		this.isOpenSms = isOpenSms;
+	}
 
 	public String getAccessKeyId() {
 		return accessKeyId;
@@ -54,6 +66,22 @@ public class Config {
 
 	public void setAppApiPath(String appApiPath) {
 		this.appApiPath = appApiPath;
+	}
+
+	public String getSignName() {
+		return signName;
+	}
+
+	public void setSignName(String signName) {
+		this.signName = signName;
+	}
+
+	public String getCommonTemplateCode() {
+		return commonTemplateCode;
+	}
+
+	public void setCommonTemplateCode(String commonTemplateCode) {
+		this.commonTemplateCode = commonTemplateCode;
 	}
 
 	@Bean

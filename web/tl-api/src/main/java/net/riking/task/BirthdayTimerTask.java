@@ -9,8 +9,8 @@ import java.util.TimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.Jdpush;
-import net.riking.service.repo.AppUserRepo;
 import net.riking.util.JdpushUtil;
 
 @Component("birthdayTimerTask")
