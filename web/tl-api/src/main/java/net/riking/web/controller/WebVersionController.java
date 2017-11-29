@@ -1,9 +1,6 @@
 package net.riking.web.controller;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.WebVersion;
-import net.riking.service.repo.AppUserRepo;
 import net.riking.service.repo.WebVersionRepo;
 
 /**

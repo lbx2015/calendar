@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.AppUser;
-import net.riking.service.repo.AppUserRepo;
 
 /**
  * web端app用户操作
