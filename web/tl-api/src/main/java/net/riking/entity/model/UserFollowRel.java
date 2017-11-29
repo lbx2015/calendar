@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,7 @@ import net.riking.entity.BaseEntity;
  */
 @Comment("关注用户 表")
 @Entity
+@IdClass(UFollowRelUnionPkId.class)
 @Table(name = "t_user_follow_rel")
 public class UserFollowRel extends BaseEntity {
 	@Id
@@ -36,7 +38,7 @@ public class UserFollowRel extends BaseEntity {
 
 	@Comment("关注状态: 0：非互相关注 1：互相关注 ")
 	@org.hibernate.annotations.ColumnDefault("0")
-	@Column(name = "follow_status", insertable = false, nullable = false, precision = 1)
+	@Column(name = "follow_status", nullable = false, precision = 1)
 	private Integer followStatus;
 
 	@Comment("创建时间")

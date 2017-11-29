@@ -43,27 +43,31 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private String userName;
 
-	// @Comment("用户关注数")
-	// @org.hibernate.annotations.ColumnDefault("0")
-	// @Column(name="follow_num",insertable=false, nullable=false)
-	// private Integer followNum;
-	//
-	// @Comment("用户回答数")
-	// @org.hibernate.annotations.ColumnDefault("0")
-	// @Column(name="answer_num",insertable=false, nullable=false)
-	// private Integer answerNum;
+	// 用户头像Url
+	@Transient
+	private String photoUrl;
 
-	public TopicQuestion(String id, Date createdTime, Integer isAduit, String title, String content, String topicId,
-			String userId, String userName) {
+	// 用户关注数
+	@Transient
+	private Integer followNum;
+
+	// 用户回答数
+	@Transient
+	private Integer answerNum;
+
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
+			String topicId, String userId, String userName, String photoUrl) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
 		this.setIsAduit(isAduit);
 		this.title = title;
 		this.content = content;
 		this.topicId = topicId;
 		this.userId = userId;
 		this.userName = userName;
+		this.photoUrl = photoUrl;
 	}
 
 	public String getTitle() {
@@ -72,6 +76,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	public String getContent() {
@@ -98,20 +110,28 @@ public class TopicQuestion extends BaseAuditProp {
 		this.userId = userId;
 	}
 
-	// public Integer getFollowNum() {
-	// return followNum;
-	// }
-	//
-	// public void setFollowNum(Integer followNum) {
-	// this.followNum = followNum;
-	// }
-	//
-	// public Integer getAnswerNum() {
-	// return answerNum;
-	// }
-	//
-	// public void setAnswerNum(Integer answerNum) {
-	// this.answerNum = answerNum;
-	// }
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Integer getFollowNum() {
+		return followNum;
+	}
+
+	public void setFollowNum(Integer followNum) {
+		this.followNum = followNum;
+	}
+
+	public Integer getAnswerNum() {
+		return answerNum;
+	}
+
+	public void setAnswerNum(Integer answerNum) {
+		this.answerNum = answerNum;
+	}
 
 }

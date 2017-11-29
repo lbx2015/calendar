@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.RelatedQuestionAdapter;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 
 /**
@@ -46,6 +47,7 @@ public class RaiseQuestionActivity extends AppCompatActivity {
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ZGoto.to(RaiseQuestionActivity.this, AddTopicActivity.class);
             }
         });
         textInputEditText.addTextChangedListener(new TextWatcher() {

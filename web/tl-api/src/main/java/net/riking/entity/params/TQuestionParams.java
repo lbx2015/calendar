@@ -30,12 +30,23 @@ public class TQuestionParams implements Serializable {
 	// (0-取消；1-关注)
 	private Integer enabled;
 
+	// 问题回答Id
+	private String questAnswerId;
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getQuestAnswerId() {
+		return questAnswerId;
+	}
+
+	public void setQuestAnswerId(String questAnswerId) {
+		this.questAnswerId = questAnswerId;
 	}
 
 	public String getTqId() {

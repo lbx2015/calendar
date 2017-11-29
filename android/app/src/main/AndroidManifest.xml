@@ -122,6 +122,7 @@
         <activity android:name=".activity.IndustrySelectActivity"></activity>
         <activity android:name=".activity.PositionSelectActivity"></activity>
         <activity android:name=".activity.ReportsSelectActivity"></activity>
+        <activity android:name=".activity.AddTopicActivity"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
@@ -129,6 +130,7 @@
         <activity android:name=".activity.QuestionActivity" />
         <activity android:name=".activity.InvitePersonActivity" />
         <activity android:name=".activity.WriteAnswerActivity" />
+        <activity android:name=".activity.CommentsActivity" />
         <activity android:name=".activity.RaiseQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"

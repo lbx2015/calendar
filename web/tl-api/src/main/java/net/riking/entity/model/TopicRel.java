@@ -30,12 +30,12 @@ public class TopicRel extends BaseEntity {
 	private static final long serialVersionUID = 944410490844286677L;
 
 	@Id
-	@Comment("操作人主键  fk t_app_user")
+	@Comment("fk t_app_user")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
 
 	@Id
-	@Comment("目标对象主键 fk t_topic_info")
+	@Comment("fk t_topic_info")
 	@Column(name = "topic_id", nullable = false)
 	private String topicId;
 

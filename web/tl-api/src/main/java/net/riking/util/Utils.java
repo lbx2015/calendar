@@ -1,11 +1,15 @@
 package net.riking.util;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Utils {
 
@@ -101,6 +105,14 @@ public class Utils {
 			for (String fieldName : keySet) {
 				for (Field field : list) {
 					if (field.getName().equals(fieldName)) {
+						if (field.getType() == Date.class) {
+							String pattern = field.getAnnotation(DateTimeFormat.class).pattern();
+							SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+							map.put(fieldName, dateFormat.parse((String) map.get(fieldName)));
+						}
+						// else if (field.getType() == Integer.class) {
+						// map.put(fieldName, Integer.parseInt((String) map.get(fieldName)));
+						// }
 						field.set(obj, map.get(fieldName));
 					}
 				}

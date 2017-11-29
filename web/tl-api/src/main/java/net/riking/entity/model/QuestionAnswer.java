@@ -1,9 +1,12 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -37,15 +40,58 @@ public class QuestionAnswer extends BaseAuditProp {
 	// @Column(name="collect_num",insertable=false, nullable=false)
 	// private Integer collectNum;
 	//
-	// @Comment("用户评论数")
-	// @org.hibernate.annotations.ColumnDefault("0")
-	// @Column(name="comment_num",insertable=false, nullable=false)
-	// private Integer commentNum;
-	//
-	// @Comment("用户点赞数")
-	// @org.hibernate.annotations.ColumnDefault("0")
-	// @Column(name="praise_num",insertable=false, nullable=false)
-	// private Integer praiseNum;
+
+	// 用户名
+	@Transient
+	private String userName;
+
+	// 用户评论数
+	@Transient
+	private Integer commentNum;
+
+	// 用户点赞数
+	@Transient
+	private Integer agreeNum;
+
+	// 用户头像路径
+	@Transient
+	private String photoUrl;
+
+	// 问题的标题
+	@Transient
+	private String title;
+
+	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,
+			String content, String userName, String photoUrl) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.userId = userId;
+		this.questionId = questionId;
+		this.content = content;
+		this.userName = userName;
+		this.photoUrl = photoUrl;
+	}
+
+	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,
+			String content, String userName, String photoUrl, String title) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.userId = userId;
+		this.questionId = questionId;
+		this.content = content;
+		this.userName = userName;
+		this.photoUrl = photoUrl;
+		this.title = title;
+	}
+
+	public QuestionAnswer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getUserId() {
 		return userId;
@@ -53,6 +99,14 @@ public class QuestionAnswer extends BaseAuditProp {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getQuestionId() {
@@ -70,28 +124,37 @@ public class QuestionAnswer extends BaseAuditProp {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	// public Integer getCollectNum() {
-	// return collectNum;
-	// }
-	//
-	// public void setCollectNum(Integer collectNum) {
-	// this.collectNum = collectNum;
-	// }
-	//
-	// public Integer getCommentNum() {
-	// return commentNum;
-	// }
-	//
-	// public void setCommentNum(Integer commentNum) {
-	// this.commentNum = commentNum;
-	// }
-	//
-	// public Integer getPraiseNum() {
-	// return praiseNum;
-	// }
-	//
-	// public void setPraiseNum(Integer praiseNum) {
-	// this.praiseNum = praiseNum;
-	// }
+
+	public Integer getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(Integer commentNum) {
+		this.commentNum = commentNum;
+	}
+
+	public Integer getAgreeNum() {
+		return agreeNum;
+	}
+
+	public void setAgreeNum(Integer agreeNum) {
+		this.agreeNum = agreeNum;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 }

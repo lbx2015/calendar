@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,7 @@ import net.riking.entity.BaseEntity;
  */
 @Comment("问题回答点赞和收藏表")
 @Entity
+@IdClass(QAnswerRelUnionPkId.class)
 @Table(name = "t_qa_rel")
 public class QAnswerRel extends BaseEntity {
 
@@ -38,7 +40,7 @@ public class QAnswerRel extends BaseEntity {
 	private String qaId;
 
 	@Comment("数据类型：数据类型：1-点赞；2-收藏；3-屏蔽")
-	@Column(name = "data_type", insertable = false, nullable = false, precision = 1)
+	@Column(name = "data_type", nullable = false, precision = 1)
 	private Integer dataType;
 
 	@Comment("创建时间")

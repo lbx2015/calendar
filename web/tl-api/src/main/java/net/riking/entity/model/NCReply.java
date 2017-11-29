@@ -44,17 +44,23 @@ public class NCReply extends BaseAuditProp {
 	@Transient
 	private String userName;
 
-	public NCReply(String id, Date createdTime, String userId, String toUserId, String commentId, String replyId,
-			String content, String userName) {
+	// 用户头像Url
+	@Transient
+	private String photoUrl;
+
+	public NCReply(String id, Date createdTime, Date modifiedTime, String userId, String toUserId, String commentId,
+			String replyId, String content, String userName, String photoUrl) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
 		this.userId = userId;
 		this.toUserId = toUserId;
 		this.commentId = commentId;
 		this.replyId = replyId;
 		this.content = content;
 		this.userName = userName;
+		this.photoUrl = photoUrl;
 	}
 
 	public String getUserId() {
@@ -71,6 +77,14 @@ public class NCReply extends BaseAuditProp {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	public String getContent() {

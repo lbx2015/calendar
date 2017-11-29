@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -12,7 +13,7 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
-import net.riking.entity.BaseAuditProp;
+import net.riking.entity.BaseEntity;
 
 /**
  * 
@@ -22,8 +23,9 @@ import net.riking.entity.BaseAuditProp;
  */
 @Comment("话题的问题关注表")
 @Entity
+@IdClass(TQRelUnionPkId.class)
 @Table(name = "t_tq_rel")
-public class TopQuestionRel extends BaseAuditProp {
+public class TQuestionRel extends BaseEntity {
 	@Id
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
@@ -36,7 +38,7 @@ public class TopQuestionRel extends BaseAuditProp {
 
 	@Comment("数据类型：0-关注 3-屏蔽")
 	@org.hibernate.annotations.ColumnDefault("0")
-	@Column(name = "data_type", insertable = false, nullable = false, precision = 1)
+	@Column(name = "data_type", nullable = false, precision = 1)
 	private Integer dataType;
 
 	@Comment("创建时间")
