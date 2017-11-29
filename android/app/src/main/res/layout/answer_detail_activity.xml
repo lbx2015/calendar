@@ -277,11 +277,13 @@
             android:gravity="center">
 
             <LinearLayout
+                android:id="@+id/comment_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:onClick="clickComments"
                 android:orientation="vertical">
 
                 <ImageView
@@ -308,12 +310,13 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:onClick="clickAgree"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/com_icon_comment" />
+                    android:src="@drawable/com_icon_zan_n" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -334,6 +337,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:onClick="clickFavorite"
                 android:orientation="vertical">
 
                 <ImageView
@@ -359,6 +363,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:onClick="clickShare"
                 android:orientation="vertical">
 
                 <ImageView

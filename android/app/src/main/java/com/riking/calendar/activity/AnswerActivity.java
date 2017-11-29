@@ -5,8 +5,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -16,9 +14,9 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.QuestionsAdapter;
-import com.riking.calendar.adapter.ReviewsAdapter;
 import com.riking.calendar.util.FileUtil;
+import com.riking.calendar.util.ZGoto;
+import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 import java.io.File;
 
@@ -29,7 +27,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
  */
 
 public class AnswerActivity extends AppCompatActivity { //Fragment 数组
-//    RecyclerView suggestionQuestionsRecyclerView;
+    //    RecyclerView suggestionQuestionsRecyclerView;
 //    RecyclerView reviewsRecyclerView;
     private WebView webView;
 
@@ -101,6 +99,22 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 
         webView.addJavascriptInterface(new WebAppInterface(), "Android");
+    }
+
+    public void clickComments(final View view) {
+        ZGoto.to(this, CommentsActivity.class);
+    }
+
+    public void clickAgree(final View view) {
+
+    }
+
+    public void clickFavorite(final View v) {
+
+    }
+
+    public void clickShare(final View v) {
+        new ShareBottomDialog(v.getContext()).show();
     }
 
     class WebAppInterface {
