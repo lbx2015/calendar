@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.util.ZR;
 
 import java.util.ArrayList;
@@ -25,9 +25,12 @@ import butterknife.ButterKnife;
 
 
 public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyViewHolder> {
+    CommentsActivity a;
+    String from;
     private List<String> mList;
 
-    public ReplyListAdapter() {
+    public ReplyListAdapter(CommentsActivity c) {
+        a = c;
         mList = new ArrayList<>();
     }
 
@@ -40,7 +43,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(ReplyListAdapter.MyViewHolder h, int i) {
-        String from = "毛润之";
+        from = "毛润之";
         String to = null;
         String reply = "回复";
         String content;
@@ -63,7 +66,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan fromClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                Toast.makeText(widget.getContext(), "from click", Toast.LENGTH_SHORT).show();
+                a.clickWriteComment(from);
             }
 
             @Override
@@ -77,7 +80,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan replyClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                Toast.makeText(widget.getContext(), "reply click", Toast.LENGTH_SHORT).show();
+                a.clickWriteComment(from);
 
             }
 
@@ -92,7 +95,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan toClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                Toast.makeText(widget.getContext(), "to click", Toast.LENGTH_SHORT).show();
+                a.clickWriteComment(from);
 
             }
 
@@ -108,8 +111,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan contentClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                // do sth.
-                Toast.makeText(widget.getContext(), "content click", Toast.LENGTH_SHORT).show();
+                a.clickWriteComment(from);
             }
 
             @Override
