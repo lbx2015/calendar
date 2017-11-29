@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +13,17 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CommentListAdapter;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.view.KeyboardEditText;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -30,7 +33,9 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     CommentListAdapter mAdapter;
     RecyclerView recyclerView;
     TextView publicButton;
-    TextInputEditText writeComment;
+    KeyboardEditText writeComment;
+    ImageView answerIcon;
+    boolean isOpened = false;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -49,12 +54,54 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);
         recyclerView = findViewById(R.id.recycler_view);
     }
 
+    public void setListenerToRootView() {
+        final View activityRootView = getWindow().getDecorView().findViewById(android.R.id.content);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) writeComment.getLayoutParams();
+                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
+                if (heightDiff > 100) { // 99% of the time the height diff will be due to a keyboard.
+                    //keyboard is up
+                    params.leftMargin = (int) ZR.convertDpToPx(15);
+                    answerIcon.setVisibility(View.GONE);
+                    if (isOpened == false) {
+                        //Do two things, make the view top visible and the editText smaller
+                    }
+                    isOpened = true;
+                } else if (isOpened == true) {
+                    //keyboard is down
+                    params.leftMargin = (int) ZR.convertDpToPx(15);
+                    writeComment.clearFocus();
+                    answerIcon.setVisibility(View.VISIBLE);
+                    isOpened = false;
+                }
+            }
+        });
+    }
+
     private void initEvents() {
+        setListenerToRootView();
+        writeComment.setOnKeyboardListener(new KeyboardEditText.KeyboardListener() {
+            @Override
+            public void onStateChanged(KeyboardEditText keyboardEditText, boolean showing) {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) writeComment.getLayoutParams();
+                if (showing) {
+                    params.leftMargin = (int) ZR.convertDpToPx(15);
+                    answerIcon.setVisibility(View.GONE);
+                } else {
+                    params.leftMargin = (int) ZR.convertDpToPx(15);
+                    writeComment.clearFocus();
+                    answerIcon.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         writeComment.setShowSoftInputOnFocus(true);
         writeComment.addTextChangedListener(new TextWatcher() {
             @Override
