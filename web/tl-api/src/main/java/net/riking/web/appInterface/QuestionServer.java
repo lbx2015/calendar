@@ -19,7 +19,7 @@ import net.riking.entity.AppResp;
  * @used 搜索列表（报表/话题/人脉/资讯/问题）结果
  */
 @RestController
-@RequestMapping(value = "/searchListServer")
+@RequestMapping(value = "/question")
 public class QuestionServer {
 
 	@ApiOperation(value = "问题详情", notes = "POST")

@@ -83,7 +83,7 @@ public class NewsServer {
 						new PageRequest(0, 30));
 				// 把查出来的数据按倒序重新排列
 				for (int i = 0; i < newsInfoAscList.size(); i++) {
-					newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i));
+					newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i - 1));
 				}
 				break;
 			default:
@@ -91,7 +91,8 @@ public class NewsServer {
 		}
 		for (News newsInfo : newsInfoList) {
 			// TODO 从数据库查询评论数插到资讯表,后面从redis里面找
-			Integer count = newsCommentRepo.commentCount(newsInfo.getId());
+			Integer count = 0;
+			count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
 			// 将对象转换成map
 			Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
@@ -147,10 +148,9 @@ public class NewsServer {
 				// 回复的数据列表添加到评论类里面
 				newsCommentInfoNew.getNCommentReplyInfoList().add(nCommentReplyInfoObjMap);
 			}
-			// TODO AppUser appUser = appUserRepo.findOne(newsCommentInfoNew.getUserId());
-			// newsCommentInfoNew.setUserName(appUser.getUserName());
 			// 点赞数 TODO 后面从redis里面去找
-			Integer agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
+			Integer agree = 0;
+			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
 			Map<String, Object> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
 			newsCommentInfoMapList.add(newsCommentInfoObjMap);
@@ -172,6 +172,7 @@ public class NewsServer {
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
+		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
 		newsCommentRepo.save(newsCommentInfo);
 		return new AppResp(CodeDef.SUCCESS);
 	}

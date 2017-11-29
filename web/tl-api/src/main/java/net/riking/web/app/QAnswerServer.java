@@ -59,13 +59,12 @@ public class QAnswerServer {
 
 	/**
 	 * 问题回答详情
-	 * @param params[tqId]
+	 * @param params[questAnswerId]
 	 * @return
 	 */
 	@ApiOperation(value = "问题回答详情", notes = "POST")
 	@RequestMapping(value = "/getQAnswer", method = RequestMethod.POST)
 	public AppResp getQAnswer(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
 		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
 		QuestionAnswer questionAnswer = questionAnswerRepo.getById(qAnswerParams.getQuestAnswerId());
 
@@ -81,7 +80,6 @@ public class QAnswerServer {
 	@ApiOperation(value = "问题回答的评论", notes = "POST")
 	@RequestMapping(value = "/qACommentPub", method = RequestMethod.POST)
 	public AppResp qACommentPub(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
 		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
 		QAComment qaComment = new QAComment();
 		qaComment.setUserId(qAnswerParams.getUserId());
@@ -99,7 +97,7 @@ public class QAnswerServer {
 	 * @return
 	 */
 	@ApiOperation(value = "问题回答的点赞/收藏", notes = "POST")
-	@RequestMapping(value = "/QAnswerAgree", method = RequestMethod.POST)
+	@RequestMapping(value = "/agreeOrCollect", method = RequestMethod.POST)
 	public AppResp QAnswerAgree(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
@@ -115,7 +113,8 @@ public class QAnswerServer {
 					qAnswerRelRepo.save(qAnswerRel);
 				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
 					// 如果传过来是取消点赞，把之前一条记录物理删除
-					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(), 1);// 1-点赞2-收藏3-屏蔽
+					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
+							Const.OBJ_OPT_GREE);// 点赞
 				} else {
 					throw new RuntimeException("参数异常：enabled=" + qAnswerParams.getEnabled());
 				}
@@ -131,7 +130,8 @@ public class QAnswerServer {
 					qAnswerRelRepo.save(qAnswerRel);
 				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
 					// 如果传过来是取消收藏，把之前一条记录物理删除
-					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(), 2);// 1-点赞2-收藏3-屏蔽
+					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
+							Const.OBJ_OPT_COLLECT);// 收藏
 				} else {
 					throw new RuntimeException("参数异常：enabled=" + qAnswerParams.getEnabled());
 				}
@@ -147,7 +147,7 @@ public class QAnswerServer {
 	// * @param params
 	// * @return
 	// */
-	// @ApiOperation(value = "问题回答列表", notes = "POST")
+	// @ApiOperation(value = "问题回答评论列表", notes = "POST")
 	// @RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
 	// public AppResp qACommentList(@RequestBody Map<String, Object> params) {
 	// // 将map转换成参数对象
