@@ -3,7 +3,6 @@ package com.riking.calendar.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -138,10 +137,10 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
     }
 
     public void localSearchConditionIsEmpty() {
-
     }
 
     public void saveToRealm() {
+        if (reportSearchCondition.trim().length() == 0) return;
         ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {

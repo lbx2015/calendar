@@ -114,4 +114,89 @@
         android:layout_width="match_parent"
         android:layout_height="6dp"
         android:background="@color/color_f2f2f2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="热门搜索"
+        android:textColor="@color/color_999999"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="资产负债表"
+            android:textColor="@color/color_222222"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/divider_vertical"
+            android:layout_width="@dimen/divider_height"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@color/color_e2e2e2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/divider_vertical"
+            android:text="中间业务"
+            android:textColor="@color/color_222222"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="大中小企业"
+            android:textColor="@color/color_222222"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/divider_vertical2"
+            android:layout_width="@dimen/divider_height"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@color/color_e2e2e2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/divider_vertical2"
+            android:text="中间业务"
+            android:textColor="@color/color_222222"
+            android:textSize="15sp" />
+    </RelativeLayout>
 </LinearLayout>
