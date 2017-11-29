@@ -127,14 +127,14 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginLeft="15dp"
         android:layout_height="@dimen/divider_height"
+        android:layout_marginLeft="15dp"
         android:background="@color/color_e2e2e2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -166,12 +166,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
+        android:layout_marginLeft="15dp"
         android:background="@color/color_e2e2e2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -199,4 +200,10 @@
             android:textColor="@color/color_222222"
             android:textSize="15sp" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/color_f2f2f2" />
 </LinearLayout>
