@@ -85,7 +85,7 @@ public class RCompleteRelServer {
 	}
 
 	/**
-	 * 用户获取当天报表完成情况[userId,completedDate]
+	 * 用户获取当天报表完成情况[userId,completeDate]
 	 * @param params
 	 * @return
 	 */
