@@ -1,13 +1,15 @@
 package net.riking.entity.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.Transient;
 
 import net.riking.core.annos.Comment;
 
@@ -20,7 +22,7 @@ import net.riking.core.annos.Comment;
 @Comment("用户详情表")
 @Entity
 @Table(name = "t_appuser_detail")
-public class AppUserDetail {
+public class AppUserDetail implements Serializable {
 
 	public AppUserDetail() {
 		super();
@@ -114,9 +116,10 @@ public class AppUserDetail {
 	// @Comment("备注信息")
 	// @Column(name = "remark", length = 500)
 	// private String remark;
-
+	@Transient
 	private String page;// 页数
 
+	@Transient
 	private String sTime;// 查询时间
 
 	// 验证码

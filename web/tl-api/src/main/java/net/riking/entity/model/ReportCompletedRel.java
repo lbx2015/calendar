@@ -9,6 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -51,8 +52,10 @@ public class ReportCompletedRel extends PageQuery {
 	// @Column(name = "is_complete")
 	// private Integer isComplete; // 是否完成（0-未完成；1-已完成）
 
+	@Transient
 	private String reportName;// 报表名称
 
+	@Transient
 	private String strFrequency;// 频度
 
 	public ReportCompletedRel(String reportId) {

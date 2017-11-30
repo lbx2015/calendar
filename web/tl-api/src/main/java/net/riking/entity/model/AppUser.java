@@ -3,8 +3,7 @@ package net.riking.entity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.springframework.data.annotation.Transient;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -52,10 +51,11 @@ public class AppUser extends BaseProp {
 	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "enabled", nullable = false, precision = 1)
 	private Integer enabled;
-	
+
 	/**
 	 * 用户详情信息
 	 */
+	@Transient
 	public AppUserDetail detail;
 
 	public String getUserName() {
@@ -113,5 +113,5 @@ public class AppUser extends BaseProp {
 	public void setDetail(AppUserDetail detail) {
 		this.detail = detail;
 	}
-	
+
 }

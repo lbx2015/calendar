@@ -14,13 +14,11 @@ import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
-import net.riking.entity.model.SysDays;
 import net.riking.entity.model.Todo;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
 import net.riking.service.repo.ReportListRepo;
-import net.riking.service.repo.SysDaysRepo;
 import net.riking.service.repo.TodoRepo;
 
 /**
@@ -42,8 +40,8 @@ public class SynchronousServer {
 
 	// @Autowired
 	// AppUserReportCompletRelRepo appUserReportCompletesRelRepo;
-	@Autowired
-	SysDaysRepo sysDaysRepo;
+	// @Autowired
+	// SysDaysRepo sysDaysRepo;
 
 	@Autowired
 	ReportListRepo reportListRepo;
@@ -79,12 +77,12 @@ public class SynchronousServer {
 	 * todoRepo.findByUserId(appUser.getId()); return new AppResp(todos, CodeDef.SUCCESS); }
 	 */
 
-	@ApiOperation(value = "同步日历信息", notes = "POST")
-	@RequestMapping(value = "/synchronousDate", method = RequestMethod.POST)
-	public AppResp synchronousDate() {
-		List<SysDays> days = sysDaysRepo.findAll();
-		return new AppResp(days, CodeDef.SUCCESS);
-	}
+	// @ApiOperation(value = "同步日历信息", notes = "POST")
+	// @RequestMapping(value = "/synchronousDate", method = RequestMethod.POST)
+	// public AppResp synchronousDate() {
+	// List<SysDays> days = sysDaysRepo.findAll();
+	// return new AppResp(days, CodeDef.SUCCESS);
+	// }
 
 	@ApiOperation(value = "同步app提醒信息", notes = "POST")
 	@RequestMapping(value = "/synchronousReminds", method = RequestMethod.POST)

@@ -16,13 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.QureyResulte;
 import net.riking.entity.model.ReportCompletedRel;
-import net.riking.service.ReportSubmitCaliberService;
+import net.riking.entity.resp.RCompletedRelResp;
 import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.service.repo.AppUserReportRelRepo;
-import net.riking.service.repo.ReportSubmitCaliberRepo;
-import net.riking.service.repo.SysDaysRepo;
 
 /***
  * 获取完成报表
@@ -36,17 +32,17 @@ public class AppUserReportCompleteRelServer {
 	// @Autowired
 	// AppUserReportCompletRelRepo appUserReportCompleteRelRepo;
 
-	@Autowired
-	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
-
-	@Autowired
-	ReportSubmitCaliberService reportSubmitCaliberService;
-
-	@Autowired
-	AppUserReportRelRepo appUserReportRelRepo;
-
-	@Autowired
-	SysDaysRepo sysDaysRepo;
+	// @Autowired
+	// ReportSubmitCaliberRepo reportSubmitCaliberRepo;
+	//
+	// @Autowired
+	// ReportSubmitCaliberService reportSubmitCaliberService;
+	//
+	// @Autowired
+	// AppUserReportRelRepo appUserReportRelRepo;
+	//
+	// @Autowired
+	// SysDaysRepo sysDaysRepo;
 
 	@Autowired
 	SysDateServiceImpl sysDateService;
@@ -61,7 +57,7 @@ public class AppUserReportCompleteRelServer {
 	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody ReportCompletedRel completeRel) {
-		List<QureyResulte> completeRels = new ArrayList<QureyResulte>();
+		List<RCompletedRelResp> completeRels = new ArrayList<RCompletedRelResp>();
 		// completeRels = appUserReportCompleteRelRepo.getReportId(completeRel.getAppUserId(),
 		// completeRel.getCompleteDate());
 		return new AppResp(completeRels, CodeDef.SUCCESS);

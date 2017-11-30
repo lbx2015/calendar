@@ -1,9 +1,6 @@
 package net.riking.web.controller;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +11,6 @@ import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.entity.model.Report;
 import net.riking.service.SysDataService;
-import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.ReportListRepo;
 
 /**
@@ -29,8 +25,8 @@ public class ReportListController {
 	@Autowired
 	ReportListRepo reportListRepo;
 
-	@Autowired
-	AppUserReportRelRepo appUserReportRepo;
+	// @Autowired
+	// AppUserReportRelRepo appUserReportRepo;
 
 	@Autowired
 	SysDataService sysDataService;
@@ -127,19 +123,14 @@ public class ReportListController {
 	// return new Resp(result, CodeDef.SUCCESS);
 	// }
 
-	/*@ApiOperation(value = "批量删除用户信息", notes = "POST")
-	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore_(@RequestBody Set<String> ids) {
-		int rs = 0;
-		if (ids.size() > 0) {
-			rs = reportListRepo.deleteById(ids);
-		}
-		if (rs > 0) {
-			return new Resp().setCode(CodeDef.SUCCESS);
-		} else {
-			return new Resp().setCode(CodeDef.ERROR);
-		}
-	}*/
+	/*
+	 * @ApiOperation(value = "批量删除用户信息", notes = "POST")
+	 * 
+	 * @RequestMapping(value = "/delMore", method = RequestMethod.POST) public Resp
+	 * delMore_(@RequestBody Set<String> ids) { int rs = 0; if (ids.size() > 0) { rs =
+	 * reportListRepo.deleteById(ids); } if (rs > 0) { return new Resp().setCode(CodeDef.SUCCESS); }
+	 * else { return new Resp().setCode(CodeDef.ERROR); } }
+	 */
 
 	// 暂时注释
 	// @AuthPass

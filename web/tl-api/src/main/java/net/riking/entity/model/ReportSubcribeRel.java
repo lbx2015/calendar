@@ -37,8 +37,8 @@ public class ReportSubcribeRel extends BaseEntity {
 
 	@Id
 	@Comment("用户ID: fk t_app_user")
-	@Column(name = "user_id", length = 32)
-	private String user_id;
+	@Column(name = "userId", length = 32)
+	private String userId;
 
 	@Id
 	@Comment("报表ID: fk t_app_user")
@@ -84,12 +84,12 @@ public class ReportSubcribeRel extends BaseEntity {
 		this.type = type;
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public Integer getIsComplete() {
