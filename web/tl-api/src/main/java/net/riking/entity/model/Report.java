@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BasePageQueryProp;
@@ -67,6 +68,7 @@ public class Report extends BasePageQueryProp {
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
 
+	@Transient
 	private String userId;
 
 	public String getName() {

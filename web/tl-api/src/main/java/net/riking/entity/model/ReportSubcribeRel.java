@@ -9,6 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -56,8 +57,10 @@ public class ReportSubcribeRel extends BaseEntity {
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
+	@Transient
 	private String reportName;// 报表名称
 
+	@Transient
 	private String type;
 
 	public String getReportId() {

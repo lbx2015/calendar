@@ -116,6 +116,7 @@ public class AppUserDetail implements Serializable {
 	// @Comment("备注信息")
 	// @Column(name = "remark", length = 500)
 	// private String remark;
+	
 	@Transient
 	private String page;// 页数
 
