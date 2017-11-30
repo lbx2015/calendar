@@ -8,6 +8,6 @@ import com.riking.calendar.pojo.server.ReportFrequency;
 
 public interface PerformSearch {
     void performSearchByLocalHistory(String searchCondition);
-    void localSearchConditionIsEmpty();
+    void localSearchConditionIsEmpty(boolean isEmpty);
 
 }

@@ -114,6 +114,7 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
                 localSearchConditionAdapter.notifyDataSetChanged();
             }
         });
+        localSearchConditionIsEmpty(realmResults.isEmpty());
         recyclerView.setAdapter(localSearchConditionAdapter);
     }
 
@@ -191,7 +192,12 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
         saveToRealm();
     }
 
-    public void localSearchConditionIsEmpty() {
+    public void localSearchConditionIsEmpty(boolean isEmpty) {
+        if (isEmpty) {
+            localSearchTitle.setVisibility(View.GONE);
+        } else {
+            localSearchTitle.setVisibility(View.VISIBLE);
+        }
     }
 
     public void saveToRealm() {

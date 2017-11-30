@@ -52,9 +52,7 @@ public class LocalSearchConditionAdapter extends RecyclerView.Adapter<OneTextVie
     public int getItemCount() {
         int size = mList.size();
         //empty notice
-        if (size == 0) {
-            searchListener.localSearchConditionIsEmpty();
-        }
+            searchListener.localSearchConditionIsEmpty(size == 0);
         return size;
     }
 

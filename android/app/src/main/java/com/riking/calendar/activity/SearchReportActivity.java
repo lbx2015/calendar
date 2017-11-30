@@ -148,7 +148,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         recyclerView.setAdapter(localSearchConditionAdapter);
     }
 
-    public void localSearchConditionIsEmpty() {
+    public void localSearchConditionIsEmpty(boolean isEmpty) {
 
     }
 
