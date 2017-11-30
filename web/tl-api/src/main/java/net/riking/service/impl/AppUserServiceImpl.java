@@ -36,7 +36,7 @@ public class AppUserServiceImpl implements AppUserService {
 	@Transactional
 	public AppUser register(AppUser user, AppUserDetail detail){
 		String uuid = UuidUtils.random();
-		Date date = new Date();
+//		Date date = new Date();
 		user.setId(uuid);
 		user.setPassWord(EncryptionUtil.MD5(user.getPhone()));
 		user.setCreatedBy(uuid);

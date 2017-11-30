@@ -1,11 +1,18 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.springframework.data.annotation.Transient;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -54,10 +61,43 @@ public class AppUser extends BaseProp {
 	@Column(name = "enabled", nullable = false, precision = 1)
 	private Integer enabled;
 	
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GeneratedValue(generator = "idGenerator")
+	@GenericGenerator(name = "idGenerator", strategy = "assigned")
+	private String id;
+
+	@Comment("创建人ID")
+	@Column(name = "created_by", updatable = false)
+	private String createdBy;
+
+	@Comment("修改人ID")
+	@Column(name = "modified_by")
+	private String modifiedBy;
+
+	@Comment("创建时间")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@org.hibernate.annotations.CreationTimestamp
+	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
+	private Date createdTime;
+
+	@Comment("修改时间")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@org.hibernate.annotations.UpdateTimestamp
+	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")
+	private Date modifiedTime;
+
+	@Comment("是否删除： 0-删除，1-未删除")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
+	private Integer isDeleted;
+	
 	/**
 	 * 用户详情信息
 	 */
-	public AppUserDetail detail;
 	@Transient
 	private AppUserDetail detail;
 

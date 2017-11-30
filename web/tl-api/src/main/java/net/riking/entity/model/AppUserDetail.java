@@ -24,7 +24,6 @@ import net.riking.core.annos.Comment;
 @Comment("用户详情表")
 @Entity
 @Table(name = "t_appuser_detail")
-public class AppUserDetail {
 public class AppUserDetail implements Serializable{
 
 	public AppUserDetail() {
@@ -34,9 +33,6 @@ public class AppUserDetail implements Serializable{
 	@Id
 	@GeneratedValue(generator = "idGenerator")
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
-	@Column(name = "ID", length = 32)
-//	@GeneratedValue(generator = "idGenerator")
-//	@GenericGenerator(name = "idGenerator", strategy = "assigned")
 	@Column(name = "id", length = 32)
 	@Comment("pk 同用户登录表t_app_user的id一致")
 	private String id;
@@ -75,7 +71,6 @@ public class AppUserDetail implements Serializable{
 
 	@Comment("手机类型 1-IOS;2-Android;3-其它")
 	@Column(name = "phone_type", length = 1)
-	private String phoneType;
 	private Integer phoneType;
 
 	@Comment("积分")
@@ -225,12 +220,10 @@ public class AppUserDetail implements Serializable{
 		this.phoneMacid = phoneMacid;
 	}
 
-	public String getPhoneType() {
 	public Integer getPhoneType() {
 		return phoneType;
 	}
 
-	public void setPhoneType(String phoneType) {
 	public void setPhoneType(Integer phoneType) {
 		this.phoneType = phoneType;
 	}
