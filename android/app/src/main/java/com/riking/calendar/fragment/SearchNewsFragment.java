@@ -1,6 +1,5 @@
 package com.riking.calendar.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,31 +14,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.SearchActivity;
-import com.riking.calendar.adapter.ReportsAdapter;
-import com.riking.calendar.adapter.ReportsOrderAdapter;
-import com.riking.calendar.interfeet.SubscribeReport;
+import com.riking.calendar.adapter.SearchNewsAdapter;
 import com.riking.calendar.listener.PullCallback;
-import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportFrequency;
-import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class ReportsFragment extends Fragment implements SubscribeReport {
+public class SearchNewsFragment extends Fragment {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
-    ReportsAdapter mAdapter;
+    SearchNewsAdapter mAdapter;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -49,7 +35,7 @@ public class ReportsFragment extends Fragment implements SubscribeReport {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (v != null) return v;
-        v = inflater.inflate(R.layout.topic_fragment, container, false);
+        v = inflater.inflate(R.layout.search_fragment, container, false);
         init();
         return v;
     }
@@ -65,12 +51,12 @@ public class ReportsFragment extends Fragment implements SubscribeReport {
 
     private void initEvents() {
         RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
+        //adding dividers.
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        //adding dividers.
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        mAdapter = new ReportsAdapter(this);
+        mAdapter = new SearchNewsAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
         mPullToLoadView.setPullCallback(new PullCallback() {
@@ -111,67 +97,13 @@ public class ReportsFragment extends Fragment implements SubscribeReport {
                     isHasLoadedAll = true;
                     return;
                 }
-                List<ReportFrequency> data = new ArrayList<>();
                 for (int i = 0; i <= 15; i++) {
-                    ReportFrequency frequency = new ReportFrequency("dfldlfjdklsf", "fldsjfkld", "dklfdla", "dfjla", "djfladj");
-                    data.add(frequency);
+                    mAdapter.add(i + "");
                 }
-                mAdapter.setData(data);
+
                 isLoading = false;
                 nextPage = page + 1;
             }
         }, 1000);
     }
-
-
-    public void orderReport(ReportFrequency report) {
-        Activity ac = getActivity();
-        if (ac instanceof SearchActivity) {
-            SearchActivity searchActivity = (SearchActivity) ac;
-            searchActivity.saveToRealm();
-        }
-        AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
-        a.reportId = report.reportId;
-        a.reportName = report.reportName;
-        a.type = "1";
-        APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
-            @Override
-            public void callBack(ResponseModel<String> response) {
-
-            }
-        });
-    }
-
-    public void unorderReport(ReportFrequency report) {
-        Activity ac = getActivity();
-        if (ac instanceof SearchActivity) {
-            SearchActivity searchActivity = (SearchActivity) ac;
-            searchActivity.saveToRealm();
-        }
-        AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
-        a.reportId = report.reportId;
-        a.reportName = report.reportName;
-        a.type = "0";
-
-        APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
-            @Override
-            public void callBack(ResponseModel<String> response) {
-
-            }
-        });
-    }
-
-    @Override
-    public boolean isAddedToMyOrder(ReportFrequency report) {
-        return false;
-    }
-
-    @Override
-    public boolean isInEditMode() {
-        return true;
-    }
-
-
 }

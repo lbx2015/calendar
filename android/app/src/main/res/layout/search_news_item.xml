@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topic_info"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/news_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="15dp"
+        android:lineSpacingMultiplier="1.2"
+        android:text="全球主要央行齐聚发生，下周市场重大事件一览（附解禁股）"
+        android:textColor="@color/color_222222"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/news_update_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="2017-11-16 11:36"
+        android:textColor="@color/color_999999"
+        android:textSize="12sp" />
+</LinearLayout>

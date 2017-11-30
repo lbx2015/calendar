@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
+public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
     private Context context;
     private List<String> mList;
 
-    public SearchTopicAdapter(Context context) {
+    public SearchPersonAdapter(Context context) {
         this.context = context;
         mList = new ArrayList<>();
     }
@@ -28,13 +28,16 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
     @Override
     public ExcellentViewHolderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.search_topic_item, viewGroup, false);
+                R.layout.excellent_answerer_item, viewGroup, false);
         return new ExcellentViewHolderViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ExcellentViewHolderViewHolder h, int i) {
-        h.userName.setText("银民银行数据大集中");
+        h.userName.setText("周润发");
+        h.userName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
+        h.answerSummary.setText("200个回答，1360赞");
+        h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
         RequestOptions options = new RequestOptions();
         Glide.with(h.userImage.getContext()).load(R.drawable.img_user_head)
                 .apply(options.fitCenter())
@@ -45,14 +48,14 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
             public void onClick(View v) {
                 if (h.invited) {
                     h.invited = false;
-                    h.followTv.setText("关注");
+                    h.followTv.setText("邀请");
                     h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
                     h.followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
                     h.followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
                     h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border));
                 } else {
                     h.invited = true;
-                    h.followTv.setText("已关注");
+                    h.followTv.setText("已邀请");
                     h.followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     h.followTv.setTextColor(ZR.getColor(R.color.color_999999));
                     h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border_gray));
@@ -65,13 +68,13 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
 
     private void showInvited(ExcellentViewHolderViewHolder h) {
         if (!h.invited) {
-            h.followTv.setText("关注");
+            h.followTv.setText("邀请");
             h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
             h.followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
             h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border));
         } else {
-            h.followTv.setText("已关注");
+            h.followTv.setText("已邀请");
             h.followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             h.followTv.setTextColor(ZR.getColor(R.color.color_999999));
             h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border_gray));

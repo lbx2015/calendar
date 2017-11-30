@@ -16,6 +16,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.fragment.ExcellentAnswererFragment;
 import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
 import com.riking.calendar.fragment.QuestionsFragment;
+import com.riking.calendar.fragment.SearchTopicFragment;
 import com.riking.calendar.fragment.TopicFragment;
 
 /**

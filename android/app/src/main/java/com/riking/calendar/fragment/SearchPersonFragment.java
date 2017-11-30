@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.ExcellentAnswerAdapter;
-import com.riking.calendar.adapter.SearchTopicAdapter;
+import com.riking.calendar.adapter.SearchPersonAdapter;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -22,10 +22,10 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class SearchTopicFragment extends Fragment {
+public class SearchPersonFragment extends Fragment {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
-    SearchTopicAdapter mAdapter;
+    SearchPersonAdapter mAdapter;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -35,7 +35,7 @@ public class SearchTopicFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (v != null) return v;
-        v = inflater.inflate(R.layout.search_fragment, container, false);
+        v = inflater.inflate(R.layout.topic_fragment, container, false);
         init();
         return v;
     }
@@ -54,7 +54,7 @@ public class SearchTopicFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new SearchTopicAdapter(getContext());
+        mAdapter = new SearchPersonAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
         mPullToLoadView.setPullCallback(new PullCallback() {

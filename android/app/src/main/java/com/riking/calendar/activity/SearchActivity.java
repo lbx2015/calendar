@@ -24,9 +24,9 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.RecommededSearchConditionsAdapter;
 import com.riking.calendar.fragment.ExcellentAnswererFragment;
-import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
-import com.riking.calendar.fragment.QuestionsFragment;
-import com.riking.calendar.fragment.ReportsFragment;
+import com.riking.calendar.fragment.SearchPersonFragment;
+import com.riking.calendar.fragment.SearchReportsFragment;
+import com.riking.calendar.fragment.SearchNewsFragment;
 import com.riking.calendar.fragment.SearchTopicFragment;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
@@ -52,7 +52,7 @@ import io.realm.Sort;
 public class SearchActivity extends AppCompatActivity implements PerformSearch {
 
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new ReportsFragment(), new SearchTopicFragment(), new QuestionsFragment(), new ExcellentAnswererFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new SearchReportsFragment(), new SearchTopicFragment(), new SearchPersonFragment(), new SearchNewsFragment()};
     public String reportSearchCondition;
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;

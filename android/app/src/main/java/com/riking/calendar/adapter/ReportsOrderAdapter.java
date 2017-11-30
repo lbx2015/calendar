@@ -38,7 +38,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
     @Override
     public ReportOrderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.report_order_item, viewGroup, false);
+                R.layout.report_item, viewGroup, false);
         return new ReportOrderViewHolder(view);
     }
 
@@ -47,6 +47,8 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
         final ReportFrequency r = mList.get(i);
         h.reportTitle.setText(r.reportTitle);
         h.reportName.setText(r.reportName);
+        h.reportName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_formlabel_icon_month, 0);
+        h.reportName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
         if (r.isSubscribe == null || r.isSubscribe.equals("0")) {
             h.subscribed = false;
         } else {
@@ -65,7 +67,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
             h.orderButton.setText("已订阅");
             h.orderButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             h.orderButton.setTextColor(ZR.getColor(R.color.color_999999));
-            h.orderButton.setBackgroundColor(h.orderButton.getResources().getColor(R.color.white));
+            h.orderButton.setBackground(h.orderButton.getResources().getDrawable(R.drawable.rounded_gray));
         } else {
             h.orderButton.setText("订阅");
             h.orderButton.setTextColor(ZR.getColor(R.color.color_489dfff));
@@ -83,7 +85,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
                     h.subscribed = true;
                     h.orderButton.setText("已订阅");
                     h.orderButton.setTextColor(ZR.getColor(R.color.color_999999));
-                    h.orderButton.setBackgroundColor(h.orderButton.getResources().getColor(R.color.white));
+                    h.orderButton.setBackground(h.orderButton.getResources().getDrawable(R.drawable.rounded_gray));
                 }
                 //update my orders
                 if (h.subscribed) {
