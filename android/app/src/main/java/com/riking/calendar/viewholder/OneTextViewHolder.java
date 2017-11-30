@@ -14,14 +14,15 @@ import butterknife.ButterKnife;
 
 
 public class OneTextViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.text_view)
     public TextView textView;
     public View divider;
+    public View horizontalDivider;
 
     public OneTextViewHolder(View itemView) {
         super(itemView);
         textView = itemView.findViewById(R.id.text_view);
         divider = itemView.findViewById(R.id.divider);
+        horizontalDivider = itemView.findViewById(R.id.horizontal_divider);
         itemView.setTag(this);
     }
 }

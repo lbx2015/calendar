@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,15 +14,18 @@ import android.widget.ImageView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
+import com.riking.calendar.adapter.RecommededSearchConditionsAdapter;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.Preference;
 import com.riking.calendar.util.ZDB;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -39,6 +43,7 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
     RecyclerView recyclerView;
+    RecyclerView recommendedRecyclerView;
     ImageView clearSearchInputImage;
 
     @Override
@@ -59,6 +64,7 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
 
     private void initEvents() {
         setRecyclerView();
+        setRecommendedRecyclerView();
         clearSearchInputImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +89,21 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
         recyclerView.setAdapter(localSearchConditionAdapter);
     }
 
+    private void setRecommendedRecyclerView() {
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recommendedRecyclerView.setLayoutManager(layoutManager);
+        List<String> list = new ArrayList<>();
+        list.add("ldjfkl");
+        list.add("ldjfkl");
+        list.add("ldjfkl");
+        list.add("ldjfkl");
+        list.add("ldjfkl");
+        RecommededSearchConditionsAdapter adapter = new RecommededSearchConditionsAdapter(this, list);
+        recommendedRecyclerView.setAdapter(adapter);
+    }
+
     private void initViews() {
+        recommendedRecyclerView = findViewById(R.id.recommend_search_conditions);
         recyclerView = findViewById(R.id.recycler_view);
         clearSearchInputImage = findViewById(R.id.cancel_search_button);
         localSearchTitle = findViewById(R.id.local_search_title);
@@ -145,7 +165,7 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
             @Override
             public void execute(Realm realm) {
                 SearchConditions s = new SearchConditions();
-                s.name = reportSearchCondition;
+                s.name = reportSearchCondition.trim();
                 s.updateTime = new Date();
                 SearchConditions c = realm.copyToRealmOrUpdate(s);
             }
