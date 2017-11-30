@@ -93,16 +93,9 @@ public class RCompleteRelServer {
 	@RequestMapping(value = "/findNowReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody Map<String, Object> params) {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		Date completeDate;
-		try {
-			completeDate = dateFormat.parse(dateFormat.format(rCompletedRelParams.getCompleteDate()));
-		} catch (ParseException e) {
-			logger.error("用户获取当天报表完成情况日期格式转换异常" + e);
-			throw new RuntimeException("用户获取当天报表完成情况日期格式转换异常" + e);
-		}
+
 		List<RCompletedRelResp> rCompletedRelResp = reportCompletedRelRepo
-				.findNowReport(rCompletedRelParams.getUserId(), completeDate);
+				.findNowReport(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompletedDate());
 		// 将对象转换成map
 		Map<String, Object> rCompletedRelRespMap = Utils.objProps2Map(rCompletedRelResp, true);
 		return new AppResp(rCompletedRelRespMap, CodeDef.SUCCESS);
@@ -118,8 +111,11 @@ public class RCompleteRelServer {
 	public AppResp findByIdAndTime(@RequestBody Map<String, Object> params) {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
 		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+		String completedDate = dateFormat.format(rCompletedRelParams.getCompletedDate());
 		List<RCompletedRelResp> list = reportSubmitCaliberService
-				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompleteDate());
+				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), completedDate);
 
 		for (RCompletedRelResp rCompletedRelResp : list) {
 			// 将对象转换成map
