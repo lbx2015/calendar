@@ -10,10 +10,10 @@ import net.riking.entity.model.AppUser;
 @Repository
 public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser> {
 
-	@Query(" from AppUser where is_deleted = 1 and phone = ?1 ")
+	@Query(" from AppUser where isDeleted = 1 and phone = ?1 ")
 	AppUser findByPhone(String phone);
 
-	@Query(" from AppUser where is_deleted = 1 and openId = ?1 ")
+	@Query(" from AppUser where isDeleted = 1 and openId = ?1 ")
 	AppUser findByOpenId(String openId);
 
 	// TODO 暂时注释 @Transactional
