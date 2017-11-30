@@ -53,9 +53,9 @@ public class ReportSubmitCaliberServiceImpl implements ReportSubmitCaliberServic
 	}
 
 	@Override
-	public List<RCompletedRelResp> findCompleteReportByIdAndTime(String userId, String time) {
+	public List<RCompletedRelResp> findCompleteReportByIdAndTime(String userId, String beginDate, String endDate) {
 		// TODO Auto-generated method stub
-		List<RCompletedRelResp> list = reportSubmitCaliberDao.findCompleteReportByIdAndTime(userId, time);
+		List<RCompletedRelResp> list = reportSubmitCaliberDao.findCompleteReportByIdAndTime(userId, beginDate, endDate);
 		return list;
 	}
 

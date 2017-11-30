@@ -88,34 +88,76 @@ public class RCompleteRelServer {
 	 * 用户获取当天报表完成情况[userId,completeDate]
 	 * @param params
 	 * @return
+	 * @throws ParseException
 	 */
 	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
 	@RequestMapping(value = "/findNowReport", method = RequestMethod.POST)
-	public AppResp getAllReport(@RequestBody Map<String, Object> params) {
+	public AppResp getAllReport(@RequestBody Map<String, Object> params) throws ParseException {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date beginDate = null;
+		Date endDate = null;
 
-		List<RCompletedRelResp> rCompletedRelResp = reportCompletedRelRepo
-				.findNowReport(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompletedDate());
-		// 将对象转换成map
-		Map<String, Object> rCompletedRelRespMap = Utils.objProps2Map(rCompletedRelResp, true);
-		return new AppResp(rCompletedRelRespMap, CodeDef.SUCCESS);
+		Date completedDate = null;
+		completedDate = dateFormat.parse(dateFormat.format(rCompletedRelParams.getCompletedDate()));
+		{
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(completedDate);
+			calendar.add(Calendar.DATE, +1);// 后一天
+			endDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+		}
+		{
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(completedDate);
+			calendar.add(Calendar.DATE, -1);// 前一天
+			beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+		}
+		List<RCompletedRelResp> rCompletedRelRespList = reportCompletedRelRepo
+				.findNowReport(rCompletedRelParams.getUserId(), beginDate, endDate);
+
+		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
+		for (RCompletedRelResp rCompletedRelResp : rCompletedRelRespList) {
+			// 将对象转换成map
+			Map<String, Object> rCompletedRelRespMap = Utils.objProps2Map(rCompletedRelResp, true);
+			rCompletedRelRespMapList.add(rCompletedRelRespMap);
+		}
+
+		return new AppResp(rCompletedRelRespMapList, CodeDef.SUCCESS);
 	}
 
 	/**
 	 * 获取当天未完成和已完成的报表列表[userId,completedDate]
 	 * @param params
 	 * @return
+	 * @throws ParseException
 	 */
 	@ApiOperation(value = "获取当天未完成和已完成的报表列表", notes = "POST")
 	@RequestMapping(value = "/findByIdAndTime", method = RequestMethod.POST)
-	public AppResp findByIdAndTime(@RequestBody Map<String, Object> params) {
+	public AppResp findByIdAndTime(@RequestBody Map<String, Object> params) throws ParseException {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
 		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date beginDate = null;
+		Date endDate = null;
 
-		String completedDate = dateFormat.format(rCompletedRelParams.getCompletedDate());
-		List<RCompletedRelResp> list = reportSubmitCaliberService
-				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), completedDate);
+		Date completedDate = null;
+		completedDate = dateFormat.parse(dateFormat.format(rCompletedRelParams.getCompletedDate()));
+		{
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(completedDate);
+			calendar.add(Calendar.DATE, +1);// 后一天
+			endDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+		}
+		{
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(completedDate);
+			calendar.add(Calendar.DATE, -1);// 前一天
+			beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+		}
+		// TODO 待测试
+		List<RCompletedRelResp> list = new ArrayList<RCompletedRelResp>();
+		// List<RCompletedRelResp> list = reportCompletedRelRepo
+		// .findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), beginDate, endDate);
 
 		for (RCompletedRelResp rCompletedRelResp : list) {
 			// 将对象转换成map

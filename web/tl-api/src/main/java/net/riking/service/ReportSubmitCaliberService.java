@@ -22,7 +22,7 @@ public interface ReportSubmitCaliberService {
 	List<QueryReport> findAllReport();
 
 	// 查询用户当天已完成/未完成的报表
-	List<RCompletedRelResp> findCompleteReportByIdAndTime(String userId, String date);
+	List<RCompletedRelResp> findCompleteReportByIdAndTime(String userId, String begindate, String endDate);
 
 	// 查询历史核销/逾期任务 分页
 	List<ReportCompletedRel> findAllUserReport(ReportCompletedRel appUserReportCompleteRel);
