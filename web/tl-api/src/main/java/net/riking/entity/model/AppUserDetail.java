@@ -107,46 +107,6 @@ public class AppUserDetail implements Serializable{
 	@Column(name = "is_guide")
 	private Integer isGuide;
 
-	// @Comment("证件类型")
-	// @Column(name = "id_type", length = 4)
-	// private String idType;
-	//
-	// @Comment("证件号码")
-	// @Column(name = "id_code", length = 32)
-	// private String idCode;
-
-	// @Comment("备注信息")
-	// @Column(name = "remark", length = 500)
-	// private String remark;
-
-	private String page;// 页数
-
-	private String sTime;// 查询时间
-
-	// 验证码
-	@Transient
-	private String valiCode;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public String getId() {
 		return id;
@@ -290,30 +250,6 @@ public class AppUserDetail implements Serializable{
 
 	public void setIsGuide(Integer isGuide) {
 		this.isGuide = isGuide;
-	}
-
-	public String getPage() {
-		return page;
-	}
-
-	public void setPage(String page) {
-		this.page = page;
-	}
-
-	public String getsTime() {
-		return sTime;
-	}
-
-	public void setsTime(String sTime) {
-		this.sTime = sTime;
-	}
-
-	public String getValiCode() {
-		return valiCode;
-	}
-
-	public void setValiCode(String valiCode) {
-		this.valiCode = valiCode;
 	}
 
 	@Override
