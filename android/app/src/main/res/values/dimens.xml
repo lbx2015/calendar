@@ -16,7 +16,7 @@
     <dimen name="WheelLabelTextSize">14sp</dimen>
 
     <dimen name="tab_div_height">0.5dp</dimen>
-    <dimen name="tab_height">60dp</dimen>
+    <dimen name="tab_height">40dp</dimen>
     <!-- new style -->
     <dimen name="action_bar_text_size">17sp</dimen>
     <dimen name="action_bar_margin">15dp</dimen>
