@@ -5,12 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.riking.service.ReportAgenceFrencyService;
-import net.riking.service.ReportSubmitCaliberService;
-import net.riking.service.SysDataService;
-import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.service.repo.AppUserReportRelRepo;
 import net.riking.service.repo.ReportListRepo;
-import net.riking.service.repo.SysDaysRepo;
 
 /**
  * app端报表配置的增删改查
@@ -23,20 +18,20 @@ public class AppReportListServer {
 	@Autowired
 	ReportListRepo reportListRepo;
 
-	@Autowired
-	AppUserReportRelRepo appUserReportRepo;
-
-	@Autowired
-	SysDataService sysDataservice;
-
-	@Autowired
-	SysDateServiceImpl sysDateService;
-
-	@Autowired
-	ReportSubmitCaliberService reportSubmitCaliberService;
-
-	@Autowired
-	SysDaysRepo sysDaysRepo;
+	// @Autowired
+	// AppUserReportRelRepo appUserReportRepo;
+	//
+	// @Autowired
+	// SysDataService sysDataservice;
+	//
+	// @Autowired
+	// SysDateServiceImpl sysDateService;
+	//
+	// @Autowired
+	// ReportSubmitCaliberService reportSubmitCaliberService;
+	//
+	// @Autowired
+	// SysDaysRepo sysDaysRepo;
 
 	@Autowired
 	ReportAgenceFrencyService reportAgenceFrencyService;

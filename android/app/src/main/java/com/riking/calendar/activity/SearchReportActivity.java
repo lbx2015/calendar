@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
+import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUserReportRel;
@@ -40,7 +41,7 @@ import io.realm.Sort;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class SearchReportActivity extends AppCompatActivity implements SubscribeReport {
+public class SearchReportActivity extends AppCompatActivity implements SubscribeReport, PerformSearch {
 
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
     public boolean editMode = false;
@@ -116,7 +117,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
                     reportSearchCondition = s.toString();
                     performSearch();
                     clearSearchInputImage.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     clearSearchInputImage.setVisibility(View.GONE);
                 }
             }
@@ -215,5 +216,12 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     @Override
     public boolean isInEditMode() {
         return editMode;
+    }
+
+    @Override
+    public void performSearchByLocalHistory(String searchCondition) {
+        reportSearchCondition = searchCondition;
+        performSearch();
+        saveToRealm();
     }
 }

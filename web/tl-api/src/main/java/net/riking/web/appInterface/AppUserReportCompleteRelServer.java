@@ -5,9 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,16 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.Period;
-import net.riking.entity.model.QureyResulte;
 import net.riking.entity.model.ReportCompletedRel;
-import net.riking.entity.model.SysDays;
-import net.riking.service.ReportSubmitCaliberService;
+import net.riking.entity.resp.RCompletedRelResp;
 import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.service.repo.AppUserReportCompletRelRepo;
-import net.riking.service.repo.AppUserReportRelRepo;
-import net.riking.service.repo.ReportSubmitCaliberRepo;
-import net.riking.service.repo.SysDaysRepo;
 
 /***
  * 获取完成报表
@@ -38,35 +29,35 @@ import net.riking.service.repo.SysDaysRepo;
 @RestController
 @RequestMapping(value = "/appUserReportCompleteRel")
 public class AppUserReportCompleteRelServer {
-	@Autowired
-	AppUserReportCompletRelRepo appUserReportCompleteRelRepo;
+	// @Autowired
+	// AppUserReportCompletRelRepo appUserReportCompleteRelRepo;
 
-	@Autowired
-	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
-
-	@Autowired
-	ReportSubmitCaliberService reportSubmitCaliberService;
-
-	@Autowired
-	AppUserReportRelRepo appUserReportRelRepo;
-
-	@Autowired
-	SysDaysRepo sysDaysRepo;
+	// @Autowired
+	// ReportSubmitCaliberRepo reportSubmitCaliberRepo;
+	//
+	// @Autowired
+	// ReportSubmitCaliberService reportSubmitCaliberService;
+	//
+	// @Autowired
+	// AppUserReportRelRepo appUserReportRelRepo;
+	//
+	// @Autowired
+	// SysDaysRepo sysDaysRepo;
 
 	@Autowired
 	SysDateServiceImpl sysDateService;
 
-	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public AppResp save(@RequestBody ReportCompletedRel appUserReportCompleteRel) {
-		appUserReportCompleteRelRepo.save(appUserReportCompleteRel);
-		return new AppResp(CodeDef.SUCCESS);
-	}
+	// @ApiOperation(value = "用户报表完成情况新增", notes = "POST")
+	// @RequestMapping(value = "/save", method = RequestMethod.POST)
+	// public AppResp save(@RequestBody ReportCompletedRel appUserReportCompleteRel) {
+	// appUserReportCompleteRelRepo.save(appUserReportCompleteRel);
+	// return new AppResp(CodeDef.SUCCESS);
+	// }
 
 	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody ReportCompletedRel completeRel) {
-		List<QureyResulte> completeRels = new ArrayList<QureyResulte>();
+		List<RCompletedRelResp> completeRels = new ArrayList<RCompletedRelResp>();
 		// completeRels = appUserReportCompleteRelRepo.getReportId(completeRel.getAppUserId(),
 		// completeRel.getCompleteDate());
 		return new AppResp(completeRels, CodeDef.SUCCESS);
@@ -162,25 +153,19 @@ public class AppUserReportCompleteRelServer {
 		return list;
 	}
 
-	/*public Set<String> getReportList(String date) {
-		SysDays day = sysDaysRepo.findOne(date);
-		Set<String> reportId = new HashSet<>();
-		Period periods = sysDateService.getDate(date, "0");
-		if (day.getIsWork() == 1) {
-			Period period = sysDateService.getDate(date, "1");
-			reportId = reportSubmitCaliberRepo.findByWorkDatefromReportId(period.getWeek(), period.getTen(),
-					period.getMonth(), period.getSeason(), period.getHalfYear(), period.getYear());
-			Set<String> reportIdAdd = reportSubmitCaliberRepo.findByFreeDatefromReportId(periods.getWeek(),
-					periods.getTen(), periods.getMonth(), periods.getSeason(), periods.getHalfYear(),
-					periods.getYear());
-			for (String string : reportIdAdd) {
-				reportId.add(string);
-			}
-		} else {
-			reportId = reportSubmitCaliberRepo.findByFreeDatefromReportId(periods.getWeek(), periods.getTen(),
-					periods.getMonth(), periods.getSeason(), periods.getHalfYear(), periods.getYear());
-		}
-
-		return reportId;
-	}*/
+	/*
+	 * public Set<String> getReportList(String date) { SysDays day = sysDaysRepo.findOne(date);
+	 * Set<String> reportId = new HashSet<>(); Period periods = sysDateService.getDate(date, "0");
+	 * if (day.getIsWork() == 1) { Period period = sysDateService.getDate(date, "1"); reportId =
+	 * reportSubmitCaliberRepo.findByWorkDatefromReportId(period.getWeek(), period.getTen(),
+	 * period.getMonth(), period.getSeason(), period.getHalfYear(), period.getYear()); Set<String>
+	 * reportIdAdd = reportSubmitCaliberRepo.findByFreeDatefromReportId(periods.getWeek(),
+	 * periods.getTen(), periods.getMonth(), periods.getSeason(), periods.getHalfYear(),
+	 * periods.getYear()); for (String string : reportIdAdd) { reportId.add(string); } } else {
+	 * reportId = reportSubmitCaliberRepo.findByFreeDatefromReportId(periods.getWeek(),
+	 * periods.getTen(), periods.getMonth(), periods.getSeason(), periods.getHalfYear(),
+	 * periods.getYear()); }
+	 * 
+	 * return reportId; }
+	 */
 }

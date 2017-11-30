@@ -9,7 +9,9 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 
 @Repository
+public interface AppUserDetailRepo extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser> {
 public interface AppUserDetailRepo extends JpaRepository<AppUserDetail, String>, JpaSpecificationExecutor<AppUserDetail> {
+
 
 //	@Query(" from AppUser where is_deleted = 1 and phone = ?1 ")
 //	AppUser findByOne(String id);

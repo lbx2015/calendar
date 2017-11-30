@@ -1,9 +1,5 @@
 package net.riking.entity.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
-import net.riking.core.annos.Comment;
 import net.riking.core.entity.PageQuery;
 
 /**
@@ -13,14 +9,8 @@ import net.riking.core.entity.PageQuery;
  * @since 1.0
  */
 public class RCRelUnionPkId extends PageQuery {
-	@Id
-	@Comment("用户ID")
-	@Column(name = "user_id", length = 32)
-	private String user_id;
+	private String userId;
 
-	@Id
-	@Comment("报表ID")
-	@Column(name = "report_id", length = 32)
 	private String reportId;
 
 	public RCRelUnionPkId() {
@@ -28,18 +18,18 @@ public class RCRelUnionPkId extends PageQuery {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RCRelUnionPkId(String user_id, String reportId) {
+	public RCRelUnionPkId(String userId, String reportId) {
 		super();
-		this.user_id = user_id;
+		this.userId = userId;
 		this.reportId = reportId;
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getReportId() {
@@ -55,7 +45,7 @@ public class RCRelUnionPkId extends PageQuery {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((reportId == null) ? 0 : reportId.hashCode());
-		result = prime * result + ((user_id == null) ? 0 : user_id.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -73,10 +63,10 @@ public class RCRelUnionPkId extends PageQuery {
 				return false;
 		} else if (!reportId.equals(other.reportId))
 			return false;
-		if (user_id == null) {
-			if (other.user_id != null)
+		if (userId == null) {
+			if (other.userId != null)
 				return false;
-		} else if (!user_id.equals(other.user_id))
+		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
 	}

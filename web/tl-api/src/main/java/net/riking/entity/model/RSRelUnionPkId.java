@@ -18,22 +18,22 @@ public class RSRelUnionPkId implements Serializable {
 	public RSRelUnionPkId() {
 	}
 
-	public RSRelUnionPkId(String user_id, String reportId) {
+	public RSRelUnionPkId(String userId, String reportId) {
 		super();
-		this.user_id = user_id;
+		this.userId = userId;
 		this.reportId = reportId;
 	}
 
-	private String user_id;
+	private String userId;
 
 	private String reportId;
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getReportId() {
@@ -49,7 +49,7 @@ public class RSRelUnionPkId implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((reportId == null) ? 0 : reportId.hashCode());
-		result = prime * result + ((user_id == null) ? 0 : user_id.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -67,10 +67,10 @@ public class RSRelUnionPkId implements Serializable {
 				return false;
 		} else if (!reportId.equals(other.reportId))
 			return false;
-		if (user_id == null) {
-			if (other.user_id != null)
+		if (userId == null) {
+			if (other.userId != null)
 				return false;
-		} else if (!user_id.equals(other.user_id))
+		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
 	}

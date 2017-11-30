@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.SearchReportActivity;
+import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.viewholder.OneTextViewHolder;
 
@@ -18,10 +18,10 @@ import io.realm.RealmResults;
 public class LocalSearchConditionAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
     public List<SearchConditions> mList;
-    private SearchReportActivity activity;
+    private PerformSearch searchListener;
 
-    public LocalSearchConditionAdapter(SearchReportActivity activity, RealmResults<SearchConditions> realmResults) {
-        this.activity = activity;
+    public LocalSearchConditionAdapter(PerformSearch searchListener, RealmResults<SearchConditions> realmResults) {
+        this.searchListener = searchListener;
         mList = realmResults;
     }
 
@@ -39,11 +39,13 @@ public class LocalSearchConditionAdapter extends RecyclerView.Adapter<OneTextVie
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                activity.reportSearchCondition = m.name;
-                activity.performSearch();
-                activity.saveToRealm();
+                searchListener.performSearchByLocalHistory(m.name);
             }
         });
+
+        if (h.divider != null && i == getItemCount() - 1) {
+            h.divider.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -51,7 +53,7 @@ public class LocalSearchConditionAdapter extends RecyclerView.Adapter<OneTextVie
         int size = mList.size();
         //empty notice
         if (size == 0) {
-            activity.localSearchConditionIsEmpty();
+            searchListener.localSearchConditionIsEmpty();
         }
         return size;
     }

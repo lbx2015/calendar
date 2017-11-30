@@ -131,6 +131,7 @@
         <activity android:name=".activity.InvitePersonActivity" />
         <activity android:name=".activity.WriteAnswerActivity" />
         <activity android:name=".activity.CommentsActivity" />
+        <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RaiseQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"

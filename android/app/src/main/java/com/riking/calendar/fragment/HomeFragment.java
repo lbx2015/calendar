@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RaiseQuestionActivity;
+import com.riking.calendar.activity.SearchActivity;
 import com.riking.calendar.util.ZGoto;
 
 import java.util.ArrayList;
@@ -92,7 +93,17 @@ public class HomeFragment extends Fragment {
                 ZGoto.to(getActivity(), RaiseQuestionActivity.class);
             }
         });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickSearchButton(v);
+            }
+        });
         return v;
+    }
+
+    public void onClickSearchButton(final View v) {
+        ZGoto.to(getActivity(), SearchActivity.class);
     }
 
 

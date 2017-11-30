@@ -5,9 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;

@@ -2,6 +2,8 @@ package net.riking.web.app;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +20,6 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.TQuestionRel;
 import net.riking.entity.model.TopicRel;
 import net.riking.entity.params.HomeParams;
-import net.riking.service.repo.QuestionInfoRepo;
-import net.riking.service.repo.TopicInfoRepo;
 import net.riking.util.Utils;
 
 /**
@@ -31,15 +31,10 @@ import net.riking.util.Utils;
 @RestController
 @RequestMapping(value = "/homePage")
 public class HomePageServer {
-
-	@Autowired
-	TopicInfoRepo topicInfoRepo;
+	protected final transient Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
 	AppUserRepo appUserRepo;
-
-	@Autowired
-	QuestionInfoRepo questionInfoRepo;
 
 	@Autowired
 	TQuestionRelRepo tQuestionRelRepo;
@@ -112,6 +107,7 @@ public class HomePageServer {
 		// }
 		// break;
 		// default:
+		// logger.error("请求方向参数异常：direct:" + commonParams.getDirect());
 		// throw new RuntimeException("请求方向参数异常：direct:" + commonParams.getDirect());
 		// }
 		// for (NewsInfo newsInfo : newsInfoList) {
@@ -154,6 +150,7 @@ public class HomePageServer {
 					// 如果传过来是取消屏蔽，把之前一条记录物理删除
 					tQuestionRelRepo.deleteByUIdAndTqId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
 				} else {
+					logger.error("参数异常：enabled=" + homeParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + homeParams.getEnabled());
 				}
 				break;
@@ -171,10 +168,12 @@ public class HomePageServer {
 					// 如果传过来是取消屏蔽，把之前一条记录物理删除
 					topicRelRepo.deleteByUIdAndTopId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
 				} else {
+					logger.error("参数异常：enabled=" + homeParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + homeParams.getEnabled());
 				}
 				break;
 			default:
+				logger.error("对象类型异常，objType=" + homeParams.getObjType());
 				throw new RuntimeException("对象类型异常，objType=" + homeParams.getObjType());
 		}
 

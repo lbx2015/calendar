@@ -1,28 +1,7 @@
 package net.riking.web.appInterface;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.ApiOperation;
-import net.riking.config.CodeDef;
-import net.riking.entity.AppResp;
-import net.riking.entity.model.AppUser;
-import net.riking.entity.model.ReportCompletedRel;
-import net.riking.entity.model.ReportFrequency;
-import net.riking.service.ReportLisService;
-import net.riking.service.ReportSubmitCaliberService;
-import net.riking.service.SysDataService;
-import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.service.repo.AppUserReportCompletRelRepo;
-import net.riking.service.repo.AppUserReportRelRepo;
-import net.riking.service.repo.SysDaysRepo;
-import net.riking.service.repo.IndustryRepo;
-import net.riking.service.repo.ReportListRepo;
 
 /**
  * 用户获取所属的报表信息
@@ -32,32 +11,32 @@ import net.riking.service.repo.ReportListRepo;
 @RequestMapping(value = "/appUserReport")
 public class AppUserReportRelServer {
 
-	@Autowired
-	AppUserReportRelRepo appUserReportRepo;
-
-	@Autowired
-	ReportListRepo reportListRepo;
-
-	@Autowired
-	SysDataService sysDataservice;
-
-	@Autowired
-	SysDateServiceImpl getDateService;
-
-	@Autowired
-	ReportSubmitCaliberService reportSubmitCaliberService;
-
-	@Autowired
-	SysDaysRepo sysDaysRepo;
-
-	@Autowired
-	IndustryRepo industryRepo;
-
-	@Autowired
-	AppUserReportCompletRelRepo appUserReportCompletRelRepo;
-
-	@Autowired
-	ReportLisService reportLisService;
+	// @Autowired
+	// AppUserReportRelRepo appUserReportRepo;
+	//
+	// @Autowired
+	// ReportListRepo reportListRepo;
+	//
+	// @Autowired
+	// SysDataService sysDataservice;
+	//
+	// @Autowired
+	// SysDateServiceImpl getDateService;
+	//
+	// @Autowired
+	// ReportSubmitCaliberService reportSubmitCaliberService;
+	//
+	// @Autowired
+	// SysDaysRepo sysDaysRepo;
+	//
+	// @Autowired
+	// IndustryRepo industryRepo;
+	//
+	// // @Autowired
+	// // AppUserReportCompletRelRepo appUserReportCompletRelRepo;
+	//
+	// @Autowired
+	// ReportLisService reportLisService;
 
 	// TODO 先注释后面要打开
 	// @ApiOperation(value = "app获取用户下的报表", notes = "POST")
@@ -135,13 +114,13 @@ public class AppUserReportRelServer {
 	// return new AppResp(CodeDef.SUCCESS);
 	// }
 
-	@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
-	@RequestMapping(value = "/findUserReportList", method = RequestMethod.POST)
-	public AppResp findUserReportList(@RequestBody AppUser appUser) {
-		// List<Report> list = appUserReportRepo.findUserReportList(appUser.getId());
-		List<ReportFrequency> list = reportLisService.findAppUserReportById(appUser.getId());
-		return new AppResp(list, CodeDef.SUCCESS);
-	}
+	// @ApiOperation(value = "查询用户订阅的报表", notes = "POST")
+	// @RequestMapping(value = "/findUserReportList", method = RequestMethod.POST)
+	// public AppResp findUserReportList(@RequestBody AppUser appUser) {
+	// // List<Report> list = appUserReportRepo.findUserReportList(appUser.getId());
+	// List<ReportFrequency> list = reportLisService.findAppUserReportById(appUser.getId());
+	// return new AppResp(list, CodeDef.SUCCESS);
+	// }
 	// TODO 先注释，后面要打开
 	// @ApiOperation(value = "更新用户报表订阅", notes = "POST")
 	// @RequestMapping(value = "/userAddReportEdit", method = RequestMethod.POST)
@@ -218,11 +197,12 @@ public class AppUserReportRelServer {
 	// return new AppResp(CodeDef.SUCCESS);
 	// }
 
-	@ApiOperation(value = "历史核销和逾期报表", notes = "POST")
-	@RequestMapping(value = "/findAllUserReport", method = RequestMethod.POST)
-	public AppResp findAllUserReport(@RequestBody ReportCompletedRel appUserReportCompleteRel) {
-		List<ReportCompletedRel> list = reportSubmitCaliberService.findAllUserReport(appUserReportCompleteRel);
-		return new AppResp(list, CodeDef.SUCCESS);
-	}
+	// @ApiOperation(value = "历史核销和逾期报表", notes = "POST")
+	// @RequestMapping(value = "/findAllUserReport", method = RequestMethod.POST)
+	// public AppResp findAllUserReport(@RequestBody ReportCompletedRel appUserReportCompleteRel) {
+	// List<ReportCompletedRel> list =
+	// reportSubmitCaliberService.findAllUserReport(appUserReportCompleteRel);
+	// return new AppResp(list, CodeDef.SUCCESS);
+	// }
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,7 +30,7 @@ public class ReportCompletedRel extends PageQuery {
 	@Id
 	@Comment("用户ID")
 	@Column(name = "user_id", length = 32)
-	private String user_id;
+	private String userId;
 
 	@Id
 	@Comment("报表ID")
@@ -38,7 +39,7 @@ public class ReportCompletedRel extends PageQuery {
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@DateTimeFormat(pattern = "yyyyMMdd")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
@@ -51,16 +52,38 @@ public class ReportCompletedRel extends PageQuery {
 	// @Column(name = "is_complete")
 	// private Integer isComplete; // 是否完成（0-未完成；1-已完成）
 
+	@Transient
 	private String reportName;// 报表名称
 
+	@Transient
 	private String strFrequency;// 频度
 
-	public String getUser_id() {
-		return user_id;
+	public ReportCompletedRel(String reportId) {
+		super();
+		this.reportId = reportId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public ReportCompletedRel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public ReportCompletedRel(String userId, String reportId, Date createdTime, String reportName,
+			String strFrequency) {
+		super();
+		this.userId = userId;
+		this.reportId = reportId;
+		this.createdTime = createdTime;
+		this.reportName = reportName;
+		this.strFrequency = strFrequency;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getReportId() {
