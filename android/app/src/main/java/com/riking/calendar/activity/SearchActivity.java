@@ -23,10 +23,9 @@ import android.widget.LinearLayout;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.RecommededSearchConditionsAdapter;
-import com.riking.calendar.fragment.ExcellentAnswererFragment;
+import com.riking.calendar.fragment.SearchNewsFragment;
 import com.riking.calendar.fragment.SearchPersonFragment;
 import com.riking.calendar.fragment.SearchReportsFragment;
-import com.riking.calendar.fragment.SearchNewsFragment;
 import com.riking.calendar.fragment.SearchTopicFragment;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
@@ -49,7 +48,7 @@ import io.realm.Sort;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class SearchActivity extends AppCompatActivity implements PerformSearch {
+public class SearchActivity extends AppCompatActivity {
 
     //viewpager
     private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new SearchReportsFragment(), new SearchTopicFragment(), new SearchPersonFragment(), new SearchNewsFragment()};
@@ -107,7 +106,17 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //set adapters
         RealmResults<SearchConditions> realmResults = ZDB.Instance.getRealm().where(SearchConditions.class).findAllSorted("updateTime", Sort.DESCENDING);
-        localSearchConditionAdapter = new LocalSearchConditionAdapter(this, realmResults);
+        localSearchConditionAdapter = new LocalSearchConditionAdapter(new PerformSearch() {
+            @Override
+            public void performSearchByLocalHistory(String searchCondition) {
+                SearchActivity.this.performSearchByLocalHistory(searchCondition);
+            }
+
+            @Override
+            public void localSearchConditionIsEmpty(boolean isEmpty) {
+                SearchActivity.this.localSearchConditionIsEmpty(isEmpty);
+            }
+        }, realmResults);
         //register realm change listener
         ZDB.Instance.getRealm().addChangeListener(new RealmChangeListener<Realm>() {
             @Override
@@ -128,7 +137,17 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
         list.add("ldjfkl");
         list.add("ldjfkl");
         list.add("ldjfkl");
-        RecommededSearchConditionsAdapter adapter = new RecommededSearchConditionsAdapter(this, list);
+        RecommededSearchConditionsAdapter adapter = new RecommededSearchConditionsAdapter(new PerformSearch() {
+            @Override
+            public void performSearchByLocalHistory(String searchCondition) {
+                
+            }
+
+            @Override
+            public void localSearchConditionIsEmpty(boolean isEmpty) {
+
+            }
+        }, list);
         recommendedRecyclerView.setAdapter(adapter);
     }
 
@@ -186,7 +205,6 @@ public class SearchActivity extends AppCompatActivity implements PerformSearch {
         });*/
     }
 
-    @Override
     public void performSearchByLocalHistory(String searchCondition) {
         reportSearchCondition = searchCondition;
         performSearch();
