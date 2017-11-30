@@ -22,6 +22,10 @@ public class LoginParams implements Serializable {
 	private String verifyCode;
 	//类型：1-手机号,2-微信号
 	private Integer type;
+	//客户端类型：1-IOS；2-Android
+	private Integer clientType;
+	//手机端macId
+	private String macId;
 	
 	public String getPhone() {
 		return phone;
@@ -46,6 +50,18 @@ public class LoginParams implements Serializable {
 	}
 	public void setType(Integer type) {
 		this.type = type;
+	}
+	public Integer getClientType() {
+		return clientType;
+	}
+	public void setClientType(Integer clientType) {
+		this.clientType = clientType;
+	}
+	public String getMacId() {
+		return macId;
+	}
+	public void setMacId(String macId) {
+		this.macId = macId;
 	}
 	
 }

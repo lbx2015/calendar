@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +19,13 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
+import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.entity.model.AliSme;
 @Component("smsUtil")
 public class SmsUtil {
+	private static final Logger logger = LogManager.getLogger("SmsUtil");
 	@Autowired
 	Config config;
 	//产品名称:云通信短信API产品,开发者无需替换  
@@ -109,9 +113,15 @@ public class SmsUtil {
      */
     public boolean checkValidCode(String phone, String verifyCode) throws NullPointerException{
     	if(StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(verifyCode)){
-    		String code = RedisUtil.getInstall().getString(Const.VALID_ + phone.trim());
-    		if(code.equals(verifyCode)){
-    			return true;
+    		Object o = RedisUtil.getInstall().getObject(Const.VALID_ + phone.trim());
+    		String code = o == null? null : o.toString();
+    		logger.info("code={}",code);
+    		if(StringUtils.isNotBlank(code)){
+	    		if(code.equals(verifyCode)){
+	    			return true;
+	    		}
+    		}else{
+    			throw new NullPointerException(CodeDef.EMP.CHECK_CODE_TIME_OUT+"");
     		}
     	}else{
     		throw new NullPointerException("phone={"+phone+"} and verifyCode={"+verifyCode+"} is empty");

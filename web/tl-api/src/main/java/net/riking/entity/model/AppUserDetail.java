@@ -1,13 +1,11 @@
 package net.riking.entity.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.Transient;
 
 import net.riking.core.annos.Comment;
 
@@ -20,26 +18,19 @@ import net.riking.core.annos.Comment;
 @Comment("用户详情表")
 @Entity
 @Table(name = "t_appuser_detail")
-public class AppUserDetail {
+public class AppUserDetail implements Serializable{
 
-	public AppUserDetail() {
-		super();
-	}
 
 	@Id
-	@GeneratedValue(generator = "idGenerator")
-	@GenericGenerator(name = "idGenerator", strategy = "assigned")
-	@Column(name = "ID", length = 32)
+//	@GeneratedValue(generator = "idGenerator")
+//	@GenericGenerator(name = "idGenerator", strategy = "assigned")
+	@Column(name = "id", length = 32)
 	@Comment("pk 同用户登录表t_app_user的id一致")
 	private String id;
 
 	@Comment("真实姓名")
 	@Column(name = "real_name", length = 32)
 	private String realName;
-
-	@Comment("用户邮箱")
-	@Column(name = "email", length = 32)
-	private String email;
 
 	@Comment("用户公司")
 	@Column(name = "company_name", length = 32)
@@ -67,7 +58,7 @@ public class AppUserDetail {
 
 	@Comment("手机类型 1-IOS;2-Android;3-其它")
 	@Column(name = "phone_type", length = 1)
-	private String phoneType;
+	private Integer phoneType;
 
 	@Comment("积分")
 	@Column(name = "integral")
@@ -103,26 +94,6 @@ public class AppUserDetail {
 	@Column(name = "is_guide")
 	private Integer isGuide;
 
-	// @Comment("证件类型")
-	// @Column(name = "id_type", length = 4)
-	// private String idType;
-	//
-	// @Comment("证件号码")
-	// @Column(name = "id_code", length = 32)
-	// private String idCode;
-
-	// @Comment("备注信息")
-	// @Column(name = "remark", length = 500)
-	// private String remark;
-
-	private String page;// 页数
-
-	private String sTime;// 查询时间
-
-	// 验证码
-	@Transient
-	private String valiCode;
-
 	public String getId() {
 		return id;
 	}
@@ -137,14 +108,6 @@ public class AppUserDetail {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getCompanyName() {
@@ -195,11 +158,11 @@ public class AppUserDetail {
 		this.phoneMacid = phoneMacid;
 	}
 
-	public String getPhoneType() {
+	public Integer getPhoneType() {
 		return phoneType;
 	}
 
-	public void setPhoneType(String phoneType) {
+	public void setPhoneType(Integer phoneType) {
 		this.phoneType = phoneType;
 	}
 
@@ -265,30 +228,6 @@ public class AppUserDetail {
 
 	public void setIsGuide(Integer isGuide) {
 		this.isGuide = isGuide;
-	}
-
-	public String getPage() {
-		return page;
-	}
-
-	public void setPage(String page) {
-		this.page = page;
-	}
-
-	public String getsTime() {
-		return sTime;
-	}
-
-	public void setsTime(String sTime) {
-		this.sTime = sTime;
-	}
-
-	public String getValiCode() {
-		return valiCode;
-	}
-
-	public void setValiCode(String valiCode) {
-		this.valiCode = valiCode;
 	}
 
 	@Override

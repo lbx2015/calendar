@@ -1,6 +1,8 @@
 package net.riking.web.app;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -14,12 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.core.utils.UuidUtils;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.params.LoginParams;
+import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
+import net.riking.util.EncryptionUtil;
 import net.riking.util.SmsUtil;
 import net.riking.util.Utils;
 
@@ -59,17 +65,53 @@ public class LoginServer {
 		LoginParams loginParams = Utils.map2Obj(params, LoginParams.class);
 		
 		AppUser user = null;
+		AppUserDetail detail = null;
 		switch (loginParams.getType().intValue()) {
 			case Const.LOGIN_REGIST_TYPE_PHONE:
-				if(StringUtils.isBlank(loginParams.getPhone())){
+				if(StringUtils.isBlank(loginParams.getPhone())){//手机号登录或注册
 					return new AppResp(CodeDef.EMP.PHONE_NULL_ERROR, CodeDef.EMP.PHONE_NULL_ERROR_DESC);
 				}
-				user = appUserService.findByPhone(loginParams.getPhone());
-				break;
-			case Const.LOGIN_REGIST_TYPE_WECHAT:
 				if(StringUtils.isBlank(loginParams.getVerifyCode())){
 					return new AppResp(CodeDef.EMP.VERIFYCODE_NULL_ERROR, CodeDef.EMP.VERIFYCODE_NULL_ERROR_DESC);
 				}
+				
+				try {
+					boolean isRn = smsUtil.checkValidCode(loginParams.getPhone(), loginParams.getVerifyCode());
+					if(!isRn){
+						return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					if(e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT+"")){
+						return new AppResp(CodeDef.EMP.CHECK_CODE_TIME_OUT, CodeDef.EMP.CHECK_CODE_TIME_OUT_DESC);
+					}else{
+						return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
+					}
+					
+				}
+				
+				user = appUserService.findByPhone(loginParams.getPhone());
+				break;
+			case Const.LOGIN_REGIST_TYPE_WECHAT://微信登录或注册
+				if(StringUtils.isBlank(loginParams.getVerifyCode())){
+					return new AppResp(CodeDef.EMP.VERIFYCODE_NULL_ERROR, CodeDef.EMP.VERIFYCODE_NULL_ERROR_DESC);
+				}
+				
+				try {
+					boolean isRn = smsUtil.checkValidCode(loginParams.getPhone(), loginParams.getVerifyCode());
+					if(!isRn){
+						return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+					if(e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT+"")){
+						return new AppResp(CodeDef.EMP.CHECK_CODE_TIME_OUT, CodeDef.EMP.CHECK_CODE_TIME_OUT_DESC);
+					}else{
+						return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
+					}
+					
+				}
+				
 				user = appUserService.findByOpenId(loginParams.getOpenId());
 				break;
 			default:
@@ -77,38 +119,52 @@ public class LoginServer {
 		}
 		
 		if(user != null){
+			/** 有用户数据,登录步骤 */
 			//判断禁用用户给提示
 			if(user.getEnabled().intValue() == Const.INVALID){
 				return new AppResp(CodeDef.EMP.USER_INVALID_ERROR, CodeDef.EMP.USER_INVALID_ERROR_DESC);
 			}
+			detail = appUserService.findDetailByOne(user.getId());
+			user.setDetail(detail);
+		}else{
+			//注册步骤
+			user = new AppUser();
+			user.setPhone(loginParams.getPhone());
+			user.setUserName(loginParams.getPhone());
+			user.setOpenId(loginParams.getOpenId());
 			
-			return new AppResp();
+			detail = new AppUserDetail();
+			detail.setPhoneMacid(loginParams.getMacId());
+			detail.setPhoneType(loginParams.getClientType());
+			user = appUserService.register(user, detail);
 		}
 		
-		boolean isRn = smsUtil.checkValidCode(loginParams.getPhone(), loginParams.getVerifyCode());
-		if(!isRn){
-			return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
+		AppUserResp userResp = new AppUserResp();
+		userResp.setUserId(user.getId());
+		userResp.setUserName(user.getUserName());
+		userResp.setOpenId(user.getOpenId());
+		userResp.setEmail(user.getEmail());
+		userResp.setPhone(user.getPhone());
+		userResp.setRealName(user.getDetail().getRealName());
+		userResp.setCompanyName(user.getDetail().getCompanyName());
+		userResp.setSex(user.getDetail().getSex());
+		userResp.setBirthday(user.getDetail().getBirthday());
+		userResp.setAddress(user.getDetail().getAddress());
+		userResp.setDescription(user.getDetail().getDescription());
+		userResp.setPhoneMacid(user.getDetail().getPhoneMacid());
+		userResp.setIntegral(user.getDetail().getIntegral());
+		userResp.setExperience(user.getDetail().getExperience());
+		if(StringUtils.isNotBlank(user.getDetail().getPhotoUrl())){
+			userResp.setPhotoUrl(Const.TL_PHOTO_PATH + user.getDetail().getPhotoUrl());
 		}
+		userResp.setRemindTime(user.getDetail().getRemindTime());
+		userResp.setIsSubscribe(user.getDetail().getIsSubscribe());
+		userResp.setPositionId(user.getDetail().getPositionId());
+		userResp.setIsGuide(user.getDetail().getIsGuide());
 		
-		return null;
-		
-//		if (StringUtils.isBlank(appUser.getDeleteState())) {
-//			appUser.setDeleteState("1");
-//		}
-//		if (StringUtils.isBlank(appUser.getEnabled())) {
-//			appUser.setEnabled("1");
-//		}
-//		Example<AppUser> example = Example.of(appUser, ExampleMatcher.matchingAll());
-//		AppUser appUser2 = appUserRepo.findOne(example);
-//		if (appUser2 != null) {
-//			session.setAttribute("currentUser", appUser2);
-//			return new AppResp(appUser2, CodeDef.SUCCESS);
-//		}
-//		List<AppUser> list = appUserRepo.findByDeleteStateAndTelephone("1", appUser.getPhone());
-//		if (null != list && list.size() > 0) {
-//			return new AppResp(CodeDef.EMP.USER_PASS_ERR);
-//		}
-//		return new AppResp(CodeDef.EMP.DATA_NOT_FOUND);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("user", userResp);
+		return new AppResp(result, CodeDef.SUCCESS);
 
 	}
 

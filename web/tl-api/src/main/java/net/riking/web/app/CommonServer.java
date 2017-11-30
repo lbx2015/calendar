@@ -92,7 +92,7 @@ public class CommonServer {
 			return new AppResp(CodeDef.EMP.SMS_SEND_ERROR, sendSmsResponse.getMessage());
 		}
 		logger.info("手机{}获取验证码成功", verifyCode);
-		RedisUtil.getInstall().setObject(Const.VALID_ + phone, Const.VALID_CODE_TIME, verifyCode);
+		RedisUtil.getInstall().setObject(Const.VALID_ + phone.trim(), Const.VALID_CODE_TIME, verifyCode);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("verifyCode", verifyCode);
 		return new AppResp(result, CodeDef.SUCCESS);

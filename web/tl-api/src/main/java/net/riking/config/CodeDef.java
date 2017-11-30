@@ -7,9 +7,9 @@ public class CodeDef {
 	
 	public static final class EMP{
 		public static final short NAME_IS_NULL = 1001;
-		//通用错误
+		//服务器异常
 		public static final short GENERAL_ERR = -999;
-		public static final String GENERAL_ERR_DESC = "通用错误";
+		public static final String GENERAL_ERR_DESC = "服务器异常";
 		//用户密码错误
 		public static final short USER_PASS_ERR = -998;
 		public static final String USER_PASS_ERR_DESC = "用户密码错误";

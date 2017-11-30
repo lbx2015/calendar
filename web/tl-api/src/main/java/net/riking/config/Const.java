@@ -37,8 +37,8 @@ public class Const {
 	/* 验证码有效时间 */
 	public static final String VALID_ = "VALID_";
 
-	/* 验证码有效时间 */
-	public static final Integer VALID_CODE_TIME = 120;
+	/* 验证码有效时间 5分钟 */
+	public static final Integer VALID_CODE_TIME = 60 * 5 ;
 
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
 
@@ -62,6 +62,13 @@ public class Const {
 
 	/** -------------------数据是否有效 1有效，0无效 end-------------------------- */
 
+	/** -------------------男女常量  begin-------------------------- */
+	
+	public static final int USER_SEX_MAN = 1;//男
+	public static final int USER_SEX_WOMAN = 0;//女
+	
+	/** --------------------男女常量 end-------------------------- */
+	
 	/** -------------------请求方向 begin-------------------------- */
 
 	public static final String DIRECT_UP = "up";

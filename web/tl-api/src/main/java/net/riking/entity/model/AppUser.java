@@ -3,8 +3,7 @@ package net.riking.entity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.springframework.data.annotation.Transient;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -56,7 +55,8 @@ public class AppUser extends BaseProp {
 	/**
 	 * 用户详情信息
 	 */
-	public AppUserDetail detail;
+	@Transient
+	private AppUserDetail detail;
 
 	public String getUserName() {
 		return userName;

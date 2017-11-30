@@ -53,18 +53,18 @@ public class RedisUtil {
 		// 池基本配置
 		JedisPoolConfig config = new JedisPoolConfig();
 		
-//		System.out.println("ip="+redisConfig.getIp());
-//		System.out.println("port="+redisConfig.getPort());
-//		System.out.println("maxTotal="+redisConfig.getMaxTotal());
-//		System.out.println("maxIdle="+redisConfig.getMaxIdle());
-//		System.out.println("maxWaitMillis="+redisConfig.getMaxWaitMillis());
-//		System.out.println("testOnBorrow="+redisConfig.getTestOnBorrow());
-		
 		config.setMaxTotal(redisConfig.getMaxTotal());
 		config.setMaxIdle(redisConfig.getMaxIdle());
 		config.setMaxWaitMillis(redisConfig.getMaxWaitMillis());
 		config.setTestOnBorrow(redisConfig.equals("1")?true:false);
 		jedisPool = new JedisPool(config, redisConfig.getIp() , redisConfig.getPort());
+		
+		//test use
+//		config.setMaxTotal(500);
+//		config.setMaxIdle(5);
+//		config.setMaxWaitMillis(10000);
+//		config.setTestOnBorrow(true);
+//		jedisPool = new JedisPool(config, "127.0.0.1" ,6379);
 		
 	}
 
@@ -74,25 +74,21 @@ public class RedisUtil {
 	private void initialShardedPool() {
 		// 池基本配置
 		JedisPoolConfig config = new JedisPoolConfig();
-		
-//		System.out.println(redisConfig.getIp());
-//		System.out.println("port="+redisConfig.getPort());
-//		System.out.println("maxTotal="+redisConfig.getMaxTotal());
-//		System.out.println("maxIdle="+redisConfig.getMaxIdle());
-//		System.out.println("maxWaitMillis="+redisConfig.getMaxWaitMillis());
-//		System.out.println("testOnBorrow="+redisConfig.getTestOnBorrow());
-		
 		config.setMaxTotal(redisConfig.getMaxTotal());
 		config.setMaxIdle(redisConfig.getMaxIdle());
 		config.setMaxWaitMillis(redisConfig.getMaxWaitMillis());
 		config.setTestOnBorrow((redisConfig.getTestOnBorrow()==1?true:false));
-//		config.setMaxTotal(redisConfig.getMaxTotal());
-//		config.setMaxIdle(redisConfig.getMaxIdle());
-//		config.setMaxWaitMillis(redisConfig.getMaxWaitMillis());
-//		config.setTestOnBorrow((redisConfig.getTestOnBorrow()==1?true:false));
+		
+		//test use
+//		config.setMaxTotal(500);
+//		config.setMaxIdle(5);
+//		config.setMaxWaitMillis(10000);
+//		config.setTestOnBorrow(true);
+		
 		// slave链接
 		List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
 		shards.add(new JedisShardInfo(redisConfig.getIp(), redisConfig.getPort(), "master"));
+//		shards.add(new JedisShardInfo("127.0.0.1", 6379, "master"));
 
 		// 构造池
 		shardedJedisPool = new ShardedJedisPool(config, shards);
