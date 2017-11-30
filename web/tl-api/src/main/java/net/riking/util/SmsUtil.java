@@ -118,6 +118,8 @@ public class SmsUtil {
     		logger.info("code={}",code);
     		if(StringUtils.isNotBlank(code)){
 	    		if(code.equals(verifyCode)){
+	    			//验证码匹配正确后删除缓存中的验证码
+	    			RedisUtil.getInstall().del(Const.VALID_ + phone.trim());
 	    			return true;
 	    		}
     		}else{

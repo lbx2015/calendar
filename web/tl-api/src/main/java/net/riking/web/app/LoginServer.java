@@ -126,6 +126,7 @@ public class LoginServer {
 			}
 			detail = appUserService.findDetailByOne(user.getId());
 			user.setDetail(detail);
+			logger.info("用户登录成功：phone={}", user.getPhone());
 		}else{
 			//注册步骤
 			user = new AppUser();
@@ -137,6 +138,7 @@ public class LoginServer {
 			detail.setPhoneMacid(loginParams.getMacId());
 			detail.setPhoneType(loginParams.getClientType());
 			user = appUserService.register(user, detail);
+			logger.info("用户注册成功：phone={}", user.getPhone());
 		}
 		
 		AppUserResp userResp = new AppUserResp();
@@ -156,6 +158,8 @@ public class LoginServer {
 		userResp.setExperience(user.getDetail().getExperience());
 		if(StringUtils.isNotBlank(user.getDetail().getPhotoUrl())){
 			userResp.setPhotoUrl(Const.TL_PHOTO_PATH + user.getDetail().getPhotoUrl());
+		}else{
+			userResp.setPhotoUrl("");
 		}
 		userResp.setRemindTime(user.getDetail().getRemindTime());
 		userResp.setIsSubscribe(user.getDetail().getIsSubscribe());

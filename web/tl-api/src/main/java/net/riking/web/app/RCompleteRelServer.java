@@ -96,7 +96,7 @@ public class RCompleteRelServer {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		Date completeDate;
 		try {
-			completeDate = dateFormat.parse(dateFormat.format(rCompletedRelParams.getCompleteDate()));
+			completeDate = dateFormat.parse(dateFormat.format(rCompletedRelParams.getCompletedDate()));
 		} catch (ParseException e) {
 			logger.error("用户获取当天报表完成情况日期格式转换异常" + e);
 			throw new RuntimeException("用户获取当天报表完成情况日期格式转换异常" + e);
@@ -119,7 +119,7 @@ public class RCompleteRelServer {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
 		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
 		List<RCompletedRelResp> list = reportSubmitCaliberService
-				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompleteDate());
+				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompletedDate());
 
 		for (RCompletedRelResp rCompletedRelResp : list) {
 			// 将对象转换成map
