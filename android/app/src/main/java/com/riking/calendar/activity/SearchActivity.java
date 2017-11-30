@@ -27,6 +27,7 @@ import com.riking.calendar.fragment.ExcellentAnswererFragment;
 import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
 import com.riking.calendar.fragment.QuestionsFragment;
 import com.riking.calendar.fragment.ReportsFragment;
+import com.riking.calendar.fragment.SearchTopicFragment;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.util.CONST;
@@ -51,7 +52,7 @@ import io.realm.Sort;
 public class SearchActivity extends AppCompatActivity implements PerformSearch {
 
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new ReportsFragment(), new HotAnswerOfTopicFragment(), new QuestionsFragment(), new ExcellentAnswererFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new ReportsFragment(), new SearchTopicFragment(), new QuestionsFragment(), new ExcellentAnswererFragment()};
     public String reportSearchCondition;
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
