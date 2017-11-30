@@ -119,6 +119,7 @@ public class AppUserDetail implements Serializable{
 	// @Column(name = "remark", length = 500)
 	// private String remark;
 
+	@Transient
 	private String page;// 页数
 
 	private String sTime;// 查询时间
