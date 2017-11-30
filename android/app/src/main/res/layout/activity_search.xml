@@ -121,7 +121,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"></android.support.v7.widget.RecyclerView>
+                android:layout_marginRight="15dp"
+                android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
 
             <View
                 android:layout_width="match_parent"
@@ -151,7 +152,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@color/white"></android.support.v7.widget.RecyclerView>
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
