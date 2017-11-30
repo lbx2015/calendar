@@ -1,6 +1,9 @@
 package net.riking.entity.params;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 核销信息的接收参数
@@ -22,7 +25,8 @@ public class RCompletedRelParams implements Serializable {
 	private String reportId;
 
 	// 完成时间（yyyyMMdd）
-	private String completedDate;
+	@DateTimeFormat(pattern = "yyyyMMdd")
+	private Date completedDate;
 
 	// 提醒时间（yyyyMMdd）
 	private String remindTime;
@@ -43,11 +47,11 @@ public class RCompletedRelParams implements Serializable {
 		this.remindTime = remindTime;
 	}
 
-	public String getCompletedDate() {
+	public Date getCompletedDate() {
 		return completedDate;
 	}
 
-	public void setCompletedDate(String completedDate) {
+	public void setCompletedDate(Date completedDate) {
 		this.completedDate = completedDate;
 	}
 
