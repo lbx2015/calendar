@@ -29,7 +29,8 @@ public class RCompletedRelParams implements Serializable {
 	private Date completedDate;
 
 	// 提醒时间（yyyyMMdd）
-	private String remindTime;
+	@DateTimeFormat(pattern = "yyyyMMdd")
+	private Date remindTime;
 
 	public String getUserId() {
 		return userId;
@@ -39,11 +40,11 @@ public class RCompletedRelParams implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getRemindTime() {
+	public Date getRemindTime() {
 		return remindTime;
 	}
 
-	public void setRemindTime(String remindTime) {
+	public void setRemindTime(Date remindTime) {
 		this.remindTime = remindTime;
 	}
 

@@ -1,17 +1,11 @@
 package net.riking.entity.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.PageQuery;
@@ -37,16 +31,17 @@ public class ReportCompletedRel extends PageQuery {
 	@Column(name = "report_id", length = 32)
 	private String reportId;
 
-	@Comment("创建时间")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyyMMdd")
-	@org.hibernate.annotations.CreationTimestamp
-	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
-	private Date createdTime;
+	// @Comment("创建时间")
+	// @Temporal(TemporalType.TIMESTAMP)
+	// @DateTimeFormat(pattern = "yyyyMMdd")
+	// @org.hibernate.annotations.CreationTimestamp
+	// @Column(name = "created_time", insertable = false, updatable = false, nullable = false,
+	// columnDefinition = "datetime default now()")
+	// private Date createdTime;
 
-	// // 报表完成时间（yyyyMMdd）
-	// @Column(name = "complete_date", length = 8)
-	// private String completeDate;
+	// 报表完成时间（yyyyMMdd）
+	@Column(name = "completed_date", length = 8)
+	private String completedDate;
 	//
 	// // 同步标识app端数据状态
 	// @Column(name = "is_complete")
@@ -68,12 +63,12 @@ public class ReportCompletedRel extends PageQuery {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReportCompletedRel(String userId, String reportId, Date createdTime, String reportName,
+	public ReportCompletedRel(String userId, String reportId, String completedDate, String reportName,
 			String strFrequency) {
 		super();
 		this.userId = userId;
 		this.reportId = reportId;
-		this.createdTime = createdTime;
+		this.completedDate = completedDate;
 		this.reportName = reportName;
 		this.strFrequency = strFrequency;
 	}
@@ -94,12 +89,12 @@ public class ReportCompletedRel extends PageQuery {
 		this.reportId = reportId;
 	}
 
-	public Date getCreatedTime() {
-		return createdTime;
+	public String getCompletedDate() {
+		return completedDate;
 	}
 
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
+	public void setCompletedDate(String completedDate) {
+		this.completedDate = completedDate;
 	}
 
 	public String getReportName() {

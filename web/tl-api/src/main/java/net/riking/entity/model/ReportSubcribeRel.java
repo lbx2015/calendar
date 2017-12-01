@@ -38,7 +38,7 @@ public class ReportSubcribeRel extends BaseEntity {
 
 	@Id
 	@Comment("用户ID: fk t_app_user")
-	@Column(name = "userId", length = 32)
+	@Column(name = "user_Id", length = 32)
 	private String userId;
 
 	@Id

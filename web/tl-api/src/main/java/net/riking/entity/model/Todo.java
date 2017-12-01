@@ -51,7 +51,7 @@ public class Todo extends PageQuery {
 	@Column(name = "str_date", length = 12)
 	private String strDate;
 
-	@Comment("手机端提供创建时间（yyyy-MM-dd HHmm）")
+	@Comment("手机端提供创建时间（yyyyMMddHHmm）")
 	@Column(name = "app_created_time", length = 12)
 	private String appCreatedTime;
 
