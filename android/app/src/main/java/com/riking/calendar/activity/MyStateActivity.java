@@ -17,10 +17,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.fragment.AnswerCommentsFragment;
 import com.riking.calendar.fragment.MyAnswersFragment;
 import com.riking.calendar.fragment.MyDynamicQuestionFragment;
-import com.riking.calendar.fragment.SearchNewsFragment;
-import com.riking.calendar.fragment.SearchPersonFragment;
-import com.riking.calendar.fragment.SearchReportsFragment;
-import com.riking.calendar.fragment.SearchTopicFragment;
+import com.riking.calendar.util.CONST;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -29,7 +26,8 @@ import com.riking.calendar.fragment.SearchTopicFragment;
 
 public class MyStateActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new AnswerCommentsFragment(), new MyAnswersFragment(), new MyDynamicQuestionFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{AnswerCommentsFragment.newInstance(this), MyAnswersFragment.newInstance(this), MyDynamicQuestionFragment.newInstance(this)};
+    public String userId;
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
@@ -41,6 +39,7 @@ public class MyStateActivity extends AppCompatActivity { //Fragment 数组
         setContentView(R.layout.activity_my_state);
 
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
     }
 

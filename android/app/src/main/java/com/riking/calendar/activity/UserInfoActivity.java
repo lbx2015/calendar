@@ -267,6 +267,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
         Bitmap bitMap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
         if (bitMap != null) {
+            Logger.d("zzw", "bit map is not null");
+            ZR.setCircleUserImage(myPhoto, bitMap);
+        } else {
             Logger.d("zzw", "bitmap is null");
             return;
         }

@@ -120,7 +120,7 @@ public class UserActivity extends BaseActivity {
             public void click(View v) {
                 Intent i = new Intent(UserActivity.this, MyCollectActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
-                ZGoto.to(MyCollectActivity.class);
+                ZGoto.to(i);
             }
         });
 
@@ -128,7 +128,9 @@ public class UserActivity extends BaseActivity {
         myRepliesLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZGoto.to(MyRepliesActivity.class);
+                Intent i = new Intent(UserActivity.this, MyRepliesActivity.class);
+                i.putExtra(CONST.USER_ID, u.userId);
+                ZGoto.to(i);
             }
         });
 
@@ -136,7 +138,9 @@ public class UserActivity extends BaseActivity {
         followMeLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZGoto.to(MyFollowersActivity.class);
+                Intent i = new Intent(UserActivity.this, MyFollowersActivity.class);
+                i.putExtra(CONST.USER_ID, u.userId);
+                ZGoto.to(i);
             }
         });
 
@@ -145,6 +149,7 @@ public class UserActivity extends BaseActivity {
             @Override
             public void click(View v) {
                 Intent i = new Intent(UserActivity.this, MyFavoritesUserActivity.class);
+                i.putExtra(CONST.USER_ID, u.userId);
                 ZGoto.to(i);
             }
         });
@@ -153,14 +158,18 @@ public class UserActivity extends BaseActivity {
         trendLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyStateActivity.class);
+                Intent i = new Intent(UserActivity.this, MyStateActivity.class);
+                i.putExtra(CONST.USER_ID, u.userId);
+                ZGoto.to(i);
             }
         });
 
         followLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyFollowActivity.class);
+                Intent i = new Intent(UserActivity.this, MyFollowActivity.class);
+                i.putExtra(CONST.USER_ID, u.userId);
+                ZGoto.to(i);
             }
         });
     }

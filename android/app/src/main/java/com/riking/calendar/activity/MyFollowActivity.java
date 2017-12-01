@@ -15,15 +15,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.MyColleagueFragment;
-import com.riking.calendar.fragment.MyContactsFragment;
 import com.riking.calendar.fragment.MyFollowTopicFragment;
 import com.riking.calendar.fragment.MyFollowerPersonFragment;
 import com.riking.calendar.fragment.MyFollowingQuestionFragment;
+import com.riking.calendar.util.CONST;
 
 public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
     private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFollowerPersonFragment(), new MyFollowTopicFragment(), new MyFollowingQuestionFragment()};
+    public String userId;
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
@@ -37,6 +37,7 @@ public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
         activityTitle = findViewById(R.id.activity_title);
         activityTitle.setText("我的关注");
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
     }
 

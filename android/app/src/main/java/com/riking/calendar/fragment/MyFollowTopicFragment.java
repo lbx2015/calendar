@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import com.riking.calendar.activity.MyFollowActivity;
 import com.riking.calendar.adapter.SearchTopicAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
 import com.riking.calendar.listener.ZCallBack;
@@ -16,6 +17,13 @@ import java.util.List;
  */
 
 public class MyFollowTopicFragment extends ZFragment<SearchTopicAdapter> {
+    MyFollowActivity activity;
+
+    public static MyFollowTopicFragment newInstance(MyFollowActivity activity) {
+        MyFollowTopicFragment f = new MyFollowTopicFragment();
+        f.activity = activity;
+        return f;
+    }
     @Override
     public SearchTopicAdapter getAdapter() {
         return new SearchTopicAdapter();
@@ -27,6 +35,7 @@ public class MyFollowTopicFragment extends ZFragment<SearchTopicAdapter> {
     public void loadData(final int page) {
         final UserFollowParams params = new UserFollowParams();
         params.pindex = page;
+        params.userId = activity.userId;
         APIClient.getMyFollow(params, new ZCallBack<ResponseModel<List<Topic>>>() {
             @Override
             public void callBack(ResponseModel<List<Topic>> response) {

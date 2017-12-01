@@ -20,6 +20,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -33,6 +34,7 @@ import java.util.List;
 public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数组
     MyFollowersAdapter mAdapter;
     RecyclerView recyclerView;
+    String userId;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -46,6 +48,7 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
         setContentView(R.layout.activity_my_followers);
 
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
         activityTitle.setText("我关注的人");
     }
@@ -115,6 +118,7 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
         //person type
         params.objType = 3;
         params.pindex = page;
+        params.userId = userId;
         APIClient.getMyFavoriateUsers(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
             @Override
             public void callBack(ResponseModel<List<AppUserResult>> response) {

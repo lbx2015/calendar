@@ -60,15 +60,20 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void onClickAbout(View view) {
-        APIClient.apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
-            @Override
-            public void callBack(ResponseModel<String> response) {
-                Intent i = new Intent(SettingActivity.this, WebviewActivity.class);
-                i.putExtra(CONST.WEB_URL, response._data);
-                i.putExtra(CONST.ACTIVITY_NAME, "SettingActivity");
-                startActivity(i);
-            }
-        });
+
+        Intent i = new Intent(SettingActivity.this, WebviewActivity.class);
+        i.putExtra(CONST.WEB_URL, "http://172.16.64.96:8280/app/getImage.html");
+        i.putExtra(CONST.ACTIVITY_NAME, "SettingActivity");
+        startActivity(i);
+//        APIClient.apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
+//            @Override
+//            public void callBack(ResponseModel<String> response) {
+//                Intent i = new Intent(SettingActivity.this, WebviewActivity.class);
+//                i.putExtra(CONST.WEB_URL, response._data);
+//                i.putExtra(CONST.ACTIVITY_NAME, "SettingActivity");
+//                startActivity(i);
+//            }
+//        });
     }
 
     @Override

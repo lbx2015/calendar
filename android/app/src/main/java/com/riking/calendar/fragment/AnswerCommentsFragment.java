@@ -1,5 +1,7 @@
 package com.riking.calendar.fragment;
 
+import com.riking.calendar.activity.MyCollectActivity;
+import com.riking.calendar.activity.MyStateActivity;
 import com.riking.calendar.adapter.MyDynamicAnswerCommentListAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
 import com.riking.calendar.listener.ZCallBack;
@@ -21,6 +23,14 @@ public class AnswerCommentsFragment extends ZFragment<MyDynamicAnswerCommentList
         return new MyDynamicAnswerCommentListAdapter(getContext());
     }
 
+    MyStateActivity activity;
+
+    public static AnswerCommentsFragment newInstance(MyStateActivity activity) {
+        AnswerCommentsFragment f = new AnswerCommentsFragment();
+        f.activity = activity;
+        return f;
+    }
+
     public void initViews() {
     }
 
@@ -34,6 +44,7 @@ public class AnswerCommentsFragment extends ZFragment<MyDynamicAnswerCommentList
     private void loadAnswerComments(final int page) {
         UserFollowParams params = new UserFollowParams();
         params.pindex = page;
+        params.userId = activity.userId;
         APIClient.getUserDynamicComments(params, new ZCallBack<ResponseModel<List<QACommentResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QACommentResult>> response) {
