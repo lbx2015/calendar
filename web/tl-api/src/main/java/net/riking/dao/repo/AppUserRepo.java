@@ -1,7 +1,10 @@
 package net.riking.dao.repo;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +18,11 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	@Query(" from AppUser where isDeleted = 1 and openId = ?1 ")
 	AppUser findByOpenId(String openId);
+
+	// @Query("select new
+	// net.riking.entity.resp.AppUserResp(a.id,a.userName,a.openId,a.email,a.phone,ap.realName,ap.companyName,ap.sex,ap.birthday,ap.address,ap.description,ap.phoneMacid,ap.integral,ap.experience,ap.photoUrl,ap.remindTime,ap.isSubscribe,ap.industryId,ap.positionId,ap.isGuide)
+	// from AppUser a join a.AppUserDetail ap where a.isDeleted = 1 and a.id = ?1 and ap.id = a.id")
+	// AppUserResp getById(String userId);
 
 	// TODO 暂时注释 @Transactional
 	// @Modifying
@@ -33,11 +41,10 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	// @Query("update AppUser set enabled = '0' where id = ?1")
 	// int unEnable(String id);
 
-	// @Transactional
-	// @Modifying
-	// TODO 暂时注释
-	// @Query("update AppUser set photoUrl = ?2 where id = ?1")
-	// int updatePhoto(String id, String photo);
+	@Transactional
+	@Modifying
+	@Query("update AppUserDetail set photoUrl = ?2 where id = ?1")
+	int updatePhoto(String userId, String photo);
 
 	// @Transactional
 	// @Modifying

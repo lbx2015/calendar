@@ -146,18 +146,17 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 	}
 
 	@Override
-	public List<RCompletedRelResp> findCompleteReportByIdAndTime(String userId, String beginDate, String endDate) {
+	public List<RCompletedRelResp> findCompleteReportByIdAndTime(String userId, String completedDate) {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "SELECT t.user_id,t.report_id,t.created_time,l.name, group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM t_report_completed_rel t LEFT JOIN t_report l ON l.id = t.report_id LEFT JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.user_id= ? AND t.created_time BETWEEN ? and ? GROUP BY c.report_id";
+		String sql = "SELECT t.user_id,t.report_id,t.completed_date,l.name, group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM t_report_completed_rel t LEFT JOIN t_report l ON l.id = t.report_id LEFT JOIN t_report_submit_caliber c ON t.report_id = c.report_id WHERE t.user_id= ? AND t.completed_date =? GROUP BY c.report_id";
 		PreparedStatement pstmt = null;
 		List<RCompletedRelResp> list = new ArrayList<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, userId);
-			pstmt.setString(2, beginDate);
-			pstmt.setString(2, beginDate);
+			pstmt.setString(2, completedDate);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				RCompletedRelResp appUserReportCompleteRel = new RCompletedRelResp(rs.getString(1), rs.getString(2),

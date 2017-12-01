@@ -1,14 +1,14 @@
-package net.riking.entity.resp;
+package net.riking.entity.params;
 
 import java.io.Serializable;
 
 /**
- * APP用户信息返回
+ * 更新用户信息参数接收
  * @author james.you
  * @version crateTime：2017年11月29日 下午3:16:14
  * @used TODO
  */
-public class AppUserResp implements Serializable {
+public class UpdUserParams implements Serializable {
 	// 用户ID
 	private String userId;
 
@@ -23,6 +23,9 @@ public class AppUserResp implements Serializable {
 
 	// 手机号
 	private String phone;
+
+	// 用户状态 0-禁用 1-启用
+	private String enabled;
 
 	// 真实姓名
 	private String realName;
@@ -69,34 +72,7 @@ public class AppUserResp implements Serializable {
 	// 是否引导: 0-未引导；1-已引导
 	private Integer isGuide;
 
-	public AppUserResp(String userId, String userName, String openId, String email, String phone, String realName,
-			String companyName, Integer sex, String birthday, String address, String description, String phoneMacid,
-			Integer integral, Integer experience, String photoUrl, String remindTime, Integer isSubscribe,
-			Integer industryId, Integer positionId, Integer isGuide) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.openId = openId;
-		this.email = email;
-		this.phone = phone;
-		this.realName = realName;
-		this.companyName = companyName;
-		this.sex = sex;
-		this.birthday = birthday;
-		this.address = address;
-		this.description = description;
-		this.phoneMacid = phoneMacid;
-		this.integral = integral;
-		this.experience = experience;
-		this.photoUrl = photoUrl;
-		this.remindTime = remindTime;
-		this.isSubscribe = isSubscribe;
-		this.industryId = industryId;
-		this.positionId = positionId;
-		this.isGuide = isGuide;
-	}
-
-	public AppUserResp() {
+	public UpdUserParams() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -123,6 +99,14 @@ public class AppUserResp implements Serializable {
 
 	public void setOpenId(String openId) {
 		this.openId = openId;
+	}
+
+	public String getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(String enabled) {
+		this.enabled = enabled;
 	}
 
 	public String getEmail() {
