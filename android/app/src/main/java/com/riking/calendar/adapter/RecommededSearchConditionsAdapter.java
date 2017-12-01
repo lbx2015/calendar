@@ -63,7 +63,6 @@ public class RecommededSearchConditionsAdapter extends RecyclerView.Adapter<OneT
             }
         } else {
             if (i == size - 1) {
-                h.divider.setVisibility(View.GONE);
                 h.horizontalDivider.setVisibility(View.GONE);
             }
         }

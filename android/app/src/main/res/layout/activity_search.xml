@@ -3,15 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f2f2f2"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_marginStart="15dp"
+        android:background="@color/white"
         android:fitsSystemWindows="true"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="15dp">
 
         <RelativeLayout
             android:layout_width="264dp"
@@ -29,7 +31,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/nav_icon_search" />
+                android:src="@drawable/com_icon_search_s" />
 
             <EditText
                 android:id="@+id/search_edit_view"
@@ -88,14 +90,15 @@
                 android:id="@+id/local_search_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:orientation="horizontal">
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_gravity="left|center_vertical"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:text="历史搜索"
@@ -105,7 +108,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="right|center_vertical"
                     android:onClick="clickClearLocalSearchConditions"
                     android:src="@drawable/work_icon_delete_gray" />
 
@@ -120,63 +123,60 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"></android.support.v7.widget.RecyclerView>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
                 android:background="@color/color_f2f2f2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:text="热门搜索"
-                android:textColor="@color/color_999999"
-                android:textSize="14sp" />
-
-            <View
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/color_e2e2e2" />
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:text="热门搜索"
+                    android:textColor="@color/color_999999"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/color_e2e2e2" />
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recommend_search_conditions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:background="@color/white"
-                android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
+                android:nestedScrollingEnabled="false"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"></android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/color_f2f2f2" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
-        android:background="@color/color_d2d2d2"
-        android:translationY="@dimen/tab_height" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/top_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tab_height"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:visibility="gone"
         app:tabIndicatorColor="@color/color_489dfff"
         app:tabIndicatorHeight="2dp"
@@ -185,11 +185,18 @@
         app:tabSelectedTextColor="@color/color_489dfff"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabTextColor="@color/color_222222"></android.support.design.widget.TabLayout>
-
+    <View
+        android:id="@+id/tab_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2"
+        android:translationY="@dimen/tab_height"
+        android:visibility="gone" />
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:visibility="gone"></android.support.v4.view.ViewPager>
 
 </LinearLayout>

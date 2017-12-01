@@ -60,6 +60,7 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView recommendedRecyclerView;
     ImageView clearSearchInputImage;
     LinearLayout localLinearLayout;
+    View tabDivider;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
 
@@ -140,7 +141,7 @@ public class SearchActivity extends AppCompatActivity {
         RecommededSearchConditionsAdapter adapter = new RecommededSearchConditionsAdapter(new PerformSearch() {
             @Override
             public void performSearchByLocalHistory(String searchCondition) {
-                
+
             }
 
             @Override
@@ -152,6 +153,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        tabDivider = findViewById(R.id.tab_divider);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.top_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
@@ -184,6 +186,7 @@ public class SearchActivity extends AppCompatActivity {
                     clearSearchInputImage.setVisibility(View.VISIBLE);
                     localLinearLayout.setVisibility(View.GONE);
                     tabLayout.setVisibility(View.VISIBLE);
+                    tabDivider.setVisibility(View.VISIBLE);
                     mViewPager.setVisibility(View.VISIBLE);
                 } else {
                     clearSearchInputImage.setVisibility(View.GONE);
