@@ -91,7 +91,7 @@ public interface APIInterface {
     @POST("checkValiCode")
     Call<ResponseModel<AppUser>> checkVarificationCode(@Body AppUser user);
 
-    @POST("common/getValiCode")
+    @POST("common/getValidCode")
     Call<ResponseModel<AppUser>> getVarificationCode(@Body AppUser user);
 
     @POST("appUserApp/addOrUpdate")

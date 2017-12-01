@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.NewsDetailActivity;
+import com.riking.calendar.util.ZGoto;
 
 /**
  * Created by zw.zhang on 2017/7/12.
@@ -43,6 +45,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ZGoto.to(NewsDetailActivity.class);
+            }
+        });
         RequestOptions options = new RequestOptions();
         switch (getItemViewType(position)) {
             case 0: {

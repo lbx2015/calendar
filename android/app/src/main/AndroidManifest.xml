@@ -143,6 +143,7 @@
             android:name=".activity.RemindRepeatActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".activity.AnswerActivity" />
+        <activity android:name=".activity.NewsDetailActivity" />
         <activity android:name=".activity.LookImageActivity" />
 
         <receiver android:name=".util.NetStateReceiver" />
