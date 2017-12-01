@@ -97,6 +97,7 @@ public class Utils {
 		}
 		try {
 			String id = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1) + "Id";
+			id = id.substring(0, 1).toLowerCase() + id.substring(1);
 			Object removeValue = map.remove(id);
 			map.put("id", removeValue);
 			obj = clazz.newInstance();

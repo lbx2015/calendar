@@ -23,6 +23,7 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.Industry;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.AppUserResp;
@@ -229,22 +230,19 @@ public class AppUserServer {
 		return dbObj;
 	}
 
-	/*
-	 * @AuthPass
-	 * 
-	 * @ApiOperation(value = "获取行业列表", notes = "POST")
-	 * 
-	 * @RequestMapping(value = "/findIndustry", method = RequestMethod.POST) public AppResp
-	 * findIndustry() { // List<Industry> list = industryRepo.findIndustry("0");//查询行业 return new
-	 * AppResp(industryRepo.findIndustry(0), CodeDef.SUCCESS); }
-	 */
+	@AuthPass
+	@ApiOperation(value = "获取行业列表", notes = "POST")
+	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
+	public AppResp findIndustry() {
+		// List<Industry> list = industryRepo.findIndustry(0);// 查询行业
+		return new AppResp(industryRepo.findIndustry(0), CodeDef.SUCCESS);
+	}
 
-	// TODO 后面要打开
-	// @ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
-	// @RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
-	// public AppResp getPositionByIndustry(@RequestBody Industry industry) {
-	// return new AppResp(industryRepo.findPositionByIndustry(industry.getId()), CodeDef.SUCCESS);
-	// }
+	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
+	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
+	public AppResp getPositionByIndustry(@RequestBody Industry industry) {
+		return new AppResp(industryRepo.findPositionByIndustry(industry.getId()), CodeDef.SUCCESS);
+	}
 
 	@ApiOperation(value = "获取推荐报表", notes = "POST")
 	@RequestMapping(value = "/getCommend", method = RequestMethod.POST)

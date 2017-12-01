@@ -45,7 +45,7 @@ public class RemindHisServer {
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public AppResp delMore(@RequestParam("id") String id) {
 		remindHisRepo.delete(id);
-		;
+
 		return new AppResp().setCode(CodeDef.SUCCESS);
 	}
 
