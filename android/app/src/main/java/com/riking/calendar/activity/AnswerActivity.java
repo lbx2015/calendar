@@ -1,9 +1,12 @@
 package com.riking.calendar.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +14,10 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZGoto;
@@ -30,6 +35,8 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     //    RecyclerView suggestionQuestionsRecyclerView;
 //    RecyclerView reviewsRecyclerView;
     private WebView webView;
+    private LinearLayout bottomBar;
+    private AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +52,8 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     void init() {
+        appBarLayout = findViewById(R.id.appbar);
+        bottomBar = findViewById(R.id.bottom_bar);
         webView = findViewById(R.id.web_view);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -64,7 +73,61 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
                 return true;
             }
         });
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            int oldVerticalOffset;
 
+            boolean animating;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                MyLog.d("oldVerticalOffset - verticalOffset: " + (oldVerticalOffset - verticalOffset));
+                if (animating) {
+                    return;
+                }
+                if (oldVerticalOffset - verticalOffset > 0) {
+                    if (bottomBar.getVisibility() == View.GONE) {
+                        return;
+                    }
+                    animating = true;
+                    // Prepare the View for the animation
+                    //scroll up
+                    bottomBar.animate()
+                            .translationY(bottomBar.getHeight())
+                            .alpha(0.f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    animating = false;
+                                    // superfluous restoration
+                                    bottomBar.setVisibility(View.GONE);
+                                    bottomBar.setAlpha(0.f);
+                                    bottomBar.setTranslationY(0.f);
+                                }
+                            });
+
+                } else if (oldVerticalOffset - verticalOffset < 0) {
+                    if (bottomBar.getVisibility() == View.VISIBLE) {
+                        return;
+                    }
+                    animating = true;
+                    //scroll down
+//                    bottomBar.setVisibility(View.VISIBLE);
+                    bottomBar.setAlpha(0.f);
+                    bottomBar.animate().translationY(0).alpha(1.f).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            animating = false;
+                            bottomBar.setVisibility(View.VISIBLE);
+                            bottomBar.setAlpha(1.f);
+                        }
+                    });
+                    ;
+                }
+                //re-initiated the oldVerticalOffset
+                oldVerticalOffset = verticalOffset;
+                MyLog.d("verticalOffset: " + verticalOffset);
+            }
+        });
        /* //init recycler view
         suggestionQuestionsRecyclerView = findViewById(R.id.suggestion_questions_recyclerview);
         suggestionQuestionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
