@@ -1,7 +1,5 @@
 package com.riking.calendar.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,6 +17,7 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.util.ExpandCollapseExtention;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
@@ -81,51 +80,29 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 MyLog.d("oldVerticalOffset - verticalOffset: " + (oldVerticalOffset - verticalOffset));
-                if (animating) {
+              /*  if (animating) {
                     return;
-                }
+                }*/
                 if (oldVerticalOffset - verticalOffset > 0) {
-                    if (bottomBar.getVisibility() == View.GONE) {
+                /*    if (bottomBar.getVisibility() == View.GONE) {
                         return;
-                    }
+                    }*/
                     animating = true;
                     // Prepare the View for the animation
                     //scroll up
-                    bottomBar.animate()
-                            .translationY(bottomBar.getHeight())
-                            .alpha(0.f)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    animating = false;
-                                    // superfluous restoration
-                                    bottomBar.setVisibility(View.GONE);
-                                    bottomBar.setAlpha(0.f);
-                                    bottomBar.setTranslationY(0.f);
-                                }
-                            });
+                    ExpandCollapseExtention.collapse(bottomBar);
 
                 } else if (oldVerticalOffset - verticalOffset < 0) {
-                    if (bottomBar.getVisibility() == View.VISIBLE) {
+                   /* if (bottomBar.getVisibility() == View.VISIBLE) {
                         return;
-                    }
+                    }*/
                     animating = true;
                     //scroll down
-//                    bottomBar.setVisibility(View.VISIBLE);
-                    bottomBar.setAlpha(0.f);
-                    bottomBar.animate().translationY(0).alpha(1.f).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            animating = false;
-                            bottomBar.setVisibility(View.VISIBLE);
-                            bottomBar.setAlpha(1.f);
-                        }
-                    });
-                    ;
+                    ExpandCollapseExtention.expand(bottomBar);
                 }
                 //re-initiated the oldVerticalOffset
                 oldVerticalOffset = verticalOffset;
-                MyLog.d("verticalOffset: " + verticalOffset);
+                MyLog.d("verticalOffset: " + verticalOffset + "visibility: " + (bottomBar.getVisibility() == View.VISIBLE));
             }
         });
        /* //init recycler view

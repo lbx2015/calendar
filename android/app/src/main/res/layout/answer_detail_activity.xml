@@ -74,8 +74,8 @@
             <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <com.riking.calendar.view.CircleImageView
                     android:id="@+id/user_icon"
@@ -260,124 +260,130 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
-        android:background="@color/color_d2d2d2" />
-
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/color_d2d2d2" />
 
-            <LinearLayout
-                android:id="@+id/comment_layout"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="clickComments"
-                android:orientation="vertical">
+                android:gravity="center">
 
-                <ImageView
+                <LinearLayout
+                    android:id="@+id/comment_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/com_icon_comment" />
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="clickComments"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="360" />
-            </LinearLayout>
-        </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/com_icon_comment" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="360" />
+                </LinearLayout>
+            </FrameLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="clickAgree"
-                android:orientation="vertical">
+                android:gravity="center">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/com_icon_zan_n" />
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="clickAgree"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="360" />
-            </LinearLayout>
-        </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/com_icon_zan_n" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="360" />
+                </LinearLayout>
+            </FrameLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="clickFavorite"
-                android:orientation="vertical">
+                android:gravity="center">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/com_toolbar_icon_collect_n" />
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="clickFavorite"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="360" />
-            </LinearLayout>
-        </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/com_toolbar_icon_collect_n" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="360" />
+                </LinearLayout>
+            </FrameLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:onClick="clickShare"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:gravity="center">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/com_toolbar_icon_share" />
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:onClick="clickShare"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="360" />
-            </LinearLayout>
-        </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/com_toolbar_icon_share" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="360" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
