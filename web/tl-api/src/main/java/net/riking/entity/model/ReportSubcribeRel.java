@@ -57,6 +57,20 @@ public class ReportSubcribeRel extends BaseEntity {
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
+	public ReportSubcribeRel(String userId, String reportId, Integer isComplete, Date createdTime) {
+		super();
+		this.userId = userId;
+		this.reportId = reportId;
+		this.isComplete = isComplete;
+		this.createdTime = createdTime;
+	}
+
+	public ReportSubcribeRel(String reportId, String reportName) {
+		super();
+		this.reportId = reportId;
+		this.reportName = reportName;
+	}
+
 	@Transient
 	private String reportName;// 报表名称
 

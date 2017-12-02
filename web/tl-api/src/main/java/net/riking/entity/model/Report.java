@@ -14,13 +14,17 @@ import net.riking.entity.BasePageQueryProp;
 @Table(name = "t_report")
 public class Report extends BasePageQueryProp {
 
-	@Comment("报表名称")
-	@Column(name = "name", length = 32)
-	private String name;
+	@Comment("报表标题")
+	@Column(name = "title", length = 32)
+	private String title;
 
-	@Comment("报表编号")
+	@Comment("报表代码")
 	@Column(name = "code", length = 32)
 	private String code;
+
+	@Comment("报表代码")
+	@Column(name = "report_no", length = 32)
+	private String reportNo;
 
 	@Comment("报表简介")
 	@Column(name = "summary")
@@ -71,12 +75,20 @@ public class Report extends BasePageQueryProp {
 	@Transient
 	private String userId;
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getReportNo() {
+		return reportNo;
+	}
+
+	public void setReportNo(String reportNo) {
+		this.reportNo = reportNo;
 	}
 
 	public String getCode() {

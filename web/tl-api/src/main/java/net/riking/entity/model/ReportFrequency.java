@@ -1,25 +1,32 @@
 package net.riking.entity.model;
 
 public class ReportFrequency {
-	
+
 	private String reportId;
-	
-	private String reportName;
-	
+
+	private String reportCode;
+
 	private String reportTitle;
-	
+
 	private String isComplete;
-	
+
 	private String strFrency;
-	
-	private String isSubscribe;//用户是否订阅
-	
-	public ReportFrequency(String reportId,String reportName,String reportTitle,String isComplete,String strFrency){
+
+	private String isSubscribe;// 用户是否订阅
+
+	public ReportFrequency(String reportId, String reportCode, String reportTitle, String isComplete,
+			String strFrency) {
 		this.reportId = reportId;
-		this.reportName = reportName;
+		this.reportCode = reportCode;
 		this.reportTitle = reportTitle;
 		this.isComplete = isComplete;
 		this.strFrency = strFrency;
+	}
+
+	public ReportFrequency(String reportId, String reportCode) {
+		super();
+		this.reportId = reportId;
+		this.reportCode = reportCode;
 	}
 
 	public String getReportId() {
@@ -30,12 +37,12 @@ public class ReportFrequency {
 		this.reportId = reportId;
 	}
 
-	public String getReportName() {
-		return reportName;
+	public String getReportCode() {
+		return reportCode;
 	}
 
-	public void setReportName(String reportName) {
-		this.reportName = reportName;
+	public void setReportCode(String reportCode) {
+		this.reportCode = reportCode;
 	}
 
 	public String getReportTitle() {
@@ -69,5 +76,5 @@ public class ReportFrequency {
 	public void setIsSubscribe(String isSubscribe) {
 		this.isSubscribe = isSubscribe;
 	}
-	
+
 }

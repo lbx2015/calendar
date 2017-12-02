@@ -18,7 +18,7 @@ import net.riking.entity.model.Todo;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.repo.RemindHisRepo;
 import net.riking.service.repo.RemindRepo;
-import net.riking.service.repo.ReportListRepo;
+import net.riking.service.repo.ReportRepo;
 import net.riking.service.repo.TodoRepo;
 
 /**
@@ -44,7 +44,7 @@ public class SynchronousServer {
 	// SysDaysRepo sysDaysRepo;
 
 	@Autowired
-	ReportListRepo reportListRepo;
+	ReportRepo reportListRepo;
 
 	@Autowired
 	ReportSubmitCaliberService reportSubmitCaliberService;
