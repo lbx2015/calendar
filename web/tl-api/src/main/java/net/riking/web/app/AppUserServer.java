@@ -23,7 +23,6 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
-import net.riking.entity.model.Industry;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.AppUserResp;
@@ -73,38 +72,38 @@ public class AppUserServer {
 		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
 		AppUserResp appUserResp = new AppUserResp();
 		appUserResp.setUserId(appUser.getId());
-		{
-			Field[] appUserfields = appUser.getClass().getDeclaredFields();
-			for (Field appUserfield : appUserfields) {
-				appUserfield.setAccessible(true);
-				Field[] respfields = appUserResp.getClass().getDeclaredFields();
-				for (Field respfield : respfields) {
-					respfield.setAccessible(true);
-					if (appUserfield.getName().equals(respfield.getName())) {
-						respfield.set(appUserResp, appUserfield.get(appUser));
-					}
-				}
-			}
-		}
-		{
-			AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
-			if (null != appUserDetail) {
-				Field[] appUserDetailfields = appUserDetail.getClass().getDeclaredFields();
-				for (Field appUserDetailfield : appUserDetailfields) {
-					appUserDetailfield.setAccessible(true);
-					Field[] respfields = appUserResp.getClass().getDeclaredFields();
-					for (Field respfield : respfields) {
-						respfield.setAccessible(true);
-						if (appUserDetailfield.getName().equals(respfield.getName())) {
-							respfield.set(appUserResp, appUserDetailfield.get(appUserDetail));
-						}
-					}
-				}
-			}
-		}
+		// appUserResp从appUser取值
+		appUserResp = (AppUserResp) fromObjToObjValue(appUserResp, appUser);
+		AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
+		// appUserResp从appUserDetail取值
+		appUserResp = (AppUserResp) fromObjToObjValue(appUserResp, appUserDetail);
 		// 将对象转换成map
 		Map<String, Object> appUserRespMapNew = Utils.objProps2Map(appUserResp, true);
 		return new AppResp(appUserRespMapNew, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * fromObj的值赋在toObj上
+	 * @param fromObj
+	 * @param toObj
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private Object fromObjToObjValue(Object fromObj, Object toObj)
+			throws IllegalArgumentException, IllegalAccessException {
+		Field[] fromObjfields = fromObj.getClass().getDeclaredFields();
+		for (Field fromObjfield : fromObjfields) {
+			fromObjfield.setAccessible(true);
+			Field[] toObjfields = toObj.getClass().getDeclaredFields();
+			for (Field toObjfield : toObjfields) {
+				toObjfield.setAccessible(true);
+				if (fromObjfield.getName().equals(toObjfield.getName())) {
+					toObjfield.set(toObj, fromObjfield.get(fromObj));
+				}
+			}
+		}
+		return toObj;
 	}
 
 	@ApiOperation(value = "更新用户信息", notes = "POST")
@@ -240,8 +239,8 @@ public class AppUserServer {
 
 	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
 	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
-	public AppResp getPositionByIndustry(@RequestBody Industry industry) {
-		return new AppResp(industryRepo.findPositionByIndustry(industry.getId()), CodeDef.SUCCESS);
+	public AppResp getPositionByIndustry(@RequestParam("industryId") String industryId) {
+		return new AppResp(industryRepo.findPositionByIndustry(industryId), CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "获取推荐报表", notes = "POST")
@@ -249,4 +248,5 @@ public class AppUserServer {
 	public AppResp getCommend() {
 		return new AppResp(appUserCommendServie.findALL(), CodeDef.SUCCESS);
 	}
+
 }

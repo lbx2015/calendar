@@ -11,7 +11,7 @@ import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.entity.model.Report;
 import net.riking.service.SysDataService;
-import net.riking.service.repo.ReportListRepo;
+import net.riking.service.repo.ReportRepo;
 
 /**
  * 报表配置的增删改查
@@ -23,7 +23,7 @@ import net.riking.service.repo.ReportListRepo;
 public class ReportListController {
 
 	@Autowired
-	ReportListRepo reportListRepo;
+	ReportRepo reportListRepo;
 
 	// @Autowired
 	// AppUserReportRelRepo appUserReportRepo;

@@ -1,10 +1,14 @@
 package net.riking.service.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.Report;
+import net.riking.entity.model.ReportSubcribeRel;
 
 /**
  * 
@@ -13,7 +17,7 @@ import net.riking.entity.model.Report;
  * @used TODO
  */
 @Repository
-public interface ReportListRepo extends JpaRepository<Report, String>, JpaSpecificationExecutor<Report> {
+public interface ReportRepo extends JpaRepository<Report, String>, JpaSpecificationExecutor<Report> {
 
 	// @Query(" from ReportList where Id in ?1 and deleteState = '1' ")
 	// List<Report> findByReoprtId(Set<String> reoprtId);
@@ -37,4 +41,6 @@ public interface ReportListRepo extends JpaRepository<Report, String>, JpaSpecif
 	// r.deleteState='1' ")
 	// List<ReportSubcribeRel> findAllId();
 
+	@Query("SELECT new net.riking.entity.model.ReportSubcribeRel(t.reportId,(select r.title from Report r where t.reportId=r.id)) FROM ReportSubcribeRel t WHERE t.userId=?1")
+	List<ReportSubcribeRel> findByUserId(String userId);
 }

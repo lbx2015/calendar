@@ -43,8 +43,8 @@ public class RemindHisServer {
 
 	@ApiOperation(value = "批量删除提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public AppResp delMore(@RequestParam("id") String id) {
-		remindHisRepo.delete(id);
+	public AppResp delMore(@RequestParam("remindHisId") String remindHisId) {
+		remindHisRepo.delete(remindHisId);
 
 		return new AppResp().setCode(CodeDef.SUCCESS);
 	}

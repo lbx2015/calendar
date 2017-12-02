@@ -2,7 +2,6 @@ package net.riking.web.app;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
-import net.riking.core.utils.UuidUtils;
-import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -25,7 +22,6 @@ import net.riking.entity.params.LoginParams;
 import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
-import net.riking.util.EncryptionUtil;
 import net.riking.util.SmsUtil;
 import net.riking.util.Utils;
 
@@ -46,7 +42,7 @@ public class LoginServer {
 
 	@Autowired
 	SysDataService sysDataService;
-	
+
 	@Autowired
 	SmsUtil smsUtil;
 
@@ -56,91 +52,89 @@ public class LoginServer {
 	 * @Autowired AppUserReportRelRepo appUserReportRelRepo;
 	 */
 
-	
-
 	@ApiOperation(value = "用户登录及注册", notes = "POST")
 	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
 	public AppResp login_(@RequestBody Map<String, Object> params) {
-		
+
 		LoginParams loginParams = Utils.map2Obj(params, LoginParams.class);
-		
+
 		AppUser user = null;
 		AppUserDetail detail = null;
 		switch (loginParams.getType().intValue()) {
 			case Const.LOGIN_REGIST_TYPE_PHONE:
-				if(StringUtils.isBlank(loginParams.getPhone())){//手机号登录或注册
+				if (StringUtils.isBlank(loginParams.getPhone())) {// 手机号登录或注册
 					return new AppResp(CodeDef.EMP.PHONE_NULL_ERROR, CodeDef.EMP.PHONE_NULL_ERROR_DESC);
 				}
-				if(StringUtils.isBlank(loginParams.getVerifyCode())){
+				if (StringUtils.isBlank(loginParams.getVerifyCode())) {
 					return new AppResp(CodeDef.EMP.VERIFYCODE_NULL_ERROR, CodeDef.EMP.VERIFYCODE_NULL_ERROR_DESC);
 				}
-				
+
 				try {
 					boolean isRn = smsUtil.checkValidCode(loginParams.getPhone(), loginParams.getVerifyCode());
-					if(!isRn){
+					if (!isRn) {
 						return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
-					if(e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT+"")){
+					if (e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT + "")) {
 						return new AppResp(CodeDef.EMP.CHECK_CODE_TIME_OUT, CodeDef.EMP.CHECK_CODE_TIME_OUT_DESC);
-					}else{
+					} else {
 						return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
 					}
-					
+
 				}
-				
+
 				user = appUserService.findByPhone(loginParams.getPhone());
 				break;
-			case Const.LOGIN_REGIST_TYPE_WECHAT://微信登录或注册
-				if(StringUtils.isBlank(loginParams.getVerifyCode())){
+			case Const.LOGIN_REGIST_TYPE_WECHAT:// 微信登录或注册
+				if (StringUtils.isBlank(loginParams.getVerifyCode())) {
 					return new AppResp(CodeDef.EMP.VERIFYCODE_NULL_ERROR, CodeDef.EMP.VERIFYCODE_NULL_ERROR_DESC);
 				}
-				
+
 				try {
 					boolean isRn = smsUtil.checkValidCode(loginParams.getPhone(), loginParams.getVerifyCode());
-					if(!isRn){
+					if (!isRn) {
 						return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
-					if(e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT+"")){
+					if (e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT + "")) {
 						return new AppResp(CodeDef.EMP.CHECK_CODE_TIME_OUT, CodeDef.EMP.CHECK_CODE_TIME_OUT_DESC);
-					}else{
+					} else {
 						return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
 					}
-					
+
 				}
-				
+
 				user = appUserService.findByOpenId(loginParams.getOpenId());
 				break;
 			default:
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		
-		if(user != null){
+
+		if (user != null) {
 			/** 有用户数据,登录步骤 */
-			//判断禁用用户给提示
-			if(user.getEnabled().intValue() == Const.INVALID){
+			// 判断禁用用户给提示
+			if (user.getEnabled().intValue() == Const.INVALID) {
 				return new AppResp(CodeDef.EMP.USER_INVALID_ERROR, CodeDef.EMP.USER_INVALID_ERROR_DESC);
 			}
 			detail = appUserService.findDetailByOne(user.getId());
 			user.setDetail(detail);
 			logger.info("用户登录成功：phone={}", user.getPhone());
-		}else{
-			//注册步骤
+		} else {
+			// 注册步骤
 			user = new AppUser();
 			user.setPhone(loginParams.getPhone());
 			user.setUserName(loginParams.getPhone());
 			user.setOpenId(loginParams.getOpenId());
-			
+
 			detail = new AppUserDetail();
-			detail.setPhoneMacid(loginParams.getMacId());
+			detail.setPhoneMacid(loginParams.getDeviceId());
 			detail.setPhoneType(loginParams.getClientType());
 			user = appUserService.register(user, detail);
 			logger.info("用户注册成功：phone={}", user.getPhone());
 		}
-		
+
 		AppUserResp userResp = new AppUserResp();
 		userResp.setUserId(user.getId());
 		userResp.setUserName(user.getUserName());
@@ -156,16 +150,16 @@ public class LoginServer {
 		userResp.setPhoneMacid(user.getDetail().getPhoneMacid());
 		userResp.setIntegral(user.getDetail().getIntegral());
 		userResp.setExperience(user.getDetail().getExperience());
-		if(StringUtils.isNotBlank(user.getDetail().getPhotoUrl())){
+		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {
 			userResp.setPhotoUrl(Const.TL_PHOTO_PATH + user.getDetail().getPhotoUrl());
-		}else{
+		} else {
 			userResp.setPhotoUrl("");
 		}
 		userResp.setRemindTime(user.getDetail().getRemindTime());
 		userResp.setIsSubscribe(user.getDetail().getIsSubscribe());
 		userResp.setPositionId(user.getDetail().getPositionId());
 		userResp.setIsGuide(user.getDetail().getIsGuide());
-		
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("user", userResp);
 		return new AppResp(result, CodeDef.SUCCESS);

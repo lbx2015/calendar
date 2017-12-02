@@ -110,6 +110,7 @@ public class SysDateServiceImpl implements SysDateService {
 		return str;
 	}
 
+	@Override
 	public Period getDate(String date, String type) {
 		SysDays day = sysDaysRepo.findOne(date);
 		Integer tenWorkDay;
