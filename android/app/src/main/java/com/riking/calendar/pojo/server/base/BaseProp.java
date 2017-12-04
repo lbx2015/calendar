@@ -10,7 +10,7 @@ public class BaseProp  {
 //	@Column(name = "id", length = 32)
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 //	@GeneratedValue(generator = "system-uuid")
-	public String id;
+//	public String id;
 
 //	@Comment("创建人ID")
 //	@Column(name = "created_by", updatable = false)
@@ -38,14 +38,6 @@ public class BaseProp  {
 //	@org.hibernate.annotations.ColumnDefault("1")
 //	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
 	public Integer isDeleted;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getCreatedBy() {
 		return createdBy;

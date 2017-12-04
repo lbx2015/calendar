@@ -27,7 +27,7 @@ public class PositionAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
     //position list, position and industry have the same data structure.
     public List<Industry> mList;
-    public Long industryId;
+    public String industryId;
     private Context context;
 
     public PositionAdapter(Context context) {
@@ -52,7 +52,7 @@ public class PositionAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
                 MyApplication.mCurrentActivity.startActivity(it);
 
                 AppUser result = new AppUser();
-                result.positionId = mList.get(i).id;
+                result.positionId = mList.get(i).industryId;
                 result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
                 APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
                     @Override

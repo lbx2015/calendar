@@ -48,11 +48,11 @@ public class IndustryAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
-                i.putExtra(CONST.INDUSTRY_ID,industry.id);
+                i.putExtra(CONST.INDUSTRY_ID,industry.industryId);
                 //go to position select page
                 MyApplication.mCurrentActivity.startActivity(i);
                 AppUser result = new AppUser();
-                result.industryId = industry.id;
+                result.industryId = industry.industryId;
                 result.isGuide = "1";
                 result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
                 APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
