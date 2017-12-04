@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.riking.entity.MyDateFormat;
+import net.riking.entity.model.AppUser;
 
 public class Utils {
 
@@ -69,12 +70,15 @@ public class Utils {
 					Field field = fields[i];
 					field.setAccessible(true);
 					String name = field.getName();
+					if(name.equals("serialVersionUID")){
+						continue;
+					}
 					Object value = field.get(obj);
 					Class<?> type = field.getType();
 					if (isJavaClass(type)) {
 						if (null != value) {
 							if(type == Date.class){
-								String pattern = field.getAnnotation(MyDateFormat.class).pattern();
+								String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern():"yyyyMMddHHmmssSSS";
 								SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 								map.put(name, dateFormat.format((Date)value));
 							}else{
@@ -100,8 +104,7 @@ public class Utils {
 	 * @param obj
 	 * @param map
 	 */
-	private static <T extends Object> Map<String, Object> objPropsEasy2Map(
-			T obj) {
+	private static <T extends Object> Map<String, Object> objPropsEasy2Map(T obj) {
 		Map<String, Object> map = new HashMap<>();
 		if (null == obj) {
 			return map;
@@ -112,8 +115,11 @@ public class Utils {
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
 				field.setAccessible(true);
-				Class<?> type = field.getType();
 				String name = field.getName();
+				if(name.equals("serialVersionUID")){
+					continue;
+				}
+				Class<?> type = field.getType();
 				Object value = field.get(obj);
 				if (null != value) {
 					if(type == Date.class){
@@ -198,5 +204,12 @@ public class Utils {
 		}
 		return list;
 	}
-
+	
+	public static void main(String[] args) {
+		AppUser appUser = new AppUser();
+		appUser.setCreatedTime(new Date());
+		
+		Map<String, Object> map = Utils.objProps2Map(appUser, true);
+		System.err.println(map);
+	}
 }
