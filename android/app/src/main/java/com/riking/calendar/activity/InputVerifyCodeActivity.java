@@ -24,6 +24,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -79,10 +80,10 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                     dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     dialog.show();
 
-                    final AppUser user = new AppUser();
-                    user.valiCode = verifyCodes;
-                    user.phoneSeqNum = ZR.getDeviceId();
-                    user.telephone = phoneNumber;
+                    final LoginParams user = new LoginParams();
+                    user.verifyCode = verifyCodes;
+                    user.deviceId = ZR.getDeviceId();
+                    user.phone = phoneNumber;
                     APIClient.checkVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUser>>() {
                         @Override
                         public void callBack(ResponseModel<AppUser> response) {
@@ -96,7 +97,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                             SharedPreferences pref = getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
                             SharedPreferences.Editor e = pref.edit();
                             e.putBoolean(CONST.IS_LOGIN, true);
-                            e.putString(CONST.USER_ID, u.id);
+                            e.putString(CONST.USER_ID, u.userId);
                             e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
                             e.putString(CONST.PHONE_NUMBER, u.telephone);
                             e.putString(CONST.USER_EMAIL, u.email);
@@ -115,13 +116,13 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                             }
                             e.commit();
 
-                            //change realm database with user id
+                            //change realm database with user userId
                             RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
                                     .deleteRealmIfMigrationNeeded();
-                            builder.name(u.id);
+                            builder.name(u.userId);
                             Realm.setDefaultConfiguration(builder.build());
                             JsonObject jsonObject = new JsonObject();
-                            jsonObject.addProperty("id", u.id);
+                            jsonObject.addProperty("userId", u.userId);
                             //get user's reminders and tasks
                             APIClient.apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
                                 @Override

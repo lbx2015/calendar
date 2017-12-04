@@ -44,8 +44,8 @@
             android:layout_centerInParent="true"
             android:background="@drawable/circular_reminder_points"
             android:visibility="gone" />
-        <!--  android:layout_above="@+id/divider"
-                android:layout_alignBottom="@id/root_linearLayout"-->
+        <!--  android:layout_aboveuserId@+id/divider"
+                android:layout_alignBottouserId"@id/root_linearLayout"-->
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"

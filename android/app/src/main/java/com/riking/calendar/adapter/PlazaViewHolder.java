@@ -30,7 +30,7 @@ public class PlazaViewHolder extends RecyclerView.ViewHolder {
     CircleImageView itemImage;
     @BindView(R.id.grid_images)
     NineGridView nineGridView;
-//    @BindView(R.id.item_count)
+//    @BindView(R.userId.item_count)
 //    TextView itemCount;
 
     public PlazaViewHolder(View itemView) {

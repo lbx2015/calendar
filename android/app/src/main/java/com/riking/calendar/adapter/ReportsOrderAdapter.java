@@ -106,7 +106,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
                 AppUser result = new AppUser();
 //                result.industryId = industry.reportId;
                 result.isGuide = "1";
-                result.id = (Preference.pref.getString(CONST.USER_ID, ""));
+                result.userId = (Preference.pref.getString(CONST.USER_ID, ""));
                 APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {

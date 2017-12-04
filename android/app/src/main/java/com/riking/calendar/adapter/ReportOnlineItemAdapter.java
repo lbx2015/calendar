@@ -95,7 +95,7 @@ public class ReportOnlineItemAdapter extends RecyclerView.Adapter<ReportOnlineIt
                 @Override
                 public void onClick(View v) {
 
-                    Logger.d("zzw", "report id: " + r.id);
+                    Logger.d("zzw", "report userId: " + r.id);
                     QueryReport report = new QueryReport();
                     report.id = r.id;
                     apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {

@@ -100,7 +100,7 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded();
 
         if (preferences.getBoolean(CONST.IS_LOGIN, false)) {
-            Logger.d("zzw", "set user id : " + preferences.getString(CONST.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
+            Logger.d("zzw", "set user userId : " + preferences.getString(CONST.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
             builder.name(preferences.getString(CONST.USER_ID, CONST.DEFAUT_REALM_DATABASE_NAME));
         } else {
             builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);

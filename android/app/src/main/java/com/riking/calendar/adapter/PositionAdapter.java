@@ -53,7 +53,7 @@ public class PositionAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
                 AppUser result = new AppUser();
                 result.positionId = mList.get(i).id;
-                result.id = (Preference.pref.getString(CONST.USER_ID, ""));
+                result.userId = (Preference.pref.getString(CONST.USER_ID, ""));
                 APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {

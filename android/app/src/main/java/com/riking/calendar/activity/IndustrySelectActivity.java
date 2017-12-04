@@ -66,7 +66,7 @@ public class IndustrySelectActivity extends AppCompatActivity {
     public void onClickNextStep(View view) {
         AppUser result = new AppUser();
         result.isGuide = "1";
-        result.id = (Preference.pref.getString(CONST.USER_ID, ""));
+        result.userId = (Preference.pref.getString(CONST.USER_ID, ""));
         APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
