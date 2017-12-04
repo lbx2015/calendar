@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import net.riking.entity.MyDateFormat;
 
 public class Utils {
 
@@ -73,7 +73,13 @@ public class Utils {
 					Class<?> type = field.getType();
 					if (isJavaClass(type)) {
 						if (null != value) {
-							map.put(name, value);
+							if(type == Date.class){
+								String pattern = field.getAnnotation(MyDateFormat.class).pattern();
+								SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+								map.put(name, dateFormat.format((Date)value));
+							}else{
+								map.put(name, value);
+							}
 						}
 					} else {
 						map.put(name, objPropsDeep2Map(value));
@@ -81,8 +87,7 @@ public class Utils {
 				}
 			}
 		} catch (Exception e) {
-			System.out
-					.println(clazz.getName() + clazz.getSuperclass().getName());
+			System.out.println(clazz.getName() + clazz.getSuperclass().getName());
 			e.printStackTrace();
 		}
 		return map;
@@ -107,10 +112,17 @@ public class Utils {
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
 				field.setAccessible(true);
+				Class<?> type = field.getType();
 				String name = field.getName();
 				Object value = field.get(obj);
 				if (null != value) {
-					map.put(name, value);
+					if(type == Date.class){
+						String pattern = field.getAnnotation(MyDateFormat.class).pattern();
+						SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+						map.put(name, dateFormat.format((Date)value));
+					}else{
+						map.put(name, value);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -134,8 +146,7 @@ public class Utils {
 			return obj;
 		}
 		try {
-			String id = clazz.getName()
-					.substring(clazz.getName().lastIndexOf(".") + 1) + "Id";
+			String id = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1) + "Id";
 			id = id.substring(0, 1).toLowerCase() + id.substring(1);
 			Object removeValue = map.remove(id);
 			map.put("id", removeValue);
@@ -146,13 +157,9 @@ public class Utils {
 				for (Field field : list) {
 					if (field.getName().equals(fieldName)) {
 						if (field.getType() == Date.class) {
-							String pattern = field
-									.getAnnotation(DateTimeFormat.class)
-									.pattern();
-							SimpleDateFormat dateFormat = new SimpleDateFormat(
-									pattern);
-							map.put(fieldName, dateFormat
-									.parse((String) map.get(fieldName)));
+							String pattern = field.getAnnotation(MyDateFormat.class).pattern();
+							SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+							map.put(fieldName, dateFormat.parse((String) map.get(fieldName)));
 						}
 						// else if (field.getType() == Integer.class) {
 						// map.put(fieldName, Integer.parseInt((String)
