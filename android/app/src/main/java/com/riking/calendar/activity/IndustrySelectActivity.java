@@ -21,8 +21,8 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 import java.util.ArrayList;
@@ -119,13 +119,17 @@ public class IndustrySelectActivity extends AppCompatActivity {
         APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) {
-                mPullToLoadView.setComplete();
-                mAdapter.mList.clear();
-                //clear the recycled view pool
-                mRecyclerView.getRecycledViewPool().clear();
-                mAdapter.mList = response._data;
-                mAdapter.notifyDataSetChanged();
-                isLoading = false;
+                if (failed) {
+
+                } else {
+                    mPullToLoadView.setComplete();
+                    mAdapter.mList.clear();
+                    //clear the recycled view pool
+                    mRecyclerView.getRecycledViewPool().clear();
+                    mAdapter.mList = response._data;
+                    mAdapter.notifyDataSetChanged();
+                    isLoading = false;
+                }
             }
         });
     }

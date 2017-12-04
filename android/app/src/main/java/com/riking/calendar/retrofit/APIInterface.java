@@ -153,7 +153,7 @@ public interface APIInterface {
     @POST("common/getappVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
 
-    @POST("appUserApp/findIndustry")
+    @POST("common/findIndustry")
     Call<ResponseModel<ArrayList<Industry>>> findIndustry();
 
     /**
