@@ -24,6 +24,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
@@ -31,6 +32,7 @@ import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 
 import java.util.List;
@@ -84,37 +86,19 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                     user.verifyCode = verifyCodes;
                     user.deviceId = ZR.getDeviceId();
                     user.phone = phoneNumber;
-                    APIClient.checkVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUser>>() {
+                    APIClient.checkVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUserResp>>() {
                         @Override
-                        public void callBack(ResponseModel<AppUser> response) {
+                        public void callBack(ResponseModel<AppUserResp> response) {
                             dialog.dismiss();
                             if (failed) {
                                 icv.clearAllText();
                                 Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            AppUser u = response._data;
-                            SharedPreferences pref = getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
-                            SharedPreferences.Editor e = pref.edit();
-                            e.putBoolean(CONST.IS_LOGIN, true);
-                            e.putString(CONST.USER_ID, u.userId);
-                            e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
-                            e.putString(CONST.PHONE_NUMBER, u.telephone);
-                            e.putString(CONST.USER_EMAIL, u.email);
-                            e.putString(CONST.PHONE_SEQ_NUMBER, u.phoneSeqNum);
-                            e.putString(CONST.USER_NAME, u.name);
-                            e.putString(CONST.USER_PASSWORD, u.passWord);
-                            e.putString(CONST.USER_DEPT, u.dept);
-                            if (u.sex != null) {
-                                e.putInt(CONST.USER_SEX, u.sex);
-                            }
-                            e.putString(CONST.USER_COMMENTS, u.remark);
-                            e.putString(CONST.USER_COMMENTS, u.remark);
-                            if (u.allDayReminderTime != null) {
-                                e.putString(CONST.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
-                                e.putString(CONST.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
-                            }
-                            e.commit();
+                            AppUserResp u = response._data;
+
+                            //save user info in preference
+                            ZPreference.saveUserInfoAfterLogin(u);
 
                             //change realm database with user userId
                             RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
@@ -131,14 +115,14 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                     realm.executeTransactionAsync(new Realm.Transaction() {
                                         @Override
                                         public void execute(Realm realm) {
-                                            List<ReminderModel> reminders = response._data.remind;
+//                                            List<ReminderModel> reminders = response._data.remind;
                                             List<TaskModel> tasks = response._data.todo;
-                                            if (reminders != null) {
-                                                for (ReminderModel m : reminders) {
-                                                    Reminder r = new Reminder(m);
-                                                    realm.copyToRealmOrUpdate(r);
-                                                }
-                                            }
+//                                            if (reminders != null) {
+//                                                for (ReminderModel m : reminders) {
+//                                                    Reminder r = new Reminder(m);
+//                                                    realm.copyToRealmOrUpdate(r);
+//                                                }
+//                                            }
                                             if (tasks != null) {
                                                 for (TaskModel m : tasks) {
                                                     Task t = new Task(m);

@@ -3,8 +3,9 @@ package com.riking.calendar.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-
+import com.google.gson.Gson;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.pojo.resp.AppUserResp;
 
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import java.util.Set;
  * Created by zw.zhang on 2017/8/31.
  */
 
-public class Preference {
+public class ZPreference {
     public static SharedPreferences pref = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
 
     public static <T> void put(String key, T val) {
@@ -31,5 +32,25 @@ public class Preference {
             editor.putStringSet(key, (Set<String>) val);
         }
         editor.commit();
+    }
+
+    public static void saveUserInfoAfterLogin(AppUserResp u) {
+        SharedPreferences.Editor e = pref.edit();
+        e.putBoolean(CONST.IS_LOGIN, true);
+        e.putString(CONST.USER_ID, u.userId);
+        e.putString(CONST.USER_NAME, u.userName);
+        e.putString(CONST.USER_EMAIL, u.email);
+        e.putString(CONST.PHONE_NUMBER, u.phone);
+        e.putString(CONST.USER_REAL_NAME, u.realName);
+        e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
+        e.putString(CONST.USER_EMAIL, u.email);
+        Gson s = new Gson();
+        e.putString(CONST.CURRENT_LOGIN_USER, s.toJson(u));
+        e.commit();
+    }
+
+    public static AppUserResp getCurrentLoginUser() {
+        Gson s = new Gson();
+        return s.fromJson(pref.getString(CONST.CURRENT_LOGIN_USER, ""), AppUserResp.class);
     }
 }

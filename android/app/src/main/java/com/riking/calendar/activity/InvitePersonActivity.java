@@ -18,7 +18,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -60,9 +60,9 @@ public class InvitePersonActivity extends AppCompatActivity {
         super.onBackPressed();
         if (subscribedReportsChanged) {
             Gson gson = new Gson();
-            Preference.put(CONST.ORDER_REPORTS_CHANGED, true);
-            Preference.put(CONST.ORDER_REPORTS, gson.toJson(orderReports));
-            Preference.put(CONST.DIS_ORDER_REPORTS, gson.toJson(disOrderReports));
+            ZPreference.put(CONST.ORDER_REPORTS_CHANGED, true);
+            ZPreference.put(CONST.ORDER_REPORTS, gson.toJson(orderReports));
+            ZPreference.put(CONST.DIS_ORDER_REPORTS, gson.toJson(disOrderReports));
         }
     }
 
@@ -113,7 +113,7 @@ public class InvitePersonActivity extends AppCompatActivity {
         mAdapter.add("dd");
         HashMap<String, String> reportName = new LinkedHashMap<>(1);
         reportName.put("reportName", reportSearchCondition);
-        reportName.put("userId", Preference.pref.getString(CONST.USER_ID, ""));
+        reportName.put("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
         APIClient.getReportByName(reportName, new ZCallBack<ResponseModel<List<ReportFrequency>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportFrequency>> response) {

@@ -22,7 +22,7 @@ import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
@@ -81,7 +81,7 @@ public class ReminderFragment extends Fragment {
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
-                if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+                if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
                     //get reminders and tasks of user from server
                     APIClient.synchAll();
                 }

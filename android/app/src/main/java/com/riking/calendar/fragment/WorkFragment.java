@@ -53,7 +53,7 @@ import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.TimePickerDialog;
 
 import org.joda.time.DateTime;
@@ -567,9 +567,9 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
             return;
         }
 
-        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false) && isNetAvailable()) {
+        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false) && isNetAvailable()) {
             AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
-            requestBody.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+            requestBody.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
             requestBody.completeDate = new SimpleDateFormat(CONST.yyyyMMdd).format(date);
             APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
                 @Override

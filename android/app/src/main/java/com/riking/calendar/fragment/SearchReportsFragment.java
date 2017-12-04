@@ -25,7 +25,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 import java.util.ArrayList;
@@ -130,7 +130,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
             searchActivity.saveToRealm();
         }
         AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
         a.type = "1";
@@ -149,7 +149,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
             searchActivity.saveToRealm();
         }
         AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
         a.type = "0";

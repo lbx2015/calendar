@@ -27,6 +27,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
@@ -146,28 +147,28 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 user.verifyCode = valiCode;
-                apiInterface.checkVarificationCode(user).enqueue(new ZCallBack<ResponseModel<AppUser>>() {
+                apiInterface.checkVarificationCode(user).enqueue(new ZCallBack<ResponseModel<AppUserResp>>() {
                     @Override
-                    public void callBack(ResponseModel<AppUser> response) {
-                        AppUser u = response._data;
+                    public void callBack(ResponseModel<AppUserResp> response) {
+                        AppUserResp u = response._data;
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
                         SharedPreferences.Editor e = pref.edit();
                         e.putBoolean(CONST.IS_LOGIN, true);
                         e.putString(CONST.USER_ID, u.userId);
                         e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
-                        e.putString(CONST.PHONE_NUMBER, u.telephone);
+                        e.putString(CONST.PHONE_NUMBER, u.phone);
                         e.putString(CONST.USER_EMAIL, u.email);
-                        e.putString(CONST.PHONE_SEQ_NUMBER, u.phoneSeqNum);
-                        e.putString(CONST.USER_NAME, u.name);
-                        e.putString(CONST.USER_PASSWORD, u.passWord);
-                        e.putString(CONST.USER_DEPT, u.dept);
+//                        e.putString(CONST.PHONE_SEQ_NUMBER, u.phoneSeqNum);
+                        e.putString(CONST.USER_NAME, u.userName);
+//                        e.putString(CONST.USER_PASSWORD, u.passWord);
+//                        e.putString(CONST.USER_DEPT, u.dept);
                         e.putInt(CONST.USER_SEX, u.sex);
-                        e.putString(CONST.USER_COMMENTS, u.remark);
-                        e.putString(CONST.USER_COMMENTS, u.remark);
-                        if (u.allDayReminderTime != null) {
-                            e.putString(CONST.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
-                            e.putString(CONST.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
-                        }
+//                        e.putString(CONST.USER_COMMENTS, u.remark);
+//                        e.putString(CONST.USER_COMMENTS, u.remark);
+//                        if (u.allDayReminderTime != null) {
+//                            e.putString(CONST.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
+//                            e.putString(CONST.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
+//                        }
                         e.commit();
 
                         //change realm database with user userId

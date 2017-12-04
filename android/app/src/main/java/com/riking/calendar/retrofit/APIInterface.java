@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
@@ -90,7 +91,7 @@ public interface APIInterface {
     Call<CtryHdayCryCondition> getVagueQuery(@Body CtryHdayCrcy ctryHdayCrcy);
 
     @POST("user/login")
-    Call<ResponseModel<AppUser>> checkVarificationCode(@Body LoginParams user);
+    Call<ResponseModel<AppUserResp>> checkVarificationCode(@Body LoginParams user);
 
     @POST("common/getValidCode")
     Call<ResponseModel<AppUser>> getVarificationCode(@Body LoginParams user);

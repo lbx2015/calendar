@@ -30,7 +30,7 @@ import com.riking.calendar.fragment.SearchTopicFragment;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZDB;
 
 import java.util.ArrayList;
@@ -198,7 +198,7 @@ public class SearchActivity extends AppCompatActivity {
     public void performSearch() {
         HashMap<String, String> reportName = new LinkedHashMap<>(1);
         reportName.put("reportName", reportSearchCondition);
-        reportName.put("userId", Preference.pref.getString(CONST.USER_ID, ""));
+        reportName.put("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
       /*  APIClient.getReportByName(reportName, new ZCallBack<ResponseModel<List<ReportFrequency>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportFrequency>> response) {
