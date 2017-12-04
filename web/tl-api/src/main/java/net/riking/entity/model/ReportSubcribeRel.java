@@ -28,6 +28,11 @@ import net.riking.entity.BaseEntity;
 @Table(name = "t_report_subscribe_rel")
 public class ReportSubcribeRel extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2353538414992037256L;
+
 	public ReportSubcribeRel(String reportId) {
 		super();
 		this.reportId = reportId;

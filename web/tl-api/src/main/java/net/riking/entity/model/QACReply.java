@@ -21,6 +21,11 @@ import net.riking.entity.BaseAuditProp;
 @Table(name = "t_qac_reply")
 public class QACReply extends BaseAuditProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3040318861369712268L;
+
 	@Comment("操作人主键 : fk t_app_user 发表回复的user_id")
 	@Column(name = "user_id", nullable = false)
 	private String userId;

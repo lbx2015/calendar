@@ -21,6 +21,11 @@ import net.riking.core.entity.PageQuery;
 @IdClass(RCRelUnionPkId.class)
 @Table(name = "t_report_completed_rel")
 public class ReportCompletedRel extends PageQuery {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7251595529415066401L;
+
 	@Id
 	@Comment("用户ID")
 	@Column(name = "user_id", length = 32)

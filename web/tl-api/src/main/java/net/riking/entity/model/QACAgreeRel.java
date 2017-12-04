@@ -26,6 +26,11 @@ import net.riking.entity.BaseEntity;
 @IdClass(QACARelUnionPkId.class)
 @Table(name = "t_qac_agree_rel")
 public class QACAgreeRel extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7005546175373114166L;
+
 	@Id
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)

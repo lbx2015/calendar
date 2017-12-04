@@ -20,14 +20,12 @@ import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
-import net.riking.dao.repo.IndustryRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.AppUserResp;
-import net.riking.service.AppUserCommendService;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.StringUtil;
@@ -49,9 +47,6 @@ public class AppUserServer {
 	AppUserDetailRepo appUserDetailRepo;
 
 	@Autowired
-	IndustryRepo industryRepo;
-
-	@Autowired
 	HttpServletRequest request;
 
 	@Autowired
@@ -59,9 +54,6 @@ public class AppUserServer {
 
 	@Autowired
 	AppUserService appUserService;
-
-	@Autowired
-	AppUserCommendService appUserCommendServie;
 
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
@@ -141,6 +133,9 @@ public class AppUserServer {
 		}
 
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(dbUser.getId());
+		if (null == appUserDetail) {
+			return new AppResp(false, CodeDef.EMP.DATA_NOT_FOUND);
+		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
 				Field[] userParamsfields = userParams.getClass().getDeclaredFields();
@@ -227,26 +222,6 @@ public class AppUserServer {
 			}
 		}
 		return dbObj;
-	}
-
-	@AuthPass
-	@ApiOperation(value = "获取行业列表", notes = "POST")
-	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
-	public AppResp findIndustry() {
-		// List<Industry> list = industryRepo.findIndustry(0);// 查询行业
-		return new AppResp(industryRepo.findIndustry(0), CodeDef.SUCCESS);
-	}
-
-	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
-	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
-	public AppResp getPositionByIndustry(@RequestParam("industryId") String industryId) {
-		return new AppResp(industryRepo.findPositionByIndustry(industryId), CodeDef.SUCCESS);
-	}
-
-	@ApiOperation(value = "获取推荐报表", notes = "POST")
-	@RequestMapping(value = "/getCommend", method = RequestMethod.POST)
-	public AppResp getCommend() {
-		return new AppResp(appUserCommendServie.findALL(), CodeDef.SUCCESS);
 	}
 
 }

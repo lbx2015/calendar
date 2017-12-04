@@ -21,6 +21,11 @@ import net.riking.entity.PageQuery;
 public class Remind extends PageQuery {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4060546025883551207L;
+
+	/**
 	 * @author Lucky.Liu on 2017/8/05.
 	 */
 	@Comment("手机端时间戳：yyyyMMddHHmmssSSS")

@@ -10,6 +10,11 @@ import java.io.Serializable;
  */
 public class QACARelUnionPkId implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6849696535382085570L;
+
 	private String userId;
 
 	private String qacId;

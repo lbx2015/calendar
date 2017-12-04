@@ -10,10 +10,10 @@ import net.riking.entity.model.Industry;
 
 public interface IndustryRepo extends JpaRepository<Industry, String>, JpaSpecificationExecutor<Industry> {
 
-	@Query(" from Industry u where u.dataType = ?1")
+	@Query(" from Industry u where u.dataType = ?1 and isDeleted = 1")
 	List<Industry> findIndustry(Integer type);
 
-	@Query(" from Industry u where u.parentId = ?1")
+	@Query(" from Industry u where u.parentId = ?1 and isDeleted = 1")
 	List<Industry> findPositionByIndustry(String id);
 
 }

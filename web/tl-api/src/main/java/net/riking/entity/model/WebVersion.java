@@ -23,6 +23,11 @@ import net.riking.entity.BaseProp;
 public class WebVersion extends BaseProp {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -777861709889682962L;
+
+	/**
 	 * @author Lucky.Liu on 2017/8/05.
 	 */
 

@@ -22,6 +22,11 @@ import net.riking.entity.BaseAuditProp;
 @Table(name = "t_question_answer")
 public class QuestionAnswer extends BaseAuditProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -449237590873319540L;
+
 	@Comment("回答人主键: fk t_app_user")
 	@Column(name = "user_id", nullable = false)
 	private String userId;

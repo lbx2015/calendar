@@ -1,8 +1,11 @@
 package net.riking.web.app;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.http.util.TextUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,14 +22,21 @@ import com.aliyuncs.exceptions.ClientException;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.dao.repo.AppVersionRepo;
+import net.riking.dao.repo.IndustryRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUserRecommend;
 import net.riking.entity.model.AppVersion;
+import net.riking.entity.model.Industry;
 import net.riking.entity.params.AppVersionParams;
+import net.riking.entity.params.IndustryParams;
 import net.riking.entity.params.ValidParams;
+import net.riking.service.AppUserCommendService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
+import net.riking.util.DateUtils;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
 import net.riking.util.Utils;
@@ -50,11 +60,16 @@ public class CommonServer {
 	SysDataService sysDataservice;
 
 	@Autowired
+	IndustryRepo industryRepo;
+
+	@Autowired
 	AppVersionRepo appVersionRepo;
 
 	@Autowired
 	SmsUtil smsUtil;
 
+	@Autowired
+	AppUserCommendService appUserCommendServie;
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
 	 */
@@ -130,5 +145,49 @@ public class CommonServer {
 			return false;
 		else
 			return phone.trim().matches(telRegex);
+	}
+
+	@AuthPass
+	@ApiOperation(value = "获取行业列表", notes = "POST")
+	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
+	public AppResp findIndustry() {
+		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+		List<Industry> list = industryRepo.findIndustry(0);// 查询行业
+		for (Industry industry : list) {
+			Map<String, Object> map = Utils.objProps2Map(industry, true);
+			String pattern = "yyyyMMddHHmmssSSS";
+			map.put("createdTime", DateUtils.DateFormatMS(industry.getCreatedTime(), pattern));
+			map.put("modifiedTime", DateUtils.DateFormatMS(industry.getModifiedTime(), pattern));
+			maps.add(map);
+		}
+		return new AppResp(maps, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
+	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
+	public AppResp getPositionByIndustry(@RequestBody Map<String, Object> params) {
+		IndustryParams industryParams = Utils.map2Obj(params, IndustryParams.class);
+		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+		List<Industry> list = industryRepo.findPositionByIndustry(industryParams.getIndustryId());
+		for (Industry industry : list) {
+			Map<String, Object> map = Utils.objProps2Map(industry, true);
+			String pattern = "yyyyMMddHHmmssSSS";
+			map.put("createdTime", DateUtils.DateFormatMS(industry.getCreatedTime(), pattern));
+			map.put("modifiedTime", DateUtils.DateFormatMS(industry.getModifiedTime(), pattern));
+			maps.add(map);
+		}
+		return new AppResp(maps, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "获取推荐报表", notes = "POST")
+	@RequestMapping(value = "/getCommend", method = RequestMethod.POST)
+	public AppResp getCommend() {
+		Set<AppUserRecommend> appUserRecommends = appUserCommendServie.findALL();
+		Set<Map<String, Object>> sets = new HashSet<Map<String, Object>>();
+		for (AppUserRecommend appUserRecommend : appUserRecommends) {
+			Map<String, Object> map = Utils.objProps2Map(appUserRecommend, true);
+			sets.add(map);
+		}
+		return new AppResp(sets, CodeDef.SUCCESS);
 	}
 }

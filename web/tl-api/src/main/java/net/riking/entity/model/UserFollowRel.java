@@ -26,6 +26,11 @@ import net.riking.entity.BaseEntity;
 @IdClass(UFollowRelUnionPkId.class)
 @Table(name = "t_user_follow_rel")
 public class UserFollowRel extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2048938865811370457L;
+
 	@Id
 	@Comment("fk t_app_user 关注的用户ID")
 	@Column(name = "user_id", nullable = false)

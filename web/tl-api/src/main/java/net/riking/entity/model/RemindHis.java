@@ -20,6 +20,11 @@ import net.riking.entity.PageQuery;
 @Table(name = "t_remind_his")
 public class RemindHis extends PageQuery {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1785806503829885019L;
+
 	@Comment("手机端时间戳：yyyyMMddHHmmssSSS")
 	@Id
 	@Column(name = "remind_his_id", length = 17)

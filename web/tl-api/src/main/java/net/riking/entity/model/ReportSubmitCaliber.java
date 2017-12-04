@@ -22,6 +22,11 @@ import net.riking.entity.BaseEntity;
 @Table(name = "t_report_submit_caliber")
 public class ReportSubmitCaliber extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2800949423639540790L;
+
 	@Id
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")

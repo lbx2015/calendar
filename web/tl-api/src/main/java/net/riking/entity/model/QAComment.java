@@ -24,6 +24,11 @@ import net.riking.entity.BaseAuditProp;
 @Table(name = "t_qa_comment")
 public class QAComment extends BaseAuditProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1580621958798681642L;
+
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
 	private String userId;

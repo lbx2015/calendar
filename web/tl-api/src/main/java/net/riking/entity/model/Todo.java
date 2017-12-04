@@ -21,6 +21,11 @@ import net.riking.entity.PageQuery;
 public class Todo extends PageQuery {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3194063320181067468L;
+
+	/**
 	 * 代办事项实体类
 	 * 
 	 * @author Lucky.Liu on 2017/8/05.

@@ -9,6 +9,11 @@ import net.riking.core.entity.PageQuery;
  * @since 1.0
  */
 public class RCRelUnionPkId extends PageQuery {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 330194607996518109L;
+
 	private String userId;
 
 	private String reportId;

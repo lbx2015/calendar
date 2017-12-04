@@ -14,6 +14,11 @@ import net.riking.entity.BasePageQueryProp;
 @Table(name = "t_report")
 public class Report extends BasePageQueryProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4087711136918056749L;
+
 	@Comment("报表标题")
 	@Column(name = "title", length = 32)
 	private String title;
