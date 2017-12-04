@@ -107,7 +107,7 @@ public interface APIInterface {
     @POST("reportListApp/getAllReport")
     Call<ResponseModel<List<ReportAgence>>> getAllReports(@Body AppUser user);
 
-    @POST("appUserApp/getCommend")
+    @POST("common/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
     /**
