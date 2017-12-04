@@ -85,7 +85,7 @@
                     android:visibility="gone"/>
 
                 <!--<TextView-->
-                    <!--android:id="@+id/status"-->
+                    <!--andruserIdd:iduserId@+id/status"-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
                     <!--android:layout_alignParentRight="true"-->
@@ -107,7 +107,7 @@
 
     <!--<LinearLayout-->
         <!--android:visibility="gone"-->
-        <!--android:id="@+id/ll_group"-->
+        <!--andruserIdd:iduserId@+id/ll_group"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:orientation="vertical" >-->

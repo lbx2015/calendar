@@ -20,7 +20,7 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	AppUser findByOpenId(String openId);
 
 	// @Query("select new
-	// net.riking.entity.resp.AppUserResp(a.id,a.userName,a.openId,a.email,a.phone,ap.realName,ap.companyName,ap.sex,ap.birthday,ap.address,ap.description,ap.phoneMacid,ap.integral,ap.experience,ap.photoUrl,ap.remindTime,ap.isSubscribe,ap.industryId,ap.positionId,ap.isGuide)
+	// net.riking.entity.resp.AppUserResp(a.id,a.userName,a.openId,a.email,a.phone,ap.realName,ap.companyName,ap.sex,ap.birthday,ap.address,ap.description,ap.phoneDeviceid,ap.integral,ap.experience,ap.photoUrl,ap.remindTime,ap.isSubscribe,ap.industryId,ap.positionId,ap.isGuide)
 	// from AppUser a join a.AppUserDetail ap where a.isDeleted = 1 and a.id = ?1 and ap.id = a.id")
 	// AppUserResp getById(String userId);
 

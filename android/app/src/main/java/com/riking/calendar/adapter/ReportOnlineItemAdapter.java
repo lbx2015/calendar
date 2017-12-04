@@ -19,7 +19,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class ReportOnlineItemAdapter extends RecyclerView.Adapter<ReportOnlineIt
         holder.title.setText(r.reportName);
 
         //not enable the swipe function when user is not logged.
-        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             holder.sml.setSwipeEnable(true);
         } else {
             holder.sml.setSwipeEnable(false);
@@ -95,7 +95,7 @@ public class ReportOnlineItemAdapter extends RecyclerView.Adapter<ReportOnlineIt
                 @Override
                 public void onClick(View v) {
 
-                    Logger.d("zzw", "report id: " + r.id);
+                    Logger.d("zzw", "report userId: " + r.id);
                     QueryReport report = new QueryReport();
                     report.id = r.id;
                     apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {

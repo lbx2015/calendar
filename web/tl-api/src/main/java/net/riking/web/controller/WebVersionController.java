@@ -10,8 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.WebVersionRepo;
 import net.riking.entity.model.WebVersion;
-import net.riking.service.repo.WebVersionRepo;
 
 /**
  * web版本的维护
@@ -60,17 +60,12 @@ public class WebVersionController {
 	// return new Resp(save, CodeDef.SUCCESS);
 	// }
 
-	/*@ApiOperation(value = "批量删除web版本信息", notes = "POST")
-	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore(@RequestBody Set<String> ids) {
-		int rs = 0;
-		if (ids.size() > 0) {
-			rs = webVersionRepo.deleteById(ids);
-		}
-		if (rs > 0) {
-			return new Resp().setCode(CodeDef.SUCCESS);
-		} else {
-			return new Resp().setCode(CodeDef.ERROR);
-		}
-	}*/
+	/*
+	 * @ApiOperation(value = "批量删除web版本信息", notes = "POST")
+	 * 
+	 * @RequestMapping(value = "/delMore", method = RequestMethod.POST) public Resp
+	 * delMore(@RequestBody Set<String> ids) { int rs = 0; if (ids.size() > 0) { rs =
+	 * webVersionRepo.deleteById(ids); } if (rs > 0) { return new Resp().setCode(CodeDef.SUCCESS); }
+	 * else { return new Resp().setCode(CodeDef.ERROR); } }
+	 */
 }

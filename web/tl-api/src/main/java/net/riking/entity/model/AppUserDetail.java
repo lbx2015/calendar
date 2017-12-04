@@ -9,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.Transient;
-
-
 
 import net.riking.core.annos.Comment;
 
@@ -24,7 +21,12 @@ import net.riking.core.annos.Comment;
 @Comment("用户详情表")
 @Entity
 @Table(name = "t_appuser_detail")
-public class AppUserDetail implements Serializable{
+public class AppUserDetail implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6491834829935023232L;
 
 	public AppUserDetail() {
 		super();
@@ -62,12 +64,12 @@ public class AppUserDetail implements Serializable{
 	private String address;
 
 	@Comment("用户描述")
-	@Column(name = "description", length = 500)
-	private String description;
+	@Column(name = "descript", length = 500)
+	private String descript;
 
-	@Comment("手机Macid")
-	@Column(name = "phone_macid", length = 32)
-	private String phoneMacid;
+	@Comment("手机Deviceid")
+	@Column(name = "phone_device_id", length = 32)
+	private String phoneDeviceid;
 
 	@Comment("手机类型 1-IOS;2-Android;3-其它")
 	@Column(name = "phone_type", length = 1)
@@ -75,10 +77,12 @@ public class AppUserDetail implements Serializable{
 
 	@Comment("积分")
 	@Column(name = "integral")
+
 	private Integer integral;
 
 	@Comment("经验值")
 	@Column(name = "experience")
+
 	private Integer experience;
 
 	@Comment("用户头像（存放用户头像名称）")
@@ -106,7 +110,6 @@ public class AppUserDetail implements Serializable{
 	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "is_guide")
 	private Integer isGuide;
-
 
 	public String getId() {
 		return id;
@@ -164,20 +167,20 @@ public class AppUserDetail implements Serializable{
 		this.address = address;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescript() {
+		return descript;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescript(String descript) {
+		this.descript = descript;
 	}
 
-	public String getPhoneMacid() {
-		return phoneMacid;
+	public String getPhoneDeviceid() {
+		return phoneDeviceid;
 	}
 
-	public void setPhoneMacid(String phoneMacid) {
-		this.phoneMacid = phoneMacid;
+	public void setPhoneDeviceid(String phoneDeviceid) {
+		this.phoneDeviceid = phoneDeviceid;
 	}
 
 	public Integer getPhoneType() {

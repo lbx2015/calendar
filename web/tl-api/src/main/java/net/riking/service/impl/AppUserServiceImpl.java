@@ -60,6 +60,7 @@ public class AppUserServiceImpl implements AppUserService {
 		detail.setIntegral(0);
 		detail.setExperience(0);
 		detail.setIsSubscribe(0);
+		detail.setIsGuide(0);
 		user.setDetail(detail);
 
 		appUserRepo.save(user);

@@ -25,9 +25,11 @@ import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -36,7 +38,8 @@ import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.StringUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,7 +77,8 @@ public class APIClient {
         retrofit = new Retrofit.Builder()
 //                .baseUrl("http://www.baidu.com")
 //                .baseUrl("https://reqres.in")
-                .baseUrl(CONST.URL_BASE)
+//                .baseUrl(CONST.TL_API_TEST)
+                .baseUrl(CONST.TL_API_TEST)
 //                .baseUrl("http://172.16.64.96:8281/")
 //                .baseUrl("http://172.16.64.85:8281/")
                 .addConverterFactory(new GsonStringConverterFactory())
@@ -84,11 +88,12 @@ public class APIClient {
         return retrofit;
     }
 
-    public static void checkVarificationCode(@Body AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
+    public static void checkVarificationCode(@Body LoginParams user, final ZCallBackWithFail<ResponseModel<AppUserResp>> callBack) {
+        user.phone = StringUtil.getPhoneNumber(user.phone);
         apiInterface.checkVarificationCode(user).enqueue(callBack);
     }
 
-    public static void getVarificationCode(AppUser user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
+    public static void getVarificationCode(LoginParams user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
         apiInterface.getVarificationCode(user).enqueue(callBack);
     }
 
@@ -353,7 +358,7 @@ public class APIClient {
 
     public static void getReminderAndTasksFromServer() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id", Preference.pref.getString(CONST.USER_ID, ""));
+        jsonObject.addProperty("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
         //get user's reminders and tasks
         APIClient.apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
             @Override
@@ -379,7 +384,7 @@ public class APIClient {
                         List<TaskModel> tasks = response._data.todo;
                         if (reminders != null) {
                             for (ReminderModel m : reminders) {
-                                int requestCode = realm.where(Reminder.class).equalTo("id", m.id).findFirst().requestCode;
+                                int requestCode = realm.where(Reminder.class).equalTo("userId", m.id).findFirst().requestCode;
                                 Reminder r = new Reminder(m);
                                 remindIds.remove(r.id);
                                 r.requestCode = requestCode;
@@ -390,7 +395,7 @@ public class APIClient {
 
                         //delete those which is from server
                         for (String id : remindIds) {
-                            Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
+                            Reminder r = realm.where(Reminder.class).equalTo("userId", id).findFirst();
                             cancelAlarm(r.requestCode);
                             r.deleteFromRealm();
                         }
@@ -470,7 +475,7 @@ public class APIClient {
                             if (c.result == null) continue;
                             for (QueryReport q : c.result) {
                                 QueryReportRealmModel reportRealmModel = new QueryReportRealmModel();
-                                reportRealmModel.id = q.id;
+                                reportRealmModel.userId = q.userId;
                                 reportRealmModel.reportName = q.reportName;
                                 reportRealmModel.moduleType = q.moduleType;
                                 reportRealmModel.reportCode = q.reportCode;
@@ -530,7 +535,7 @@ public class APIClient {
         apiInterface.getReportByName(reportName).enqueue(c);
     }
 
-    public static void updateUserReportRelById( AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c){
+    public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {
         apiInterface.updateUserReportRelById(reportRel).enqueue(c);
     }
 }

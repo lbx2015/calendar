@@ -29,6 +29,7 @@ import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.TQuestionParams;
+import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
 /**
@@ -82,6 +83,9 @@ public class TopicQuestionServer {
 		topicQuestion.setAnswerNum(answerNum);
 		// 将对象转换成map
 		Map<String, Object> topicQuestionMap = Utils.objProps2Map(topicQuestion, true);
+		String pattern = "yyyyMMddHHmmssSSS";
+		topicQuestionMap.put("createdTime", DateUtils.DateFormatMS(topicQuestion.getCreatedTime(), pattern));
+		topicQuestionMap.put("modifiedTime", DateUtils.DateFormatMS(topicQuestion.getModifiedTime(), pattern));
 		return new AppResp(topicQuestionMap, CodeDef.SUCCESS);
 	}
 
@@ -111,7 +115,7 @@ public class TopicQuestionServer {
 							0);// 0-关注 3-屏蔽
 				} else {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				break;
 			// 话题关注
@@ -129,7 +133,7 @@ public class TopicQuestionServer {
 
 				} else {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				break;
 			// 用户关注
@@ -167,12 +171,12 @@ public class TopicQuestionServer {
 					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
 				} else {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				break;
 			default:
 				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
-				throw new RuntimeException("参数异常：objType=" + tQuestionParams.getObjType());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
 		return new AppResp(CodeDef.SUCCESS);
@@ -202,6 +206,9 @@ public class TopicQuestionServer {
 
 			// 将对象转换成map
 			Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
+			String pattern = "yyyyMMddHHmmssSSS";
+			questionAnswerMap.put("createdTime", DateUtils.DateFormatMS(questionAnswer.getCreatedTime(), pattern));
+			questionAnswerMap.put("modifiedTime", DateUtils.DateFormatMS(questionAnswer.getModifiedTime(), pattern));
 			questionAnswerMapList.add(questionAnswerMap);
 		}
 

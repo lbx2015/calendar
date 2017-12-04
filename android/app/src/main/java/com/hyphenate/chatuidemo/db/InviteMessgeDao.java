@@ -22,7 +22,7 @@ import java.util.List;
 
 public class InviteMessgeDao {
 	static final String TABLE_NAME = "new_friends_msgs";
-	static final String COLUMN_NAME_ID = "id";
+	static final String COLUMN_NAME_ID = "userId";
 	static final String COLUMN_NAME_FROM = "username";
 	static final String COLUMN_NAME_GROUP_ID = "groupid";
 	static final String COLUMN_NAME_GROUP_Name = "groupname";

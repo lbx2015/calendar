@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,10 +24,11 @@ import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.GetVerificationModel;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -41,9 +41,6 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/8/14.
@@ -56,14 +53,14 @@ public class LoginActivity extends AppCompatActivity {
     public TextView userContractLinkButton;
     Button loginButton;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    //device id
+    //device userId
     String uid;
     private TimeCount time;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final AppUser user = new AppUser();
+        final LoginParams user = new LoginParams();
         TelephonyManager tManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -76,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             uid = tManager.getDeviceId();
         }
         time = new TimeCount(60000, 1000);
-        Logger.d("zzw", "device id:" + uid);
+        Logger.d("zzw", "device userId:" + uid);
         setContentView(R.layout.activity_login);
         phoneNumber = (EditText) findViewById(R.id.phone_nubmer_editor);
         verificationCode = (EditText) findViewById(R.id.verification_code);
@@ -103,8 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                user.telephone = phoneDigits;
-                user.phoneSeqNum = uid;
+                user.phone = phoneDigits;
+                user.deviceId = uid;
                 /*apiInterface.getVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
                     @Override
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {
@@ -149,38 +146,38 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                user.valiCode = valiCode;
-                apiInterface.checkVarificationCode(user).enqueue(new ZCallBack<ResponseModel<AppUser>>() {
+                user.verifyCode = valiCode;
+                apiInterface.checkVarificationCode(user).enqueue(new ZCallBack<ResponseModel<AppUserResp>>() {
                     @Override
-                    public void callBack(ResponseModel<AppUser> response) {
-                        AppUser u = response._data;
+                    public void callBack(ResponseModel<AppUserResp> response) {
+                        AppUserResp u = response._data;
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
                         SharedPreferences.Editor e = pref.edit();
                         e.putBoolean(CONST.IS_LOGIN, true);
-                        e.putString(CONST.USER_ID, u.id);
+                        e.putString(CONST.USER_ID, u.userId);
                         e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
-                        e.putString(CONST.PHONE_NUMBER, u.telephone);
+                        e.putString(CONST.PHONE_NUMBER, u.phone);
                         e.putString(CONST.USER_EMAIL, u.email);
-                        e.putString(CONST.PHONE_SEQ_NUMBER, u.phoneSeqNum);
-                        e.putString(CONST.USER_NAME, u.name);
-                        e.putString(CONST.USER_PASSWORD, u.passWord);
-                        e.putString(CONST.USER_DEPT, u.dept);
+//                        e.putString(CONST.PHONE_SEQ_NUMBER, u.phoneSeqNum);
+                        e.putString(CONST.USER_NAME, u.userName);
+//                        e.putString(CONST.USER_PASSWORD, u.passWord);
+//                        e.putString(CONST.USER_DEPT, u.dept);
                         e.putInt(CONST.USER_SEX, u.sex);
-                        e.putString(CONST.USER_COMMENTS, u.remark);
-                        e.putString(CONST.USER_COMMENTS, u.remark);
-                        if (u.allDayReminderTime != null) {
-                            e.putString(CONST.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
-                            e.putString(CONST.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
-                        }
+//                        e.putString(CONST.USER_COMMENTS, u.remark);
+//                        e.putString(CONST.USER_COMMENTS, u.remark);
+//                        if (u.allDayReminderTime != null) {
+//                            e.putString(CONST.WHOLE_DAY_EVENT_HOUR, u.allDayReminderTime.substring(0, 2));
+//                            e.putString(CONST.WHOLE_DAY_EVENT_MINUTE, u.allDayReminderTime.substring(2));
+//                        }
                         e.commit();
 
-                        //change realm database with user id
+                        //change realm database with user userId
                         RealmConfiguration.Builder builder = new RealmConfiguration.Builder()
                                 .deleteRealmIfMigrationNeeded();
-                        builder.name(u.id);
+                        builder.name(u.userId);
                         Realm.setDefaultConfiguration(builder.build());
                         JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty("id", u.id);
+                        jsonObject.addProperty("userId", u.userId);
                         //get user's reminders and tasks
                         apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
                             @Override

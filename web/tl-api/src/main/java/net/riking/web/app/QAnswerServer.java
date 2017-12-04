@@ -1,5 +1,7 @@
 package net.riking.web.app;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,14 +19,18 @@ import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.NCReplyRepo;
 import net.riking.dao.repo.NewsCommentRepo;
 import net.riking.dao.repo.NewsRelRepo;
+import net.riking.dao.repo.QACAgreeRelRepo;
+import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.QACReply;
 import net.riking.entity.model.QAComment;
 import net.riking.entity.model.QAnswerRel;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.params.QAnswerParams;
+import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
 /**
@@ -60,6 +66,12 @@ public class QAnswerServer {
 	@Autowired
 	QAnswerRelRepo qAnswerRelRepo;
 
+	@Autowired
+	QACReplyRepo qACReplyRepo;
+
+	@Autowired
+	QACAgreeRelRepo qACAgreeRelRepo;
+
 	/**
 	 * 问题回答详情
 	 * @param params[questAnswerId]
@@ -72,6 +84,9 @@ public class QAnswerServer {
 		QuestionAnswer questionAnswer = questionAnswerRepo.getById(qAnswerParams.getQuestAnswerId());
 
 		Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
+		String pattern = "yyyyMMddHHmmssSSS";
+		questionAnswerMap.put("createdTime", DateUtils.DateFormatMS(questionAnswer.getCreatedTime(), pattern));
+		questionAnswerMap.put("modifiedTime", DateUtils.DateFormatMS(questionAnswer.getModifiedTime(), pattern));
 		return new AppResp(questionAnswerMap, CodeDef.SUCCESS);
 	}
 
@@ -120,7 +135,7 @@ public class QAnswerServer {
 							Const.OBJ_OPT_GREE);// 点赞
 				} else {
 					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
-					throw new RuntimeException("参数异常：enabled=" + qAnswerParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				break;
 			// 2-收藏
@@ -138,43 +153,53 @@ public class QAnswerServer {
 							Const.OBJ_OPT_COLLECT);// 收藏
 				} else {
 					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
-					throw new RuntimeException("参数异常：enabled=" + qAnswerParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				break;
 			default:
 				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
-				throw new RuntimeException("参数异常：objType=" + qAnswerParams.getOptType());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		return new AppResp(CodeDef.SUCCESS);
 	}
 
-	// /**
-	// * 问题回答评论列表[tqId，questAnswerId]
-	// * @param params
-	// * @return
-	// */
-	// @ApiOperation(value = "问题回答评论列表", notes = "POST")
-	// @RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
-	// public AppResp qACommentList(@RequestBody Map<String, Object> params) {
-	// // 将map转换成参数对象
-	// QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
-	// // 返回到前台的问题回答列表
-	//
-	// List<QAComment> questionAnswerList =
-	// qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId());
-	// for (QAComment qAComment : questionAnswerList) {
-	// // TODO 统计数后面从redis中取回答的评论数
-	// Integer commentNum = qACommentRepo.commentCount(questionAnswer.getId());
-	// questionAnswer.setCommentNum(commentNum);
-	// // TODO 统计数后面从redis中取点赞数
-	// Integer agreeNum = qACAgreeRelRepo.agreeCount(questionAnswer.getId(), 1);// 1-点赞
-	// questionAnswer.setAgreeNum(agreeNum);
-	//
-	// // 将对象转换成map
-	// Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
-	// questionAnswerMapList.add(questionAnswerMap);
-	// }
-	//
-	// return new AppResp(questionAnswerMapList, CodeDef.SUCCESS);
-	// }
+	/**
+	 * TODO 问题回答评论列表[tqId，questAnswerId]
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "问题回答评论列表", notes = "POST")
+	@RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
+	public AppResp qACommentList(@RequestBody Map<String, Object> params) {
+		// 将map转换成参数对象
+		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
+		// 返回前台问题回答评论的map列表
+		List<Map<String, Object>> questionAnswerMapList = new ArrayList<Map<String, Object>>();
+		// 返回到前台的问题回答列表
+		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId());
+		for (QAComment qAComment : questionAnswerList) {
+			List<QACReply> qacReplies = qACReplyRepo.getByCommentId(qAComment.getId());
+			for (QACReply qacReply : qacReplies) {
+				// qacReply将对象转换成map
+				Map<String, Object> qacReplyMap = Utils.objProps2Map(qacReply, true);
+				String pattern = "yyyyMMddHHmmssSSS";
+				qacReplyMap.put("createdTime", DateUtils.DateFormatMS(qacReply.getCreatedTime(), pattern));
+				qacReplyMap.put("modifiedTime", DateUtils.DateFormatMS(qacReply.getModifiedTime(), pattern));
+				qAComment.getQACReplyList().add(qacReplyMap);
+			}
+			// TODO 统计数后面从redis中取点赞数
+			Integer agreeNum = 0;
+			agreeNum = qACAgreeRelRepo.agreeCount(qAComment.getId(), Const.OBJ_OPT_GREE);// 点赞
+			qAComment.setAgreeNum(agreeNum);
+
+			// 将对象转换成map
+			Map<String, Object> questionAnswerMap = Utils.objProps2Map(qAComment, true);
+			String pattern = "yyyyMMddHHmmssSSS";
+			questionAnswerMap.put("createdTime", DateUtils.DateFormatMS(qAComment.getCreatedTime(), pattern));
+			questionAnswerMap.put("modifiedTime", DateUtils.DateFormatMS(qAComment.getModifiedTime(), pattern));
+			questionAnswerMapList.add(questionAnswerMap);
+		}
+
+		return new AppResp(questionAnswerMapList, CodeDef.SUCCESS);
+	}
 }

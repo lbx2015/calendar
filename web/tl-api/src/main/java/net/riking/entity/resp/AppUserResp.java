@@ -40,10 +40,10 @@ public class AppUserResp implements Serializable {
 	private String address;
 
 	// 个性签名
-	private String description;
+	private String descript;
 
-	// 手机Macid
-	private String phoneMacid;
+	// 手机Deviceid
+	private String phoneDeviceid;
 
 	// 积分
 	private Integer integral;
@@ -70,7 +70,7 @@ public class AppUserResp implements Serializable {
 	private Integer isGuide;
 
 	public AppUserResp(String userId, String userName, String openId, String email, String phone, String realName,
-			String companyName, Integer sex, String birthday, String address, String description, String phoneMacid,
+			String companyName, Integer sex, String birthday, String address, String descript, String phoneDeviceid,
 			Integer integral, Integer experience, String photoUrl, String remindTime, Integer isSubscribe,
 			Integer industryId, Integer positionId, Integer isGuide) {
 		super();
@@ -84,8 +84,8 @@ public class AppUserResp implements Serializable {
 		this.sex = sex;
 		this.birthday = birthday;
 		this.address = address;
-		this.description = description;
-		this.phoneMacid = phoneMacid;
+		this.descript = descript;
+		this.phoneDeviceid = phoneDeviceid;
 		this.integral = integral;
 		this.experience = experience;
 		this.photoUrl = photoUrl;
@@ -181,20 +181,20 @@ public class AppUserResp implements Serializable {
 		this.address = address;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescript() {
+		return descript;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescript(String descript) {
+		this.descript = descript;
 	}
 
-	public String getPhoneMacid() {
-		return phoneMacid;
+	public String getPhoneDeviceid() {
+		return phoneDeviceid;
 	}
 
-	public void setPhoneMacid(String phoneMacid) {
-		this.phoneMacid = phoneMacid;
+	public void setPhoneDeviceid(String phoneDeviceid) {
+		this.phoneDeviceid = phoneDeviceid;
 	}
 
 	public Integer getIntegral() {

@@ -21,8 +21,8 @@ public class UserParams implements Serializable {
 	// 是否删除： 0-删除，1-未删除
 	private Integer isDeleted;
 
-	// 手机Macid
-	private String phoneMacid;
+	// 手机Deviceid
+	private String phoneDeviceid;
 
 	// 手机类型 1-IOS;2-Android;3-其它
 	private Integer phoneType;
@@ -43,12 +43,12 @@ public class UserParams implements Serializable {
 		this.phoneType = phoneType;
 	}
 
-	public String getPhoneMacid() {
-		return phoneMacid;
+	public String getPhoneDeviceid() {
+		return phoneDeviceid;
 	}
 
-	public void setPhoneMacid(String phoneMacid) {
-		this.phoneMacid = phoneMacid;
+	public void setPhoneDeviceid(String phoneDeviceid) {
+		this.phoneDeviceid = phoneDeviceid;
 	}
 
 	public Integer getIsDeleted() {

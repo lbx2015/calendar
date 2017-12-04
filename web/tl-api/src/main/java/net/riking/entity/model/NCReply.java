@@ -21,6 +21,11 @@ import net.riking.entity.BaseAuditProp;
 @Table(name = "t_nc_reply")
 public class NCReply extends BaseAuditProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1461884746264578424L;
+
 	@Comment("操作人主键: fk t_app_user 发表回复的user_id")
 	@Column(name = "user_id", nullable = false)
 	private String userId;

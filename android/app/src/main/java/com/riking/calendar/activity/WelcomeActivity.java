@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.riking.calendar.R;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.ZCenterImageView;
 
 /**
@@ -74,7 +74,7 @@ public class WelcomeActivity extends AppCompatActivity {
                             Intent intent = new Intent(WelcomeActivity.this, ViewPagerActivity.class);
                             startActivity(intent);
                             //Welcome activity only need once
-                            Preference.put(CONST.NEED_WELCOME_ACTIVITY, false);
+                            ZPreference.put(CONST.NEED_WELCOME_ACTIVITY, false);
                             finish(); //This closes current activity
                         }
                     });

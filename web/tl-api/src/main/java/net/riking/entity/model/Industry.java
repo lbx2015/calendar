@@ -18,6 +18,11 @@ import net.riking.entity.BaseProp;
 @Table(name = "t_industry")
 public class Industry extends BaseProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3940163346158751094L;
+
 	@Comment("行业/职位名称")
 	@Column(name = "name", length = 32)
 	private String name;

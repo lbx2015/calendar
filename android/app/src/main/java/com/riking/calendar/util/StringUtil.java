@@ -24,6 +24,10 @@ public class StringUtil {
         else return phone.trim().matches(telRegex);
     }
 
+    public  static  String getPhoneNumber(String mobiles) {
+        return mobiles.replaceAll("[^\\d]", "");
+    }
+
     public static boolean isMobileNO(CharSequence mobiles){
         if(mobiles== null){
             return false;

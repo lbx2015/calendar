@@ -31,7 +31,7 @@ import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.iflytek.sunflower.FlowerCollector;
 import com.riking.calendar.R;
 import com.riking.calendar.app.MyApplication;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.VoiceJsonParser;
 
 import org.json.JSONException;
@@ -133,7 +133,7 @@ public class SearchDialog extends AppCompatDialog {
             // 若使用本地能力，会话id为null
             //	if (SpeechEvent.EVENT_SESSION_ID == eventType) {
             //		String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
-            //		Log.d(TAG, "session id =" + sid);
+            //		Log.d(TAG, "session userId =" + sid);
             //	}
         }
     };
@@ -277,7 +277,7 @@ public class SearchDialog extends AppCompatDialog {
                     mIatResults.clear();
                     // 设置参数
                     setParam();
-                    boolean isShowDialog = Preference.pref.getBoolean(
+                    boolean isShowDialog = ZPreference.pref.getBoolean(
                             "iat_show", true);
                     if (isShowDialog) {
                         // 显示听写对话框
@@ -321,7 +321,7 @@ public class SearchDialog extends AppCompatDialog {
             mIat.setParameter(SpeechConstant.TRS_SRC, "its");
         }
 
-        String lag = Preference.pref.getString("iat_language_preference",
+        String lag = ZPreference.pref.getString("iat_language_preference",
                 "mandarin");
         if (lag.equals("en_us")) {
             // 设置语言

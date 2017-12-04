@@ -22,7 +22,7 @@ public class ChatActivity extends BaseActivity{
         super.onCreate(arg0);
         setContentView(R.layout.em_activity_chat);
         activityInstance = this;
-        //get user id or group id
+        //get user userId or group userId
         toChatUsername = getIntent().getExtras().getString("userId");
         //use EaseChatFratFragment
         chatFragment = new ChatFragment();

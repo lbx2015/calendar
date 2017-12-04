@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+
 import net.riking.config.Const;
 import net.riking.dao.repo.ReportSubcribeRelRepo;
 import net.riking.entity.AppResp;
@@ -27,7 +28,6 @@ import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
-import net.riking.service.repo.ReportRepo;
 import net.riking.util.RedisUtil;
 import net.riking.util.Utils;
 
@@ -58,6 +58,7 @@ public class AppReportServer {
 
 	/**
 	 * 
+	 * @author tao.yuan[userId]
 	 * @param [userId]
 	 * @version crateTime：2017年11月6日 下午3:41:08
 	 * @used TODO
@@ -68,7 +69,7 @@ public class AppReportServer {
 	public AppResp getAllReport(@RequestBody Map<String, Object> params) {
 		// List<QueryReport> list = reportSubmitCaliberService.findAllReport();
 		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
-		List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();
+//		List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
 		//获取订阅关联表
 		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo.findUserReportList(reportParams.getUserId());
 		
@@ -127,6 +128,8 @@ public class AppReportServer {
 				reportAgence.setList(list);// 将汇报机构下面的中文名称放进去
 				reportAgenceList.add(reportAgence);
 			}
+		}
+		return new AppResp(reportAgenceList, CodeDef.SUCCESS);
 		}*/
 		return new AppResp(reportList, CodeDef.SUCCESS);
 	}

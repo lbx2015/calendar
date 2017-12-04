@@ -38,7 +38,7 @@ public class Const {
 	public static final String VALID_ = "VALID_";
 
 	/* 验证码有效时间 5分钟 */
-	public static final Integer VALID_CODE_TIME = 60 * 5 ;
+	public static final Integer VALID_CODE_TIME = 60 * 5;
 
 	public static final String CTRY_HDAY_CRCY = "CTRY_HDAY_CRCY";
 
@@ -51,12 +51,13 @@ public class Const {
 	// /* 根据tablename */
 	// public static final String SYS_CLAZZ_DICT = "SYS_CLAZZ_DICT";
 	// public static final String SYS_FIELD_DICT = "SYS_FIELD_DICT";
-	
-	/** -------------------登录方式  begin-------------------------- */
-	public static final int LOGIN_REGIST_TYPE_PHONE = 1;//手机号
-	public static final int LOGIN_REGIST_TYPE_WECHAT = 2;//微信号
+
+	/** -------------------登录方式 begin-------------------------- */
+	public static final int LOGIN_REGIST_TYPE_PHONE = 1;// 手机号
+
+	public static final int LOGIN_REGIST_TYPE_WECHAT = 2;// 微信号
 	/** --------------------登录方式 end-------------------------- */
-	
+
 	/** -------------------数据是否有效 1有效，0无效 begin-------------------------- */
 
 	public static final int EFFECTIVE = 1;// 有效数据
@@ -65,13 +66,14 @@ public class Const {
 
 	/** -------------------数据是否有效 1有效，0无效 end-------------------------- */
 
-	/** -------------------男女常量  begin-------------------------- */
-	
-	public static final int USER_SEX_MAN = 1;//男
-	public static final int USER_SEX_WOMAN = 0;//女
-	
+	/** -------------------男女常量 begin-------------------------- */
+
+	public static final int USER_SEX_MAN = 1;// 男
+
+	public static final int USER_SEX_WOMAN = 0;// 女
+
 	/** --------------------男女常量 end-------------------------- */
-	
+
 	/** -------------------请求方向 begin-------------------------- */
 
 	public static final String DIRECT_UP = "up";
@@ -89,8 +91,6 @@ public class Const {
 	public static final int OBJ_TYPE_3 = 3;// 用户
 
 	/** --------------------对象类型 end-------------------------- */
-	
-	
 
 	/** -------------------操作类型 begin-------------------------- */
 
@@ -104,4 +104,11 @@ public class Const {
 
 	/** --------------------操作类型 end-------------------------- */
 
+	/** -------------------操作类型 begin-------------------------- */
+
+	public static final int OBJ_TYPE_ANSWER = 1;// 回答
+
+	public static final int OBJ_TYPE_NEWS = 2;// 资讯
+
+	/** --------------------操作类型 end-------------------------- */
 }

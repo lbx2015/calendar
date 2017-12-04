@@ -9,6 +9,11 @@ import java.io.Serializable;
  * @since 1.0
  */
 public class NewsRelUnionPkId implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6365922550894229903L;
+
 	private String userId;
 
 	private String newsId;

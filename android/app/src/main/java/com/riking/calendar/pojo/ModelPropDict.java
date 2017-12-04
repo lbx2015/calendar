@@ -34,7 +34,7 @@ public class ModelPropDict {
     @Override
     public String toString() {
         return "ModelPropDict{" +
-                "id=" + id +
+                "userId=" + id +
                 ", clazz='" + clazz + '\'' +
                 ", field='" + field + '\'' +
                 ", ke='" + ke + '\'' +

@@ -157,7 +157,7 @@ public class AddRemindActivity extends AppCompatActivity {
                 if (preference.getBoolean(CONST.IS_LOGIN, false)) {
                     //remind fragment
                     if (viewPager.getCurrentItem() == 0) {
-                        Reminder r = realm.where(Reminder.class).equalTo("id", id).findFirst();
+                        Reminder r = realm.where(Reminder.class).equalTo("userId", id).findFirst();
                         //add a new remind to server.
                         APIClient.synchronousReminds(r, CONST.UPDATE, null);
                     } else {

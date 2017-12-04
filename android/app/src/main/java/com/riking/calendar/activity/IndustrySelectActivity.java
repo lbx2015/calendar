@@ -21,7 +21,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -66,7 +66,7 @@ public class IndustrySelectActivity extends AppCompatActivity {
     public void onClickNextStep(View view) {
         AppUser result = new AppUser();
         result.isGuide = "1";
-        result.id = (Preference.pref.getString(CONST.USER_ID, ""));
+        result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
         APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {

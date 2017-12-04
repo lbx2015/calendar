@@ -35,7 +35,7 @@ public class PublicGroupsSeachActivity extends BaseActivity{
     }
     
     /**
-     * search group with group id
+     * search group with group userId
      * @param v
      */
     public void searchGroup(View v){

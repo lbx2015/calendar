@@ -154,8 +154,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         public ImageView important;
         public Task task;
 
-        public TextView deleteButton;
-        public TextView editButton;
+        public ImageView deleteButton;
+        public ImageView editButton;
         SwipeHorizontalMenuLayout sml;
         //        View divider;
         boolean completed = false;
@@ -166,10 +166,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 title = (TextView) view.findViewById(R.id.title);
                 done = (ImageView) view.findViewById(R.id.done);
                 important = (ImageView) view.findViewById(R.id.image_star);
-                deleteButton = (TextView) view.findViewById(R.id.tv_text);
-                editButton = (TextView) view.findViewById(R.id.tv_edit);
+                deleteButton =  view.findViewById(R.id.tv_text);
+                editButton =  view.findViewById(R.id.tv_edit);
                 sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
-//                divider = view.findViewById(R.id.divider);
+//                divider = view.findViewById(R.userId.divider);
                 final Handler handler = new Handler();
                 done.setOnClickListener(new View.OnClickListener() {
                     Runnable callBack = new Runnable() {

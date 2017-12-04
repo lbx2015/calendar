@@ -24,7 +24,7 @@ public class UserList {
 
     public class Datum {
 
-        @SerializedName("id")
+        @SerializedName("userId")
         public Integer id;
         @SerializedName("first_name")
         public String first_name;

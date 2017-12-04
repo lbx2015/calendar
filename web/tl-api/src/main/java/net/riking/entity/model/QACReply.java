@@ -1,8 +1,11 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -32,11 +35,34 @@ public class QACReply extends BaseAuditProp {
 
 	@Comment("目标对象评论回复主键: fk t_qac_reply 回复ID")
 	@Column(name = "reply_id", nullable = false)
-	private String reply_id;
+	private String replyId;
 
 	@Comment("内容")
 	@Column(name = "content", nullable = false)
 	private String content;
+
+	// 发表回复的名称
+	@Transient
+	private String userName;
+
+	// 被评论人名称
+	@Transient
+	private String toUserName;
+
+	public QACReply(String id, Date createdTime, Integer isAduit, String userId, String toUserId, String commentId,
+			String replyId, String content, String userName, String toUserName) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setIsAduit(isAduit);
+		this.userId = userId;
+		this.toUserId = toUserId;
+		this.commentId = commentId;
+		this.replyId = replyId;
+		this.content = content;
+		this.userName = userName;
+		this.toUserName = toUserName;
+	}
 
 	public String getUserId() {
 		return userId;
@@ -54,6 +80,22 @@ public class QACReply extends BaseAuditProp {
 		this.content = content;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getToUserName() {
+		return toUserName;
+	}
+
+	public void setToUserName(String toUserName) {
+		this.toUserName = toUserName;
+	}
+
 	public String getCommentId() {
 		return commentId;
 	}
@@ -62,12 +104,12 @@ public class QACReply extends BaseAuditProp {
 		this.commentId = commentId;
 	}
 
-	public String getReply_id() {
-		return reply_id;
+	public String getReplyId() {
+		return replyId;
 	}
 
-	public void setReply_id(String reply_id) {
-		this.reply_id = reply_id;
+	public void setReplyId(String replyId) {
+		this.replyId = replyId;
 	}
 
 	public String getToUserId() {

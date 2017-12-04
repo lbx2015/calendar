@@ -21,7 +21,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -67,7 +67,7 @@ public class PositionSelectActivity extends AppCompatActivity {
     public void onClickNextStep(View view) {
             AppUser result = new AppUser();
             result.isGuide = "1";
-            result.id = (Preference.pref.getString(CONST.USER_ID, ""));
+            result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
             APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
                 @Override
                 public void callBack(ResponseModel<String> response) {
@@ -117,7 +117,7 @@ public class PositionSelectActivity extends AppCompatActivity {
         isLoading = true;
         HashMap<String, Long> hashMap = new HashMap<>();
         Long industryId = getIntent().getExtras().getLong(CONST.INDUSTRY_ID);
-        hashMap.put("id", getIntent().getExtras().getLong(CONST.INDUSTRY_ID));
+        hashMap.put("userId", getIntent().getExtras().getLong(CONST.INDUSTRY_ID));
         mAdapter.industryId = industryId;
         APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override

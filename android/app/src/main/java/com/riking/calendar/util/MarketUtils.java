@@ -108,7 +108,7 @@ public class MarketUtils {
         try {
             if (TextUtils.isEmpty(appPkg))
                 return;
-            Uri uri = Uri.parse("market://details?id=" + appPkg);
+            Uri uri = Uri.parse("market://details?userId=" + appPkg);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             if (!TextUtils.isEmpty(marketPkg))
                 intent.setPackage(marketPkg);

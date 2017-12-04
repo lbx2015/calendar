@@ -50,7 +50,7 @@
                  android:background="@android:color/white">
 
                  <TextView
-                     android:id="@+id/first_week_day"
+                     andruserIdd:iduserId@+id/first_week_day"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_alignParentLeft="true"
@@ -62,21 +62,21 @@
                      android:textSize="16sp" />
 
                  <TextView
-                     android:id="@+id/first_day"
+                     andruserIdd:iduserId@+id/first_day"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_centerVertical="true"
                      android:layout_margin="5dp"
-                     android:layout_toLeftOf="@+id/edit_first_day"
+                     android:layout_toLeftOfuserId@+id/edit_first_day"
                      android:text="@string/sundday"
                      android:textColor="@color/color_background_b6b6b6"
                      android:textSize="14sp" />
 
                  <ImageView
-                     android:id="@+id/edit_first_day"
+                     andruserIdd:iduserId@+id/edit_first_day"
                      android:layout_width="10dp"
                      android:layout_height="10dp"
-                     android:layout_alignBottom="@+id/select_time"
+                     android:layout_alignBottomuserId@+id/select_time"
                      android:layout_alignParentEnd="true"
                      android:layout_centerVertical="true"
                      android:layout_marginEnd="9dp"
@@ -140,7 +140,7 @@
                  android:background="@android:color/white">
 
                  <TextView
-                     android:id="@+id/remind_voice"
+                     andruserIdd:iduserId@+id/remind_voice"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_alignParentLeft="true"
@@ -151,20 +151,20 @@
                      android:textColor="@color/color_323232" />
 
                  <TextView
-                     android:id="@+id/default_remind"
+                     andruserIdd:iduserId@+id/default_remind"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_centerVertical="true"
                      android:layout_margin="5dp"
-                     android:layout_toLeftOf="@+id/look_remind_voice"
+                     android:layout_toLeftOfuserId@+id/look_remind_voice"
                      android:text="@string/default_remind"
                      android:textColor="@color/color_background_b6b6b6" />
 
                  <ImageView
-                     android:id="@+id/look_remind_voice"
+                     andruserIdd:iduserId@+id/look_remind_voice"
                      android:layout_width="10dp"
                      android:layout_height="10dp"
-                     android:layout_alignBottom="@+id/select_time"
+                     android:layout_alignBottomuserId@+id/select_time"
                      android:layout_alignParentEnd="true"
                      android:layout_centerVertical="true"
                      android:layout_marginEnd="9dp"
@@ -236,7 +236,7 @@
             <!--android:paddingTop="2dp">-->
 
             <!--<TextView-->
-            <!--android:id="@+id/bind_wechat"-->
+            <!--andruserIdd:iduserId@+id/bind_wechat"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_alignParentLeft="true"-->
@@ -247,17 +247,17 @@
             <!--android:textColor="@color/color_323232" />-->
 
             <!--<TextView-->
-            <!--android:id="@+id/whether_wechat_binded"-->
+            <!--andruserIdd:iduserId@+id/whether_wechat_binded"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_centerVertical="true"-->
             <!--android:layout_margin="5dp"-->
-            <!--android:layout_toLeftOf="@+id/look_wechat"-->
+            <!--android:layout_toLeftOfuserId@+id/look_wechat"-->
             <!--android:text="@string/not_binded"-->
             <!--android:textColor="@color/color_background_b6b6b6" />-->
 
             <!--<ImageView-->
-            <!--android:id="@+id/look_wechat"-->
+            <!--andruserIdd:iduserId@+id/look_wechat"-->
             <!--android:layout_width="10dp"-->
             <!--android:layout_height="10dp"-->
             <!--android:layout_alignParentEnd="true"-->

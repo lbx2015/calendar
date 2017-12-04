@@ -21,7 +21,7 @@ import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.InterestingReportLinearLayout;
 import com.riking.calendar.view.ZFlowLayout;
@@ -62,14 +62,14 @@ public class ReportsSelectActivity extends AppCompatActivity {
 
     private void initViews() {
         zFlowLayout = findViewById(R.id.flow_layout);
-//        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+//        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.userId.swipeRefreshLayout);
     }
 
     public void onClickStart(View view) {
         if (selectedReportIds.size() > 0) {
             AppUserReportResult result = new AppUserReportResult();
             result.list=selectedReportIds;
-            result.userId = Preference.pref.getString(CONST.USER_ID, "");
+            result.userId = ZPreference.pref.getString(CONST.USER_ID, "");
             APIClient.interestingReports(result, new ZCallBackWithFail<ResponseModel<Short>>() {
                 @Override
                 public void callBack(ResponseModel<Short> response) {
@@ -84,7 +84,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
     }
 
     private void initEvents() {
-//        mRecyclerView = findViewById(R.id.recyclerView);
+//        mRecyclerView = findViewById(R.userId.recyclerView);
         //two columns
 //        GridLayoutManager manager = new GridLayoutManager(this, 2);
 //
@@ -129,7 +129,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                     if (root.checked) {
                                         //the report is not been subscribed
                                         root.checked = false;
-                                        //remove the report id form the result
+                                        //remove the report userId form the result
                                         selectedReportIds.remove(r.reportId);
                                         checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.drawable.login_icon_add));
                                         reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.color_222222));
@@ -137,7 +137,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                     } else {
                                         //the report is been subscribed.
                                         root.checked = true;
-                                        //add the report id into the result
+                                        //add the report userId into the result
                                         selectedReportIds.add(r.reportId);
 
                                         checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.drawable.login_icon_dh));

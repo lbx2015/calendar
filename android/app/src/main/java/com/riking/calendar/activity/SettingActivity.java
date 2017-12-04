@@ -20,7 +20,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZDB;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
@@ -60,9 +60,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             cacheSizeTextview.setText(getString(R.string.no_need_to_clear));
         }
 
-        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             findViewById(R.id.login_out_card_view).setVisibility(View.VISIBLE);
-            bindedPhone.setText(Preference.pref.getString(CONST.PHONE_NUMBER, ""));
+            bindedPhone.setText(ZPreference.pref.getString(CONST.PHONE_NUMBER, ""));
         } else {
             bindedPhone.setText(getString(R.string.not_binded));
         }
@@ -122,7 +122,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
                 pickerDialog.dismiss();
                 AppUser user = new AppUser();
-                user.id = preferences.getString(CONST.USER_ID, null);
+                user.userId = preferences.getString(CONST.USER_ID, null);
                 user.allDayReminderTime = hour + minute;
                 apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
