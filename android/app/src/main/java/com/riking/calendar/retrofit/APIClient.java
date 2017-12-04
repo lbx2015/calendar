@@ -38,8 +38,9 @@ import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.convert.DateTypeDeserializer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,6 +75,9 @@ public class APIClient {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Date.class, new DateTypeDeserializer());
+        gsonBuilder.setExclusionStrategies(new AnnotationExclusionStrategy());
         retrofit = new Retrofit.Builder()
 //                .baseUrl("http://www.baidu.com")
 //                .baseUrl("https://reqres.in")
@@ -82,7 +86,7 @@ public class APIClient {
 //                .baseUrl("http://172.16.64.96:8281/")
 //                .baseUrl("http://172.16.64.85:8281/")
                 .addConverterFactory(new GsonStringConverterFactory())
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setExclusionStrategies(new AnnotationExclusionStrategy()).create()))
+                .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
                 .client(client)
                 .build();
         return retrofit;
@@ -511,7 +515,7 @@ public class APIClient {
     /**
      * get positions
      */
-    public static void getPositions(HashMap<String, Long> industryMap, final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
+    public static void getPositions(HashMap<String, String> industryMap, final ZCallBackWithFail<ResponseModel<ArrayList<Industry>>> c) {
         apiInterface.getPositionByIndustry(industryMap).enqueue(c);
     }
 

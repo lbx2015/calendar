@@ -36,6 +36,7 @@ public class BaseProp extends BaseEntity {
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
