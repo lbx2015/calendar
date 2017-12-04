@@ -24,7 +24,7 @@ import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZDB;
 
 import java.util.ArrayList;
@@ -72,9 +72,9 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         super.onBackPressed();
         if (subscribedReportsChanged) {
             Gson gson = new Gson();
-            Preference.put(CONST.ORDER_REPORTS_CHANGED, true);
-            Preference.put(CONST.ORDER_REPORTS, gson.toJson(orderReports));
-            Preference.put(CONST.DIS_ORDER_REPORTS, gson.toJson(disOrderReports));
+            ZPreference.put(CONST.ORDER_REPORTS_CHANGED, true);
+            ZPreference.put(CONST.ORDER_REPORTS, gson.toJson(orderReports));
+            ZPreference.put(CONST.DIS_ORDER_REPORTS, gson.toJson(disOrderReports));
         }
     }
 
@@ -127,7 +127,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     public void performSearch() {
         HashMap<String, String> reportName = new LinkedHashMap<>(1);
         reportName.put("reportName", reportSearchCondition);
-        reportName.put("userId", Preference.pref.getString(CONST.USER_ID, ""));
+        reportName.put("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
         APIClient.getReportByName(reportName, new ZCallBack<ResponseModel<List<ReportFrequency>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportFrequency>> response) {
@@ -160,7 +160,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
 
         subscribedReportsChanged = true;
         AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
         a.type = "1";
@@ -181,7 +181,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
 
         subscribedReportsChanged = true;
         AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
         a.type = "0";

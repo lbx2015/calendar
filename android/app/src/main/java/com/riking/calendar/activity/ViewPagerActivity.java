@@ -46,7 +46,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DownLoadApk;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZGoto;
 
 import java.util.List;
@@ -344,7 +344,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 1) {
-                    if (!Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+                    if (!ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
                         ZGoto.toLoginActivity(ViewPagerActivity.this);
                     }
                 }

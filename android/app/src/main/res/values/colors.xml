@@ -71,4 +71,6 @@
     <color name="color_f8f8f8">#f8f8f8</color>
 
     <color name="colorPrimaryDarkTrans">#CCf57257</color>
+    <color name="color_ffab40">#ffab40</color>
+    <color name="color_ff5252">#ff5252</color>
 </resources>

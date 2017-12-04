@@ -10,15 +10,16 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
-import net.riking.dao.ReportListDao;
-import net.riking.entity.model.ReportSubcribeRel;
+import net.riking.dao.ReportDao;
+import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportFrequency;
 
-@Repository("reportListDao")
-public class ReportListDaoImpl implements ReportListDao {
+@Repository("reportDao")
+public class ReportDaoImpl implements ReportDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -30,7 +31,7 @@ public class ReportListDaoImpl implements ReportListDao {
 		Connection connection = session.connection();
 		String sql = "SELECT t.report_id,r.report_name FROM t_appuser_report_rel t LEFT JOIN t_report_list r ON t.report_id=r.Id WHERE t.appUser_id=?";
 		PreparedStatement pstmt = null;
-		List<ReportFrequency> list = new ArrayList<>();
+		List<ReportFrequency> list = new ArrayList<ReportFrequency>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, userId);
@@ -43,6 +44,37 @@ public class ReportListDaoImpl implements ReportListDao {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public List<Report> getAllReportByParams(String param) {
+		// TODO Auto-generated method stub
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call getAllReport(?)";
+		PreparedStatement pstmt = null;
+		List<Report> list = new ArrayList<Report>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if(StringUtils.isBlank(param))
+				param = "";
+			pstmt.setString(1, param);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Report report = new Report();
+				report.setAgenceName(rs.getString("agenceName"));
+				report.setReportType(rs.getString("reportType"));
+				report.setReportMode(rs.getString("reportMode"));
+				report.setCode(rs.getString("code"));
+				report.setTitle(rs.getString("title"));
+				report.setIsSubcribe(rs.getString("isSubcribe"));
+				list.add(report);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+		
 	}
 
 }

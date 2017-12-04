@@ -5,7 +5,6 @@ import java.util.Set;
 
 import net.riking.entity.model.BaseModelPropdict;
 import net.riking.entity.model.ReportFrequency;
-import net.riking.entity.model.Report;
 
 public interface ReportAgenceFrencyDao {
 

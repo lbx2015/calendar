@@ -27,7 +27,7 @@ import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
@@ -155,7 +155,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     private void saveSubscribedReports() {
         if (editMode) {
             AppUserReportResult appUserReportResult = new AppUserReportResult();
-            appUserReportResult.userId = Preference.pref.getString(CONST.USER_ID, "");
+            appUserReportResult.userId = ZPreference.pref.getString(CONST.USER_ID, "");
             appUserReportResult.list = new ArrayList<>();
 
             for (ReportFrequency r : mySubscribedReports) {
@@ -198,12 +198,12 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     }
 
     private void updateOrderReports() {
-        if (Preference.pref.getBoolean(CONST.ORDER_REPORTS_CHANGED, false)) {
-            Preference.put(CONST.ORDER_REPORTS_CHANGED, false);
+        if (ZPreference.pref.getBoolean(CONST.ORDER_REPORTS_CHANGED, false)) {
+            ZPreference.put(CONST.ORDER_REPORTS_CHANGED, false);
 
             Gson gson = new Gson();
-            final ReportFrequency[] orderReports = gson.fromJson(Preference.pref.getString(CONST.ORDER_REPORTS, ""), ReportFrequency[].class);
-            final ReportFrequency[] disOrderReports = gson.fromJson(Preference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), ReportFrequency[].class);
+            final ReportFrequency[] orderReports = gson.fromJson(ZPreference.pref.getString(CONST.ORDER_REPORTS, ""), ReportFrequency[].class);
+            final ReportFrequency[] disOrderReports = gson.fromJson(ZPreference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), ReportFrequency[].class);
             boolean reportAdded = false;
             if (orderReports != null) {
                 for (int i = 0; i < orderReports.length; i++) {
@@ -237,9 +237,9 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         enterEditMode();
 
         //delete the preference for temp transfer value
-        Preference.pref.edit().remove(CONST.ORDER_REPORTS_CHANGED).commit();
-        Preference.pref.edit().remove(CONST.ORDER_REPORTS).commit();
-        Preference.pref.edit().remove(CONST.DIS_ORDER_REPORTS).commit();
+        ZPreference.pref.edit().remove(CONST.ORDER_REPORTS_CHANGED).commit();
+        ZPreference.pref.edit().remove(CONST.ORDER_REPORTS).commit();
+        ZPreference.pref.edit().remove(CONST.DIS_ORDER_REPORTS).commit();
         reportsOrderAdapter.notifyDataSetChanged();
     }
 
@@ -248,7 +248,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         //request all reports
         AppUser u = new AppUser();
         //set user userId
-        u.userId = Preference.pref.getString(CONST.USER_ID, "");
+        u.userId = ZPreference.pref.getString(CONST.USER_ID, "");
         APIClient.getAllReports(u, new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportAgence>> response) {
@@ -318,7 +318,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
 
     public void orderReport(ReportFrequency report) {
         AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = Preference.pref.getString(CONST.USER_ID, "");
+        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
         a.reportName = report.reportName;
         mySubscribedReports.add(report);

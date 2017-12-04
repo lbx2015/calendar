@@ -25,6 +25,7 @@ import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
@@ -37,7 +38,7 @@ import com.riking.calendar.service.ReminderService;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StringUtil;
 
 import java.text.ParseException;
@@ -76,6 +77,7 @@ public class APIClient {
         retrofit = new Retrofit.Builder()
 //                .baseUrl("http://www.baidu.com")
 //                .baseUrl("https://reqres.in")
+//                .baseUrl(CONST.TL_API_TEST)
                 .baseUrl(CONST.TL_API_TEST)
 //                .baseUrl("http://172.16.64.96:8281/")
 //                .baseUrl("http://172.16.64.85:8281/")
@@ -86,7 +88,7 @@ public class APIClient {
         return retrofit;
     }
 
-    public static void checkVarificationCode(@Body LoginParams user, final ZCallBackWithFail<ResponseModel<AppUser>> callBack) {
+    public static void checkVarificationCode(@Body LoginParams user, final ZCallBackWithFail<ResponseModel<AppUserResp>> callBack) {
         user.phone = StringUtil.getPhoneNumber(user.phone);
         apiInterface.checkVarificationCode(user).enqueue(callBack);
     }
@@ -356,7 +358,7 @@ public class APIClient {
 
     public static void getReminderAndTasksFromServer() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("userId", Preference.pref.getString(CONST.USER_ID, ""));
+        jsonObject.addProperty("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
         //get user's reminders and tasks
         APIClient.apiInterface.synchronousAll(jsonObject).enqueue(new ZCallBack<ResponseModel<SynResult>>() {
             @Override

@@ -14,17 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.dao.repo.ReportRepo;
+
+import net.riking.config.Const;
 import net.riking.dao.repo.ReportSubcribeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.BaseModelPropdict;
+import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportAgence;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.params.ReportParams;
 import net.riking.service.ReportAgenceFrencyService;
+import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
+import net.riking.util.RedisUtil;
 import net.riking.util.Utils;
 
 /**
@@ -35,9 +39,10 @@ import net.riking.util.Utils;
  */
 @RestController
 @RequestMapping(value = "/report")
-public class ReportServer {
+public class AppReportServer {
 	@Autowired
-	ReportRepo reportRepo;
+	ReportService reportService;
+//	ReportRepo reportRepo;
 
 	@Autowired
 	ReportSubcribeRelRepo reportSubcribeRelRepo;
@@ -54,6 +59,7 @@ public class ReportServer {
 	/**
 	 * 
 	 * @author tao.yuan[userId]
+	 * @param [userId]
 	 * @version crateTime：2017年11月6日 下午3:41:08
 	 * @used TODO
 	 * @return
@@ -63,7 +69,31 @@ public class ReportServer {
 	public AppResp getAllReport(@RequestBody Map<String, Object> params) {
 		// List<QueryReport> list = reportSubmitCaliberService.findAllReport();
 		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
-		List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
+//		List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
+		//获取订阅关联表
+		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo.findUserReportList(reportParams.getUserId());
+		
+		List<Report> reportList = null;
+		if(RedisUtil.getInstall().getList(Const.ALL_REPORT) != null){
+			reportList = RedisUtil.getInstall().getList(Const.ALL_REPORT);
+		}else{
+			reportList = reportService.getAllReport();
+		}
+		
+//		List<Report> reportResult = new ArrayList<Report>();
+//		for(Report r : reportList){
+		for(int i = 0; i < reportList.size(); i++){
+			Report r = reportList.get(i);
+			for(ReportSubcribeRel rel : reportSubcribeRelList){
+				if(r.getReportId().equals(rel.getReportId())){
+					r.setIsSubcribe("1");//已订阅
+					reportList.remove(i);
+					reportList.add(i, r);
+				}
+			}
+		}
+		
+		/*List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
 		Set<String> agenceList = reportAgenceFrencyService.findALLAgence();// 查询所有的汇报机构
 		List<BaseModelPropdict> list = null;
 		// 根据汇报机构 查询字典表 查询出汇报机构下面的中文名称
@@ -100,6 +130,8 @@ public class ReportServer {
 			}
 		}
 		return new AppResp(reportAgenceList, CodeDef.SUCCESS);
+		}*/
+		return new AppResp(reportList, CodeDef.SUCCESS);
 	}
 
 	/**

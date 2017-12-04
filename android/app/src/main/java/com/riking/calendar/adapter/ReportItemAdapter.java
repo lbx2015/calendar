@@ -20,7 +20,7 @@ import com.riking.calendar.realm.model.QueryReportRealmModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
@@ -57,7 +57,7 @@ public class ReportItemAdapter extends RecyclerView.Adapter<ReportItemAdapter.My
         holder.title.setText(r.reportName);
 
         //not enable the swipe function when user is not logged.
-        if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             holder.sml.setSwipeEnable(true);
         } else {
             holder.sml.setSwipeEnable(false);

@@ -18,7 +18,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
                 AppUser result = new AppUser();
 //                result.industryId = industry.reportId;
                 result.isGuide = "1";
-                result.userId = (Preference.pref.getString(CONST.USER_ID, ""));
+                result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
                 APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {

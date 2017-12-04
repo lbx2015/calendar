@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 
 import com.riking.calendar.R;
@@ -28,7 +27,7 @@ import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.Preference;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.CustomLinearLayout;
 
 import java.text.SimpleDateFormat;
@@ -125,7 +124,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRefresh() {
                 checkHistoryButton.setVisibility(View.VISIBLE);
-                if (Preference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+                if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
                     //get reminders and tasks of user from server
                     APIClient.synchAll();
                 }

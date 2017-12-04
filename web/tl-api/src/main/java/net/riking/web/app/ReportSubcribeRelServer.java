@@ -28,7 +28,7 @@ import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportResult;
 import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.model.SysDays;
-import net.riking.service.ReportLisService;
+import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
 import net.riking.service.SysDateService;
@@ -67,7 +67,7 @@ public class ReportSubcribeRelServer {
 	// AppUserReportCompletRelRepo appUserReportCompletRelRepo;
 
 	@Autowired
-	ReportLisService reportLisService;
+	ReportService reportService;
 
 	@Autowired
 	ReportRepo reportRepo;

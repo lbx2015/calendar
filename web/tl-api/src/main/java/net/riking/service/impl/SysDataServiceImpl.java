@@ -17,6 +17,7 @@ import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.core.utils.ExceptUtils;
 import net.riking.entity.model.AppUser;
+import net.riking.service.ReportService;
 import net.riking.service.SysDataService;
 import net.riking.util.RedisUtil;
 
@@ -32,6 +33,9 @@ public class SysDataServiceImpl implements SysDataService {
 
 	@Autowired
 	ModelPropdictRepo modelPropdictRepo;
+	
+	@Autowired
+	ReportService reportService;
 
 	// @Autowired
 	// CtryHdayCrcyRepo ctryHdayCrcyRepo;
@@ -43,9 +47,11 @@ public class SysDataServiceImpl implements SysDataService {
 	 * @used TODO
 	 */
 	public void initData() {
-		logger.info(
-				"====================================================initData=======================================================");
+		logger.info("====================================================initData=======================================================");
 		initDict();
+//		List<Report> list = reportService.getAllReport();
+//		List<ReportFrequency> list = reportService.findAppUserReportById("1");
+//		System.out.println("===================size=="+list.size());
 		// initCtryHdayCrcy();
 	}
 

@@ -77,8 +77,46 @@ public class Report extends BasePageQueryProp {
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
 
+	
 	@Transient
 	private String userId;
+	
+	@Comment("机构")
+	@Transient
+	private String agenceName;
+	
+	@Comment("报表类型")
+	@Transient
+	private String reportType;
+	
+	@Comment("报表模式分类")
+	@Transient
+	private String reportMode;
+	
+	@Comment("报表模式分类")
+	@Transient
+	private String reportId;
+	
+	@Comment("是否订阅")
+	@Transient
+	private String isSubcribe;
+	
+	public Report(){}
+	
+
+//	public Report(String agenceName, String reportType, String reportMode, String reportId, String code, String title,
+//			String isSubcribe) {
+//		super();
+//		this.agenceName = agenceName;
+//		this.reportType = reportType;
+//		this.reportMode = reportMode;
+//		this.reportId = reportId;
+//		this.code = code;
+//		this.title = title;
+//		this.isSubcribe = isSubcribe;
+//	}
+
+
 
 	public String getTitle() {
 		return title;
@@ -200,4 +238,55 @@ public class Report extends BasePageQueryProp {
 		this.userId = userId;
 	}
 
+
+	public String getAgenceName() {
+		return agenceName;
+	}
+
+
+	public void setAgenceName(String agenceName) {
+		this.agenceName = agenceName;
+	}
+
+
+	public String getReportType() {
+		return reportType;
+	}
+
+
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
+
+
+	public String getReportMode() {
+		return reportMode;
+	}
+
+
+	public void setReportMode(String reportMode) {
+		this.reportMode = reportMode;
+	}
+
+
+	public String getReportId() {
+		return reportId;
+	}
+
+
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
+	}
+
+
+	public String getIsSubcribe() {
+		return isSubcribe;
+	}
+
+
+	public void setIsSubcribe(String isSubcribe) {
+		this.isSubcribe = isSubcribe;
+	}
+
+	
 }
