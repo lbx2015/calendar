@@ -57,6 +57,7 @@ public class AppUserServiceImpl implements AppUserService {
 		/* 详细信息 */
 		detail.setId(uuid);
 		detail.setSex(Const.USER_SEX_MAN);
+		detail.setPhotoUrl(Const.DEFAULT_PHOTO_URL);// 默认头像Url
 		detail.setIntegral(0);
 		detail.setExperience(0);
 		detail.setIsSubscribe(0);

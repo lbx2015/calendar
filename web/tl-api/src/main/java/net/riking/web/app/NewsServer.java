@@ -205,8 +205,9 @@ public class NewsServer {
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
 		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
-		newsCommentRepo.save(newsCommentInfo);
-		return new AppResp(CodeDef.SUCCESS);
+		newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
+		Map<String, Object> map = Utils.objProps2Map(newsCommentInfo, true);
+		return new AppResp(map, CodeDef.SUCCESS);
 	}
 
 	/**

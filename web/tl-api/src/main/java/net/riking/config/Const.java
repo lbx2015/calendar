@@ -44,9 +44,12 @@ public class Const {
 
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
-	
+
 	/* 所有报表数据集 */
 	public static final String ALL_REPORT = "ALL_REPORT";
+
+	/* 默认头像 */
+	public static final String DEFAULT_PHOTO_URL = "defaultPhotoUrl.jpg";
 
 	// /* 根据tablename */
 	// public static final String SYS_CLAZZ_DICT = "SYS_CLAZZ_DICT";
