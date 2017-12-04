@@ -57,7 +57,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			holder.message = (TextView) convertView.findViewById(R.id.message);
             holder.agreeBtn = (Button) convertView.findViewById(R.id.agree);
 			holder.refuseBtn = (Button) convertView.findViewById(R.id.refuse);
-			// holder.time = (TextView) convertView.findViewById(R.id.time);
+			// holder.time = (TextView) convertView.findViewById(R.userId.time);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();

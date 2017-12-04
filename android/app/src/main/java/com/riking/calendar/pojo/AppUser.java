@@ -10,7 +10,7 @@ public class AppUser {
 //    @Column(name = "Id", length = 32)
 //    @GenericGenerator(name = "system-uuid", strategy = "uuid")
 //    @GeneratedValue(generator = "system-uuid")
-    public String id;
+    public String userId;
 
 //    @Comment("用户名称")
 //    @Column(name = "name", length = 32)

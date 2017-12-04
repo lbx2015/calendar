@@ -154,7 +154,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
         bottomContainer = (LinearLayout) findViewById(R.id.ll_bottom_container);
         monitorTextView = (TextView) findViewById(R.id.tv_call_monitor);
         netwrokStatusVeiw = (TextView) findViewById(R.id.tv_network_status);
-//        recordBtn = (Button) findViewById(R.id.btn_record_video);
+//        recordBtn = (Button) findViewById(R.userId.btn_record_video);
         Button switchCameraBtn = (Button) findViewById(R.id.btn_switch_camera);
         Button captureImageBtn = (Button) findViewById(R.id.btn_capture_image);
         SeekBar YDeltaSeekBar = (SeekBar) findViewById(R.id.seekbar_y_detal);
@@ -555,7 +555,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
             }
             break;
         /*
-        case R.id.btn_record_video: //record the video
+        case R.userId.btn_record_video: //record the video
             if(!isRecording){
 //                callHelper.startVideoRecord(PathUtil.getInstance().getVideoPath().getAbsolutePath());
                 callHelper.startVideoRecord("/sdcard/");

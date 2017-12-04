@@ -262,9 +262,9 @@ public class DemoHelper {
         // set if you need delivery ack
         options.setRequireDeliveryAck(false);
 
-        //you need apply & set your own id if you want to use google cloud messaging.
+        //you need apply & set your own userId if you want to use google cloud messaging.
         options.setGCMNumber("324169311137");
-        //you need apply & set your own id if you want to use Mi push notification
+        //you need apply & set your own userId if you want to use Mi push notification
         options.setMipushConfig("2882303761517426801", "5381742660801");
 
         //set custom servers, commonly used in private deployment
@@ -387,7 +387,7 @@ public class DemoHelper {
                 }else{
                     String chatUsename = null;
                     List<String> notNotifyIds = null;
-                    // get user or group id which was blocked to show message notifications
+                    // get user or group userId which was blocked to show message notifications
                     if (message.getChatType() == ChatType.Chat) {
                         chatUsename = message.getFrom();
                         notNotifyIds = demoModel.getDisabledIds();
@@ -482,7 +482,7 @@ public class DemoHelper {
                         intent.putExtra("userId", message.getFrom());
                         intent.putExtra("chatType", Constant.CHATTYPE_SINGLE);
                     } else { // group chat message
-                        // message.getTo() is the group id
+                        // message.getTo() is the group userId
                         intent.putExtra("userId", message.getTo());
                         if(chatType == ChatType.GroupChat){
                             intent.putExtra("chatType", Constant.CHATTYPE_GROUP);
@@ -1225,7 +1225,7 @@ public class DemoHelper {
 			@Override
 			public void onMessageReceived(List<EMMessage> messages) {
 			    for (EMMessage message : messages) {
-                    EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
+                    EMLog.d(TAG, "onMessageReceived userId : " + message.getMsgId());
                     // in background, do not refresh UI, notify it in notification bar
                     if(!easeUI.hasForegroundActivies()){
                         getNotifier().onNewMsg(message);
@@ -1412,7 +1412,7 @@ public class DemoHelper {
     }
 
     /**
-     * get current user's id
+     * get current user's userId
      */
     public String getCurrentUsernName(){
     	if(username == null){

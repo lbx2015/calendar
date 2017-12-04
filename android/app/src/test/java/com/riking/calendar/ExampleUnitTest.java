@@ -31,6 +31,14 @@ public class ExampleUnitTest {
     String repeatWeekReminds;
 
     @Test
+    public void testTimeFormat() throws Exception {
+        String format = "yyyyMMddhhmmssSSS";
+        SimpleDateFormat s = new SimpleDateFormat(format);
+        Date d = new Date();
+        System.out.println(s.format(d));
+    }
+
+    @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
@@ -52,7 +60,7 @@ public class ExampleUnitTest {
     public void testGeneric() throws Exception {
         ResponseModel<AppUser> dd = new ResponseModel<>();
         AppUser user = new AppUser();
-        user.id = "ddddd";
+        user.userId = "ddddd";
         dd._data = user;
         System.out.println(new Gson().toJson(dd));
     }
@@ -79,7 +87,7 @@ public class ExampleUnitTest {
     public void testGsonString() {
         String id = "adsfjdl";
         JsonObject j = new JsonObject();
-        j.addProperty("id", id);
+        j.addProperty("userId", id);
         System.out.println(new Gson().toJson(j));
 
     }

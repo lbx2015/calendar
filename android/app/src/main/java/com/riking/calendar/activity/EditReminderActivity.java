@@ -72,7 +72,7 @@ public class EditReminderActivity extends AppCompatActivity {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Reminder reminder = realm.where(Reminder.class).equalTo("id", id).findFirst();
+                Reminder reminder = realm.where(Reminder.class).equalTo("userId", id).findFirst();
                 SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
                 reminder.title = reminderFragment.remindTitle.getText().toString();

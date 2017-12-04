@@ -114,7 +114,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 if (departName.length() > 0) {
                     AppUser user = new AppUser();
                     user.address = departName;
-                    user.id = preference.getString(CONST.USER_ID, null);
+                    user.userId = preference.getString(CONST.USER_ID, null);
 
                     apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                         @Override
@@ -245,7 +245,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         calendar.set(Calendar.MONTH, Integer.parseInt(datePickerDialog.wheelDatePicker.month) - 1);
                         calendar.set(Calendar.DATE, Integer.parseInt(datePickerDialog.wheelDatePicker.day) - 1);
                         AppUser user = new AppUser();
-                        user.id = preference.getString(CONST.USER_ID, null);
+                        user.userId = preference.getString(CONST.USER_ID, null);
                         user.birthday = new SimpleDateFormat(CONST.yyyyMMdd).format(calendar.getTime());
                         apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                             @Override
@@ -317,7 +317,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         }
                         if (sex != newSex) {
                             final AppUser user = new AppUser();
-                            user.id = preference.getString(CONST.USER_ID, null);
+                            user.userId = preference.getString(CONST.USER_ID, null);
                             user.sex = newSex;
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
@@ -363,7 +363,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 // but you can provide here any other instance of ViewGroup from your Fragment / Activity
                 View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_user_name_dialog, null, false);
                 // Set up the input
-                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
+                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.userId.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
                 String addressText = preference.getString(CONST.USER_ADDRESS, "");
@@ -383,7 +383,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                         if (departName.length() > 0) {
                             AppUser user = new AppUser();
                             user.address = departName;
-                            user.id = preference.getString(CONST.USER_ID, null);
+                            user.userId = preference.getString(CONST.USER_ID, null);
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
@@ -441,7 +441,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
 
                             AppUser user = new AppUser();
                             user.remark = newComments;
-                            user.id = preference.getString(CONST.USER_ID, null);
+                            user.userId = preference.getString(CONST.USER_ID, null);
 
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {

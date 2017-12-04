@@ -247,8 +247,8 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     private void loadReport() {
         //request all reports
         AppUser u = new AppUser();
-        //set user id
-        u.id = Preference.pref.getString(CONST.USER_ID, "");
+        //set user userId
+        u.userId = Preference.pref.getString(CONST.USER_ID, "");
         APIClient.getAllReports(u, new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportAgence>> response) {

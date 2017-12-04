@@ -69,7 +69,7 @@ public class ReminderModel {
     @Override
     public String toString() {
         return "ReminderModel{" +
-                "id='" + id + '\'' +
+                "userId='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", title='" + title + '\'' +
                 ", day='" + day + '\'' +

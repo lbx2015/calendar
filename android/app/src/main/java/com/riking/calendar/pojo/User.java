@@ -11,7 +11,7 @@ public class User {
     public String name;
     @SerializedName("job")
     public String job;
-    @SerializedName("id")
+    @SerializedName("userId")
     public String id;
     @SerializedName("createdAt")
     public String createdAt;
