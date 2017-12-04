@@ -26,6 +26,11 @@ import net.riking.entity.BaseEntity;
 @IdClass(NCAgreeRelUnionPkId.class)
 @Table(name = "t_nc_agree_rel")
 public class NCAgreeRel extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1855481143298435808L;
+
 	@Id
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)

@@ -9,6 +9,11 @@ import java.io.Serializable;
  * @since 1.0
  */
 public class NCAgreeRelUnionPkId implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5586968998456004334L;
+
 	private String userId;
 
 	private String ncId;

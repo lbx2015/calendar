@@ -46,7 +46,7 @@ public class QAComment extends BaseAuditProp {
 
 	// 点赞数
 	@Transient
-	private String agreeNum;
+	private Integer agreeNum;
 
 	// 问题回答评论的回复list
 	@Transient
@@ -118,11 +118,11 @@ public class QAComment extends BaseAuditProp {
 		this.photoUrl = photoUrl;
 	}
 
-	public String getAgreeNum() {
+	public Integer getAgreeNum() {
 		return agreeNum;
 	}
 
-	public void setAgreeNum(String agreeNum) {
+	public void setAgreeNum(Integer agreeNum) {
 		this.agreeNum = agreeNum;
 	}
 

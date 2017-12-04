@@ -24,6 +24,11 @@ import net.riking.entity.BaseAuditProp;
 @Table(name = "t_news_comment")
 public class NewsComment extends BaseAuditProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8066495971201081735L;
+
 	@Comment("操作人主键 : fk t_app_user 发表评论的用户id")
 	@Column(name = "user_id", nullable = false)
 	private String userId;

@@ -97,9 +97,6 @@ public class RCompleteRelServer {
 	@RequestMapping(value = "/findNowReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody Map<String, Object> params) throws ParseException {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-		String completedDate = dateFormat.format(rCompletedRelParams.getCompletedDate());
 		// {
 		// Calendar calendar = Calendar.getInstance();
 		// calendar.setTime(completedDate);
@@ -113,7 +110,7 @@ public class RCompleteRelServer {
 		// beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
 		// }
 		List<RCompletedRelResp> rCompletedRelRespList = reportCompletedRelRepo
-				.findNowReport(rCompletedRelParams.getUserId(), completedDate);
+				.findNowReport(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompletedDate());
 
 		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
 		for (RCompletedRelResp rCompletedRelResp : rCompletedRelRespList) {
@@ -138,7 +135,6 @@ public class RCompleteRelServer {
 		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-		String completedDate = dateFormat.format(rCompletedRelParams.getCompletedDate());
 		// {
 		// Calendar calendar = Calendar.getInstance();
 		// calendar.setTime(completedDate);
@@ -152,7 +148,7 @@ public class RCompleteRelServer {
 		// beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
 		// }
 		List<RCompletedRelResp> list = reportSubmitCaliberService
-				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), completedDate);
+				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompletedDate());
 
 		for (RCompletedRelResp rCompletedRelResp : list) {
 			// 将对象转换成map

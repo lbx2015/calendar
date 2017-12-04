@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.ReportRepo;
 import net.riking.entity.model.Report;
 import net.riking.service.SysDataService;
-import net.riking.service.repo.ReportRepo;
 
 /**
  * 报表配置的增删改查

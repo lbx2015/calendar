@@ -26,6 +26,11 @@ import net.riking.entity.BaseEntity;
 @IdClass(NewsRelUnionPkId.class)
 @Table(name = "t_news_rel")
 public class NewsRel extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6064997132710255157L;
+
 	@Id
 	@Comment("操作人主键: fk t_app_user")
 	@Column(name = "user_id", nullable = false)

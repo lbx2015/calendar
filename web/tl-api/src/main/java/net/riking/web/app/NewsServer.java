@@ -1,6 +1,8 @@
 package net.riking.web.app;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,7 @@ import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
 import net.riking.entity.model.NewsRel;
 import net.riking.entity.params.NewsParams;
+import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
 /**
@@ -69,6 +72,14 @@ public class NewsServer {
 	public AppResp findNewsList(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
+		String pattern = "yyyyMMddHHmmssSSS";
+		Date reqTimeStamp = null;
+		try {
+			reqTimeStamp = DateUtils.StringFormatMS(newsParams.getReqTimeStamp(), pattern);
+		} catch (ParseException e) {
+			logger.error("获取资讯列表日期转换异常" + e);
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
 		// 分页数据
 		List<News> newsInfoList = new ArrayList<News>();
 		// 把分页数据封装成map传入前台
@@ -77,13 +88,12 @@ public class NewsServer {
 			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
 			case Const.DIRECT_UP:
 				// 查询查出前30条数据
-				newsInfoList = newsRepo.findNewsListPageNext(newsParams.getReqTimeStamp(), new PageRequest(0, 30));
+				newsInfoList = newsRepo.findNewsListPageNext(reqTimeStamp, new PageRequest(0, 30));
 				break;
 			// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
 			case Const.DIRECT_DOWN:
 				// 查询查出前30条数据
-				List<News> newsInfoAscList = newsRepo.findNewsListRefresh(newsParams.getReqTimeStamp(),
-						new PageRequest(0, 30));
+				List<News> newsInfoAscList = newsRepo.findNewsListRefresh(reqTimeStamp, new PageRequest(0, 30));
 				// 把查出来的数据按倒序重新排列
 				for (int i = 0; i < newsInfoAscList.size(); i++) {
 					newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i - 1));
@@ -91,15 +101,18 @@ public class NewsServer {
 				break;
 			default:
 				logger.error("请求方向参数异常：direct:" + newsParams.getDirect());
-				throw new RuntimeException("请求方向参数异常：direct:" + newsParams.getDirect());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		for (News newsInfo : newsInfoList) {
 			// TODO 从数据库查询评论数插到资讯表,后面从redis里面找
 			Integer count = 0;
 			count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
+
 			// 将对象转换成map
 			Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
+			newsInfoMapNew.put("createdTime", DateUtils.DateFormatMS(newsInfo.getCreatedTime(), pattern));
+			newsInfoMapNew.put("modifiedTime", DateUtils.DateFormatMS(newsInfo.getModifiedTime(), pattern));
 			newsInfoMapList.add(newsInfoMapNew);
 		}
 
@@ -117,8 +130,14 @@ public class NewsServer {
 		// 将map转换成参数对象
 		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
 		News newsInfo = newsRepo.getById(newsParams.getNewsId());
+		if (newsInfo == null) {
+			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
+		}
 		// 将对象转换成map
 		Map<String, Object> newsInfoMap = Utils.objProps2Map(newsInfo, true);
+		String pattern = "yyyyMMddHHmmssSSS";
+		newsInfoMap.put("createdTime", DateUtils.DateFormatMS(newsInfo.getCreatedTime(), pattern));
+		newsInfoMap.put("modifiedTime", DateUtils.DateFormatMS(newsInfo.getModifiedTime(), pattern));
 		return new AppResp(newsInfoMap, CodeDef.SUCCESS);
 	}
 
@@ -130,6 +149,7 @@ public class NewsServer {
 	@ApiOperation(value = "获取资讯详情评论列表", notes = "POST")
 	@RequestMapping(value = "/findNewsCommentList", method = RequestMethod.POST)
 	public AppResp findNewsCommentList(@RequestBody Map<String, Object> params) {
+		String pattern = "yyyyMMddHHmmssSSS";
 		// 将map转换成参数对象
 		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
 		// 资讯详情评论的Map列表(把资讯详情评论对象封装成Map传进前台)
@@ -149,6 +169,10 @@ public class NewsServer {
 				// nCommentReplyInfo.setUserName(appUser.getUserName());
 				// 将评论回复对象转换成map
 				nCommentReplyInfoObjMap = Utils.objProps2Map(nCommentReplyInfo, true);
+				nCommentReplyInfoObjMap.put("createdTime",
+						DateUtils.DateFormatMS(nCommentReplyInfo.getCreatedTime(), pattern));
+				nCommentReplyInfoObjMap.put("modifiedTime",
+						DateUtils.DateFormatMS(nCommentReplyInfo.getModifiedTime(), pattern));
 				// 回复的数据列表添加到评论类里面
 				newsCommentInfoNew.getNCommentReplyInfoList().add(nCommentReplyInfoObjMap);
 			}
@@ -157,6 +181,10 @@ public class NewsServer {
 			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
 			Map<String, Object> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
+			newsCommentInfoObjMap.put("createdTime",
+					DateUtils.DateFormatMS(newsCommentInfoNew.getCreatedTime(), pattern));
+			newsCommentInfoObjMap.put("modifiedTime",
+					DateUtils.DateFormatMS(newsCommentInfoNew.getModifiedTime(), pattern));
 			newsCommentInfoMapList.add(newsCommentInfoObjMap);
 		}
 		return new AppResp(newsCommentInfoMapList, CodeDef.SUCCESS);
@@ -206,7 +234,7 @@ public class NewsServer {
 				break;
 			default:
 				logger.error("参数异常：enabled=" + newsParams.getEnabled());
-				throw new RuntimeException("参数异常：enabled=" + newsParams.getEnabled());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		return new AppResp(CodeDef.SUCCESS);
 	}

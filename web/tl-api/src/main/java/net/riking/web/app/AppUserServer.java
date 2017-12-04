@@ -20,6 +20,7 @@ import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.IndustryRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -29,7 +30,6 @@ import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserCommendService;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
-import net.riking.service.repo.IndustryRepo;
 import net.riking.util.StringUtil;
 import net.riking.util.Utils;
 
@@ -169,17 +169,17 @@ public class AppUserServer {
 	}
 
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
-	@RequestMapping(value = "/IsChangeMac", method = RequestMethod.POST)
-	public AppResp IsChangeMac_(@RequestBody Map<String, Object> params) {
+	@RequestMapping(value = "/IsChangeDevice", method = RequestMethod.POST)
+	public AppResp IsChangeDevice_(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
 		UserParams userParams = Utils.map2Obj(params, UserParams.class);
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(userParams.getUserId());
 		if (null == appUserDetail) {
 			return new AppResp(false, CodeDef.EMP.DATA_NOT_FOUND);
 		}
-		String seqNum = userParams.getPhoneMacid();
-		if (appUserDetail != null && !seqNum.equals(appUserDetail.getPhoneMacid())) {
-			appUserDetail.setPhoneMacid(seqNum);
+		String seqNum = userParams.getPhoneDeviceid();
+		if (appUserDetail != null && !seqNum.equals(appUserDetail.getPhoneDeviceid())) {
+			appUserDetail.setPhoneDeviceid(seqNum);
 			appUserDetail.setPhoneType(userParams.getPhoneType());
 			appUserDetailRepo.save(appUserDetail);
 			return new AppResp(true, CodeDef.SUCCESS);

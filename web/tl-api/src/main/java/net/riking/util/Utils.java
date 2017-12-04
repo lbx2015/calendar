@@ -31,6 +31,10 @@ public class Utils {
 		} else {
 			objPropsEasy2Map(obj, map);
 		}
+		String id = obj.getClass().getName().substring(obj.getClass().getName().lastIndexOf(".") + 1) + "Id";
+		id = id.substring(0, 1).toLowerCase() + id.substring(1);
+		Object removeValue = map.remove("id");
+		map.put(id, removeValue);
 		return map;
 	}
 

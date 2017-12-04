@@ -151,7 +151,7 @@ public class HomePageServer {
 					tQuestionRelRepo.deleteByUIdAndTqId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
 				} else {
 					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					throw new RuntimeException("参数异常：enabled=" + homeParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				break;
 			// 话题
@@ -169,12 +169,12 @@ public class HomePageServer {
 					topicRelRepo.deleteByUIdAndTopId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
 				} else {
 					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					throw new RuntimeException("参数异常：enabled=" + homeParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				break;
 			default:
 				logger.error("对象类型异常，objType=" + homeParams.getObjType());
-				throw new RuntimeException("对象类型异常，objType=" + homeParams.getObjType());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
 		return new AppResp(CodeDef.SUCCESS);

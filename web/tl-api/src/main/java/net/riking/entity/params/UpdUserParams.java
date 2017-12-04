@@ -45,8 +45,8 @@ public class UpdUserParams implements Serializable {
 	// 个性签名
 	private String description;
 
-	// 手机Macid
-	private String phoneMacid;
+	// 手机Deviceid
+	private String phoneDeviceid;
 
 	// 积分
 	private Integer integral;
@@ -173,12 +173,12 @@ public class UpdUserParams implements Serializable {
 		this.description = description;
 	}
 
-	public String getPhoneMacid() {
-		return phoneMacid;
+	public String getPhoneDeviceid() {
+		return phoneDeviceid;
 	}
 
-	public void setPhoneMacid(String phoneMacid) {
-		this.phoneMacid = phoneMacid;
+	public void setPhoneDeviceid(String phoneDeviceid) {
+		this.phoneDeviceid = phoneDeviceid;
 	}
 
 	public Integer getIntegral() {

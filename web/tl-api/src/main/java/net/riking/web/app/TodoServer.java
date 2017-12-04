@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.dao.repo.TodoRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Todo;
-import net.riking.service.repo.TodoRepo;
 import net.riking.util.MergeUtil;
 
 /**

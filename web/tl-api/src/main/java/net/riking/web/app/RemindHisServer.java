@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.dao.repo.RemindHisRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.RemindHis;
-import net.riking.service.repo.RemindHisRepo;
 
 /**
  * 提醒历史的增删改查

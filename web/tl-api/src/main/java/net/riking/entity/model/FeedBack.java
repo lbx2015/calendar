@@ -18,6 +18,11 @@ import net.riking.entity.BaseProp;
 @Table(name = "t_feedback")
 public class FeedBack extends BaseProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5622478704716507201L;
+
 	@Comment("标题")
 	@Column(name = "title", length = 32)
 	private String title;

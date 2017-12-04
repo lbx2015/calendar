@@ -22,6 +22,11 @@ import net.riking.entity.BaseAuditProp;
 @Table(name = "t_news")
 public class News extends BaseAuditProp {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -766591260385281272L;
+
 	@Comment("资讯标题")
 	@Column(name = "title", length = 128)
 	private String title;

@@ -1,6 +1,5 @@
 package net.riking.web.app;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -118,7 +117,11 @@ public class LoginServer {
 			if (user.getEnabled().intValue() == Const.INVALID) {
 				return new AppResp(CodeDef.EMP.USER_INVALID_ERROR, CodeDef.EMP.USER_INVALID_ERROR_DESC);
 			}
+
 			detail = appUserService.findDetailByOne(user.getId());
+			if (null == detail) {
+				detail = new AppUserDetail();
+			}
 			user.setDetail(detail);
 			logger.info("用户登录成功：phone={}", user.getPhone());
 		} else {
@@ -129,7 +132,7 @@ public class LoginServer {
 			user.setOpenId(loginParams.getOpenId());
 
 			detail = new AppUserDetail();
-			detail.setPhoneMacid(loginParams.getDeviceId());
+			detail.setPhoneDeviceid(loginParams.getPhoneDeviceId());
 			detail.setPhoneType(loginParams.getClientType());
 			user = appUserService.register(user, detail);
 			logger.info("用户注册成功：phone={}", user.getPhone());
@@ -146,8 +149,8 @@ public class LoginServer {
 		userResp.setSex(user.getDetail().getSex());
 		userResp.setBirthday(user.getDetail().getBirthday());
 		userResp.setAddress(user.getDetail().getAddress());
-		userResp.setDescription(user.getDetail().getDescription());
-		userResp.setPhoneMacid(user.getDetail().getPhoneMacid());
+		userResp.setDescript(user.getDetail().getDescript());
+		userResp.setPhoneDeviceid(user.getDetail().getPhoneDeviceid());
 		userResp.setIntegral(user.getDetail().getIntegral());
 		userResp.setExperience(user.getDetail().getExperience());
 		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {
@@ -160,9 +163,10 @@ public class LoginServer {
 		userResp.setPositionId(user.getDetail().getPositionId());
 		userResp.setIsGuide(user.getDetail().getIsGuide());
 
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("user", userResp);
-		return new AppResp(result, CodeDef.SUCCESS);
+		Map<String, Object> map = Utils.objProps2Map(userResp, true);
+		// Map<String, Object> result = new HashMap<String, Object>();
+		// result.put("user", userResp);
+		return new AppResp(map, CodeDef.SUCCESS);
 
 	}
 
@@ -200,7 +204,7 @@ public class LoginServer {
 	// if (appUser2 == null) {
 	// AppUser appUser3 = new AppUser(appUser.getPhone(), appUser.getPhone(),
 	// appUser.getPhone().substring(5),
-	// user.getPhoneMacid(), "1", "1", "0800", user.getOpenId(),
+	// user.getPhoneDeviceid(), "1", "1", "0800", user.getOpenId(),
 	// user.getIsSubscribe(),
 	// user.getIsGuide());
 	// appUser2 = appUserRepo.save(appUser3);

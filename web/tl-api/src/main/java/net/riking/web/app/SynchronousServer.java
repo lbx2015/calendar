@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.dao.repo.RemindHisRepo;
+import net.riking.dao.repo.RemindRepo;
+import net.riking.dao.repo.ReportRepo;
+import net.riking.dao.repo.TodoRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.RemindHis;
 import net.riking.entity.model.Todo;
 import net.riking.service.ReportSubmitCaliberService;
-import net.riking.service.repo.RemindHisRepo;
-import net.riking.service.repo.RemindRepo;
-import net.riking.service.repo.ReportRepo;
-import net.riking.service.repo.TodoRepo;
 
 /**
  * app和服务器的同步信息

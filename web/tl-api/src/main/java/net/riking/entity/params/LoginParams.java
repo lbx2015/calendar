@@ -27,7 +27,7 @@ public class LoginParams implements Serializable {
 	private Integer clientType;
 
 	// 手机端设备Id
-	private String deviceId;
+	private String phoneDeviceId;
 
 	public String getPhone() {
 		return phone;
@@ -69,12 +69,12 @@ public class LoginParams implements Serializable {
 		this.clientType = clientType;
 	}
 
-	public String getDeviceId() {
-		return deviceId;
+	public String getPhoneDeviceId() {
+		return phoneDeviceId;
 	}
 
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
+	public void setPhoneDeviceId(String phoneDeviceId) {
+		this.phoneDeviceId = phoneDeviceId;
 	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.dao.repo.ReportRepo;
 import net.riking.dao.repo.ReportSubcribeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.BaseModelPropdict;
@@ -24,7 +25,6 @@ import net.riking.entity.params.ReportParams;
 import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
-import net.riking.service.repo.ReportRepo;
 import net.riking.util.Utils;
 
 /**
