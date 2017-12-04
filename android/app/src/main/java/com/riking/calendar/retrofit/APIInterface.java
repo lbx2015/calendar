@@ -161,8 +161,8 @@ public interface APIInterface {
      *
      * @return
      */
-    @POST("appUserApp/getPositionByIndustry")
-    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, Long> industryId);
+    @POST("common/getPositionByIndustry")
+    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, String> industryId);
 
     /**
      * set user's interesting reports into server

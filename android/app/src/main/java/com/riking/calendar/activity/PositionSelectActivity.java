@@ -21,8 +21,8 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 import java.util.ArrayList;
@@ -65,16 +65,16 @@ public class PositionSelectActivity extends AppCompatActivity {
     }
 
     public void onClickNextStep(View view) {
-            AppUser result = new AppUser();
-            result.isGuide = "1";
-            result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
-            APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
-                @Override
-                public void callBack(ResponseModel<String> response) {
+        AppUser result = new AppUser();
+        result.isGuide = "1";
+        result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
+        APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
 
-                }
-            });
-            startActivity(new Intent(this, ViewPagerActivity.class));
+            }
+        });
+        startActivity(new Intent(this, ViewPagerActivity.class));
     }
 
     private void initEvents() {
@@ -115,10 +115,10 @@ public class PositionSelectActivity extends AppCompatActivity {
 
     private void loadData(final int page) {
         isLoading = true;
-        HashMap<String, Long> hashMap = new HashMap<>();
-        Long industryId = getIntent().getExtras().getLong(CONST.INDUSTRY_ID);
-        hashMap.put("userId", getIntent().getExtras().getLong(CONST.INDUSTRY_ID));
+        HashMap<String, String> hashMap = new HashMap<>();
+        String industryId = getIntent().getExtras().getString(CONST.INDUSTRY_ID);
         mAdapter.industryId = industryId;
+        hashMap.put("industryId", industryId);
         APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) {
