@@ -33,7 +33,7 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 	 * @param questAnswerId
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.QAComment(q.id,q.createdTime,q.modifiedTime,q.isAduit,q.userId,q.questionAnswerId,q.content,(select a.userName from AppUser a where q.userId = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where q.userId = ap.id)) from QAComment q where q.questionAnswerId = ?1 and q.isAduit <> 2 and q.isDeleted=1 order by q.createdTime desc")
+	@Query("select new net.riking.entity.model.QAComment(q.id,q.createdTime,q.modifiedTime,q.isAduit,q.userId,q.questionAnswerId,q.content,(select a.userName from AppUser a where q.userId = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where q.userId = ap.id),(select app.experience from AppUserDetail app where q.userId = app.id)) from QAComment q where q.questionAnswerId = ?1 and q.isAduit <> 2 and q.isDeleted=1 order by q.createdTime desc")
 	List<QAComment> findByQaId(String questAnswerId);
 
 }

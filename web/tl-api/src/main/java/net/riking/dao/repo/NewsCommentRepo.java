@@ -34,6 +34,6 @@ public interface NewsCommentRepo extends JpaRepository<NewsComment, String>, Jpa
 	 * @param pageable
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.NewsComment(n.id,n.createdTime,n.modifiedTime,n.userId,n.newsId,n.content,(select a.userName from AppUser a where n.userId= a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.userId = ap.id)) from NewsComment n where n.newsId= ?1 and n.isAduit <> 2 and n.isDeleted=1 order by n.createdTime desc")
+	@Query("select new net.riking.entity.model.NewsComment(n.id,n.createdTime,n.modifiedTime,n.userId,n.newsId,n.content,(select a.userName from AppUser a where n.userId= a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.userId = ap.id),(select app.experience from AppUserDetail app where n.userId = app.id)) from NewsComment n where n.newsId= ?1 and n.isAduit <> 2 and n.isDeleted=1 order by n.createdTime desc")
 	List<NewsComment> findByNewsId(String newsId, Pageable pageable);
 }

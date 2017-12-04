@@ -31,7 +31,7 @@ public class QACReply extends BaseAuditProp {
 	private String userId;
 
 	@Comment("被操作人主键: fk t_app_user 被评论人ID")
-	@Column(name = "to_user_id", nullable = false)
+	@Column(name = "to_user_id")
 	private String toUserId;
 
 	@Comment("目标对象评论主键: fk t_qa_comment")
@@ -39,7 +39,7 @@ public class QACReply extends BaseAuditProp {
 	private String commentId;
 
 	@Comment("目标对象评论回复主键: fk t_qac_reply 回复ID")
-	@Column(name = "reply_id", nullable = false)
+	@Column(name = "reply_id")
 	private String replyId;
 
 	@Comment("内容")
@@ -53,6 +53,11 @@ public class QACReply extends BaseAuditProp {
 	// 被评论人名称
 	@Transient
 	private String toUserName;
+
+	public QACReply() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public QACReply(String id, Date createdTime, Integer isAduit, String userId, String toUserId, String commentId,
 			String replyId, String content, String userName, String toUserName) {
