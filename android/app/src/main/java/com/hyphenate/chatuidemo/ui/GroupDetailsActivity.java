@@ -972,14 +972,14 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					dialog.show();
 
 					boolean[] adminVisibilities = {
-							true,       //R.id.menu_item_transfer_owner,
-							false,      //R.id.menu_item_add_admin,
-							true,       //R.id.menu_item_rm_admin,
-							false,      //R.id.menu_item_remove_member,
-							false,      //R.id.menu_item_add_to_blacklist,
-							false,      //R.id.menu_item_remove_from_blacklist,
-							false,      //R.id.menu_item_mute,
-							false,      //R.id.menu_item_unmute
+							true,       //R.userId.menu_item_transfer_owner,
+							false,      //R.userId.menu_item_add_admin,
+							true,       //R.userId.menu_item_rm_admin,
+							false,      //R.userId.menu_item_remove_member,
+							false,      //R.userId.menu_item_add_to_blacklist,
+							false,      //R.userId.menu_item_remove_from_blacklist,
+							false,      //R.userId.menu_item_mute,
+							false,      //R.userId.menu_item_unmute
 					};
 					try {
 						dialog.setVisibility(adminVisibilities);
@@ -1074,36 +1074,36 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						dialog.show();
 
 						boolean[] normalVisibilities = {
-								false,      //R.id.menu_item_transfer_owner,
-								isCurrentOwner(group) ? true : false,       //R.id.menu_item_add_admin,
-								false,      //R.id.menu_item_rm_admin,
-								true,       //R.id.menu_item_remove_member,
-								true,       //R.id.menu_item_add_to_blacklist,
-								false,      //R.id.menu_item_remove_from_blacklist,
-								true,       //R.id.menu_item_mute,
-								false,      //R.id.menu_item_unmute
+								false,      //R.userId.menu_item_transfer_owner,
+								isCurrentOwner(group) ? true : false,       //R.userId.menu_item_add_admin,
+								false,      //R.userId.menu_item_rm_admin,
+								true,       //R.userId.menu_item_remove_member,
+								true,       //R.userId.menu_item_add_to_blacklist,
+								false,      //R.userId.menu_item_remove_from_blacklist,
+								true,       //R.userId.menu_item_mute,
+								false,      //R.userId.menu_item_unmute
 						};
 
 						boolean[] blackListVisibilities = {
-								false,      //R.id.menu_item_transfer_owner,
-								false,      //R.id.menu_item_add_admin,
-								false,      //R.id.menu_item_rm_admin,
-								false,      //R.id.menu_item_remove_member,
-								false,      //R.id.menu_item_add_to_blacklist,
-								true,       //R.id.menu_item_remove_from_blacklist,
-								false,      //R.id.menu_item_mute,
-								false,      //R.id.menu_item_unmute
+								false,      //R.userId.menu_item_transfer_owner,
+								false,      //R.userId.menu_item_add_admin,
+								false,      //R.userId.menu_item_rm_admin,
+								false,      //R.userId.menu_item_remove_member,
+								false,      //R.userId.menu_item_add_to_blacklist,
+								true,       //R.userId.menu_item_remove_from_blacklist,
+								false,      //R.userId.menu_item_mute,
+								false,      //R.userId.menu_item_unmute
 						};
 
 						boolean[] muteListVisibilities = {
-								false,      //R.id.menu_item_transfer_owner,
-								isCurrentOwner(group) ? true : false,       //R.id.menu_item_add_admin,
-								false,      //R.id.menu_item_rm_admin,
-								true,       //R.id.menu_item_remove_member,
-								true,       //R.id.menu_item_add_to_blacklist,
-								false,      //R.id.menu_item_remove_from_blacklist,
-								false,      //R.id.menu_item_mute,
-								true,       //R.id.menu_item_unmute
+								false,      //R.userId.menu_item_transfer_owner,
+								isCurrentOwner(group) ? true : false,       //R.userId.menu_item_add_admin,
+								false,      //R.userId.menu_item_rm_admin,
+								true,       //R.userId.menu_item_remove_member,
+								true,       //R.userId.menu_item_add_to_blacklist,
+								false,      //R.userId.menu_item_remove_from_blacklist,
+								false,      //R.userId.menu_item_mute,
+								true,       //R.userId.menu_item_unmute
 						};
 
 						boolean inBlackList = isInBlackList(username);

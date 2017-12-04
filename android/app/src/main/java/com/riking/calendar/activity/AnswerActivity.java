@@ -106,11 +106,11 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             }
         });
        /* //init recycler view
-        suggestionQuestionsRecyclerView = findViewById(R.id.suggestion_questions_recyclerview);
+        suggestionQuestionsRecyclerView = findViewById(R.userId.suggestion_questions_recyclerview);
         suggestionQuestionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         suggestionQuestionsRecyclerView.setAdapter(new QuestionsAdapter(this));
         //init reviews recycler view
-        reviewsRecyclerView = findViewById(R.id.review_recyclerview);
+        reviewsRecyclerView = findViewById(R.userId.review_recyclerview);
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         reviewsRecyclerView.setAdapter(new ReviewsAdapter(this));*/
     }

@@ -62,7 +62,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
 
     private void initViews() {
         zFlowLayout = findViewById(R.id.flow_layout);
-//        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+//        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.userId.swipeRefreshLayout);
     }
 
     public void onClickStart(View view) {
@@ -84,7 +84,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
     }
 
     private void initEvents() {
-//        mRecyclerView = findViewById(R.id.recyclerView);
+//        mRecyclerView = findViewById(R.userId.recyclerView);
         //two columns
 //        GridLayoutManager manager = new GridLayoutManager(this, 2);
 //
@@ -129,7 +129,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                     if (root.checked) {
                                         //the report is not been subscribed
                                         root.checked = false;
-                                        //remove the report id form the result
+                                        //remove the report userId form the result
                                         selectedReportIds.remove(r.reportId);
                                         checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.drawable.login_icon_add));
                                         reportNameTV.setTextColor(reportNameTV.getResources().getColor(R.color.color_222222));
@@ -137,7 +137,7 @@ public class ReportsSelectActivity extends AppCompatActivity {
                                     } else {
                                         //the report is been subscribed.
                                         root.checked = true;
-                                        //add the report id into the result
+                                        //add the report userId into the result
                                         selectedReportIds.add(r.reportId);
 
                                         checkImage.setImageDrawable(checkImage.getResources().getDrawable(R.drawable.login_icon_dh));

@@ -64,7 +64,7 @@ public class MainActivity extends InstrumentedActivity implements OnClickListene
 
         String deviceId = ExampleUtil.getDeviceId(getApplicationContext());
         TextView mDeviceId = (TextView) findViewById(R.id.tv_device_id);
-        Log.d("zzw", "device id:" + deviceId);
+        Log.d("zzw", "device userId:" + deviceId);
         mDeviceId.setText("deviceId:" + deviceId);
 
         String versionName = ExampleUtil.GetVersion(getApplicationContext());
@@ -109,7 +109,7 @@ public class MainActivity extends InstrumentedActivity implements OnClickListene
                 String rid = JPushInterface.getRegistrationID(getApplicationContext());
                 if (!rid.isEmpty()) {
                     mRegId.setText("RegId:" + rid);
-                    Log.d("zzw", "registration id: " + rid);
+                    Log.d("zzw", "registration userId: " + rid);
                 } else {
                     Toast.makeText(this, "Get registration fail, JPush init failed!", Toast.LENGTH_SHORT).show();
                 }

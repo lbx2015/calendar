@@ -109,7 +109,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
-                                case R.id.share: {
+                                case R.userId.share: {
                                     new ShareBottomDialog(h.moreAction.getContext()).show();
 //                                    Intent textIntent = new Intent(Intent.ACTION_SEND);
 //                                    textIntent.setType("text/plain");
@@ -117,7 +117,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
 //                                    MyApplication.mCurrentActivity.startActivity(Intent.createChooser(textIntent, "分享到..."));
                                     break;
                                 }
-                                case R.id.prevent: {
+                                case R.userId.prevent: {
                                     break;
                                 }
                             }

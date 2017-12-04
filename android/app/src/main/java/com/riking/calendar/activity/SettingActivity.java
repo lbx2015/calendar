@@ -122,7 +122,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
                 pickerDialog.dismiss();
                 AppUser user = new AppUser();
-                user.id = preferences.getString(CONST.USER_ID, null);
+                user.userId = preferences.getString(CONST.USER_ID, null);
                 user.allDayReminderTime = hour + minute;
                 apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override

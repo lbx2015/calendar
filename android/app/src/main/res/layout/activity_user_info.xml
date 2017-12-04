@@ -228,7 +228,7 @@
                      android:paddingTop="2dp">
 
                      <TextView
-                         android:id="@+id/quick_mark_row"
+                         andruserIdd:iduserId@+id/quick_mark_row"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:layout_alignParentLeft="true"
@@ -239,19 +239,19 @@
                          android:textColor="@color/color_323232" />
 
                      <ImageView
-                         android:id="@+id/quick_mark_code"
+                         andruserIdd:iduserId@+id/quick_mark_code"
                          android:layout_width="20dp"
                          android:layout_height="20dp"
                          android:layout_centerVertical="true"
                          android:layout_margin="5dp"
-                         android:layout_toLeftOf="@+id/quick_mark_code_show"
+                         android:layout_toLeftOfuserId@+id/quick_mark_code_show"
                          android:src="@drawable/quick_mark_code" />
 
                      <ImageView
-                         android:id="@+id/quick_mark_code_show"
+                         andruserIdd:iduserId@+id/quick_mark_code_show"
                          android:layout_width="10dp"
                          android:layout_height="10dp"
-                         android:layout_alignBottom="@+id/select_time"
+                         android:layout_alignBottomuserId@+id/select_time"
                          android:layout_alignParentEnd="true"
                          android:layout_centerVertical="true"
                          android:layout_marginEnd="9dp"

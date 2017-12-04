@@ -19,6 +19,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
@@ -146,9 +147,8 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity implements T
                     Toast.makeText(phoneNumber.getContext(), "电话号码格式不正确", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final AppUser user = new AppUser();
-                user.telephone = phoneDigits;
-                user.phoneSeqNum = ZR.getDeviceId();
+                final LoginParams user = new LoginParams();
+                user.phone = StringUtil.getPhoneNumber(phoneDigits);
                 final ProgressDialog dialog = new ProgressDialog(InputCellPhoneNumberActivity.this);
                 dialog.setMessage("正在加载中");
                 dialog.show();

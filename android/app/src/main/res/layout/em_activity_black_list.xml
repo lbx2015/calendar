@@ -24,7 +24,7 @@
             android:textSize="20sp" />
 
         <!-- <RelativeLayout
-            android:id="@+id/container_remove"
+            andruserIdd:iduserId@+id/container_remove"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

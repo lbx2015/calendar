@@ -92,7 +92,7 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 		TextView chatRoomIdTextView = (TextView) findViewById(R.id.tv_chat_room_id_value);
 		TextView chatRoomNickTextView = (TextView) findViewById(R.id.tv_chat_room_nick_value);
 
-		// get room id
+		// get room userId
 		roomId = getIntent().getStringExtra("roomId");
 		room = EMClient.getInstance().chatroomManager().getChatRoom(roomId);
 		if (room == null) {
@@ -577,14 +577,14 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 					dialog.show();
 
                     boolean[] adminVisibilities = {
-                            true,       //R.id.menu_item_transfer_owner,
-                            false,      //R.id.menu_item_add_admin,
-                            true,       //R.id.menu_item_rm_admin,
-                            false,      //R.id.menu_item_remove_member,
-                            false,      //R.id.menu_item_add_to_blacklist,
-                            false,      //R.id.menu_item_remove_from_blacklist,
-                            false,      //R.id.menu_item_mute,
-                            false,      //R.id.menu_item_unmute
+                            true,       //R.userId.menu_item_transfer_owner,
+                            false,      //R.userId.menu_item_add_admin,
+                            true,       //R.userId.menu_item_rm_admin,
+                            false,      //R.userId.menu_item_remove_member,
+                            false,      //R.userId.menu_item_add_to_blacklist,
+                            false,      //R.userId.menu_item_remove_from_blacklist,
+                            false,      //R.userId.menu_item_mute,
+                            false,      //R.userId.menu_item_unmute
                     };
 
                     try {
@@ -755,36 +755,36 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 					dialog.show();
 
                     boolean[] normalVisibilities = {
-                            false,      //R.id.menu_item_transfer_owner,
-                            isCurrentOwner(room) ? true : false,       //R.id.menu_item_add_admin,
-                            false,      //R.id.menu_item_rm_admin,
-                            true,       //R.id.menu_item_remove_member,
-                            true,       //R.id.menu_item_add_to_blacklist,
-                            false,      //R.id.menu_item_remove_from_blacklist,
-                            true,       //R.id.menu_item_mute,
-                            false,      //R.id.menu_item_unmute
+                            false,      //R.userId.menu_item_transfer_owner,
+                            isCurrentOwner(room) ? true : false,       //R.userId.menu_item_add_admin,
+                            false,      //R.userId.menu_item_rm_admin,
+                            true,       //R.userId.menu_item_remove_member,
+                            true,       //R.userId.menu_item_add_to_blacklist,
+                            false,      //R.userId.menu_item_remove_from_blacklist,
+                            true,       //R.userId.menu_item_mute,
+                            false,      //R.userId.menu_item_unmute
                     };
 
                     boolean[] blackListVisibilities = {
-                            false,      //R.id.menu_item_transfer_owner,
-                            false,      //R.id.menu_item_add_admin,
-                            false,      //R.id.menu_item_rm_admin,
-                            false,      //R.id.menu_item_remove_member,
-                            false,      //R.id.menu_item_add_to_blacklist,
-                            true,       //R.id.menu_item_remove_from_blacklist,
-                            false,      //R.id.menu_item_mute,
-                            false,      //R.id.menu_item_unmute
+                            false,      //R.userId.menu_item_transfer_owner,
+                            false,      //R.userId.menu_item_add_admin,
+                            false,      //R.userId.menu_item_rm_admin,
+                            false,      //R.userId.menu_item_remove_member,
+                            false,      //R.userId.menu_item_add_to_blacklist,
+                            true,       //R.userId.menu_item_remove_from_blacklist,
+                            false,      //R.userId.menu_item_mute,
+                            false,      //R.userId.menu_item_unmute
                     };
 
                     boolean[] muteListVisibilities = {
-                            false,      //R.id.menu_item_transfer_owner,
-                            isCurrentOwner(room) ? true : false,       //R.id.menu_item_add_admin,
-                            false,      //R.id.menu_item_rm_admin,
-                            true,       //R.id.menu_item_remove_member,
-                            true,       //R.id.menu_item_add_to_blacklist,
-                            false,      //R.id.menu_item_remove_from_blacklist,
-                            false,      //R.id.menu_item_mute,
-                            true,       //R.id.menu_item_unmute
+                            false,      //R.userId.menu_item_transfer_owner,
+                            isCurrentOwner(room) ? true : false,       //R.userId.menu_item_add_admin,
+                            false,      //R.userId.menu_item_rm_admin,
+                            true,       //R.userId.menu_item_remove_member,
+                            true,       //R.userId.menu_item_add_to_blacklist,
+                            false,      //R.userId.menu_item_remove_from_blacklist,
+                            false,      //R.userId.menu_item_mute,
+                            true,       //R.userId.menu_item_unmute
                     };
 
                     boolean inBlackList = isInBlackList(username);

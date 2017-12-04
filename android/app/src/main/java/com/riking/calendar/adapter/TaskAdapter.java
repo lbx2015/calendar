@@ -169,7 +169,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 deleteButton = (TextView) view.findViewById(R.id.tv_text);
                 editButton = (TextView) view.findViewById(R.id.tv_edit);
                 sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
-//                divider = view.findViewById(R.id.divider);
+//                divider = view.findViewById(R.userId.divider);
                 final Handler handler = new Handler();
                 done.setOnClickListener(new View.OnClickListener() {
                     Runnable callBack = new Runnable() {

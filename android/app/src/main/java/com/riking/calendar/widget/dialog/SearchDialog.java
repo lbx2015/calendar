@@ -133,7 +133,7 @@ public class SearchDialog extends AppCompatDialog {
             // 若使用本地能力，会话id为null
             //	if (SpeechEvent.EVENT_SESSION_ID == eventType) {
             //		String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
-            //		Log.d(TAG, "session id =" + sid);
+            //		Log.d(TAG, "session userId =" + sid);
             //	}
         }
     };

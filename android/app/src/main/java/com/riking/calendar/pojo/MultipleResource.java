@@ -24,7 +24,7 @@ public class MultipleResource {
 
     public class Datum {
 
-        @SerializedName("id")
+        @SerializedName("userId")
         public Integer id;
         @SerializedName("name")
         public String name;

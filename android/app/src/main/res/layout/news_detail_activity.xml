@@ -80,12 +80,12 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/btn_gray_normal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/suggestions_for_you"
+                app:layout_constraintEnd_toStartOfuserId@+id/suggestions_for_you"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/suggestions_for_you"
+                andruserIdd:iduserId@+id/suggestions_for_you"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -106,13 +106,13 @@
                 android:background="@color/btn_gray_normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/suggestions_for_you"
+                app:layout_constraintStart_toEndOfuserId@+id/suggestions_for_you"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/suggestion_questions_recyclerview"
+            andruserIdd:iduserId@+id/suggestion_questions_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
@@ -130,12 +130,12 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/btn_gray_normal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/reviews"
+                app:layout_constraintEnd_toStartOfuserId@+id/reviews"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/reviews"
+                andruserIdd:iduserId@+id/reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -156,13 +156,13 @@
                 android:background="@color/btn_gray_normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/reviews"
+                app:layout_constraintStart_toEndOfuserId@+id/reviews"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/review_recyclerview"
+            andruserIdd:iduserId@+id/review_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>-->

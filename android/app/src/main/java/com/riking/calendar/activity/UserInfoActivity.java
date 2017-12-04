@@ -245,7 +245,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                             userName.setText(newName);
                             AppUser user = new AppUser();
                             user.name = newName;
-                            user.id = preference.getString(CONST.USER_ID, null);
+                            user.userId = preference.getString(CONST.USER_ID, null);
 
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
@@ -298,7 +298,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                             email.setText(emailText);
                             AppUser user = new AppUser();
                             user.email = emailText;
-                            user.id = preference.getString(CONST.USER_ID, null);
+                            user.userId = preference.getString(CONST.USER_ID, null);
 
 
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
@@ -351,7 +351,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 //                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
 //                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
 //                // Set up the input
-//                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.id.input);
+//                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.userId.input);
 //                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
 //                builder.setView(viewInflated);
 //                String name = preference.getString(CONST.USER_DEPT, "");
@@ -372,7 +372,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 //                            department.setText(departName);
 //                            AppUser user = new AppUser();
 //                            user.dept = departName;
-//                            user.id = preference.getString(CONST.USER_ID, null);
+//                            user.userId = preference.getString(CONST.USER_ID, null);
 //
 //
 //                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
@@ -420,7 +420,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final String departName = cardItem.get(options1).getPickerViewText();
                 AppUser user = new AppUser();
                 user.dept = departName;
-                user.id = preference.getString(CONST.USER_ID, null);
+                user.userId = preference.getString(CONST.USER_ID, null);
                 Logger.d("zzw", "depart selected: " + departName);
                 apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override

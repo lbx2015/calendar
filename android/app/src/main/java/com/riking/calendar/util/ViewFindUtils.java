@@ -14,8 +14,8 @@ public class ViewFindUtils
 	 * {
 	 * 	convertView = View.inflate(context, R.layout.ad_demo, null);
 	 * }
-	 * TextView tv_demo = ViewHolderUtils.get(convertView, R.id.tv_demo);
-	 * ImageView iv_demo = ViewHolderUtils.get(convertView, R.id.iv_demo);
+	 * TextView tv_demo = ViewHolderUtils.get(convertView, R.userId.tv_demo);
+	 * ImageView iv_demo = ViewHolderUtils.get(convertView, R.userId.iv_demo);
 	 * </pre>
 	 */
 	public static <T extends View> T hold(View view, int id)

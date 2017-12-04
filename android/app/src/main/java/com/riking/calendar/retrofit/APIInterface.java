@@ -25,6 +25,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public interface APIInterface {
     Call<ResponseBody> doGetListResources(@Url String url);
 
     @GET("/reportList/getForHtml")
-    Call<ResponseBody> getHtml(@Query("id") String id);
+    Call<ResponseBody> getHtml(@Query("userId") String id);
 
     @GET("api/unknown")
     Call<MultipleResource> doGetListResources();
@@ -88,11 +89,11 @@ public interface APIInterface {
     @POST("ctryHdayCrcyApp/vagueQuery")
     Call<CtryHdayCryCondition> getVagueQuery(@Body CtryHdayCrcy ctryHdayCrcy);
 
-    @POST("checkValiCode")
-    Call<ResponseModel<AppUser>> checkVarificationCode(@Body AppUser user);
+    @POST("user/login")
+    Call<ResponseModel<AppUser>> checkVarificationCode(@Body LoginParams user);
 
     @POST("common/getValidCode")
-    Call<ResponseModel<AppUser>> getVarificationCode(@Body AppUser user);
+    Call<ResponseModel<AppUser>> getVarificationCode(@Body LoginParams user);
 
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
@@ -124,11 +125,11 @@ public interface APIInterface {
     Call<ResponseModel<String>> getAboutHtml(@Query("versionNumber") String versionNumber);
 
     @POST("appAboutApp/agreementHtml")
-    Call<ResponseModel<String>> getAgreementHtml(@Query("id") String notUsed);
+    Call<ResponseModel<String>> getAgreementHtml(@Query("userId") String notUsed);
 
     @Multipart
     @POST("appUserApp/upLoad")
-    Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("id") String id);
+    Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("userId") String id);
 
     @POST("modelPropDictApp/T_APP_USER")
     Call<ResponseModel<ArrayList<Dictionary>>> getDictionary(@Body ArrayList<String> fields);
@@ -167,18 +168,20 @@ public interface APIInterface {
      */
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
+
     /**
      * find the repords of user ordered
      */
     @POST("/appUserReport/findUserReportList")
-    Call<ResponseModel<List<ReportFrequency>>>  findUserReportList(@Body AppUser user);
+    Call<ResponseModel<List<ReportFrequency>>> findUserReportList(@Body AppUser user);
 
     @POST("/appUserReport/userAddReportEdit")
-    Call<ResponseModel<Short>>   userAddReportEdit(@Body AppUserReportResult reportResult);
+    Call<ResponseModel<Short>> userAddReportEdit(@Body AppUserReportResult reportResult);
 
     @POST("/reportListApp/getReportByName")
-    Call<ResponseModel<List<ReportFrequency>>> getReportByName(@Body HashMap<String,String> reporName);
+    Call<ResponseModel<List<ReportFrequency>>> getReportByName(@Body HashMap<String, String> reporName);
+
     @POST("/appUserReport/updateUserReportRelById")
-    Call<ResponseModel<String>>  updateUserReportRelById(@Body AppUserReportRel reportRel);
+    Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
 
 }

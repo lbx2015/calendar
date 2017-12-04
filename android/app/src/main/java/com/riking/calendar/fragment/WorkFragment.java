@@ -141,10 +141,10 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
             @SuppressLint("RestrictedApi")
             public void onClick(View v) {
                 switch (v.getId()) {
-//                    case R.id.nextMonth: // 下一个月
+//                    case R.userId.nextMonth: // 下一个月
 //                        enterNextMonth(gvFlag);
 //                        break;
-//                    case R.id.prevMonth: // 上一个月
+//                    case R.userId.prevMonth: // 上一个月
 //                        enterPrevMonth(gvFlag);
 //                        break;
                     case R.id.add: {
@@ -382,8 +382,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         }
 
 
-//        prevMonth = (ImageView) v.findViewById(R.id.prevMonth);
-//        nextMonth = (ImageView) v.findViewById(R.id.nextMonth);
+//        prevMonth = (ImageView) v.findViewById(R.userId.prevMonth);
+//        nextMonth = (ImageView) v.findViewById(R.userId.nextMonth);
         add = v.findViewById(R.id.add);
         setListener();
         currentMonth = (TextView) v.findViewById(R.id.currentMonth);
@@ -424,7 +424,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         });
 
 //        gestureDetector = new GestureDetector(a, new FirstFragment.MyGestureListener());
-//        flipper = (ViewFlipper) v.findViewById(R.id.flipper);
+//        flipper = (ViewFlipper) v.findViewById(R.userId.flipper);
 //        flipper.removeAllViews();
 //        calV = new CalendarGridViewAdapter(this, a.getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
 //        addGridView();
