@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.CONST;
@@ -25,7 +26,7 @@ public class PullToLoadViewWithoutFloatButton extends FrameLayout {
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
     protected CONST.ScrollDirection mCurScrollingDirection;
     protected int mPrevFirstVisibleItem = 0;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    public SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
     private PullCallback mPullCallback;
@@ -153,12 +154,13 @@ public class PullToLoadViewWithoutFloatButton extends FrameLayout {
 
     public void initLoad() {
         if (null != mPullCallback) {
-            mSwipeRefreshLayout.post(new Runnable() {
+         /*   mSwipeRefreshLayout.post(new Runnable() {
                 @Override
                 public void run() {
+                    MyLog.d("findNewList mSwipeRefreshLayout.setRefreshing(true)");
                     mSwipeRefreshLayout.setRefreshing(true);
                 }
-            });
+            });*/
             mPullCallback.onRefresh();
         }
     }

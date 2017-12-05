@@ -13,10 +13,17 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.server.News;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ExpandCollapseExtention;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZGoto;
@@ -50,7 +57,22 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
         onBackPressed();
     }
 
+    TextView commentNumberTv;
+    void initEvents() {
+        NewsParams p = new NewsParams();
+        p.newsId = getIntent().getStringExtra(CONST.NEWS_ID);
+        APIClient.getNewsDetail(p, new ZCallBack<ResponseModel<News>>() {
+            @Override
+            public void callBack(ResponseModel<News> response) {
+                News news = response._data;
+                webView.loadUrl(news.content);
+                commentNumberTv.setText(news.commentNumber.toString());
+            }
+        });
+    }
+
     void init() {
+        commentNumberTv = findViewById(R.id.comment_number_tv);
         appBarLayout = findViewById(R.id.appbar);
         bottomBar = findViewById(R.id.bottom_bar);
         webView = findViewById(R.id.web_view);
@@ -60,7 +82,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
         if (!isNetworkAvailable()) { // loading offline
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
-        webView.loadUrl("file:///android_asset/example.html");
+//        webView.loadUrl("file:///android_asset/example.html");
 //        webView.loadUrl("http://image.baidu.com/search/index?ct=201326592&cl=2&st=-1&lm=-1&nc=1&ie=utf-8&tn=baiduimage&ipn=r&rps=1&pv=&fm=rs1&word=%E7%BE%8E%E5%A5%B3%E5%9B%BE%E7%89%87&oriquery=%E5%9B%BE%E7%89%87&ofr=%E5%9B%BE%E7%89%87&sensitive=0");
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
@@ -106,7 +128,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
             }
         });
 
-
+        initEvents();
     }
 
     private boolean isNetworkAvailable() {

@@ -60,9 +60,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             public void onClick(View v) {
                 Intent i = new Intent(holder.itemView.getContext(), NewsDetailActivity.class);
                 i.putExtra(CONST.NEWS_ID, news.newsId);
-                ZGoto.to(NewsDetailActivity.class);
+                ZGoto.to(i);
             }
         });
+        holder.newsTitle.setText(news.title);
         RequestOptions options = new RequestOptions();
         switch (getItemViewType(position)) {
             case 0: {

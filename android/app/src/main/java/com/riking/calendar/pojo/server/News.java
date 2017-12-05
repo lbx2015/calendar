@@ -2,8 +2,6 @@ package com.riking.calendar.pojo.server;
 
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
-import java.util.Date;
-
 
 /**
  * @author jc.tan 2017年11月27日
@@ -46,7 +44,7 @@ public class News extends BaseAuditProp {
     public String userName;
     // 评论数
 //	@Transient
-    public Integer commentNumber;
+    public String commentNumber = "0";
     // 用户头像Url
 //	@Transient
     public String photoUrl;

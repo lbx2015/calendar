@@ -90,6 +90,10 @@ public class ExampleUnitTest {
         JsonObject j = new JsonObject();
         j.addProperty("userId", id);
         AppUser a = new AppUser();
+        String js = "{userId:0}";
+        Gson g = new Gson();
+        AppUser user = g.fromJson(js,AppUser.class);
+        System.out.println(user.userId);
         System.out.println(new Gson().toJson(j));
         System.out.println(new Gson().toJson(a));
 

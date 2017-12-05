@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.NewsAdapter;
@@ -109,9 +110,11 @@ public class FinanceNewsFragment extends Fragment {
             p.direct = "up";
             p.reqTimeStamp = lastItemTime;
         }
+        mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
         APIClient.findNewsList(p, new ZCallBack<ResponseModel<List<News>>>() {
             @Override
             public void callBack(ResponseModel<List<News>> response) {
+                MyLog.d("findNewList mPullToLoadView.setComplete()");
                 mPullToLoadView.setComplete();
                 isLoading = false;
                 nextPage = page + 1;
