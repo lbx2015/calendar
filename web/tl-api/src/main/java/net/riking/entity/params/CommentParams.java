@@ -14,11 +14,17 @@ public class CommentParams implements Serializable {
 	// 用户id
 	private String userId;
 
+	// 被回复用户id
+	private String toUserId;
+
 	// 评论ID
 	private String commentId;
 
 	// 1-回答类；2-资讯类
 	private Integer objType;
+
+	// 回复Id
+	private String replyId;
 
 	// 内容
 	private String content;
@@ -32,6 +38,22 @@ public class CommentParams implements Serializable {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getToUserId() {
+		return toUserId;
+	}
+
+	public void setToUserId(String toUserId) {
+		this.toUserId = toUserId;
+	}
+
+	public String getReplyId() {
+		return replyId;
+	}
+
+	public void setReplyId(String replyId) {
+		this.replyId = replyId;
 	}
 
 	public String getCommentId() {
