@@ -13,12 +13,19 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.NewsDetailActivity;
 import com.riking.calendar.util.ZGoto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by zw.zhang on 2017/7/12.
  */
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
+    private List<String> mList;
 
+    {
+        mList = new ArrayList<>();
+    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -92,7 +99,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 100;
+        return mList.size();
+    }
+
+    public void add(String s) {
+        mList.add(s);
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

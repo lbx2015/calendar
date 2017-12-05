@@ -23,7 +23,6 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
  */
 
 public class TopicFragment extends Fragment {
-    protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
     HomeAdapter mAdapter;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
