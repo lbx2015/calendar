@@ -1,6 +1,7 @@
 package net.riking.entity.params;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 核销信息的接收参数
@@ -25,7 +26,7 @@ public class RCompletedRelParams implements Serializable {
 	private String completedDate;
 
 	// 提醒时间（yyyyMMdd）
-	private String remindTime;
+	private Date remindTime;
 
 	public String getUserId() {
 		return userId;
@@ -43,11 +44,11 @@ public class RCompletedRelParams implements Serializable {
 		this.completedDate = completedDate;
 	}
 
-	public String getRemindTime() {
+	public Date getRemindTime() {
 		return remindTime;
 	}
 
-	public void setRemindTime(String remindTime) {
+	public void setRemindTime(Date remindTime) {
 		this.remindTime = remindTime;
 	}
 
