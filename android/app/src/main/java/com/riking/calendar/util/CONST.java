@@ -46,6 +46,7 @@ public class CONST {
     public static final String REMINDER_TITLE = "Reminder title";
     //Date formats
     public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
+    public static final String YYYYMMDDHHMMSSSSS = "yyyyMMddHHmmssSSS";
     public static final String yyyyMMdd = "yyyyMMdd";
     public static final String birthDayFormat = "yyyy-MM-dd";
     public static final String WEB_URL = "WEB_URL";

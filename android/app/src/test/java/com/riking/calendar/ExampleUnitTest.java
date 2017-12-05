@@ -209,4 +209,32 @@ public class ExampleUnitTest {
         System.out.println(Industry.class.getSimpleName());
         System.out.print(Industry.class.getName());
     }
+
+    @Test
+    public void testArrayList() {
+        ArrayList<Integer> a = new ArrayList();
+        a.add(2);
+        a.add(2);
+        a.add(2);
+        a.add(2);
+        a.add(2);
+        ArrayList b = new ArrayList();
+        b.add(1);
+        b.add(1);
+        b.add(1);
+        b.add(1);
+        ArrayList c = new ArrayList();
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        a.addAll(0, b);
+        a.addAll(a.size(), c);
+
+        for (int i = 0; i < a.size(); i++) {
+            System.out.println(a.get(i));
+        }
+    }
 }

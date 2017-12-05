@@ -25,8 +25,10 @@ import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.synch.LoginParams;
@@ -541,5 +543,9 @@ public class APIClient {
 
     public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {
         apiInterface.updateUserReportRelById(reportRel).enqueue(c);
+    }
+
+    public static void findNewsList(NewsParams params, ZCallBack<ResponseModel<List<News>>> c) {
+        apiInterface.findNewsList(params).enqueue(c);
     }
 }

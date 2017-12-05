@@ -129,4 +129,20 @@ public class DateUtil {
     public static String getCustonFormatTime(long timeInMillis, String s) {
         return new SimpleDateFormat(s).format(new Date(timeInMillis));
     }
+
+    public static String date2String(Date time, String pattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        String reqTimeStamp;
+        reqTimeStamp = dateFormat.format(time);
+        return reqTimeStamp;
+    }
+
+    public static Date StringFormatMS(String time, String pattern) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        Date reqTimeStamp;
+
+        reqTimeStamp = dateFormat.parse(time);
+
+        return reqTimeStamp;
+    }
 }

@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.NewsDetailActivity;
+import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.util.ZGoto;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
-    private List<String> mList;
+    public List<News> mList;
 
     {
         mList = new ArrayList<>();
@@ -102,7 +103,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         return mList.size();
     }
 
-    public void add(String s) {
+    public void add(News s) {
         mList.add(s);
         notifyDataSetChanged();
     }

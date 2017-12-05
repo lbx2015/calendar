@@ -1,10 +1,8 @@
 package com.riking.calendar.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +14,16 @@ import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.NewsAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.server.News;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -25,6 +32,7 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 public class FinanceNewsFragment extends Fragment {
     View v;
     NewsAdapter mAdapter;
+    String reqTimeStamp;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -87,8 +95,37 @@ public class FinanceNewsFragment extends Fragment {
     }
 
     private void loadData(final int page) {
+        NewsParams p = new NewsParams();
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
+        if (page == 1) {
+            p.direct = "up";
+        } else {
+            p.direct = "down";
+        }
+        p.reqTimeStamp = reqTimeStamp;
+        APIClient.findNewsList(p, new ZCallBack<ResponseModel<List<News>>>() {
+            @Override
+            public void callBack(ResponseModel<List<News>> response) {
+                mPullToLoadView.setComplete();
+                isLoading = false;
+                nextPage = page + 1;
+                List<News> news = response._data;
+                if (news.size() == 0) {
+                    Toast.makeText(getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                reqTimeStamp = DateUtil.date2String(news.get(0).createdTime, CONST.YYYYMMDDHHMMSSSSS);
+                if (page == 0) {
+                    mAdapter.mList.addAll(0, news);
+                    mAdapter.notifyItemRangeInserted(0, news.size());
+                } else {
+                    mAdapter.mList.addAll((mAdapter.mList.size()), news);
+                    mAdapter.notifyItemRangeInserted(mAdapter.mList.size() - 1, news.size());
+                }
+
+            }
+        });
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPullToLoadView.setComplete();
@@ -105,6 +142,6 @@ public class FinanceNewsFragment extends Fragment {
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 3000);
+        }, 3000);*/
     }
 }
