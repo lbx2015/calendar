@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import net.riking.dao.ReportDao;
 import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportFrequency;
+import net.riking.entity.model.ReportResult;
 
 @Repository("reportDao")
 public class ReportDaoImpl implements ReportDao {
@@ -47,13 +48,13 @@ public class ReportDaoImpl implements ReportDao {
 	}
 
 	@Override
-	public List<Report> getAllReportByParams(String param) {
+	public List<ReportResult> getAllReportByParams(String param) {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call getAllReport(?)";
 		PreparedStatement pstmt = null;
-		List<Report> list = new ArrayList<Report>();
+		List<ReportResult> list = new ArrayList<ReportResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			if(StringUtils.isBlank(param))
@@ -61,10 +62,11 @@ public class ReportDaoImpl implements ReportDao {
 			pstmt.setString(1, param);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Report report = new Report();
-				report.setAgenceName(rs.getString("agenceName"));
+				ReportResult report = new ReportResult();
+				report.setAgenceCode(rs.getString("agenceCode"));
 				report.setReportType(rs.getString("reportType"));
 				report.setReportMode(rs.getString("reportMode"));
+				report.setReportId(rs.getString("reportId"));
 				report.setCode(rs.getString("code"));
 				report.setTitle(rs.getString("title"));
 				report.setIsSubcribe(rs.getString("isSubcribe"));

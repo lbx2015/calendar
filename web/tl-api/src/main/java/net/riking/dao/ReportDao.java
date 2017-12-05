@@ -2,8 +2,8 @@ package net.riking.dao;
 
 import java.util.List;
 
-import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportFrequency;
+import net.riking.entity.model.ReportResult;
 
 public interface ReportDao {
 	List<ReportFrequency> findAppUserReportById(String userId);
@@ -16,5 +16,5 @@ public interface ReportDao {
 	 * @param code和title参数值
 	 * @return
 	 */
-	List<Report> getAllReportByParams(String param);
+	List<ReportResult> getAllReportByParams(String param);
 }

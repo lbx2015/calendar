@@ -228,6 +228,7 @@ public class RedisUtil {
 //			getJedis().set(key.getBytes(), ObjectTranscoder.serialize(list));
 			jedis.set(key.getBytes(), SerializeUtil.serialize(list));
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("Set key error : " + e);
 		}finally {
 			returnResource(jedis);

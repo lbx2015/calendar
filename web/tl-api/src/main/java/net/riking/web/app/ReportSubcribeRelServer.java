@@ -114,7 +114,7 @@ public class ReportSubcribeRelServer {
 		for (String title : map.keySet()) {
 			ReportResult reportResult = new ReportResult();
 			reportResult.setTitle(title);
-			reportResult.setResult(map.get(title));
+//			reportResult.setResult(map.get(title));
 			listes.add(reportResult);
 		}
 		return new AppResp(listes, CodeDef.SUCCESS);
