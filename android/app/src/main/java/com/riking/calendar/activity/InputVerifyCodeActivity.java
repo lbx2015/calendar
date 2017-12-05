@@ -134,7 +134,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 }
                             });
 
-                            if (u.isGuide == null || u.isGuide.equals("0")) {
+                            if (u.isGuide == null || u.isGuide==(0)) {
                                 startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
                             } else {
                                 startActivity(new Intent(InputVerifyCodeActivity.this, ViewPagerActivity.class));

@@ -1,23 +1,19 @@
 package com.riking.calendar.pojo.server;
 
-public class Industry {
+import com.riking.calendar.pojo.server.base.BaseProp;
 
-    //行业/职位表
-//	@Id
-//	@GeneratedValue
-//	@Column(name = "id")
-    public Long id;
-
-    //	@Comment("行业/职位名称")
-//	@Column(name = "name", length = 32)
+public class Industry extends BaseProp {
+    //    @Comment("行业/职位名称")
+//    @Column(name = "name", length = 32)
     public String name;
+    public String industryId;
 
-    //	@Comment("父id")
-//	@Column(name = "parent_id", length = 32)
-    public Long parentId;
+    //    @Comment("所属行业id")
+//    @Column(name = "parent_id", length = 32)
+    public String parentId;
 
-    //	@Comment("所属类型")
-//	@Column(name = "type", length = 1)
-    public Integer type;//0：行业；1：职位
+    //    @Comment("类型:0-行业；1-职位")
+//    @Column(name = "data_type", length = 1)
+    public Integer dataType;// 0：行业；1：职位
 
 }

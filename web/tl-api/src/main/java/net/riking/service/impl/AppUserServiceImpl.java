@@ -14,12 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.utils.UuidUtils;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.service.AppUserService;
+import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
 
 @Service("appUserSerice")
@@ -32,6 +34,9 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
+
+	@Autowired
+	SysDataService sysDataService;
 
 	public AppUser findByPhone(String phone) {
 		return appUserRepo.findByPhone(phone);
@@ -75,8 +80,9 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Override
 	public String uploadPhoto(MultipartFile mFile, String userId) throws RuntimeException {
-		String suffix = mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
-		String fileName = userId + mFile.getOriginalFilename() + suffix;
+		// String suffix =
+		// mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
+		String fileName = UuidUtils.random() + mFile.getOriginalFilename();
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {
@@ -110,7 +116,10 @@ public class AppUserServiceImpl implements AppUserService {
 		String oleFilePath = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH
 				+ oldFileName;
 		// 删除服务器上文件
-		this.deleteFile(oleFilePath);
+		ModelPropDict dict = sysDataService.getDict("T_ROOT_URL", "PHOTO_URL", "DEFAULT_URL");
+		if (!dict.getValu().equals(oldFileName) || !oldFileName.equals(mFile.getOriginalFilename())) {
+			this.deleteFile(oleFilePath);
+		}
 		// 数据库保存路径
 		appUserRepo.updatePhoto(userId, fileName);
 		return fileName;

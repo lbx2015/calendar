@@ -50,8 +50,11 @@ public class News extends BaseAuditProp {
 	@Column(name = "issued", length = 255, nullable = false)
 	private String issued;
 
+	@Transient
+	private Integer experience;
+
 	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
-			String content, String issued, String userName, String photoUrl) {
+			String content, String issued, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
@@ -63,6 +66,7 @@ public class News extends BaseAuditProp {
 		this.issued = issued;
 		this.userName = userName;
 		this.photoUrl = photoUrl;
+		this.experience = experience;
 	}
 
 	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
@@ -96,6 +100,14 @@ public class News extends BaseAuditProp {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Integer getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Integer experience) {
+		this.experience = experience;
 	}
 
 	public String getPhotoUrl() {

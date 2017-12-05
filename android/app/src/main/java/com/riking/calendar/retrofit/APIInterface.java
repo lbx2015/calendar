@@ -153,7 +153,7 @@ public interface APIInterface {
     @POST("common/getappVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
 
-    @POST("appUserApp/findIndustry")
+    @POST("common/findIndustry")
     Call<ResponseModel<ArrayList<Industry>>> findIndustry();
 
     /**
@@ -161,8 +161,8 @@ public interface APIInterface {
      *
      * @return
      */
-    @POST("appUserApp/getPositionByIndustry")
-    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, Long> industryId);
+    @POST("common/getPositionByIndustry")
+    Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, String> industryId);
 
     /**
      * set user's interesting reports into server

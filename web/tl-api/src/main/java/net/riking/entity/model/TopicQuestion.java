@@ -60,8 +60,12 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private Integer answerNum;
 
+	// 经验值
+	@Transient
+	private Integer experience;
+
 	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
-			String topicId, String userId, String userName, String photoUrl) {
+			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
@@ -73,6 +77,7 @@ public class TopicQuestion extends BaseAuditProp {
 		this.userId = userId;
 		this.userName = userName;
 		this.photoUrl = photoUrl;
+		this.experience = experience;
 	}
 
 	public String getTitle() {
@@ -81,6 +86,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Integer getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Integer experience) {
+		this.experience = experience;
 	}
 
 	public String getPhotoUrl() {

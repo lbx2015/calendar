@@ -27,7 +27,7 @@ public interface NewsRepo extends JpaRepository<News, String>, JpaSpecificationE
 	 * @param reqTimeStamp
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id)) from News n where n.createdTime < ?1 and n.isDeleted=1 and n.isAduit <> 2 order by n.createdTime desc")
+	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id),(select app.experience from AppUserDetail app where n.createdBy = app.id)) from News n where n.createdTime < ?1 and n.isDeleted=1 and n.isAduit <> 2 order by n.createdTime desc")
 	List<News> findNewsListPageNext(Date reqTimeStamp, Pageable pageable);
 
 	/**
@@ -35,7 +35,7 @@ public interface NewsRepo extends JpaRepository<News, String>, JpaSpecificationE
 	 * @param reqTimeStamp
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id)) from News n where n.createdTime > ?1 and n.isDeleted=1 and n.isAduit <> 2 order by n.createdTime asc")
+	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id),(select app.experience from AppUserDetail app where n.createdBy = app.id)) from News n where n.createdTime > ?1 and n.isDeleted=1 and n.isAduit <> 2 order by n.createdTime asc")
 	List<News> findNewsListRefresh(Date reqTimeStamp, Pageable pageable);
 
 	/**

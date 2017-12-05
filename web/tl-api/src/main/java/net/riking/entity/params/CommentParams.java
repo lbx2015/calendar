@@ -20,6 +20,9 @@ public class CommentParams implements Serializable {
 	// 1-回答类；2-资讯类
 	private Integer objType;
 
+	// 内容
+	private String content;
+
 	// 0-取消；1-赞同
 	private Integer enabled;
 
@@ -37,6 +40,14 @@ public class CommentParams implements Serializable {
 
 	public void setCommentId(String commentId) {
 		this.commentId = commentId;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public Integer getObjType() {

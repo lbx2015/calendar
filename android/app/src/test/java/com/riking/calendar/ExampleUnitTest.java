@@ -88,7 +88,9 @@ public class ExampleUnitTest {
         String id = "adsfjdl";
         JsonObject j = new JsonObject();
         j.addProperty("userId", id);
+        AppUser a = new AppUser();
         System.out.println(new Gson().toJson(j));
+        System.out.println(new Gson().toJson(a));
 
     }
 

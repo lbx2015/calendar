@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import net.riking.entity.MyDateFormat;
+import net.riking.entity.model.AppUser;
 
 public class Utils {
 
@@ -69,11 +70,20 @@ public class Utils {
 					Field field = fields[i];
 					field.setAccessible(true);
 					String name = field.getName();
+					if(name.equals("serialVersionUID")){
+						continue;
+					}
 					Object value = field.get(obj);
 					Class<?> type = field.getType();
 					if (isJavaClass(type)) {
 						if (null != value) {
-							map.put(name, value);
+							if(type == Date.class){
+								String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
+								SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+								map.put(name, dateFormat.format((Date)value));
+							}else{
+								map.put(name, value);
+							}
 						}
 					} else {
 						map.put(name, objPropsDeep2Map(value));
@@ -81,8 +91,7 @@ public class Utils {
 				}
 			}
 		} catch (Exception e) {
-			System.out
-					.println(clazz.getName() + clazz.getSuperclass().getName());
+			System.out.println(clazz.getName() + clazz.getSuperclass().getName());
 			e.printStackTrace();
 		}
 		return map;
@@ -95,8 +104,7 @@ public class Utils {
 	 * @param obj
 	 * @param map
 	 */
-	private static <T extends Object> Map<String, Object> objPropsEasy2Map(
-			T obj) {
+	private static <T extends Object> Map<String, Object> objPropsEasy2Map(T obj) {
 		Map<String, Object> map = new HashMap<>();
 		if (null == obj) {
 			return map;
@@ -108,9 +116,19 @@ public class Utils {
 				Field field = fields[i];
 				field.setAccessible(true);
 				String name = field.getName();
+				if(name.equals("serialVersionUID")){
+					continue;
+				}
+				Class<?> type = field.getType();
 				Object value = field.get(obj);
 				if (null != value) {
-					map.put(name, value);
+					if(type == Date.class){
+						String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
+						SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+						map.put(name, dateFormat.format((Date)value));
+					}else{
+						map.put(name, value);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -134,8 +152,7 @@ public class Utils {
 			return obj;
 		}
 		try {
-			String id = clazz.getName()
-					.substring(clazz.getName().lastIndexOf(".") + 1) + "Id";
+			String id = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1) + "Id";
 			id = id.substring(0, 1).toLowerCase() + id.substring(1);
 			Object removeValue = map.remove(id);
 			map.put("id", removeValue);
@@ -146,13 +163,9 @@ public class Utils {
 				for (Field field : list) {
 					if (field.getName().equals(fieldName)) {
 						if (field.getType() == Date.class) {
-							String pattern = field
-									.getAnnotation(DateTimeFormat.class)
-									.pattern();
-							SimpleDateFormat dateFormat = new SimpleDateFormat(
-									pattern);
-							map.put(fieldName, dateFormat
-									.parse((String) map.get(fieldName)));
+							String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
+							SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+							map.put(fieldName, dateFormat.parse((String) map.get(fieldName)));
 						}
 						// else if (field.getType() == Integer.class) {
 						// map.put(fieldName, Integer.parseInt((String)
@@ -191,5 +204,12 @@ public class Utils {
 		}
 		return list;
 	}
-
+	
+	public static void main(String[] args) {
+		AppUser appUser = new AppUser();
+		appUser.setCreatedTime(new Date());
+		
+		Map<String, Object> map = Utils.objProps2Map(appUser, true);
+		System.err.println(map);
+	}
 }

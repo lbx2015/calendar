@@ -31,7 +31,7 @@ public class NCReply extends BaseAuditProp {
 	private String userId;
 
 	@Comment("被操作人主键: fk t_app_user 被评论人ID")
-	@Column(name = "to_user_id", nullable = false)
+	@Column(name = "to_user_id")
 	private String toUserId;
 
 	@Comment("目标对象评论主键: fk t_news_comment 行业资讯的评论表")
@@ -49,12 +49,16 @@ public class NCReply extends BaseAuditProp {
 	@Transient
 	private String userName;
 
-	// 用户头像Url
 	@Transient
-	private String photoUrl;
+	private String toUserName;
+
+	public NCReply() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public NCReply(String id, Date createdTime, Date modifiedTime, String userId, String toUserId, String commentId,
-			String replyId, String content, String userName, String photoUrl) {
+			String replyId, String content, String userName, String toUserName) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
@@ -65,7 +69,7 @@ public class NCReply extends BaseAuditProp {
 		this.replyId = replyId;
 		this.content = content;
 		this.userName = userName;
-		this.photoUrl = photoUrl;
+		this.toUserName = toUserName;
 	}
 
 	public String getUserId() {
@@ -84,14 +88,6 @@ public class NCReply extends BaseAuditProp {
 		this.userName = userName;
 	}
 
-	public String getPhotoUrl() {
-		return photoUrl;
-	}
-
-	public void setPhotoUrl(String photoUrl) {
-		this.photoUrl = photoUrl;
-	}
-
 	public String getContent() {
 		return content;
 	}
@@ -106,6 +102,14 @@ public class NCReply extends BaseAuditProp {
 
 	public void setToUserId(String toUserId) {
 		this.toUserId = toUserId;
+	}
+
+	public String getToUserName() {
+		return toUserName;
+	}
+
+	public void setToUserName(String toUserName) {
+		this.toUserName = toUserName;
 	}
 
 	public String getCommentId() {

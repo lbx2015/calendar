@@ -43,10 +43,6 @@ public class AppUserDetail implements Serializable {
 	@Column(name = "real_name", length = 32)
 	private String realName;
 
-	@Comment("用户邮箱")
-	@Column(name = "email", length = 32)
-	private String email;
-
 	@Comment("用户公司")
 	@Column(name = "company_name", length = 32)
 	private String companyName;
@@ -77,12 +73,11 @@ public class AppUserDetail implements Serializable {
 
 	@Comment("积分")
 	@Column(name = "integral")
-
 	private Integer integral;
 
 	@Comment("经验值")
+	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "experience")
-
 	private Integer experience;
 
 	@Comment("用户头像（存放用户头像名称）")
@@ -125,14 +120,6 @@ public class AppUserDetail implements Serializable {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getCompanyName() {

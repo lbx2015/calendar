@@ -169,6 +169,9 @@ public class CommonServer {
 		IndustryParams industryParams = Utils.map2Obj(params, IndustryParams.class);
 		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
 		List<Industry> list = industryRepo.findPositionByIndustry(industryParams.getIndustryId());
+		if (null == list) {
+			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
+		}
 		for (Industry industry : list) {
 			Map<String, Object> map = Utils.objProps2Map(industry, true);
 			String pattern = "yyyyMMddHHmmssSSS";
