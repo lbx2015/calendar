@@ -136,7 +136,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickComments(final View view) {
-        ZGoto.to(this, CommentsActivity.class);
+        ZGoto.toWithLoginCheck(CommentsActivity.class);
     }
 
     public void clickFavorite(final View v) {

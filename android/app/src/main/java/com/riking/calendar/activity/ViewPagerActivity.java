@@ -343,11 +343,6 @@ public class ViewPagerActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 1) {
-                    if (!ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
-                        ZGoto.toLoginActivity(ViewPagerActivity.this);
-                    }
-                }
             }
 
             @Override

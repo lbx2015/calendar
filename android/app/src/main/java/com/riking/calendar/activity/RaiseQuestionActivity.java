@@ -47,7 +47,7 @@ public class RaiseQuestionActivity extends AppCompatActivity {
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZGoto.to(RaiseQuestionActivity.this, AddTopicActivity.class);
+                ZGoto.toWithLoginCheck( AddTopicActivity.class);
             }
         });
         textInputEditText.addTextChangedListener(new TextWatcher() {
