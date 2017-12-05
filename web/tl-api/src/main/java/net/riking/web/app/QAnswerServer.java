@@ -30,7 +30,6 @@ import net.riking.entity.model.QAComment;
 import net.riking.entity.model.QAnswerRel;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.params.QAnswerParams;
-import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
 /**
@@ -84,9 +83,6 @@ public class QAnswerServer {
 		QuestionAnswer questionAnswer = questionAnswerRepo.getById(qAnswerParams.getQuestAnswerId());
 
 		Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
-		String pattern = "yyyyMMddHHmmssSSS";
-		questionAnswerMap.put("createdTime", DateUtils.DateFormatMS(questionAnswer.getCreatedTime(), pattern));
-		questionAnswerMap.put("modifiedTime", DateUtils.DateFormatMS(questionAnswer.getModifiedTime(), pattern));
 		return new AppResp(questionAnswerMap, CodeDef.SUCCESS);
 	}
 
@@ -182,9 +178,6 @@ public class QAnswerServer {
 			for (QACReply qacReply : qacReplies) {
 				// qacReply将对象转换成map
 				Map<String, Object> qacReplyMap = Utils.objProps2Map(qacReply, true);
-				String pattern = "yyyyMMddHHmmssSSS";
-				qacReplyMap.put("createdTime", DateUtils.DateFormatMS(qacReply.getCreatedTime(), pattern));
-				qacReplyMap.put("modifiedTime", DateUtils.DateFormatMS(qacReply.getModifiedTime(), pattern));
 				qAComment.getQACReplyList().add(qacReplyMap);
 			}
 			// TODO 统计数后面从redis中取点赞数
@@ -194,9 +187,6 @@ public class QAnswerServer {
 
 			// 将对象转换成map
 			Map<String, Object> questionAnswerMap = Utils.objProps2Map(qAComment, true);
-			String pattern = "yyyyMMddHHmmssSSS";
-			questionAnswerMap.put("createdTime", DateUtils.DateFormatMS(qAComment.getCreatedTime(), pattern));
-			questionAnswerMap.put("modifiedTime", DateUtils.DateFormatMS(qAComment.getModifiedTime(), pattern));
 			questionAnswerMapList.add(questionAnswerMap);
 		}
 

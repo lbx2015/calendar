@@ -29,7 +29,6 @@ import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.TQuestionParams;
-import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
 /**
@@ -83,9 +82,6 @@ public class TopicQuestionServer {
 		topicQuestion.setAnswerNum(answerNum);
 		// 将对象转换成map
 		Map<String, Object> topicQuestionMap = Utils.objProps2Map(topicQuestion, true);
-		String pattern = "yyyyMMddHHmmssSSS";
-		topicQuestionMap.put("createdTime", DateUtils.DateFormatMS(topicQuestion.getCreatedTime(), pattern));
-		topicQuestionMap.put("modifiedTime", DateUtils.DateFormatMS(topicQuestion.getModifiedTime(), pattern));
 		return new AppResp(topicQuestionMap, CodeDef.SUCCESS);
 	}
 
@@ -206,9 +202,6 @@ public class TopicQuestionServer {
 
 			// 将对象转换成map
 			Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
-			String pattern = "yyyyMMddHHmmssSSS";
-			questionAnswerMap.put("createdTime", DateUtils.DateFormatMS(questionAnswer.getCreatedTime(), pattern));
-			questionAnswerMap.put("modifiedTime", DateUtils.DateFormatMS(questionAnswer.getModifiedTime(), pattern));
 			questionAnswerMapList.add(questionAnswerMap);
 		}
 
