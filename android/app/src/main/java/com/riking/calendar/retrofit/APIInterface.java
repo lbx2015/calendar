@@ -190,4 +190,7 @@ public interface APIInterface {
     @POST("news/findNewsList")
     Call<ResponseModel<List<News>>> findNewsList(@Body NewsParams params);
 
+    @POST("news/getNews")
+    Call<ResponseModel<News>> getNewsDetail(@Body NewsParams params);
+
 }

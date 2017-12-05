@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.NewsDetailActivity;
 import com.riking.calendar.pojo.server.News;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 
 import java.util.ArrayList;
@@ -52,10 +54,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
+        final News news = mList.get(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(holder.itemView.getContext(), NewsDetailActivity.class);
+                i.putExtra(CONST.NEWS_ID, news.newsId);
                 ZGoto.to(NewsDetailActivity.class);
             }
         });

@@ -548,4 +548,8 @@ public class APIClient {
     public static void findNewsList(NewsParams params, ZCallBack<ResponseModel<List<News>>> c) {
         apiInterface.findNewsList(params).enqueue(c);
     }
+
+    public static void getNewsDetail(NewsParams params, ZCallBack<ResponseModel<News>> c) {
+        apiInterface.getNewsDetail(params).enqueue(c);
+    }
 }

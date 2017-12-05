@@ -62,6 +62,7 @@ public class CONST {
     //The whole information of logining user in gson string
     public static final String CURRENT_LOGIN_USER = "CURRENT_LOGIN_USER";
     public static final String JUMP_CLASS_NAME = "JUMP_CLASS_NAME";
+    public static final String NEWS_ID = "NEWS_ID";
 
     //滚动事件
     public enum ScrollDirection {

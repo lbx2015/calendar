@@ -33,6 +33,7 @@ public class FinanceNewsFragment extends Fragment {
     View v;
     NewsAdapter mAdapter;
     String reqTimeStamp;
+    String lastItemTime;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -98,11 +99,16 @@ public class FinanceNewsFragment extends Fragment {
         NewsParams p = new NewsParams();
         isLoading = true;
         if (page == 1) {
-            p.direct = "up";
+            if (reqTimeStamp == null) {
+                p.direct = "up";
+            } else {
+                p.direct = "down";
+            }
+            p.reqTimeStamp = reqTimeStamp;
         } else {
-            p.direct = "down";
+            p.direct = "up";
+            p.reqTimeStamp = lastItemTime;
         }
-        p.reqTimeStamp = reqTimeStamp;
         APIClient.findNewsList(p, new ZCallBack<ResponseModel<List<News>>>() {
             @Override
             public void callBack(ResponseModel<List<News>> response) {
@@ -114,7 +120,10 @@ public class FinanceNewsFragment extends Fragment {
                     Toast.makeText(getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 reqTimeStamp = DateUtil.date2String(news.get(0).createdTime, CONST.YYYYMMDDHHMMSSSSS);
+                lastItemTime = DateUtil.date2String(news.get(news.size() - 1).createdTime, CONST.YYYYMMDDHHMMSSSSS);
+
                 if (page == 0) {
                     mAdapter.mList.addAll(0, news);
                     mAdapter.notifyItemRangeInserted(0, news.size());
