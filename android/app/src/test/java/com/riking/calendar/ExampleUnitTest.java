@@ -7,6 +7,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.util.Debug;
 
 import org.joda.time.DateTime;
@@ -201,5 +202,11 @@ public class ExampleUnitTest {
         for (int i = 0; i < 100; i++) {
             System.out.println(i % 3);
         }
+    }
+
+    @Test
+    public void testClass() {
+        System.out.println(Industry.class.getSimpleName());
+        System.out.print(Industry.class.getName());
     }
 }

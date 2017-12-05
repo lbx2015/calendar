@@ -3,13 +3,17 @@ package com.riking.calendar.listener;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Looper;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.LoginNavigateActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,12 +55,12 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
         mProgressDialog.show();
     }
 
-    public abstract void callBack(T response);
+    public abstract void callBack(T response) throws Exception;
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         Activity activity = mProgressDialog.getOwnerActivity();
-        if (activity!=null && !activity.isFinishing()) {
+        if (activity != null && !activity.isFinishing()) {
             mProgressDialog.dismiss();
         }
         Logger.d("zzw", "request ok + " + call.request().toString());
@@ -64,18 +68,27 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
             failed = true;
             Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT).show();
         }
-        callBack(response.body());
+
+        try {
+            callBack(response.body());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
         Activity activity = mProgressDialog.getOwnerActivity();
-        if (activity!=null && !activity.isFinishing()) {
+        if (activity != null && !activity.isFinishing()) {
             mProgressDialog.dismiss();
         }
 
         failed = true;
-        callBack(null);
+        try {
+            callBack(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Logger.d("zzw", "request fail + " + call.request().toString() + t.getMessage());
         Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT).show();
     }

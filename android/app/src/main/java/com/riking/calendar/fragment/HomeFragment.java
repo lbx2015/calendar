@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
         raiseQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZGoto.to(getActivity(), RaiseQuestionActivity.class);
+                ZGoto.to(RaiseQuestionActivity.class);
             }
         });
         search.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void onClickSearchButton(final View v) {
-        ZGoto.to(getActivity(), SearchActivity.class);
+        ZGoto.to( SearchActivity.class);
     }
 
 
