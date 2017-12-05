@@ -53,6 +53,10 @@ public class QAComment extends BaseAuditProp {
 	@Transient
 	private Integer agreeNum;
 
+	// 经验值
+	@Transient
+	private Integer experience;
+
 	// 问题回答评论的回复list
 	@Transient
 	List<Map<String, Object>> qACReplyList;
@@ -63,7 +67,7 @@ public class QAComment extends BaseAuditProp {
 	}
 
 	public QAComment(String id, Date createdTime, Date modifiedTime, Integer isAduit, String userId,
-			String questionAnswerId, String content, String userName, String photoUrl) {
+			String questionAnswerId, String content, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
@@ -74,6 +78,7 @@ public class QAComment extends BaseAuditProp {
 		this.content = content;
 		this.userName = userName;
 		this.photoUrl = photoUrl;
+		this.experience = experience;
 	}
 
 	public String getUserId() {
@@ -90,6 +95,14 @@ public class QAComment extends BaseAuditProp {
 
 	public void setQuestionAnswerId(String questionAnswerId) {
 		this.questionAnswerId = questionAnswerId;
+	}
+
+	public Integer getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Integer experience) {
+		this.experience = experience;
 	}
 
 	public String getContent() {

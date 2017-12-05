@@ -36,7 +36,6 @@ import net.riking.entity.params.ValidParams;
 import net.riking.service.AppUserCommendService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.util.DateUtils;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
 import net.riking.util.Utils;
@@ -155,9 +154,6 @@ public class CommonServer {
 		List<Industry> list = industryRepo.findIndustry(0);// 查询行业
 		for (Industry industry : list) {
 			Map<String, Object> map = Utils.objProps2Map(industry, true);
-			String pattern = "yyyyMMddHHmmssSSS";
-			map.put("createdTime", DateUtils.DateFormatMS(industry.getCreatedTime(), pattern));
-			map.put("modifiedTime", DateUtils.DateFormatMS(industry.getModifiedTime(), pattern));
 			maps.add(map);
 		}
 		return new AppResp(maps, CodeDef.SUCCESS);
@@ -169,11 +165,11 @@ public class CommonServer {
 		IndustryParams industryParams = Utils.map2Obj(params, IndustryParams.class);
 		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
 		List<Industry> list = industryRepo.findPositionByIndustry(industryParams.getIndustryId());
+		if (null == list) {
+			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
+		}
 		for (Industry industry : list) {
 			Map<String, Object> map = Utils.objProps2Map(industry, true);
-			String pattern = "yyyyMMddHHmmssSSS";
-			map.put("createdTime", DateUtils.DateFormatMS(industry.getCreatedTime(), pattern));
-			map.put("modifiedTime", DateUtils.DateFormatMS(industry.getModifiedTime(), pattern));
 			maps.add(map);
 		}
 		return new AppResp(maps, CodeDef.SUCCESS);

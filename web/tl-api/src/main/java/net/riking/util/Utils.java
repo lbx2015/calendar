@@ -78,7 +78,7 @@ public class Utils {
 					if (isJavaClass(type)) {
 						if (null != value) {
 							if(type == Date.class){
-								String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern():"yyyyMMddHHmmssSSS";
+								String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
 								SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 								map.put(name, dateFormat.format((Date)value));
 							}else{
@@ -123,7 +123,7 @@ public class Utils {
 				Object value = field.get(obj);
 				if (null != value) {
 					if(type == Date.class){
-						String pattern = field.getAnnotation(MyDateFormat.class).pattern();
+						String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
 						SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 						map.put(name, dateFormat.format((Date)value));
 					}else{
@@ -163,7 +163,7 @@ public class Utils {
 				for (Field field : list) {
 					if (field.getName().equals(fieldName)) {
 						if (field.getType() == Date.class) {
-							String pattern = field.getAnnotation(MyDateFormat.class).pattern();
+							String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
 							SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 							map.put(fieldName, dateFormat.parse((String) map.get(fieldName)));
 						}

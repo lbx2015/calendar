@@ -6,16 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
+
 import net.riking.dao.AppUserCommendDao;
 import net.riking.entity.model.AppUserRecommend;
 
 @Repository("appUserCommendDao")
-public class AppUserCommendDaoImpl implements AppUserCommendDao{
-	
+public class AppUserCommendDaoImpl implements AppUserCommendDao {
+
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -24,14 +27,15 @@ public class AppUserCommendDaoImpl implements AppUserCommendDao{
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "SELECT t.report_id,r.report_name,t.industry_id from t_app_user_recommend t left join t_report_list r on t.report_id=r.id";
+		String sql = "SELECT t.report_id,r.title,t.industry_id from t_app_user_recommend t left join t_report r on t.report_id=r.id";
 		PreparedStatement pstmt = null;
 		Set<AppUserRecommend> list = new HashSet<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				AppUserRecommend appUserRecommend = new AppUserRecommend(rs.getString(1), rs.getString(2), rs.getLong(3));
+				AppUserRecommend appUserRecommend = new AppUserRecommend(rs.getString(1), rs.getString(2),
+						rs.getLong(3));
 				list.add(appUserRecommend);
 			}
 		} catch (SQLException e) {

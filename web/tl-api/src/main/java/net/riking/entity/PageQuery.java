@@ -18,11 +18,14 @@ public class PageQuery extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -7460526310221003824L;
-	private Integer pindex = 0; // 页数
-	private Integer pcount = 10;// 每页条数
+	private Integer pindex; // 页数
+	private Integer pcount;// 每页条数
 	private String sort; // like: id_asc|name_desc
 
 	public Integer getPindex() {
+		if(pindex == null){
+			pindex = 0;
+		}
 		return pindex;
 	}
 
@@ -31,6 +34,9 @@ public class PageQuery extends BaseEntity {
 	}
 
 	public Integer getPcount() {
+		if(pcount == null){
+			pcount = 10;
+		}
 		return pcount;
 	}
 

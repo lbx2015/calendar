@@ -19,12 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.AppUserDetailRepo;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.NCReplyRepo;
 import net.riking.dao.repo.NewsCommentRepo;
 import net.riking.dao.repo.NewsRelRepo;
 import net.riking.dao.repo.NewsRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.NCReply;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
@@ -61,6 +65,12 @@ public class NewsServer {
 
 	@Autowired
 	NewsRelRepo newsRelRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
+
+	@Autowired
+	AppUserDetailRepo appUserDetailRepo;
 
 	/**
 	 * 获取资讯列表
@@ -111,8 +121,6 @@ public class NewsServer {
 
 			// 将对象转换成map
 			Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
-			newsInfoMapNew.put("createdTime", DateUtils.DateFormatMS(newsInfo.getCreatedTime(), pattern));
-			newsInfoMapNew.put("modifiedTime", DateUtils.DateFormatMS(newsInfo.getModifiedTime(), pattern));
 			newsInfoMapList.add(newsInfoMapNew);
 		}
 
@@ -135,9 +143,6 @@ public class NewsServer {
 		}
 		// 将对象转换成map
 		Map<String, Object> newsInfoMap = Utils.objProps2Map(newsInfo, true);
-		String pattern = "yyyyMMddHHmmssSSS";
-		newsInfoMap.put("createdTime", DateUtils.DateFormatMS(newsInfo.getCreatedTime(), pattern));
-		newsInfoMap.put("modifiedTime", DateUtils.DateFormatMS(newsInfo.getModifiedTime(), pattern));
 		return new AppResp(newsInfoMap, CodeDef.SUCCESS);
 	}
 
@@ -169,10 +174,6 @@ public class NewsServer {
 				// nCommentReplyInfo.setUserName(appUser.getUserName());
 				// 将评论回复对象转换成map
 				nCommentReplyInfoObjMap = Utils.objProps2Map(nCommentReplyInfo, true);
-				nCommentReplyInfoObjMap.put("createdTime",
-						DateUtils.DateFormatMS(nCommentReplyInfo.getCreatedTime(), pattern));
-				nCommentReplyInfoObjMap.put("modifiedTime",
-						DateUtils.DateFormatMS(nCommentReplyInfo.getModifiedTime(), pattern));
 				// 回复的数据列表添加到评论类里面
 				newsCommentInfoNew.getNCommentReplyInfoList().add(nCommentReplyInfoObjMap);
 			}
@@ -181,10 +182,6 @@ public class NewsServer {
 			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
 			Map<String, Object> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
-			newsCommentInfoObjMap.put("createdTime",
-					DateUtils.DateFormatMS(newsCommentInfoNew.getCreatedTime(), pattern));
-			newsCommentInfoObjMap.put("modifiedTime",
-					DateUtils.DateFormatMS(newsCommentInfoNew.getModifiedTime(), pattern));
 			newsCommentInfoMapList.add(newsCommentInfoObjMap);
 		}
 		return new AppResp(newsCommentInfoMapList, CodeDef.SUCCESS);
@@ -201,11 +198,21 @@ public class NewsServer {
 		// 将map转换成参数对象
 		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
 		NewsComment newsCommentInfo = new NewsComment();
+		AppUser appUser = appUserRepo.findOne(newsParams.getUserId());
+		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());
+
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
 		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
 		newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
+		if (null != appUser) {
+			newsCommentInfo.setUserName(appUser.getUserName());
+		}
+		if (null != appUserDetail) {
+			newsCommentInfo.setPhotoUrl(appUserDetail.getPhotoUrl());
+			newsCommentInfo.setExperience(appUserDetail.getExperience());
+		}
 		Map<String, Object> map = Utils.objProps2Map(newsCommentInfo, true);
 		return new AppResp(map, CodeDef.SUCCESS);
 	}

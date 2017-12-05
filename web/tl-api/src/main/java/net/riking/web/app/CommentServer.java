@@ -1,5 +1,6 @@
 package net.riking.web.app;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.AppUserDetailRepo;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.NCReplyRepo;
 import net.riking.dao.repo.NewsCommentRepo;
-import net.riking.dao.repo.NewsRelRepo;
 import net.riking.dao.repo.QACAgreeRelRepo;
+import net.riking.dao.repo.QACReplyRepo;
+import net.riking.dao.repo.QACommentRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.NCAgreeRel;
+import net.riking.entity.model.NCReply;
 import net.riking.entity.model.QACAgreeRel;
+import net.riking.entity.model.QACReply;
 import net.riking.entity.params.CommentParams;
 import net.riking.util.Utils;
 
@@ -51,7 +58,16 @@ public class CommentServer {
 	NCAgreeRelRepo nCAgreeRelRepo;
 
 	@Autowired
-	NewsRelRepo newsRelRepo;
+	QACommentRepo qACommentRepo;
+
+	@Autowired
+	QACReplyRepo qACReplyRepo;
+
+	@Autowired
+	AppUserDetailRepo appUserDetailRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
 
 	/**
 	 * 评论点赞
@@ -112,21 +128,54 @@ public class CommentServer {
 		return new AppResp(CodeDef.SUCCESS);
 	}
 
-	// /**
-	// * 资讯的详情
-	// * @param params[newsId]
-	// * @return
-	// */
-	// @ApiOperation(value = "获取资讯的详情", notes = "POST")
-	// @RequestMapping(value = "/getNews", method = RequestMethod.POST)
-	// public AppResp getNewsInfo(@RequestBody Map<String, Object> params) {
-	// // 将map转换成参数对象
-	// NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
-	// News newsInfo = newsRepo.getById(newsParams.getNewsId());
-	// // 将对象转换成map
-	// Map<String, Object> newsInfoMap = Utils.objProps2Map(newsInfo, true);
-	// return new AppResp(newsInfoMap, CodeDef.SUCCESS);
-	// }
+	/**
+	 * 评论的回复
+	 * @param params[userId,objType(1-回答类；2-资讯类),commentId(评论ID),content]
+	 * @return
+	 */
+	@ApiOperation(value = "评论的回复", notes = "POST")
+	@RequestMapping(value = "/commentReply", method = RequestMethod.POST)
+	public AppResp commentReply_(@RequestBody Map<String, Object> params) {
+		// 将map转换成参数对象
+		CommentParams commentParams = Utils.map2Obj(params, CommentParams.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		AppUser appUser = appUserRepo.findOne(commentParams.getUserId());
+		switch (commentParams.getObjType()) {
+			// 回答类
+			case Const.OBJ_TYPE_ANSWER:
+				QACReply qACReply = new QACReply();
+				qACReply.setUserId(commentParams.getUserId());
+				qACReply.setCreatedBy(commentParams.getUserId());
+				qACReply.setModifiedBy(commentParams.getUserId());
+				qACReply.setCommentId(commentParams.getCommentId());
+				qACReply.setContent(commentParams.getContent());
+				qACReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
+				qACReply = qACReplyRepo.save(qACReply);
+				if (null != appUser) {
+					qACReply.setUserName(appUser.getUserName());
+				}
+				map = Utils.objProps2Map(qACReply, true);
+				break;
+			// 资讯类
+			case Const.OBJ_TYPE_NEWS:
+				NCReply ncReply = new NCReply();
+				ncReply.setUserId(commentParams.getUserId());
+				ncReply.setCreatedBy(commentParams.getUserId());
+				ncReply.setModifiedBy(commentParams.getUserId());
+				ncReply.setCommentId(commentParams.getCommentId());
+				ncReply.setContent(commentParams.getContent());
+				ncReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
+				ncReply = nCReplyRepo.save(ncReply);
+				if (null != appUser) {
+					ncReply.setUserName(appUser.getUserName());
+				}
+				map = Utils.objProps2Map(ncReply, true);
+				break;
+			default:
+				break;
+		}
+		return new AppResp(map, CodeDef.SUCCESS);
+	}
 
 	// /**
 	// * 资讯详情评论列表
