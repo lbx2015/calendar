@@ -97,6 +97,10 @@ public class RCompleteRelServer {
 	@RequestMapping(value = "/findNowReport", method = RequestMethod.POST)
 	public AppResp getAllReport(@RequestBody Map<String, Object> params) throws ParseException {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
+		// 获取当月的打点数据 如果只打点当月之后的数据
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		// sdf.parse(str);
+		String completedDate = sdf.format(rCompletedRelParams.getCompletedDate());
 		// {
 		// Calendar calendar = Calendar.getInstance();
 		// calendar.setTime(completedDate);
@@ -110,7 +114,7 @@ public class RCompleteRelServer {
 		// beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
 		// }
 		List<RCompletedRelResp> rCompletedRelRespList = reportCompletedRelRepo
-				.findNowReport(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompletedDate());
+				.findNowReport(rCompletedRelParams.getUserId(), completedDate);
 
 		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
 		for (RCompletedRelResp rCompletedRelResp : rCompletedRelRespList) {
@@ -133,8 +137,8 @@ public class RCompleteRelServer {
 	public AppResp findByIdAndTime(@RequestBody Map<String, Object> params) throws ParseException {
 		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
 		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String completedDate = sdf.format(rCompletedRelParams.getCompletedDate());
 		// {
 		// Calendar calendar = Calendar.getInstance();
 		// calendar.setTime(completedDate);
@@ -148,7 +152,7 @@ public class RCompleteRelServer {
 		// beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
 		// }
 		List<RCompletedRelResp> list = reportSubmitCaliberService
-				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), rCompletedRelParams.getCompletedDate());
+				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), completedDate);
 
 		for (RCompletedRelResp rCompletedRelResp : list) {
 			// 将对象转换成map
