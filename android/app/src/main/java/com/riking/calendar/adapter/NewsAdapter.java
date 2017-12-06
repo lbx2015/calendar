@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.NewsDetailActivity;
 import com.riking.calendar.pojo.server.News;
@@ -60,6 +61,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             public void onClick(View v) {
                 Intent i = new Intent(holder.itemView.getContext(), NewsDetailActivity.class);
                 i.putExtra(CONST.NEWS_ID, news.newsId);
+                MyLog.d("click newsId " + news.newsId);
                 ZGoto.to(i);
             }
         });

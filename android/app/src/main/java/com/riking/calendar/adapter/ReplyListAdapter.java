@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CommentsActivity;
+import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.util.ZR;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import butterknife.ButterKnife;
 public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyViewHolder> {
     CommentsActivity a;
     String from;
-    private List<String> mList;
+    private List<NCReply> mList;
 
     public ReplyListAdapter(CommentsActivity c) {
         a = c;
@@ -145,9 +147,13 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
-        notifyDataSetChanged();
+    public void add(List<NCReply> s) {
+        if (s != null) {
+            MyLog.d("add reply list");
+            mList.clear();
+            mList = s;
+            notifyDataSetChanged();
+        }
     }
 
     public void clear() {

@@ -22,8 +22,16 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CommentListAdapter;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.KeyboardEditText;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -39,12 +47,14 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
+    private String newsId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+        newsId = getIntent().getStringExtra(CONST.NEWS_ID);
         init();
     }
 
@@ -133,7 +143,25 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
     private void loadData(final int page) {
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
+        NewsParams p = new NewsParams();
+        p.newsId = newsId;
+
+        APIClient.findNewsCommentList(p, new ZCallBack<ResponseModel<List<NewsComment>>>() {
+            @Override
+            public void callBack(ResponseModel<List<NewsComment>> response) {
+                List<NewsComment> comments = response._data;
+                isLoading = false;
+                if (comments.size() == 0) {
+                    Toast.makeText(CommentsActivity.this, "没有更多数据了",
+                            Toast.LENGTH_SHORT).show();
+                    isHasLoadedAll = true;
+                    return;
+                }
+                mAdapter.addAll(comments);
+                nextPage = page + 1;
+            }
+        });
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (page > 3) {
@@ -149,7 +177,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 1);
+        }, 1);*/
     }
 
     public void clickBack(final View view) {

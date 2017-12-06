@@ -26,6 +26,7 @@ import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.News;
+import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.synch.LoginParams;
@@ -193,4 +194,6 @@ public interface APIInterface {
     @POST("news/getNews")
     Call<ResponseModel<News>> getNewsDetail(@Body NewsParams params);
 
+    @POST("news/findNewsCommentList")
+    Call<ResponseModel<List<NewsComment>>> findNewsCommentList(@Body NewsParams params);
 }

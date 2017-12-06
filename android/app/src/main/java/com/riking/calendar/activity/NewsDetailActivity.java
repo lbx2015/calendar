@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
  */
 
 public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
+    String newsId;
+    TextView commentNumberTv;
     //    RecyclerView suggestionQuestionsRecyclerView;
 //    RecyclerView reviewsRecyclerView;
     private WebView webView;
@@ -49,6 +52,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_detail_activity);
+        newsId = getIntent().getStringExtra(CONST.NEWS_ID);
         init();
 
     }
@@ -57,10 +61,9 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
         onBackPressed();
     }
 
-    TextView commentNumberTv;
     void initEvents() {
         NewsParams p = new NewsParams();
-        p.newsId = getIntent().getStringExtra(CONST.NEWS_ID);
+        p.newsId = newsId;
         APIClient.getNewsDetail(p, new ZCallBack<ResponseModel<News>>() {
             @Override
             public void callBack(ResponseModel<News> response) {
@@ -158,7 +161,9 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickComments(final View view) {
-        ZGoto.toWithLoginCheck(CommentsActivity.class);
+        Intent i = new Intent(this, CommentsActivity.class);
+        i.putExtra(CONST.NEWS_ID, newsId);
+        ZGoto.to(i);
     }
 
     public void clickFavorite(final View v) {

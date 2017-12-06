@@ -29,6 +29,7 @@ import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.News;
+import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.synch.LoginParams;
@@ -551,5 +552,9 @@ public class APIClient {
 
     public static void getNewsDetail(NewsParams params, ZCallBack<ResponseModel<News>> c) {
         apiInterface.getNewsDetail(params).enqueue(c);
+    }
+
+    public static void findNewsCommentList(NewsParams params, ZCallBack<ResponseModel<List<NewsComment>>> c) {
+        apiInterface.findNewsCommentList(params).enqueue(c);
     }
 }
