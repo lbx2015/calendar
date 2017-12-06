@@ -20,12 +20,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CommentListAdapter;
+import com.riking.calendar.adapter.ReplyListAdapter;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.NewsComment;
@@ -53,6 +56,8 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     NewsComment replyComment;
     NCReply replyReply;
     String commentContent;
+    ReplyListAdapter replyListAdapter;
+    RecyclerView replyRecyclerView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -156,16 +161,47 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         publicButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                NewsParams p = new NewsParams();
-                p.newsId = newsId;
 
-                if (replyComment != null) {
+                if (replyComment != null || replyReply != null) {
+                    CommentParams params = new CommentParams();
+                    params.content = commentContent;
+                    params.objType = 2;
+                    if (replyComment != null) {
+                        params.userId = replyComment.userId;
+                        params.commentId = replyComment.newsCommentId;
+                        //reset to null
+                        replyComment = null;
 
-                } else if (replyReply != null) {
+                    } else if (replyReply != null) {
+                        params.userId = replyReply.userId;
+                        params.commentId = replyReply.commentId;
+                        //reset to null
+                        replyReply = null;
+                    }
 
+                    MyLog.d("commentReply:" + params.toString());
+
+                    APIClient.commentReply(params, new ZCallBackWithFail<ResponseModel<NCReply>>() {
+                        @Override
+                        public void callBack(ResponseModel<NCReply> response) throws Exception {
+                            MyLog.d("comment reply : " + failed);
+                            if (failed) {
+
+                            } else {
+                                writeComment.setText("");
+                                replyListAdapter.mList.add(0, response._data);
+                                replyListAdapter.notifyItemInserted(0);
+                                replyListAdapter.notifyDataSetChanged();
+                                replyRecyclerView.scrollToPosition(0);
+                                Toast.makeText(CommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
                 //reply news
                 else {
+                    NewsParams p = new NewsParams();
+                    p.newsId = newsId;
                     p.content = commentContent;
                     p.userId = ZPreference.pref.getString(CONST.USER_ID, "");
                     APIClient.newsCommentPub(p, new ZCallBackWithFail<ResponseModel<NewsComment>>() {
@@ -230,10 +266,25 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         onBackPressed();
     }
 
-    public void clickWriteComment(NewsComment c) {
+    public void clickWriteComment(NewsComment c, ReplyListAdapter adapter, RecyclerView replyRecyclerView) {
+        this.replyRecyclerView = replyRecyclerView;
+        replyListAdapter = adapter;
         commentFlag = 1;
         replyComment = c;
-        writeComment.setHint("回复" + c.userName);
+        showKeyBoard(c.userName);
+    }
+
+    public void clickReply(final NCReply reply, ReplyListAdapter adapter, RecyclerView replyRecyclerView) {
+        this.replyRecyclerView = replyRecyclerView;
+        replyListAdapter = adapter;
+        commentFlag = 2;
+        replyReply = reply;
+
+        showKeyBoard(reply.userName);
+    }
+
+    public void showKeyBoard(String userName) {
+        writeComment.setHint("回复" + userName);
         writeComment.performClick();
         writeComment.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -246,8 +297,4 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         }, 200);
     }
 
-    public void clickReply(final NCReply reply) {
-        commentFlag = 2;
-        replyReply = reply;
-    }
 }

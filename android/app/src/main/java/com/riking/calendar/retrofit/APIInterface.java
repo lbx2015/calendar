@@ -22,9 +22,11 @@ import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.ReportAgence;
@@ -199,4 +201,8 @@ public interface APIInterface {
 
     @POST("news/newsCommentPub")
     Call<ResponseModel<NewsComment>> newsCommentPub(@Body NewsParams params);
+
+
+    @POST("comment/commentReply")
+    Call<ResponseModel<NCReply>> commentReply(@Body CommentParams params);
 }

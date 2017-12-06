@@ -59,17 +59,17 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         h.answerContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CommentsActivity) a).clickWriteComment(c);
+                ((CommentsActivity) a).clickWriteComment(c,mAdapter,h.recyclerView);
             }
         });
 
     }
-
+    ReplyListAdapter mAdapter;
     private void setRecyclerView(final RecyclerView recyclerView, final int position) {
         LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
-        ReplyListAdapter mAdapter = new ReplyListAdapter(a);
+        mAdapter = new ReplyListAdapter(a,recyclerView);
         List<NCReply> replies = mList.get(position).nCommentReplyInfoList;
         if (replies == null || replies.size() == 0) {
             recyclerView.setVisibility(View.GONE);

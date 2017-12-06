@@ -27,12 +27,14 @@ import butterknife.ButterKnife;
 
 
 public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyViewHolder> {
+    public List<NCReply> mList;
     CommentsActivity a;
     String from;
-    private List<NCReply> mList;
+    RecyclerView recyclerView;
 
-    public ReplyListAdapter(CommentsActivity c) {
+    public ReplyListAdapter(CommentsActivity c, RecyclerView recyclerView) {
         a = c;
+        this.recyclerView = recyclerView;
         mList = new ArrayList<>();
     }
 
@@ -62,7 +64,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan fromClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickReply(reply);
+                a.clickReply(reply, ReplyListAdapter.this, recyclerView);
             }
 
             @Override
@@ -76,7 +78,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan replyClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickReply(reply);
+                a.clickReply(reply, ReplyListAdapter.this, recyclerView);
             }
 
             @Override
@@ -90,7 +92,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan toClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickReply(reply);
+                a.clickReply(reply, ReplyListAdapter.this, recyclerView);
             }
 
             @Override
@@ -105,7 +107,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan contentClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickReply(reply);
+                a.clickReply(reply, ReplyListAdapter.this, recyclerView);
             }
 
             @Override

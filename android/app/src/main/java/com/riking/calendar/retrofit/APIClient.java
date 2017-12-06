@@ -25,9 +25,11 @@ import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.ReportAgence;
@@ -560,5 +562,9 @@ public class APIClient {
 
     public static void newsCommentPub(NewsParams params, ZCallBackWithFail<ResponseModel<NewsComment>> c) {
         apiInterface.newsCommentPub(params).enqueue(c);
+    }
+
+    public static void commentReply(CommentParams params, ZCallBackWithFail<ResponseModel<NCReply>> c) {
+        apiInterface.commentReply(params).enqueue(c);
     }
 }
