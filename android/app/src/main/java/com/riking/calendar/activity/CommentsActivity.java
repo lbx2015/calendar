@@ -184,15 +184,17 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                     APIClient.commentReply(params, new ZCallBackWithFail<ResponseModel<NCReply>>() {
                         @Override
                         public void callBack(ResponseModel<NCReply> response) throws Exception {
-                            MyLog.d("comment reply : " + failed);
+                            MyLog.d("comment reply : " + failed + " replyRecyclerView visibility: " + (replyRecyclerView.getVisibility() == View.VISIBLE));
                             if (failed) {
 
                             } else {
                                 writeComment.setText("");
+                                MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
                                 replyListAdapter.mList.add(0, response._data);
+                                MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
                                 replyListAdapter.notifyItemInserted(0);
-                                replyListAdapter.notifyDataSetChanged();
-                                replyRecyclerView.scrollToPosition(0);
+//                                replyListAdapter.notifyDataSetChanged();
+//                                replyRecyclerView.scrollToPosition(0);
                                 Toast.makeText(CommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             }
                         }

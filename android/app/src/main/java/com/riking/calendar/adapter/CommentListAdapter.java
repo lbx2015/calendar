@@ -22,8 +22,8 @@ import java.util.List;
 
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.MyViewHolder> {
-    private CommentsActivity a;
     public List<NewsComment> mList;
+    private CommentsActivity a;
 
     public CommentListAdapter(CommentsActivity context) {
         this.a = context;
@@ -46,7 +46,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
         }
-        if(c.content!=null){
+        if (c.content != null) {
             h.answerContent.setText(c.content);
         }
 
@@ -54,29 +54,28 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
                 .apply(options.fitCenter())
                 .into(h.authorImage);
-        setRecyclerView(h.recyclerView, i);
+        setRecyclerView(h.recyclerView, h, i);
         CommentsActivity commentsActivity = (CommentsActivity) a;
         h.answerContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CommentsActivity) a).clickWriteComment(c,mAdapter,h.recyclerView);
+                ((CommentsActivity) a).clickWriteComment(c, h.replyListAdapter, h.recyclerView);
             }
         });
-
     }
-    ReplyListAdapter mAdapter;
-    private void setRecyclerView(final RecyclerView recyclerView, final int position) {
+
+    private void setRecyclerView(final RecyclerView recyclerView, final CommentListAdapter.MyViewHolder h, final int position) {
         LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
-        mAdapter = new ReplyListAdapter(a,recyclerView);
+        h.replyListAdapter = new ReplyListAdapter(a, recyclerView);
         List<NCReply> replies = mList.get(position).nCommentReplyInfoList;
         if (replies == null || replies.size() == 0) {
             recyclerView.setVisibility(View.GONE);
         } else {
             recyclerView.setVisibility(View.VISIBLE);
-            mAdapter.add(replies);
-            recyclerView.setAdapter(mAdapter);
+            h.replyListAdapter.add(replies);
+            recyclerView.setAdapter(h.replyListAdapter);
         }
 
     }
@@ -99,6 +98,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         public CircleImageView authorImage;
+        public ReplyListAdapter replyListAdapter;
         public RecyclerView recyclerView;
         public TextView createTimeTv;
         public TextView answerContent;
