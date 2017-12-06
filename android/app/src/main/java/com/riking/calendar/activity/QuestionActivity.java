@@ -78,10 +78,10 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickInvitePerson(final View view) {
-        ZGoto.to(this, InvitePersonActivity.class);
+        ZGoto.to( InvitePersonActivity.class);
     }
 
     public void clickLetMeAnswer(final View view) {
-        ZGoto.to(this, WriteAnswerActivity.class);
+        ZGoto.toWithLoginCheck( WriteAnswerActivity.class);
     }
 }

@@ -19,6 +19,7 @@ import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
@@ -27,6 +28,7 @@ import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.OrderReportFrameLayout;
@@ -135,9 +137,9 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     private void initEvents() {
         setRecyclerView();
         setClickListeners4Group();
-        editButton.setOnClickListener(new View.OnClickListener() {
+        editButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
+            public void click(View v) {
                 saveSubscribedReports();
                 updateEditMode();
             }
@@ -147,7 +149,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             public void onClick(View v) {
                 Intent i = new Intent(OrderReportActivity.this, SearchReportActivity.class);
                 i.putExtra(CONST.EDIT_MODE, editMode);
-                startActivity(i);
+                ZGoto.to(i);
             }
         });
     }

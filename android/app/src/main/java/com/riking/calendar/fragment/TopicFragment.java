@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
  */
 
 public class TopicFragment extends Fragment {
-    protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
     HomeAdapter mAdapter;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
@@ -88,6 +86,7 @@ public class TopicFragment extends Fragment {
 
     private void loadData(final int page) {
         isLoading = true;
+        mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

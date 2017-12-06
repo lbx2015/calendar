@@ -1,8 +1,8 @@
 package com.riking.calendar.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,18 +20,17 @@ import com.necer.ncalendar.view.IdentifyingCodeView;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.ReminderModel;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
-import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 
@@ -88,7 +87,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                     user.phone = phoneNumber;
                     APIClient.checkVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUserResp>>() {
                         @Override
-                        public void callBack(ResponseModel<AppUserResp> response) {
+                        public void callBack(ResponseModel<AppUserResp> response) throws ClassNotFoundException {
                             dialog.dismiss();
                             if (failed) {
                                 icv.clearAllText();
@@ -134,11 +133,18 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 }
                             });
 
-                            if (u.isGuide == null || u.isGuide==(0)) {
-                                startActivity(new Intent(InputVerifyCodeActivity.this, IndustrySelectActivity.class));
-                            } else {
-                                startActivity(new Intent(InputVerifyCodeActivity.this, ViewPagerActivity.class));
+                           String nextActivityClassName = ZPreference.pref.getString(CONST.JUMP_CLASS_NAME, null);
+                            if (nextActivityClassName != null) {
+                                //delete the the jump class name
+                                ZPreference.remove(CONST.JUMP_CLASS_NAME);
+                                Class<Activity> c = (Class<Activity>) Class.forName(nextActivityClassName);
+                                ZGoto.to(c);
+                            } else if (u.isGuide == null || u.isGuide == (0)) {
+                                ZGoto.to(IndustrySelectActivity.class);
                             }
+
+                            //kill self in order to return back.
+                            finish();
                             Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         }
                     });

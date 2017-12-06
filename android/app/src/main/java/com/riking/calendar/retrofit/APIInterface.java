@@ -22,8 +22,10 @@ import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.synch.LoginParams;
@@ -107,7 +109,7 @@ public interface APIInterface {
     @POST("reportListApp/getAllReport")
     Call<ResponseModel<List<ReportAgence>>> getAllReports(@Body AppUser user);
 
-    @POST("appUserApp/getCommend")
+    @POST("common/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
     /**
@@ -184,5 +186,11 @@ public interface APIInterface {
 
     @POST("/appUserReport/updateUserReportRelById")
     Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
+
+    @POST("news/findNewsList")
+    Call<ResponseModel<List<News>>> findNewsList(@Body NewsParams params);
+
+    @POST("news/getNews")
+    Call<ResponseModel<News>> getNewsDetail(@Body NewsParams params);
 
 }

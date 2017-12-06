@@ -24,6 +24,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 
 /**
@@ -162,7 +163,8 @@ public class InputCellPhoneNumberActivity extends AppCompatActivity implements T
                             Intent i = new Intent(InputCellPhoneNumberActivity.this, InputVerifyCodeActivity.class);
                             i.putExtra(CONST.PHONE_NUMBER, phoneDigits);
                             //Success get the verify code
-                            startActivity(i);
+                            ZGoto.to(i);
+                            finish();
                         }
                     }
                 });

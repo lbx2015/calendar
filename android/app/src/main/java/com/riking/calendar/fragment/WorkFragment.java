@@ -53,6 +53,7 @@ import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.TimePickerDialog;
 
@@ -189,7 +190,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                             public boolean onMenuItemClick(MenuItem item) {
                                 switch (item.getItemId()) {
                                     case R.id.order_reports: {
-                                        startActivity(new Intent(getContext(), OrderReportActivity.class));
+                                        ZGoto.toWithLoginCheck(OrderReportActivity.class);
                                         break;
                                     }
                                     case R.id.overdue_task: {

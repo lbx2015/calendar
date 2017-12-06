@@ -7,6 +7,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.util.Debug;
 
 import org.joda.time.DateTime;
@@ -89,6 +90,10 @@ public class ExampleUnitTest {
         JsonObject j = new JsonObject();
         j.addProperty("userId", id);
         AppUser a = new AppUser();
+        String js = "{userId:0}";
+        Gson g = new Gson();
+        AppUser user = g.fromJson(js,AppUser.class);
+        System.out.println(user.userId);
         System.out.println(new Gson().toJson(j));
         System.out.println(new Gson().toJson(a));
 
@@ -200,6 +205,40 @@ public class ExampleUnitTest {
     public void testNumberMod() {
         for (int i = 0; i < 100; i++) {
             System.out.println(i % 3);
+        }
+    }
+
+    @Test
+    public void testClass() {
+        System.out.println(Industry.class.getSimpleName());
+        System.out.print(Industry.class.getName());
+    }
+
+    @Test
+    public void testArrayList() {
+        ArrayList<Integer> a = new ArrayList();
+        a.add(2);
+        a.add(2);
+        a.add(2);
+        a.add(2);
+        a.add(2);
+        ArrayList b = new ArrayList();
+        b.add(1);
+        b.add(1);
+        b.add(1);
+        b.add(1);
+        ArrayList c = new ArrayList();
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        c.add(3);
+        a.addAll(0, b);
+        a.addAll(a.size(), c);
+
+        for (int i = 0; i < a.size(); i++) {
+            System.out.println(a.get(i));
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.riking.calendar.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZGoto;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +46,8 @@ public class LoginNavigateActivity extends AppCompatActivity {
         loginWithPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginNavigateActivity.this, InputCellPhoneNumberActivity.class));
+                ZGoto.to(InputCellPhoneNumberActivity.class);
+                finish();
             }
         });
     }

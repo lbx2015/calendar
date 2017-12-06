@@ -14,11 +14,12 @@ import android.widget.Toast;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CreateTaskActivity;
 import com.riking.calendar.activity.EditTaskActivity;
-import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.text.ParseException;
@@ -118,11 +119,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 holder.divider.setVisibility(View.VISIBLE);
             }*/
         } else {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new ZClickListenerWithLoginCheck() {
                 @Override
-                public void onClick(View v) {
+                public void click(View v) {
                     //adding to do s
-                    MyApplication.mCurrentActivity.startActivity(new Intent(v.getContext(), CreateTaskActivity.class));
+                    ZGoto.toWithLoginCheck(CreateTaskActivity.class);
 //                    MyApplication.mCurrentActivity.startActivity(new Intent(v.getContext(), AddRemindActivity.class));
                 }
             });
@@ -166,8 +167,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 title = (TextView) view.findViewById(R.id.title);
                 done = (ImageView) view.findViewById(R.id.done);
                 important = (ImageView) view.findViewById(R.id.image_star);
-                deleteButton =  view.findViewById(R.id.tv_text);
-                editButton =  view.findViewById(R.id.tv_edit);
+                deleteButton = view.findViewById(R.id.tv_text);
+                editButton = view.findViewById(R.id.tv_edit);
                 sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 //                divider = view.findViewById(R.userId.divider);
                 final Handler handler = new Handler();
