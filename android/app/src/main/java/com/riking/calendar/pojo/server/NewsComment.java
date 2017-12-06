@@ -1,5 +1,6 @@
 package com.riking.calendar.pojo.server;
 
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
 import java.util.List;

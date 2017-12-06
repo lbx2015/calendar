@@ -1,5 +1,7 @@
 package com.riking.calendar.pojo.server;
 
+import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
 /**
@@ -11,13 +13,8 @@ import com.riking.calendar.pojo.server.base.BaseAuditProp;
 //@Entity
 //@Table(name = "t_nc_reply")
 public class NCReply extends BaseAuditProp {
-    //	@Comment("操作人主键: fk t_app_user 发表回复的user_id")
-//	@Column(name = "user_id", nullable = false)
-    public String userId;
-
-    //	@Comment("被操作人主键: fk t_app_user 被评论人ID")
-//	@Column(name = "to_user_id")
-    public String toUserId;
+    public AppUserResp toUser;
+    public AppUserResp fromUser;
 
     //	@Comment("目标对象评论主键: fk t_news_comment 行业资讯的评论表")
 //	@Column(name = "comment_id", nullable = false)
@@ -30,10 +27,4 @@ public class NCReply extends BaseAuditProp {
     //	@Comment("内容")
 //	@Column(name = "content", nullable = false)
     public String content;
-
-    //	@Transient
-    public String userName;
-
-    //	@Transient
-    public String toUserName;
 }

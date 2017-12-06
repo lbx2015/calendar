@@ -48,8 +48,8 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
     @Override
     public void onBindViewHolder(ReplyListAdapter.MyViewHolder h, int i) {
         final NCReply reply = mList.get(i);
-        from = reply.userName == null ? "周恩来" : reply.userName;
-        String to = reply.toUserName == null ? "毛泽东" : reply.toUserName;
+        from = reply.fromUser.userName == null ? "周恩来" : reply.fromUser.userName;
+        String to = reply.toUser.userName == null ? "毛泽东" : reply.toUser.userName;
         String replyText = "回复";
         String content = reply.content == null ? "总理还是我们的总理呀。总理还是我们的总理呀。" : reply.content;
 

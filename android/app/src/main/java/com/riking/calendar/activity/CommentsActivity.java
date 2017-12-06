@@ -173,7 +173,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                         replyComment = null;
 
                     } else if (replyReply != null) {
-                        params.userId = replyReply.userId;
+                        params.userId = replyReply.fromUser.userId;
                         params.commentId = replyReply.commentId;
                         //reset to null
                         replyReply = null;
@@ -282,7 +282,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         commentFlag = 2;
         replyReply = reply;
 
-        showKeyBoard(reply.userName);
+        showKeyBoard(reply.fromUser.userName);
     }
 
     public void showKeyBoard(String userName) {
