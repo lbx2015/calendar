@@ -80,6 +80,13 @@ public class TopicQuestionServer {
 		// TODO 问题的回答数 后面从redis里面取
 		Integer answerNum = questionAnswerRepo.answerCount(tQuestionParams.getTqId());
 		topicQuestion.setAnswerNum(answerNum);
+		topicQuestion.setIsFollow(0);// 0-未关注
+		List<String> questIds = tQuestionRelRepo.findByUser(tQuestionParams.getUserId(), 0);// 0-关注
+		for (String tqId : questIds) {
+			if (topicQuestion.getId().equals(tqId)) {
+				topicQuestion.setIsFollow(1);// 1-已关注
+			}
+		}
 		// 将对象转换成map
 		Map<String, Object> topicQuestionMap = Utils.objProps2Map(topicQuestion, true);
 		return new AppResp(topicQuestionMap, CodeDef.SUCCESS);
@@ -99,12 +106,16 @@ public class TopicQuestionServer {
 			// 问题关注
 			case Const.OBJ_TYPE_1:
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					// 如果传过来的参数是关注，保存新的一条关注记录
-					TQuestionRel topQuestionRel = new TQuestionRel();
-					topQuestionRel.setUserId(tQuestionParams.getUserId());
-					topQuestionRel.setTqId(tQuestionParams.getAttentObjId());
-					topQuestionRel.setDataType(0);// 关注
-					tQuestionRelRepo.save(topQuestionRel);
+					TQuestionRel rels = tQuestionRelRepo.findByOne(tQuestionParams.getUserId(),
+							tQuestionParams.getAttentObjId(), 0);// 0-关注
+					if (null == rels) {
+						// 如果传过来的参数是关注，保存新的一条关注记录
+						TQuestionRel topQuestionRel = new TQuestionRel();
+						topQuestionRel.setUserId(tQuestionParams.getUserId());
+						topQuestionRel.setTqId(tQuestionParams.getAttentObjId());
+						topQuestionRel.setDataType(0);// 关注
+						tQuestionRelRepo.save(topQuestionRel);
+					}
 				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
 					// 如果传过来是取消关注，把之前一条记录物理删除
 					tQuestionRelRepo.deleteByUIdAndTqId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
@@ -117,12 +128,16 @@ public class TopicQuestionServer {
 			// 话题关注
 			case Const.OBJ_TYPE_2:
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					// 如果传过来的参数是关注，保存新的一条关注记录
-					TopicRel topicRel = new TopicRel();
-					topicRel.setUserId(tQuestionParams.getUserId());
-					topicRel.setTopicId(tQuestionParams.getAttentObjId());
-					topicRel.setDataType(0);// 关注
-					topicRelRepo.save(topicRel);
+					TopicRel rels = topicRelRepo.findByOne(tQuestionParams.getUserId(),
+							tQuestionParams.getAttentObjId(), 0);// 0-关注
+					if (null == rels) {
+						// 如果传过来的参数是关注，保存新的一条关注记录
+						TopicRel topicRel = new TopicRel();
+						topicRel.setUserId(tQuestionParams.getUserId());
+						topicRel.setTopicId(tQuestionParams.getAttentObjId());
+						topicRel.setDataType(0);// 关注
+						topicRelRepo.save(topicRel);
+					}
 				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
 					// 如果传过来是取消关注，把之前一条记录物理删除
 					topicRelRepo.deleteByUIdAndTopId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(), 0);// 0-关注3-屏蔽
@@ -139,15 +154,19 @@ public class TopicQuestionServer {
 					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
 							tQuestionParams.getUserId());// 对方的点赞记录
 					if (toUserFollowRel != null) {
-						// 更新对方关注表，互相关注
-						userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(), toUserFollowRel.getToUserId(),
-								1);// 1-互相关注
-						// 如果传过来的参数是关注，保存新的一条关注记录
-						UserFollowRel userFollowRel = new UserFollowRel();
-						userFollowRel.setUserId(tQuestionParams.getUserId());
-						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
-						userFollowRel.setFollowStatus(1);// 互相关注
-						userFollowRelRepo.save(userFollowRel);
+						UserFollowRel rels = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getUserId(),
+								tQuestionParams.getAttentObjId());
+						if (null == rels) {
+							// 更新对方关注表，互相关注
+							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
+									toUserFollowRel.getToUserId(), 1);// 1-互相关注
+							// 如果传过来的参数是关注，保存新的一条关注记录
+							UserFollowRel userFollowRel = new UserFollowRel();
+							userFollowRel.setUserId(tQuestionParams.getUserId());
+							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
+							userFollowRel.setFollowStatus(1);// 互相关注
+							userFollowRelRepo.save(userFollowRel);
+						}
 					} else {
 						// 如果传过来的参数是关注，保存新的一条关注记录
 						UserFollowRel userFollowRel = new UserFollowRel();
@@ -175,7 +194,7 @@ public class TopicQuestionServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp("", CodeDef.SUCCESS);
 	}
 
 	/**
@@ -199,7 +218,15 @@ public class TopicQuestionServer {
 			// TODO 统计数后面从redis中取点赞数
 			Integer agreeNum = qACAgreeRelRepo.agreeCount(questionAnswer.getId(), 1);// 1-点赞
 			questionAnswer.setAgreeNum(agreeNum);
-
+			questionAnswer.setIsAgree(0);// 0-未点赞
+			if (null != tQuestionParams.getUserId()) {
+				List<String> qacIds = qACAgreeRelRepo.findByUser(tQuestionParams.getUserId(), 1);// 1-点赞
+				for (String qacId : qacIds) {
+					if (questionAnswer.getId().equals(qacId)) {
+						questionAnswer.setIsAgree(1);// 1-已点赞
+					}
+				}
+			}
 			// 将对象转换成map
 			Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
 			questionAnswerMapList.add(questionAnswerMap);

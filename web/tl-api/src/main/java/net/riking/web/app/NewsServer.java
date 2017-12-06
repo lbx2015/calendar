@@ -1,12 +1,12 @@
 package net.riking.web.app;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +34,8 @@ import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
 import net.riking.entity.model.NewsRel;
 import net.riking.entity.params.NewsParams;
+import net.riking.entity.resp.FromUser;
+import net.riking.entity.resp.ToUser;
 import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
@@ -80,16 +82,22 @@ public class NewsServer {
 	@ApiOperation(value = "获取资讯列表", notes = "POST")
 	@RequestMapping(value = "/findNewsList", method = RequestMethod.POST)
 	public AppResp findNewsList(@RequestBody Map<String, Object> params) {
+		// if第一次获取
+		if (params == null) {
+			params = new HashMap<String, Object>();
+			params.put("reqTimeStamp", new Date());
+			params.put("direct", Const.DIRECT_UP);
+		}
+		if (params.get("reqTimeStamp") == null || "".equals(params.get("reqTimeStamp"))) {
+			params.put("reqTimeStamp", DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"));
+			params.put("direct", Const.DIRECT_UP);
+		}
+		if (params.get("direct") == null) {
+			params.put("direct", Const.DIRECT_UP);
+		}
 		// 将map转换成参数对象
 		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
-		String pattern = "yyyyMMddHHmmssSSS";
-		Date reqTimeStamp = null;
-		try {
-			reqTimeStamp = DateUtils.StringFormatMS(newsParams.getReqTimeStamp(), pattern);
-		} catch (ParseException e) {
-			logger.error("获取资讯列表日期转换异常" + e);
-			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
+
 		// 分页数据
 		List<News> newsInfoList = new ArrayList<News>();
 		// 把分页数据封装成map传入前台
@@ -98,12 +106,13 @@ public class NewsServer {
 			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
 			case Const.DIRECT_UP:
 				// 查询查出前30条数据
-				newsInfoList = newsRepo.findNewsListPageNext(reqTimeStamp, new PageRequest(0, 30));
+				newsInfoList = newsRepo.findNewsListPageNext(newsParams.getReqTimeStamp(), new PageRequest(0, 30));
 				break;
 			// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
 			case Const.DIRECT_DOWN:
 				// 查询查出前30条数据
-				List<News> newsInfoAscList = newsRepo.findNewsListRefresh(reqTimeStamp, new PageRequest(0, 30));
+				List<News> newsInfoAscList = newsRepo.findNewsListRefresh(newsParams.getReqTimeStamp(),
+						new PageRequest(0, 30));
 				// 把查出来的数据按倒序重新排列
 				for (int i = 0; i < newsInfoAscList.size(); i++) {
 					newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i - 1));
@@ -113,18 +122,21 @@ public class NewsServer {
 				logger.error("请求方向参数异常：direct:" + newsParams.getDirect());
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
+		// if (null == newsInfoList) {
+		// return new AppResp(CodeDef.EMP.DATE_FOUND_EMPTY, CodeDef.EMP.DATE_FOUND_EMPTY_DESC);
+		// }
 		for (News newsInfo : newsInfoList) {
 			// TODO 从数据库查询评论数插到资讯表,后面从redis里面找
-			Integer count = 0;
+			int count = 0;
 			count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
 
 			// 将对象转换成map
-			Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
-			newsInfoMapList.add(newsInfoMapNew);
+			// Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
+			// newsInfoMapList.add(newsInfoMapNew);
 		}
 
-		return new AppResp(newsInfoMapList, CodeDef.SUCCESS);
+		return new AppResp(newsInfoList, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -141,6 +153,19 @@ public class NewsServer {
 		if (newsInfo == null) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
+		// TODO 从数据库查询评论数插到资讯表,后面从redis里面找
+		Integer count = 0;
+		count = newsCommentRepo.commentCount(newsInfo.getId());
+		newsInfo.setCommentNumber(count);
+		newsInfo.setIsCollect(0);// 0-未收藏
+		if (StringUtils.isNotBlank(newsParams.getUserId())) {
+			List<String> newsIds = newsRelRepo.findByUserId(newsParams.getUserId(), 2);// 收藏
+			for (String newsId : newsIds) {
+				if (newsInfo.getId().equals(newsId)) {
+					newsInfo.setIsCollect(1);// 1-已收藏
+				}
+			}
+		}
 		// 将对象转换成map
 		Map<String, Object> newsInfoMap = Utils.objProps2Map(newsInfo, true);
 		return new AppResp(newsInfoMap, CodeDef.SUCCESS);
@@ -148,7 +173,7 @@ public class NewsServer {
 
 	/**
 	 * 资讯详情评论列表
-	 * @param params[newsId]
+	 * @param params[userId,newsId]
 	 * @return
 	 */
 	@ApiOperation(value = "获取资讯详情评论列表", notes = "POST")
@@ -170,8 +195,26 @@ public class NewsServer {
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
 				Map<String, Object> nCommentReplyInfoObjMap = new HashMap<String, Object>();
-				// TODO AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
-				// nCommentReplyInfo.setUserName(appUser.getUserName());
+				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
+				if (null != appUser) {
+					FromUser fromUser = new FromUser();
+					fromUser.setUserId(nCommentReplyInfo.getUserId());
+					fromUser.setUserName(appUser.getUserName());
+					nCommentReplyInfo.setFromUser(fromUser);
+				}
+				if (null != nCommentReplyInfo.getToUserId()) {
+					AppUser apptoUser = appUserRepo.findOne(nCommentReplyInfo.getToUserId());
+					if (null != apptoUser) {
+						ToUser toUser = new ToUser();
+						toUser.setUserId(nCommentReplyInfo.getToUserId());
+						toUser.setUserName(apptoUser.getUserName());
+						nCommentReplyInfo.setToUser(toUser);
+					}
+				}
+				nCommentReplyInfo.setUserId(null);
+				nCommentReplyInfo.setUserName(null);
+				nCommentReplyInfo.setToUserId(null);
+				nCommentReplyInfo.setToUserName(null);
 				// 将评论回复对象转换成map
 				nCommentReplyInfoObjMap = Utils.objProps2Map(nCommentReplyInfo, true);
 				// 回复的数据列表添加到评论类里面
@@ -181,6 +224,15 @@ public class NewsServer {
 			Integer agree = 0;
 			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
+			newsCommentInfoNew.setIsAgree(0);// 0-未点赞
+			if (StringUtils.isNotBlank(newsParams.getUserId())) {
+				List<String> ncIds = nCAgreeRelRepo.findByUserId(newsParams.getUserId(), 1);// 点赞
+				for (String ncId : ncIds) {
+					if (newsCommentInfoNew.getId().equals(ncId)) {
+						newsCommentInfoNew.setIsAgree(1);// 1-已点赞
+					}
+				}
+			}
 			Map<String, Object> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
 			newsCommentInfoMapList.add(newsCommentInfoObjMap);
 		}
@@ -204,14 +256,24 @@ public class NewsServer {
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
-		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
+		newsCommentInfo.setIsAudit(0);// 0-未审核，1-已审核,2-不通过
 		newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
+
 		if (null != appUser) {
 			newsCommentInfo.setUserName(appUser.getUserName());
 		}
 		if (null != appUserDetail) {
 			newsCommentInfo.setPhotoUrl(appUserDetail.getPhotoUrl());
 			newsCommentInfo.setExperience(appUserDetail.getExperience());
+		}
+		newsCommentInfo.setIsAgree(0);// 0-未点赞
+		if (StringUtils.isNotBlank(newsParams.getUserId())) {
+			List<String> ncIds = nCAgreeRelRepo.findByUserId(newsParams.getUserId(), 1);// 点赞
+			for (String ncId : ncIds) {
+				if (newsCommentInfo.getId().equals(ncId)) {
+					newsCommentInfo.setIsAgree(1);// 1-已点赞
+				}
+			}
 		}
 		Map<String, Object> map = Utils.objProps2Map(newsCommentInfo, true);
 		return new AppResp(map, CodeDef.SUCCESS);
@@ -230,11 +292,14 @@ public class NewsServer {
 
 		switch (newsParams.getEnabled()) {
 			case Const.EFFECTIVE:
-				// 如果传过来的参数是收藏，保存新的一条收藏记录
-				NewsRel newsRel = new NewsRel();
-				newsRel.setUserId(newsParams.getUserId());
-				newsRel.setNewsId(newsParams.getNewsId());
-				newsRelRepo.save(newsRel);
+				NewsRel rels = newsRelRepo.findByOne(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏
+				if (null == rels) {
+					// 如果传过来的参数是收藏，保存新的一条收藏记录
+					NewsRel newsRel = new NewsRel();
+					newsRel.setUserId(newsParams.getUserId());
+					newsRel.setNewsId(newsParams.getNewsId());
+					newsRelRepo.save(newsRel);
+				}
 				break;
 			case Const.INVALID:
 				// 如果传过来是取消收藏，把之前一条记录物理删除
@@ -244,7 +309,8 @@ public class NewsServer {
 				logger.error("参数异常：enabled=" + newsParams.getEnabled());
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		return new AppResp(CodeDef.SUCCESS);
+
+		return new AppResp("", CodeDef.SUCCESS);
 	}
 
 }

@@ -122,7 +122,7 @@ public class HomePageServer {
 		// return new AppResp(newsInfoMapList, CodeDef.SUCCESS);
 		//
 		// }
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp("", CodeDef.SUCCESS);
 	}
 
 	/**
@@ -140,12 +140,15 @@ public class HomePageServer {
 			// 问题
 			case Const.OBJ_TYPE_1:
 				if (Const.EFFECTIVE == homeParams.getEnabled()) {
-					// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-					TQuestionRel tQuestionRel = new TQuestionRel();
-					tQuestionRel.setUserId(homeParams.getUserId());
-					tQuestionRel.setTqId(homeParams.getObjId());
-					tQuestionRel.setDataType(3);// 0-关注 3-屏蔽
-					tQuestionRelRepo.save(tQuestionRel);
+					TQuestionRel rels = tQuestionRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
+					if (null == rels) {
+						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
+						TQuestionRel tQuestionRel = new TQuestionRel();
+						tQuestionRel.setUserId(homeParams.getUserId());
+						tQuestionRel.setTqId(homeParams.getObjId());
+						tQuestionRel.setDataType(3);// 0-关注 3-屏蔽
+						tQuestionRelRepo.save(tQuestionRel);
+					}
 				} else if (Const.INVALID == homeParams.getEnabled()) {
 					// 如果传过来是取消屏蔽，把之前一条记录物理删除
 					tQuestionRelRepo.deleteByUIdAndTqId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
@@ -158,12 +161,15 @@ public class HomePageServer {
 			case Const.OBJ_TYPE_2:
 				if (Const.EFFECTIVE == homeParams.getEnabled()) {
 					// TODO 确认是否有话题屏蔽
-					// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-					TopicRel topicRel = new TopicRel();
-					topicRel.setUserId(homeParams.getUserId());
-					topicRel.setTopicId(homeParams.getObjId());
-					topicRel.setDataType(3);// 0-关注；3-屏蔽
-					topicRelRepo.save(topicRel);
+					TopicRel rels = topicRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
+					if (null == rels) {
+						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
+						TopicRel topicRel = new TopicRel();
+						topicRel.setUserId(homeParams.getUserId());
+						topicRel.setTopicId(homeParams.getObjId());
+						topicRel.setDataType(3);// 0-关注；3-屏蔽
+						topicRelRepo.save(topicRel);
+					}
 				} else if (Const.INVALID == homeParams.getEnabled()) {
 					// 如果传过来是取消屏蔽，把之前一条记录物理删除
 					topicRelRepo.deleteByUIdAndTopId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
@@ -177,7 +183,7 @@ public class HomePageServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp("", CodeDef.SUCCESS);
 	}
 
 }

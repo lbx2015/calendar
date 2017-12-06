@@ -7,8 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
+import net.riking.entity.resp.FromUser;
+import net.riking.entity.resp.ToUser;
 
 /**
  * 
@@ -19,6 +25,8 @@ import net.riking.entity.BaseAuditProp;
 @Comment("行业资讯的评论回复表")
 @Entity
 @Table(name = "t_nc_reply")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class NCReply extends BaseAuditProp {
 
 	/**
@@ -45,6 +53,12 @@ public class NCReply extends BaseAuditProp {
 	@Comment("内容")
 	@Column(name = "content", nullable = false)
 	private String content;
+
+	@Transient
+	FromUser fromUser;
+
+	@Transient
+	ToUser toUser;
 
 	@Transient
 	private String userName;
@@ -86,6 +100,22 @@ public class NCReply extends BaseAuditProp {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public FromUser getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(FromUser fromUser) {
+		this.fromUser = fromUser;
+	}
+
+	public ToUser getToUser() {
+		return toUser;
+	}
+
+	public void setToUser(ToUser toUser) {
+		this.toUser = toUser;
 	}
 
 	public String getContent() {

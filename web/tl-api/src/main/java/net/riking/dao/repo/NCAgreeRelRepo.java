@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,4 +41,21 @@ public interface NCAgreeRelRepo extends JpaRepository<NCAgreeRel, String>, JpaSp
 	@Modifying
 	@Query("delete NCAgreeRel where userId =?1 and ncId = ?2 and dataType = ?3")
 	void deleteByUIdAndNcId(String userId, String ncId, Integer dataType);
+
+	/**
+	 * 查询点赞的资讯评论id
+	 * @param ncId
+	 * @return
+	 */
+	@Query("select ncId from NCAgreeRel where userId = ?1 and dataType = ?2")
+	List<String> findByUserId(String userId, Integer dataType);
+
+	/**
+	 * 根据userId,ncId找出唯一记录
+	 * @param userId,ncId
+	 * @return
+	 */
+	@Query(" from NCAgreeRel where userId = ?1 and ncId = ?2 and dataType = ?3")
+	NCAgreeRel findByOne(String userId, String ncId, Integer dataType);
+
 }

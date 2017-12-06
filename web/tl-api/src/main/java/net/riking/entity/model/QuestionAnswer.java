@@ -70,6 +70,14 @@ public class QuestionAnswer extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 是否已点赞（0-未点赞；1-已点赞）
+	@Transient
+	private Integer isAgree;
+
+	// 是否已收藏（0-未收藏；1-已收藏）
+	@Transient
+	private Integer isCollect;
+
 	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,
 			String content, String userName, String photoUrl, Integer experience) {
 		super();
@@ -110,6 +118,22 @@ public class QuestionAnswer extends BaseAuditProp {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getIsCollect() {
+		return isCollect;
+	}
+
+	public void setIsCollect(Integer isCollect) {
+		this.isCollect = isCollect;
+	}
+
+	public Integer getIsAgree() {
+		return isAgree;
+	}
+
+	public void setIsAgree(Integer isAgree) {
+		this.isAgree = isAgree;
 	}
 
 	public Integer getExperience() {

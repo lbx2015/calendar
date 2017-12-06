@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.News;
+import net.riking.entity.model.NewsResult;
 
 /**
  * 
@@ -27,7 +28,7 @@ public interface NewsRepo extends JpaRepository<News, String>, JpaSpecificationE
 	 * @param reqTimeStamp
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id),(select app.experience from AppUserDetail app where n.createdBy = app.id)) from News n where n.createdTime < ?1 and n.isDeleted=1 and n.isAduit <> 2 order by n.createdTime desc")
+	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id),(select app.experience from AppUserDetail app where n.createdBy = app.id)) from News n where n.createdTime < ?1 and n.isDeleted=1 and n.isAudit <> 2 order by n.createdTime desc")
 	List<News> findNewsListPageNext(Date reqTimeStamp, Pageable pageable);
 
 	/**
@@ -35,7 +36,7 @@ public interface NewsRepo extends JpaRepository<News, String>, JpaSpecificationE
 	 * @param reqTimeStamp
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id),(select app.experience from AppUserDetail app where n.createdBy = app.id)) from News n where n.createdTime > ?1 and n.isDeleted=1 and n.isAduit <> 2 order by n.createdTime asc")
+	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued,(select a.userName from AppUser a where n.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where n.createdBy = ap.id),(select app.experience from AppUserDetail app where n.createdBy = app.id)) from News n where n.createdTime > ?1 and n.isDeleted=1 and n.isAudit <> 2 order by n.createdTime asc")
 	List<News> findNewsListRefresh(Date reqTimeStamp, Pageable pageable);
 
 	/**
@@ -45,5 +46,13 @@ public interface NewsRepo extends JpaRepository<News, String>, JpaSpecificationE
 	 */
 	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued) from News n where n.id =?1")
 	News getById(String newsId);
+
+	/**
+	 * 根据关键字模糊查询title
+	 * @param keyWord
+	 * @return
+	 */
+	@Query("select new net.riking.entity.model.NewsResult(n.id,n.title,n.createdTime) from News n where n.isDeleted = 1 and n.isAudit <> 2 and n.title like %?1% ")
+	List<NewsResult> getNewsByParam(String keyWord);
 
 }

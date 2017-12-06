@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,5 +41,21 @@ public interface TQuestionRelRepo extends JpaRepository<TQuestionRel, String>, J
 	@Modifying
 	@Query("delete TQuestionRel where userId =?1 and tqId = ?2 and dataType =?3")
 	void deleteByUIdAndTqId(String userId, String tqId, Integer dataType);
+
+	/**
+	 * 查询关注或者屏蔽的问题id
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select tqId from TQuestionRel where userId = ?1 and dataType = ?2")
+	List<String> findByUser(String userId, Integer dataType);
+
+	/**
+	 * 根据userId,newsId找出唯一记录
+	 * @param userId,newsId
+	 * @return
+	 */
+	@Query("from TQuestionRel where userId = ?1 and tqId = ?2 and dataType = ?3")
+	TQuestionRel findByOne(String userId, String tqId, Integer dataType);
 
 }

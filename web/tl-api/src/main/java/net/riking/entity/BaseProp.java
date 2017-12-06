@@ -10,8 +10,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.riking.core.annos.Comment;
 
@@ -35,6 +36,7 @@ public class BaseProp extends BaseEntity {
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
 	@org.hibernate.annotations.CreationTimestamp
@@ -43,6 +45,7 @@ public class BaseProp extends BaseEntity {
 
 	@Comment("修改时间")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.UpdateTimestamp
 	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")

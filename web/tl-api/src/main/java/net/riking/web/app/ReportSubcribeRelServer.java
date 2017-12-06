@@ -114,7 +114,7 @@ public class ReportSubcribeRelServer {
 		for (String title : map.keySet()) {
 			ReportResult reportResult = new ReportResult();
 			reportResult.setTitle(title);
-//			reportResult.setResult(map.get(title));
+			// reportResult.setResult(map.get(title));
 			listes.add(reportResult);
 		}
 		return new AppResp(listes, CodeDef.SUCCESS);
@@ -145,7 +145,7 @@ public class ReportSubcribeRelServer {
 	// @RequestMapping(value = "/getReportList", method = RequestMethod.POST)
 	// public AppResp getReportList(){
 	//
-	// return new AppResp(CodeDef.SUCCESS);
+	// return new AppResp(null,CodeDef.SUCCESS);
 	// }
 
 	@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
@@ -217,7 +217,7 @@ public class ReportSubcribeRelServer {
 		// }
 		// }
 
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp("", CodeDef.SUCCESS);
 	}
 	// TODO
 	// @ApiOperation(value = "新增报表订阅", notes = "POST")
@@ -231,7 +231,7 @@ public class ReportSubcribeRelServer {
 	// appUserReportRepo.save(appUserReportRel);
 	// }
 	//
-	// return new AppResp(CodeDef.SUCCESS);
+	// return new AppResp(null,CodeDef.SUCCESS);
 	// }
 	//
 	// @ApiOperation(value = "历史核销和逾期报表", notes = "POST")

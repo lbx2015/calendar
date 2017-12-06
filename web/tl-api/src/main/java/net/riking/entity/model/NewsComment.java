@@ -57,6 +57,10 @@ public class NewsComment extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	@Transient
+	@Comment("是否已点赞 0-未点赞，1-已点赞")
+	private Integer isAgree;
+
 	// 评论的回复list
 	@Transient
 	List<Map<String, Object>> nCommentReplyInfoList;
@@ -105,6 +109,14 @@ public class NewsComment extends BaseAuditProp {
 
 	public void setAgreeNumber(Integer agreeNumber) {
 		this.agreeNumber = agreeNumber;
+	}
+
+	public Integer getIsAgree() {
+		return isAgree;
+	}
+
+	public void setIsAgree(Integer isAgree) {
+		this.isAgree = isAgree;
 	}
 
 	public String getPhotoUrl() {

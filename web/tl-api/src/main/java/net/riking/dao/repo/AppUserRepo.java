@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserResult;
 
 @Repository
 public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser> {
@@ -18,6 +21,14 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	@Query(" from AppUser where isDeleted = 1 and openId = ?1 ")
 	AppUser findByOpenId(String openId);
+
+	/**
+	 * 根据关键字模糊查询userName
+	 * @param keyWord
+	 * @return
+	 */
+	@Query("select new net.riking.entity.model.AppUserResult(a.id,a.userName,(select app.photoUrl from AppUserDetail app where a.id = app.id),(select app.experience from AppUserDetail app where a.id = app.id)) from AppUser a where a.isDeleted = 1 and a.userName like %?1% ")
+	List<AppUserResult> getUserByParam(String keyWord);
 
 	// @Query("select new
 	// net.riking.entity.resp.AppUserResp(a.id,a.userName,a.openId,a.email,a.phone,ap.realName,ap.companyName,ap.sex,ap.birthday,ap.address,ap.description,ap.phoneDeviceid,ap.integral,ap.experience,ap.photoUrl,ap.remindTime,ap.isSubscribe,ap.industryId,ap.positionId,ap.isGuide)

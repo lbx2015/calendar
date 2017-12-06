@@ -19,7 +19,7 @@ public class ReportParams implements Serializable {
 	private String userId;
 
 	// 报表名
-	private String reportName;
+	private String reportTitle;
 
 	public String getUserId() {
 		return userId;
@@ -29,12 +29,12 @@ public class ReportParams implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getReportName() {
-		return reportName;
+	public String getReportTitle() {
+		return reportTitle;
 	}
 
-	public void setReportName(String reportName) {
-		this.reportName = reportName;
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
 	}
 
 }
