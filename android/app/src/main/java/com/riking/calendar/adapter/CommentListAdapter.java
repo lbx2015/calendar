@@ -13,6 +13,8 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.view.CircleImageView;
 
 import java.util.ArrayList;
@@ -37,6 +39,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     @Override
     public void onBindViewHolder(final CommentListAdapter.MyViewHolder h, int i) {
+        NewsComment c = mList.get(i);
+
+        //show time.
+        if (c.createdTime != null) {
+            h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
+        }
+
         RequestOptions options = new RequestOptions();
         Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
                 .apply(options.fitCenter())
@@ -86,13 +95,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         public CircleImageView authorImage;
-
         public RecyclerView recyclerView;
+        public TextView createTimeTv;
         public TextView answerContent;
         public TextView authorName;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            createTimeTv = itemView.findViewById(R.id.answer_update_time);
             authorImage = itemView.findViewById(R.id.answer_author_icon);
             recyclerView = itemView.findViewById(R.id.recycler_view);
             answerContent = itemView.findViewById(R.id.answer_content);
