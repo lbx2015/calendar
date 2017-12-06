@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.MyViewHolder> {
     private CommentsActivity a;
-    private List<NewsComment> mList;
+    public List<NewsComment> mList;
 
     public CommentListAdapter(CommentsActivity context) {
         this.a = context;

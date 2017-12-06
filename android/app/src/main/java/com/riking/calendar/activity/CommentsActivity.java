@@ -174,6 +174,10 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                             if (failed) {
 
                             } else {
+                                writeComment.setText("");
+                                mAdapter.mList.add(0, response._data);
+                                mAdapter.notifyItemInserted(0);
+                                recyclerView.scrollToPosition(0);
                                 Toast.makeText(CommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             }
                         }
