@@ -76,6 +76,10 @@ public class Report extends BasePageQueryProp {
 	@Comment("报表模板下载地址")
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
+	
+	@Comment("启用状态0-不启用；1-启用")
+	@Column(name = "enabled", length = 1)
+	private Integer enabled;
 
 	public Report(){}
 	
@@ -192,4 +196,14 @@ public class Report extends BasePageQueryProp {
 		this.downloadUrl = downloadUrl;
 	}
 
+
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
+	}
+	
 }
