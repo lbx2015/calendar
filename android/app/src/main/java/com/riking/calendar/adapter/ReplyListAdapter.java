@@ -45,20 +45,14 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(ReplyListAdapter.MyViewHolder h, int i) {
-        from = "毛润之";
-        String to = null;
-        String reply = "回复";
-        String content;
-        if (i == 0) {
-            from = (String) TextUtils.concat(from, ":");
-            content = "嗯来呀";
-        } else {
-            to = "周恩来: ";
+        NCReply reply = mList.get(i);
+        from = reply.userName == null ? "周恩来" : reply.userName;
+        String to = reply.toUserName == null ? "毛泽东" : reply.toUserName;
+        String replyText = "回复";
+        String content = reply.content == null ? "总理还是我们的总理呀。总理还是我们的总理呀。" : reply.content;
 
-            content = "总理还是我们的总理呀。总理还是我们的总理呀。";
-        }
         SpannableString fromSpan = new SpannableString(from);
-        SpannableString replySpan = new SpannableString(reply);
+        SpannableString replySpan = new SpannableString(replyText);
         SpannableString toSpan = null;
         if (!TextUtils.isEmpty(to)) {
             toSpan = new SpannableString(to);
@@ -129,7 +123,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         if (toSpan != null) {
             toSpan.setSpan(toClick, 0, to.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
-        replySpan.setSpan(replyClick, 0, reply.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        replySpan.setSpan(replyClick, 0, replyText.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         contentSpan.setSpan(contentClick, 0, content.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         Spanned richText = null;
         if (toSpan == null) {

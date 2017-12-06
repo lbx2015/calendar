@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CommentsActivity;
+import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.view.CircleImageView;
 
@@ -56,8 +57,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         ReplyListAdapter mAdapter = new ReplyListAdapter(a);
-        mAdapter.add(mList.get(position).nCommentReplyInfoList);
-        recyclerView.setAdapter(mAdapter);
+        List<NCReply> replies = mList.get(position).nCommentReplyInfoList;
+        if (replies == null || replies.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            mAdapter.add(replies);
+            recyclerView.setAdapter(mAdapter);
+        }
+
     }
 
     @Override
