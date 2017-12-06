@@ -19,6 +19,7 @@ import com.riking.calendar.app.MyApplication;
  */
 
 public class ZR {
+    public  static String jumpClass;
     /**
      * This method converts dp unit to equivalent pixels, depending on device density.
      *

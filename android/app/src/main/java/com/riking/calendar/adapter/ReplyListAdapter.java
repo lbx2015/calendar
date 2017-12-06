@@ -45,7 +45,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(ReplyListAdapter.MyViewHolder h, int i) {
-        NCReply reply = mList.get(i);
+        final NCReply reply = mList.get(i);
         from = reply.userName == null ? "周恩来" : reply.userName;
         String to = reply.toUserName == null ? "毛泽东" : reply.toUserName;
         String replyText = "回复";
@@ -62,7 +62,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan fromClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickWriteComment(from);
+                a.clickReply(reply);
             }
 
             @Override
@@ -76,8 +76,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan replyClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickWriteComment(from);
-
+                a.clickReply(reply);
             }
 
             @Override
@@ -91,8 +90,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan toClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickWriteComment(from);
-
+                a.clickReply(reply);
             }
 
             @Override
@@ -107,7 +105,7 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
         ClickableSpan contentClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                a.clickWriteComment(from);
+                a.clickReply(reply);
             }
 
             @Override

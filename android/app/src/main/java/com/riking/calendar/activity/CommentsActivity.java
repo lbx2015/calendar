@@ -23,11 +23,15 @@ import android.widget.Toast;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.CommentListAdapter;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.KeyboardEditText;
 
@@ -44,6 +48,11 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     KeyboardEditText writeComment;
     ImageView answerIcon;
     boolean isOpened = false;
+    //0 reply news ,1 rely comment,2 reply reply
+    int commentFlag = 0;
+    NewsComment replyComment;
+    NCReply replyReply;
+    String commentContent;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -98,6 +107,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
     private void initEvents() {
         setListenerToRootView();
+        setPublicClickListener();
         writeComment.setOnKeyboardListener(new KeyboardEditText.KeyboardListener() {
             @Override
             public void onStateChanged(KeyboardEditText keyboardEditText, boolean showing) {
@@ -125,6 +135,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim().length() > 0) {
+                    commentContent = s.toString().trim();
                     publicButton.setTextColor(ZR.getColor(R.color.color_489dfff));
                     publicButton.setEnabled(true);
                 } else {
@@ -139,6 +150,37 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         mAdapter = new CommentListAdapter(this);
         recyclerView.setAdapter(mAdapter);
         loadData(1);
+    }
+
+    private void setPublicClickListener() {
+        publicButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                NewsParams p = new NewsParams();
+                p.newsId = newsId;
+
+                if (replyComment != null) {
+
+                } else if (replyReply != null) {
+
+                }
+                //reply news
+                else {
+                    p.content = commentContent;
+                    p.userId = ZPreference.pref.getString(CONST.USER_ID, "");
+                    APIClient.newsCommentPub(p, new ZCallBackWithFail<ResponseModel<NewsComment>>() {
+                        @Override
+                        public void callBack(ResponseModel<NewsComment> response) {
+                            if (failed) {
+
+                            } else {
+                                Toast.makeText(CommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void loadData(final int page) {
@@ -184,8 +226,10 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         onBackPressed();
     }
 
-    public void clickWriteComment(final String hintText) {
-        writeComment.setHint("回复" + hintText);
+    public void clickWriteComment(NewsComment c) {
+        commentFlag = 1;
+        replyComment = c;
+        writeComment.setHint("回复" + c.userName);
         writeComment.performClick();
         writeComment.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -196,5 +240,10 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                 writeComment.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, 0, 0, 0));
             }
         }, 200);
+    }
+
+    public void clickReply(final NCReply reply) {
+        commentFlag = 2;
+        replyReply = reply;
     }
 }

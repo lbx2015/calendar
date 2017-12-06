@@ -557,4 +557,8 @@ public class APIClient {
     public static void findNewsCommentList(NewsParams params, ZCallBack<ResponseModel<List<NewsComment>>> c) {
         apiInterface.findNewsCommentList(params).enqueue(c);
     }
+
+    public static void newsCommentPub(NewsParams params, ZCallBackWithFail<ResponseModel<NewsComment>> c) {
+        apiInterface.newsCommentPub(params).enqueue(c);
+    }
 }

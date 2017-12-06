@@ -21,6 +21,7 @@ import java.util.List;
 //@Entity
 //@Table(name = "t_news_comment")
 public class NewsComment extends BaseAuditProp {
+    public String newsCommentId;
 
     //	@Comment("操作人主键 : fk t_app_user 发表评论的用户id")
 //	@Column(name = "user_id", nullable = false)

@@ -16,6 +16,9 @@ import java.util.Set;
 public class ZPreference {
     public static SharedPreferences pref = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
 
+    public static boolean isLogin(){
+        return ZPreference.pref.getBoolean(CONST.IS_LOGIN,false);
+    }
     public static void remove(String key){
         SharedPreferences.Editor e = pref.edit();
         e.remove(key);

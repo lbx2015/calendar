@@ -146,6 +146,12 @@
         <activity android:name=".activity.NewsDetailActivity" />
         <activity android:name=".activity.LookImageActivity" />
 
+        <receiver android:name=".listener.ZClickListenerWithLoginCheck$MyReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_BROADCAST"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".util.NetStateReceiver" />
 
         <receiver android:name=".receiver.ApkInstallReceiver">

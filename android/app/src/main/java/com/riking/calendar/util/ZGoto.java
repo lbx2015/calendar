@@ -31,7 +31,7 @@ public class ZGoto {
             a.startActivity(new Intent(a, t));
         } else {
             Intent i = new Intent(MyApplication.mCurrentActivity, LoginNavigateActivity.class);
-            ZPreference.put(CONST.JUMP_CLASS_NAME, t.getName());
+            ZR.jumpClass = t.getName();
             MyApplication.mCurrentActivity.startActivity(i);
         }
 

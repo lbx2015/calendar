@@ -39,11 +39,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     @Override
     public void onBindViewHolder(final CommentListAdapter.MyViewHolder h, int i) {
-        NewsComment c = mList.get(i);
+        final NewsComment c = mList.get(i);
 
+        h.authorName.setText(c.userName);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
+        }
+        if(c.content!=null){
+            h.answerContent.setText(c.content);
         }
 
         RequestOptions options = new RequestOptions();
@@ -55,7 +59,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         h.answerContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CommentsActivity) a).clickWriteComment(h.authorName.getText().toString());
+                ((CommentsActivity) a).clickWriteComment(c);
             }
         });
 
