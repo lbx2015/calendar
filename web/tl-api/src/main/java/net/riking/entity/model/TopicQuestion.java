@@ -64,13 +64,17 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
-	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
+	@Transient
+	@Comment("是否已关注 0-未关注，1-已关注")
+	private Integer isFollow;
+
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
 			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAduit(isAduit);
+		this.setIsAudit(isAudit);
 		this.title = title;
 		this.content = content;
 		this.topicId = topicId;
@@ -102,6 +106,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	public Integer getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Integer isFollow) {
+		this.isFollow = isFollow;
 	}
 
 	public String getContent() {

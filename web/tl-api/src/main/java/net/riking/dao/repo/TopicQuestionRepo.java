@@ -1,10 +1,13 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.TopicQuestion;
 
 /**
@@ -23,6 +26,14 @@ public interface TopicQuestionRepo
 	 * @param tqId
 	 * @return
 	 */
-	@Query("select new TopicQuestion(t.id,t.createdTime,t.modifiedTime,t.isAduit,t.title,t.content,t.topicId,t.userId,(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where t.createdBy = ap.id),(select app.experience from AppUserDetail app where t.createdBy = app.id)) from TopicQuestion t where t.id = ?1 ")
+	@Query("select new TopicQuestion(t.id,t.createdTime,t.modifiedTime,t.isAudit,t.title,t.content,t.topicId,t.userId,(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where t.createdBy = ap.id),(select app.experience from AppUserDetail app where t.createdBy = app.id)) from TopicQuestion t where t.id = ?1 ")
 	TopicQuestion getById(String tqId);
+
+	/**
+	 * 根据关键字模糊查询title
+	 * @param keyWord
+	 * @return
+	 */
+	@Query("select new net.riking.entity.model.QuestResult(t.id,t.title) from TopicQuestion t where t.isDeleted = 1 and t.isAudit <> 2 and t.title like %?1% ")
+	List<QuestResult> getQuestByParam(String keyWord);
 }

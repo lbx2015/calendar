@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +33,19 @@ public interface NewsRelRepo extends JpaRepository<NewsRel, String>, JpaSpecific
 	@Query("delete NewsRel where userId =?1 and newsId = ?2 and dataType = ?3")
 	void deleteByUIdAndNId(String userId, String newsId, Integer dataType);
 
+	/**
+	 * 查询收藏的资讯id
+	 * @param ncId
+	 * @return
+	 */
+	@Query("select newsId from NewsRel where userId = ?1 and dataType = ?2")
+	List<String> findByUserId(String userId, Integer dataType);
+
+	/**
+	 * 根据userId,newsId找出唯一记录
+	 * @param userId,newsId
+	 * @return
+	 */
+	@Query(" from NewsRel where userId = ?1 and newsId = ?2 and dataType = ?3")
+	NewsRel findByOne(String userId, String newsId, Integer dataType);
 }

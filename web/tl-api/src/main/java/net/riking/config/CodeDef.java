@@ -69,6 +69,11 @@ public class CodeDef {
 
 		public static final String USER_INVALID_ERROR_DESC = "该用户被禁用";
 
+		// 列表查询为空
+		public static final short DATE_FOUND_EMPTY = -987;
+
+		public static final String DATE_FOUND_EMPTY_DESC = "没有更多内容了";
+
 	}
 
 }

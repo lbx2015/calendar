@@ -23,7 +23,7 @@ public class RCompletedRelParams implements Serializable {
 	private String reportId;
 
 	// 完成时间（yyyyMMdd）
-	private String completedDate;
+	private Date completedDate;
 
 	// 提醒时间（yyyyMMdd）
 	private Date remindTime;
@@ -36,11 +36,11 @@ public class RCompletedRelParams implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getCompletedDate() {
+	public Date getCompletedDate() {
 		return completedDate;
 	}
 
-	public void setCompletedDate(String completedDate) {
+	public void setCompletedDate(Date completedDate) {
 		this.completedDate = completedDate;
 	}
 

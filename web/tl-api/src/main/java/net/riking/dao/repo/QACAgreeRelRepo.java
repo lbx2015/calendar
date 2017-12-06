@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,4 +41,20 @@ public interface QACAgreeRelRepo extends JpaRepository<QACAgreeRel, String>, Jpa
 	@Modifying
 	@Query("delete QACAgreeRel where userId =?1 and qacId = ?2 and dataType = ?3")
 	void deleteByUIdAndQaId(String userId, String qaId, Integer dataType);
+
+	/**
+	 * 查询点赞的qacId
+	 * @param newsCommentId
+	 * @return
+	 */
+	@Query("select qacId from QACAgreeRel where userId = ?1 and dataType = ?2")
+	List<String> findByUser(String userId, Integer dataType);
+
+	/**
+	 * 根据userId,qacId找出唯一记录
+	 * @param userId,newsId
+	 * @return
+	 */
+	@Query(" from QACAgreeRel where userId = ?1 and qacId = ?2 and dataType = ?3")
+	QACAgreeRel findByOne(String userId, String qacId, Integer dataType);
 }

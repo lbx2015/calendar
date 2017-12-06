@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +33,19 @@ public interface QAnswerRelRepo extends JpaRepository<QAnswerRel, String>, JpaSp
 	@Query("delete QAnswerRel where userId =?1 and qaId = ?2 and dataType = ?3")
 	void deleteByUIdAndQaId(String userId, String qaId, Integer dataType);
 
+	/**
+	 * 查询点赞/收藏的qaId
+	 * @param questAnswerId
+	 * @return
+	 */
+	@Query("select qaId,dataType from QAnswerRel where userId = ?1")
+	List<QAnswerRel> findByUser(String userId);
+
+	/**
+	 * 根据userId,qaId找出唯一记录
+	 * @param userId,qaId
+	 * @return
+	 */
+	@Query(" from QAnswerRel where userId = ?1 and qaId = ?2 and dataType = ?3")
+	QAnswerRel findByOne(String userId, String qaId, Integer dataType);
 }

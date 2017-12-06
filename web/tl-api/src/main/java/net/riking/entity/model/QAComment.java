@@ -51,11 +51,15 @@ public class QAComment extends BaseAuditProp {
 
 	// 点赞数
 	@Transient
-	private Integer agreeNum;
+	private Integer agreeNumber;
 
 	// 经验值
 	@Transient
 	private Integer experience;
+
+	@Transient
+	@Comment("是否已点赞 0-未点赞，1-已点赞")
+	private Integer isAgree;
 
 	// 问题回答评论的回复list
 	@Transient
@@ -66,13 +70,13 @@ public class QAComment extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QAComment(String id, Date createdTime, Date modifiedTime, Integer isAduit, String userId,
+	public QAComment(String id, Date createdTime, Date modifiedTime, Integer isAudit, String userId,
 			String questionAnswerId, String content, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAduit(isAduit);
+		this.setIsAudit(isAudit);
 		this.userId = userId;
 		this.questionAnswerId = questionAnswerId;
 		this.content = content;
@@ -83,6 +87,14 @@ public class QAComment extends BaseAuditProp {
 
 	public String getUserId() {
 		return userId;
+	}
+
+	public Integer getIsAgree() {
+		return isAgree;
+	}
+
+	public void setIsAgree(Integer isAgree) {
+		this.isAgree = isAgree;
 	}
 
 	public void setUserId(String userId) {
@@ -136,12 +148,12 @@ public class QAComment extends BaseAuditProp {
 		this.photoUrl = photoUrl;
 	}
 
-	public Integer getAgreeNum() {
-		return agreeNum;
+	public Integer getAgreeNumber() {
+		return agreeNumber;
 	}
 
-	public void setAgreeNum(Integer agreeNum) {
-		this.agreeNum = agreeNum;
+	public void setAgreeNumber(Integer agreeNumber) {
+		this.agreeNumber = agreeNumber;
 	}
 
 }

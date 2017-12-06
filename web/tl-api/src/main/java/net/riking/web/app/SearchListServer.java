@@ -1,8 +1,12 @@
 package net.riking.web.app;
 
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,8 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
+import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.NewsRepo;
+import net.riking.dao.repo.QuestionAnswerRepo;
+import net.riking.dao.repo.ReportSubcribeRelRepo;
+import net.riking.dao.repo.TopicQuestionRepo;
+import net.riking.dao.repo.TopicRelRepo;
+import net.riking.dao.repo.TopicRepo;
+import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.NewsResult;
+import net.riking.entity.model.QuestResult;
+import net.riking.entity.model.ReportResult;
+import net.riking.entity.model.ReportSubcribeRel;
+import net.riking.entity.model.TopicResult;
 import net.riking.entity.params.SearchParams;
+import net.riking.service.ReportService;
 import net.riking.util.Utils;
 
 /**
@@ -21,8 +41,36 @@ import net.riking.util.Utils;
  * @used 搜索列表（报表/话题/人脉/资讯/问题）结果
  */
 @RestController
-@RequestMapping(value = "/searchListServer")
+@RequestMapping(value = "/searchList")
 public class SearchListServer {
+	protected final transient Logger logger = LogManager.getLogger(getClass());
+
+	@Autowired
+	ReportService reportService;
+
+	@Autowired
+	ReportSubcribeRelRepo reportSubcribeRelRepo;
+
+	@Autowired
+	TopicRepo topicRepo;
+
+	@Autowired
+	TopicRelRepo topicRelRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
+
+	@Autowired
+	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	QuestionAnswerRepo questionAnswerRepo;
+
+	@Autowired
+	NewsRepo newsRepo;
+
+	@Autowired
+	TopicQuestionRepo topicQuestionRepo;
 
 	/**
 	 * 显示热门资讯（6条）
@@ -33,20 +81,175 @@ public class SearchListServer {
 	@RequestMapping(value = "/findHotSearchList", method = RequestMethod.POST)
 	public AppResp findHotSearchList(@RequestBody Map<String, Object> params) {
 		// 将map转换成参数对象
-		SearchParams commonParams = Utils.map2Obj(params, SearchParams.class);
+		SearchParams searchParams = Utils.map2Obj(params, SearchParams.class);
 
 		return new AppResp(CodeDef.SUCCESS);
 	}
 
+	/**
+	 * 搜索列表[userId;showOptType(显示操作类型：0-不显示状态；1-显示关注状态；2-显示邀请状态)objType（1-报表；2-话题；3-人脉；4-资讯；5-问题）;
+	 * keyword:关键字；]
+	 * @param params
+	 * @return
+	 */
 	@ApiOperation(value = "搜索列表（报表/话题/人脉/资讯/问题）", notes = "POST")
 	@RequestMapping(value = "/findSearchList", method = RequestMethod.POST)
-	public AppResp findSearchList(@RequestBody Map<String, String> params) {
-		// 判断用户id是否为空
-		if (StringUtils.isNotBlank(params.get("userId"))) {// 为空 则是未登录 则首页数据显示的是热点数据
+	public AppResp findSearchList(@RequestBody Map<String, Object> params) {
 
-		} else {// 搜索列表（报表/话题/人脉/资讯/问题）
-
+		SearchParams searchParams = Utils.map2Obj(params, SearchParams.class);
+		if (searchParams.getShowOptType() == null || (searchParams.getShowOptType() != 0
+				|| searchParams.getShowOptType() != 1 || searchParams.getShowOptType() != 2)) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		return new AppResp(CodeDef.SUCCESS);
+		if (StringUtils.isBlank(searchParams.getKeyWord())) {
+			return new AppResp("", CodeDef.SUCCESS);
+		}
+
+		switch (searchParams.getObjType()) {
+			// 报表
+			case Const.OPJ_TYPE_REPORT:
+				List<ReportResult> reportResults = findReportByKeyWord(searchParams.getUserId(),
+						searchParams.getKeyWord(), searchParams.getShowOptType());
+				return new AppResp(reportResults, CodeDef.SUCCESS);
+			// 话题
+			case Const.OPJ_TYPE_TOPIC:
+				List<TopicResult> topicResults = findTopicByKeyWord(searchParams.getUserId(), searchParams.getKeyWord(),
+						searchParams.getShowOptType());
+				return new AppResp(topicResults, CodeDef.SUCCESS);
+			// 人脉
+			case Const.OPJ_TYPE_CONTACTS:
+				List<AppUserResult> appUserResults = findUserByKeyWord(searchParams.getUserId(),
+						searchParams.getKeyWord(), searchParams.getShowOptType());
+				return new AppResp(appUserResults, CodeDef.SUCCESS);
+			// 资讯
+			case Const.OPJ_TYPE_NEWS:
+				List<NewsResult> newsResults = findNewsByKeyWord(searchParams.getUserId(), searchParams.getKeyWord(),
+						searchParams.getShowOptType());
+				return new AppResp(newsResults, CodeDef.SUCCESS);
+			// 问题
+			case Const.OPJ_TYPE_QUEST:
+				List<QuestResult> questResult = findQuestByKeyWord(searchParams.getUserId(), searchParams.getKeyWord(),
+						searchParams.getShowOptType());
+				return new AppResp(questResult, CodeDef.SUCCESS);
+			default:
+				logger.error("参数异常：objType:" + searchParams.getObjType());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+
+	}
+
+	/**
+	 * 根据关键字搜索报表
+	 * @param userId
+	 * @param keyWord
+	 * @return
+	 */
+	private List<ReportResult> findReportByKeyWord(String userId, String keyWord, Integer showOptType) {
+		// 获取订阅关联表
+		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo.findUserReportList(userId);
+
+		List<ReportResult> reportResultList = reportService.getReportByParam(keyWord);
+		for (int i = 0; i < reportResultList.size(); i++) {
+			ReportResult r = reportResultList.get(i);
+			for (ReportSubcribeRel rel : reportSubcribeRelList) {
+				if (r.getReportId().equals(rel.getReportId())) {
+					r.setIsSubcribe("1");// 已订阅
+					// 不显示状态
+					if (Const.OPT_TYPE_BLANK_STATUS == showOptType) {
+						r.setIsSubcribe(null);
+					}
+					reportResultList.remove(i);
+					reportResultList.add(i, r);
+				}
+			}
+		}
+		return reportResultList;
+	}
+
+	/**
+	 * 根据关键字搜索话题
+	 * @param userId
+	 * @param keyword
+	 * @return
+	 */
+	private List<TopicResult> findTopicByKeyWord(String userId, String keyWord, Integer showOptType) {
+		List<TopicResult> topicResults = topicRepo.getTopicByParam(keyWord);
+		List<String> topicIds = topicRelRepo.findByUser(userId, 0);// 0-关注
+
+		for (int i = 0; i < topicResults.size(); i++) {
+			TopicResult topicResult = topicResults.get(i);
+			// TODO 话题的关注数 后面从redis里面取
+			Integer followNum = topicRelRepo.followCount(topicResult.getId(), 0);
+			topicResult.setIsFollow(0);// 0-未关注
+			for (String topicId : topicIds) {
+				if (topicResult.getId().equals(topicId)) {
+					topicResult.setIsFollow(1);// 1-已关注
+					topicResult.setFollowNum(followNum);
+				}
+			}
+			// 不显示状态
+			if (Const.OPT_TYPE_BLANK_STATUS == showOptType) {
+				topicResult.setIsFollow(null);
+			}
+			topicResults.remove(i);
+			topicResults.add(i, topicResult);
+		}
+		return topicResults;
+	}
+
+	/**
+	 * 根据关键字搜索人脉
+	 * @param userId
+	 * @param keyWord
+	 * @return
+	 */
+	private List<AppUserResult> findUserByKeyWord(String userId, String keyWord, Integer showOptType) {
+		List<AppUserResult> appUserResults = appUserRepo.getUserByParam(keyWord);
+		List<String> toUserIds = userFollowRelRepo.findByUser(userId);
+
+		for (int i = 0; i < appUserResults.size(); i++) {
+			AppUserResult appUserResult = appUserResults.get(i);
+			// TODO 用户的回答数 后面从redis里面取
+			Integer answerNum = questionAnswerRepo.answerCountByUserId(userId);
+
+			appUserResult.setIsFollow(0);// 0-未关注
+			appUserResult.setAnswerNum(answerNum);// 回答数
+			for (String toUserId : toUserIds) {
+				if (appUserResult.getId().equals(toUserId)) {
+					appUserResult.setIsFollow(1);// 1-已关注
+				}
+			}
+			// 不显示状态
+			if (Const.OPT_TYPE_BLANK_STATUS == showOptType) {
+				appUserResult.setIsFollow(null);
+			}
+			appUserResults.remove(i);
+			appUserResults.add(i, appUserResult);
+		}
+		return appUserResults;
+	}
+
+	/**
+	 * 根据关键字搜索资讯
+	 * @param userId
+	 * @param keyWord
+	 * @return
+	 */
+	private List<NewsResult> findNewsByKeyWord(String userId, String keyWord, Integer showOptType) {
+		List<NewsResult> newsResults = newsRepo.getNewsByParam(keyWord);
+
+		return newsResults;
+	}
+
+	/**
+	 * 根据关键字搜索问题
+	 * @param userId
+	 * @param keyWord
+	 * @return
+	 */
+	private List<QuestResult> findQuestByKeyWord(String userId, String keyWord, Integer showOptType) {
+		List<QuestResult> questResults = topicQuestionRepo.getQuestByParam(keyWord);
+
+		return questResults;
 	}
 }

@@ -163,10 +163,10 @@ public class LoginServer {
 		userResp.setPositionId(user.getDetail().getPositionId());
 		userResp.setIsGuide(user.getDetail().getIsGuide());
 
-		Map<String, Object> map = Utils.objProps2Map(userResp, true);
+		// Map<String, Object> map = Utils.objProps2Map(userResp, true);
 		// Map<String, Object> result = new HashMap<String, Object>();
 		// result.put("user", userResp);
-		return new AppResp(map, CodeDef.SUCCESS);
+		return new AppResp(userResp, CodeDef.SUCCESS);
 
 	}
 

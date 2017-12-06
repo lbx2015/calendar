@@ -176,7 +176,7 @@ public class CommonServer {
 	}
 
 	@ApiOperation(value = "获取推荐报表", notes = "POST")
-	@RequestMapping(value = "/getCommend", method = RequestMethod.POST)
+	@RequestMapping(value = "/getRecommendReport", method = RequestMethod.POST)
 	public AppResp getCommend() {
 		Set<AppUserRecommend> appUserRecommends = appUserCommendServie.findALL();
 		Set<Map<String, Object>> sets = new HashSet<Map<String, Object>>();

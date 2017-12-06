@@ -1,8 +1,9 @@
 package net.riking.entity.params;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import net.riking.entity.MyDateFormat;
 
 /**
  * 资讯类的接收参数
@@ -30,8 +31,8 @@ public class NewsParams implements Serializable {
 	private Integer enabled;
 
 	// 请求上翻最新时间戳
-	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
-	private String reqTimeStamp;
+	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
+	private Date reqTimeStamp;
 
 	// 评论内容
 	private String content;
@@ -98,11 +99,11 @@ public class NewsParams implements Serializable {
 		this.direct = direct;
 	}
 
-	public String getReqTimeStamp() {
+	public Date getReqTimeStamp() {
 		return reqTimeStamp;
 	}
 
-	public void setReqTimeStamp(String reqTimeStamp) {
+	public void setReqTimeStamp(Date reqTimeStamp) {
 		this.reqTimeStamp = reqTimeStamp;
 	}
 

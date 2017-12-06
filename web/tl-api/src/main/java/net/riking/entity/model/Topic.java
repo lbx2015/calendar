@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -31,9 +33,38 @@ public class Topic extends BaseAuditProp {
 	@Column(name = "content", nullable = false)
 	private String content;
 
+	@Comment("话题url")
+	@Lob
+	@Column(name = "topic_url", nullable = false)
+	private String topicUrl;
+
 	@Transient
 	@Comment("创建人名称")
 	private String userName;
+
+	@Transient
+	@Comment("关注数")
+	private Integer followNum;
+
+	@Transient
+	@Comment("用户头像")
+	private String photoUrl;
+
+	@Transient
+	@Comment("是否已关注 0-未关注，1-已关注")
+	private Integer isFollow;
+
+	public Topic(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
+			String topicUrl) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.setIsAudit(isAudit);
+		this.title = title;
+		this.content = content;
+		this.topicUrl = topicUrl;
+	}
 
 	public String getTitle() {
 		return title;
@@ -41,6 +72,38 @@ public class Topic extends BaseAuditProp {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+
+	public Integer getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Integer isFollow) {
+		this.isFollow = isFollow;
+	}
+
+	public Integer getFollowNum() {
+		return followNum;
+	}
+
+	public void setFollowNum(Integer followNum) {
+		this.followNum = followNum;
+	}
+
+	public String getTopicUrl() {
+		return topicUrl;
+	}
+
+	public void setTopicUrl(String topicUrl) {
+		this.topicUrl = topicUrl;
 	}
 
 	public String getContent() {

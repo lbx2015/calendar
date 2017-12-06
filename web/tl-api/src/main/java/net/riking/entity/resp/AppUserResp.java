@@ -2,12 +2,18 @@ package net.riking.entity.resp;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * APP用户信息返回
  * @author james.you
  * @version crateTime：2017年11月29日 下午3:16:14
  * @used TODO
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class AppUserResp implements Serializable {
 	// 用户ID
 	private String userId;
