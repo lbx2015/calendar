@@ -14,12 +14,14 @@ import android.widget.Toast;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.QuestionListAdapter;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -67,10 +69,49 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         mAdapter = new QuestionListAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
+        followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                final TQuestionParams params = new TQuestionParams();
+                params.attentObjId = question.topicQuestionId;
+                //question
+                params.objType = 1;
+                //followed
+                if (question.isFollow == 1) {
+                    params.enabled = 0;
+                } else {
+                    params.enabled = 1;
+                }
+
+                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        question.isFollow = params.enabled;
+                        if (question.isFollow == 1) {
+                            ZToast.toast("关注成功");
+                        } else {
+                            ZToast.toast("取消关注");
+                        }
+                        updateFollowButton();
+                    }
+                });
+            }
+        });
         loadData(1);
     }
 
     private void setData() {
+
+        updateFollowButton();
+        //set follow number
+        followNumberTv.setText(question.followNum + "人关注");
+        //set question title
+        questionTitleTv.setText(question.title);
+        //set answer number
+        answerNumberTv.setText("" + question.answerNum);
+    }
+
+    private void updateFollowButton() {
         //followed
         if (question.isFollow == 1) {
             followTv.setText("已关注");
@@ -84,13 +125,6 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
             followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
             followButton.setBackground(ZR.getDrawable(R.drawable.follow_button_border));
         }
-
-        //set follow number
-        followNumberTv.setText(question.followNum + "人关注");
-        //set question title
-        questionTitleTv.setText(question.title);
-        //set answer number
-        answerNumberTv.setText("" + question.answerNum);
     }
 
     private void loadData(final int page) {

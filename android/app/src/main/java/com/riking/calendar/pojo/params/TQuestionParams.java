@@ -13,13 +13,13 @@ public class TQuestionParams extends BaseParams {
 	public String tqId;
 
 	// (1-问题；2-话题；3-用户)
-	public Integer objType;
+	public int objType;
 
 	// (关注类型ID)
 	public String attentObjId;
 
 	// (0-取消；1-关注)
-	public Integer enabled;
+	public int enabled;
 
 	// 问题回答Id
 	public String questAnswerId;
