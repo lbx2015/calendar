@@ -25,6 +25,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
@@ -32,6 +33,7 @@ import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 
@@ -212,6 +214,9 @@ public interface APIInterface {
     @POST("comment/commentAgree")
     Call<ResponseModel<String>> commentAgree(@Body CommentParams params);
 
-    @POST("homePage/shieldProblem")
+    @POST("homePage/shield")
     Call<ResponseModel<String>> shielfProblem(@Body HomeParams params);
+
+    @POST("topicQuestion/getTopicQuestion")
+    Call<ResponseModel<TopicQuestion>> getTopicQuestion(@Body TQuestionParams params);
 }
