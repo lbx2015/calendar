@@ -8,6 +8,7 @@ import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.util.Debug;
 
 import org.joda.time.DateTime;

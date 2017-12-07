@@ -24,7 +24,7 @@ public class QuestionAnswer extends BaseAuditProp {
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 //	@GeneratedValue(generator = "system-uuid")
 //	@JsonProperty("questionAnswerId")
-	public String id;
+//	public String id;
 
 //	@Comment("回答人主键: fk t_app_user")
 //	@Column(name = "user_id", nullable = false)
