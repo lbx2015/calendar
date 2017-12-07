@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.viewholder.AnswerListViewHolder;
-import com.riking.calendar.viewholder.HotAnswerOfTopicViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHolder> {
+    public List<QuestionAnswer> mList;
     private Context a;
-    private List<String> mList;
 
     public QuestionListAdapter(Context context) {
         this.a = context;
@@ -46,8 +46,9 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
+    public void addAll(List<QuestionAnswer> mList) {
+        this.mList.clear();
+        this.mList = mList;
         notifyDataSetChanged();
     }
 

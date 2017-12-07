@@ -3,6 +3,8 @@ package com.riking.calendar.pojo.server;
 
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
+import java.util.List;
+
 /**
  * @author jc.tan 2017年11月27日
  * @see
@@ -62,4 +64,5 @@ public class TopicQuestion extends BaseAuditProp {
 //    @Comment("是否已关注 0-未关注，1-已关注")
     public int isFollow;
 
+    public List<QuestionAnswer> questionAnswers;
 }

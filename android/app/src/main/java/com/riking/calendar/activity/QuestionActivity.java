@@ -1,7 +1,6 @@
 package com.riking.calendar.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.QuestionListAdapter;
@@ -109,6 +107,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         questionTitleTv.setText(question.title);
         //set answer number
         answerNumberTv.setText("" + question.answerNum);
+        mAdapter.addAll(question.questionAnswers);
     }
 
     private void updateFollowButton() {
@@ -136,9 +135,12 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
             public void callBack(ResponseModel<TopicQuestion> response) {
                 question = response._data;
                 setData();
+                isLoading = false;
+                nextPage = page + 1;
             }
         });
-        new Handler().postDelayed(new Runnable() {
+
+    /*    new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (page > 3) {
@@ -154,7 +156,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 1);
+        }, 1);*/
     }
 
     public void clickBack(final View view) {
