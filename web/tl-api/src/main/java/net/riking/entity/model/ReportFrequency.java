@@ -1,6 +1,8 @@
 package net.riking.entity.model;
 
-public class ReportFrequency {
+import net.riking.core.entity.BaseEntity;
+
+public class ReportFrequency extends BaseEntity {
 
 	private String reportId;
 

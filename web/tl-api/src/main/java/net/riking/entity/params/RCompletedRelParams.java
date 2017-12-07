@@ -1,7 +1,8 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
 import java.util.Date;
+
+import net.riking.entity.BaseEntity;
 
 /**
  * 核销信息的接收参数
@@ -10,7 +11,7 @@ import java.util.Date;
  * @see
  * @since 1.0
  */
-public class RCompletedRelParams implements Serializable {
+public class RCompletedRelParams extends BaseEntity {
 	/**
 	 * 
 	 */

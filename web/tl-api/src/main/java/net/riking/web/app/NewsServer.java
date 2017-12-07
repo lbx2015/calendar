@@ -1,10 +1,9 @@
 package net.riking.web.app;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +36,6 @@ import net.riking.entity.params.NewsParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.util.DateUtils;
-import net.riking.util.Utils;
 
 /**
  * 
@@ -78,30 +76,27 @@ public class NewsServer {
 	 * 获取资讯列表
 	 * @param params[direct,reqTimeStamp]
 	 * @return
+	 * @throws ParseException
 	 */
 	@ApiOperation(value = "获取资讯列表", notes = "POST")
 	@RequestMapping(value = "/findNewsList", method = RequestMethod.POST)
-	public AppResp findNewsList(@RequestBody Map<String, Object> params) {
-		// if第一次获取
-		if (params == null) {
-			params = new HashMap<String, Object>();
-			params.put("reqTimeStamp", new Date());
-			params.put("direct", Const.DIRECT_UP);
+	public AppResp findNewsList(@RequestBody NewsParams newsParams) throws ParseException {
+		if (newsParams == null) {
+			newsParams = new NewsParams();
+			newsParams.setReqTimeStamp(new Date());
+			newsParams.setDirect(Const.DIRECT_UP);
 		}
-		if (params.get("reqTimeStamp") == null || "".equals(params.get("reqTimeStamp"))) {
-			params.put("reqTimeStamp", DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"));
-			params.put("direct", Const.DIRECT_UP);
+		if (newsParams.getReqTimeStamp() == null || "".equals(newsParams.getReqTimeStamp())) {
+			newsParams.setReqTimeStamp(DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"),
+					"yyyyMMddHHmmssSSS"));
+			newsParams.setDirect(Const.DIRECT_UP);
 		}
-		if (params.get("direct") == null) {
-			params.put("direct", Const.DIRECT_UP);
+		if (newsParams.getDirect() == null) {
+			newsParams.setDirect(Const.DIRECT_UP);
 		}
-		// 将map转换成参数对象
-		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
 
 		// 分页数据
 		List<News> newsInfoList = new ArrayList<News>();
-		// 把分页数据封装成map传入前台
-		List<Map<String, Object>> newsInfoMapList = new ArrayList<Map<String, Object>>();
 		switch (newsParams.getDirect()) {
 			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
 			case Const.DIRECT_UP:
@@ -131,9 +126,6 @@ public class NewsServer {
 			count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
 
-			// 将对象转换成map
-			// Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
-			// newsInfoMapList.add(newsInfoMapNew);
 		}
 
 		return new AppResp(newsInfoList, CodeDef.SUCCESS);
@@ -146,9 +138,7 @@ public class NewsServer {
 	 */
 	@ApiOperation(value = "获取资讯的详情", notes = "POST")
 	@RequestMapping(value = "/getNews", method = RequestMethod.POST)
-	public AppResp getNewsInfo(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
+	public AppResp getNewsInfo(@RequestBody NewsParams newsParams) {
 		News newsInfo = newsRepo.getById(newsParams.getNewsId());
 		if (newsInfo == null) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
@@ -166,9 +156,7 @@ public class NewsServer {
 				}
 			}
 		}
-		// 将对象转换成map
-		Map<String, Object> newsInfoMap = Utils.objProps2Map(newsInfo, true);
-		return new AppResp(newsInfoMap, CodeDef.SUCCESS);
+		return new AppResp(newsInfo, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -178,12 +166,8 @@ public class NewsServer {
 	 */
 	@ApiOperation(value = "获取资讯详情评论列表", notes = "POST")
 	@RequestMapping(value = "/findNewsCommentList", method = RequestMethod.POST)
-	public AppResp findNewsCommentList(@RequestBody Map<String, Object> params) {
+	public AppResp findNewsCommentList(@RequestBody NewsParams newsParams) {
 		String pattern = "yyyyMMddHHmmssSSS";
-		// 将map转换成参数对象
-		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
-		// 资讯详情评论的Map列表(把资讯详情评论对象封装成Map传进前台)
-		List<Map<String, Object>> newsCommentInfoMapList = new ArrayList<Map<String, Object>>();
 		// 根据NewsId查出资讯详情评论列表（30条）
 		List<NewsComment> newsCommentInfoList = newsCommentRepo.findByNewsId(newsParams.getNewsId(),
 				new PageRequest(0, 30));
@@ -194,7 +178,6 @@ public class NewsServer {
 			List<NCReply> nCommentReplyInfoList = nCReplyRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
-				Map<String, Object> nCommentReplyInfoObjMap = new HashMap<String, Object>();
 				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
@@ -215,10 +198,8 @@ public class NewsServer {
 				nCommentReplyInfo.setUserName(null);
 				nCommentReplyInfo.setToUserId(null);
 				nCommentReplyInfo.setToUserName(null);
-				// 将评论回复对象转换成map
-				nCommentReplyInfoObjMap = Utils.objProps2Map(nCommentReplyInfo, true);
 				// 回复的数据列表添加到评论类里面
-				newsCommentInfoNew.getNCommentReplyInfoList().add(nCommentReplyInfoObjMap);
+				newsCommentInfoNew.getNCReplyList().add(nCommentReplyInfo);
 			}
 			// 点赞数 TODO 后面从redis里面去找
 			Integer agree = 0;
@@ -233,10 +214,8 @@ public class NewsServer {
 					}
 				}
 			}
-			Map<String, Object> newsCommentInfoObjMap = Utils.objProps2Map(newsCommentInfoNew, true);
-			newsCommentInfoMapList.add(newsCommentInfoObjMap);
 		}
-		return new AppResp(newsCommentInfoMapList, CodeDef.SUCCESS);
+		return new AppResp(newsCommentInfoList, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -246,9 +225,7 @@ public class NewsServer {
 	 */
 	@ApiOperation(value = "资讯评论发布", notes = "POST")
 	@RequestMapping(value = "/newsCommentPub", method = RequestMethod.POST)
-	public AppResp newsCommentPub(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
+	public AppResp newsCommentPub(@RequestBody NewsParams newsParams) {
 		NewsComment newsCommentInfo = new NewsComment();
 		AppUser appUser = appUserRepo.findOne(newsParams.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());
@@ -275,8 +252,7 @@ public class NewsServer {
 				}
 			}
 		}
-		Map<String, Object> map = Utils.objProps2Map(newsCommentInfo, true);
-		return new AppResp(map, CodeDef.SUCCESS);
+		return new AppResp(newsCommentInfo, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -286,9 +262,7 @@ public class NewsServer {
 	 */
 	@ApiOperation(value = "资讯收藏", notes = "POST")
 	@RequestMapping(value = "/newsCollect", method = RequestMethod.POST)
-	public AppResp newsCollect(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		NewsParams newsParams = Utils.map2Obj(params, NewsParams.class);
+	public AppResp newsCollect(@RequestBody NewsParams newsParams) {
 
 		switch (newsParams.getEnabled()) {
 			case Const.EFFECTIVE:

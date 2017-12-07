@@ -1,24 +1,27 @@
 package net.riking.entity.model;
 
+import net.riking.core.entity.BaseEntity;
+
 /**
  * 
  * @author tao.yuan
  * @version crateTime：2017年11月16日 上午10:28:19
  * @used 首页加载设置
  */
-public class LoadSetting {
+public class LoadSetting extends BaseEntity {
 
 	private Long id;
-	
-	private String moduleName;//模块名称
-	
-	private String moduleCode;//code
-	
-	private String type;//模块类别 1.好友关注的话题 2.好友回答的问题 3.好友点赞的问题 4.好友点赞的回答 5.好友关注的回答 6.大众的问题  7.大众的回答 8.可能感兴趣的话题9.可能感兴趣的问题 10.可能感兴趣的人脉 11.广告
-	
-	private String isFlag;//是否有效
-	
-	private Integer sequence;//排序
+
+	private String moduleName;// 模块名称
+
+	private String moduleCode;// code
+
+	private String type;// 模块类别 1.好友关注的话题 2.好友回答的问题 3.好友点赞的问题 4.好友点赞的回答 5.好友关注的回答 6.大众的问题 7.大众的回答
+						// 8.可能感兴趣的话题9.可能感兴趣的问题 10.可能感兴趣的人脉 11.广告
+
+	private String isFlag;// 是否有效
+
+	private Integer sequence;// 排序
 
 	public Long getId() {
 		return id;

@@ -2,6 +2,8 @@ package net.riking.entity.model;
 
 import java.util.List;
 
+import net.riking.core.entity.BaseEntity;
+
 /**
  * 同步信息封装的类
  * 
@@ -9,17 +11,20 @@ import java.util.List;
  * @version crateTime：2017年8月10日 下午2:50:09
  * @used TODO
  */
-public class SynResult {
+public class SynResult extends BaseEntity {
 
 	private List<Remind> remind;
+
 	private List<Todo> todo;
+
 	private List<SysDays> days;
+
 	private List<QueryReport> reportList;
 
 	public SynResult() {
 	}
 
-	public SynResult(List<Remind> remind,  List<Todo> todo, List<SysDays> days,List<QueryReport> reportList) {
+	public SynResult(List<Remind> remind, List<Todo> todo, List<SysDays> days, List<QueryReport> reportList) {
 		this.remind = remind;
 		this.todo = todo;
 		this.days = days;

@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * App版本获取接口参数
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @version crateTime：2017年11月28日 下午2:39:26
  * @used TODO
  */
-public class IndustryParams implements Serializable {
+public class IndustryParams extends BaseEntity {
 
 	/**
 	 * 

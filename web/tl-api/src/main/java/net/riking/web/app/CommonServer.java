@@ -1,8 +1,6 @@
 package net.riking.web.app;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,7 +36,6 @@ import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
-import net.riking.util.Utils;
 
 /**
  * 公共模块
@@ -84,19 +81,16 @@ public class CommonServer {
 
 	@ApiOperation(value = "获取系统版本", notes = "POST")
 	@RequestMapping(value = "/getAppVersion", method = RequestMethod.POST)
-	public AppResp getAppVersion(@RequestBody Map<String, Object> params) {
-		AppVersionParams appVersionParams = Utils.map2Obj(params, AppVersionParams.class);
+	public AppResp getAppVersion(@RequestBody AppVersionParams appVersionParams) {
 		AppVersion appVersion = appVersionRepo.hasUpdateAppVersion(appVersionParams.getVersionNo(),
 				appVersionParams.getClientType());
-		Map<String, Object> result = Utils.objProps2Map(appVersion, true);
-		return new AppResp(result, CodeDef.SUCCESS);
+		return new AppResp(appVersion, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "发送验证码", notes = "POST")
 	@RequestMapping(value = "/getValidCode", method = RequestMethod.POST)
-	public AppResp getValidCode_(@RequestBody Map<String, Object> params) throws ClientException {
+	public AppResp getValidCode_(@RequestBody ValidParams validParams) throws ClientException {
 		// user = appUser;
-		ValidParams validParams = Utils.map2Obj(params, ValidParams.class);
 		String phone = validParams.getPhone();
 		if (null == phone) {
 			return new AppResp(CodeDef.EMP.PHONE_NULL_ERROR, CodeDef.EMP.PHONE_NULL_ERROR_DESC);
@@ -150,40 +144,24 @@ public class CommonServer {
 	@ApiOperation(value = "获取行业列表", notes = "POST")
 	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
 	public AppResp findIndustry() {
-		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
 		List<Industry> list = industryRepo.findIndustry(0);// 查询行业
-		for (Industry industry : list) {
-			Map<String, Object> map = Utils.objProps2Map(industry, true);
-			maps.add(map);
-		}
-		return new AppResp(maps, CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
 	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
-	public AppResp getPositionByIndustry(@RequestBody Map<String, Object> params) {
-		IndustryParams industryParams = Utils.map2Obj(params, IndustryParams.class);
-		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+	public AppResp getPositionByIndustry(@RequestBody IndustryParams industryParams) {
 		List<Industry> list = industryRepo.findPositionByIndustry(industryParams.getIndustryId());
 		if (null == list) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
-		for (Industry industry : list) {
-			Map<String, Object> map = Utils.objProps2Map(industry, true);
-			maps.add(map);
-		}
-		return new AppResp(maps, CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "获取推荐报表", notes = "POST")
 	@RequestMapping(value = "/getRecommendReport", method = RequestMethod.POST)
 	public AppResp getCommend() {
 		Set<AppUserRecommend> appUserRecommends = appUserCommendServie.findALL();
-		Set<Map<String, Object>> sets = new HashSet<Map<String, Object>>();
-		for (AppUserRecommend appUserRecommend : appUserRecommends) {
-			Map<String, Object> map = Utils.objProps2Map(appUserRecommend, true);
-			sets.add(map);
-		}
-		return new AppResp(sets, CodeDef.SUCCESS);
+		return new AppResp(appUserRecommends, CodeDef.SUCCESS);
 	}
 }

@@ -1,12 +1,19 @@
 package net.riking.entity.model;
 
-public class Period {
+import net.riking.core.entity.BaseEntity;
+
+public class Period extends BaseEntity {
 
 	private Integer week;
+
 	private Integer ten;
+
 	private Integer month;
+
 	private Integer season;
+
 	private Integer halfYear;
+
 	private Integer Year;
 
 	public Period(Integer week, Integer ten, Integer month, Integer season, Integer halfYear, Integer year) {

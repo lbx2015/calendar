@@ -1,8 +1,8 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
 import java.util.Date;
 
+import net.riking.entity.BaseEntity;
 import net.riking.entity.MyDateFormat;
 
 /**
@@ -12,7 +12,7 @@ import net.riking.entity.MyDateFormat;
  * @see
  * @since 1.0
  */
-public class NewsParams implements Serializable {
+public class NewsParams extends BaseEntity {
 	/**
 	 * 
 	 */

@@ -35,7 +35,6 @@ import net.riking.entity.resp.RCompletedRelResp;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDateService;
 import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.util.Utils;
 
 /**
  * 核销信息接口
@@ -76,9 +75,7 @@ public class RCompleteRelServer {
 	 */
 	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public AppResp save(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
+	public AppResp save(@RequestBody RCompletedRelParams rCompletedRelParams) {
 		ReportCompletedRel completedRel = new ReportCompletedRel();
 		completedRel.setReportId(rCompletedRelParams.getReportId());
 		completedRel.setUserId(rCompletedRelParams.getUserId());
@@ -95,8 +92,7 @@ public class RCompleteRelServer {
 	 */
 	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
 	@RequestMapping(value = "/findNowReport", method = RequestMethod.POST)
-	public AppResp getAllReport(@RequestBody Map<String, Object> params) throws ParseException {
-		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
+	public AppResp getAllReport(@RequestBody RCompletedRelParams rCompletedRelParams) throws ParseException {
 		// 获取当月的打点数据 如果只打点当月之后的数据
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		// sdf.parse(str);
@@ -116,14 +112,7 @@ public class RCompleteRelServer {
 		List<RCompletedRelResp> rCompletedRelRespList = reportCompletedRelRepo
 				.findNowReport(rCompletedRelParams.getUserId(), completedDate);
 
-		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
-		for (RCompletedRelResp rCompletedRelResp : rCompletedRelRespList) {
-			// 将对象转换成map
-			Map<String, Object> rCompletedRelRespMap = Utils.objProps2Map(rCompletedRelResp, true);
-			rCompletedRelRespMapList.add(rCompletedRelRespMap);
-		}
-
-		return new AppResp(rCompletedRelRespMapList, CodeDef.SUCCESS);
+		return new AppResp(rCompletedRelRespList, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -134,9 +123,7 @@ public class RCompleteRelServer {
 	 */
 	@ApiOperation(value = "获取当天未完成和已完成的报表列表", notes = "POST")
 	@RequestMapping(value = "/findByIdAndTime", method = RequestMethod.POST)
-	public AppResp findByIdAndTime(@RequestBody Map<String, Object> params) throws ParseException {
-		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
-		List<Map<String, Object>> rCompletedRelRespMapList = new ArrayList<Map<String, Object>>();
+	public AppResp findByIdAndTime(@RequestBody RCompletedRelParams rCompletedRelParams) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String completedDate = sdf.format(rCompletedRelParams.getCompletedDate());
 		// {
@@ -154,12 +141,7 @@ public class RCompleteRelServer {
 		List<RCompletedRelResp> list = reportSubmitCaliberService
 				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), completedDate);
 
-		for (RCompletedRelResp rCompletedRelResp : list) {
-			// 将对象转换成map
-			Map<String, Object> rCompletedRelRespMap = Utils.objProps2Map(rCompletedRelResp, true);
-			rCompletedRelRespMapList.add(rCompletedRelRespMap);
-		}
-		return new AppResp(rCompletedRelRespMapList, CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -170,8 +152,7 @@ public class RCompleteRelServer {
 	 */
 	@ApiOperation(value = "获取当天之后的打点日期", notes = "POST")
 	@RequestMapping(value = "/getDatedot", method = RequestMethod.POST)
-	public AppResp getDatedot(@RequestBody Map<String, Object> params) throws ParseException {
-		RCompletedRelParams rCompletedRelParams = Utils.map2Obj(params, RCompletedRelParams.class);
+	public AppResp getDatedot(@RequestBody RCompletedRelParams rCompletedRelParams) throws ParseException {
 		// List<String> list = getDateByToDay();//获取当日之后的一年日期
 		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();// 存日期 返回
 		Set<String> result = new HashSet<String>();// 取交集用

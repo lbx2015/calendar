@@ -1,10 +1,11 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
-public class AppUserResult implements Serializable {
+public class AppUserResult extends BaseEntity {
 
 	/**
 	 * 
@@ -12,6 +13,7 @@ public class AppUserResult implements Serializable {
 	private static final long serialVersionUID = -8418351387803616527L;
 
 	@Comment("物理主键")
+	@JsonProperty("userId")
 	private String id;
 
 	@Comment("姓名")

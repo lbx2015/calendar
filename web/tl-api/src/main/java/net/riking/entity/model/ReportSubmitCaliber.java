@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
@@ -31,6 +33,7 @@ public class ReportSubmitCaliber extends BaseEntity {
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("reportSubmitCaliberId")
 	private String id;
 
 	@Comment("FK t_report_list")

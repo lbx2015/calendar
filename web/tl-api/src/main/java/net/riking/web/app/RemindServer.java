@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -45,8 +44,8 @@ public class RemindServer {
 
 	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public AppResp delMore(@RequestParam("remindId") String remindId) {
-		remindRepo.delete(remindId);
+	public AppResp delMore(@RequestBody Remind remind) {
+		remindRepo.delete(remind.getRemindId());
 
 		return new AppResp().setCode(CodeDef.SUCCESS);
 	}

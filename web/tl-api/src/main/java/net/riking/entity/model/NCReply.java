@@ -4,12 +4,17 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -33,6 +38,14 @@ public class NCReply extends BaseAuditProp {
 	 * 
 	 */
 	private static final long serialVersionUID = -1461884746264578424L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("nCReplyId")
+	private String id;
 
 	@Comment("操作人主键: fk t_app_user 发表回复的user_id")
 	@Column(name = "user_id", nullable = false)
@@ -84,6 +97,14 @@ public class NCReply extends BaseAuditProp {
 		this.content = content;
 		this.userName = userName;
 		this.toUserName = toUserName;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getUserId() {

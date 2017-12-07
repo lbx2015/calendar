@@ -4,8 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -27,6 +33,14 @@ public class QACReply extends BaseAuditProp {
 	 * 
 	 */
 	private static final long serialVersionUID = 3040318861369712268L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("qACReplyId")
+	private String id;
 
 	@Comment("操作人主键 : fk t_app_user 发表回复的user_id")
 	@Column(name = "from_user_id", nullable = false)
@@ -88,6 +102,14 @@ public class QACReply extends BaseAuditProp {
 
 	public void setFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getContent() {

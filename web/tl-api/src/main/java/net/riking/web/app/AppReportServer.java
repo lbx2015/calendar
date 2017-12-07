@@ -1,8 +1,6 @@
 package net.riking.web.app;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +20,6 @@ import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
-import net.riking.util.Utils;
 
 /**
  * 报表信息接口
@@ -59,9 +56,8 @@ public class AppReportServer {
 	 */
 	@ApiOperation(value = "app获取所有的报表", notes = "POST")
 	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport_(@RequestBody Map<String, Object> params) {
+	public AppResp getAllReport_(@RequestBody ReportParams reportParams) {
 		// List<QueryReport> list = reportSubmitCaliberService.findAllReport();
-		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
 		// List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
 		// 获取订阅关联表
 		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo
@@ -114,10 +110,9 @@ public class AppReportServer {
 	 */
 	@ApiOperation(value = "根据报表名称查询报表列表", notes = "POST")
 	@RequestMapping(value = "/getReportByName", method = RequestMethod.POST)
-	public AppResp getReportByName(@RequestBody Map<String, Object> params) {
+	public AppResp getReportByName(@RequestBody ReportParams reportParams) {
 		// List<ReportList> list =
 		// reportListRepo.findReportByreportName(reportList.getReportName());
-		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
 		// 获取订阅关联表
 		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo
 				.findUserReportList(reportParams.getUserId());
@@ -125,8 +120,6 @@ public class AppReportServer {
 		// List<ReportFrequency> list =
 		// reportAgenceFrencyService.findReportListByName(reportParams.getReportName());
 		List<ReportResult> reportResultList = reportService.getReportByParam(reportParams.getReportTitle());
-
-		List<Map<String, Object>> reportResultMapList = new ArrayList<Map<String, Object>>();
 
 		if (reportResultList != null && reportResultList.size() > 0) {
 			for (int i = 0; i < reportResultList.size(); i++) {
@@ -139,12 +132,9 @@ public class AppReportServer {
 						}
 					}
 				}
-				Map<String, Object> map = Utils.objProps2Map(reportResult, true);
-				reportResultMapList.add(map);
 			}
 		}
 
-		return new AppResp(reportResultMapList, CodeDef.SUCCESS);
+		return new AppResp(reportResultList, CodeDef.SUCCESS);
 	}
 }
-

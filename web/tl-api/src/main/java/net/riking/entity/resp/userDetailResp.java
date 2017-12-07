@@ -1,6 +1,6 @@
 package net.riking.entity.resp;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * 
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class userDetailResp implements Serializable {
+public class userDetailResp extends BaseEntity {
 
 	/**
 	 * 

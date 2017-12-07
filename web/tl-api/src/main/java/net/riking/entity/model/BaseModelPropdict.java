@@ -2,17 +2,19 @@ package net.riking.entity.model;
 
 import java.util.List;
 
-public class BaseModelPropdict {
+import net.riking.core.entity.BaseEntity;
+
+public class BaseModelPropdict extends BaseEntity {
 
 	private String id;
-	
+
 	private String ke;
-	
+
 	private String valueName;
-	
+
 	public List<ReportFrequency> list;
-	
-	public BaseModelPropdict(String id,String ke,String valueName){
+
+	public BaseModelPropdict(String id, String ke, String valueName) {
 		this.id = id;
 		this.ke = ke;
 		this.valueName = valueName;

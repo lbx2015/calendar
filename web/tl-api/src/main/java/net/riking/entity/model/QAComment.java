@@ -3,12 +3,17 @@ package net.riking.entity.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -28,6 +33,14 @@ public class QAComment extends BaseAuditProp {
 	 * 
 	 */
 	private static final long serialVersionUID = -1580621958798681642L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("qACommentId")
+	private String id;
 
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
@@ -63,7 +76,7 @@ public class QAComment extends BaseAuditProp {
 
 	// 问题回答评论的回复list
 	@Transient
-	List<Map<String, Object>> qACReplyList;
+	List<QACReply> qACReplyList;
 
 	public QAComment() {
 		super();
@@ -91,6 +104,14 @@ public class QAComment extends BaseAuditProp {
 
 	public Integer getIsAgree() {
 		return isAgree;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setIsAgree(Integer isAgree) {
@@ -125,9 +146,9 @@ public class QAComment extends BaseAuditProp {
 		this.content = content;
 	}
 
-	public List<Map<String, Object>> getQACReplyList() {
+	public List<QACReply> getQACReplyList() {
 		if (qACReplyList == null) {
-			qACReplyList = new ArrayList<Map<String, Object>>();
+			qACReplyList = new ArrayList<QACReply>();
 		}
 		return this.qACReplyList;
 	}

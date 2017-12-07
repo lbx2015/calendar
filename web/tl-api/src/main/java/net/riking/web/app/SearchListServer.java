@@ -94,9 +94,8 @@ public class SearchListServer {
 	 */
 	@ApiOperation(value = "搜索列表（报表/话题/人脉/资讯/问题）", notes = "POST")
 	@RequestMapping(value = "/findSearchList", method = RequestMethod.POST)
-	public AppResp findSearchList(@RequestBody Map<String, Object> params) {
+	public AppResp findSearchList(@RequestBody SearchParams searchParams) {
 
-		SearchParams searchParams = Utils.map2Obj(params, SearchParams.class);
 		if (searchParams.getShowOptType() == null || (searchParams.getShowOptType() != 0
 				|| searchParams.getShowOptType() != 1 || searchParams.getShowOptType() != 2)) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);

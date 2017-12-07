@@ -2,16 +2,18 @@ package net.riking.entity.model;
 
 import java.util.List;
 
+import net.riking.core.entity.BaseEntity;
+
 /**
  * 
  * @author tao.yuan
  * @version crateTime：2017年11月7日 下午4:01:44
  * @used TODO
  */
-public class AppUserReportResult {
-	
+public class AppUserReportResult extends BaseEntity {
+
 	private String userId;
-	
+
 	private List<String> list;
 
 	public String getUserId() {
@@ -29,6 +31,5 @@ public class AppUserReportResult {
 	public void setList(List<String> list) {
 		this.list = list;
 	}
-
 
 }

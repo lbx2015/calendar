@@ -1,8 +1,6 @@
 package net.riking.web.app;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +35,6 @@ import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
-import net.riking.util.Utils;
 
 /**
  * 
@@ -91,8 +88,7 @@ public class QAnswerServer {
 	 */
 	@ApiOperation(value = "问题回答详情", notes = "POST")
 	@RequestMapping(value = "/getQAnswer", method = RequestMethod.POST)
-	public AppResp getQAnswer(@RequestBody Map<String, Object> params) {
-		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
+	public AppResp getQAnswer(@RequestBody QAnswerParams qAnswerParams) {
 		QuestionAnswer questionAnswer = questionAnswerRepo.getById(qAnswerParams.getQuestAnswerId());
 		questionAnswer.setIsAgree(0);// 0-未点赞
 		questionAnswer.setIsCollect(0);// 0-未收藏
@@ -110,8 +106,7 @@ public class QAnswerServer {
 				}
 			}
 		}
-		Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
-		return new AppResp(questionAnswerMap, CodeDef.SUCCESS);
+		return new AppResp(questionAnswer, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -121,8 +116,7 @@ public class QAnswerServer {
 	 */
 	@ApiOperation(value = "问题回答的评论", notes = "POST")
 	@RequestMapping(value = "/qACommentPub", method = RequestMethod.POST)
-	public AppResp qACommentPub(@RequestBody Map<String, Object> params) {
-		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
+	public AppResp qACommentPub(@RequestBody QAnswerParams qAnswerParams) {
 		if (StringUtils.isBlank(qAnswerParams.getUserId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
@@ -157,8 +151,7 @@ public class QAnswerServer {
 				}
 			}
 		}
-		Map<String, Object> map = Utils.objProps2Map(qaComment, true);
-		return new AppResp(map, CodeDef.SUCCESS);
+		return new AppResp(qaComment, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -168,9 +161,7 @@ public class QAnswerServer {
 	 */
 	@ApiOperation(value = "问题回答的点赞/收藏", notes = "POST")
 	@RequestMapping(value = "/agreeOrCollect", method = RequestMethod.POST)
-	public AppResp QAnswerAgree(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
+	public AppResp QAnswerAgree(@RequestBody QAnswerParams qAnswerParams) {
 		switch (qAnswerParams.getOptType()) {
 			// 1-点赞
 			case 1:
@@ -220,7 +211,7 @@ public class QAnswerServer {
 				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		return new AppResp(null, CodeDef.SUCCESS);
+		return new AppResp("", CodeDef.SUCCESS);
 	}
 
 	/**
@@ -230,11 +221,7 @@ public class QAnswerServer {
 	 */
 	@ApiOperation(value = "问题回答评论列表", notes = "POST")
 	@RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
-	public AppResp qACommentList(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
-		// 返回前台问题回答评论的map列表
-		List<Map<String, Object>> questionAnswerMapList = new ArrayList<Map<String, Object>>();
+	public AppResp qACommentList(@RequestBody QAnswerParams qAnswerParams) {
 		// 返回到前台的问题回答列表
 		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId());
 		for (QAComment qAComment : questionAnswerList) {
@@ -260,9 +247,7 @@ public class QAnswerServer {
 				qacReply.setToUserName(null);
 				qacReply.setFromUserId(null);
 				qacReply.setFromUserName(null);
-				// qacReply将对象转换成map
-				Map<String, Object> qacReplyMap = Utils.objProps2Map(qacReply, true);
-				qAComment.getQACReplyList().add(qacReplyMap);
+				qAComment.getQACReplyList().add(qacReply);
 			}
 			// TODO 统计数后面从redis中取点赞数
 			Integer agreeNum = 0;
@@ -278,11 +263,8 @@ public class QAnswerServer {
 
 				}
 			}
-			// 将对象转换成map
-			Map<String, Object> questionAnswerMap = Utils.objProps2Map(qAComment, true);
-			questionAnswerMapList.add(questionAnswerMap);
 		}
 
-		return new AppResp(questionAnswerMapList, CodeDef.SUCCESS);
+		return new AppResp(questionAnswerList, CodeDef.SUCCESS);
 	}
 }

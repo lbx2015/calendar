@@ -1,32 +1,30 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
-
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
-public class ReportResult implements Serializable {
-	
+public class ReportResult extends BaseEntity {
+
 	@Comment("机构")
 	private String agenceCode;
-	
+
 	@Comment("报表类型")
 	private String reportType;
-	
+
 	@Comment("报表模式分类")
 	private String reportMode;
-	
+
 	@Comment("报表代码")
 	private String code;
-	
+
 	@Comment("报表标题")
 	private String title;
-	
+
 	@Comment("报表模式分类")
 	private String reportId;
-	
+
 	@Comment("是否订阅")
 	private String isSubcribe;
-
 
 	public String getReportType() {
 		return reportType;
@@ -83,6 +81,5 @@ public class ReportResult implements Serializable {
 	public String getAgenceCode() {
 		return agenceCode;
 	}
-	
-	
+
 }

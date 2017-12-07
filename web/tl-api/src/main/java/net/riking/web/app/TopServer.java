@@ -26,7 +26,6 @@ import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Topic;
 import net.riking.entity.params.TopicParams;
-import net.riking.util.Utils;
 
 /**
  * 话题接口
@@ -70,9 +69,7 @@ public class TopServer {
 	 */
 	@ApiOperation(value = "话题的详情", notes = "POST")
 	@RequestMapping(value = "/getTopic", method = RequestMethod.POST)
-	public AppResp getTopic_(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		TopicParams topicParams = Utils.map2Obj(params, TopicParams.class);
+	public AppResp getTopic_(@RequestBody TopicParams topicParams) {
 		Topic topic = topicRepo.getById(topicParams.getTopicId());
 
 		// TODO 话题的关注数 后面从redis里面取
@@ -85,9 +82,7 @@ public class TopServer {
 				topic.setIsFollow(1);// 1-已关注
 			}
 		}
-		// 将对象转换成map
-		Map<String, Object> topicMap = Utils.objProps2Map(topic, true);
-		return new AppResp(topicMap, CodeDef.SUCCESS);
+		return new AppResp(topic, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -97,9 +92,7 @@ public class TopServer {
 	 */
 	@ApiOperation(value = "精华问题回答列表", notes = "POST")
 	@RequestMapping(value = "/essenceQAList", method = RequestMethod.POST)
-	public AppResp essenceQAList_(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		TopicParams topicParams = Utils.map2Obj(params, TopicParams.class);
+	public AppResp essenceQAList_(@RequestBody TopicParams topicParams) {
 		// 返回到前台的问题回答列表
 		List<Map<String, Object>> questionAnswerMapList = new ArrayList<Map<String, Object>>();
 		switch (topicParams.getOptType()) {

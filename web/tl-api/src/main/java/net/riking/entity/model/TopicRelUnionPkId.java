@@ -1,6 +1,6 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * 话题关注表
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class TopicRelUnionPkId implements Serializable {
+public class TopicRelUnionPkId extends BaseEntity {
 
 	private static final long serialVersionUID = 944410490844286677L;
 

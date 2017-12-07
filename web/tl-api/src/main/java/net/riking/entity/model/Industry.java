@@ -2,7 +2,13 @@ package net.riking.entity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -22,6 +28,14 @@ public class Industry extends BaseProp {
 	 * 
 	 */
 	private static final long serialVersionUID = 3940163346158751094L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("industryId")
+	private String id;
 
 	@Comment("行业/职位名称")
 	@Column(name = "name", length = 32)
@@ -49,6 +63,14 @@ public class Industry extends BaseProp {
 
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Integer getDataType() {

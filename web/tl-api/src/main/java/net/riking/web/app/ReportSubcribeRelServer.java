@@ -32,7 +32,6 @@ import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
 import net.riking.service.SysDateService;
-import net.riking.util.Utils;
 
 /**
  * 用户获取所属的报表信息
@@ -153,13 +152,8 @@ public class ReportSubcribeRelServer {
 	public AppResp findUserReportList(@RequestParam("userId") String userId) {
 		// List<Report> list = appUserReportRepo.findUserReportList(appUser.getId());
 		// List<ReportFrequency> list = reportLisService.findAppUserReportById(userId);
-		List<Map<String, Object>> newsInfoMapList = new ArrayList<Map<String, Object>>();
 		List<ReportSubcribeRel> ReportSubcribeRelList = reportRepo.findByUserId(userId);
-		for (ReportSubcribeRel reportSubcribeRel : ReportSubcribeRelList) {
-			Map<String, Object> newsInfoMap = Utils.objProps2Map(reportSubcribeRel, true);
-			newsInfoMapList.add(newsInfoMap);
-		}
-		return new AppResp(newsInfoMapList, CodeDef.SUCCESS);
+		return new AppResp(ReportSubcribeRelList, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "更新用户报表订阅", notes = "POST")

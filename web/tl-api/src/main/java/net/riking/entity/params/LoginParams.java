@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * 登录及注册参数
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @version crateTime：2017年11月29日 下午3:16:14
  * @used TODO
  */
-public class LoginParams implements Serializable {
+public class LoginParams extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	// 手机号

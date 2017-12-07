@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * 
@@ -16,7 +17,7 @@ import net.riking.core.annos.Comment;
 @Comment("系统日历表")
 @Entity
 @Table(name = "t_sys_days")
-public class SysDays {
+public class SysDays extends BaseEntity {
 
 	@Comment("日期（yyyyMMdd）")
 	@Id
@@ -59,5 +60,4 @@ public class SysDays {
 		this.isWork = isWork;
 	}
 
-	
 }

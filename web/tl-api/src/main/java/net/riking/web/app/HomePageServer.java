@@ -20,7 +20,6 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.TQuestionRel;
 import net.riking.entity.model.TopicRel;
 import net.riking.entity.params.HomeParams;
-import net.riking.util.Utils;
 
 /**
  * 首页接口
@@ -132,9 +131,7 @@ public class HomePageServer {
 	 */
 	@ApiOperation(value = "屏蔽问题", notes = "POST")
 	@RequestMapping(value = "/shieldProblem", method = RequestMethod.POST)
-	public AppResp shieldProblem(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		HomeParams homeParams = Utils.map2Obj(params, HomeParams.class);
+	public AppResp shieldProblem(@RequestBody HomeParams homeParams) {
 
 		switch (homeParams.getObjType()) {
 			// 问题

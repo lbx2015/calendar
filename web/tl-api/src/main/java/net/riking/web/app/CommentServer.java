@@ -1,8 +1,5 @@
 package net.riking.web.app;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +29,6 @@ import net.riking.entity.model.QACReply;
 import net.riking.entity.params.CommentParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
-import net.riking.util.Utils;
 
 /**
  * 
@@ -79,9 +75,8 @@ public class CommentServer {
 	 */
 	@ApiOperation(value = "评论点赞", notes = "POST")
 	@RequestMapping(value = "/commentAgree", method = RequestMethod.POST)
-	public AppResp commentAgree_(@RequestBody Map<String, Object> params) {
+	public AppResp commentAgree_(@RequestBody CommentParams commentParams) {
 		// 将map转换成参数对象
-		CommentParams commentParams = Utils.map2Obj(params, CommentParams.class);
 		if (commentParams.getObjType() == null) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
@@ -159,11 +154,8 @@ public class CommentServer {
 	 */
 	@ApiOperation(value = "评论的回复和回复的回复", notes = "POST")
 	@RequestMapping(value = "/commentReply", method = RequestMethod.POST)
-	public AppResp commentReply_(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		CommentParams commentParams = Utils.map2Obj(params, CommentParams.class);
+	public AppResp commentReply_(@RequestBody CommentParams commentParams) {
 
-		Map<String, Object> map = new HashMap<String, Object>();
 		AppUser appUser = appUserRepo.findOne(commentParams.getUserId());
 		switch (commentParams.getObjType()) {
 			// 回答类
@@ -195,8 +187,7 @@ public class CommentServer {
 				}
 				qACReply.setFromUserId(null);
 				qACReply.setToUserId(null);
-				map = Utils.objProps2Map(qACReply, true);
-				break;
+				return new AppResp(qACReply, CodeDef.SUCCESS);
 			// 资讯类
 			case Const.OBJ_TYPE_NEWS:
 				NCReply ncReply = new NCReply();
@@ -226,12 +217,10 @@ public class CommentServer {
 				}
 				ncReply.setUserId(null);
 				ncReply.setToUserId(null);
-				map = Utils.objProps2Map(ncReply, true);
-				break;
+				return new AppResp(ncReply, CodeDef.SUCCESS);
 			default:
-				break;
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		return new AppResp(map, CodeDef.SUCCESS);
 	}
 
 	// /**

@@ -14,6 +14,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.BaseEntity;
 
@@ -41,6 +44,7 @@ public class AppUser extends BaseEntity {
 	@Column(name = "id", length = 32)
 	@GeneratedValue(generator = "idGenerator")
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
+	@JsonProperty("appUserId")
 	private String id;
 
 	@Comment("用户名称")
@@ -78,6 +82,7 @@ public class AppUser extends BaseEntity {
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
@@ -85,6 +90,7 @@ public class AppUser extends BaseEntity {
 
 	@Comment("修改时间")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.UpdateTimestamp
 	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")

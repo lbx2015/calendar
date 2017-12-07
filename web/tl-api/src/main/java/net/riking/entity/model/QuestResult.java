@@ -1,10 +1,13 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
-public class QuestResult implements Serializable {
+public class QuestResult extends BaseEntity {
 
 	/**
 	 * 
@@ -12,10 +15,22 @@ public class QuestResult implements Serializable {
 	private static final long serialVersionUID = -8418351387803616527L;
 
 	@Comment("物理主键")
+	@JsonProperty("questionId")
 	private String id;
 
 	@Comment("标题")
 	private String title;
+
+	@Comment("内容")
+	private String content;
+
+	// 用户名
+	@Transient
+	private String userName;
+
+	// 用户头像Url
+	@Transient
+	private String photoUrl;
 
 	public QuestResult() {
 		super();

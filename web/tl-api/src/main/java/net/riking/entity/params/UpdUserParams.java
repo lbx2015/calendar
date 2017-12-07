@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * 更新用户信息参数接收
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @version crateTime：2017年11月29日 下午3:16:14
  * @used TODO
  */
-public class UpdUserParams implements Serializable {
+public class UpdUserParams extends BaseEntity {
 	// 用户ID
 	private String userId;
 

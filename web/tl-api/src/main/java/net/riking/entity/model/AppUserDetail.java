@@ -1,7 +1,5 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +8,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * 
@@ -21,7 +22,7 @@ import net.riking.core.annos.Comment;
 @Comment("用户详情表")
 @Entity
 @Table(name = "t_appuser_detail")
-public class AppUserDetail implements Serializable {
+public class AppUserDetail extends BaseEntity {
 
 	/**
 	 * 
@@ -37,6 +38,7 @@ public class AppUserDetail implements Serializable {
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
 	@Column(name = "id", length = 32)
 	@Comment("pk 同用户登录表t_app_user的id一致")
+	@JsonProperty("appUserDetailId")
 	private String id;
 
 	@Comment("真实姓名")

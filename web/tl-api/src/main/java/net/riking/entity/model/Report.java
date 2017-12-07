@@ -2,9 +2,14 @@ package net.riking.entity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BasePageQueryProp;
@@ -18,6 +23,14 @@ public class Report extends BasePageQueryProp {
 	 * 
 	 */
 	private static final long serialVersionUID = -4087711136918056749L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("reportId")
+	private String id;
 
 	@Comment("报表标题")
 	@Column(name = "title", length = 32)
@@ -77,14 +90,12 @@ public class Report extends BasePageQueryProp {
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
 
-	public Report(){}
-	
+	public Report() {
+	}
+
 	@Comment("报表版本号")
 	@Column(name = "version_no", length = 128)
 	private String versionNo;
-
-	public Report() {
-	}
 
 	public String getTitle() {
 		return title;
@@ -96,6 +107,14 @@ public class Report extends BasePageQueryProp {
 
 	public String getReportNo() {
 		return reportNo;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setReportNo(String reportNo) {

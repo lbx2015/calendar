@@ -9,6 +9,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
@@ -26,6 +28,7 @@ public class AppUserRecommend extends BaseEntity {
 	@Column(name = "id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("appUserRecommendId")
 	private String id;
 
 	// 报表id
@@ -66,6 +69,14 @@ public class AppUserRecommend extends BaseEntity {
 
 	public void setReportName(String reportName) {
 		this.reportName = reportName;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

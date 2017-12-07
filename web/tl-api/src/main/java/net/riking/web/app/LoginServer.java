@@ -1,7 +1,5 @@
 package net.riking.web.app;
 
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +20,6 @@ import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.SmsUtil;
-import net.riking.util.Utils;
 
 /**
  * 用户登录注册接口
@@ -53,9 +50,7 @@ public class LoginServer {
 
 	@ApiOperation(value = "用户登录及注册", notes = "POST")
 	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
-	public AppResp login_(@RequestBody Map<String, Object> params) {
-
-		LoginParams loginParams = Utils.map2Obj(params, LoginParams.class);
+	public AppResp login_(@RequestBody LoginParams loginParams) {
 
 		AppUser user = null;
 		AppUserDetail detail = null;

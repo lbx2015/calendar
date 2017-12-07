@@ -1,8 +1,6 @@
 package net.riking.web.app;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +27,6 @@ import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.TQuestionParams;
-import net.riking.util.Utils;
 
 /**
  * 问题接口
@@ -70,9 +67,7 @@ public class TopicQuestionServer {
 	 */
 	@ApiOperation(value = "问题的详情", notes = "POST")
 	@RequestMapping(value = "/getTopicQuestion", method = RequestMethod.POST)
-	public AppResp getTopicQuestion(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+	public AppResp getTopicQuestion(@RequestBody TQuestionParams tQuestionParams) {
 		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId());
 		// TODO 问题的关注数 后面从redis里面取
 		Integer followNum = tQuestionRelRepo.followCount(tQuestionParams.getTqId(), 0);// 0-关注
@@ -87,9 +82,7 @@ public class TopicQuestionServer {
 				topicQuestion.setIsFollow(1);// 1-已关注
 			}
 		}
-		// 将对象转换成map
-		Map<String, Object> topicQuestionMap = Utils.objProps2Map(topicQuestion, true);
-		return new AppResp(topicQuestionMap, CodeDef.SUCCESS);
+		return new AppResp(topicQuestion, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -99,9 +92,7 @@ public class TopicQuestionServer {
 	 */
 	@ApiOperation(value = "问题，话题，用户的关注", notes = "POST")
 	@RequestMapping(value = "/tQUAgree", method = RequestMethod.POST)
-	public AppResp tQUAgree(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+	public AppResp tQUAgree(@RequestBody TQuestionParams tQuestionParams) {
 		switch (tQuestionParams.getObjType()) {
 			// 问题关注
 			case Const.OBJ_TYPE_1:
@@ -204,11 +195,7 @@ public class TopicQuestionServer {
 	 */
 	@ApiOperation(value = "问题回答列表", notes = "POST")
 	@RequestMapping(value = "/questionAnswerList", method = RequestMethod.POST)
-	public AppResp questionAnswerList(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
-		// 返回到前台的问题回答列表
-		List<Map<String, Object>> questionAnswerMapList = new ArrayList<Map<String, Object>>();
+	public AppResp questionAnswerList(@RequestBody TQuestionParams tQuestionParams) {
 
 		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId());
 		for (QuestionAnswer questionAnswer : questionAnswerList) {
@@ -227,12 +214,9 @@ public class TopicQuestionServer {
 					}
 				}
 			}
-			// 将对象转换成map
-			Map<String, Object> questionAnswerMap = Utils.objProps2Map(questionAnswer, true);
-			questionAnswerMapList.add(questionAnswerMap);
 		}
 
-		return new AppResp(questionAnswerMapList, CodeDef.SUCCESS);
+		return new AppResp(questionAnswerList, CodeDef.SUCCESS);
 	}
 
 }

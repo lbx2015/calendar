@@ -3,12 +3,17 @@ package net.riking.entity.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -28,6 +33,14 @@ public class NewsComment extends BaseAuditProp {
 	 * 
 	 */
 	private static final long serialVersionUID = -8066495971201081735L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("newsCommentId")
+	private String id;
 
 	@Comment("操作人主键 : fk t_app_user 发表评论的用户id")
 	@Column(name = "user_id", nullable = false)
@@ -63,7 +76,7 @@ public class NewsComment extends BaseAuditProp {
 
 	// 评论的回复list
 	@Transient
-	List<Map<String, Object>> nCommentReplyInfoList;
+	List<NCReply> nCReplyList;
 
 	public NewsComment(String id, Date createdTime, Date modifiedTime, String userId, String newsId, String content,
 			String userName, String photoUrl, Integer experience) {
@@ -84,11 +97,11 @@ public class NewsComment extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<Map<String, Object>> getNCommentReplyInfoList() {
-		if (nCommentReplyInfoList == null) {
-			nCommentReplyInfoList = new ArrayList<Map<String, Object>>();
+	public List<NCReply> getNCReplyList() {
+		if (nCReplyList == null) {
+			nCReplyList = new ArrayList<NCReply>();
 		}
-		return this.nCommentReplyInfoList;
+		return this.nCReplyList;
 	}
 
 	public String getUserId() {
@@ -137,6 +150,14 @@ public class NewsComment extends BaseAuditProp {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getNewsId() {

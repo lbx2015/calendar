@@ -4,9 +4,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -26,6 +32,14 @@ public class QuestionAnswer extends BaseAuditProp {
 	 * 
 	 */
 	private static final long serialVersionUID = -449237590873319540L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("questionAnswerId")
+	private String id;
 
 	@Comment("回答人主键: fk t_app_user")
 	@Column(name = "user_id", nullable = false)
@@ -110,6 +124,14 @@ public class QuestionAnswer extends BaseAuditProp {
 	public QuestionAnswer() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getUserId() {

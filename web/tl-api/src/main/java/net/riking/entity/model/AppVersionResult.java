@@ -1,30 +1,40 @@
 package net.riking.entity.model;
 
-public class AppVersionResult {
+import net.riking.core.entity.BaseEntity;
+
+public class AppVersionResult extends BaseEntity {
 
 	private String type;
+
 	private String msg;
+
 	private String versionNumber;
+
 	private String apkUrl;
-	public AppVersionResult(){
+
+	public AppVersionResult() {
 		super();
 	}
-	
-	public AppVersionResult(String type, String msg ,String versionNumber,String apkUrl) {
+
+	public AppVersionResult(String type, String msg, String versionNumber, String apkUrl) {
 		this.type = type;
 		this.msg = msg;
 		this.versionNumber = versionNumber;
-		this.apkUrl= apkUrl;
+		this.apkUrl = apkUrl;
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public String getMsg() {
 		return msg;
 	}
+
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
@@ -44,5 +54,5 @@ public class AppVersionResult {
 	public void setApkUrl(String apkUrl) {
 		this.apkUrl = apkUrl;
 	}
-	
+
 }

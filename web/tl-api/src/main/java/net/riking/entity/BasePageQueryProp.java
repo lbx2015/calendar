@@ -3,14 +3,13 @@ package net.riking.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.riking.core.annos.Comment;
 
@@ -23,13 +22,6 @@ import net.riking.core.annos.Comment;
 @MappedSuperclass
 public class BasePageQueryProp extends PageQuery {
 
-	@Comment("物理主键")
-	@Id
-	@Column(name = "id", length = 32)
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@GeneratedValue(generator = "system-uuid")
-	private String id;
-
 	@Comment("创建人ID")
 	@Column(name = "created_by", updatable = false)
 	private String createdBy;
@@ -40,6 +32,7 @@ public class BasePageQueryProp extends PageQuery {
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
@@ -47,6 +40,7 @@ public class BasePageQueryProp extends PageQuery {
 
 	@Comment("修改时间")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.UpdateTimestamp
 	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")
@@ -61,14 +55,6 @@ public class BasePageQueryProp extends PageQuery {
 	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
 	private Integer isDeleted;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getCreatedBy() {
 		return createdBy;

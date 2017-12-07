@@ -1,9 +1,10 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import net.riking.entity.BaseEntity;
 
 /**
  * 主页的接收参数
@@ -12,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @see
  * @since 1.0
  */
-public class HomeParams implements Serializable {
+public class HomeParams extends BaseEntity {
 
 	/**
 	 * 

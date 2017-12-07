@@ -1,12 +1,14 @@
 package net.riking.entity.resp;
 
+import net.riking.entity.BaseEntity;
+
 /**
  * 核销表返回参数
  * @author jc.tan 2017年11月29日
  * @see
  * @since 1.0
  */
-public class RCompletedRelResp {
+public class RCompletedRelResp extends BaseEntity {
 
 	private String reportId;
 

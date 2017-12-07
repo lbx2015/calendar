@@ -1,7 +1,5 @@
 package net.riking.web.app;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -19,7 +17,6 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.Todo;
 import net.riking.entity.params.TodoParams;
 import net.riking.util.MergeUtil;
-import net.riking.util.Utils;
 
 /**
  * 待办的增删改查
@@ -52,9 +49,7 @@ public class TodoServer {
 
 	@ApiOperation(value = "批量删除代办信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public AppResp delMore(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		TodoParams todoParams = Utils.map2Obj(params, TodoParams.class);
+	public AppResp delMore(@RequestBody TodoParams todoParams) {
 		todoRepo.delete(todoParams.getTodoId());
 
 		return new AppResp().setCode(CodeDef.SUCCESS);

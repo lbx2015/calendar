@@ -2,9 +2,11 @@ package net.riking.entity.model;
 
 import java.util.List;
 
-public class ReportAgence {
+import net.riking.core.entity.BaseEntity;
+
+public class ReportAgence extends BaseEntity {
 	private String agenceName;
-	
+
 	private List<BaseModelPropdict> list;
 
 	public String getAgenceName() {
@@ -23,6 +25,4 @@ public class ReportAgence {
 		this.list = list;
 	}
 
-	
-	
 }
