@@ -17,6 +17,11 @@ import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.HomeParams;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
@@ -60,7 +65,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, int i) {
+    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, final int i) {
         if (getItemViewType(i) == REMMEND_TYPE) {
             MyLog.d("onBindViewHolderr at " + i + " and the view type is " + getItemViewType(i));
             RecommendedViewHolder h = (RecommendedViewHolder) cellHolder;
@@ -95,7 +100,23 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @Override
                 @SuppressLint("RestrictedApi")
                 public void onClick(View v) {
-                    new ShareBottomDialog(h.moreAction.getContext()).show();
+                    final ShareBottomDialog shareBottomDialog = new ShareBottomDialog(h.moreAction.getContext());
+                    shareBottomDialog.shieldButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+                        @Override
+                        public void click(View v) {
+                            shareBottomDialog.dismiss();
+                            HomeParams p = new HomeParams();
+                            p.enabled = 0;//屏蔽
+                            APIClient.shieldQuestion(p, new ZCallBack<ResponseModel<String>>() {
+                                @Override
+                                public void callBack(ResponseModel<String> response) {
+                                    mList.remove(i);
+                                    notifyItemRemoved(i);
+                                }
+                            });
+                        }
+                    });
+                    shareBottomDialog.show();
           /*          //Creating the instance of PopupMenu
                     final PopupMenu popup = new PopupMenu(context, h.moreAction, Gravity.RIGHT);
                     //Inflating the Popup using xml file

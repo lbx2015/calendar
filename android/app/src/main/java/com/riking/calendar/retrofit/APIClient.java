@@ -15,7 +15,6 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.listener.ZCallBackWithFailAndProgressDialog;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
@@ -27,6 +26,7 @@ import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.CommentParams;
+import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
@@ -575,5 +575,9 @@ public class APIClient {
 
     public static void commentAgree(CommentParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.commentAgree(params).enqueue(c);
+    }
+
+    public static void shieldQuestion(HomeParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.shielfProblem(params).enqueue(c);
     }
 }

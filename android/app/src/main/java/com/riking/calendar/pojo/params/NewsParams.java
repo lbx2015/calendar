@@ -11,11 +11,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class NewsParams implements Serializable {
-
-    // 用户Id
-    public String userId = ZPreference.getUserId();
-    ;
+public class NewsParams extends BaseParams implements Serializable {
 
     // 请求方向（up上，down下）
     public String direct;

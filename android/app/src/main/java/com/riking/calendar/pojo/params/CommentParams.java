@@ -10,10 +10,7 @@ import com.riking.calendar.util.ZPreference;
  * @version crateTime：2017年11月28日 下午2:39:26
  * @used TODO
  */
-public class CommentParams {
-
-    // 用户id
-    public String userId= ZPreference.getUserId();
+public class CommentParams extends BaseParams {
 
     // 被回复用户id
     public String toUserId;

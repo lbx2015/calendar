@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.server.News;
@@ -204,7 +205,15 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickShare(final View v) {
-        new ShareBottomDialog(v.getContext()).show();
+        ShareBottomDialog dialog = new ShareBottomDialog(v.getContext());
+        dialog.shieldButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+
+        dialog.show();
     }
 
     class WebAppInterface {
