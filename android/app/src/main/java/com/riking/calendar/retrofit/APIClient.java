@@ -583,7 +583,11 @@ public class APIClient {
         apiInterface.shielfProblem(params).enqueue(c);
     }
 
-    public static void getTopicQuestion(TQuestionParams params, ZCallBack<ResponseModel<TopicQuestion>> c){
+    public static void getTopicQuestion(TQuestionParams params, ZCallBack<ResponseModel<TopicQuestion>> c) {
         apiInterface.getTopicQuestion(params).enqueue(c);
+    }
+
+    public static void follow(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.follow(params).enqueue(c);
     }
 }

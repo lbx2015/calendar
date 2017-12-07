@@ -36,6 +36,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     private int nextPage;
     private TextView questionTitleTv;
     private TextView followNumberTv;
+    private TextView answerNumberTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        answerNumberTv = findViewById(R.id.answer_number);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
         questionTitleTv = findViewById(R.id.question_title);
@@ -64,6 +66,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         recyclerView.setLayoutManager(manager);
         mAdapter = new QuestionListAdapter(this);
         recyclerView.setAdapter(mAdapter);
+
         loadData(1);
     }
 
@@ -86,6 +89,8 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         followNumberTv.setText(question.followNum + "人关注");
         //set question title
         questionTitleTv.setText(question.title);
+        //set answer number
+        answerNumberTv.setText("" + question.answerNum);
     }
 
     private void loadData(final int page) {

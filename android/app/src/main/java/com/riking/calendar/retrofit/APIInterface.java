@@ -219,4 +219,7 @@ public interface APIInterface {
 
     @POST("topicQuestion/getTopicQuestion")
     Call<ResponseModel<TopicQuestion>> getTopicQuestion(@Body TQuestionParams params);
+
+    @POST("common/follow")
+    Call<ResponseModel<String>> follow(@Body TQuestionParams params);
 }
