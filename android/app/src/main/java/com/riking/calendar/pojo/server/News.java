@@ -48,4 +48,8 @@ public class News extends BaseAuditProp {
     // 用户头像Url
 //	@Transient
     public String photoUrl;
+
+    //1-已收藏和0-未收藏
+    public int isCollect;
+
 }

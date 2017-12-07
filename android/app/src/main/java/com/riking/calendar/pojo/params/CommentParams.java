@@ -1,6 +1,7 @@
 package com.riking.calendar.pojo.params;
 
 import com.google.gson.Gson;
+import com.riking.calendar.util.ZPreference;
 
 /**
  * App版本获取接口参数
@@ -12,7 +13,7 @@ import com.google.gson.Gson;
 public class CommentParams {
 
     // 用户id
-    public String userId;
+    public String userId= ZPreference.getUserId();
 
     // 被回复用户id
     public String toUserId;
@@ -21,7 +22,7 @@ public class CommentParams {
     public String commentId;
 
     // 1-回答类；2-资讯类
-    public Integer objType;
+    public int objType = 2;
 
     // 回复Id
     public String replyId;
@@ -30,7 +31,7 @@ public class CommentParams {
     public String content;
 
     // 0-取消；1-赞同
-    public Integer enabled;
+    public int enabled = 0;
 
     @Override
     public String toString() {

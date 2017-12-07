@@ -202,7 +202,12 @@ public interface APIInterface {
     @POST("news/newsCommentPub")
     Call<ResponseModel<NewsComment>> newsCommentPub(@Body NewsParams params);
 
+    @POST("news/newsCollect")
+    Call<ResponseModel<String>> newsCollect(@Body NewsParams params);
 
     @POST("comment/commentReply")
     Call<ResponseModel<NCReply>> commentReply(@Body CommentParams params);
+
+    @POST("comment/commentAgree")
+    Call<ResponseModel<String>> commentAgree(@Body CommentParams params);
 }

@@ -92,7 +92,7 @@ public class ExampleUnitTest {
         AppUser a = new AppUser();
         String js = "{userId:0}";
         Gson g = new Gson();
-        AppUser user = g.fromJson(js,AppUser.class);
+        AppUser user = g.fromJson(js, AppUser.class);
         System.out.println(user.userId);
         System.out.println(new Gson().toJson(j));
         System.out.println(new Gson().toJson(a));
@@ -240,5 +240,20 @@ public class ExampleUnitTest {
         for (int i = 0; i < a.size(); i++) {
             System.out.println(a.get(i));
         }
+    }
+
+    @Test
+    public void testSmartOperation() {
+        int i = 0;
+        i = i & 0;
+        System.out.println(i);
+        i = i & 0;
+        System.out.println(i);
+
+        int j = 0;
+        j = 0 ^ j;
+        System.out.println(j);
+        j = 0 ^ j;
+        System.out.println(j);
     }
 }

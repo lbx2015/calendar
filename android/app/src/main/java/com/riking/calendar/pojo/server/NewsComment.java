@@ -56,4 +56,7 @@ public class NewsComment extends BaseAuditProp {
 //	@Transient
     public List<NCReply> nCommentReplyInfoList;
 
+    //0 disagree 1 agree
+    public int isAgree;
+
 }

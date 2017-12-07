@@ -15,6 +15,7 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.listener.ZCallBackWithFailAndProgressDialog;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
@@ -560,11 +561,19 @@ public class APIClient {
         apiInterface.findNewsCommentList(params).enqueue(c);
     }
 
+    public static void newsCollect(NewsParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.newsCollect(params).enqueue(c);
+    }
+
     public static void newsCommentPub(NewsParams params, ZCallBackWithFail<ResponseModel<NewsComment>> c) {
         apiInterface.newsCommentPub(params).enqueue(c);
     }
 
     public static void commentReply(CommentParams params, ZCallBackWithFail<ResponseModel<NCReply>> c) {
         apiInterface.commentReply(params).enqueue(c);
+    }
+
+    public static void commentAgree(CommentParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.commentAgree(params).enqueue(c);
     }
 }
