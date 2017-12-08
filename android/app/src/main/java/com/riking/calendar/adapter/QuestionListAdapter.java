@@ -1,6 +1,7 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.params.CommentParams;
+import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.AnswerListViewHolder;
@@ -45,6 +49,14 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
         final QuestionAnswer questionAnswer = mList.get(i);
         h.agreeTv.setText(ZR.getNumberString(questionAnswer.agreeNum));
         h.commentTV.setText(ZR.getNumberString(questionAnswer.commentNum));
+        h.commentTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(h.commentTV.getContext(), CommentsActivity.class);
+                i.putExtra(CONST.QUESTION_ID, questionAnswer.questionAnswerId);
+                ZGoto.to(i);
+            }
+        });
 
         if (questionAnswer.isAgree == 1) {
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
@@ -55,16 +67,16 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
         h.agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                final CommentParams p = new CommentParams();
-                p.commentId = questionAnswer.questionAnswerId;
-                //answer type
-                p.objType = 1;
+                final QAnswerParams p = new QAnswerParams();
+                p.questAnswerId = questionAnswer.questionAnswerId;
+                //answer agree type
+                p.optType = 1;
                 if (questionAnswer.isAgree == 1) {
                     p.enabled = 0;
                 } else {
                     p.enabled = 1;
                 }
-                APIClient.commentAgree(p, new ZCallBack<ResponseModel<String>>() {
+                APIClient.qAnswerAgree(p, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         if (p.enabled == 1) {

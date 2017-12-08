@@ -28,6 +28,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
@@ -589,5 +590,9 @@ public class APIClient {
 
     public static void follow(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.follow(params).enqueue(c);
+    }
+
+    public static void qAnswerAgree(QAnswerParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.qAnswerAgree(params).enqueue(c);
     }
 }

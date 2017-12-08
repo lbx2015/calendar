@@ -1,6 +1,7 @@
 package com.riking.calendar.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -42,6 +43,7 @@ import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/24.
+ * answer comments or news comments page
  */
 
 public class CommentsActivity extends AppCompatActivity { //Fragment 数组
@@ -62,13 +64,19 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     private boolean isHasLoadedAll = false;
     private int nextPage;
     private String newsId;
-
+    private String answerId;
+    private boolean isNewsComment;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        newsId = getIntent().getStringExtra(CONST.NEWS_ID);
+        Intent i = getIntent();
+        newsId = i.getStringExtra(CONST.NEWS_ID);
+        answerId = i.getStringExtra(CONST.QUESTION_ID);
+        if(newsId!=null){
+            isNewsComment = true;
+        }
         init();
     }
 
@@ -227,6 +235,35 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
     private void loadData(final int page) {
         isLoading = true;
+        if(isNewsComment){
+            loadNews();
+        }else {
+            loadAnswerComments();
+        }
+       /* new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (page > 3) {
+                    Toast.makeText(CommentsActivity.this, "没有更多数据了",
+                            Toast.LENGTH_SHORT).show();
+                    isHasLoadedAll = true;
+                    return;
+                }
+                for (int i = 0; i <= 15; i++) {
+                    mAdapter.add(i + "");
+                }
+
+                isLoading = false;
+                nextPage = page + 1;
+            }
+        }, 1);*/
+    }
+
+    private void loadAnswerComments(){
+
+    }
+    private void loadNews(){
+
         NewsParams p = new NewsParams();
         p.newsId = newsId;
 
@@ -245,23 +282,6 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                 nextPage = page + 1;
             }
         });
-       /* new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (page > 3) {
-                    Toast.makeText(CommentsActivity.this, "没有更多数据了",
-                            Toast.LENGTH_SHORT).show();
-                    isHasLoadedAll = true;
-                    return;
-                }
-                for (int i = 0; i <= 15; i++) {
-                    mAdapter.add(i + "");
-                }
-
-                isLoading = false;
-                nextPage = page + 1;
-            }
-        }, 1);*/
     }
 
     public void clickBack(final View view) {

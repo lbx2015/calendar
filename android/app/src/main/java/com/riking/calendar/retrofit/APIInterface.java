@@ -25,6 +25,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
@@ -222,4 +223,13 @@ public interface APIInterface {
 
     @POST("common/follow")
     Call<ResponseModel<String>> follow(@Body TQuestionParams params);
+
+    /**
+     * 问题回答的点赞/收藏
+     *
+     * @param params [userId,questAnswerId,optType,enabled]
+     * @return
+     */
+    @POST("qAnswer/agreeOrCollect")
+    Call<ResponseModel<String>> qAnswerAgree(@Body QAnswerParams params);
 }
