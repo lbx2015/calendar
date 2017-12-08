@@ -8,12 +8,12 @@ import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
-import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.util.Debug;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -256,5 +256,18 @@ public class ExampleUnitTest {
         System.out.println(j);
         j = 0 ^ j;
         System.out.println(j);
+
+        long[] numbers = new long[]{1,0,100,7, 12, 856, 1000, 5821, 10500, 101800, 2000000, 7885000, 92150000, 123200000, 99999993333l};
+        for (long number : numbers) {
+            String[] suffix = new String[]{"", "k", "m", "b", "t"};
+            int MAX_LENGTH = 4;
+            String r = new DecimalFormat("##0E0").format(number);
+            System.out.println(r);
+            r = r.replaceAll("E[0-9]", suffix[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+            while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
+                r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
+            }
+            System.out.println(number + " = " + r);
+        }
     }
 }

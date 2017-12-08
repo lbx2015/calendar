@@ -14,6 +14,8 @@ import android.util.Log;
 
 import com.riking.calendar.app.MyApplication;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by zw.zhang on 2017/7/14.
  */
@@ -93,6 +95,17 @@ public class ZR {
             //it is a ldpi display
             //load a low resolution image (100x100px, for example)
         }
+    }
 
+    public static String getNumberString(long number){
+        String[] suffix = new String[]{"", "k", "m", "b", "t"};
+        int MAX_LENGTH = 4;
+        String r = new DecimalFormat("##0E0").format(number);
+        System.out.println(r);
+        r = r.replaceAll("E[0-9]", suffix[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+        while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
+            r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
+        }
+        return r;
     }
 }

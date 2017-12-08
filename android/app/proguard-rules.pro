@@ -57,3 +57,7 @@
 
 # for DexGuard only
 -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+#fix not stop at breakpoints
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable

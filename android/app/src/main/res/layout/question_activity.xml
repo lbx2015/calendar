@@ -90,9 +90,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:drawableLeft="@drawable/com_btn_icon_plus_w"
+                        android:drawablePadding="5dp"
                         android:gravity="center"
-                        android:text="邀请"
-                        android:textColor="@color/color_489dfff"
+                        android:text="关注"
+                        android:textColor="@color/white"
                         android:textSize="14sp" />
                 </FrameLayout>
             </RelativeLayout>
