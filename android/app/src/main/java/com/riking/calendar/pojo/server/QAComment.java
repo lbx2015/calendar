@@ -43,5 +43,5 @@ public class QAComment extends BaseAuditProp {
     public int isAgree;
     // 问题回答评论的回复list
 //	@Transient
-    List<QACReply> qACReplyList;
+    public List<NCReply> qacReplyList;
 }

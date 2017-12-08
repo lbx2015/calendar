@@ -15,7 +15,7 @@ import com.riking.calendar.pojo.server.base.BaseAuditProp;
 public class NCReply extends BaseAuditProp {
     public AppUserResp toUser;
     public AppUserResp fromUser;
-    public String qACReplyId;
+    public String replyId;
 
     //	@Comment("目标对象评论主键: fk t_news_comment 行业资讯的评论表")
 //	@Column(name = "comment_id", nullable = false)
@@ -23,7 +23,7 @@ public class NCReply extends BaseAuditProp {
 
     //	@Comment("目标对象评论回复主键: fk t_nc_reply 回复ID")
 //	谁回复谁的@Column(name = "reply_id")
-    public String replyId;
+    public String last_reply_id;
 
     //	@Comment("内容")
 //	@Column(name = "content", nullable = false)

@@ -43,7 +43,7 @@ import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/24.
- * answer comments or news comments page
+ * news comments page
  */
 
 public class CommentsActivity extends AppCompatActivity { //Fragment 数组
@@ -64,8 +64,6 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     private boolean isHasLoadedAll = false;
     private int nextPage;
     private String newsId;
-    private String answerId;
-    private boolean isNewsComment;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
@@ -73,10 +71,6 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         setContentView(R.layout.activity_comments);
         Intent i = getIntent();
         newsId = i.getStringExtra(CONST.NEWS_ID);
-        answerId = i.getStringExtra(CONST.QUESTION_ID);
-        if(newsId!=null){
-            isNewsComment = true;
-        }
         init();
     }
 
@@ -175,7 +169,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                     params.content = commentContent;
                     params.objType = 2;
                     if (replyComment != null) {
-                        params.userId = replyComment.userId;
+                        params.toUserId = replyComment.userId;
                         params.commentId = replyComment.newsCommentId;
                         //reset to null
                         replyComment = null;
@@ -235,11 +229,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
     private void loadData(final int page) {
         isLoading = true;
-        if(isNewsComment){
-            loadNews();
-        }else {
-            loadAnswerComments();
-        }
+            loadNews(page);
        /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -259,11 +249,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         }, 1);*/
     }
 
-    private void loadAnswerComments(){
-
-    }
-    private void loadNews(){
-
+    private void loadNews(final int page){
         NewsParams p = new NewsParams();
         p.newsId = newsId;
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AnswerCommentsActivity;
 import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
@@ -52,7 +53,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
         h.commentTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(h.commentTV.getContext(), CommentsActivity.class);
+                Intent i = new Intent(h.commentTV.getContext(), AnswerCommentsActivity.class);
                 i.putExtra(CONST.QUESTION_ID, questionAnswer.questionAnswerId);
                 ZGoto.to(i);
             }

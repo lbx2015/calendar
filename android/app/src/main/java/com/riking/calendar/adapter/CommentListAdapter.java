@@ -28,7 +28,7 @@ import com.riking.calendar.view.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//news comment adapter
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.MyViewHolder> {
     public List<NewsComment> mList;
     private CommentsActivity a;

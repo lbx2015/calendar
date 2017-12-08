@@ -35,6 +35,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -594,5 +595,13 @@ public class APIClient {
 
     public static void qAnswerAgree(QAnswerParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.qAnswerAgree(params).enqueue(c);
+    }
+
+    public static void qACommentList(QAnswerParams params, ZCallBack<ResponseModel<List<QAComment>>> c) {
+        apiInterface.qACommentList(params).enqueue(c);
+    }
+
+    public static void qACommentPub(QAnswerParams params, ZCallBack<ResponseModel<QAComment>> c) {
+        apiInterface.qACommentPub(params).enqueue(c);
     }
 }

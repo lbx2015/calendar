@@ -32,6 +32,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -232,4 +233,21 @@ public interface APIInterface {
      */
     @POST("qAnswer/agreeOrCollect")
     Call<ResponseModel<String>> qAnswerAgree(@Body QAnswerParams params);
+    /**
+     * TODO 问题回答评论列表[userId,tqId，questAnswerId]
+     * @param params
+     * @return
+     */
+    @POST("qAnswer/qACommentList")
+    Call<ResponseModel<List<QAComment>>> qACommentList(@Body QAnswerParams params);
+
+    /**
+     * 问题回答的评论
+     * @param params [userId,questAnswerId,content]
+     * @return
+     */
+    @POST("qAnswer/qACommentPub")
+    Call<ResponseModel<QAComment>> qACommentPub(@Body QAnswerParams params);
+
+
 }
