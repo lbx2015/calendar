@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.ExcellentAnswerAdapter;
 import com.riking.calendar.adapter.SearchTopicAdapter;
+import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -22,7 +23,7 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class SearchTopicFragment extends Fragment {
+public class SearchTopicFragment extends Fragment implements PerformInputSearch {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
     SearchTopicAdapter mAdapter;
@@ -103,5 +104,10 @@ public class SearchTopicFragment extends Fragment {
                 nextPage = page + 1;
             }
         }, 1000);
+    }
+
+    @Override
+    public void search(String searchCondition) {
+
     }
 }

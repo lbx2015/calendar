@@ -27,11 +27,12 @@ import com.riking.calendar.fragment.SearchNewsFragment;
 import com.riking.calendar.fragment.SearchPersonFragment;
 import com.riking.calendar.fragment.SearchReportsFragment;
 import com.riking.calendar.fragment.SearchTopicFragment;
+import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZDB;
+import com.riking.calendar.util.ZPreference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,10 +50,10 @@ import io.realm.Sort;
  */
 
 public class SearchActivity extends AppCompatActivity {
-
     //viewpager
     private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new SearchReportsFragment(), new SearchTopicFragment(), new SearchPersonFragment(), new SearchNewsFragment()};
-    public String reportSearchCondition;
+    public String inputSearchCondition;
+    public Fragment currentSelectedFragment = TAB_FRAGMENTS[0];
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
@@ -61,6 +62,7 @@ public class SearchActivity extends AppCompatActivity {
     ImageView clearSearchInputImage;
     LinearLayout localLinearLayout;
     View tabDivider;
+    TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
 
@@ -90,6 +92,22 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initEvents() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentSelectedFragment = TAB_FRAGMENTS[position];
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         setRecyclerView();
@@ -155,7 +173,7 @@ public class SearchActivity extends AppCompatActivity {
     private void initViews() {
         tabDivider = findViewById(R.id.tab_divider);
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.top_tab_layout);
+        tabLayout = (TabLayout) findViewById(R.id.top_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
         localLinearLayout = findViewById(R.id.local_search_linear_layout);
         recommendedRecyclerView = findViewById(R.id.recommend_search_conditions);
@@ -175,19 +193,9 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    reportSearchCondition = s.toString();
+                    inputSearchCondition = s.toString();
                     performSearch();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            saveToRealm();
-                        }
-                    }, 1000);
-                    clearSearchInputImage.setVisibility(View.VISIBLE);
-                    localLinearLayout.setVisibility(View.GONE);
-                    tabLayout.setVisibility(View.VISIBLE);
-                    tabDivider.setVisibility(View.VISIBLE);
-                    mViewPager.setVisibility(View.VISIBLE);
+
                 } else {
                     clearSearchInputImage.setVisibility(View.GONE);
                 }
@@ -196,9 +204,26 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void performSearch() {
-        HashMap<String, String> reportName = new LinkedHashMap<>(1);
-        reportName.put("reportName", reportSearchCondition);
-        reportName.put("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                saveToRealm();
+            }
+        }, 1000);
+
+        clearSearchInputImage.setVisibility(View.VISIBLE);
+        localLinearLayout.setVisibility(View.GONE);
+        tabLayout.setVisibility(View.VISIBLE);
+        tabDivider.setVisibility(View.VISIBLE);
+        mViewPager.setVisibility(View.VISIBLE);
+
+        if (currentSelectedFragment instanceof PerformInputSearch) {
+            ((PerformInputSearch) currentSelectedFragment).search(inputSearchCondition);
+        }
+
+//        HashMap<String, String> reportName = new LinkedHashMap<>(1);
+//        reportName.put("reportName", inputSearchCondition);
+//        reportName.put("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
       /*  APIClient.getReportByName(reportName, new ZCallBack<ResponseModel<List<ReportFrequency>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportFrequency>> response) {
@@ -209,7 +234,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void performSearchByLocalHistory(String searchCondition) {
-        reportSearchCondition = searchCondition;
+        inputSearchCondition = searchCondition;
         performSearch();
         saveToRealm();
     }
@@ -223,12 +248,12 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void saveToRealm() {
-        if (reportSearchCondition.trim().length() == 0) return;
+        if (inputSearchCondition.trim().length() == 0) return;
         ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 SearchConditions s = new SearchConditions();
-                s.name = reportSearchCondition.trim();
+                s.name = inputSearchCondition.trim();
                 s.updateTime = new Date();
                 SearchConditions c = realm.copyToRealmOrUpdate(s);
             }

@@ -26,6 +26,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
@@ -61,7 +62,6 @@ import retrofit2.http.Url;
  */
 
 public interface APIInterface {
-
     @GET
     Call<ResponseBody> doGetListResources(@Url String url);
 
@@ -233,8 +233,10 @@ public interface APIInterface {
      */
     @POST("qAnswer/agreeOrCollect")
     Call<ResponseModel<String>> qAnswerAgree(@Body QAnswerParams params);
+
     /**
      * TODO 问题回答评论列表[userId,tqId，questAnswerId]
+     *
      * @param params
      * @return
      */
@@ -243,11 +245,13 @@ public interface APIInterface {
 
     /**
      * 问题回答的评论
+     *
      * @param params [userId,questAnswerId,content]
      * @return
      */
     @POST("qAnswer/qACommentPub")
     Call<ResponseModel<QAComment>> qACommentPub(@Body QAnswerParams params);
 
-
+    @POST("searchList/findSearchList")
+    Call<ResponseBody> findSearchList(@Body SearchParams params);
 }

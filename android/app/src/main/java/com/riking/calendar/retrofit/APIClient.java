@@ -29,6 +29,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
@@ -64,6 +65,7 @@ import java.util.TimeZone;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -603,5 +605,9 @@ public class APIClient {
 
     public static void qACommentPub(QAnswerParams params, ZCallBack<ResponseModel<QAComment>> c) {
         apiInterface.qACommentPub(params).enqueue(c);
+    }
+
+    public static <T> void findSearchList(SearchParams params, Callback<ResponseBody> c) {
+        apiInterface.findSearchList(params).enqueue(c);
     }
 }

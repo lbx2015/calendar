@@ -6,11 +6,11 @@ import com.riking.calendar.pojo.server.ReportFrequency;
  * Created by zw.zhang on 2017/11/20.
  */
 
-public interface SubscribeReport {
-    void orderReport(ReportFrequency report);
+public interface SubscribeReport<T> {
+    void orderReport(T report);
 
-    void unorderReport(ReportFrequency report);
+    void unorderReport(T report);
 
-    boolean isAddedToMyOrder(ReportFrequency report);
+    boolean isAddedToMyOrder(T report);
      boolean isInEditMode();
 }

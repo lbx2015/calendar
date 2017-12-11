@@ -3,11 +3,13 @@ package com.riking.calendar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.util.Debug;
 
 import org.joda.time.DateTime;
@@ -21,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -257,7 +260,7 @@ public class ExampleUnitTest {
         j = 0 ^ j;
         System.out.println(j);
 
-        long[] numbers = new long[]{1,0,100,7, 12, 856, 1000, 5821, 10500, 101800, 2000000, 7885000, 92150000, 123200000, 99999993333l};
+        long[] numbers = new long[]{1, 0, 100, 7, 12, 856, 1000, 5821, 10500, 101800, 2000000, 7885000, 92150000, 123200000, 99999993333l};
         for (long number : numbers) {
             String[] suffix = new String[]{"", "k", "m", "b", "t"};
             int MAX_LENGTH = 4;
@@ -269,5 +272,25 @@ public class ExampleUnitTest {
             }
             System.out.println(number + " = " + r);
         }
+    }
+
+    @Test
+    public void testGsonList() {
+        List<ReportResult> list = new ArrayList<>();
+        ReportResult r = new ReportResult();
+        r.code = "dd";
+        list.add(r);
+        Gson g = new Gson();
+
+        String s = g.toJson(list);
+
+        System.out.print(s);
+
+        TypeToken<List<ReportResult>> token = new TypeToken<List<ReportResult>>() {
+        };
+
+        List<ReportResult> results = g.fromJson(s, token.getType());
+
+        System.out.print(results.get(0).code);
     }
 }
