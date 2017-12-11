@@ -170,7 +170,6 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                     params.content = commentContent;
                     params.objType = 2;
                     if (replyComment != null) {
-                        params.toUserId = replyComment.userId;
                         params.commentId = replyComment.newsCommentId;
                         //reset to null
                         replyComment = null;
