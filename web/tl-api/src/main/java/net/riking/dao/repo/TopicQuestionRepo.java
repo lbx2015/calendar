@@ -2,6 +2,7 @@ package net.riking.dao.repo;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -36,4 +37,12 @@ public interface TopicQuestionRepo
 	 */
 	@Query("select new net.riking.entity.model.QuestResult(t.id,t.title) from TopicQuestion t where t.isDeleted = 1 and t.isAudit <> 2 and t.title like %?1% ")
 	List<QuestResult> getQuestByParam(String keyWord);
+
+	/**
+	 * 根据topicId查询话题下面的问题
+	 * @param keyWord
+	 * @return
+	 */
+	@Query("select new net.riking.entity.model.QuestResult(tq.id,tq.title,tq.createdTime,(select count(*) from TQuestionRel ttr where ttr.dataType = 0 and ttr.tqId = tq.id) as tqFollowNum,(select count(*) from QuestionAnswer tqa where tqa.questionId = tq.id and tqa.isAudit <> 2 and tqa.isDeleted = 1) as qaCommentNum) FROM TopicQuestion tq  where  tq.isAudit <> 2 and tq.isDeleted = 1 and tq.topicId like %?1% ORDER BY tqFollowNum DESC,qaCommentNum DESC,tq.createdTime DESC")
+	List<QuestResult> findByTid(String topicId, Pageable pageable);
 }

@@ -47,7 +47,7 @@ public interface UserFollowRelRepo
 	void updFollowStatus(String userId, String toUserId, Integer followStatus);
 
 	/**
-	 * 根据主键找到唯一一条点赞记录
+	 * 根据主键找到唯一一条关注记录
 	 * @param userId
 	 * @param toUserId
 	 * @return

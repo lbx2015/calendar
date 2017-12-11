@@ -12,6 +12,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.QAnswerDao;
+import net.riking.entity.model.QuestionAnswer;
 
 @Repository("QAnswerDao")
 public class QAnswerDaoImpl implements QAnswerDao {
@@ -20,23 +21,25 @@ public class QAnswerDaoImpl implements QAnswerDao {
 	private EntityManager entityManager;
 
 	@Override
-	public String getAContentByOne(String questionId) {
+	public QuestionAnswer getAContentByOne(String questionId) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call getAContentByOne(?)";
 		PreparedStatement pstmt = null;
-		String qaContent = "";
+		QuestionAnswer questionAnswer = new QuestionAnswer();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			pstmt.setString(1, questionId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				qaContent = rs.getString("content");
+				questionAnswer.setContent(rs.getString("content"));
+				questionAnswer.setCommentNum(rs.getInt("qaCommentNum"));
+				questionAnswer.setAgreeNum(rs.getInt("qaAgreeNum"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return qaContent;
+		return questionAnswer;
 
 	}
 

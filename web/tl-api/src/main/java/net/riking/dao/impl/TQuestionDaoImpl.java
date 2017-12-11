@@ -17,6 +17,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.TQuestionDao;
+import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.TQuestionResult;
 
 @Repository("tQuestionDao")
@@ -27,7 +28,6 @@ public class TQuestionDaoImpl implements TQuestionDao {
 
 	@Override
 	public List<TQuestionResult> findTopicHomeUp(String userId, Date reqTimeStamp, int start, int end) {
-		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call findTopicHomeUp(?,?,?,?)";
@@ -47,20 +47,19 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				TQuestionResult tQuestionResult = new TQuestionResult();
 				tQuestionResult.setTqId(rs.getString("tqId"));
 				tQuestionResult.setTqTitle(rs.getString("tqTitle"));
-				tQuestionResult.setCreatedTime(rs.getDate("createdTime"));
+				tQuestionResult.setCreatedTime(rs.getTimestamp("createdTime"));
 				tQuestionResult.setTopicTitle(rs.getString("topicTitle"));
-				tQuestionResult.setTopicUrl(rs.getString("topicUrl"));
 				tQuestionResult.setQaContent(rs.getString("qAContent"));
 				tQuestionResult.setTfollowNum(rs.getInt("tFollowNum"));
 				tQuestionResult.setUserId(rs.getString("userId"));
 				tQuestionResult.setUserName(rs.getString("userName"));
-				tQuestionResult.setPhotoUrl(rs.getString("photoUrl"));
+				tQuestionResult.setFromImgUrl(rs.getString("fromImgUrl"));
 				tQuestionResult.setExperience(rs.getInt("experience"));
 				tQuestionResult.setQaCommentNum(rs.getInt("qaCommentNum"));
 				tQuestionResult.setQaAgreeNum(rs.getInt("qaAgreeNum"));
 				tQuestionResult.setQfollowNum(rs.getInt("qFollowNum"));
 				tQuestionResult.setQanswerNum(rs.getInt("qAnswerNum"));
-				tQuestionResult.setPhotoUrl(rs.getString("pushType"));
+				tQuestionResult.setPushType(rs.getInt("pushType"));
 				list.add(tQuestionResult);
 			}
 		} catch (SQLException e) {
@@ -72,7 +71,6 @@ public class TQuestionDaoImpl implements TQuestionDao {
 
 	@Override
 	public List<TQuestionResult> findTopicHomeDown(String userId, Date reqTimeStamp, int start, int end) {
-		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call findTopicHomeDown(?,?,?,?)";
@@ -92,21 +90,86 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				TQuestionResult tQuestionResult = new TQuestionResult();
 				tQuestionResult.setTqId(rs.getString("tqId"));
 				tQuestionResult.setTqTitle(rs.getString("tqTitle"));
-				tQuestionResult.setCreatedTime(rs.getDate("createdTime"));
+				tQuestionResult.setCreatedTime(rs.getTimestamp("createdTime"));
 				tQuestionResult.setTopicTitle(rs.getString("topicTitle"));
-				tQuestionResult.setTopicUrl(rs.getString("topicUrl"));
 				tQuestionResult.setQaContent(rs.getString("qAContent"));
 				tQuestionResult.setTfollowNum(rs.getInt("tFollowNum"));
 				tQuestionResult.setUserId(rs.getString("userId"));
 				tQuestionResult.setUserName(rs.getString("userName"));
-				tQuestionResult.setPhotoUrl(rs.getString("photoUrl"));
+				tQuestionResult.setFromImgUrl(rs.getString("fromImgUrl"));
 				tQuestionResult.setExperience(rs.getInt("experience"));
 				tQuestionResult.setQaCommentNum(rs.getInt("qaCommentNum"));
 				tQuestionResult.setQaAgreeNum(rs.getInt("qaAgreeNum"));
 				tQuestionResult.setQfollowNum(rs.getInt("qFollowNum"));
 				tQuestionResult.setQanswerNum(rs.getInt("qAnswerNum"));
-				tQuestionResult.setPhotoUrl(rs.getString("pushType"));
+				tQuestionResult.setPushType(rs.getInt("pushType"));
 				list.add(tQuestionResult);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+
+	@Override
+	public List<TQuestionResult> findEssenceByTid(String topicId, int start, int end) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call findEssenceByTid(?,?,?)";
+		PreparedStatement pstmt = null;
+		List<TQuestionResult> list = new ArrayList<TQuestionResult>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(topicId))
+				topicId = "";
+			pstmt.setString(1, topicId);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				TQuestionResult tQuestionResult = new TQuestionResult();
+				tQuestionResult.setTqId(rs.getString("tqId"));
+				tQuestionResult.setTqTitle(rs.getString("tqTitle"));
+				tQuestionResult.setCreatedTime(rs.getTimestamp("createdTime"));
+				tQuestionResult.setQaContent(rs.getString("qAContent"));
+				tQuestionResult.setQaId(rs.getString("qaId"));
+				tQuestionResult.setUserName(rs.getString("userName"));
+				tQuestionResult.setFromImgUrl(rs.getString("fromImgUrl"));
+				tQuestionResult.setExperience(rs.getInt("experience"));
+				list.add(tQuestionResult);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+
+	@Override
+	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int end) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call findExcellentResp(?,?,?)";
+		PreparedStatement pstmt = null;
+		List<QAExcellentResp> list = new ArrayList<QAExcellentResp>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(topicId))
+				topicId = "";
+			pstmt.setString(1, topicId);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				QAExcellentResp qaExcellentResp = new QAExcellentResp();
+				qaExcellentResp.setUserId(rs.getString("userId"));
+				qaExcellentResp.setUserName(rs.getString("userName"));
+				qaExcellentResp.setPhotoUrl(rs.getString("photoUrl"));
+				qaExcellentResp.setQanswerNum(rs.getInt("qanswerNum"));
+				qaExcellentResp.setQaAgreeNum(rs.getString("qaAgreeNum"));
+				qaExcellentResp.setExperience(rs.getInt("experience"));
+				list.add(qaExcellentResp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

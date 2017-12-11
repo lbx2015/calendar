@@ -15,7 +15,6 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.ReportDao;
-import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportResult;
 
@@ -24,7 +23,7 @@ public class ReportDaoImpl implements ReportDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
 	public List<ReportFrequency> findAppUserReportById(String userId) {
 		// TODO Auto-generated method stub
@@ -38,7 +37,7 @@ public class ReportDaoImpl implements ReportDao {
 			pstmt.setString(1, userId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				ReportFrequency reportFrequency = new ReportFrequency(rs.getString(1), rs.getString(2), "","","");
+				ReportFrequency reportFrequency = new ReportFrequency(rs.getString(1), rs.getString(2), "", "", "");
 				list.add(reportFrequency);
 			}
 		} catch (SQLException e) {
@@ -57,7 +56,7 @@ public class ReportDaoImpl implements ReportDao {
 		List<ReportResult> list = new ArrayList<ReportResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
-			if(StringUtils.isBlank(param))
+			if (StringUtils.isBlank(param))
 				param = "";
 			pstmt.setString(1, param);
 			ResultSet rs = pstmt.executeQuery();
@@ -69,14 +68,14 @@ public class ReportDaoImpl implements ReportDao {
 				report.setReportId(rs.getString("reportId"));
 				report.setCode(rs.getString("code"));
 				report.setTitle(rs.getString("title"));
-				report.setIsSubcribe(rs.getString("isSubcribe"));
+				report.setIsSubscribe(rs.getString("isSubcribe"));
 				list.add(report);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
-		
+
 	}
 
 }

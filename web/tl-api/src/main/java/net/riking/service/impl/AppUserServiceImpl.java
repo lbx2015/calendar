@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,10 +17,12 @@ import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.utils.UuidUtils;
+import net.riking.dao.AppUserDao;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.AppUserResult;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
@@ -37,6 +40,9 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	SysDataService sysDataService;
+
+	@Autowired
+	AppUserDao appUserDao;
 
 	public AppUser findByPhone(String phone) {
 		return appUserRepo.findByPhone(phone);
@@ -146,5 +152,10 @@ public class AppUserServiceImpl implements AppUserService {
 			logger.info("删除单个文件失败：" + fileName + "不存在！");
 			return false;
 		}
+	}
+
+	@Override
+	public List<AppUserResult> findUserMightKnow(String userId, int begin, int end) {
+		return appUserDao.findUserMightKnow(userId, begin, end);
 	}
 }
