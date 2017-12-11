@@ -54,7 +54,7 @@ public class NewsComment extends BaseAuditProp {
 
     // 评论的回复list
 //	@Transient
-    public List<NCReply> nCommentReplyInfoList;
+    public List<NCReply> ncReplyList;
 
     //0 disagree 1 agree
     public int isAgree;

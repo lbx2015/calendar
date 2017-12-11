@@ -112,7 +112,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         h.replyListAdapter = new ReplyListAdapter(a, recyclerView);
-        List<NCReply> replies = mList.get(position).nCommentReplyInfoList;
+        List<NCReply> replies = mList.get(position).ncReplyList;
         if (replies == null || replies.size() == 0) {
             recyclerView.setVisibility(View.GONE);
         } else {

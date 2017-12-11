@@ -64,6 +64,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     private boolean isHasLoadedAll = false;
     private int nextPage;
     private String newsId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
@@ -175,7 +176,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                         replyComment = null;
 
                     } else if (replyReply != null) {
-                        params.userId = replyReply.fromUser.userId;
+                        params.toUserId = replyReply.fromUser.userId;
                         params.commentId = replyReply.commentId;
                         //reset to null
                         replyReply = null;
@@ -191,10 +192,14 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
                             } else {
                                 writeComment.setText("");
-                                MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
-                                replyListAdapter.mList.add(0, response._data);
-                                MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
-                                replyListAdapter.notifyItemInserted(0);
+                                if (replyListAdapter.mList.size() > 0) {
+                                    MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
+                                    replyListAdapter.mList.add(0, response._data);
+                                    MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
+                                    replyListAdapter.notifyItemInserted(0);
+                                } else {
+                                    loadData(1);
+                                }
 //                                replyListAdapter.notifyDataSetChanged();
 //                                replyRecyclerView.scrollToPosition(0);
                                 Toast.makeText(CommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
@@ -229,7 +234,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
     private void loadData(final int page) {
         isLoading = true;
-            loadNews(page);
+        loadNews(page);
        /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -249,7 +254,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         }, 1);*/
     }
 
-    private void loadNews(final int page){
+    private void loadNews(final int page) {
         NewsParams p = new NewsParams();
         p.newsId = newsId;
 
