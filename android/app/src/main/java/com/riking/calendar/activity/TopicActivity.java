@@ -18,11 +18,14 @@ import com.riking.calendar.fragment.ExcellentAnswererFragment;
 import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
 import com.riking.calendar.fragment.QuestionsFragment;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 
 import static com.riking.calendar.util.CONST.TOPIC_ID;
 
@@ -54,6 +57,40 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
         initViews();
         initEvents();
         loadTopicById();
+        setFollowClickListener();
+
+    }
+
+    private void setFollowClickListener() {
+        followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                final TQuestionParams params = new TQuestionParams();
+                params.attentObjId = topic.topicId;
+                //topic
+                params.objType = 2;
+                //followed
+                if (topic.isFollow == 1) {
+                    params.enabled = 0;
+                } else {
+                    params.enabled = 1;
+                }
+
+                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        topic.isFollow = params.enabled;
+                        if (topic.isFollow == 1) {
+                            ZToast.toast("关注成功");
+                        } else {
+                            ZToast.toast("取消关注");
+                        }
+                        updateFollowButton();
+                    }
+                });
+            }
+        });
+
     }
 
     private void loadTopicById() {
@@ -99,7 +136,6 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initEvents() {
-
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
         TabLayout tabLayout = (TabLayout) findViewById(R.id.top_tab_layout);
