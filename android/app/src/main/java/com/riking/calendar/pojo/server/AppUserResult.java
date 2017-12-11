@@ -13,18 +13,18 @@ public class AppUserResult {
     public String photoUrl;
 
     //	@Comment("经验值")
-    public Integer experience;
+    public int experience;
 
     //	@Comment("回答数")
-    public Integer answerNum;
+    public int answerNum;
 
     //	@Comment("点赞数")
-    public Integer agreeNum;
+    public int agreeNum;
 
     //	@Comment("是否已关注 0-未关注，1-已关注")
-    public Integer isFollow;
+    public int isFollow;
 
     //	@Comment("是否已邀请 0-未邀请，1-已邀请")
-    public Integer isInvited;
+    public int isInvited;
 
 }

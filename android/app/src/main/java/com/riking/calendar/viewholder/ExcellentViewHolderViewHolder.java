@@ -14,8 +14,8 @@ import butterknife.ButterKnife;
 
 public class ExcellentViewHolderViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.answer_summary)
-    public TextView answerSummary;
+    @BindView(R.id.summary)
+    public TextView summary;
     @BindView(R.id.user_name)
     public TextView userName;
     @BindView(R.id.user_icon)
