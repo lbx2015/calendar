@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
 
@@ -18,7 +20,7 @@ import java.util.List;
 
 public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
     private Context context;
-    private List<String> mList;
+    private List<AppUserResult> mList;
 
     public SearchPersonAdapter(Context context) {
         this.context = context;
@@ -86,8 +88,8 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
+    public void setData(List<AppUserResult> data) {
+        this.mList = data;
         notifyDataSetChanged();
     }
 
