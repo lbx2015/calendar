@@ -99,7 +99,6 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void setData() {
-
         updateFollowButton();
         //set follow number
         followNumberTv.setText(question.followNum + "人关注");

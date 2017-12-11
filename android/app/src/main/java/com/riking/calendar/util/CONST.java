@@ -65,6 +65,7 @@ public class CONST {
     public static final String NEWS_ID = "NEWS_ID";
     public static final String CHECK_NOT_LOGIN_ON_CLICK = "CHECK_NOT_LOGIN_ON_CLICK";
     public static final String QUESTION_ID = "QUESTION_ID";
+    public static final String TOPIC_ID = "TOPIC_ID";
 
     //滚动事件
     public enum ScrollDirection {

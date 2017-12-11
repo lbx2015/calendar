@@ -31,6 +31,7 @@ import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
@@ -39,6 +40,7 @@ import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
@@ -607,7 +609,11 @@ public class APIClient {
         apiInterface.qACommentPub(params).enqueue(c);
     }
 
-    public static <T> void findSearchList(SearchParams params, Callback<ResponseBody> c) {
+    public static void findSearchList(SearchParams params, Callback<ResponseBody> c) {
         apiInterface.findSearchList(params).enqueue(c);
+    }
+
+    public static void getTopic(@Body TopicParams params, ZCallBack<ResponseModel<Topic>> c) {
+        apiInterface.getTopic(params).enqueue(c);
     }
 }

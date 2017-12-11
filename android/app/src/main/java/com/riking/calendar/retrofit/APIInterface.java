@@ -28,6 +28,7 @@ import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
@@ -36,6 +37,7 @@ import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
@@ -254,4 +256,7 @@ public interface APIInterface {
 
     @POST("searchList/findSearchList")
     Call<ResponseBody> findSearchList(@Body SearchParams params);
+
+    @POST("topic/getTopic/")
+    Call<ResponseModel<Topic>> getTopic(@Body TopicParams params);
 }

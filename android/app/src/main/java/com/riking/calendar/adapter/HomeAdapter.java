@@ -22,6 +22,7 @@ import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
@@ -88,7 +89,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
 //                    context.startActivity(new Intent(context, TopicActivity.class));
-                    ZGoto.to(TopicActivity.class);
+                    Intent i = new Intent(context, TopicActivity.class);
+                    i.putExtra(CONST.TOPIC_ID, "1");
+                    ZGoto.to(i);
                 }
             });
 
