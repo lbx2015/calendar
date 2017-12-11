@@ -133,7 +133,7 @@ public class Const {
 
 	public static final int OPT_TYPE_INVITE_STATUS = 2;// 显示邀请状态
 
-	public static final int OPT_TYPE_SUBSCRIBE_STATUS = 2;// 显示订阅状态
+	public static final int OPT_TYPE_SUBSCRIBE_STATUS = 3;// 显示订阅状态
 	/** --------------------操作类型状态 end-------------------------- */
 
 	/** -------------------搜索栏操作对象状态 begin-------------------------- */

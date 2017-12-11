@@ -1,8 +1,6 @@
 package net.riking.web.app;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -86,15 +84,13 @@ public class TopServer {
 	}
 
 	/**
-	 * TODO 精华问题回答列表[tqId]
+	 * TODO 精华问题回答列表[topicId,optType（1-精华；2-问题；3-优秀回答者）]
 	 * @param params
 	 * @return
 	 */
 	@ApiOperation(value = "精华问题回答列表", notes = "POST")
 	@RequestMapping(value = "/essenceQAList", method = RequestMethod.POST)
 	public AppResp essenceQAList_(@RequestBody TopicParams topicParams) {
-		// 返回到前台的问题回答列表
-		List<Map<String, Object>> questionAnswerMapList = new ArrayList<Map<String, Object>>();
 		switch (topicParams.getOptType()) {
 			// 精华
 			case Const.TOP_OBJ_OPT_ESSENCE:

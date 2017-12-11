@@ -2,6 +2,8 @@ package net.riking.entity.params;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import net.riking.entity.BaseEntity;
 
 /**
@@ -24,6 +26,7 @@ public class RCompletedRelParams extends BaseEntity {
 	private String reportId;
 
 	// 完成时间（yyyyMMdd）
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date completedDate;
 
 	// 提醒时间（yyyyMMdd）

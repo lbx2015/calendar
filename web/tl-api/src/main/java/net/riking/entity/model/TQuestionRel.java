@@ -88,4 +88,10 @@ public class TQuestionRel extends BaseEntity {
 		this.createdTime = createdTime;
 	}
 
+	@Override
+	public String toString() {
+		return "TQuestionRel [userId=" + userId + ", tqId=" + tqId + ", dataType=" + dataType + ", createdTime="
+				+ createdTime + "]";
+	}
+
 }

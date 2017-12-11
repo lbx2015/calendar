@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import net.riking.entity.BaseEntity;
 
 /**
@@ -28,6 +30,7 @@ public class HomeParams extends BaseEntity {
 
 	// 请求上翻最新时间戳
 	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date reqTimeStamp;
 
 	// 1-问题；2-话题

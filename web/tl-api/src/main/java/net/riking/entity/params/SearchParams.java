@@ -18,6 +18,9 @@ public class SearchParams extends BaseEntity {
 	// 用户Id
 	private String userId;
 
+	// 问题Id
+	private String tqId;
+
 	// 显示操作类型：0-不显示状态；1-显示关注状态；2-显示邀请状态
 	private Integer showOptType;
 
@@ -33,6 +36,14 @@ public class SearchParams extends BaseEntity {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getTqId() {
+		return tqId;
+	}
+
+	public void setTqId(String tqId) {
+		this.tqId = tqId;
 	}
 
 	public Integer getShowOptType() {

@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -44,15 +45,17 @@ public class NCReply extends BaseAuditProp {
 	@Column(name = "id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
-	@JsonProperty("nCReplyId")
+	@JsonProperty("replyId")
 	private String id;
 
 	@Comment("操作人主键: fk t_app_user 发表回复的user_id")
-	@Column(name = "user_id", nullable = false)
-	private String userId;
+	@Column(name = "from_user_id", nullable = false)
+	@JsonIgnore
+	private String fromUserId;
 
 	@Comment("被操作人主键: fk t_app_user 被评论人ID")
 	@Column(name = "to_user_id")
+	@JsonIgnore
 	private String toUserId;
 
 	@Comment("目标对象评论主键: fk t_news_comment 行业资讯的评论表")
@@ -61,6 +64,7 @@ public class NCReply extends BaseAuditProp {
 
 	@Comment("目标对象评论回复主键: fk t_nc_reply 回复ID")
 	@Column(name = "reply_id")
+	@JsonProperty("lastReplyId")
 	private String replyId;
 
 	@Comment("内容")
@@ -74,9 +78,11 @@ public class NCReply extends BaseAuditProp {
 	ToUser toUser;
 
 	@Transient
+	@JsonIgnore
 	private String userName;
 
 	@Transient
+	@JsonIgnore
 	private String toUserName;
 
 	public NCReply() {
@@ -84,13 +90,13 @@ public class NCReply extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NCReply(String id, Date createdTime, Date modifiedTime, String userId, String toUserId, String commentId,
+	public NCReply(String id, Date createdTime, Date modifiedTime, String fromUserId, String toUserId, String commentId,
 			String replyId, String content, String userName, String toUserName) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.userId = userId;
+		this.fromUserId = fromUserId;
 		this.toUserId = toUserId;
 		this.commentId = commentId;
 		this.replyId = replyId;
@@ -107,12 +113,12 @@ public class NCReply extends BaseAuditProp {
 		this.id = id;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getFromUserId() {
+		return fromUserId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setFromUserId(String fromUserId) {
+		this.fromUserId = fromUserId;
 	}
 
 	public String getUserName() {
