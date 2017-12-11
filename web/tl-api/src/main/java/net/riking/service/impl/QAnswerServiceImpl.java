@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.dao.QAnswerDao;
+import net.riking.entity.model.QuestionAnswer;
 import net.riking.service.QAnswerService;
 
 @Service("QAnswerService")
@@ -23,7 +24,7 @@ public class QAnswerServiceImpl implements QAnswerService {
 	 * @return
 	 */
 	@Override
-	public String getAContentByOne(String questionId) {
+	public QuestionAnswer getAContentByOne(String questionId) {
 
 		return qAnswerDao.getAContentByOne(questionId);
 

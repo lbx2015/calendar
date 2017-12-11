@@ -24,7 +24,7 @@ public class ReportResult extends BaseEntity {
 	private String reportId;
 
 	@Comment("是否订阅")
-	private String isSubcribe;
+	private String isSubscribe;
 
 	public String getReportType() {
 		return reportType;
@@ -50,12 +50,12 @@ public class ReportResult extends BaseEntity {
 		this.reportId = reportId;
 	}
 
-	public String getIsSubcribe() {
-		return isSubcribe;
+	public String getIsSubscribe() {
+		return isSubscribe;
 	}
 
-	public void setIsSubcribe(String isSubcribe) {
-		this.isSubcribe = isSubcribe;
+	public void setIsSubscribe(String isSubscribe) {
+		this.isSubscribe = isSubscribe;
 	}
 
 	public String getCode() {

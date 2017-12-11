@@ -87,8 +87,8 @@ public class SearchListServer {
 	}
 
 	/**
-	 * 搜索列表[userId;showOptType(显示操作类型：0-不显示状态；1-显示关注状态；2-显示邀请状态)objType（1-报表；2-话题；3-人脉；4-资讯；5-问题）;
-	 * keyword:关键字；]
+	 * 搜索列表[userId;showOptType(显示操作类型：0-不显示状态；1-显示关注/收藏、订阅状态；2-显示邀请状态)objType（1-报表；2-话题；3-人脉；4-资讯；5-
+	 * 问题）; keyword:关键字；]
 	 * @param params
 	 * @return
 	 */
@@ -147,10 +147,10 @@ public class SearchListServer {
 			ReportResult r = reportResultList.get(i);
 			for (ReportSubcribeRel rel : reportSubcribeRelList) {
 				if (r.getReportId().equals(rel.getReportId())) {
-					r.setIsSubcribe("1");// 已订阅
+					r.setIsSubscribe("1");// 已订阅
 					// 不显示状态
 					if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
-						r.setIsSubcribe(null);
+						r.setIsSubscribe(null);
 					}
 					reportResultList.remove(i);
 					reportResultList.add(i, r);

@@ -71,7 +71,7 @@ public class AppReportServer {
 				ReportResult r = reportList.get(i);
 				for (ReportSubcribeRel rel : reportSubcribeRelList) {
 					if (r.getReportId().equals(rel.getReportId())) {
-						r.setIsSubcribe("1");// 已订阅
+						r.setIsSubscribe("1");// 已订阅
 						reportList.remove(i);
 						reportList.add(i, r);
 					}
@@ -128,7 +128,7 @@ public class AppReportServer {
 				if (reportSubcribeRelList != null && reportSubcribeRelList.size() > 0) {
 					for (ReportSubcribeRel rel : reportSubcribeRelList) {
 						if (reportResult.getReportId().equals(rel.getReportId())) {
-							reportResult.setIsSubcribe("1");// 已订阅
+							reportResult.setIsSubscribe("1");// 已订阅
 						}
 					}
 				}

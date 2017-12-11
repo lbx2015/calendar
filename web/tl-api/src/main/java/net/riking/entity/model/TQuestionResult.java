@@ -2,7 +2,7 @@ package net.riking.entity.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.BaseEntity;
@@ -12,11 +12,13 @@ public class TQuestionResult extends BaseEntity {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8418351387803616527L;
+	private static final long serialVersionUID = 6032956463780926056L;
 
 	@Comment("问题主键")
-	@JsonProperty("tqId")
 	private String tqId;
+
+	@Comment("问题回答主键")
+	private String qaId;
 
 	@Comment("问题标题")
 	private String tqTitle;
@@ -24,17 +26,12 @@ public class TQuestionResult extends BaseEntity {
 	@Comment("话题的标题")
 	private String topicTitle;
 
-	@Comment("创建时间")
+	// 创建时间
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date createdTime;
-
-	@Comment("话题的头像")
-	private String topicUrl;
 
 	@Comment("问题的回答内容")
 	private String qaContent;
-
-	@Comment("话题关注数")
-	private Integer tfollowNum;
 
 	@Comment("用户Id")
 	private String userId;
@@ -42,8 +39,8 @@ public class TQuestionResult extends BaseEntity {
 	@Comment("用户名")
 	private String userName;
 
-	@Comment("用户头像")
-	private String photoUrl;
+	@Comment("用户/话题头像")
+	private String fromImgUrl;
 
 	@Comment("经验值")
 	private Integer experience;
@@ -57,6 +54,9 @@ public class TQuestionResult extends BaseEntity {
 	@Comment("问题的关注数")
 	private Integer qfollowNum;
 
+	@Comment("话题关注数")
+	private Integer tfollowNum;
+
 	@Comment("问题的回答数")
 	private Integer qanswerNum;
 
@@ -65,22 +65,22 @@ public class TQuestionResult extends BaseEntity {
 
 	public TQuestionResult() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public TQuestionResult(String tqId, String tqTitle, String topicTitle, String topicUrl, String qaContent,
-			Integer tfollowNum, String userId, String userName, String photoUrl, Integer experience,
+	public TQuestionResult(String tqId, String qaId, String tqTitle, String topicTitle, Date createdTime,
+			String qaContent, Integer tfollowNum, String userId, String userName, String fromImgUrl, Integer experience,
 			Integer qaCommentNum, Integer qaAgreeNum, Integer qfollowNum, Integer qanswerNum, Integer pushType) {
 		super();
 		this.tqId = tqId;
+		this.qaId = qaId;
 		this.tqTitle = tqTitle;
 		this.topicTitle = topicTitle;
-		this.topicUrl = topicUrl;
+		this.createdTime = createdTime;
 		this.qaContent = qaContent;
 		this.tfollowNum = tfollowNum;
 		this.userId = userId;
 		this.userName = userName;
-		this.photoUrl = photoUrl;
+		this.fromImgUrl = fromImgUrl;
 		this.experience = experience;
 		this.qaCommentNum = qaCommentNum;
 		this.qaAgreeNum = qaAgreeNum;
@@ -97,6 +97,14 @@ public class TQuestionResult extends BaseEntity {
 		this.tqId = tqId;
 	}
 
+	public String getQaId() {
+		return qaId;
+	}
+
+	public void setQaId(String qaId) {
+		this.qaId = qaId;
+	}
+
 	public String getTqTitle() {
 		return tqTitle;
 	}
@@ -111,14 +119,6 @@ public class TQuestionResult extends BaseEntity {
 
 	public void setTopicTitle(String topicTitle) {
 		this.topicTitle = topicTitle;
-	}
-
-	public String getTopicUrl() {
-		return topicUrl;
-	}
-
-	public void setTopicUrl(String topicUrl) {
-		this.topicUrl = topicUrl;
 	}
 
 	public Integer getTfollowNum() {
@@ -145,12 +145,12 @@ public class TQuestionResult extends BaseEntity {
 		this.userName = userName;
 	}
 
-	public String getPhotoUrl() {
-		return photoUrl;
+	public String getFromImgUrl() {
+		return fromImgUrl;
 	}
 
-	public void setPhotoUrl(String photoUrl) {
-		this.photoUrl = photoUrl;
+	public void setFromImgUrl(String fromImgUrl) {
+		this.fromImgUrl = fromImgUrl;
 	}
 
 	public Integer getExperience() {

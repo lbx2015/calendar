@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import net.riking.entity.BaseEntity;
+import net.riking.entity.PageQuery;
 
 /**
  * 话题的接收参数
@@ -9,7 +9,7 @@ import net.riking.entity.BaseEntity;
  * @see
  * @since 1.0
  */
-public class TopicParams extends BaseEntity {
+public class TopicParams extends PageQuery {
 	/**
 	 * 
 	 */

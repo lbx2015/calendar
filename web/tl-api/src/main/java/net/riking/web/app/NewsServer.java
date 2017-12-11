@@ -3,6 +3,7 @@ package net.riking.web.app;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -110,10 +111,17 @@ public class NewsServer {
 				List<News> newsInfoAscList = newsRepo.findNewsListRefresh(newsParams.getReqTimeStamp(),
 						new PageRequest(0, 30));
 				// 把查出来的数据按倒序重新排列
-				for (int i = 0; i < newsInfoAscList.size(); i++) {
-					newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i - 1));
-				}
-				Collections.sort(list,  Comparator<? super T> c); 
+				Collections.sort(newsInfoAscList, new Comparator<News>() {
+
+					@Override
+					public int compare(News o1, News o2) {
+						if (o2.getCreatedTime().after(o1.getCreatedTime())) {
+							return -1;
+						} else {
+							return 1;
+						}
+					}
+				});
 				break;
 			default:
 				logger.error("请求方向参数异常：direct:" + newsParams.getDirect());
