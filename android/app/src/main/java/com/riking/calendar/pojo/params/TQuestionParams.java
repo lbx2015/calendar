@@ -8,7 +8,6 @@ package com.riking.calendar.pojo.params;
  * @since 1.0
  */
 public class TQuestionParams extends BaseParams {
-
 	// 话题下面问题Id
 	public String tqId;
 
@@ -23,5 +22,4 @@ public class TQuestionParams extends BaseParams {
 
 	// 问题回答Id
 	public String questAnswerId;
-
 }
