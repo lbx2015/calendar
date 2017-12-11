@@ -1,7 +1,6 @@
 package net.riking.web.app;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +16,7 @@ import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NewsRepo;
+import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.ReportSubcribeRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
@@ -32,7 +32,6 @@ import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.model.TopicResult;
 import net.riking.entity.params.SearchParams;
 import net.riking.service.ReportService;
-import net.riking.util.Utils;
 
 /**
  * 搜索接口
@@ -72,17 +71,18 @@ public class SearchListServer {
 	@Autowired
 	TopicQuestionRepo topicQuestionRepo;
 
+	@Autowired
+	QAInviteRepo qAInviteRepo;
+
 	/**
 	 * 显示热门资讯（6条）
-	 * @param params
+	 * @param params[userId]
 	 * @return
 	 */
 	@ApiOperation(value = "显示热门搜索列表", notes = "POST")
 	@RequestMapping(value = "/findHotSearchList", method = RequestMethod.POST)
-	public AppResp findHotSearchList(@RequestBody Map<String, Object> params) {
-		// 将map转换成参数对象
-		SearchParams searchParams = Utils.map2Obj(params, SearchParams.class);
-
+	public AppResp findHotSearchList(@RequestBody SearchParams searchParams) {
+		// TODO
 		return new AppResp(CodeDef.SUCCESS);
 	}
 
@@ -96,8 +96,7 @@ public class SearchListServer {
 	@RequestMapping(value = "/findSearchList", method = RequestMethod.POST)
 	public AppResp findSearchList(@RequestBody SearchParams searchParams) {
 
-		if (searchParams.getShowOptType() == null || (searchParams.getShowOptType() != 0
-				|| searchParams.getShowOptType() != 1 || searchParams.getShowOptType() != 2)) {
+		if (searchParams.getShowOptType() == null) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(searchParams.getKeyWord())) {
@@ -107,28 +106,23 @@ public class SearchListServer {
 		switch (searchParams.getObjType()) {
 			// 报表
 			case Const.OPJ_TYPE_REPORT:
-				List<ReportResult> reportResults = findReportByKeyWord(searchParams.getUserId(),
-						searchParams.getKeyWord(), searchParams.getShowOptType());
+				List<ReportResult> reportResults = findReportByKeyWord(searchParams);
 				return new AppResp(reportResults, CodeDef.SUCCESS);
 			// 话题
 			case Const.OPJ_TYPE_TOPIC:
-				List<TopicResult> topicResults = findTopicByKeyWord(searchParams.getUserId(), searchParams.getKeyWord(),
-						searchParams.getShowOptType());
+				List<TopicResult> topicResults = findTopicByKeyWord(searchParams);
 				return new AppResp(topicResults, CodeDef.SUCCESS);
 			// 人脉
 			case Const.OPJ_TYPE_CONTACTS:
-				List<AppUserResult> appUserResults = findUserByKeyWord(searchParams.getUserId(),
-						searchParams.getKeyWord(), searchParams.getShowOptType());
+				List<AppUserResult> appUserResults = findUserByKeyWord(searchParams);
 				return new AppResp(appUserResults, CodeDef.SUCCESS);
 			// 资讯
 			case Const.OPJ_TYPE_NEWS:
-				List<NewsResult> newsResults = findNewsByKeyWord(searchParams.getUserId(), searchParams.getKeyWord(),
-						searchParams.getShowOptType());
+				List<NewsResult> newsResults = findNewsByKeyWord(searchParams);
 				return new AppResp(newsResults, CodeDef.SUCCESS);
 			// 问题
 			case Const.OPJ_TYPE_QUEST:
-				List<QuestResult> questResult = findQuestByKeyWord(searchParams.getUserId(), searchParams.getKeyWord(),
-						searchParams.getShowOptType());
+				List<QuestResult> questResult = findQuestByKeyWord(searchParams);
 				return new AppResp(questResult, CodeDef.SUCCESS);
 			default:
 				logger.error("参数异常：objType:" + searchParams.getObjType());
@@ -143,18 +137,19 @@ public class SearchListServer {
 	 * @param keyWord
 	 * @return
 	 */
-	private List<ReportResult> findReportByKeyWord(String userId, String keyWord, Integer showOptType) {
+	private List<ReportResult> findReportByKeyWord(SearchParams searchParams) {
 		// 获取订阅关联表
-		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo.findUserReportList(userId);
+		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo
+				.findUserReportList(searchParams.getUserId());
 
-		List<ReportResult> reportResultList = reportService.getReportByParam(keyWord);
+		List<ReportResult> reportResultList = reportService.getReportByParam(searchParams.getKeyWord());
 		for (int i = 0; i < reportResultList.size(); i++) {
 			ReportResult r = reportResultList.get(i);
 			for (ReportSubcribeRel rel : reportSubcribeRelList) {
 				if (r.getReportId().equals(rel.getReportId())) {
 					r.setIsSubcribe("1");// 已订阅
 					// 不显示状态
-					if (Const.OPT_TYPE_BLANK_STATUS == showOptType) {
+					if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 						r.setIsSubcribe(null);
 					}
 					reportResultList.remove(i);
@@ -171,23 +166,23 @@ public class SearchListServer {
 	 * @param keyword
 	 * @return
 	 */
-	private List<TopicResult> findTopicByKeyWord(String userId, String keyWord, Integer showOptType) {
-		List<TopicResult> topicResults = topicRepo.getTopicByParam(keyWord);
-		List<String> topicIds = topicRelRepo.findByUser(userId, 0);// 0-关注
+	private List<TopicResult> findTopicByKeyWord(SearchParams searchParams) {
+		List<TopicResult> topicResults = topicRepo.getTopicByParam(searchParams.getKeyWord());
+		List<String> topicIds = topicRelRepo.findByUser(searchParams.getUserId(), 0);// 0-关注
 
 		for (int i = 0; i < topicResults.size(); i++) {
 			TopicResult topicResult = topicResults.get(i);
 			// TODO 话题的关注数 后面从redis里面取
 			Integer followNum = topicRelRepo.followCount(topicResult.getId(), 0);
+			topicResult.setFollowNum(followNum);
 			topicResult.setIsFollow(0);// 0-未关注
 			for (String topicId : topicIds) {
 				if (topicResult.getId().equals(topicId)) {
 					topicResult.setIsFollow(1);// 1-已关注
-					topicResult.setFollowNum(followNum);
 				}
 			}
 			// 不显示状态
-			if (Const.OPT_TYPE_BLANK_STATUS == showOptType) {
+			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 				topicResult.setIsFollow(null);
 			}
 			topicResults.remove(i);
@@ -202,24 +197,38 @@ public class SearchListServer {
 	 * @param keyWord
 	 * @return
 	 */
-	private List<AppUserResult> findUserByKeyWord(String userId, String keyWord, Integer showOptType) {
-		List<AppUserResult> appUserResults = appUserRepo.getUserByParam(keyWord);
-		List<String> toUserIds = userFollowRelRepo.findByUser(userId);
+	private List<AppUserResult> findUserByKeyWord(SearchParams searchParams) {
+		List<AppUserResult> appUserResults = appUserRepo.getUserByParam(searchParams.getKeyWord());
 
 		for (int i = 0; i < appUserResults.size(); i++) {
 			AppUserResult appUserResult = appUserResults.get(i);
 			// TODO 用户的回答数 后面从redis里面取
-			Integer answerNum = questionAnswerRepo.answerCountByUserId(userId);
+			Integer answerNum = questionAnswerRepo.answerCountByUserId(searchParams.getUserId());
 
 			appUserResult.setIsFollow(0);// 0-未关注
 			appUserResult.setAnswerNum(answerNum);// 回答数
-			for (String toUserId : toUserIds) {
-				if (appUserResult.getId().equals(toUserId)) {
-					appUserResult.setIsFollow(1);// 1-已关注
+			// 显示关注状态
+			if (Const.OPT_TYPE_FOLLOW_STATUS == searchParams.getShowOptType()) {
+				List<String> toUserIds = userFollowRelRepo.findByUser(searchParams.getUserId());
+				for (String toUserId : toUserIds) {
+					if (appUserResult.getId().equals(toUserId)) {
+						appUserResult.setIsFollow(1);// 1-已关注
+					}
 				}
 			}
+			// 显示邀请状态
+			if (Const.OPT_TYPE_INVITE_STATUS == searchParams.getShowOptType()) {
+				List<String> toUserIds = qAInviteRepo.findToIdByUIdAndQId(searchParams.getUserId(),
+						searchParams.getTqId());
+				for (String toUserId : toUserIds) {
+					if (appUserResult.getId().equals(toUserId)) {
+						appUserResult.setIsInvited(1);// 1-已邀请
+					}
+				}
+			}
+
 			// 不显示状态
-			if (Const.OPT_TYPE_BLANK_STATUS == showOptType) {
+			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 				appUserResult.setIsFollow(null);
 			}
 			appUserResults.remove(i);
@@ -234,8 +243,8 @@ public class SearchListServer {
 	 * @param keyWord
 	 * @return
 	 */
-	private List<NewsResult> findNewsByKeyWord(String userId, String keyWord, Integer showOptType) {
-		List<NewsResult> newsResults = newsRepo.getNewsByParam(keyWord);
+	private List<NewsResult> findNewsByKeyWord(SearchParams searchParams) {
+		List<NewsResult> newsResults = newsRepo.getNewsByParam(searchParams.getKeyWord());
 
 		return newsResults;
 	}
@@ -246,8 +255,8 @@ public class SearchListServer {
 	 * @param keyWord
 	 * @return
 	 */
-	private List<QuestResult> findQuestByKeyWord(String userId, String keyWord, Integer showOptType) {
-		List<QuestResult> questResults = topicQuestionRepo.getQuestByParam(keyWord);
+	private List<QuestResult> findQuestByKeyWord(SearchParams searchParams) {
+		List<QuestResult> questResults = topicQuestionRepo.getQuestByParam(searchParams.getKeyWord());
 
 		return questResults;
 	}

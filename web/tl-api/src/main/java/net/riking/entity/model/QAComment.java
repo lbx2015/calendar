@@ -1,6 +1,5 @@
 package net.riking.entity.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,7 +75,8 @@ public class QAComment extends BaseAuditProp {
 
 	// 问题回答评论的回复list
 	@Transient
-	List<QACReply> qACReplyList;
+	@JsonProperty("qacReplyList")
+	List<QACReply> qacReplyList;
 
 	public QAComment() {
 		super();
@@ -146,11 +146,12 @@ public class QAComment extends BaseAuditProp {
 		this.content = content;
 	}
 
-	public List<QACReply> getQACReplyList() {
-		if (qACReplyList == null) {
-			qACReplyList = new ArrayList<QACReply>();
-		}
-		return this.qACReplyList;
+	public List<QACReply> getQacReplyList() {
+		return qacReplyList;
+	}
+
+	public void setQacReplyList(List<QACReply> qacReplyList) {
+		this.qacReplyList = qacReplyList;
 	}
 
 	public String getUserName() {

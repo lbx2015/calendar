@@ -1,6 +1,5 @@
 package net.riking.entity.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,7 +75,7 @@ public class NewsComment extends BaseAuditProp {
 
 	// 评论的回复list
 	@Transient
-	List<NCReply> nCReplyList;
+	List<NCReply> ncReplyList;
 
 	public NewsComment(String id, Date createdTime, Date modifiedTime, String userId, String newsId, String content,
 			String userName, String photoUrl, Integer experience) {
@@ -97,11 +96,12 @@ public class NewsComment extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<NCReply> getNCReplyList() {
-		if (nCReplyList == null) {
-			nCReplyList = new ArrayList<NCReply>();
-		}
-		return this.nCReplyList;
+	public List<NCReply> getNcReplyList() {
+		return ncReplyList;
+	}
+
+	public void setNcReplyList(List<NCReply> ncReplyList) {
+		this.ncReplyList = ncReplyList;
 	}
 
 	public String getUserId() {

@@ -243,12 +243,9 @@ public class QAnswerServer {
 						qacReply.setToUser(toUser);
 					}
 				}
-				qacReply.setToUserId(null);
-				qacReply.setToUserName(null);
-				qacReply.setFromUserId(null);
-				qacReply.setFromUserName(null);
-				qAComment.getQACReplyList().add(qacReply);
+
 			}
+			qAComment.setQacReplyList(qacReplies);
 			// TODO 统计数后面从redis中取点赞数
 			Integer agreeNum = 0;
 			agreeNum = qACAgreeRelRepo.agreeCount(qAComment.getId(), Const.OBJ_OPT_GREE);// 点赞

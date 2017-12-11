@@ -2,6 +2,7 @@ package net.riking.web.app;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -112,6 +113,7 @@ public class NewsServer {
 				for (int i = 0; i < newsInfoAscList.size(); i++) {
 					newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i - 1));
 				}
+				Collections.sort(list,  Comparator<? super T> c); 
 				break;
 			default:
 				logger.error("请求方向参数异常：direct:" + newsParams.getDirect());
@@ -178,10 +180,10 @@ public class NewsServer {
 			List<NCReply> nCommentReplyInfoList = nCReplyRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
-				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
+				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getFromUserId());
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
-					fromUser.setUserId(nCommentReplyInfo.getUserId());
+					fromUser.setUserId(nCommentReplyInfo.getFromUserId());
 					fromUser.setUserName(appUser.getUserName());
 					nCommentReplyInfo.setFromUser(fromUser);
 				}
@@ -194,13 +196,10 @@ public class NewsServer {
 						nCommentReplyInfo.setToUser(toUser);
 					}
 				}
-				nCommentReplyInfo.setUserId(null);
-				nCommentReplyInfo.setUserName(null);
-				nCommentReplyInfo.setToUserId(null);
-				nCommentReplyInfo.setToUserName(null);
-				// 回复的数据列表添加到评论类里面
-				newsCommentInfoNew.getNCReplyList().add(nCommentReplyInfo);
+
 			}
+			// 回复的数据列表添加到评论类里面
+			newsCommentInfoNew.setNcReplyList(nCommentReplyInfoList);
 			// 点赞数 TODO 后面从redis里面去找
 			Integer agree = 0;
 			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
@@ -263,7 +262,15 @@ public class NewsServer {
 	@ApiOperation(value = "资讯收藏", notes = "POST")
 	@RequestMapping(value = "/newsCollect", method = RequestMethod.POST)
 	public AppResp newsCollect(@RequestBody NewsParams newsParams) {
-
+		if (StringUtils.isBlank(newsParams.getUserId())) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (StringUtils.isBlank(newsParams.getNewsId())) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (newsParams.getEnabled() == null) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
 		switch (newsParams.getEnabled()) {
 			case Const.EFFECTIVE:
 				NewsRel rels = newsRelRepo.findByOne(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏

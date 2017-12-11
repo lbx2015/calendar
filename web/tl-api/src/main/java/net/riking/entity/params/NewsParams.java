@@ -2,6 +2,8 @@ package net.riking.entity.params;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import net.riking.entity.BaseEntity;
 import net.riking.entity.MyDateFormat;
 
@@ -32,6 +34,7 @@ public class NewsParams extends BaseEntity {
 
 	// 请求上翻最新时间戳
 	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date reqTimeStamp;
 
 	// 评论内容

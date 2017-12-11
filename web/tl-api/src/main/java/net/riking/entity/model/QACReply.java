@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
@@ -39,15 +40,17 @@ public class QACReply extends BaseAuditProp {
 	@Column(name = "id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
-	@JsonProperty("qACReplyId")
+	@JsonProperty("replyId")
 	private String id;
 
 	@Comment("操作人主键 : fk t_app_user 发表回复的user_id")
 	@Column(name = "from_user_id", nullable = false)
+	@JsonIgnore
 	private String fromUserId;
 
 	@Comment("被操作人主键: fk t_app_user 被评论人ID")
 	@Column(name = "to_user_id")
+	@JsonIgnore
 	private String toUserId;
 
 	@Comment("目标对象评论主键: fk t_qa_comment")
@@ -56,6 +59,7 @@ public class QACReply extends BaseAuditProp {
 
 	@Comment("目标对象评论回复主键: fk t_qac_reply 回复ID")
 	@Column(name = "reply_id")
+	@JsonProperty("lastReplyId")
 	private String replyId;
 
 	@Comment("内容")
@@ -70,10 +74,12 @@ public class QACReply extends BaseAuditProp {
 
 	// 发表回复的名称
 	@Transient
+	@JsonIgnore
 	private String fromUserName;
 
 	// 被评论人名称
 	@Transient
+	@JsonIgnore
 	private String toUserName;
 
 	public QACReply() {

@@ -1,6 +1,7 @@
 package net.riking.entity.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -82,6 +83,9 @@ public class TopicQuestion extends BaseAuditProp {
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
 
+	@Transient
+	private List<QuestionAnswer> questionAnswers;
+
 	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
 			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
@@ -104,6 +108,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public List<QuestionAnswer> getQuestionAnswers() {
+		return questionAnswers;
+	}
+
+	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
+		this.questionAnswers = questionAnswers;
 	}
 
 	public String getId() {
