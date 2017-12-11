@@ -30,14 +30,10 @@ import com.riking.calendar.fragment.SearchTopicFragment;
 import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.realm.model.SearchConditions;
-import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZDB;
-import com.riking.calendar.util.ZPreference;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -101,6 +97,9 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 currentSelectedFragment = TAB_FRAGMENTS[position];
+                //refresh current page
+                performSearch();
+
             }
 
             @Override
