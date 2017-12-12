@@ -34,7 +34,7 @@ public class QAnswerResult {
 
     // 经验值
 //	@Transient
-    public Integer experience;
+    public int experience;
 
     // 封面url
 //	@Transient
@@ -42,10 +42,11 @@ public class QAnswerResult {
 
     // 问题回答点赞数
 //	@Transient
-    public Integer qaAgreeNum;
+    public int qaAgreeNum;
 
     // 问题回答评论数
 //	@Transient
-    public Integer qaCommentNum;
+    public int qaCommentNum;
 
+    public int isAgree;
 }

@@ -1,16 +1,27 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AnswerCommentsActivity;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
-import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
+import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.HotAnswerOfTopicViewHolder;
 
 import java.util.ArrayList;
@@ -34,15 +45,62 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
     }
 
     @Override
-    public void onBindViewHolder(HotAnswerOfTopicViewHolder h, int i) {
-        if (i % 2 == 1) {
-            h.answerTitle.setText("什么是证券投资基金？");
+    public void onBindViewHolder(final HotAnswerOfTopicViewHolder h, int i) {
+        final QAnswerResult qAnswerResult = mList.get(i);
+        h.answerTitle.setText(qAnswerResult.title);
+        h.agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                final QAnswerParams p = new QAnswerParams();
+                p.questAnswerId = qAnswerResult.qaId;
+                //answer agree type
+                p.optType = 1;
+                if (qAnswerResult.isAgree == 1) {
+                    p.enabled = 0;
+                } else {
+                    p.enabled = 1;
+                }
+                APIClient.qAnswerAgree(p, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        if (p.enabled == 1) {
+                            qAnswerResult.isAgree = 1;
+                            qAnswerResult.qaAgreeNum = qAnswerResult.qaAgreeNum + 1;
+                            h.agreeTv.setText(ZR.getNumberString(qAnswerResult.qaAgreeNum));
+                            h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
+                            Toast.makeText(h.agreeTv.getContext(), "点赞成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            qAnswerResult.isAgree = 0;
+                            qAnswerResult.qaAgreeNum = qAnswerResult.qaAgreeNum - 1;
+                            h.agreeTv.setText(ZR.getNumberString(qAnswerResult.qaAgreeNum));
+                            ZToast.toast("取消点赞");
+                            h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
+                        }
+                    }
+                });
+            }
+        });
+
+        h.agreeTv.setText(ZR.getNumberString(qAnswerResult.qaAgreeNum));
+        if (qAnswerResult.isAgree == 1) {
+            h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
         } else {
-            h.answerTitle.setText("证券业金融机构包括哪几类？");
+            h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
+
+        h.reviewTv.setText(ZR.getNumberString(qAnswerResult.qaCommentNum));
+        h.reviewTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(h.reviewTv.getContext(), AnswerCommentsActivity.class);
+                i.putExtra(CONST.QUESTION_ID, qAnswerResult.qaId);
+                ZGoto.to(i);
+            }
+        });
+
         RequestOptions options = new RequestOptions();
-        Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
-                .apply(options.fitCenter())
+        Glide.with(h.authorImage.getContext()).load(qAnswerResult.coverUrl)
+                .apply(options.fitCenter().placeholder(R.drawable.default_user_icon))
                 .into(h.authorImage);
     }
 

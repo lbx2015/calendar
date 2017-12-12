@@ -24,6 +24,10 @@ public class HotAnswerOfTopicViewHolder extends RecyclerView.ViewHolder {
     public CircleImageView authorImage;
     @BindView(R.id.answer_content)
     public TextView answerContent;
+    @BindView(R.id.review_number)
+    public TextView reviewTv;
+    @BindView(R.id.agree_number)
+    public TextView agreeTv;
 
     public HotAnswerOfTopicViewHolder(View itemView) {
         super(itemView);
