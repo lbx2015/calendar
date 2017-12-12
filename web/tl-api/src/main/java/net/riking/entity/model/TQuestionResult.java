@@ -60,6 +60,9 @@ public class TQuestionResult extends BaseEntity {
 	@Comment("问题的回答数")
 	private Integer qanswerNum;
 
+	@Comment("回答封面url")
+	private String coverUrl;
+
 	@Comment("推送类型 1-根据用户关注的话题推送问题；2-关注的用户点赞的回答；3-关注的用户关注的问题；4-关注的用户回答的问题")
 	private Integer pushType;
 
@@ -99,6 +102,14 @@ public class TQuestionResult extends BaseEntity {
 
 	public String getQaId() {
 		return qaId;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
 	}
 
 	public void setQaId(String qaId) {

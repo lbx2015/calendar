@@ -43,6 +43,6 @@ public interface TopicQuestionRepo
 	 * @param keyWord
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.QuestResult(tq.id,tq.title,tq.createdTime,(select count(*) from TQuestionRel ttr where ttr.dataType = 0 and ttr.tqId = tq.id) as tqFollowNum,(select count(*) from QuestionAnswer tqa where tqa.questionId = tq.id and tqa.isAudit <> 2 and tqa.isDeleted = 1) as qaCommentNum) FROM TopicQuestion tq  where  tq.isAudit <> 2 and tq.isDeleted = 1 and tq.topicId like %?1% ORDER BY tqFollowNum DESC,qaCommentNum DESC,tq.createdTime DESC")
+	@Query("select new net.riking.entity.model.QuestResult(tq.id,tq.title,tq.createdTime,(select count(*) from TQuestionRel ttr where ttr.dataType = 0 and ttr.tqId = tq.id) as tqFollowNum,(select count(*) from QuestionAnswer tqa where tqa.questionId = tq.id and tqa.isAudit <> 2 and tqa.isDeleted = 1) as qanswerNum) FROM TopicQuestion tq  where  tq.isAudit <> 2 and tq.isDeleted = 1 and tq.topicId like %?1% ORDER BY tqFollowNum DESC,qanswerNum DESC,tq.createdTime DESC")
 	List<QuestResult> findByTid(String topicId, Pageable pageable);
 }

@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.HotSearchRepo;
 import net.riking.dao.repo.NewsRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
@@ -25,6 +27,7 @@ import net.riking.dao.repo.TopicRepo;
 import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.HotSearch;
 import net.riking.entity.model.NewsResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.ReportResult;
@@ -74,6 +77,9 @@ public class SearchListServer {
 	@Autowired
 	QAInviteRepo qAInviteRepo;
 
+	@Autowired
+	HotSearchRepo hotSearchRepo;
+
 	/**
 	 * 显示热门资讯（6条）
 	 * @param params[userId]
@@ -82,8 +88,9 @@ public class SearchListServer {
 	@ApiOperation(value = "显示热门搜索列表", notes = "POST")
 	@RequestMapping(value = "/findHotSearchList", method = RequestMethod.POST)
 	public AppResp findHotSearchList(@RequestBody SearchParams searchParams) {
-		// TODO
-		return new AppResp(CodeDef.SUCCESS);
+		// 取前六条数据
+		List<HotSearch> hotSearches = hotSearchRepo.findHotSearch(new PageRequest(0, 6));
+		return new AppResp(hotSearches, CodeDef.SUCCESS);
 	}
 
 	/**
