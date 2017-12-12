@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.ExcellentAnswererFragment;
 import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
@@ -43,6 +44,8 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
     private TextView topicTitle;
     private MyPagerAdapter mAdapter;
     private TextView followNumberTv;
+    private TextView topicContent;
+    private TextView expandButtonTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,8 +107,14 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
                 updateFollowButton();
                 //set follow number
                 followNumberTv.setText(topic.followNum + "人关注");
-                //set question title
+                //set topic title
                 topicTitle.setText(topic.title);
+                //set topic content
+                topicContent.setText(topic.content);
+                if (topicContent.getLineCount() <= 3) {
+                    MyLog.d("expand button set gone");
+                    expandButtonTv.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -128,6 +137,8 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        expandButtonTv = findViewById(R.id.id_expand_textview);
+        topicContent = findViewById(R.id.id_source_textview);
         followNumberTv = findViewById(R.id.follow_number_tv);
         topicTitle = findViewById(R.id.topic_title);
         followButton = findViewById(R.id.follow_button);
