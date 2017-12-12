@@ -35,6 +35,10 @@ public class QuestResult extends BaseEntity {
 	@Transient
 	private Integer tqFollowNum;
 
+	// 是否关注 1-已关注，0-未关注
+	@Transient
+	private Integer isFollow;
+
 	// 问题回答数
 	@Transient
 	private Integer qanswerNum;
@@ -77,6 +81,14 @@ public class QuestResult extends BaseEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Integer getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Integer isFollow) {
+		this.isFollow = isFollow;
 	}
 
 	public String getTitle() {

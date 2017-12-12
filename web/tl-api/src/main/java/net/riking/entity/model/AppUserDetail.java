@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -108,6 +109,10 @@ public class AppUserDetail extends BaseEntity {
 	@Column(name = "is_guide")
 	private Integer isGuide;
 
+	@Transient
+	@Comment("我的等级")
+	private Integer grade;
+
 	public String getId() {
 		return id;
 	}
@@ -122,6 +127,14 @@ public class AppUserDetail extends BaseEntity {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getCompanyName() {
