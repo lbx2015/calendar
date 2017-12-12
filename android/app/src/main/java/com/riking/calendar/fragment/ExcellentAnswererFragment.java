@@ -10,15 +10,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.necer.ncalendar.view.SimpleDividerItemDecoration;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.ExcellentAnswerAdapter;
-import com.riking.calendar.adapter.HomeAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.server.QAExcellentResp;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -28,16 +34,18 @@ public class ExcellentAnswererFragment extends Fragment {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
     ExcellentAnswerAdapter mAdapter;
+    TopicActivity activity;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
-    TopicActivity activity;
+
     public static ExcellentAnswererFragment newInstance(TopicActivity activity) {
-        ExcellentAnswererFragment fragment =new ExcellentAnswererFragment();
+        ExcellentAnswererFragment fragment = new ExcellentAnswererFragment();
         fragment.activity = activity;
         return fragment;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,23 +100,45 @@ public class ExcellentAnswererFragment extends Fragment {
 
     private void loadData(final int page) {
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPullToLoadView.setComplete();
-                if (page > 3) {
-                    Toast.makeText(getContext(), "没有更多数据了",
-                            Toast.LENGTH_SHORT).show();
-                    isHasLoadedAll = true;
-                    return;
+        if (page > 1 && isHasLoadedAll) {
+            return;
+        }
+        if (mPullToLoadView != null) {
+            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mPullToLoadView != null) {
+                        mPullToLoadView.setComplete();
+                    }
                 }
-                for (int i = 0; i <= 15; i++) {
-                    mAdapter.add(i + "");
-                }
+            }, 2000);
+        }
+        final TopicParams params = new TopicParams();
+        params.topicId = activity.topicId;
+        //excellent answer
+        params.optType = 1;
+        params.pcount = 30;
+        params.pindex = page;
 
+        APIClient.getExcellentAnswer(params, new ZCallBackWithoutProgress<ResponseModel<List<QAExcellentResp>>>() {
+            @Override
+            public void callBack(ResponseModel<List<QAExcellentResp>> response) {
+                mPullToLoadView.setComplete();
+
+                List<QAExcellentResp> list = response._data;
+                MyLog.d("list size: " + list.size());
+                if (list.size() < params.pcount) {
+                    isHasLoadedAll = true;
+                    if (list.size() == 0) {
+                        ZToast.toastEmpty();
+                        return;
+                    }
+                }
                 isLoading = false;
                 nextPage = page + 1;
+                mAdapter.setData(list);
             }
-        }, 1000);
+        });
     }
 }

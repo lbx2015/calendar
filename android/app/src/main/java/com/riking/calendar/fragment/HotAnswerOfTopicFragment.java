@@ -1,6 +1,7 @@
 package com.riking.calendar.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -109,6 +110,14 @@ public class HotAnswerOfTopicFragment extends Fragment {
         }
         if (mPullToLoadView != null) {
             mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mPullToLoadView != null) {
+                        mPullToLoadView.setComplete();
+                    }
+                }
+            }, 2000);
         }
         final TopicParams params = new TopicParams();
         params.topicId = activity.topicId;

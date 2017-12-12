@@ -39,6 +39,7 @@ import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.ReportAgence;
@@ -626,6 +627,10 @@ public class APIClient {
 
     public static void getQuestionsOfTopic(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QuestResult>>> c) {
         apiInterface.getQuestionsOfTopic(params).enqueue(c);
+    }
+
+    public static void getExcellentAnswer(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QAExcellentResp>>> c){
+        apiInterface.getExcellentResp(params).enqueue(c);
     }
 
 }

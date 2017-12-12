@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.pojo.server.QAExcellentResp;
+import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
 
@@ -18,7 +20,7 @@ import java.util.List;
 
 public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
     private Context context;
-    private List<String> mList;
+    private List<QAExcellentResp> mList;
 
     public ExcellentAnswerAdapter(Context context) {
         this.context = context;
@@ -85,11 +87,10 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
+    public void setData(List<QAExcellentResp> data) {
+        this.mList = data;
         notifyDataSetChanged();
     }
-
     public void clear() {
         mList.clear();
         notifyDataSetChanged();
