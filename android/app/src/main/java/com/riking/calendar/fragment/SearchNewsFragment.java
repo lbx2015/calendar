@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.SearchNewsAdapter;
@@ -163,6 +164,14 @@ public class SearchNewsFragment extends Fragment implements PerformInputSearch {
                 try {
                     String sourceString = r.source().readUtf8();
                     Gson s =  new GsonBuilder().setDateFormat(CONST.YYYYMMDDHHMMSSSSS).create();;
+
+                    JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
+                    String _data = jsonObject.get("_data").toString();
+
+                    //do nothing when the data is empty.
+                    if (TextUtils.isEmpty(_data.trim())) {
+                        return;
+                    }
 
                     TypeToken<ResponseModel<List<NewsResult>>> token = new TypeToken<ResponseModel<List<NewsResult>>>() {
                     };

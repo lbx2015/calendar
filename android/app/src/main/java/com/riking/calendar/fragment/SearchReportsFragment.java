@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.SearchActivity;
 import com.riking.calendar.adapter.SearchReportsAdapter;
@@ -213,7 +215,14 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
                 try {
                     String sourceString = r.source().readUtf8();
                     Gson s = new Gson();
+                    JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
+                    String _data = jsonObject.get("_data").toString();
 
+                    MyLog.d("_data " + _data);
+                    //do nothing when the data is empty.
+                    if (TextUtils.isEmpty(_data.trim())) {
+                        return;
+                    }
                     TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
                     };
 

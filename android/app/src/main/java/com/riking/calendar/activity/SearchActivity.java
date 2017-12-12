@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -203,6 +204,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void performSearch() {
+        if (TextUtils.isEmpty(inputSearchCondition.trim())) {
+            //do nothing when the input search condition is empty
+            return;
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

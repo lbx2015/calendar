@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.SearchTopicAdapter;
 import com.riking.calendar.interfeet.PerformInputSearch;
@@ -135,7 +137,18 @@ public class SearchTopicFragment extends Fragment implements PerformInputSearch 
                 ResponseBody r = response.body();
                 try {
                     String sourceString = r.source().readUtf8();
+                    if (TextUtils.isEmpty(sourceString.trim())) {
+                        return;
+                    }
                     Gson s = new Gson();
+                    JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
+                    String _data = jsonObject.get("_data").toString();
+
+                    MyLog.d("_data topic " + _data);
+                    //do nothing when the data is empty.
+                    if (TextUtils.isEmpty(_data.trim())) {
+                        return;
+                    }
 
                     TypeToken<ResponseModel<List<TopicResult>>> token = new TypeToken<ResponseModel<List<TopicResult>>>() {
                     };

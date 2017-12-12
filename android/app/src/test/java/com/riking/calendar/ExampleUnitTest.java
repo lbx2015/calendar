@@ -1,5 +1,7 @@
 package com.riking.calendar;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -292,5 +294,11 @@ public class ExampleUnitTest {
         List<ReportResult> results = g.fromJson(s, token.getType());
 
         System.out.print(results.get(0).code);
+    }
+
+    @Test
+    public void testStringEmpty() {
+        String s = "";
+        System.out.print(s.length());
     }
 }
