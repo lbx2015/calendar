@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.riking.entity.model.QAExcellentResp;
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.TQuestionResult;
 
 public interface TQuestionService {
@@ -32,7 +33,7 @@ public interface TQuestionService {
 	 * @param end
 	 * @return
 	 */
-	public List<TQuestionResult> findEssenceByTid(String topicId, int start, int end);
+	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int end);
 
 	/**
 	 * 优秀回答者

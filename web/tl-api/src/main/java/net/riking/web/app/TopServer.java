@@ -26,9 +26,9 @@ import net.riking.dao.repo.TopicRepo;
 import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.QAExcellentResp;
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.QuestionAnswer;
-import net.riking.entity.model.TQuestionResult;
 import net.riking.entity.model.Topic;
 import net.riking.entity.params.TopicParams;
 import net.riking.service.QAnswerService;
@@ -115,18 +115,18 @@ public class TopServer {
 		switch (topicParams.getOptType()) {
 			// 精华
 			case Const.TOP_OBJ_OPT_ESSENCE:
-				List<TQuestionResult> tQuestionResults = tQuestionService.findEssenceByTid(topicParams.getTopicId(),
+				List<QAnswerResult> tQuestionResults = tQuestionService.findEssenceByTid(topicParams.getTopicId(),
 						topicParams.getPindex(), topicParams.getPindex() + 30);// 显示30条数据
-				for (TQuestionResult tQuestionResult : tQuestionResults) {
+				for (QAnswerResult tQuestionResult : tQuestionResults) {
 					QuestionAnswer questionAnswer = qAnswerService.getAContentByOne(tQuestionResult.getTqId());
-					tQuestionResult.setQaContent(questionAnswer.getContent());
+					tQuestionResult.setContent(questionAnswer.getContent());
 					tQuestionResult.setQaAgreeNum(questionAnswer.getAgreeNum());
 					tQuestionResult.setQaCommentNum(questionAnswer.getCommentNum());
 				}
-				Collections.sort(tQuestionResults, new Comparator<TQuestionResult>() {
+				Collections.sort(tQuestionResults, new Comparator<QAnswerResult>() {
 					// TODO 根据评论数和点赞数排序，算法待确认
 					@Override
-					public int compare(TQuestionResult o1, TQuestionResult o2) {
+					public int compare(QAnswerResult o1, QAnswerResult o2) {
 						if (o1.getQaCommentNum() > o2.getQaCommentNum()) {
 							return -1;
 						} else if (o1.getQaAgreeNum() > o2.getQaAgreeNum()) {

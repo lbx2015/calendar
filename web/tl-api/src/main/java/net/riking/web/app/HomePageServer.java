@@ -126,6 +126,7 @@ public class HomePageServer {
 				tQuestionResult.setQaContent(questionAnswer.getContent());
 				tQuestionResult.setQaAgreeNum(questionAnswer.getAgreeNum());
 				tQuestionResult.setQaCommentNum(questionAnswer.getCommentNum());
+				tQuestionResult.setCoverUrl(questionAnswer.getCoverUrl());
 			}
 		}
 		// 把查出来的数据按倒序重新排列

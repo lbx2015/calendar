@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.dao.TQuestionDao;
 import net.riking.entity.model.QAExcellentResp;
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.TQuestionResult;
 
 @Repository("tQuestionDao")
@@ -59,6 +60,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				tQuestionResult.setQaAgreeNum(rs.getInt("qaAgreeNum"));
 				tQuestionResult.setQfollowNum(rs.getInt("qFollowNum"));
 				tQuestionResult.setQanswerNum(rs.getInt("qAnswerNum"));
+				tQuestionResult.setCoverUrl(rs.getString("coverUrl"));
 				tQuestionResult.setPushType(rs.getInt("pushType"));
 				list.add(tQuestionResult);
 			}
@@ -102,6 +104,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				tQuestionResult.setQaAgreeNum(rs.getInt("qaAgreeNum"));
 				tQuestionResult.setQfollowNum(rs.getInt("qFollowNum"));
 				tQuestionResult.setQanswerNum(rs.getInt("qAnswerNum"));
+				tQuestionResult.setCoverUrl(rs.getString("coverUrl"));
 				tQuestionResult.setPushType(rs.getInt("pushType"));
 				list.add(tQuestionResult);
 			}
@@ -113,12 +116,12 @@ public class TQuestionDaoImpl implements TQuestionDao {
 	}
 
 	@Override
-	public List<TQuestionResult> findEssenceByTid(String topicId, int start, int end) {
+	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int end) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call findEssenceByTid(?,?,?)";
 		PreparedStatement pstmt = null;
-		List<TQuestionResult> list = new ArrayList<TQuestionResult>();
+		List<QAnswerResult> list = new ArrayList<QAnswerResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			if (StringUtils.isBlank(topicId))
@@ -128,16 +131,17 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			pstmt.setInt(3, end);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				TQuestionResult tQuestionResult = new TQuestionResult();
-				tQuestionResult.setTqId(rs.getString("tqId"));
-				tQuestionResult.setTqTitle(rs.getString("tqTitle"));
-				tQuestionResult.setCreatedTime(rs.getTimestamp("createdTime"));
-				tQuestionResult.setQaContent(rs.getString("qAContent"));
-				tQuestionResult.setQaId(rs.getString("qaId"));
-				tQuestionResult.setUserName(rs.getString("userName"));
-				tQuestionResult.setFromImgUrl(rs.getString("fromImgUrl"));
-				tQuestionResult.setExperience(rs.getInt("experience"));
-				list.add(tQuestionResult);
+				QAnswerResult qAnswerResult = new QAnswerResult();
+				qAnswerResult.setTqId(rs.getString("tqId"));
+				qAnswerResult.setTitle(rs.getString("tqTitle"));
+				qAnswerResult.setCreatedTime(rs.getTimestamp("createdTime"));
+				qAnswerResult.setQaId(rs.getString("qaId"));
+				qAnswerResult.setUserName(rs.getString("userName"));
+				qAnswerResult.setPhotoUrl(rs.getString("photoUrl"));
+				qAnswerResult.setExperience(rs.getInt("experience"));
+				qAnswerResult.setUserId(rs.getString("userId"));
+				qAnswerResult.setCoverUrl(rs.getString("coverUrl"));
+				list.add(qAnswerResult);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

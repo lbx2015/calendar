@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.dao.TQuestionDao;
 import net.riking.entity.model.QAExcellentResp;
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.TQuestionResult;
 import net.riking.service.TQuestionService;
 
@@ -35,7 +36,7 @@ public class TQuestionServiceImpl implements TQuestionService {
 	}
 
 	@Override
-	public List<TQuestionResult> findEssenceByTid(String topicId, int start, int end) {
+	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int end) {
 		return tQuestionDao.findEssenceByTid(topicId, start, end);
 	}
 

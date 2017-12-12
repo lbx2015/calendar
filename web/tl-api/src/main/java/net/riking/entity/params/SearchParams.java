@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import net.riking.entity.BaseEntity;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * 搜索列表类的接收参数

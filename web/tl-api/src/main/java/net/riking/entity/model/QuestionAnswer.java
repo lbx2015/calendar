@@ -49,6 +49,11 @@ public class QuestionAnswer extends BaseAuditProp {
 	@Column(name = "question_id", nullable = false)
 	private String questionId;
 
+	@Comment("封面url")
+	@Lob
+	@Column(name = "cover_url", length = 128)
+	private String coverUrl;
+
 	@Comment("回答内容")
 	@Lob
 	@Column(name = "content", nullable = false)
@@ -132,6 +137,14 @@ public class QuestionAnswer extends BaseAuditProp {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
 	}
 
 	public String getUserId() {

@@ -35,9 +35,9 @@ public class QuestResult extends BaseEntity {
 	@Transient
 	private Integer tqFollowNum;
 
-	// 问题回答评论数
+	// 问题回答数
 	@Transient
-	private Integer qaCommentNum;
+	private Integer qanswerNum;
 
 	// 用户名
 	@Transient
@@ -52,7 +52,7 @@ public class QuestResult extends BaseEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QuestResult(String id, String title, Date createdTime, Long tqFollowNum, Long qaCommentNum) {
+	public QuestResult(String id, String title, Date createdTime, Long tqFollowNum, Long qanswerNum) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -60,8 +60,8 @@ public class QuestResult extends BaseEntity {
 		if (tqFollowNum != null) {
 			this.tqFollowNum = tqFollowNum.intValue();
 		}
-		if (qaCommentNum != null) {
-			this.qaCommentNum = qaCommentNum.intValue();
+		if (qanswerNum != null) {
+			this.qanswerNum = qanswerNum.intValue();
 		}
 	}
 
@@ -111,12 +111,12 @@ public class QuestResult extends BaseEntity {
 		this.tqFollowNum = tqFollowNum;
 	}
 
-	public Integer getQaCommentNum() {
-		return qaCommentNum;
+	public Integer getQanswerNum() {
+		return qanswerNum;
 	}
 
-	public void setQaCommentNum(Integer qaCommentNum) {
-		this.qaCommentNum = qaCommentNum;
+	public void setQanswerNum(Integer qanswerNum) {
+		this.qanswerNum = qanswerNum;
 	}
 
 	public String getUserName() {
