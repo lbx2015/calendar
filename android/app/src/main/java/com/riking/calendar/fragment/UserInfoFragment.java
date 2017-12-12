@@ -1,8 +1,6 @@
 package com.riking.calendar.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.riking.calendar.BuildConfig;
@@ -22,47 +22,53 @@ import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.MarketUtils;
+import com.riking.calendar.util.ZPreference;
 
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class FourthFragment extends Fragment implements OnClickListener {
-    SharedPreferences sharedPreferences;
+public class UserInfoFragment extends Fragment implements OnClickListener {
     TextView userName;
+    LinearLayout loginLinearLayout;
+    TextView userComment;
+    ImageView toUserInfoIm;
+    TextView checkInTv;
+    TextView notLoginTv;
+    RelativeLayout setLayout;
     ImageView myPhoto;
+    RelativeLayout userInfoRelativeLayout;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     int loginState;
     View v;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (v != null) {
             return v;
         }
-        sharedPreferences = getActivity().getApplicationContext().getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
-        View v = inflater.inflate(R.layout.fourth_fragment, container, false);
-        v.findViewById(R.id.my_photo_layout).setOnClickListener(this);
-        v.findViewById(R.id.set_layout).setOnClickListener(this);
-        v.findViewById(R.id.about_relative_layout).setOnClickListener(this);
-        v.findViewById(R.id.comment_root).setOnClickListener(this);
+        v = inflater.inflate(R.layout.my_fragment, container, false);
+        init();
 
-
-        userName = (TextView) v.findViewById(R.id.user_name);
-        myPhoto = (ImageView) v.findViewById(R.id.my_photo);
-        if (sharedPreferences.getBoolean(CONST.IS_LOGIN, false)) {
+        if (ZPreference.isLogin()) {
+            notLoginTv.setVisibility(View.GONE);
+            loginLinearLayout.setVisibility(View.VISIBLE);
             loginState = 1;
-            userName.setText(sharedPreferences.getString(CONST.USER_NAME, null) + "\n" +
-                    sharedPreferences.getString(CONST.USER_COMMENTS, ""));
+            AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+            userName.setText(currentUser.userName);
+            userComment.setText(currentUser.description);
 
-            String imageUrl = sharedPreferences.getString(CONST.USER_IMAGE_URL, null);
+            String imageUrl = currentUser.photoUrl;
             String imageName = imageUrl == null ? "" : imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
             if (FileUtil.imageExists(imageName)) {
                 Logger.d("zzw", "no need load url: " + imageName);
@@ -76,31 +82,72 @@ public class FourthFragment extends Fragment implements OnClickListener {
                 myTask.execute(imageUrl);
             }
         } else {
+            notLoginTv.setVisibility(View.VISIBLE);
+            loginLinearLayout.setVisibility(View.GONE);
             loginState = 0;
         }
         return v;
     }
 
+    private void init() {
+        initViews();
+        initEvents();
+    }
+
+    private void initViews() {
+        setLayout = v.findViewById(R.id.set_layout);
+        userInfoRelativeLayout = v.findViewById(R.id.user_info_relative_layout);
+        userName = v.findViewById(R.id.user_name);
+        loginLinearLayout = v.findViewById(R.id.login_linear_layout);
+        userComment = v.findViewById(R.id.user_comment);
+        toUserInfoIm = v.findViewById(R.id.to_info);
+        checkInTv = v.findViewById(R.id.check_in_button);
+        notLoginTv = v.findViewById(R.id.not_login_button);
+        myPhoto = v.findViewById(R.id.user_icon);
+    }
+
+    private void initEvents() {
+        setLayout.setOnClickListener(this);
+        userInfoRelativeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                if (ZPreference.isLogin()) {
+                    startActivity(new Intent(getContext(), UserInfoActivity.class));
+                } else {
+                    startActivity((new Intent(getContext(), LoginNavigateActivity.class)));
+//                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
+                }
+            }
+        });
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        if (sharedPreferences.getBoolean(CONST.IS_LOGIN, false)) {
+        if (ZPreference.isLogin()) {
+            notLoginTv.setVisibility(View.GONE);
+            loginLinearLayout.setVisibility(View.VISIBLE);
             //Login state changed.
             if ((loginState ^ 1) == 1) {
                 //refresh the activity
                 getActivity().recreate();
                 loginState = 1;
-                userName.setText(sharedPreferences.getString(CONST.USER_NAME, null) + "\n" +
-                        sharedPreferences.getString(CONST.USER_COMMENTS, ""));
+                AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                userName.setText(currentUser.userName);
+                userComment.setText(currentUser.description);
 
-                String imageUrl = sharedPreferences.getString(CONST.USER_IMAGE_URL, null);
+                String imageUrl = currentUser.photoUrl;
                 if (imageUrl != null && imageUrl.length() > 0) {
                     LoadUserImageTask myTask = new LoadUserImageTask();
                     myTask.imageView = myPhoto;
                     myTask.execute(imageUrl);
                 }
             }
+
         } else {
+            notLoginTv.setVisibility(View.VISIBLE);
+            loginLinearLayout.setVisibility(View.GONE);
             if ((loginState ^ 1) == 0) {
                 //refresh the activity
                 getActivity().recreate();
@@ -114,16 +161,6 @@ public class FourthFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.my_photo_layout: {
-
-                if (sharedPreferences.getBoolean(CONST.IS_LOGIN, false)) {
-                    startActivity(new Intent(getContext(), UserInfoActivity.class));
-                } else {
-                    startActivity((new Intent(getContext(), LoginNavigateActivity.class)));
-//                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
-                }
-                break;
-            }
             case R.id.set_layout: {
                 startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
