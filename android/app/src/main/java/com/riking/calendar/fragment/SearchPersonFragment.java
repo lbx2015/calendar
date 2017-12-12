@@ -133,6 +133,8 @@ public class SearchPersonFragment extends Fragment implements PerformInputSearch
             return;
         }
 
+        this.searchCondition = searchCondition;
+
         SearchParams params = new SearchParams();
         params.keyWord = searchCondition;
         //search topics
@@ -149,6 +151,10 @@ public class SearchPersonFragment extends Fragment implements PerformInputSearch
         APIClient.findSearchList(params, new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (mPullToLoadView != null) {
+                    mPullToLoadView.setComplete();
+                }
+
                 ResponseBody r = response.body();
                 try {
                     String sourceString = r.source().readUtf8();
