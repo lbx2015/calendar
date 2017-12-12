@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.viewholder.HotAnswerOfTopicViewHolder;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.List;
 
 public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTopicViewHolder> {
     private Context a;
-    private List<String> mList;
+    private List<QAnswerResult> mList;
 
     public HotAnswerOfTopicAdapter(Context context) {
         this.a = context;
@@ -50,8 +52,8 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
+    public void setData(List<QAnswerResult> data) {
+        this.mList = data;
         notifyDataSetChanged();
     }
 

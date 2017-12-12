@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.HomeAdapter;
 import com.riking.calendar.adapter.QuestionsAdapter;
 import com.riking.calendar.listener.PullCallback;
@@ -30,7 +31,12 @@ public class QuestionsFragment extends Fragment {
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
-
+    TopicActivity activity;
+    public static QuestionsFragment newInstance(TopicActivity activity) {
+        QuestionsFragment fragment =new QuestionsFragment();
+        fragment.activity = activity;
+        return fragment;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

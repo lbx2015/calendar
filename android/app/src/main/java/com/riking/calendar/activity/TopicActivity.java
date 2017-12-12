@@ -35,11 +35,11 @@ import static com.riking.calendar.util.CONST.TOPIC_ID;
  */
 
 public class TopicActivity extends AppCompatActivity { //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HotAnswerOfTopicFragment(), new QuestionsFragment(), new ExcellentAnswererFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{HotAnswerOfTopicFragment.newInstance(this), QuestionsFragment.newInstance(this), ExcellentAnswererFragment.newInstance(this)};
     public View followButton;
     public TextView followTv;
-    String topicId;
-    Topic topic;
+    public Topic topic;
+    public String topicId;
     private ViewPager mViewPager;
     private TextView topicTitle;
     private MyPagerAdapter mAdapter;

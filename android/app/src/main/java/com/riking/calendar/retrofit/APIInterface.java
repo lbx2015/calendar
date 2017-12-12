@@ -35,6 +35,8 @@ import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.Topic;
@@ -259,4 +261,10 @@ public interface APIInterface {
 
     @POST("topic/getTopic")
     Call<ResponseModel<Topic>> getTopic(@Body TopicParams params);
+
+    /**
+     * 精华的问题
+     */
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<List<QAnswerResult>>> getEssenceAnswer(@Body TopicParams params);
 }

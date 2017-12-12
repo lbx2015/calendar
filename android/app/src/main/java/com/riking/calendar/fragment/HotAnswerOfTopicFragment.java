@@ -1,24 +1,30 @@
 package com.riking.calendar.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.HotAnswerOfTopicAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -26,12 +32,19 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 public class HotAnswerOfTopicFragment extends Fragment {
     protected SwipeRefreshLayout swipeRefreshLayout;
+    TopicActivity activity;
     View v;
     HotAnswerOfTopicAdapter mAdapter;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
+
+    public static HotAnswerOfTopicFragment newInstance(TopicActivity activity) {
+        HotAnswerOfTopicFragment fragment = new HotAnswerOfTopicFragment();
+        fragment.activity = activity;
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -90,7 +103,37 @@ public class HotAnswerOfTopicFragment extends Fragment {
 
     private void loadData(final int page) {
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
+        if (page > 1 && isHasLoadedAll) {
+            return;
+        }
+        if (mPullToLoadView != null) {
+            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+        }
+        final TopicParams params = new TopicParams();
+        params.topicId = activity.topicId;
+        //excellent answer
+        params.optType = 1;
+        params.pCount = 30;
+        params.pindex = page;
+
+        APIClient.getEssenceAnswer(params, new ZCallBack<ResponseModel<List<QAnswerResult>>>() {
+            @Override
+            public void callBack(ResponseModel<List<QAnswerResult>> response) {
+                mPullToLoadView.setComplete();
+
+                List<QAnswerResult> list = response._data;
+                MyLog.d("list size: " + list.size());
+                if (list.size() < params.pCount) {
+                    ZToast.toastEmpty();
+                    isHasLoadedAll = true;
+                    return;
+                }
+                isLoading = false;
+                nextPage = page + 1;
+                mAdapter.setData(list);
+            }
+        });
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPullToLoadView.setComplete();
@@ -107,6 +150,6 @@ public class HotAnswerOfTopicFragment extends Fragment {
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 3000);
+        }, 3000);*/
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.ExcellentAnswerAdapter;
 import com.riking.calendar.adapter.HomeAdapter;
 import com.riking.calendar.listener.PullCallback;
@@ -31,7 +32,12 @@ public class ExcellentAnswererFragment extends Fragment {
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
-
+    TopicActivity activity;
+    public static ExcellentAnswererFragment newInstance(TopicActivity activity) {
+        ExcellentAnswererFragment fragment =new ExcellentAnswererFragment();
+        fragment.activity = activity;
+        return fragment;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -38,6 +38,8 @@ import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.Topic;
@@ -613,7 +615,12 @@ public class APIClient {
         apiInterface.findSearchList(params).enqueue(c);
     }
 
-    public static void getTopic(@Body TopicParams params, ZCallBack<ResponseModel<Topic>> c) {
+    public static void getTopic(TopicParams params, ZCallBack<ResponseModel<Topic>> c) {
         apiInterface.getTopic(params).enqueue(c);
     }
+
+    public static void getEssenceAnswer(TopicParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        apiInterface.getEssenceAnswer(params).enqueue(c);
+    }
+
 }
