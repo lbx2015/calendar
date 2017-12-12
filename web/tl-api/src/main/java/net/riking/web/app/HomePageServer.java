@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,7 +97,6 @@ public class HomePageServer {
 		if (homeParams.getDirect() == null) {
 			homeParams.setDirect(Const.DIRECT_UP);
 		}
-		Map<Integer, Object> map = new HashMap<Integer, Object>();
 		// 分页数据
 		List<TQuestionResult> tQuestionList = new ArrayList<TQuestionResult>();
 		switch (homeParams.getDirect()) {
@@ -151,6 +148,10 @@ public class HomePageServer {
 				}
 			}
 		}
+		TQuestionResult tQuestionResultTopic = new TQuestionResult();
+		tQuestionResultTopic.setPushType(5);
+		tQuestionResultTopic.setTopicResults(topics);
+		tQuestionList.add(tQuestionResultTopic);
 		// 可能感兴趣的人
 		List<AppUserResult> userResults = appUserService.findUserMightKnow(homeParams.getUserId(), 0, 8);// 取出0-8条数据
 		List<String> toUserIds = userFollowRelRepo.findByUser(homeParams.getUserId());
@@ -162,10 +163,11 @@ public class HomePageServer {
 				}
 			}
 		}
-		map.put(1, tQuestionList);
-		map.put(2, topics);
-		map.put(3, userResults);
-		return new AppResp(map, CodeDef.SUCCESS);
+		TQuestionResult tQuestionResultUser = new TQuestionResult();
+		tQuestionResultUser.setPushType(6);
+		tQuestionResultUser.setAppUserResults(userResults);
+		tQuestionList.add(tQuestionResultUser);
+		return new AppResp(tQuestionList, CodeDef.SUCCESS);
 	}
 
 	/**

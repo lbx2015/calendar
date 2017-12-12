@@ -1,6 +1,7 @@
 package net.riking.entity.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -66,6 +67,12 @@ public class TQuestionResult extends BaseEntity {
 	@Comment("推送类型 1-根据用户关注的话题推送问题；2-关注的用户点赞的回答；3-关注的用户关注的问题；4-关注的用户回答的问题")
 	private Integer pushType;
 
+	@Comment("可能感兴趣的话题")
+	private List<TopicResult> topicResults;
+
+	@Comment("可能感兴趣的人")
+	private List<AppUserResult> appUserResults;
+
 	public TQuestionResult() {
 		super();
 	}
@@ -98,6 +105,22 @@ public class TQuestionResult extends BaseEntity {
 
 	public void setTqId(String tqId) {
 		this.tqId = tqId;
+	}
+
+	public List<TopicResult> getTopicResults() {
+		return topicResults;
+	}
+
+	public void setTopicResults(List<TopicResult> topicResults) {
+		this.topicResults = topicResults;
+	}
+
+	public List<AppUserResult> getAppUserResults() {
+		return appUserResults;
+	}
+
+	public void setAppUserResults(List<AppUserResult> appUserResults) {
+		this.appUserResults = appUserResults;
 	}
 
 	public String getQaId() {
