@@ -17,6 +17,7 @@ import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.HotAnswerOfTopicAdapter;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
@@ -113,20 +114,22 @@ public class HotAnswerOfTopicFragment extends Fragment {
         params.topicId = activity.topicId;
         //excellent answer
         params.optType = 1;
-        params.pCount = 30;
+        params.pcount = 30;
         params.pindex = page;
 
-        APIClient.getEssenceAnswer(params, new ZCallBack<ResponseModel<List<QAnswerResult>>>() {
+        APIClient.getEssenceAnswer(params, new ZCallBackWithoutProgress<ResponseModel<List<QAnswerResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QAnswerResult>> response) {
                 mPullToLoadView.setComplete();
 
                 List<QAnswerResult> list = response._data;
                 MyLog.d("list size: " + list.size());
-                if (list.size() < params.pCount) {
-                    ZToast.toastEmpty();
+                if (list.size() < params.pcount) {
                     isHasLoadedAll = true;
-                    return;
+                    if (list.size() == 0) {
+                        ZToast.toastEmpty();
+                        return;
+                    }
                 }
                 isLoading = false;
                 nextPage = page + 1;

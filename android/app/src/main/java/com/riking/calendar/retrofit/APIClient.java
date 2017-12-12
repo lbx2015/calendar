@@ -15,6 +15,7 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
@@ -619,8 +620,12 @@ public class APIClient {
         apiInterface.getTopic(params).enqueue(c);
     }
 
-    public static void getEssenceAnswer(TopicParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+    public static void getEssenceAnswer(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QAnswerResult>>> c) {
         apiInterface.getEssenceAnswer(params).enqueue(c);
+    }
+
+    public static void getQuestionsOfTopic(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QuestResult>>> c) {
+        apiInterface.getQuestionsOfTopic(params).enqueue(c);
     }
 
 }

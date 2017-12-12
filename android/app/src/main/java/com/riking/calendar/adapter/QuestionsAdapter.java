@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.viewholder.QuestionsViewHolder;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
 
 
 public class QuestionsAdapter extends RecyclerView.Adapter {
-    public List<String> mList;
+    public List<QuestResult> mList;
     private Context context;
 
     public QuestionsAdapter(Context context) {
@@ -48,9 +50,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
-        notifyItemInserted(mList.size() - 1);
+    public void setData(List<QuestResult> data) {
+        this.mList = data;
+        notifyDataSetChanged();
     }
 
     public void clear() {

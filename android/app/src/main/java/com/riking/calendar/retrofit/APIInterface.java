@@ -267,4 +267,7 @@ public interface APIInterface {
      */
     @POST("topic/essenceQAList")
     Call<ResponseModel<List<QAnswerResult>>> getEssenceAnswer(@Body TopicParams params);
+
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<	List<QuestResult>>> getQuestionsOfTopic(@Body TopicParams params);
 }

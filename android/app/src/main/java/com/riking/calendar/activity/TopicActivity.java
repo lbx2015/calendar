@@ -189,7 +189,7 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
                 case 0:
                     return "精华";
                 case 1:
-                    return "回答";
+                    return "问题";
                 case 2:
                     return "优秀回答者";
             }
