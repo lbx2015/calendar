@@ -60,6 +60,10 @@ public class QAnswerResult extends BaseEntity {
 	@Transient
 	private Integer qaCommentNum;
 
+	// 是否已点赞 0-未点赞，1-已点赞
+	@Transient
+	private Integer isAgree;
+
 	public QAnswerResult() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -86,6 +90,14 @@ public class QAnswerResult extends BaseEntity {
 
 	public void setTqId(String tqId) {
 		this.tqId = tqId;
+	}
+
+	public Integer getIsAgree() {
+		return isAgree;
+	}
+
+	public void setIsAgree(Integer isAgree) {
+		this.isAgree = isAgree;
 	}
 
 	public String getQaId() {

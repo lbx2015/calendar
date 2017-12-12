@@ -18,6 +18,7 @@ import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.dao.repo.QACommentRepo;
+import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
@@ -75,6 +76,9 @@ public class TopServer {
 	@Autowired
 	QAnswerService qAnswerService;
 
+	@Autowired
+	QAnswerRelRepo qAnswerRelRepo;
+
 	/**
 	 * 话题的详情[topicId,userId]
 	 * @param params
@@ -99,7 +103,7 @@ public class TopServer {
 	}
 
 	/**
-	 * TODO 精华问题回答列表[userId,topicId,optType（1-精华；2-问题；3-优秀回答者）,pindex(当前页数)]
+	 * TODO 精华问题回答列表[userId,topicId,optType（1-精华；2-问题；3-优秀回答者）,pindex(当前页数)，pcount(每页条数)]
 	 * @param params
 	 * @return
 	 */
@@ -112,16 +116,32 @@ public class TopServer {
 		if (topicParams.getPindex() != 0 && topicParams.getPindex() != null) {
 			topicParams.setPindex(topicParams.getPindex() - 1);
 		}
+		int pageCount = topicParams.getPcount() == null ? 30 : topicParams.getPcount();
+		pageCount = topicParams.getPcount() == 0 ? 30 : topicParams.getPcount();
+
+		int pageBegin = topicParams.getPindex() == 0 ? 0 : topicParams.getPindex() + pageCount;
+		int pageEnd = pageBegin + pageCount;
 		switch (topicParams.getOptType()) {
 			// 精华
 			case Const.TOP_OBJ_OPT_ESSENCE:
 				List<QAnswerResult> tQuestionResults = tQuestionService.findEssenceByTid(topicParams.getTopicId(),
-						topicParams.getPindex(), topicParams.getPindex() + 30);// 显示30条数据
+						pageBegin, pageEnd);
 				for (QAnswerResult tQuestionResult : tQuestionResults) {
 					QuestionAnswer questionAnswer = qAnswerService.getAContentByOne(tQuestionResult.getTqId());
 					tQuestionResult.setContent(questionAnswer.getContent());
 					tQuestionResult.setQaAgreeNum(questionAnswer.getAgreeNum());
 					tQuestionResult.setQaCommentNum(questionAnswer.getCommentNum());
+					tQuestionResult.setIsAgree(0);// 0-未点赞
+				}
+				if (null != topicParams.getUserId()) {
+					List<String> qaIds = qAnswerRelRepo.findByUser(topicParams.getUserId(), Const.OBJ_OPT_GREE);
+					for (String qaId : qaIds) {
+						for (QAnswerResult tQuestionResult : tQuestionResults) {
+							if (qaId.equals(tQuestionResult.getQaId())) {
+								tQuestionResult.setIsAgree(1);// 1-已点赞
+							}
+						}
+					}
 				}
 				Collections.sort(tQuestionResults, new Comparator<QAnswerResult>() {
 					// TODO 根据评论数和点赞数排序，算法待确认
@@ -141,15 +161,26 @@ public class TopServer {
 			// 问题
 			case Const.TOP_OBJ_OPT_QUEST:
 				List<QuestResult> questResults = topicQuestionRepo.findByTid(topicParams.getTopicId(),
-						new PageRequest(topicParams.getPindex(), topicParams.getPindex() + 30));
+						new PageRequest(pageBegin, pageEnd));
+				for (QuestResult questResult : questResults) {
+					questResult.setIsFollow(0);// 0-未关注
+					if (null != topicParams.getUserId()) {
+						List<String> tqIds = tQuestionRelRepo.findByUser(topicParams.getUserId(), 0);// 0-关注
+						for (String tqId : tqIds) {
+							if (tqId.equals(questResult.getId())) {
+								questResult.setIsFollow(1);// 1-已关注
+							}
+						}
+					}
+				}
 				return new AppResp(questResults, CodeDef.SUCCESS);
 			// 优秀回答者
 			case Const.TOP_OBJ_OPT_EXRESP:
 				List<QAExcellentResp> excellentResps = tQuestionService.findExcellentResp(topicParams.getTopicId(),
-						topicParams.getPindex(), topicParams.getPindex() + 30);
-				if (topicParams.getUserId() != null) {
-					for (QAExcellentResp qaExcellentResp : excellentResps) {
-						qaExcellentResp.setIsFollow(0);// 未关注
+						pageBegin, pageEnd);
+				for (QAExcellentResp qaExcellentResp : excellentResps) {
+					qaExcellentResp.setIsFollow(0);// 未关注
+					if (topicParams.getUserId() != null) {
 						List<String> toUserIds = userFollowRelRepo.findByUser(topicParams.getUserId());
 						for (String toUserId : toUserIds) {
 							if (qaExcellentResp.getUserId().equals(toUserId)) {

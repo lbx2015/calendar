@@ -198,13 +198,6 @@ public class AppUserServer {
 		return new AppResp(result, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "更新用户信息", notes = "POST")
-	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-	public AppResp updateUser(@RequestBody AppUser appUser) {
-		appUserRepo.save(appUser);
-		return new AppResp("", CodeDef.ERROR);
-	}
-
 	private <T> T merge(T dbObj, T appObj) throws Exception {
 		Field[] fields = dbObj.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
