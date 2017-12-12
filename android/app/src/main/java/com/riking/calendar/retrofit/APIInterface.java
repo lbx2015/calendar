@@ -257,6 +257,6 @@ public interface APIInterface {
     @POST("searchList/findSearchList")
     Call<ResponseBody> findSearchList(@Body SearchParams params);
 
-    @POST("topic/getTopic/")
+    @POST("topic/getTopic")
     Call<ResponseModel<Topic>> getTopic(@Body TopicParams params);
 }

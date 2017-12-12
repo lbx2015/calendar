@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.listener.ZCallBack;
@@ -22,6 +20,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
 
@@ -93,10 +92,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
-        RequestOptions options = new RequestOptions();
-        Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
-                .apply(options.fitCenter())
-                .into(h.authorImage);
+        //set the user image icon
+        ZR.setUserImage(h.authorImage, c.photoUrl);
+
         setRecyclerView(h.recyclerView, h, i);
         CommentsActivity commentsActivity = (CommentsActivity) a;
         h.answerContent.setOnClickListener(new View.OnClickListener() {
