@@ -117,7 +117,7 @@ public class ExcellentAnswererFragment extends Fragment {
         final TopicParams params = new TopicParams();
         params.topicId = activity.topicId;
         //excellent answer
-        params.optType = 1;
+        params.optType = 3;
         params.pcount = 30;
         params.pindex = page;
 
