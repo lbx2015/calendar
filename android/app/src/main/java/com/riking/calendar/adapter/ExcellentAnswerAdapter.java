@@ -43,6 +43,10 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
         h.userName.setText(user.userName);
         h.summary.setText("此话题下" + user.qanswerNum + "个回答，" + user.qaAgreeNum + "赞");
 
+        //hide divider for the last item
+        if (i == mList.size() - 1) {
+            h.divider.setVisibility(View.GONE);
+        }
         if (user.experience == 3) {
             h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
         } else if (user.experience == 4) {

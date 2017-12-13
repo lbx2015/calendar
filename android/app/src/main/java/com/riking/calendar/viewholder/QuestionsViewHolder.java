@@ -14,9 +14,11 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
     public TextView titleTv;
     public TextView followTv;
     public TextView answerTv;
+    public View divider;
 
     public QuestionsViewHolder(View v) {
         super(v);
+        divider = v.findViewById(R.id.divider);
         titleTv = v.findViewById(R.id.question_title);
         followTv = v.findViewById(R.id.follow_tv);
         answerTv = v.findViewById(R.id.answer_tv);

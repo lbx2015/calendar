@@ -50,6 +50,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
         updateFollowButton(result.isFollow, h.followTv);
         h.followTv.setText(ZR.getNumberString(result.tqFollowNum));
         h.answerTv.setText(ZR.getNumberString(result.qanswerNum));
+
+        //hide divider for the last item
+        if (i == mList.size() - 1) {
+            h.divider.setVisibility(View.GONE);
+        }
         h.answerTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {

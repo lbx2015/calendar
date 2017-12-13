@@ -42,4 +42,10 @@
             android:text="0" />
 
     </LinearLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2"></View>
+
 </LinearLayout>
