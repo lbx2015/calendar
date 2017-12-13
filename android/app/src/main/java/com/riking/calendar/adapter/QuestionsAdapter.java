@@ -1,16 +1,21 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.TopicActivity;
-import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.QuestionsViewHolder;
 
 import java.util.ArrayList;
@@ -35,15 +40,53 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, int i) {
-        QuestionsViewHolder h = (QuestionsViewHolder) cellHolder;
-        h.itemView.setOnClickListener(new View.OnClickListener() {
+        final QuestResult result = mList.get(i);
+        final QuestionsViewHolder h = (QuestionsViewHolder) cellHolder;
+        h.titleTv.setText(result.title);
+        updateFollowButton(result.isFollow, h.followTv);
+        h.followTv.setText(ZR.getNumberString(result.tqFollowNum));
+        h.followTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, TopicActivity.class));
+            public void click(View v) {
+                final TQuestionParams params = new TQuestionParams();
+                params.attentObjId = result.questionId;
+                //question
+                params.objType = 1;
+                //followed
+                if (result.isFollow == 1) {
+                    params.enabled = 0;
+                } else {
+                    params.enabled = 1;
+                }
+
+                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        result.isFollow = params.enabled;
+                        if (result.isFollow == 1) {
+                            result.tqFollowNum = result.tqFollowNum + 1;
+                            h.followTv.setText(ZR.getNumberString(result.tqFollowNum));
+                            ZToast.toast("关注成功");
+                        } else {
+                            result.tqFollowNum = result.tqFollowNum - 1;
+                            h.followTv.setText(ZR.getNumberString(result.tqFollowNum));
+                            ZToast.toast("取消关注");
+                        }
+                        updateFollowButton(result.isFollow, h.followTv);
+                    }
+                });
             }
         });
     }
 
+    private void updateFollowButton(int enable, final TextView followTv) {
+        //update the follow status
+        if (enable == 1) {
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_p, 0, 0, 0);
+        } else {
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_n, 0, 0, 0);
+        }
+    }
 
     @Override
     public int getItemCount() {

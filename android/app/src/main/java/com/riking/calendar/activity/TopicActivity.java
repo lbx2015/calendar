@@ -68,6 +68,10 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                //adding null protection
+                if (topic == null) {
+                    return;
+                }
                 final TQuestionParams params = new TQuestionParams();
                 params.attentObjId = topic.topicId;
                 //topic
