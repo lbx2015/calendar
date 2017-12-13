@@ -59,6 +59,7 @@ public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyList
         if (!TextUtils.isEmpty(to)) {
             toSpan = new SpannableString(to);
         }
+        
         SpannableString contentSpan = new SpannableString(content);
 
         ClickableSpan fromClick = new ClickableSpan() {
