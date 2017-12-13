@@ -94,7 +94,7 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(h.reviewTv.getContext(), AnswerCommentsActivity.class);
-                i.putExtra(CONST.QUESTION_ID, qAnswerResult.qaId);
+                i.putExtra(CONST.ANSWER_ID, qAnswerResult.qaId);
                 ZGoto.to(i);
             }
         });

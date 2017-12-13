@@ -29,11 +29,11 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.more_action)
     public View moreAction;
     @BindView(R.id.answer_title)
-    public TextView answerTitle;
+    public TextView questionTitle;
     @BindView(R.id.review_number)
-    public TextView reviewTv;
+    public TextView firstTextIcon;
     @BindView(R.id.agree_number)
-    public TextView agreeTv;
+    public TextView secondTextIcon;
 
     public HomeViewHolder(View itemView) {
         super(itemView);

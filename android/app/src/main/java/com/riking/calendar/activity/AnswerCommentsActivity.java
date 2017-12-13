@@ -71,7 +71,7 @@ public class AnswerCommentsActivity extends AppCompatActivity { //Fragment æ•°ç»
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         Intent i = getIntent();
-        answerId = i.getStringExtra(CONST.QUESTION_ID);
+        answerId = i.getStringExtra(CONST.ANSWER_ID);
         init();
     }
 

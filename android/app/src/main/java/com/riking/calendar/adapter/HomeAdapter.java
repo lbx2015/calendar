@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
+import com.riking.calendar.activity.AnswerCommentsActivity;
 import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.listener.ZCallBack;
@@ -21,6 +22,7 @@ import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -83,64 +85,15 @@ public class HomeAdapter extends RecyclerView.Adapter {
             final HomeViewHolder h = (HomeViewHolder) cellHolder;
             //type 1 : from topic
             if (r.pushType == 1) {
-                h.itemCator.setText("来自话题" + r.topicTitle);
-                if (StringUtil.isEmpty(r.qaContent)) {
-                    h.answerContent.setVisibility(View.GONE);
-                } else {
-                    h.answerContent.setVisibility(View.VISIBLE);
-                    h.answerContent.setText(r.qaContent);
-                }
-                h.answerTitle.setText(r.tqTitle);
-                if (r.coverUrl == null) {
-                    h.answerImage.setVisibility(View.GONE);
-                } else {
-                    h.answerImage.setVisibility(View.VISIBLE);
-                    ZR.setAnswerImage(h.answerImage, r.coverUrl);
-                }
-
-                //set from image
-                ZR.setUserImage(h.fromImage, r.fromImgUrl);
-
-                h.reviewTv.setText(ZR.getNumberString(r.qaCommentNum));
-                h.agreeTv.setText(ZR.getNumberString(r.qaAgreeNum));
-
-                if (r.isAgree == 1) {
-                    h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
-                } else {
-                    h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
-                }
-                //go to topic on click
-                h.itemCator.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(context, TopicActivity.class);
-                        i.putExtra(CONST.TOPIC_ID, r.topicId);
-                        ZGoto.to(i);
-                    }
-                });
-
-                //go to question activity on click
-                h.answerTitle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(context, QuestionActivity.class);
-                        i.putExtra(CONST.QUESTION_ID, r.tqId);
-                        ZGoto.to(i);
-                    }
-                });
-
-                //set agree listener
-                setAgreeClick(h.agreeTv, r);
-
-                //go to answer activity on click
-                h.answerContent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(context, AnswerActivity.class);
-                        i.putExtra(CONST.ANSWER_ID, r.tqId);
-                        ZGoto.to(i);
-                    }
-                });
+                setFromTopic(h, r);
+            }
+            //user agree answer
+            else if (r.pushType == 2) {
+                setFromUserAgreeAnswer(h, r);
+            }
+            //user follow question
+            else if (r.pushType == 3) {
+                setFromUserFollowQuestion(h,r);
             }
 
 
@@ -199,6 +152,158 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private void setFromUserFollowQuestion(final HomeViewHolder h, final TQuestionResult r) {
+        h.itemCator.setText(r.userName + "关注了问题");
+        setAnswerData(h, r);
+        setQuestionFollowAndReply(h, r);
+    }
+
+    private void setFromUserAgreeAnswer(final HomeViewHolder h, final TQuestionResult r) {
+        h.itemCator.setText(r.userName + "攒了回答");
+        setAnswerData(h, r);
+        setAnswerAgreeAndComment(h, r);
+    }
+
+    private void setFromTopic(final HomeViewHolder h, final TQuestionResult r) {
+        h.itemCator.setText("来自话题" + r.topicTitle);
+        setAnswerData(h, r);
+        setAnswerAgreeAndComment(h, r);
+    }
+
+    private void setAnswerData(final HomeViewHolder h, final TQuestionResult r) {
+        //set answer content
+        if (StringUtil.isEmpty(r.qaContent)) {
+            h.answerContent.setVisibility(View.GONE);
+        } else {
+            h.answerContent.setVisibility(View.VISIBLE);
+            h.answerContent.setText(r.qaContent);
+        }
+        //set question title
+        h.questionTitle.setText(r.tqTitle);
+
+        //set answer cover image
+        if (StringUtil.isEmpty(r.coverUrl)) {
+            h.answerImage.setVisibility(View.GONE);
+        } else {
+            h.answerImage.setVisibility(View.VISIBLE);
+            ZR.setAnswerImage(h.answerImage, r.coverUrl);
+        }
+
+        //set from image
+        ZR.setUserImage(h.fromImage, r.fromImgUrl);
+
+        //go to topic on click
+        h.itemCator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, TopicActivity.class);
+                i.putExtra(CONST.TOPIC_ID, r.topicId);
+                ZGoto.to(i);
+            }
+        });
+
+        //go to question activity on click
+        h.questionTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, QuestionActivity.class);
+                i.putExtra(CONST.QUESTION_ID, r.tqId);
+                ZGoto.to(i);
+            }
+        });
+
+        //go to answer activity on click
+        h.answerContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, AnswerActivity.class);
+                i.putExtra(CONST.ANSWER_ID, r.tqId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+
+    private void setQuestionFollowAndReply(final HomeViewHolder h, final TQuestionResult r) {
+        //set the follow number of the question
+        h.firstTextIcon.setText(ZR.getNumberString(r.qfollowNum));
+        //set the answer number of the question
+        h.secondTextIcon.setText(ZR.getNumberString(r.qanswerNum));
+
+        //follow icon
+        if (r.status == 1) {
+            h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_p, 0, 0, 0);
+        } else {
+            h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_n, 0, 0, 0);
+        }
+
+        //set follow listener
+        setFollowQuestionClick(h.firstTextIcon, r);
+
+        //go to comment list activity on cick
+        h.secondTextIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(h.secondTextIcon.getContext(), AnswerCommentsActivity.class);
+                i.putExtra(CONST.ANSWER_ID, r.qaId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    private void setAnswerAgreeAndComment(final HomeViewHolder h, final TQuestionResult r) {
+        //set the answer comment number
+        h.firstTextIcon.setText(ZR.getNumberString(r.qaCommentNum));
+        //set the answer agree number
+        h.secondTextIcon.setText(ZR.getNumberString(r.qaAgreeNum));
+
+        if (r.status == 1) {
+            h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
+        } else {
+            h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
+        }
+
+        //set agree listener
+        setAgreeClick(h.secondTextIcon, r);
+
+        //go to comment list activity on cick
+        h.firstTextIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(h.firstTextIcon.getContext(), AnswerCommentsActivity.class);
+                i.putExtra(CONST.ANSWER_ID, r.qaId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    private void setFollowQuestionClick(final TextView followTv, final TQuestionResult r){
+        final TQuestionParams params = new TQuestionParams();
+        params.attentObjId = r.tqId;
+        //question
+        params.objType = 1;
+        //followed
+        if (r.status == 1) {
+            params.enabled = 0;
+        } else {
+            params.enabled = 1;
+        }
+
+        APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+                r.status = params.enabled;
+                if (r.status == 1) {
+                    followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
+                    ZToast.toast("关注成功");
+                } else {
+                    followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
+                    ZToast.toast("取消关注");
+                }
+            }
+        });
+    }
+
     private void setAgreeClick(final TextView agreeTv, final TQuestionResult r) {
         agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
@@ -207,7 +312,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 p.questAnswerId = r.qaId;
                 //answer agree type
                 p.optType = 1;
-                if (r.isAgree == 1) {
+                if (r.status == 1) {
                     p.enabled = 0;
                 } else {
                     p.enabled = 1;
@@ -216,13 +321,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         if (p.enabled == 1) {
-                            r.isAgree = 1;
+                            r.status = 1;
                             r.qaAgreeNum = r.qaAgreeNum + 1;
                             agreeTv.setText(ZR.getNumberString(r.qaAgreeNum));
                             agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
                             Toast.makeText(agreeTv.getContext(), "点赞成功", Toast.LENGTH_SHORT).show();
                         } else {
-                            r.isAgree = 0;
+                            r.status = 0;
                             r.qaAgreeNum = r.qaAgreeNum - 1;
                             agreeTv.setText(ZR.getNumberString(r.qaAgreeNum));
                             ZToast.toast("取消点赞");
