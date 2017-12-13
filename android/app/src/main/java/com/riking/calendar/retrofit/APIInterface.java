@@ -40,6 +40,7 @@ import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.synch.LoginParams;
@@ -271,6 +272,7 @@ public interface APIInterface {
 
     /**
      * 得到话题的问题
+     *
      * @param params
      * @return
      */
@@ -279,9 +281,13 @@ public interface APIInterface {
 
     /**
      * 得到话题的优秀回答者
+     *
      * @param params
      * @return
      */
     @POST("topic/essenceQAList")
     Call<ResponseModel<List<QAExcellentResp>>> getExcellentResp(@Body TopicParams params);
+
+    @POST("homePage/findHomePageData")
+    Call<ResponseModel<List<TQuestionResult>>> findHomePageData(@Body HomeParams params);
 }

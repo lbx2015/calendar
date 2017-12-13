@@ -99,7 +99,6 @@ public class QuestionsFragment extends Fragment {
 
     private void loadData(final int page) {
         isLoading = true;
-        isLoading = true;
         if (page > 1 && isHasLoadedAll) {
             return;
         }

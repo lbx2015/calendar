@@ -135,7 +135,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         webView.getSettings().setAppCachePath(dir.getPath());
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setAppCacheEnabled(true);
-
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 
         webView.addJavascriptInterface(new WebAppInterface(), "Android");

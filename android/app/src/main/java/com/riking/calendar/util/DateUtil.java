@@ -130,6 +130,9 @@ public class DateUtil {
     }
 
     public static String date2String(Date time, String pattern) {
+        if (time == null) {
+            return null;
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         String reqTimeStamp;
         reqTimeStamp = dateFormat.format(time);
