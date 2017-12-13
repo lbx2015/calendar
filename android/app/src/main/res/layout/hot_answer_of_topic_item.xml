@@ -58,7 +58,7 @@
         android:textSize="18sp" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/answer_image"
         android:layout_width="330dp"
         android:layout_height="130dp"
         android:layout_marginBottom="15dp"

@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerCommentsActivity;
 import com.riking.calendar.listener.ZCallBack;
@@ -19,6 +17,7 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
@@ -48,6 +47,8 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
     public void onBindViewHolder(final HotAnswerOfTopicViewHolder h, int i) {
         final QAnswerResult qAnswerResult = mList.get(i);
         h.answerTitle.setText(qAnswerResult.title);
+        h.answerContent.setText(qAnswerResult.content);
+
         h.agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
@@ -98,10 +99,15 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
             }
         });
 
-        RequestOptions options = new RequestOptions();
-        Glide.with(h.authorImage.getContext()).load(qAnswerResult.coverUrl)
-                .apply(options.fitCenter().placeholder(R.drawable.default_user_icon))
-                .into(h.authorImage);
+        if (StringUtil.isEmpty(qAnswerResult.coverUrl) || !StringUtil.isHttpUrl(qAnswerResult.coverUrl)) {
+            h.answerImage.setVisibility(View.GONE);
+        } else {
+            h.answerImage.setVisibility(View.VISIBLE);
+            ZR.setAnswerImage(h.answerImage, qAnswerResult.coverUrl);
+        }
+
+        //set user image
+        ZR.setUserImage(h.authorImage, qAnswerResult.photoUrl);
     }
 
 

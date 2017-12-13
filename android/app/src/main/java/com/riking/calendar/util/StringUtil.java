@@ -47,4 +47,8 @@ public class StringUtil {
         return false;
 
     }
+
+    public static boolean isHttpUrl(String s){
+     return s.startsWith("http");
+    }
 }

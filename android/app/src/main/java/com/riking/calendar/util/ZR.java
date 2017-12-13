@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
 
 import java.text.DecimalFormat;
@@ -95,6 +96,10 @@ public class ZR {
         Glide.with(v.getContext()).load(imageUrl)
                 .apply(options.fitCenter().placeholder(R.drawable.default_user_icon))
                 .into(v);
+    }
+
+    public static  void setAnswerImage(ImageView v, String imageUrl){
+        GlideApp.with(v.getContext()).load(imageUrl).placeholder(R.drawable.banner).fitCenter().into(v);
     }
 
     public void getDensity(Activity activity) {

@@ -8,20 +8,23 @@ public class QuestResult {
 //	@JsonProperty("questionId")
     public String questionId;
 
-
-    //    @Comment("标题")
+//    @Comment("标题")
     public String title;
 
-    //    @Comment("内容")
+//    @Comment("内容")
     public String content;
 
-    //    @Comment("创建时间")
+//    @Comment("创建时间")
 //    @JsonFormat(pattern = "yyyyMMddHHmmssSSS")
     public Date createdTime;
 
     // 问题关注数
 //    @Transient
     public int tqFollowNum;
+
+    // 是否关注 1-已关注，0-未关注
+//    @Transient
+    public int isFollow;
 
     // 问题回答数
 //    @Transient
