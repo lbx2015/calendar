@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
@@ -37,12 +39,15 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     private TextView questionTitleTv;
     private TextView followNumberTv;
     private TextView answerNumberTv;
+    private TextView letMeAnswerTv;
+    private String questionId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_activity);
+        questionId = getIntent().getStringExtra(CONST.QUESTION_ID);
         init();
     }
 
@@ -52,6 +57,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        letMeAnswerTv = findViewById(R.id.let_me_answer);
         answerNumberTv = findViewById(R.id.answer_number);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
@@ -67,6 +73,12 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         mAdapter = new QuestionListAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
+        letMeAnswerTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                clickLetMeAnswer(v);
+            }
+        });
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
@@ -167,6 +179,8 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickLetMeAnswer(final View view) {
-        ZGoto.toWithLoginCheck(WriteAnswerActivity.class);
+        Intent i = new Intent(this, WriteAnswerActivity.class);
+        i.putExtra(CONST.QUESTION_ID, question.topicQuestionId);
+        ZGoto.to(i);
     }
 }

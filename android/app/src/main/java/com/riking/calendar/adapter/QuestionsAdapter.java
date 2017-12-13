@@ -1,6 +1,7 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.QuestionsViewHolder;
@@ -45,6 +49,16 @@ public class QuestionsAdapter extends RecyclerView.Adapter {
         h.titleTv.setText(result.title);
         updateFollowButton(result.isFollow, h.followTv);
         h.followTv.setText(ZR.getNumberString(result.tqFollowNum));
+        h.answerTv.setText(ZR.getNumberString(result.qanswerNum));
+        h.answerTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                Intent i = new Intent(v.getContext(), QuestionActivity.class);
+                i.putExtra(CONST.QUESTION_ID, result.questionId);
+                ZGoto.to(i);
+            }
+        });
+
         h.followTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
