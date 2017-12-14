@@ -94,7 +94,7 @@ public class ZR {
         RequestOptions options = new RequestOptions();
         //if fail user the default user icon
         Glide.with(v.getContext()).load(imageUrl)
-                .apply(options.fitCenter().placeholder(R.drawable.default_user_icon))
+                .apply(options.fitCenter().placeholder(R.drawable.user_icon_head_notlogin))
                 .into(v);
     }
 

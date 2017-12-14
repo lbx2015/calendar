@@ -16,7 +16,7 @@ import com.riking.calendar.R;
 public class GlidImageLoader implements NineGridView.ImageLoader {
     @Override
     public void onDisplayImage(Context context, ImageView imageView, String s) {
-        Glide.with(context).load(s).apply(new RequestOptions().placeholder(R.drawable.img_user_head).error(R.drawable.default_user_icon)).into(imageView);
+        Glide.with(context).load(s).apply(new RequestOptions().placeholder(R.drawable.img_user_head).error(R.drawable.user_icon_head_notlogin)).into(imageView);
     }
 
     @Override

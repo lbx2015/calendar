@@ -19,7 +19,7 @@
             android:layout_height="20dp"
             android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/default_user_icon" />
+            android:src="@drawable/user_icon_head_notlogin" />
 
         <TextView
             android:id="@+id/item_cator"

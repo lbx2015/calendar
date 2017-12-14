@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.view.CircleImageView;
 

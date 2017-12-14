@@ -43,7 +43,7 @@
                 android:layout_marginLeft="19dp"
                 android:layout_marginRight="19dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_user_icon" />
+                android:src="@drawable/user_icon_head_notlogin" />
 
             <TextView
                 android:id="@+id/user_name"

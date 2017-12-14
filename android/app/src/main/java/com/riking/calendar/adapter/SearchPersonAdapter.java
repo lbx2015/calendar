@@ -48,7 +48,7 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
         RequestOptions options = new RequestOptions();
         GlideApp.with(h.userImage.getContext()).load(user.photoUrl)
-                .placeholder(R.drawable.default_user_icon)
+                .placeholder(R.drawable.user_icon_head_notlogin)
                 .apply(options.fitCenter())
                 .into(h.userImage);
 
