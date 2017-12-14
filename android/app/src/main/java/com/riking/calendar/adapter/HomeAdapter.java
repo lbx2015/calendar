@@ -101,25 +101,25 @@ public class HomeAdapter extends RecyclerView.Adapter {
             //type 1 : from topic
             if (r.pushType == 1) {
                 h.itemCator.setText("来自话题" + r.topicTitle);
-                setAnswer(h, r);
+                setAnswerAgreeAndComment(h, r);
             }
             //followed user agree answer
             else if (r.pushType == 2) {
                 h.itemCator.setText(r.userName + "攒了回答");
-                setAnswer(h, r);
+                setAnswerAgreeAndComment(h, r);
             }
             //followed user follow question
             else if (r.pushType == 3) {
                 h.itemCator.setText(r.userName + "关注了问题");
-                setQuestion(h, r);
+                setQuestionFollowAndReply(h, r);
             }
             //followed user answer a question
             else if (r.pushType == 4) {
                 h.itemCator.setText(r.userName + "回答了问题");
-                setAnswer(h, r);
+                setAnswerAgreeAndComment(h, r);
             } else if (r.pushType == 5) {
                 h.itemCator.setText(r.userName + "收藏了问题");
-                setAnswer(h, r);
+                setAnswerAgreeAndComment(h, r);
             }
 
             //set the answer data
@@ -179,14 +179,6 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 }
             });
         }
-    }
-
-    private void setQuestion(final HomeViewHolder h, final TQuestionResult r) {
-        setQuestionFollowAndReply(h, r);
-    }
-
-    private void setAnswer(final HomeViewHolder h, final TQuestionResult r) {
-        setAnswerAgreeAndComment(h, r);
     }
 
     private void setAnswerData(final HomeViewHolder h, final TQuestionResult r) {
@@ -281,6 +273,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
         } else {
             h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
+
+        h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_comment,0,0,0);
 
         //set agree listener
         setAgreeClick(h.secondTextIcon, r);
