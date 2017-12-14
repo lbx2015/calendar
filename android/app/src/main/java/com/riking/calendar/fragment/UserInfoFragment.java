@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginNavigateActivity;
+import com.riking.calendar.activity.MyFollowersActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
@@ -54,6 +55,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     int loginState;
     View v;
     LinearLayout myRepliesLayout;
+    LinearLayout myFollowLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +102,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initViews() {
+        myFollowLayout = v.findViewById(R.id.my_follower_layout);
         myRepliesLayout = v.findViewById(R.id.my_replyes);
         setLayout = v.findViewById(R.id.set_layout);
         userInfoRelativeLayout = v.findViewById(R.id.user_info_relative_layout);
@@ -140,6 +143,14 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             @Override
             public void onClick(View v) {
                 ZGoto.to(MyRepliesActivity.class);
+            }
+        });
+
+        // go to my followers activity on click
+        myFollowLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ZGoto.to(MyFollowersActivity.class);
             }
         });
     }

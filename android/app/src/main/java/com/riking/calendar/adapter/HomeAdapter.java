@@ -307,18 +307,22 @@ public class HomeAdapter extends RecyclerView.Adapter {
         } else {
             params.enabled = 1;
         }
-
-        APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+        followTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void callBack(ResponseModel<String> response) {
-                r.status = params.enabled;
-                if (r.status == 1) {
-                    followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
-                    ZToast.toast("关注成功");
-                } else {
-                    followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
-                    ZToast.toast("取消关注");
-                }
+            public void click(View v) {
+                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        r.status = params.enabled;
+                        if (r.status == 1) {
+                            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
+                            ZToast.toast("关注成功");
+                        } else {
+                            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
+                            ZToast.toast("取消关注");
+                        }
+                    }
+                });
             }
         });
     }
