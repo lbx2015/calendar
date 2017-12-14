@@ -37,7 +37,6 @@ import com.riking.calendar.widget.dialog.ShareBottomDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class HomeAdapter extends RecyclerView.Adapter {
 
     public static final int REMMEND_TYPE = 2;
@@ -65,7 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (mList.get(position).pushType == 5 || mList.get(position).pushType == 6) {
+        if (mList.get(position).pushType == 6 || mList.get(position).pushType == 7) {
             return REMMEND_TYPE;
         }
         return super.getItemViewType(position);
@@ -73,14 +72,31 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, final int i) {
+        final TQuestionResult r = mList.get(i);
+
         if (getItemViewType(i) == REMMEND_TYPE) {
             MyLog.d("onBindViewHolderr at " + i + " and the view type is " + getItemViewType(i));
             RecommendedViewHolder h = (RecommendedViewHolder) cellHolder;
             h.recyclerView.setLayoutManager(new LinearLayoutManager(h.recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            h.recyclerView.setAdapter(new RecommendedAdapter());
+            RecommendedAdapter adapter = new RecommendedAdapter();
+            adapter.type = r.pushType;
+            switch (r.pushType) {
+                //interesting topics
+                case 6: {
+                    h.titleTV.setText("你可能感兴趣的话题");
+                    adapter.topicResults = r.topicResults;
+                    break;
+                }
+                //interesting person
+                case 7: {
+                    h.titleTV.setText("你可能感兴趣的人");
+                    adapter.appUserResults = r.appUserResults;
+                    break;
+                }
+            }
+            h.recyclerView.setAdapter(adapter);
 
         } else {
-            final TQuestionResult r = mList.get(i);
             final HomeViewHolder h = (HomeViewHolder) cellHolder;
             //type 1 : from topic
             if (r.pushType == 1) {
@@ -101,7 +117,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             else if (r.pushType == 4) {
                 h.itemCator.setText(r.userName + "回答了问题");
                 setAnswer(h, r);
-            } else if (r.pushType == 7) {
+            } else if (r.pushType == 5) {
                 h.itemCator.setText(r.userName + "收藏了问题");
                 setAnswer(h, r);
             }
