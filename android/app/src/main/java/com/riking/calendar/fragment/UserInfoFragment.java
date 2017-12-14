@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginNavigateActivity;
+import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
@@ -31,6 +32,7 @@ import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.MarketUtils;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.dialog.CheckInDialog;
 
@@ -51,7 +53,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     int loginState;
     View v;
-
+    LinearLayout myRepliesLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,6 +100,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initViews() {
+        myRepliesLayout = v.findViewById(R.id.my_replyes);
         setLayout = v.findViewById(R.id.set_layout);
         userInfoRelativeLayout = v.findViewById(R.id.user_info_relative_layout);
         userName = v.findViewById(R.id.user_name);
@@ -132,6 +135,13 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             }
         });
 
+        //set my replies click listener
+        myRepliesLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ZGoto.to(MyRepliesActivity.class);
+            }
+        });
     }
 
     @Override
