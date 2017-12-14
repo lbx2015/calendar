@@ -51,14 +51,19 @@ public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyList
         from = reply.fromUser == null ? "" : reply.fromUser.userName;
         String to = reply.toUser == null ? "" : reply.toUser.userName;
         String replyText = "回复";
-        String content = reply.content == null ? "总理还是我们的总理呀。总理还是我们的总理呀。" : reply.content;
+        String content = reply.content == null ? "" : reply.content;
 
-        SpannableString fromSpan = new SpannableString(from);
-        SpannableString replySpan = new SpannableString(replyText);
+
+        //set spannable string
         SpannableString toSpan = null;
         if (!TextUtils.isEmpty(to)) {
             toSpan = new SpannableString(to);
+        } else {
+            from = from + ": ";
         }
+
+        SpannableString fromSpan = new SpannableString(from);
+        SpannableString replySpan = new SpannableString(replyText);
         SpannableString contentSpan = new SpannableString(content);
 
         ClickableSpan fromClick = new ClickableSpan() {

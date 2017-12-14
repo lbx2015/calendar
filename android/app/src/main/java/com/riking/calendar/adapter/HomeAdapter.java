@@ -17,6 +17,7 @@ import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.AnswerCommentsActivity;
 import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.activity.WriteAnswerActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -248,6 +249,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_n, 0, 0, 0);
         }
 
+        h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_answer, 0, 0, 0);
+
         //set follow listener
         setFollowQuestionClick(h.firstTextIcon, r);
 
@@ -255,7 +258,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         h.secondTextIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(h.secondTextIcon.getContext(), AnswerCommentsActivity.class);
+                Intent i = new Intent(h.secondTextIcon.getContext(), WriteAnswerActivity.class);
                 i.putExtra(CONST.ANSWER_ID, r.qaId);
                 ZGoto.to(i);
             }
@@ -274,7 +277,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
-        h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_comment,0,0,0);
+        h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_comment, 0, 0, 0);
 
         //set agree listener
         setAgreeClick(h.secondTextIcon, r);
@@ -285,6 +288,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent i = new Intent(h.firstTextIcon.getContext(), AnswerCommentsActivity.class);
                 i.putExtra(CONST.ANSWER_ID, r.qaId);
+                i.putExtra(CONST.ANSWER_COMMENT_NUM, r.qaCommentNum);
                 ZGoto.to(i);
             }
         });
@@ -309,10 +313,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     public void callBack(ResponseModel<String> response) {
                         r.status = params.enabled;
                         if (r.status == 1) {
-                            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
+                            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_p, 0, 0, 0);
                             ZToast.toast("关注成功");
                         } else {
-                            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
+                            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_n, 0, 0, 0);
                             ZToast.toast("取消关注");
                         }
                     }
