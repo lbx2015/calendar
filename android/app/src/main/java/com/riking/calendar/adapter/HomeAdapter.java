@@ -65,12 +65,11 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (mList.get(position).pushType > 5) {
+        if (mList.get(position).pushType == 5 || mList.get(position).pushType == 6) {
             return REMMEND_TYPE;
         }
         return super.getItemViewType(position);
     }
-
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, final int i) {
@@ -85,16 +84,30 @@ public class HomeAdapter extends RecyclerView.Adapter {
             final HomeViewHolder h = (HomeViewHolder) cellHolder;
             //type 1 : from topic
             if (r.pushType == 1) {
-                setFromTopic(h, r);
+                h.itemCator.setText("来自话题" + r.topicTitle);
+                setAnswer(h, r);
             }
-            //user agree answer
+            //followed user agree answer
             else if (r.pushType == 2) {
-                setFromUserAgreeAnswer(h, r);
+                h.itemCator.setText(r.userName + "攒了回答");
+                setAnswer(h, r);
             }
-            //user follow question
+            //followed user follow question
             else if (r.pushType == 3) {
-                setFromUserFollowQuestion(h,r);
+                h.itemCator.setText(r.userName + "关注了问题");
+                setQuestion(h, r);
             }
+            //followed user answer a question
+            else if (r.pushType == 4) {
+                h.itemCator.setText(r.userName + "回答了问题");
+                setAnswer(h, r);
+            } else if (r.pushType == 7) {
+                h.itemCator.setText(r.userName + "收藏了问题");
+                setAnswer(h, r);
+            }
+
+            //set the answer data
+            setAnswerData(h, r);
 
 
             h.moreAction.setOnClickListener(new View.OnClickListener() {
@@ -152,21 +165,11 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void setFromUserFollowQuestion(final HomeViewHolder h, final TQuestionResult r) {
-        h.itemCator.setText(r.userName + "关注了问题");
-        setAnswerData(h, r);
+    private void setQuestion(final HomeViewHolder h, final TQuestionResult r) {
         setQuestionFollowAndReply(h, r);
     }
 
-    private void setFromUserAgreeAnswer(final HomeViewHolder h, final TQuestionResult r) {
-        h.itemCator.setText(r.userName + "攒了回答");
-        setAnswerData(h, r);
-        setAnswerAgreeAndComment(h, r);
-    }
-
-    private void setFromTopic(final HomeViewHolder h, final TQuestionResult r) {
-        h.itemCator.setText("来自话题" + r.topicTitle);
-        setAnswerData(h, r);
+    private void setAnswer(final HomeViewHolder h, final TQuestionResult r) {
         setAnswerAgreeAndComment(h, r);
     }
 
@@ -277,7 +280,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         });
     }
 
-    private void setFollowQuestionClick(final TextView followTv, final TQuestionResult r){
+    private void setFollowQuestionClick(final TextView followTv, final TQuestionResult r) {
         final TQuestionParams params = new TQuestionParams();
         params.attentObjId = r.tqId;
         //question

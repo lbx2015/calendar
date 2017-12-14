@@ -145,7 +145,7 @@ public class TopicFragment extends Fragment {
                 }
                 lastItemTime = DateUtil.date2String(lastTime, CONST.YYYYMMDDHHMMSSSSS);
 
-                if (page == 0) {
+                if (page == 1) {
                     mAdapter.mList.addAll(0, news);
                     mAdapter.notifyItemRangeInserted(0, news.size());
                 } else {
