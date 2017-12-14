@@ -105,7 +105,7 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void loadAnswer(final int page) {
-        QAnswerParams params = new QAnswerParams();
+     /*   QAnswerParams params = new QAnswerParams();
         APIClient.qACommentList(params, new ZCallBack<ResponseModel<List<QAComment>>>() {
             @Override
             public void callBack(ResponseModel<List<QAComment>> response) {
@@ -118,7 +118,7 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
                 mAdapter.addAll(comments);
                 nextPage = page + 1;
             }
-        });
+        });*/
     }
 
     public void clickBack(final View view) {

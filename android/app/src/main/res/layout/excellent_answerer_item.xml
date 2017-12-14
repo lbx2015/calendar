@@ -62,7 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="邀请"
             android:textColor="@color/color_489dfff"
             android:textSize="14sp" />
     </FrameLayout>

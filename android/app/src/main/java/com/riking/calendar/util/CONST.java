@@ -67,6 +67,7 @@ public class CONST {
     public static final String QUESTION_ID = "QUESTION_ID";
     public static final String TOPIC_ID = "TOPIC_ID";
     public static final String ANSWER_ID = "ANSWER_ID";
+    public static final String MY_FOLLOW = "MY_FOLLOW";
 
     //滚动事件
     public enum ScrollDirection {

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.CircleImageView;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class MyFollowersAdapter extends RecyclerView.Adapter<MyFollowersAdapter.
         } else {
             h.divider.setVisibility(View.VISIBLE);
         }
+        showInvited(h.followButton,h.followTv,1);
        /* final QAComment c = mList.get(i);
 
         h.authorName.setText(c.userName);
@@ -95,6 +97,20 @@ public class MyFollowersAdapter extends RecyclerView.Adapter<MyFollowersAdapter.
         setRecyclerView(h.recyclerView, h, i);*/
     }
 
+    private void showInvited(View followButton, TextView followTv, int isFollow) {
+        if (isFollow == 0) {
+            followTv.setText("关注");
+            followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
+            followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border));
+        } else {
+            followTv.setText("已关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            followTv.setTextColor(ZR.getColor(R.color.color_999999));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
+        }
+    }
     @Override
     public int getItemCount() {
         return mList.size() + 2;

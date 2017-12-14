@@ -55,6 +55,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     int loginState;
     View v;
     LinearLayout myRepliesLayout;
+    LinearLayout followMeLayout;
     LinearLayout myFollowLayout;
 
     @Override
@@ -102,7 +103,8 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initViews() {
-        myFollowLayout = v.findViewById(R.id.my_follower_layout);
+        myFollowLayout = v.findViewById(R.id.my_follow_person_layout);
+        followMeLayout = v.findViewById(R.id.my_follower_layout);
         myRepliesLayout = v.findViewById(R.id.my_replyes);
         setLayout = v.findViewById(R.id.set_layout);
         userInfoRelativeLayout = v.findViewById(R.id.user_info_relative_layout);
@@ -146,11 +148,21 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             }
         });
 
-        // go to my followers activity on click
-        myFollowLayout.setOnClickListener(new OnClickListener() {
+        // go to following me activity on click
+        followMeLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 ZGoto.to(MyFollowersActivity.class);
+            }
+        });
+
+        //go to my follow
+        myFollowLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                Intent i = new Intent(getContext(), MyFollowersActivity.class);
+                i.putExtra(CONST.MY_FOLLOW, 1);
+                ZGoto.to(i);
             }
         });
     }
