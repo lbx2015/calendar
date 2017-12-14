@@ -101,6 +101,11 @@ public class ExampleUnitTest {
         System.out.println(user.userId);
         System.out.println(new Gson().toJson(j));
         System.out.println(new Gson().toJson(a));
+        ArrayList<String>  arrayList = new ArrayList();
+        arrayList.add("dd");
+        arrayList.add("dd");
+        arrayList.add("dd");
+        System.out.println(g.toJson(arrayList));
 
     }
 

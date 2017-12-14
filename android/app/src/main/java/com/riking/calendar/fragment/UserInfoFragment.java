@@ -32,6 +32,7 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.MarketUtils;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.widget.dialog.CheckInDialog;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -61,6 +62,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         init();
 
         if (ZPreference.isLogin()) {
+            toUserInfoIm.setVisibility(View.VISIBLE);
             notLoginTv.setVisibility(View.GONE);
             loginLinearLayout.setVisibility(View.VISIBLE);
             loginState = 1;
@@ -82,6 +84,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                 myTask.execute(imageUrl);
             }
         } else {
+            toUserInfoIm.setVisibility(View.GONE);
             notLoginTv.setVisibility(View.VISIBLE);
             loginLinearLayout.setVisibility(View.GONE);
             loginState = 0;
@@ -117,6 +120,15 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                     startActivity((new Intent(getContext(), LoginNavigateActivity.class)));
 //                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
                 }
+            }
+        });
+
+        //set sign in click listener
+        checkInTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
+                dialog.show();
             }
         });
 
