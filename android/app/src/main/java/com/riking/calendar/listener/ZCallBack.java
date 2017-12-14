@@ -24,11 +24,15 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
 
     private ProgressDialog mProgressDialog;
 
+    private boolean isBackQuickly;
 
     public ZCallBack() {
-        new android.os.Handler(Looper.getMainLooper()).post(new Runnable() {
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (isBackQuickly) {
+                    return;
+                }
                 //dismiss the dialog first
                 if (mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
@@ -40,12 +44,15 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
                 mProgressDialog.setCanceledOnTouchOutside(false);
                 mProgressDialog.show();
             }
-        });
+        }, 2000);
     }
 
     public abstract void callBack(T response);
 
     private void closeProgressDialog() {
+        if (mProgressDialog == null) {
+            return;
+        }
         Activity activity = mProgressDialog.getOwnerActivity();
         if (activity != null && !activity.isFinishing()) {
             mProgressDialog.dismiss();
@@ -54,6 +61,7 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
+        isBackQuickly = true;
         closeProgressDialog();
         Logger.d("zzw", "request ok + " + call.request().toString());
         if (response == null || response.body() == null) {
@@ -77,6 +85,7 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
+        isBackQuickly = true;
         closeProgressDialog();
         Logger.d("zzw", "request fail + " + call.request().toString() + t.getMessage());
         if (NetStateReceiver.isNetAvailable) {
