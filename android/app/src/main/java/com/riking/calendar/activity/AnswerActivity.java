@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
@@ -131,6 +132,9 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
                 MyLog.d("verticalOffset: " + verticalOffset + "visibility: " + (bottomBar.getVisibility() == View.VISIBLE));
             }
         });
+
+        //set follow user click listener
+        setFollowClickListener();
        /* //init recycler view
         suggestionQuestionsRecyclerView = findViewById(R.userId.suggestion_questions_recyclerview);
         suggestionQuestionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -201,7 +205,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
                     agreeTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_icon_zan_p, 0, 0);
                     agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
                 } else {
-                    agreeTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_icon_zan_p, 0, 0);
+                    agreeTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_icon_zan_n, 0, 0);
                     agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
                 }
 
@@ -245,11 +249,41 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickComments(final View view) {
-        ZGoto.toWithLoginCheck(CommentsActivity.class);
+        ZGoto.toWithLoginCheck(AnswerCommentsActivity.class);
     }
 
     public void clickAgree(final View view) {
-
+        agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                final QAnswerParams p = new QAnswerParams();
+                p.questAnswerId = answer.questionAnswerId;
+                //answer agree type
+                p.optType = 1;
+                if (answer.isAgree == 1) {
+                    p.enabled = 0;
+                } else {
+                    p.enabled = 1;
+                }
+                APIClient.qAnswerAgree(p, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                            answer.isAgree = p.enabled;
+                        if (p.enabled == 1) {
+                            answer.agreeNum = answer.agreeNum+ 1;
+                            agreeTv.setText(ZR.getNumberString(answer.agreeNum));
+                            agreeTv.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.com_icon_zan_p,  0, 0);
+                            Toast.makeText(agreeTv.getContext(), "点赞成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            answer.agreeNum = answer.agreeNum - 1;
+                            agreeTv.setText(ZR.getNumberString(answer.agreeNum));
+                            ZToast.toast("取消点赞");
+                            agreeTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_icon_zan_n, 0, 0);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     public void clickFavorite(final View v) {
