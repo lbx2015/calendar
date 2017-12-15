@@ -69,6 +69,10 @@ public class NewsComment extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	@Transient
 	@Comment("是否已点赞 0-未点赞，1-已点赞")
 	private Integer isAgree;
@@ -102,6 +106,14 @@ public class NewsComment extends BaseAuditProp {
 
 	public void setNcReplyList(List<NCReply> ncReplyList) {
 		this.ncReplyList = ncReplyList;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getUserId() {

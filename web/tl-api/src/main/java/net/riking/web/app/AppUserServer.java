@@ -1,6 +1,9 @@
 package net.riking.web.app;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,14 +23,20 @@ import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.QuestionAnswerRepo;
+import net.riking.dao.repo.SignInRepo;
+import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.SignIn;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
+import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
+import net.riking.util.DateUtils;
 import net.riking.util.StringUtil;
 
 /**
@@ -54,6 +63,18 @@ public class AppUserServer {
 	@Autowired
 	AppUserService appUserService;
 
+	@Autowired
+	SignInRepo signInRepo;
+
+	@Autowired
+	QuestionAnswerRepo questionAnswerRepo;
+
+	@Autowired
+	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	SignInService signInService;
+
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
 	public AppResp get_(@RequestBody UserParams userParams) throws IllegalArgumentException, IllegalAccessException {
@@ -62,43 +83,27 @@ public class AppUserServer {
 		AppUserResp appUserResp = new AppUserResp();
 		appUserResp.setUserId(appUser.getId());
 		// appUserResp从appUser取值
-		appUserResp = (AppUserResp) fromObjToObjValue(appUserResp, appUser);
+		appUserResp = (AppUserResp) fromObjToObjValue(appUser, appUserResp);
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
 		// appUserResp从appUserDetail取值
-		appUserResp = (AppUserResp) fromObjToObjValue(appUserResp, appUserDetail);
-
-		return new AppResp(appUserResp, CodeDef.SUCCESS);
-	}
-
-	/**
-	 * fromObj的值赋在toObj上
-	 * @param fromObj
-	 * @param toObj
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 */
-	private Object fromObjToObjValue(Object fromObj, Object toObj)
-			throws IllegalArgumentException, IllegalAccessException {
-		Field[] fromObjfields = fromObj.getClass().getDeclaredFields();
-		for (Field fromObjfield : fromObjfields) {
-			fromObjfield.setAccessible(true);
-			Field[] toObjfields = toObj.getClass().getDeclaredFields();
-			for (Field toObjfield : toObjfields) {
-				toObjfield.setAccessible(true);
-				if (fromObjfield.getName().equals(toObjfield.getName())) {
-					toObjfield.set(toObj, fromObjfield.get(fromObj));
-				}
-			}
+		appUserResp = (AppUserResp) fromObjToObjValue(appUserDetail, appUserResp);
+		if (null != appUserResp.getPhotoUrl()) {
+			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResp.getPhotoUrl());
 		}
-		return toObj;
+		// 等级
+		if (null != appUserResp.getExperience()) {
+			appUserResp.setGrade(appUserService.transformExpToGrade(appUserResp.getExperience()));
+		}
+		return new AppResp(appUserResp, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "更新用户信息", notes = "POST")
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public AppResp modify_(@RequestBody UpdUserParams userParams)
 			throws IllegalArgumentException, IllegalAccessException {
-
+		if (userParams.getUserId() == null) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
 		AppUser dbUser = appUserRepo.findOne(userParams.getUserId());
 		if (null == dbUser) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
@@ -106,20 +111,7 @@ public class AppUserServer {
 
 		AppUser appUser = appUserRepo.findOne(dbUser.getId());
 		if (null != userParams) {
-			Field[] userParamsfields = userParams.getClass().getDeclaredFields();
-			for (Field userParamsfield : userParamsfields) {
-				userParamsfield.setAccessible(true);
-				Field[] appUserfields = appUser.getClass().getDeclaredFields();
-				for (Field appUserfield : appUserfields) {
-					appUserfield.setAccessible(true);
-					if (userParamsfield.getName().equals(appUserfield.getName())) {
-						// 如果接收对象里面的属性不为空，设置进appUser类中
-						if (null != userParamsfield.get(userParams)) {
-							appUserfield.set(appUser, userParamsfield.get(userParams));
-						}
-					}
-				}
-			}
+			appUser = (AppUser) fromObjToObjValue(userParams, appUser);
 		}
 		try {
 			appUserRepo.save(appUser);
@@ -133,20 +125,7 @@ public class AppUserServer {
 		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
-				Field[] userParamsfields = userParams.getClass().getDeclaredFields();
-				for (Field userParamsfield : userParamsfields) {
-					userParamsfield.setAccessible(true);
-					Field[] appUserDetailfields = appUserDetail.getClass().getDeclaredFields();
-					for (Field appUserDetailfield : appUserDetailfields) {
-						appUserDetailfield.setAccessible(true);
-						if (userParamsfield.getName().equals(appUserDetailfield.getName())) {
-							// 如果接收对象里面的属性不为空，设置进appUserDetail类中
-							if (null != userParamsfield.get(userParams)) {
-								appUserDetailfield.set(appUserDetail, userParamsfield.get(userParams));
-							}
-						}
-					}
-				}
+				appUserDetail = (AppUserDetail) fromObjToObjValue(userParams, appUserDetail);
 			}
 			try {
 				appUserDetailRepo.save(appUserDetail);
@@ -179,11 +158,11 @@ public class AppUserServer {
 	@AuthPass
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
-	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestBody UserParams userParams) {
+	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("userId") String userId) {
 		String url = request.getRequestURL().toString();
 		String fileName = null;
 		try {
-			fileName = appUserService.uploadPhoto(mFile, userParams.getUserId());
+			fileName = appUserService.uploadPhoto(mFile, userId);
 		} catch (RuntimeException e) {
 			// TODO: handle exception
 			if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) {
@@ -196,6 +175,90 @@ public class AppUserServer {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("photoUrl", photoUrl);
 		return new AppResp(result, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * userId
+	 * @param userParams
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "签到", notes = "POST")
+	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
+	public AppResp signIn_(@RequestBody UserParams userParams) throws ParseException {
+		if (null == userParams) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (null == userParams.getUserId()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, +1);// 加一天
+		Date nextDay = DateUtils.StringFormatMS(DateUtils.DateFormatMS(calendar.getTime(), "yyyy-MM-dd"), "yyyy-MM-dd");
+		Date today = DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd");
+
+		SignIn signIn = signInRepo.getByUIdAndTime(userParams.getUserId(), today, nextDay);
+		Integer integral = appUserDetailRepo.getIntegral(userParams.getUserId());
+		Integer integralNew = signInService.signIn(signIn, userParams.getUserId(), integral);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("integral", integralNew);
+		if (integral == integralNew) {
+			return new AppResp("", CodeDef.SUCCESS);
+		} else {
+			return new AppResp(map, CodeDef.SUCCESS);
+		}
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "关注数、回答数、粉丝数获取", notes = "POST")
+	@RequestMapping(value = "/getOperateNumber", method = RequestMethod.POST)
+	public AppResp getOperateNumber_(@RequestBody UserParams userParams) throws ParseException {
+		if (null == userParams) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (null == userParams.getUserId()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		// TODO 暂时从数据库中获取，后面优化从redis中取
+		Integer followNum = userFollowRelRepo.countByUser(userParams.getUserId());
+		Integer answerNum = questionAnswerRepo.answerCountByUserId(userParams.getUserId());
+		Integer fansNum = userFollowRelRepo.countByToUser(userParams.getUserId());
+		map.put("followNum", followNum);
+		map.put("answerNum", answerNum);
+		map.put("fansNum", fansNum);
+		return new AppResp(map, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * fromObj的值赋在toObj上
+	 * @param fromObj
+	 * @param toObj
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private Object fromObjToObjValue(Object fromObj, Object toObj)
+			throws IllegalArgumentException, IllegalAccessException {
+		Field[] fromObjfields = fromObj.getClass().getDeclaredFields();
+		for (Field fromObjfield : fromObjfields) {
+			fromObjfield.setAccessible(true);
+			Field[] toObjfields = toObj.getClass().getDeclaredFields();
+			for (Field toObjfield : toObjfields) {
+				toObjfield.setAccessible(true);
+				if (fromObjfield.getName().equals(toObjfield.getName())) {
+					if (null != fromObjfield.get(fromObj)) {
+						toObjfield.set(toObj, fromObjfield.get(fromObj));
+					}
+				}
+			}
+		}
+		return toObj;
 	}
 
 	private <T> T merge(T dbObj, T appObj) throws Exception {

@@ -46,7 +46,7 @@ public interface QAnswerRelRepo extends JpaRepository<QAnswerRel, String>, JpaSp
 	 * @param questAnswerId
 	 * @return
 	 */
-	@Query("select qaId,dataType from QAnswerRel where userId = ?1 ")
+	@Query("from QAnswerRel where userId = ?1 ")
 	List<QAnswerRel> findByUser(String userId);
 
 	/**

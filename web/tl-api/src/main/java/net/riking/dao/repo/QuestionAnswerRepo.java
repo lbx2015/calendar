@@ -2,11 +2,13 @@ package net.riking.dao.repo;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestionAnswer;
 
 /**
@@ -51,4 +53,14 @@ public interface QuestionAnswerRepo
 	 */
 	@Query("select count(*) from QuestionAnswer where userId = ?1 and isAudit <> 2 and isDeleted = 1")
 	Integer answerCountByUserId(String userId);
+
+	/**
+	 * 用户的回答
+	 * @param userId
+	 * @param pageRequest
+	 * @return
+	 */
+	@Query("select new net.riking.entity.model.QAnswerResult(qa.id,(select tq.id from TopicQuestion tq where tq.id = qa.questionId),(select tq.title from TopicQuestion tq where tq.id = qa.questionId),qa.content,qa.createdTime) from QuestionAnswer qa where qa.userId = ?1 and qa.isAudit <>2 and qa.isDeleted =1")
+	List<QAnswerResult> findQAnswerByUserId(String userId, Pageable Pageable);
+
 }

@@ -22,8 +22,13 @@ public class TopicServiceImpl implements TopicService {
 	TopicDao topicDao;
 
 	@Override
-	public List<TopicResult> findTopicOfInterest(String userId, int begin, int end) {
-		return topicDao.findTopicOfInterest(userId, begin, end);
+	public List<TopicResult> findTopicOfInterest(String userId, String topicIds, int begin, int end) {
+		return topicDao.findTopicOfInterest(userId, topicIds, begin, end);
+	}
+
+	@Override
+	public List<TopicResult> userFollowTopic(String userId, int begin, int end) {
+		return topicDao.userFollowTopic(userId, begin, end);
 	}
 
 }

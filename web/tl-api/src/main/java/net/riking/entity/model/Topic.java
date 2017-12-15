@@ -65,6 +65,14 @@ public class Topic extends BaseAuditProp {
 	private String photoUrl;
 
 	@Transient
+	@Comment("经验值")
+	private Integer experience;
+
+	@Transient
+	@Comment("用户等级")
+	private Integer grade;
+
+	@Transient
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
 
@@ -86,6 +94,22 @@ public class Topic extends BaseAuditProp {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Integer getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Integer experience) {
+		this.experience = experience;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getPhotoUrl() {

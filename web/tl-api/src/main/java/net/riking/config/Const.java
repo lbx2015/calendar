@@ -102,6 +102,12 @@ public class Const {
 
 	public static final int OBJ_OPT_SHIELD = 3;// 屏蔽
 
+	public static final int OBJ_OPT_COMMENT = 1;// 评论
+
+	public static final int OBJ_OPT_ANSWER = 2;// 回答
+
+	public static final int OBJ_OPT_INQUIRY = 3;// 提问
+
 	/** --------------------操作类型 end-------------------------- */
 
 	/** -------------------操作类型 begin-------------------------- */

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import net.riking.dao.TQuestionDao;
 import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.QAnswerResult;
+import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.TQuestionResult;
 
 @Repository("tQuestionDao")
@@ -28,10 +29,10 @@ public class TQuestionDaoImpl implements TQuestionDao {
 	private EntityManager entityManager;
 
 	@Override
-	public List<TQuestionResult> findTopicHomeUp(String userId, Date reqTimeStamp, int start, int end) {
+	public List<TQuestionResult> findTopicHomeUp(String userId, Date reqTimeStamp, String tqIds, int start, int end) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call findTopicHomeUp(?,?,?,?)";
+		String sql = "call findTopicHomeUp(?,?,?,?,?)";
 		PreparedStatement pstmt = null;
 		List<TQuestionResult> list = new ArrayList<TQuestionResult>();
 		try {
@@ -40,18 +41,21 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			Timestamp timestamp = new Timestamp(reqTimeStamp.getTime());
-			pstmt.setTimestamp(2, timestamp);
-			pstmt.setInt(3, start);
-			pstmt.setInt(4, end);
+			pstmt.setString(2, tqIds);
+			pstmt.setTimestamp(3, timestamp);
+			pstmt.setInt(4, start);
+			pstmt.setInt(5, end);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TQuestionResult tQuestionResult = new TQuestionResult();
+				tQuestionResult.setTopicId(rs.getString("topicId"));
 				tQuestionResult.setTqId(rs.getString("tqId"));
 				tQuestionResult.setTqTitle(rs.getString("tqTitle"));
 				tQuestionResult.setCreatedTime(rs.getTimestamp("createdTime"));
 				tQuestionResult.setTopicTitle(rs.getString("topicTitle"));
 				tQuestionResult.setQaContent(rs.getString("qAContent"));
 				tQuestionResult.setTfollowNum(rs.getInt("tFollowNum"));
+				tQuestionResult.setQaId(rs.getString("qaId"));
 				tQuestionResult.setUserId(rs.getString("userId"));
 				tQuestionResult.setUserName(rs.getString("userName"));
 				tQuestionResult.setFromImgUrl(rs.getString("fromImgUrl"));
@@ -72,10 +76,10 @@ public class TQuestionDaoImpl implements TQuestionDao {
 	}
 
 	@Override
-	public List<TQuestionResult> findTopicHomeDown(String userId, Date reqTimeStamp, int start, int end) {
+	public List<TQuestionResult> findTopicHomeDown(String userId, Date reqTimeStamp, String tqIds, int start, int end) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call findTopicHomeDown(?,?,?,?)";
+		String sql = "call findTopicHomeDown(?,?,?,?,?)";
 		PreparedStatement pstmt = null;
 		List<TQuestionResult> list = new ArrayList<TQuestionResult>();
 		try {
@@ -84,14 +88,17 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			Timestamp timestamp = new Timestamp(reqTimeStamp.getTime());
-			pstmt.setTimestamp(2, timestamp);
-			pstmt.setInt(3, start);
-			pstmt.setInt(4, end);
+			pstmt.setString(2, tqIds);
+			pstmt.setTimestamp(3, timestamp);
+			pstmt.setInt(4, start);
+			pstmt.setInt(5, end);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TQuestionResult tQuestionResult = new TQuestionResult();
+				tQuestionResult.setTopicId(rs.getString("topicId"));
 				tQuestionResult.setTqId(rs.getString("tqId"));
 				tQuestionResult.setTqTitle(rs.getString("tqTitle"));
+				tQuestionResult.setQaId(rs.getString("qaId"));
 				tQuestionResult.setCreatedTime(rs.getTimestamp("createdTime"));
 				tQuestionResult.setTopicTitle(rs.getString("topicTitle"));
 				tQuestionResult.setQaContent(rs.getString("qAContent"));
@@ -174,6 +181,36 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				qaExcellentResp.setQaAgreeNum(rs.getString("qaAgreeNum"));
 				qaExcellentResp.setExperience(rs.getInt("experience"));
 				list.add(qaExcellentResp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+
+	@Override
+	public List<QuestResult> userFollowQuest(String userId, int start, int end) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call userFollowQuest(?,?,?)";
+		PreparedStatement pstmt = null;
+		List<QuestResult> list = new ArrayList<QuestResult>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(userId))
+				userId = "";
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				QuestResult questResult = new QuestResult();
+				questResult.setTitle(rs.getString("title"));
+				questResult.setId(rs.getString("tqId"));
+				questResult.setTqFollowNum(rs.getInt("followNum"));
+				questResult.setQanswerNum(rs.getInt("qanswerNum"));
+				list.add(questResult);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

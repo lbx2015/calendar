@@ -51,6 +51,9 @@ public class AppUserResp extends BaseEntity {
 	// 经验值
 	private Integer experience;
 
+	// 等级
+	private Integer grade;
+
 	// 用户头像（存放用户头像名称）
 	private String photoUrl;
 
@@ -195,6 +198,14 @@ public class AppUserResp extends BaseEntity {
 
 	public void setPhoneDeviceid(String phoneDeviceid) {
 		this.phoneDeviceid = phoneDeviceid;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public Integer getIntegral() {
