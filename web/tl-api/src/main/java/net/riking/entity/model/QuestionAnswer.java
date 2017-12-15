@@ -89,6 +89,10 @@ public class QuestionAnswer extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	// 是否已点赞（0-未点赞；1-已点赞）
 	@Transient
 	private Integer isAgree;
@@ -96,6 +100,10 @@ public class QuestionAnswer extends BaseAuditProp {
 	// 是否已收藏（0-未收藏；1-已收藏）
 	@Transient
 	private Integer isCollect;
+
+	// 用户是否关注
+	@Transient
+	private Integer isFollow;
 
 	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,
 			String content, String userName, String photoUrl, Integer experience) {
@@ -139,12 +147,28 @@ public class QuestionAnswer extends BaseAuditProp {
 		this.id = id;
 	}
 
+	public Integer getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Integer isFollow) {
+		this.isFollow = isFollow;
+	}
+
 	public String getCoverUrl() {
 		return coverUrl;
 	}
 
 	public void setCoverUrl(String coverUrl) {
 		this.coverUrl = coverUrl;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getUserId() {

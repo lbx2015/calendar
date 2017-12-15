@@ -2,6 +2,8 @@ package net.riking.web.app;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +28,7 @@ import net.riking.entity.model.QAInvite;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.params.TQuestionParams;
+import net.riking.service.AppUserService;
 
 /**
  * 问题接口
@@ -48,6 +51,9 @@ public class TopicQuestionServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	TQuestionRelRepo tQuestionRelRepo;
 
 	@Autowired
@@ -61,6 +67,9 @@ public class TopicQuestionServer {
 
 	@Autowired
 	QAInviteRepo qAInviteRepo;
+
+	@Autowired
+	AppUserService appUserService;
 
 	/**
 	 * 问题的详情[userId,tqId]
@@ -84,8 +93,14 @@ public class TopicQuestionServer {
 				topicQuestion.setIsFollow(1);// 1-已关注
 			}
 		}
-
 		topicQuestion.setQuestionAnswers(findAnswerList(tQuestionParams));
+		if (null != topicQuestion.getPhotoUrl()) {
+			topicQuestion.setPhotoUrl(appUserService.getPhotoUrlPath() + topicQuestion.getPhotoUrl());
+		}
+		// 等级
+		if (null != topicQuestion.getExperience()) {
+			topicQuestion.setGrade(appUserService.transformExpToGrade(topicQuestion.getExperience()));
+		}
 		return new AppResp(topicQuestion, CodeDef.SUCCESS);
 	}
 
@@ -135,6 +150,13 @@ public class TopicQuestionServer {
 	private List<QuestionAnswer> findAnswerList(TQuestionParams tQuestionParams) {
 		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId());
 		for (QuestionAnswer questionAnswer : questionAnswerList) {
+			if (null != questionAnswer.getPhotoUrl()) {
+				questionAnswer.setPhotoUrl(appUserService.getPhotoUrlPath() + questionAnswer.getPhotoUrl());
+			}
+			// 等级
+			if (null != questionAnswer.getExperience()) {
+				questionAnswer.setGrade(appUserService.transformExpToGrade(questionAnswer.getExperience()));
+			}
 			// TODO 统计数后面从redis中取回答的评论数
 			Integer commentNum = qACommentRepo.commentCount(questionAnswer.getId());
 			questionAnswer.setCommentNum(commentNum);

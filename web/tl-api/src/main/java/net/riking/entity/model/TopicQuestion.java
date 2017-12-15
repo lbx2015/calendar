@@ -79,6 +79,10 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	@Transient
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
@@ -116,6 +120,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
 		this.questionAnswers = questionAnswers;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getId() {

@@ -13,5 +13,14 @@ public interface TopicService {
 	 * @param end
 	 * @return
 	 */
-	public List<TopicResult> findTopicOfInterest(String userId, int begin, int end);
+	public List<TopicResult> findTopicOfInterest(String userId, String topicIds, int begin, int end);
+
+	/**
+	 * 关注的话题
+	 * @param userId
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public List<TopicResult> userFollowTopic(String userId, int begin, int end);
 }

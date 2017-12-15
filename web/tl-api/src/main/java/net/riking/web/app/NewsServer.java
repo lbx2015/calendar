@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +39,7 @@ import net.riking.entity.model.NewsRel;
 import net.riking.entity.params.NewsParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
+import net.riking.service.AppUserService;
 import net.riking.util.DateUtils;
 
 /**
@@ -63,6 +66,9 @@ public class NewsServer {
 	NCReplyRepo nCReplyRepo;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	NCAgreeRelRepo nCAgreeRelRepo;
 
 	@Autowired
@@ -73,6 +79,9 @@ public class NewsServer {
 
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
+
+	@Autowired
+	AppUserService appUserService;
 
 	/**
 	 * 获取资讯列表
@@ -122,6 +131,7 @@ public class NewsServer {
 						}
 					}
 				});
+				newsInfoList = newsInfoAscList;
 				break;
 			default:
 				logger.error("请求方向参数异常：direct:" + newsParams.getDirect());
@@ -135,7 +145,14 @@ public class NewsServer {
 			int count = 0;
 			count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
-
+			// 截取资源访问路径
+			if (null != newsInfo.getPhotoUrl()) {
+				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath() + newsInfo.getPhotoUrl());
+			}
+			// 等级
+			if (null != newsInfo.getExperience()) {
+				newsInfo.setGrade(appUserService.transformExpToGrade(newsInfo.getExperience()));
+			}
 		}
 
 		return new AppResp(newsInfoList, CodeDef.SUCCESS);
@@ -166,6 +183,14 @@ public class NewsServer {
 				}
 			}
 		}
+		// 截取资源访问路径
+		if (null != newsInfo.getPhotoUrl()) {
+			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath() + newsInfo.getPhotoUrl());
+		}
+		// 等级
+		if (null != newsInfo.getExperience()) {
+			newsInfo.setGrade(appUserService.transformExpToGrade(newsInfo.getExperience()));
+		}
 		return new AppResp(newsInfo, CodeDef.SUCCESS);
 	}
 
@@ -184,6 +209,13 @@ public class NewsServer {
 
 		// 评论列表
 		for (NewsComment newsCommentInfoNew : newsCommentInfoList) {
+			if (null != newsCommentInfoNew.getPhotoUrl()) {
+				newsCommentInfoNew.setPhotoUrl(appUserService.getPhotoUrlPath() + newsCommentInfoNew.getPhotoUrl());
+			}
+			// 等级
+			if (null != newsCommentInfoNew.getExperience()) {
+				newsCommentInfoNew.setGrade(appUserService.transformExpToGrade(newsCommentInfoNew.getExperience()));
+			}
 			// 根据评论id取到回复列表
 			List<NCReply> nCommentReplyInfoList = nCReplyRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
@@ -258,6 +290,13 @@ public class NewsServer {
 					newsCommentInfo.setIsAgree(1);// 1-已点赞
 				}
 			}
+		}
+		if (null != newsCommentInfo.getPhotoUrl()) {
+			newsCommentInfo.setPhotoUrl(appUserService.getPhotoUrlPath() + newsCommentInfo.getPhotoUrl());
+		}
+		// 等级
+		if (null != newsCommentInfo.getExperience()) {
+			newsCommentInfo.setGrade(appUserService.transformExpToGrade(newsCommentInfo.getExperience()));
 		}
 		return new AppResp(newsCommentInfo, CodeDef.SUCCESS);
 	}

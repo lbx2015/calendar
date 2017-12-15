@@ -2,6 +2,8 @@ package net.riking.web.app;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +35,9 @@ import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.ReportResult;
 import net.riking.entity.model.ReportSubcribeRel;
 import net.riking.entity.model.TopicResult;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.SearchParams;
+import net.riking.service.AppUserService;
 import net.riking.service.ReportService;
 
 /**
@@ -49,6 +53,12 @@ public class SearchListServer {
 
 	@Autowired
 	ReportService reportService;
+
+	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
+	AppUserService appUserService;
 
 	@Autowired
 	ReportSubcribeRelRepo reportSubcribeRelRepo;
@@ -209,6 +219,13 @@ public class SearchListServer {
 
 		for (int i = 0; i < appUserResults.size(); i++) {
 			AppUserResult appUserResult = appUserResults.get(i);
+			if (null != appUserResult.getPhotoUrl()) {
+				appUserResult.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResult.getPhotoUrl());
+			}
+			// 等级
+			if (null != appUserResult.getExperience()) {
+				appUserResult.setGrade(appUserService.transformExpToGrade(appUserResult.getExperience()));
+			}
 			// TODO 用户的回答数 后面从redis里面取
 			Integer answerNum = questionAnswerRepo.answerCountByUserId(searchParams.getUserId());
 
@@ -216,10 +233,14 @@ public class SearchListServer {
 			appUserResult.setAnswerNum(answerNum);// 回答数
 			// 显示关注状态
 			if (Const.OPT_TYPE_FOLLOW_STATUS == searchParams.getShowOptType()) {
-				List<String> toUserIds = userFollowRelRepo.findByUser(searchParams.getUserId());
-				for (String toUserId : toUserIds) {
-					if (appUserResult.getId().equals(toUserId)) {
-						appUserResult.setIsFollow(1);// 1-已关注
+				List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(searchParams.getUserId());
+				for (UserFollowRel userFollowRel : userFollowRels) {
+					if (userFollowRel.getFollowStatus() == 0
+							&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
+						appUserResult.setIsFollow(1);// 已关注
+					} else if (userFollowRel.getFollowStatus() == 1
+							&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
+						appUserResult.setIsFollow(2);// 互相关注
 					}
 				}
 			}

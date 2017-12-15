@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,9 @@ import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.Topic;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.TopicParams;
+import net.riking.service.AppUserService;
 import net.riking.service.QAnswerService;
 import net.riking.service.TQuestionService;
 
@@ -48,6 +52,12 @@ public class TopServer {
 
 	@Autowired
 	TopicQuestionRepo topicQuestionRepo;
+
+	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
+	AppUserService appUserService;
 
 	@Autowired
 	TopicRelRepo topicRelRepo;
@@ -99,6 +109,13 @@ public class TopServer {
 				topic.setIsFollow(1);// 1-已关注
 			}
 		}
+		if (null != topic.getPhotoUrl()) {
+			topic.setPhotoUrl(appUserService.getPhotoUrlPath() + topic.getPhotoUrl());
+		}
+		// 等级
+		if (null != topic.getExperience()) {
+			topic.setGrade(appUserService.transformExpToGrade(topic.getExperience()));
+		}
 		return new AppResp(topic, CodeDef.SUCCESS);
 	}
 
@@ -116,8 +133,11 @@ public class TopServer {
 		if (topicParams.getPindex() != 0 && topicParams.getPindex() != null) {
 			topicParams.setPindex(topicParams.getPindex() - 1);
 		}
-		int pageCount = topicParams.getPcount() == null ? 30 : topicParams.getPcount();
-		pageCount = topicParams.getPcount() == 0 ? 30 : topicParams.getPcount();
+		if (topicParams.getOptType() == null) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		int pageCount = (topicParams.getPcount() == null || topicParams.getPcount() == 0) ? 30
+				: topicParams.getPcount();
 
 		int pageBegin = topicParams.getPindex() == 0 ? 0 : topicParams.getPindex() + pageCount;
 		int pageEnd = pageBegin + pageCount;
@@ -127,6 +147,13 @@ public class TopServer {
 				List<QAnswerResult> tQuestionResults = tQuestionService.findEssenceByTid(topicParams.getTopicId(),
 						pageBegin, pageEnd);
 				for (QAnswerResult tQuestionResult : tQuestionResults) {
+					if (null != tQuestionResult.getPhotoUrl()) {
+						tQuestionResult.setPhotoUrl(appUserService.getPhotoUrlPath() + tQuestionResult.getPhotoUrl());
+					}
+					// 等级
+					if (null != tQuestionResult.getExperience()) {
+						tQuestionResult.setGrade(appUserService.transformExpToGrade(tQuestionResult.getExperience()));
+					}
 					QuestionAnswer questionAnswer = qAnswerService.getAContentByOne(tQuestionResult.getTqId());
 					tQuestionResult.setContent(questionAnswer.getContent());
 					tQuestionResult.setQaAgreeNum(questionAnswer.getAgreeNum());
@@ -163,6 +190,13 @@ public class TopServer {
 				List<QuestResult> questResults = topicQuestionRepo.findByTid(topicParams.getTopicId(),
 						new PageRequest(pageBegin, pageEnd));
 				for (QuestResult questResult : questResults) {
+					if (null != questResult.getPhotoUrl()) {
+						questResult.setPhotoUrl(appUserService.getPhotoUrlPath() + questResult.getPhotoUrl());
+					}
+					// 等级
+					if (null != questResult.getExperience()) {
+						questResult.setGrade(appUserService.transformExpToGrade(questResult.getExperience()));
+					}
 					questResult.setIsFollow(0);// 0-未关注
 					if (null != topicParams.getUserId()) {
 						List<String> tqIds = tQuestionRelRepo.findByUser(topicParams.getUserId(), 0);// 0-关注
@@ -179,12 +213,23 @@ public class TopServer {
 				List<QAExcellentResp> excellentResps = tQuestionService.findExcellentResp(topicParams.getTopicId(),
 						pageBegin, pageEnd);
 				for (QAExcellentResp qaExcellentResp : excellentResps) {
+					if (null != qaExcellentResp.getPhotoUrl()) {
+						qaExcellentResp.setPhotoUrl(appUserService.getPhotoUrlPath() + qaExcellentResp.getPhotoUrl());
+					}
+					// 等级
+					if (null != qaExcellentResp.getExperience()) {
+						qaExcellentResp.setGrade(appUserService.transformExpToGrade(qaExcellentResp.getExperience()));
+					}
 					qaExcellentResp.setIsFollow(0);// 未关注
 					if (topicParams.getUserId() != null) {
-						List<String> toUserIds = userFollowRelRepo.findByUser(topicParams.getUserId());
-						for (String toUserId : toUserIds) {
-							if (qaExcellentResp.getUserId().equals(toUserId)) {
+						List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(topicParams.getUserId());
+						for (UserFollowRel userFollowRel : userFollowRels) {
+							if (userFollowRel.getFollowStatus() == 0
+									&& userFollowRel.getToUserId().equals(qaExcellentResp.getUserId())) {
 								qaExcellentResp.setIsFollow(1);// 已关注
+							} else if (userFollowRel.getFollowStatus() == 1
+									&& userFollowRel.getToUserId().equals(qaExcellentResp.getUserId())) {
+								qaExcellentResp.setIsFollow(2);// 互相关注
 							}
 						}
 					}

@@ -1,5 +1,7 @@
 package net.riking.web.app;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +37,9 @@ public class LoginServer {
 
 	@Autowired
 	AppUserService appUserService;
+
+	@Autowired
+	HttpServletRequest request;
 
 	@Autowired
 	SysDataService sysDataService;
@@ -149,9 +154,16 @@ public class LoginServer {
 		userResp.setIntegral(user.getDetail().getIntegral());
 		userResp.setExperience(user.getDetail().getExperience());
 		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {
-			userResp.setPhotoUrl(Const.TL_PHOTO_PATH + user.getDetail().getPhotoUrl());
+			// 截取资源访问路径
+			if (null != user.getDetail().getPhotoUrl()) {
+				userResp.setPhotoUrl(appUserService.getPhotoUrlPath() + user.getDetail().getPhotoUrl());
+			}
 		} else {
 			userResp.setPhotoUrl("");
+		}
+		// 等级
+		if (null != userResp.getExperience()) {
+			userResp.setGrade(appUserService.transformExpToGrade(userResp.getExperience()));
 		}
 		userResp.setRemindTime(user.getDetail().getRemindTime());
 		userResp.setIsSubscribe(user.getDetail().getIsSubscribe());

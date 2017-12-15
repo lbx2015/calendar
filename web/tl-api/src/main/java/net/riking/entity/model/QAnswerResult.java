@@ -48,6 +48,10 @@ public class QAnswerResult extends BaseEntity {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	// 封面url
 	@Transient
 	private String coverUrl;
@@ -84,12 +88,29 @@ public class QAnswerResult extends BaseEntity {
 		this.coverUrl = coverUrl;
 	}
 
+	public QAnswerResult(String qaId, String tqId, String title, String content, Date createdTime) {
+		super();
+		this.qaId = qaId;
+		this.tqId = tqId;
+		this.title = title;
+		this.content = content;
+		this.createdTime = createdTime;
+	}
+
 	public String getTqId() {
 		return tqId;
 	}
 
 	public void setTqId(String tqId) {
 		this.tqId = tqId;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public Integer getIsAgree() {

@@ -2,11 +2,8 @@ package net.riking.dao.repo;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -51,11 +48,6 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	// TODO 暂时注释
 	// @Query("update AppUser set enabled = '0' where id = ?1")
 	// int unEnable(String id);
-
-	@Transactional
-	@Modifying
-	@Query("update AppUserDetail set photoUrl = ?2 where id = ?1")
-	int updatePhoto(String userId, String photo);
 
 	// @Transactional
 	// @Modifying

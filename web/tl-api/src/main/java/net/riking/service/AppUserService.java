@@ -19,6 +19,15 @@ public interface AppUserService {
 
 	public String uploadPhoto(MultipartFile mFile, String userId) throws RuntimeException;
 
-	public List<AppUserResult> findUserMightKnow(String userId, int begin, int end);
+	public List<AppUserResult> findUserMightKnow(String userId, String userIds, int begin, int end);
 
+	public Integer transformExpToGrade(Integer experience);
+
+	public String getPhotoUrlPath();
+
+	// 用户关注的人
+	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageEnd);
+
+	// 我的粉丝
+	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageEnd);
 }

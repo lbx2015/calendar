@@ -67,6 +67,9 @@ public class News extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	@Transient
+	private Integer grade;
+
 	// 用户名
 	@Transient
 	private String userName;
@@ -126,6 +129,14 @@ public class News extends BaseAuditProp {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public Integer getIsCollect() {
