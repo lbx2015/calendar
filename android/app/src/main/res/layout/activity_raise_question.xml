@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f2f2f2"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
@@ -51,24 +53,34 @@
         android:id="@+id/question_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
+        android:background="@color/white"
         android:hint="填写下你的问题"
+        android:maxLines="1"
+        android:paddingBottom="20dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
+        android:singleLine="true"
         android:textColorHint="@color/color_999999"
         android:textSize="17sp" />
 
-    <View
-        android:id="@+id/divider"
+    <ImageView
+        android:id="@+id/top_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
-        android:background="@color/color_d2d2d2"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:src="@color/color_d2d2d2"
         android:visibility="gone" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
