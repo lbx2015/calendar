@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
 
@@ -75,13 +76,20 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
                 APIClient.commentAgree(p, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
+                        c.isAgree = p.enabled;
                         if (p.enabled == 1) {
-                            c.isAgree = 1;
+                            //agree number plus one
+                            c.agreeNumber = c.agreeNumber + 1;
+                            h.agreeTv.setText(ZR.getNumberString(c.agreeNumber));
+                            h.agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
                             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
                             Toast.makeText(h.agreeTv.getContext(), "点赞成功", Toast.LENGTH_SHORT).show();
                         } else {
-                            c.isAgree = 0;
                             ZToast.toast("取消点赞");
+                            //agree number minus one
+                            c.agreeNumber = c.agreeNumber - 1;
+                            h.agreeTv.setText(ZR.getNumberString(c.agreeNumber));
+                            h.agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
                             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
                         }
                     }
@@ -89,9 +97,14 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
             }
         });
 
+        //set the agree number
+        h.agreeTv.setText(ZR.getNumberString(c.agreeNumber));
+
         if (c.isAgree == 1) {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
         } else {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
@@ -114,7 +127,7 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
         recyclerView.setLayoutManager(manager);
         h.replyListAdapter = new AnswerReplyListAdapter(a, recyclerView);
         List<NCReply> replies = mList.get(position).qacReplyList;
-        MyLog.d("replies number: " + replies +  " id : " +mList.get(position).qACommentId);
+        MyLog.d("replies number: " + replies + " id : " + mList.get(position).qACommentId);
 
         if (replies == null || replies.size() == 0) {
             recyclerView.setVisibility(View.GONE);
@@ -123,7 +136,6 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
             h.replyListAdapter.add(replies);
             recyclerView.setAdapter(h.replyListAdapter);
         }
-
     }
 
     @Override

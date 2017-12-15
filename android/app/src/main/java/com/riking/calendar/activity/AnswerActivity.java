@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -249,7 +250,9 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickComments(final View view) {
-        ZGoto.toWithLoginCheck(AnswerCommentsActivity.class);
+        Intent i = new Intent(this, AnswerCommentsActivity.class);
+        i.putExtra(CONST.ANSWER_ID, answer.questionAnswerId);
+        ZGoto.to(i);
     }
 
     public void clickAgree(final View view) {

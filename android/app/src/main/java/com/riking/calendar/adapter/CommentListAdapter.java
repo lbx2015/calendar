@@ -86,9 +86,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             }
         });
 
+        //set the agree number
+        h.agreeTv.setText(ZR.getNumberString(c.agreeNumber));
+
         if (c.isAgree == 1) {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
         } else {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
