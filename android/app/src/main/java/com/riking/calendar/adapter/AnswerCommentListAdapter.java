@@ -50,7 +50,7 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
     public void onBindViewHolder(final AnswerCommentListAdapter.MyViewHolder h, int i) {
         final QAComment c = mList.get(i);
 
-        h.authorName.setText(c.userName);
+        ZR.setUserName(h.authorName, c.userName, c.experience);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));

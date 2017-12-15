@@ -27,6 +27,7 @@ import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ExpandCollapseExtention;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZGoto;
@@ -57,6 +58,8 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     private TextView agreeTv;
     private TextView commentsTv;
     private TextView questionTitle;
+    private TextView authoName;
+    private TextView answerCreateTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     void init() {
+        answerCreateTime = findViewById(R.id.answer_create_time);
+        authoName = findViewById(R.id.user_name);
         questionTitle = findViewById(R.id.question_title);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
@@ -216,6 +221,10 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             @Override
             public void callBack(ResponseModel<QuestionAnswer> response) {
                 answer = response._data;
+                //set the user name of the answer
+                ZR.setUserName(authoName, answer.userName, answer.experience);
+
+                answerCreateTime.setText(DateUtil.date2String(answer.modifiedTime, CONST.yyyy_mm_dd_hh_mm));
                 commentsTv.setText(ZR.getNumberString(answer.commentNum));
                 agreeTv.setText(ZR.getNumberString(answer.agreeNum));
                 //set question title of the answer
@@ -271,7 +280,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     public void clickComments(final View view) {
         Intent i = new Intent(this, AnswerCommentsActivity.class);
         i.putExtra(CONST.ANSWER_ID, answer.questionAnswerId);
-        i.putExtra(CONST.ANSWER_COMMENT_NUM,answer.commentNum);
+        i.putExtra(CONST.ANSWER_COMMENT_NUM, answer.commentNum);
         ZGoto.to(i);
     }
 
