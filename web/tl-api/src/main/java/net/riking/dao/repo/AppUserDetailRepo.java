@@ -1,7 +1,8 @@
 package net.riking.dao.repo;
 
-import javax.transaction.Transactional;
 import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,9 +21,9 @@ public interface AppUserDetailRepo
 
 	@Query("select integral from AppUserDetail where id = ?1 ")
 	Integer getIntegral(String userId);
-	
-	 @Query("select a.phoneDeviceid from AppUserDetail a where a.isDeleted = '1' and substring(a.birthday, 5, 4) =?1 ")
-	 Set<String> findByDate(String date);
+
+	@Query("select a.phoneDeviceid from AppUserDetail a where  substring(a.birthday, 5, 4) =?1 ")
+	Set<String> findByDate(String date);
 
 	@Transactional
 	@Modifying
