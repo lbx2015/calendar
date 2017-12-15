@@ -1,7 +1,7 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.RelatedQuestionAdapter;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -69,7 +70,22 @@ public class RaiseQuestionActivity extends AppCompatActivity {
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ZGoto.toWithLoginCheck(AddTopicActivity.class);
+                boolean existed = false;
+                //go to the existing question instead of raise a new one.
+                for (QuestResult r : mAdapter.mList) {
+                    if (r.title.trim().equals(searchCondition.trim() + "?")) {
+                        MyLog.d("r.title" + r.title + " id: " + r.questionId);
+                        Intent i = new Intent(RaiseQuestionActivity.this, QuestionActivity.class);
+                        i.putExtra(CONST.QUESTION_ID, r.questionId);
+                        ZGoto.to(i);
+                        existed = true;
+                        break;
+                    }
+                }
+                //raise the question if no existed
+                if (!existed) {
+                    ZGoto.toWithLoginCheck(AddTopicActivity.class);
+                }
             }
         });
         textInputEditText.addTextChangedListener(new TextWatcher() {
