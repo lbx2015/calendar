@@ -22,11 +22,12 @@ import net.riking.core.entity.PageQuery;
  * @see
  * @since 1.0
  */
-@Comment("用户历史核销完成表")
+@Comment("用户核销表")
 @Entity
 @IdClass(RCRelUnionPkId.class)
 @Table(name = "t_report_completed_rel")
 public class ReportCompletedRel extends PageQuery {
+
 	@Id
 	@Comment("用户ID")
 	@Column(name = "user_id", length = 32)
@@ -36,10 +37,22 @@ public class ReportCompletedRel extends PageQuery {
 	@Comment("报表ID")
 	@Column(name = "report_id", length = 32)
 	private String reportId;
+	
+	@Comment("是否完成（0-未完成；1-已完成）")
+	@Column(name = "is_completed", length = 8)
+	private String isCompleted;
 
 	@Comment("报表完成时间（yyyyMMdd）")
 	@Column(name = "completed_date", length = 8)
 	private String completedDate;
+	
+	@Comment("报送开始时间（yyyyMMddHHmm）")
+	@Column(name = "submit_start_time", length = 8)
+	private String submitStartTime;
+	
+	@Comment("报送截止时间（yyyyMMddHHmm）")
+	@Column(name = "submit_end_time", length = 8)
+	private String submitEndTime;
 	
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -48,6 +61,9 @@ public class ReportCompletedRel extends PageQuery {
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
+	@Transient
+	private String reportCode;// 报表名称
+	
 	@Transient
 	private String reportName;// 报表名称
 
@@ -121,6 +137,30 @@ public class ReportCompletedRel extends PageQuery {
 
 	public void setCompletedDate(String completedDate) {
 		this.completedDate = completedDate;
+	}
+
+	public String getIsCompleted() {
+		return isCompleted;
+	}
+
+	public void setIsCompleted(String isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+
+	public String getSubmitStartTime() {
+		return submitStartTime;
+	}
+
+	public void setSubmitStartTime(String submitStartTime) {
+		this.submitStartTime = submitStartTime;
+	}
+
+	public String getSubmitEndTime() {
+		return submitEndTime;
+	}
+
+	public void setSubmitEndTime(String submitEndTime) {
+		this.submitEndTime = submitEndTime;
 	}
 
 }

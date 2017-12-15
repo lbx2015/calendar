@@ -220,7 +220,7 @@ public class NewsServer {
 			List<NCReply> nCommentReplyInfoList = nCReplyRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
-				/* AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getFromUserId()); */
+				 AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getFromUserId()); 
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
 					fromUser.setUserId(nCommentReplyInfo.getFromUserId());
@@ -228,7 +228,7 @@ public class NewsServer {
 					nCommentReplyInfo.setFromUser(fromUser);
 				}
 				if (null != nCommentReplyInfo.getToUserId()) {
-					/* AppUser apptoUser = appUserRepo.findOne(nCommentReplyInfo.getToUserId()); */
+					AppUser apptoUser = appUserRepo.findOne(nCommentReplyInfo.getToUserId());
 					if (null != apptoUser) {
 						ToUser toUser = new ToUser();
 						toUser.setUserId(nCommentReplyInfo.getToUserId());

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.ReportCompletedRelRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.ReportListResult;
@@ -24,6 +25,7 @@ import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
+import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
 /**
@@ -40,6 +42,9 @@ public class AppReportServer {
 
 	@Autowired
 	ReportSubscribeRelRepo reportSubscribeRelRepo;
+	
+	@Autowired
+	ReportCompletedRelRepo reportCompletedRelRepo;
 
 	@Autowired
 	SysDataService sysDataservice;
@@ -125,10 +130,10 @@ public class AppReportServer {
 	@ApiOperation(value = "查询逾期报表", notes = "POST")
 	@RequestMapping(value = "/findExpireTasks", method = RequestMethod.POST)
 	public AppResp findExpireTasks_(@RequestParam("userId") String userId) {
-		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(userId);
+		String currentDate = DateUtils.getDate("yyyyMMdd");
+		reportCompletedRelRepo.findExpireReport(userId, currentDate);
 		
-		
-		return new AppResp(list, CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 }
