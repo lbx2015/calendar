@@ -140,7 +140,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     private void loadData(final int page) {
         isLoading = true;
         TQuestionParams params = new TQuestionParams();
-        params.tqId = "1";
+        params.tqId = questionId;
         APIClient.getTopicQuestion(params, new ZCallBack<ResponseModel<TopicQuestion>>() {
             @Override
             public void callBack(ResponseModel<TopicQuestion> response) {
