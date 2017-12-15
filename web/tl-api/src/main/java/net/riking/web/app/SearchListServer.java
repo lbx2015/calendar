@@ -285,7 +285,12 @@ public class SearchListServer {
 	 */
 	private List<QuestResult> findQuestByKeyWord(SearchParams searchParams) {
 		List<QuestResult> questResults = topicQuestionRepo.getQuestByParam(searchParams.getKeyWord());
+		for (QuestResult questResult : questResults) {
 
+			// // TODO 后面从redis中取
+			// questResult.setTqFollowNum(tqFollowNum);
+			// questResult.setQanswerNum(qanswerNum);
+		}
 		return questResults;
 	}
 }

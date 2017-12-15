@@ -35,6 +35,7 @@ import net.riking.entity.resp.RCompletedRelResp;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDateService;
 import net.riking.service.impl.SysDateServiceImpl;
+import net.riking.util.DateUtils;
 
 /**
  * 核销信息接口
@@ -109,10 +110,14 @@ public class RCompleteRelServer {
 		// calendar.add(Calendar.DATE, -1);// 前一天
 		// beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
 		// }
-		List<RCompletedRelResp> rCompletedRelRespList = reportCompletedRelRepo
-				.findNowReport(rCompletedRelParams.getUserId(), completedDate);
-
-		return new AppResp(rCompletedRelRespList, CodeDef.SUCCESS);
+		List<String> reportIds = reportCompletedRelRepo.findNowReport(rCompletedRelParams.getUserId(), completedDate);
+		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+		for (String reportId : reportIds) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("reportId", reportId);
+			maps.add(map);
+		}
+		return new AppResp(maps, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -163,7 +168,10 @@ public class RCompleteRelServer {
 		List<String> dateList = getAllTheDateOftheMonth(sdf.parse(sdf.format(rCompletedRelParams.getRemindTime())));
 
 		// 根据userId去用户订阅表里查询未完成的 报表id 集合
-		Set<String> userSetList = rSubscribeRelRepo.findReportByUserIdAndIsComplete(rCompletedRelParams.getUserId());
+		String compeltedDate = DateUtils.DateFormatMS(new Date(), "yyyy-MM-dd");
+		List<String> reportIds = reportCompletedRelRepo.findNowReport(rCompletedRelParams.getUserId(), compeltedDate);
+		Set<String> userSetList = rSubscribeRelRepo.findReportByUserIdAndIsComplete(rCompletedRelParams.getUserId(),
+				reportIds);
 		// 循环日期 根据当天日期去查询 报送口径表 相符合的报表id集合
 		for (String date : dateList) {
 			Set<String> setList = getReportList(date);// 计算出的reportId集合

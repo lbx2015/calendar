@@ -15,7 +15,6 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.ReportDao;
-import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportResult;
 
@@ -24,7 +23,7 @@ public class ReportDaoImpl implements ReportDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
 	public List<ReportFrequency> findAppUserReportById(String userId) {
 		// TODO Auto-generated method stub
@@ -38,7 +37,7 @@ public class ReportDaoImpl implements ReportDao {
 			pstmt.setString(1, userId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				ReportFrequency reportFrequency = new ReportFrequency(rs.getString(1), rs.getString(2), "","","");
+				ReportFrequency reportFrequency = new ReportFrequency(rs.getString(1), rs.getString(2), "", "", "");
 				list.add(reportFrequency);
 			}
 		} catch (SQLException e) {
@@ -52,7 +51,7 @@ public class ReportDaoImpl implements ReportDao {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-//		String sql = "call getAllReport(?)";
+		// String sql = "call getAllReport(?)";
 		String sql = "select ";
 		sql += "a.report_type reportType, ";
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'REPORT_TYPE' and t.KE=a.report_type) reportTypeName, ";
@@ -62,7 +61,7 @@ public class ReportDaoImpl implements ReportDao {
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'MODULE_TYPE' and t.KE=a.module_type) moduleTypeName, ";
 		sql += "a.id reportId, a.`code`, a.title, '0' isSubcribe from t_report a ";
 		sql += "where a.is_deleted=1 and a.is_audit=1 ";
-		if(StringUtils.isBlank(param)){
+		if (StringUtils.isBlank(param)) {
 			sql += "and (a.`code` like '%" + param + "%' or a.title like '%" + param + "%') ";
 		}
 		sql += "order by a.report_type, a.module_type, a.`code` ";
@@ -73,9 +72,9 @@ public class ReportDaoImpl implements ReportDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportResult report = new ReportResult();
-				report.setAgenceCode(rs.getString("agenceCode"));
+				// report.setAgenceCode(rs.getString("agenceCode"));
 				report.setReportType(rs.getString("reportType"));
-				report.setReportMode(rs.getString("reportMode"));
+				// report.setReportMode(rs.getString("reportMode"));
 				report.setReportTypeName(rs.getString("reportTypeName"));
 				report.setReportKind(rs.getString("reportKind"));
 				report.setReportKindName(rs.getString("reportKindName"));
@@ -91,7 +90,7 @@ public class ReportDaoImpl implements ReportDao {
 			e.printStackTrace();
 		}
 		return list;
-		
+
 	}
 
 }
