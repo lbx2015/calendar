@@ -42,6 +42,7 @@ import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.TQuestionResult;
@@ -638,4 +639,7 @@ public class APIClient {
         apiInterface.findHomePageData(params).enqueue(c);
     }
 
+    public static void getAnswerInfo(QAnswerParams params, ZCallBack<ResponseModel<QuestionAnswer>> c) {
+        apiInterface.getAnswerInfo(params).enqueue(c);
+    }
 }

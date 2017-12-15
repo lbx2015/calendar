@@ -4,6 +4,8 @@ import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
 import java.util.Date;
 
+import javax.annotation.PropertyKey;
+
 
 /**
  * 
@@ -15,16 +17,13 @@ import java.util.Date;
 //@Entity
 //@Table(name = "t_question_answer")
 public class QuestionAnswer extends BaseAuditProp {
-
-	public String questionAnswerId;
-
 //	@Comment("物理主键")
 //	@Id
 //	@Column(name = "id", length = 32)
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 //	@GeneratedValue(generator = "system-uuid")
 //	@JsonProperty("questionAnswerId")
-//	public String id;
+	public String questionAnswerId;
 
 //	@Comment("回答人主键: fk t_app_user")
 //	@Column(name = "user_id", nullable = false)
@@ -34,6 +33,11 @@ public class QuestionAnswer extends BaseAuditProp {
 //	@Column(name = "question_id", nullable = false)
 	public String questionId;
 
+//	@Comment("封面url")
+//	@Lob
+//	@Column(name = "cover_url", length = 128)
+	public String coverUrl;
+
 //	@Comment("回答内容")
 //	@Lob
 //	@Column(name = "content", nullable = false)
@@ -42,8 +46,7 @@ public class QuestionAnswer extends BaseAuditProp {
 	// @Comment("用户收藏数")
 	// @org.hibernate.annotations.ColumnDefault("0")
 	// @Column(name="collect_num",insertable=false, nullable=false)
-	// public Integer collectNum;
-	//
+	 public int collectNum;
 
 	// 用户名
 //	@Transient
@@ -76,5 +79,8 @@ public class QuestionAnswer extends BaseAuditProp {
 	// 是否已收藏（0-未收藏；1-已收藏）
 //	@Transient
 	public int isCollect;
+
+	//是否已经关注回答的作者。
+	public int isFollow;
 
 }

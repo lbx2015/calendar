@@ -98,10 +98,8 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
             }
         });
 
-        RequestOptions options = new RequestOptions();
-        Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
-                .apply(options.fitCenter())
-                .into(h.authorImage);
+        //set user image
+        ZR.setUserImage(h.authorImage,questionAnswer.photoUrl);
     }
 
 

@@ -38,6 +38,7 @@ import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.TQuestionResult;
@@ -290,4 +291,10 @@ public interface APIInterface {
 
     @POST("homePage/findHomePageData")
     Call<ResponseModel<List<TQuestionResult>>> findHomePageData(@Body HomeParams params);
+
+    /**
+     * get the detail information of answer
+     */
+    @POST("qAnswer/getQAnswer")
+    Call<ResponseModel<QuestionAnswer>> getAnswerInfo(@Body QAnswerParams params);
 }

@@ -22,4 +22,5 @@ public class TQuestionParams extends BaseParams {
 
 	// 问题回答Id
 	public String questAnswerId;
+
 }
