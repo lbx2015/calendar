@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
-import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
@@ -47,10 +46,8 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         h.summary.setText(user.answerNum + "个回答，" + user.agreeNum + "赞");
         h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
         RequestOptions options = new RequestOptions();
-        GlideApp.with(h.userImage.getContext()).load(user.photoUrl)
-                .placeholder(R.drawable.user_icon_head_notlogin)
-                .apply(options.fitCenter())
-                .into(h.userImage);
+
+        ZR.setUserImage(h.userImage,user.photoUrl);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override

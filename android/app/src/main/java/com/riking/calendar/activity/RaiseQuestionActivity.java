@@ -84,7 +84,9 @@ public class RaiseQuestionActivity extends AppCompatActivity {
                 }
                 //raise the question if no existed
                 if (!existed) {
-                    ZGoto.toWithLoginCheck(AddTopicActivity.class);
+                    Intent i = new Intent(RaiseQuestionActivity.this, AddTopicActivity.class);
+                    i.putExtra(CONST.SEARCH_CONDITION, searchCondition);
+                    ZGoto.to(i);
                 }
             }
         });

@@ -69,6 +69,7 @@ public class CONST {
     public static final String ANSWER_ID = "ANSWER_ID";
     public static final String MY_FOLLOW = "MY_FOLLOW";
     public static final String ANSWER_COMMENT_NUM = "ANSWER_COMMENT_NUM";
+    public static final String SEARCH_CONDITION = "SEARCH_CONDITION";
 
     //滚动事件
     public enum ScrollDirection {
