@@ -1,32 +1,48 @@
 package net.riking.task;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TimerTask;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/*@Component("remindTask")*/
-public class RemindTask /*extends TimerTask*/ {
+import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.ReportSubmitCaliberRepo;
+import net.riking.dao.repo.SysDaysRepo;
+import net.riking.entity.model.Jdpush;
+import net.riking.entity.model.Period;
+import net.riking.entity.model.SysDays;
+import net.riking.service.impl.SysDateServiceImpl;
+import net.riking.util.JdpushUtil;
 
-	/*@Autowired
+@Component("remindTask")
+public class RemindTask extends TimerTask {
+
+	@Autowired
 	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
 
 	@Autowired
 	SysDateServiceImpl sysDateService;
 
-	@Autowired
-	AppUserReportRelRepo appUserReportRelRepo;
+//	@Autowired
+//	AppUserReportRelRepo appUserReportRelRepo;
 
 	@Autowired
 	AppUserRepo appUserRepo;
 
 	@Autowired
-	SysDaysRepo sysDaysRepo;*/
+	SysDaysRepo sysDaysRepo;
 	
-	/*
+	
 	@Override
 	public void run() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date d = new Date();
 		String date = sdf.format(d);
-		Days day = daysRepo.findOne(date);
+		SysDays day = sysDaysRepo.findOne(date);
 		Set<String> reportId = new HashSet<>();
 		Period periods = sysDateService.getDate(date, "0");
 		if (day.getIsWork() == 1) {
@@ -60,6 +76,6 @@ public class RemindTask /*extends TimerTask*/ {
 				JdpushUtil.sendToRegistrationId(jdpush);
 			}
 		}
-	}*/
+	}
 
 }

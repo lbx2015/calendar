@@ -1,19 +1,34 @@
 package net.riking.entity.model;
 
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.riking.core.annos.Comment;
 
 public class ReportResult implements Serializable {
 	
-	@Comment("机构")
-	private String agenceCode;
-	
+	@JsonIgnore
 	@Comment("报表类型")
 	private String reportType;
 	
-	@Comment("报表模式分类")
-	private String reportMode;
+	@JsonIgnore
+	@Comment("报表类型中文名称")
+	private String reportTypeName;
+	
+	@Comment("报表种类")
+	private String reportKind;
+	
+	@Comment("报表种类名称")
+	private String reportKindName;
+	
+	@Comment("报表所属模块")
+	private String moduleType;
+	
+	@Comment("报表所属模块名称")
+	private String moduleTypeName;
+	
+	@Comment("报表Id")
+	private String reportId;
 	
 	@Comment("报表代码")
 	private String code;
@@ -21,12 +36,8 @@ public class ReportResult implements Serializable {
 	@Comment("报表标题")
 	private String title;
 	
-	@Comment("报表模式分类")
-	private String reportId;
-	
 	@Comment("是否订阅")
 	private String isSubcribe;
-
 
 	public String getReportType() {
 		return reportType;
@@ -36,12 +47,44 @@ public class ReportResult implements Serializable {
 		this.reportType = reportType;
 	}
 
-	public String getReportMode() {
-		return reportMode;
+	public String getReportTypeName() {
+		return reportTypeName;
 	}
 
-	public void setReportMode(String reportMode) {
-		this.reportMode = reportMode;
+	public void setReportTypeName(String reportTypeName) {
+		this.reportTypeName = reportTypeName;
+	}
+
+	public String getReportKind() {
+		return reportKind;
+	}
+
+	public void setReportKind(String reportKind) {
+		this.reportKind = reportKind;
+	}
+
+	public String getReportKindName() {
+		return reportKindName;
+	}
+
+	public void setReportKindName(String reportKindName) {
+		this.reportKindName = reportKindName;
+	}
+
+	public String getModuleType() {
+		return moduleType;
+	}
+
+	public void setModuleType(String moduleType) {
+		this.moduleType = moduleType;
+	}
+
+	public String getModuleTypeName() {
+		return moduleTypeName;
+	}
+
+	public void setModuleTypeName(String moduleTypeName) {
+		this.moduleTypeName = moduleTypeName;
 	}
 
 	public String getReportId() {
@@ -50,14 +93,6 @@ public class ReportResult implements Serializable {
 
 	public void setReportId(String reportId) {
 		this.reportId = reportId;
-	}
-
-	public String getIsSubcribe() {
-		return isSubcribe;
-	}
-
-	public void setIsSubcribe(String isSubcribe) {
-		this.isSubcribe = isSubcribe;
 	}
 
 	public String getCode() {
@@ -76,13 +111,12 @@ public class ReportResult implements Serializable {
 		this.title = title;
 	}
 
-	public void setAgenceCode(String agenceCode) {
-		this.agenceCode = agenceCode;
+	public String getIsSubcribe() {
+		return isSubcribe;
 	}
 
-	public String getAgenceCode() {
-		return agenceCode;
+	public void setIsSubcribe(String isSubcribe) {
+		this.isSubcribe = isSubcribe;
 	}
-	
 	
 }

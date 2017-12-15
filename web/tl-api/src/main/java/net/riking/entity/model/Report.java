@@ -14,71 +14,49 @@ import net.riking.entity.BasePageQueryProp;
 @Table(name = "t_report")
 public class Report extends BasePageQueryProp {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4087711136918056749L;
-
-	@Comment("报表标题")
+	@Comment("报表名称")
 	@Column(name = "title", length = 32)
 	private String title;
 
 	@Comment("报表代码")
 	@Column(name = "code", length = 32)
 	private String code;
-
-	@Comment("报表代码")
-	@Column(name = "report_no", length = 32)
-	private String reportNo;
+	
+	@Comment("报表类型（字典表：T_REPORT-REPORT_TYPE:PBOC、CBRC）")
+	@Column(name = "report_type", length = 32)
+	private String reportType;
+	
+	@Comment("报表种类（字典表：T_REPORT-REPORT_KIND:1-1104;2-大集中）")
+	@Column(name = "report_kind", length = 32)
+	private String reportKind;
+	
+	@Comment("报表所属模块（字典表：T_REPORT-MODLE_TYPE）")
+	@Column(name = "module_type", length = 5)
+	private String moduleType;
+	
+	@Comment("报表批次：（字典表：T_REPORT-REPORT_BATCH：0-4批，PBOC使用）")
+	@Column(name = "report_batch", length = 1)
+	private Integer reportBatch;
 
 	@Comment("报表简介")
 	@Column(name = "summary")
 	private String summary;
 
-	@Comment("填报机构")
-	@Column(name = "fillin_org", length = 512)
-	private String fillinOrg;
-
-	@Comment("报送口径、频度及时间")
-	@Column(name = "submit_frequency", length = 256)
-	private String submitFrequency;
-
-	@Comment("报送方式")
-	@Column(name = "submit_mode", length = 32)
-	private String submitMode;
-
-	@Comment("数据单位")
-	@Column(name = "submit_unit", length = 32)
-	private String submitUnit;
-
-	@Comment("四舍五入要求")
-	@Column(name = "submit_round", length = 32)
-	private String submitRound;
-
-	@Comment("填报币种")
-	@Column(name = "fillin_currency", length = 3)
-	private String fillinCurrency;
-
 	@Comment("报表说明")
 	@Lob
-	@Column(name = "note")
-	private String note;
+	@Column(name = "fillin_note")
+	private String fillinNote;
 
-	@Comment("报表规则")
-	@Lob
-	@Column(name = "report_rule", length = 32)
-	private String reportRule;
+	@Comment("报表版本号")
+	@Column(name = "version_no", length = 16)
+	private String versionNo;
 
-	@Comment("报表所属模块，频度标识")
-	@Column(name = "module_type", length = 3)
-	private String moduleType;
 
 	@Comment("报表模板下载地址")
-	@Column(name = "download_url", length = 128)
-	private String downloadUrl;
+	@Column(name = "template_name", length = 128)
+	private String templateName;
 	
 	public Report(){}
-	
 
 	public String getTitle() {
 		return title;
@@ -86,14 +64,6 @@ public class Report extends BasePageQueryProp {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getReportNo() {
-		return reportNo;
-	}
-
-	public void setReportNo(String reportNo) {
-		this.reportNo = reportNo;
 	}
 
 	public String getCode() {
@@ -104,76 +74,20 @@ public class Report extends BasePageQueryProp {
 		this.code = code;
 	}
 
-	public String getSummary() {
-		return summary;
+	public String getReportType() {
+		return reportType;
 	}
 
-	public void setSummary(String summary) {
-		this.summary = summary;
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
 	}
 
-	public String getFillinOrg() {
-		return fillinOrg;
+	public String getReportKind() {
+		return reportKind;
 	}
 
-	public void setFillinOrg(String fillinOrg) {
-		this.fillinOrg = fillinOrg;
-	}
-
-	public String getSubmitFrequency() {
-		return submitFrequency;
-	}
-
-	public void setSubmitFrequency(String submitFrequency) {
-		this.submitFrequency = submitFrequency;
-	}
-
-	public String getSubmitMode() {
-		return submitMode;
-	}
-
-	public void setSubmitMode(String submitMode) {
-		this.submitMode = submitMode;
-	}
-
-	public String getSubmitUnit() {
-		return submitUnit;
-	}
-
-	public void setSubmitUnit(String submitUnit) {
-		this.submitUnit = submitUnit;
-	}
-
-	public String getSubmitRound() {
-		return submitRound;
-	}
-
-	public void setSubmitRound(String submitRound) {
-		this.submitRound = submitRound;
-	}
-
-	public String getFillinCurrency() {
-		return fillinCurrency;
-	}
-
-	public void setFillinCurrency(String fillinCurrency) {
-		this.fillinCurrency = fillinCurrency;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public String getReportRule() {
-		return reportRule;
-	}
-
-	public void setReportRule(String reportRule) {
-		this.reportRule = reportRule;
+	public void setReportKind(String reportKind) {
+		this.reportKind = reportKind;
 	}
 
 	public String getModuleType() {
@@ -184,12 +98,44 @@ public class Report extends BasePageQueryProp {
 		this.moduleType = moduleType;
 	}
 
-	public String getDownloadUrl() {
-		return downloadUrl;
+	public Integer getReportBatch() {
+		return reportBatch;
 	}
 
-	public void setDownloadUrl(String downloadUrl) {
-		this.downloadUrl = downloadUrl;
+	public void setReportBatch(Integer reportBatch) {
+		this.reportBatch = reportBatch;
 	}
 
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public String getFillinNote() {
+		return fillinNote;
+	}
+
+	public void setFillinNote(String fillinNote) {
+		this.fillinNote = fillinNote;
+	}
+
+	public String getVersionNo() {
+		return versionNo;
+	}
+
+	public void setVersionNo(String versionNo) {
+		this.versionNo = versionNo;
+	}
+
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
+	
 }

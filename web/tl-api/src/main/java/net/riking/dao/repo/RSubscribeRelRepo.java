@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import net.riking.entity.model.ReportSubcribeRel;
+import net.riking.entity.model.ReportSubscribeRel;
 
 /**
  * 
@@ -21,7 +21,7 @@ import net.riking.entity.model.ReportSubcribeRel;
  */
 @Repository
 public interface RSubscribeRelRepo
-		extends JpaRepository<ReportSubcribeRel, String>, JpaSpecificationExecutor<ReportSubcribeRel> {
+		extends JpaRepository<ReportSubscribeRel, String>, JpaSpecificationExecutor<ReportSubscribeRel> {
 
 	@Query("select u.reportId from ReportSubcribeRel u where u.userId = ?1 ")
 	Set<String> findbyAppUserId(String appUserId);
@@ -30,7 +30,7 @@ public interface RSubscribeRelRepo
 	Set<String> findbyReportId(Set<String> reportId);
 
 	@Query(" from ReportSubcribeRel u where u.userId = ?1")
-	List<ReportSubcribeRel> findUserReportList(String appUserId);
+	List<ReportSubscribeRel> findUserReportList(String appUserId);
 
 	@Query("select t.reportId from ReportSubcribeRel t where t.userId = ?1")
 	List<String> findReportByUserId(String userId);
@@ -45,7 +45,7 @@ public interface RSubscribeRelRepo
 	public int deleteReportRel(String userId, String reportId);
 
 	@Query("select t.id,t.userId,t.reportId,t.isComplete from ReportSubcribeRel t where t.userId = ?1 and t.reportId =?2")
-	ReportSubcribeRel findByUserIdAndReportId(String userId, String reportId);
+	ReportSubscribeRel findByUserIdAndReportId(String userId, String reportId);
 
 	@Transactional
 	@Modifying

@@ -3,22 +3,22 @@ package net.riking.web.app;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.dao.repo.ReportSubcribeRelRepo;
+import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportListResult;
 import net.riking.entity.model.ReportResult;
-import net.riking.entity.model.ReportSubcribeRel;
+import net.riking.entity.model.ReportSubscribeRel;
 import net.riking.entity.params.ReportParams;
+import net.riking.entity.params.SubscribeReportParam;
 import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
@@ -36,10 +36,9 @@ import net.riking.util.Utils;
 public class AppReportServer {
 	@Autowired
 	ReportService reportService;
-//	ReportRepo reportRepo;
 
 	@Autowired
-	ReportSubcribeRelRepo reportSubcribeRelRepo;
+	ReportSubscribeRelRepo reportSubscribeRelRepo;
 
 	@Autowired
 	SysDataService sysDataservice;
@@ -51,112 +50,81 @@ public class AppReportServer {
 	ReportAgenceFrencyService reportAgenceFrencyService;
 
 	/**
-	 * 
-	 * @author tao.yuan[userId]
-	 * @param [userId]
+	 * 可根据报表名称查询相关报表
+	 * @author james.you[userId]
+	 * @param [userId] or [reportName]
 	 * @version crateTime：2017年11月6日 下午3:41:08
 	 * @used TODO
 	 * @return
 	 */
-	@ApiOperation(value = "app获取所有的报表", notes = "POST")
-	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport_(@RequestBody Map<String, Object> params) {
-//		 List<QueryReport> list = reportSubmitCaliberService.findAllReport();
+	@ApiOperation(value = "可根据报表名称查询相关报表", notes = "POST")
+	@RequestMapping(value = "/getReports", method = RequestMethod.POST)
+	public AppResp getReports_(@RequestBody Map<String, Object> params) {
 		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
-//		List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
 		//获取订阅关联表
-		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo.findUserReportList(reportParams.getUserId());
-		
-		List<ReportListResult> reportListResult = reportService.getAllReport();
+		List<ReportSubscribeRel> reportSubcribeRelList = reportSubscribeRelRepo.findSubscribeReportList(reportParams.getUserId());
+		List<ReportListResult> reportListResult = reportService.getReportByParam(reportParams.getReportName());
 		
 		for(ReportListResult rl : reportListResult){
 			List<ReportResult> reportList = rl.getList();
 			for(int i = 0; i < reportList.size(); i++){
 				ReportResult r = reportList.get(i);
-				for(ReportSubcribeRel rel : reportSubcribeRelList){
+				for(ReportSubscribeRel rel : reportSubcribeRelList){
 					if(r.getReportId().equals(rel.getReportId())){
 						r.setIsSubcribe("1");//已订阅
-//						reportList.remove(i);
-//						reportList.add(i, r);
 					}
 				}
 			}
 		}
-		
-		
-		
-		/*List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
-		Set<String> agenceList = reportAgenceFrencyService.findALLAgence();// 查询所有的汇报机构
-		List<BaseModelPropdict> list = null;
-		// 根据汇报机构 查询字典表 查询出汇报机构下面的中文名称
-		if (agenceList != null && agenceList.size() > 0) {
-			ReportAgence reportAgence = null;
-			for (String value : agenceList) {
-				reportAgence = new ReportAgence();
-				reportAgence.setAgenceName(value);// 汇报机构名称
-				list = reportAgenceFrencyService.findAgenceNameList(value);// 中文名称
-				if (list != null && list.size() > 0) {// 如果存在中文名称 则拿到中文名称的主键id 和ke 关联用户的id查询
-					List<ReportFrequency> frencyList = null;
-					for (BaseModelPropdict baseModelPropdict : list) {
-						frencyList = reportAgenceFrencyService.findReportByModuleType(baseModelPropdict.getKe());// 根据ke去查询报表
-						// if(StringUtils.isNotBlank(appUser.getId())){//用户id不为空
-						if (frencyList != null && frencyList.size() > 0) {
-							ReportSubcribeRel reportSubcribeRel = null;
-							for (ReportFrequency frencey : frencyList) {
-								// 根据用户id和 报表id 查询 此用户是否订阅
-								reportSubcribeRel = reportSubcribeRelRepo
-										.findByUserIdAndReportId(reportParams.getUserId(), frencey.getReportId());
-								if (null != reportSubcribeRel) {// 不为空 则是已经订阅的
-									frencey.setIsSubscribe("1");
-								} else {// 为空
-									frencey.setIsSubscribe("0");
-								}
-							}
-						}
-						// }
-						baseModelPropdict.setList(frencyList);// 将查询出的报表集合放入
-					}
-				}
-				reportAgence.setList(list);// 将汇报机构下面的中文名称放进去
-				reportAgenceList.add(reportAgence);
-			}
-		}
-		return new AppResp(reportAgenceList, CodeDef.SUCCESS);*/
 		
 		return new AppResp(reportListResult, CodeDef.SUCCESS);
 	}
-
-	/**
-	 * 
-	 * @author tao.yuan[title,userId]
-	 * @version crateTime：2017年11月14日 上午11:41:56
-	 * @used 根据报表名称查询报表列表
-	 * @param reportList
-	 * @return
-	 */
-	@ApiOperation(value = "根据报表名称查询报表列表", notes = "POST")
-	@RequestMapping(value = "/getReportByName", method = RequestMethod.POST)
-	public AppResp getReportByName(@RequestBody Map<String, Object> params) {
-		// List<ReportList> list =
-		// reportListRepo.findReportByreportName(reportList.getReportName());
-		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
-		List<ReportFrequency> list = reportAgenceFrencyService.findReportListByName(reportParams.getReportName());
-		if (StringUtils.isNotBlank(reportParams.getUserId())) {// 用户id 不为空 判断报表是否订阅
-			ReportSubcribeRel reportSubcribeRel = null;
-			if (list != null && list.size() > 0) {
-				for (ReportFrequency frency : list) {
-					// 根据用户id和 报表id 查询 此用户是否订阅
-					reportSubcribeRel = reportSubcribeRelRepo.findByUserIdAndReportId(reportParams.getUserId(),
-							frency.getReportId());
-					if (null != reportSubcribeRel) {// 不为空 则是已经订阅的
-						frency.setIsSubscribe("1");
-					} else {// 为空
-						frency.setIsSubscribe("0");
-					}
-				}
-			}
-		}
-
+	
+	@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
+	@RequestMapping(value = "/findSubscribeReportList", method = RequestMethod.POST)
+	public AppResp findSubscribeReportList_(@RequestParam("userId") String userId) {
+		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(userId);
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
+	
+	@ApiOperation(value = "更新用户报表订阅", notes = "POST")
+	@RequestMapping(value = "/modifySubscribeReport", method = RequestMethod.POST)
+	public AppResp modifySubscribeReport_(@RequestBody Map<String, Object> params) {
+		SubscribeReportParam subscribeReport = Utils.map2Obj(params, SubscribeReportParam.class);
+		
+		//先删除不在本次订阅内的reportId
+		reportSubscribeRelRepo.deleteNotSubscribeByUserId(subscribeReport.getUserId(), subscribeReport.getReportIds());
+		
+		//查找该用户剩余订阅的数据
+		List<String> currentReportIds = reportSubscribeRelRepo.findByUserId(subscribeReport.getUserId());
+		
+		// 批量插入
+		for (String reportId : subscribeReport.getReportIds()) {
+			boolean isRn = true;
+			for(String cutReportId : currentReportIds){
+				if(reportId.equals(cutReportId)){
+					//订阅的报表已经在已订阅之内，不让其新增
+					isRn = false;
+				}
+			}
+			if(isRn){
+				ReportSubscribeRel data = new ReportSubscribeRel();
+				data.setUserId(data.getUserId());
+				data.setReportId(reportId);
+				reportSubscribeRelRepo.save(data);
+			}
+		}
+		return new AppResp(CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "查询逾期报表", notes = "POST")
+	@RequestMapping(value = "/findExpireTasks", method = RequestMethod.POST)
+	public AppResp findExpireTasks_(@RequestParam("userId") String userId) {
+		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(userId);
+		
+		
+		
+		return new AppResp(list, CodeDef.SUCCESS);
+	}
+
 }

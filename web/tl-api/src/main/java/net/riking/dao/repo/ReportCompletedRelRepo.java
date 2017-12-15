@@ -17,5 +17,5 @@ public interface ReportCompletedRelRepo extends JpaRepository<ReportCompletedRel
 
 	@Query("select new net.riking.entity.resp.RCompletedRelResp(r.reportId) from ReportCompletedRel r where r.userId = ?1 and r.completedDate = ?2")
 	List<RCompletedRelResp> findNowReport(String userId, String completedDate);
-
+	
 }

@@ -38,5 +38,5 @@ public class ReportListResult {
 	public void setList(List<ReportResult> list) {
 		this.list = list;
 	}
-
+	
 }
