@@ -22,7 +22,7 @@ import net.riking.core.entity.PageQuery;
  * @see
  * @since 1.0
  */
-@Comment("用户核销表")
+@Comment("用户历史核销完成表")
 @Entity
 @IdClass(RCRelUnionPkId.class)
 @Table(name = "t_report_completed_rel")
@@ -37,7 +37,7 @@ public class ReportCompletedRel extends PageQuery {
 	@Column(name = "report_id", length = 32)
 	private String reportId;
 
-	// 报表完成时间（yyyyMMdd）
+	@Comment("报表完成时间（yyyyMMdd）")
 	@Column(name = "completed_date", length = 8)
 	private String completedDate;
 	
