@@ -32,6 +32,7 @@ public class QAnswerDaoImpl implements QAnswerDao {
 			pstmt.setString(1, questionId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
+				questionAnswer.setId(rs.getString("id"));
 				questionAnswer.setContent(rs.getString("content"));
 				questionAnswer.setCommentNum(rs.getInt("qaCommentNum"));
 				questionAnswer.setAgreeNum(rs.getInt("qaAgreeNum"));

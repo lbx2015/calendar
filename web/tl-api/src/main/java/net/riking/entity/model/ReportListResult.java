@@ -38,5 +38,5 @@ public class ReportListResult extends BaseEntity {
 	public void setList(List<ReportResult> list) {
 		this.list = list;
 	}
-
+	
 }

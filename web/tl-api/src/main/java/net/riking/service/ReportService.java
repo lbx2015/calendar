@@ -8,24 +8,19 @@ import net.riking.entity.model.ReportResult;
 
 public interface ReportService {
 	
-	/***
-	 * 获取所有报表
-	 * @author james.you
-	 * @version crateTime：2017年12月4日 上午10:10:47
-	 * @used TODO
-	 * @return
-	 */
-	List<ReportListResult> getAllReport();
 	
 	/***
 	 * 根据code和title，模糊查询报表集合
+	 * 不传责获取所有报表
 	 * @author james.you
 	 * @version crateTime：2017年12月5日 上午10:45:13
 	 * @used TODO
-	 * @param param
+	 * @param reportName
 	 * @return
 	 */
-	List<ReportResult> getReportByParam(String param);
+	List<ReportListResult> getReportByParam(String reportName);
+	
+	List<ReportResult> getReportResultByParam(String reportName);
 	
 	List<ReportFrequency> findAppUserReportById(String userId);
 

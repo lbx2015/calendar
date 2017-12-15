@@ -75,6 +75,7 @@ public class AppUserDetail extends BaseEntity {
 	private Integer phoneType;
 
 	@Comment("积分")
+	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "integral")
 	private Integer integral;
 

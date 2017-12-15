@@ -8,16 +8,18 @@ import java.util.TimerTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import net.riking.dao.repo.AppUserRepo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.entity.model.Jdpush;
 import net.riking.util.JdpushUtil;
 
 @Component("birthdayTimerTask")
 public class BirthdayTimerTask extends TimerTask {
+	protected final transient Logger logger = LogManager.getLogger(BirthdayTimerTask.class);
 
 	@Autowired
-	AppUserRepo appUserRepo;
+	AppUserDetailRepo appUserDetailRepo;
 
 	@Override
 	public void run() {
@@ -26,15 +28,15 @@ public class BirthdayTimerTask extends TimerTask {
 			String date = sdf.format(Calendar.getInstance().getTime());
 			Set<String> set = new HashSet<String>();
 			// TODO 暫時注釋
-			// appUserRepo.findByDate(date);
+			appUserDetailRepo.findByDate(date);
 			if (set.size() < 1) {
 				return;
 			}
 			Jdpush jdpush = new Jdpush();
-			jdpush.setNotificationTitle("金融台历祝您生日快乐");
-			jdpush.setMsgTitle("今天生日哟，不要忘了。");
-			jdpush.setMsgContent("生日对自己好一点，来场说走就走的旅行吧");
-			jdpush.setExtrasparam("这是空");
+			jdpush.setNotificationTitle("祝您生日快乐");
+			jdpush.setMsgTitle("生日快乐");
+			jdpush.setMsgContent("亲爱的朋友，今天是你的生日，我为你放飞了一群祝福，为你洒下了一地幸福，祝你生日快乐，生活幸福，笑容天天，美梦实现。");
+			jdpush.setExtrasparam("");
 			for (String string : set) {
 				jdpush.setRegisrationId(string);
 				JdpushUtil.sendToRegistrationId(jdpush);

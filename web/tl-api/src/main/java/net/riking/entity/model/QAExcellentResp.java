@@ -33,6 +33,9 @@ public class QAExcellentResp extends BaseEntity {
 	// 经验值
 	private Integer experience;
 
+	// 经验值
+	private Integer grade;
+
 	// 是否已关注 0-未关注，1-已关注
 	private Integer isFollow;
 
@@ -67,6 +70,14 @@ public class QAExcellentResp extends BaseEntity {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getPhotoUrl() {

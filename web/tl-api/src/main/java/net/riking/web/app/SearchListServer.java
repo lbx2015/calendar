@@ -2,6 +2,8 @@ package net.riking.web.app;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +22,7 @@ import net.riking.dao.repo.HotSearchRepo;
 import net.riking.dao.repo.NewsRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
-import net.riking.dao.repo.ReportSubcribeRelRepo;
+import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
@@ -31,9 +33,11 @@ import net.riking.entity.model.HotSearch;
 import net.riking.entity.model.NewsResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.ReportResult;
-import net.riking.entity.model.ReportSubcribeRel;
+import net.riking.entity.model.ReportSubscribeRel;
 import net.riking.entity.model.TopicResult;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.SearchParams;
+import net.riking.service.AppUserService;
 import net.riking.service.ReportService;
 
 /**
@@ -51,7 +55,13 @@ public class SearchListServer {
 	ReportService reportService;
 
 	@Autowired
-	ReportSubcribeRelRepo reportSubcribeRelRepo;
+	HttpServletRequest request;
+
+	@Autowired
+	AppUserService appUserService;
+
+	@Autowired
+	ReportSubscribeRelRepo reportSubscribeRelRepo;
 
 	@Autowired
 	TopicRepo topicRepo;
@@ -146,13 +156,13 @@ public class SearchListServer {
 	 */
 	private List<ReportResult> findReportByKeyWord(SearchParams searchParams) {
 		// 获取订阅关联表
-		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo
+		List<ReportSubscribeRel> reportSubcribeRelList = reportSubscribeRelRepo
 				.findUserReportList(searchParams.getUserId());
 
-		List<ReportResult> reportResultList = reportService.getReportByParam(searchParams.getKeyWord());
+		List<ReportResult> reportResultList = reportService.getReportResultByParam(searchParams.getKeyWord());
 		for (int i = 0; i < reportResultList.size(); i++) {
 			ReportResult r = reportResultList.get(i);
-			for (ReportSubcribeRel rel : reportSubcribeRelList) {
+			for (ReportSubscribeRel rel : reportSubcribeRelList) {
 				if (r.getReportId().equals(rel.getReportId())) {
 					r.setIsSubscribe("1");// 已订阅
 					// 不显示状态
@@ -209,6 +219,13 @@ public class SearchListServer {
 
 		for (int i = 0; i < appUserResults.size(); i++) {
 			AppUserResult appUserResult = appUserResults.get(i);
+			if (null != appUserResult.getPhotoUrl()) {
+				appUserResult.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResult.getPhotoUrl());
+			}
+			// 等级
+			if (null != appUserResult.getExperience()) {
+				appUserResult.setGrade(appUserService.transformExpToGrade(appUserResult.getExperience()));
+			}
 			// TODO 用户的回答数 后面从redis里面取
 			Integer answerNum = questionAnswerRepo.answerCountByUserId(searchParams.getUserId());
 
@@ -216,10 +233,14 @@ public class SearchListServer {
 			appUserResult.setAnswerNum(answerNum);// 回答数
 			// 显示关注状态
 			if (Const.OPT_TYPE_FOLLOW_STATUS == searchParams.getShowOptType()) {
-				List<String> toUserIds = userFollowRelRepo.findByUser(searchParams.getUserId());
-				for (String toUserId : toUserIds) {
-					if (appUserResult.getId().equals(toUserId)) {
-						appUserResult.setIsFollow(1);// 1-已关注
+				List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(searchParams.getUserId());
+				for (UserFollowRel userFollowRel : userFollowRels) {
+					if (userFollowRel.getFollowStatus() == 0
+							&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
+						appUserResult.setIsFollow(1);// 已关注
+					} else if (userFollowRel.getFollowStatus() == 1
+							&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
+						appUserResult.setIsFollow(2);// 互相关注
 					}
 				}
 			}

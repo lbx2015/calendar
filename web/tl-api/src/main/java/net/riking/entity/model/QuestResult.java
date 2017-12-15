@@ -47,6 +47,14 @@ public class QuestResult extends BaseEntity {
 	@Transient
 	private String userName;
 
+	// 经验值
+	@Transient
+	private Integer experience;
+
+	// 经验值
+	@Transient
+	private Integer grade;
+
 	// 用户头像Url
 	@Transient
 	private String photoUrl;
@@ -69,10 +77,33 @@ public class QuestResult extends BaseEntity {
 		}
 	}
 
+	public QuestResult(String id, String title, Date createdTime) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.createdTime = createdTime;
+	}
+
 	public QuestResult(String id, String title) {
 		super();
 		this.id = id;
 		this.title = title;
+	}
+
+	public Integer getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Integer experience) {
+		this.experience = experience;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getId() {

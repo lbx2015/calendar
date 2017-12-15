@@ -9,13 +9,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.riking.config.Const;
 import net.riking.dao.ReportDao;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportListResult;
 import net.riking.entity.model.ReportResult;
 import net.riking.service.ReportService;
-import net.riking.util.RedisUtil;
 
 @Service("reportService")
 public class ReportServiceImpl implements ReportService {
@@ -27,28 +25,27 @@ public class ReportServiceImpl implements ReportService {
 		// TODO Auto-generated method stub
 		return reportDao.findAppUserReportById(userId);
 	}
+	
+	@Override
+	public List<ReportResult> getReportResultByParam(String reportName){
+		return reportDao.getAllReportByParams(reportName);
+	}
 
 	@Override
-	public List<ReportListResult> getAllReport() {
+	public List<ReportListResult> getReportByParam(String reportName) {
 		// TODO Auto-generated method stub
-		List<ReportResult> list = null;
-		if (RedisUtil.getInstall().getList(Const.ALL_REPORT) != null) {
-			list = RedisUtil.getInstall().getList(Const.ALL_REPORT);
-		} else {
-			list = reportDao.getAllReportByParams("");
-			RedisUtil.getInstall().setList(Const.ALL_REPORT, list);
-		}
 
+		List<ReportResult> list = reportDao.getAllReportByParams(reportName);
 		
 		Map<String, List<ReportResult>> m = new HashMap<String, List<ReportResult>>();
 		List<ReportResult> rList = null;
 		for (ReportResult r : list) {
-			rList = m.get(r.getAgenceCode().toUpperCase());
+			rList = m.get(r.getReportType().toUpperCase());
 			if (rList == null) {
 				rList = new ArrayList<ReportResult>();
 			}
 			rList.add(r);
-			m.put(r.getAgenceCode().toUpperCase(), rList);
+			m.put(r.getReportType().toUpperCase(), rList);
 		}
 		
 
@@ -64,13 +61,6 @@ public class ReportServiceImpl implements ReportService {
 		}
 		
 		return result;
-	}
-
-	@Override
-	public List<ReportResult> getReportByParam(String param) {
-		// TODO Auto-generated method stub
-		List<ReportResult> list = reportDao.getAllReportByParams(param);
-		return list;
 	}
 
 }

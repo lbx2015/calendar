@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.QAComment;
+import net.riking.entity.model.QACommentResult;
 
 /**
  * 
@@ -36,4 +37,11 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 	@Query("select new net.riking.entity.model.QAComment(q.id,q.createdTime,q.modifiedTime,q.isAudit,q.userId,q.questionAnswerId,q.content,(select a.userName from AppUser a where q.userId = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where q.userId = ap.id),(select app.experience from AppUserDetail app where q.userId = app.id)) from QAComment q where q.questionAnswerId = ?1 and q.isAudit <> 2 and q.isDeleted=1 order by q.createdTime desc")
 	List<QAComment> findByQaId(String questAnswerId);
 
+	/**
+	 * 我的评论列表
+	 * @param questAnswerId
+	 * @return
+	 */
+	@Query("select new net.riking.entity.model.QACommentResult(q.id,q.createdTime,q.modifiedTime,q.userId,q.questionAnswerId,q.content,(select qa.questionId from QuestionAnswer qa where qa.id = q.questionAnswerId),(select a.userName from AppUser a where q.userId = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where q.userId = ap.id),(select app.experience from AppUserDetail app where q.userId = app.id)) from QAComment q where q.userId = ?1 and q.isAudit <> 2 and q.isDeleted=1 ORDER BY q.createdTime desc")
+	List<QACommentResult> findByUserId(String userId);
 }

@@ -25,6 +25,12 @@ public class AppUserResult extends BaseEntity {
 	@Comment("经验值")
 	private Integer experience;
 
+	@Comment("用户描述")
+	private String descript;
+
+	@Comment("等级")
+	private Integer grade;
+
 	@Comment("回答数")
 	private Integer answerNum;
 
@@ -58,6 +64,14 @@ public class AppUserResult extends BaseEntity {
 		this.id = id;
 	}
 
+	public String getDescript() {
+		return descript;
+	}
+
+	public void setDescript(String descript) {
+		this.descript = descript;
+	}
+
 	public Integer getIsInvited() {
 		return isInvited;
 	}
@@ -80,6 +94,14 @@ public class AppUserResult extends BaseEntity {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public Integer getExperience() {
