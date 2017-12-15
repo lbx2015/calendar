@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * 问题的接收参数
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class TQuestionParams implements Serializable {
+public class TQuestionParams extends BaseEntity {
 	/**
 	 * 
 	 */
@@ -17,6 +17,9 @@ public class TQuestionParams implements Serializable {
 
 	// 用户Id
 	private String userId;
+
+	// 目标对象用户Id
+	private String toUserId;
 
 	// 话题下面问题Id
 	private String tqId;
@@ -39,6 +42,14 @@ public class TQuestionParams implements Serializable {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getToUserId() {
+		return toUserId;
+	}
+
+	public void setToUserId(String toUserId) {
+		this.toUserId = toUserId;
 	}
 
 	public String getQuestAnswerId() {

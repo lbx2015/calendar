@@ -1,6 +1,6 @@
 package net.riking.entity.resp;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * APP用户信息返回
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @version crateTime：2017年11月29日 下午3:16:14
  * @used TODO
  */
-public class AppUserResp implements Serializable {
+public class AppUserResp extends BaseEntity {
 	// 用户ID
 	private String userId;
 

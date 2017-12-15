@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;
 
 /**
@@ -20,7 +20,7 @@ import com.riking.calendar.util.ZR;
 public class WriteAnswerActivity extends AppCompatActivity {
     TextInputEditText textInputEditText;
     TextView publishButton;
-
+String questionId;
     public void clickCancel(View view) {
         onBackPressed();
     }
@@ -29,6 +29,7 @@ public class WriteAnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_answer);
+        questionId = getIntent().getStringExtra(CONST.QUESTION_ID);
         init();
     }
 

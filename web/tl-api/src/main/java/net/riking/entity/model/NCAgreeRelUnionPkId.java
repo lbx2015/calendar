@@ -1,6 +1,6 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * 资讯的评论点赞表
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class NCAgreeRelUnionPkId implements Serializable {
+public class NCAgreeRelUnionPkId extends BaseEntity {
 	/**
 	 * 
 	 */

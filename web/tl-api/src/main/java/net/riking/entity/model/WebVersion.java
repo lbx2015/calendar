@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
 
@@ -35,6 +37,7 @@ public class WebVersion extends BaseProp {
 	@Column(name = "Id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("webVersionId")
 	private String id;
 
 	@Comment("WEB版本号(如V1.0.0）")

@@ -2,9 +2,14 @@ package net.riking.entity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BasePageQueryProp;
@@ -13,6 +18,14 @@ import net.riking.entity.BasePageQueryProp;
 @Entity
 @Table(name = "t_report")
 public class Report extends BasePageQueryProp {
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("reportId")
+	private String id;
 
 	@Comment("报表名称")
 	@Column(name = "title", length = 32)
@@ -56,7 +69,18 @@ public class Report extends BasePageQueryProp {
 	@Column(name = "template_name", length = 128)
 	private String templateName;
 	
+	@Column(name = "download_url", length = 128)
+	private String downloadUrl;
+
 	public Report(){}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getTitle() {
 		return title;
@@ -137,5 +161,15 @@ public class Report extends BasePageQueryProp {
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
 	}
+
+	public String getDownloadUrl() {
+		return downloadUrl;
+	}
+
+	public void setDownloadUrl(String downloadUrl) {
+		this.downloadUrl = downloadUrl;
+	}
+	
+	
 	
 }

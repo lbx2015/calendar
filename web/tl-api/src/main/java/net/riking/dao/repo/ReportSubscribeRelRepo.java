@@ -26,6 +26,9 @@ public interface ReportSubscribeRelRepo
 
 	@Query("select u.reportId from ReportSubscribeRel u where u.userId = ?1 ")
 	List<String> findByUserId(String userId);
+	
+    @Query(" from ReportSubcribeRel u where u.userId = ?1")
+    List<ReportSubscribeRel> findUserReportList(String userId);
 
 //	@Query("select u.userId from ReportSubscribeRel u where u.reportId in ?1")
 //	Set<String> findbyReportId(Set<String> reportId);

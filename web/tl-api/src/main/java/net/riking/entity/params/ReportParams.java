@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * 报表类的接收参数
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class ReportParams implements Serializable {
+public class ReportParams extends BaseEntity {
 	/**
 	 * 
 	 */
@@ -20,7 +20,7 @@ public class ReportParams implements Serializable {
 
 	// 报表名
 	private String reportName;
-
+	
 	public String getUserId() {
 		return userId;
 	}

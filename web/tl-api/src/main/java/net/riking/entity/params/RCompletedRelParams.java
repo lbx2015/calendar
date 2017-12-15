@@ -1,7 +1,10 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import net.riking.entity.BaseEntity;
 
 /**
  * 核销信息的接收参数
@@ -10,7 +13,7 @@ import java.util.Date;
  * @see
  * @since 1.0
  */
-public class RCompletedRelParams implements Serializable {
+public class RCompletedRelParams extends BaseEntity {
 	/**
 	 * 
 	 */
@@ -23,7 +26,8 @@ public class RCompletedRelParams implements Serializable {
 	private String reportId;
 
 	// 完成时间（yyyyMMdd）
-	private String completedDate;
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
+	private Date completedDate;
 
 	// 提醒时间（yyyyMMdd）
 	private Date remindTime;
@@ -36,11 +40,11 @@ public class RCompletedRelParams implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getCompletedDate() {
+	public Date getCompletedDate() {
 		return completedDate;
 	}
 
-	public void setCompletedDate(String completedDate) {
+	public void setCompletedDate(Date completedDate) {
 		this.completedDate = completedDate;
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.ReportListResult;
@@ -67,14 +68,14 @@ public class AppReportServer {
 		
 		for(ReportListResult rl : reportListResult){
 			List<ReportResult> reportList = rl.getList();
-			for(int i = 0; i < reportList.size(); i++){
-				ReportResult r = reportList.get(i);
+			for(ReportResult r : reportList){
 				for(ReportSubscribeRel rel : reportSubcribeRelList){
 					if(r.getReportId().equals(rel.getReportId())){
-						r.setIsSubcribe("1");//已订阅
+						r.setIsSubscribe("1");//已订阅
 					}
 				}
 			}
+			
 		}
 		
 		return new AppResp(reportListResult, CodeDef.SUCCESS);
@@ -106,22 +107,25 @@ public class AppReportServer {
 					//订阅的报表已经在已订阅之内，不让其新增
 					isRn = false;
 				}
-			}
-			if(isRn){
-				ReportSubscribeRel data = new ReportSubscribeRel();
-				data.setUserId(data.getUserId());
-				data.setReportId(reportId);
-				reportSubscribeRelRepo.save(data);
+				
+				if(isRn){
+					ReportSubscribeRel rel = new ReportSubscribeRel();
+					rel.setReportId(reportId);
+					rel.setUserId(subscribeReport.getUserId());
+					reportSubscribeRelRepo.save(rel);
+				}
+				
 			}
 		}
+
 		return new AppResp(CodeDef.SUCCESS);
 	}
+
 	
 	@ApiOperation(value = "查询逾期报表", notes = "POST")
 	@RequestMapping(value = "/findExpireTasks", method = RequestMethod.POST)
 	public AppResp findExpireTasks_(@RequestParam("userId") String userId) {
 		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(userId);
-		
 		
 		
 		return new AppResp(list, CodeDef.SUCCESS);

@@ -41,7 +41,7 @@ import java.util.List;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class OrderReportActivity extends AppCompatActivity implements SubscribeReport {
+public class OrderReportActivity extends AppCompatActivity implements SubscribeReport<ReportFrequency> {
     public ZReportFlowLayout zReportFlowLayout;
     public TextView editButton;
     public boolean editMode = false;

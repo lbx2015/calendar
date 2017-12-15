@@ -1,16 +1,18 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * 
@@ -21,7 +23,7 @@ import net.riking.core.annos.Comment;
 @Comment("用户详情表")
 @Entity
 @Table(name = "t_appuser_detail")
-public class AppUserDetail implements Serializable {
+public class AppUserDetail extends BaseEntity {
 
 	/**
 	 * 
@@ -37,6 +39,7 @@ public class AppUserDetail implements Serializable {
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
 	@Column(name = "id", length = 32)
 	@Comment("pk 同用户登录表t_app_user的id一致")
+	@JsonProperty("appUserDetailId")
 	private String id;
 
 	@Comment("真实姓名")
@@ -106,6 +109,10 @@ public class AppUserDetail implements Serializable {
 	@Column(name = "is_guide")
 	private Integer isGuide;
 
+	@Transient
+	@Comment("我的等级")
+	private Integer grade;
+
 	public String getId() {
 		return id;
 	}
@@ -120,6 +127,14 @@ public class AppUserDetail implements Serializable {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getCompanyName() {

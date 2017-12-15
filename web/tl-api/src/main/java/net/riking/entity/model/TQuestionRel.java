@@ -12,6 +12,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
@@ -49,6 +51,7 @@ public class TQuestionRel extends BaseEntity {
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
@@ -83,6 +86,12 @@ public class TQuestionRel extends BaseEntity {
 
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	@Override
+	public String toString() {
+		return "TQuestionRel [userId=" + userId + ", tqId=" + tqId + ", dataType=" + dataType + ", createdTime="
+				+ createdTime + "]";
 	}
 
 }

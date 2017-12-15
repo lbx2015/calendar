@@ -73,7 +73,9 @@ public class ReportDaoImpl implements ReportDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportResult report = new ReportResult();
+				report.setAgenceCode(rs.getString("agenceCode"));
 				report.setReportType(rs.getString("reportType"));
+				report.setReportMode(rs.getString("reportMode"));
 				report.setReportTypeName(rs.getString("reportTypeName"));
 				report.setReportKind(rs.getString("reportKind"));
 				report.setReportKindName(rs.getString("reportKindName"));
@@ -82,7 +84,7 @@ public class ReportDaoImpl implements ReportDao {
 				report.setReportId(rs.getString("reportId"));
 				report.setCode(rs.getString("code"));
 				report.setTitle(rs.getString("title"));
-				report.setIsSubcribe(rs.getString("isSubcribe"));
+				report.setIsSubscribe(rs.getString("isSubcribe"));
 				list.add(report);
 			}
 		} catch (SQLException e) {

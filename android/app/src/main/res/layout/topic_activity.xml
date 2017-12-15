@@ -78,7 +78,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/follow_number_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -91,6 +91,7 @@
                     app:layout_constraintTop_toBottomOf="@id/topic_title" />
 
                 <FrameLayout
+                    android:id="@+id/follow_button"
                     android:layout_width="68dp"
                     android:layout_height="28dp"
                     android:background="@drawable/follow_border"
@@ -98,28 +99,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/follow_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="horizontal">
+                        android:drawableLeft="@drawable/com_btn_icon_plus"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:text="关注"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp" />
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="5dp"
-                            android:src="@drawable/com_btn_icon_plus" />
-
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="关注"
-                            android:textColor="@color/color_489dfff"
-                            android:textSize="14sp" />
-                    </LinearLayout>
                 </FrameLayout>
             </android.support.constraint.ConstraintLayout>
 

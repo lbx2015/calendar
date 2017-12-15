@@ -16,11 +16,20 @@ import java.util.Set;
 public class ZPreference {
     public static SharedPreferences pref = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
 
-    public static void remove(String key){
+    public static String getUserId() {
+        return ZPreference.pref.getString(CONST.USER_ID, "");
+    }
+
+    public static boolean isLogin() {
+        return ZPreference.pref.getBoolean(CONST.IS_LOGIN, false);
+    }
+
+    public static void remove(String key) {
         SharedPreferences.Editor e = pref.edit();
         e.remove(key);
         e.commit();
     }
+
     public static <T> void put(String key, T val) {
         SharedPreferences.Editor editor = pref.edit();
         if (val instanceof String) {

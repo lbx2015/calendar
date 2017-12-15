@@ -4,20 +4,27 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.HomeAdapter;
+import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.QuestionsAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -26,10 +33,17 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 public class QuestionsFragment extends Fragment {
     View v;
     QuestionsAdapter mAdapter;
+    TopicActivity activity;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
+
+    public static QuestionsFragment newInstance(TopicActivity activity) {
+        QuestionsFragment fragment = new QuestionsFragment();
+        fragment.activity = activity;
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -54,8 +68,6 @@ public class QuestionsFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        //adding custom divider
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         mAdapter = new QuestionsAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
@@ -87,7 +99,50 @@ public class QuestionsFragment extends Fragment {
 
     private void loadData(final int page) {
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
+        if (page > 1 && isHasLoadedAll) {
+            return;
+        }
+
+        if (mPullToLoadView != null) {
+            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mPullToLoadView != null) {
+                        mPullToLoadView.setComplete();
+                    }
+                }
+            }, 2000);
+        }
+        final TopicParams params = new TopicParams();
+        params.topicId = activity.topicId;
+        //get the questions of topic
+        params.optType = 2;
+        params.pcount = 30;
+        params.pindex = page;
+
+        APIClient.getQuestionsOfTopic(params, new ZCallBackWithoutProgress<ResponseModel<List<QuestResult>>>() {
+            @Override
+            public void callBack(ResponseModel<List<QuestResult>> response) {
+                mPullToLoadView.setComplete();
+
+                List<QuestResult> list = response._data;
+                MyLog.d("list size: " + list.size());
+
+                if (list.size() < params.pcount) {
+                    isHasLoadedAll = true;
+                    if (list.size() == 0) {
+                        ZToast.toastEmpty();
+                        return;
+                    }
+                }
+                isLoading = false;
+                nextPage = page + 1;
+                mAdapter.setData(list);
+            }
+        });
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPullToLoadView.setComplete();
@@ -104,6 +159,6 @@ public class QuestionsFragment extends Fragment {
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 1000);
+        }, 1000);*/
     }
 }

@@ -1,11 +1,14 @@
 package net.riking.entity.model;
 
-import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
-public class ReportResult implements Serializable {
+public class ReportResult extends BaseEntity {
+
+	@Comment("报表Id")
+	private String reportId;
 	
 	@JsonIgnore
 	@Comment("报表类型")
@@ -27,25 +30,20 @@ public class ReportResult implements Serializable {
 	@Comment("报表所属模块名称")
 	private String moduleTypeName;
 	
-	@Comment("报表Id")
-	private String reportId;
-	
+	@Comment("机构")
+	private String agenceCode;
+
+	@Comment("报表模式分类")
+	private String reportMode;
+
 	@Comment("报表代码")
 	private String code;
-	
+
 	@Comment("报表标题")
 	private String title;
-	
+
 	@Comment("是否订阅")
-	private String isSubcribe;
-
-	public String getReportType() {
-		return reportType;
-	}
-
-	public void setReportType(String reportType) {
-		this.reportType = reportType;
-	}
+	private String isSubscribe;
 
 	public String getReportTypeName() {
 		return reportTypeName;
@@ -95,6 +93,30 @@ public class ReportResult implements Serializable {
 		this.reportId = reportId;
 	}
 
+	public String getAgenceCode() {
+		return agenceCode;
+	}
+
+	public void setAgenceCode(String agenceCode) {
+		this.agenceCode = agenceCode;
+	}
+
+	public String getReportType() {
+		return reportType;
+	}
+
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
+
+	public String getReportMode() {
+		return reportMode;
+	}
+
+	public void setReportMode(String reportMode) {
+		this.reportMode = reportMode;
+	}
+
 	public String getCode() {
 		return code;
 	}
@@ -111,12 +133,12 @@ public class ReportResult implements Serializable {
 		this.title = title;
 	}
 
-	public String getIsSubcribe() {
-		return isSubcribe;
+	public String getIsSubscribe() {
+		return isSubscribe;
 	}
 
-	public void setIsSubcribe(String isSubcribe) {
-		this.isSubcribe = isSubcribe;
+	public void setIsSubscribe(String isSubscribe) {
+		this.isSubscribe = isSubscribe;
 	}
-	
+
 }

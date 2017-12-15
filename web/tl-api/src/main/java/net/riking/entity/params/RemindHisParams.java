@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import net.riking.entity.BaseEntity;
 
 /**
  * 提醒的历史参数
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class RemindHisParams implements Serializable {
+public class RemindHisParams extends BaseEntity {
 	/**
 	 * 
 	 */

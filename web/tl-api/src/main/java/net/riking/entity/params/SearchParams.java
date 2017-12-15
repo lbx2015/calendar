@@ -1,6 +1,6 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * 搜索列表类的接收参数
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class SearchParams implements Serializable {
+public class SearchParams extends BaseEntity {
 	/**
 	 * 
 	 */
@@ -18,14 +18,17 @@ public class SearchParams implements Serializable {
 	// 用户Id
 	private String userId;
 
-	// 显示操作类型：0-不显示状态；1-显示关注状态；2-显示邀请状态
-	private String showOptType;
+	// 问题Id
+	private String tqId;
+
+	// 显示操作类型：0-不显示状态；1-显示关注/收藏、订阅状态；2-显示邀请状态
+	private Integer showOptType;
 
 	// 搜索类型： 1-报表；2-话题；3-人脉；4-资讯；5-问题
-	private String objType;
+	private Integer objType;
 
 	// 关键字
-	private String keyword;
+	private String keyWord;
 
 	public String getUserId() {
 		return userId;
@@ -35,28 +38,36 @@ public class SearchParams implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getShowOptType() {
+	public String getTqId() {
+		return tqId;
+	}
+
+	public void setTqId(String tqId) {
+		this.tqId = tqId;
+	}
+
+	public Integer getShowOptType() {
 		return showOptType;
 	}
 
-	public void setShowOptType(String showOptType) {
+	public void setShowOptType(Integer showOptType) {
 		this.showOptType = showOptType;
 	}
 
-	public String getObjType() {
+	public Integer getObjType() {
 		return objType;
 	}
 
-	public void setObjType(String objType) {
+	public void setObjType(Integer objType) {
 		this.objType = objType;
 	}
 
-	public String getKeyword() {
-		return keyword;
+	public String getKeyWord() {
+		return keyWord;
 	}
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
 	}
 
 }

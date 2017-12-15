@@ -1,5 +1,7 @@
 package com.riking.calendar.pojo.params;
 
+import com.riking.calendar.util.ZPreference;
+
 import java.io.Serializable;
 
 /**
@@ -9,10 +11,7 @@ import java.io.Serializable;
  * @see
  * @since 1.0
  */
-public class NewsParams implements Serializable {
-
-    // 用户Id
-    public String userId;
+public class NewsParams extends BaseParams implements Serializable {
 
     // 请求方向（up上，down下）
     public String direct;
@@ -21,7 +20,7 @@ public class NewsParams implements Serializable {
     public String newsId;
 
     // (0-取消；1-收藏)
-    public Integer enabled;
+    public int enabled = 0;
 
     // 请求上翻最新时间戳
 //	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
@@ -31,7 +30,7 @@ public class NewsParams implements Serializable {
     public String content;
 
     // 屏蔽问题[1-问题;2-话题;3-屏蔽]
-    public Integer objType;
+    public int objType;
 
     // 目标对象id
     public String objId;

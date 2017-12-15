@@ -1,6 +1,7 @@
 package com.riking.calendar.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -110,7 +111,19 @@ public class FinanceNewsFragment extends Fragment {
             p.direct = "up";
             p.reqTimeStamp = lastItemTime;
         }
-        mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+
+        if (mPullToLoadView != null) {
+            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mPullToLoadView != null) {
+                        mPullToLoadView.setComplete();
+                    }
+                }
+            }, 2000);
+        }
         APIClient.findNewsList(p, new ZCallBack<ResponseModel<List<News>>>() {
             @Override
             public void callBack(ResponseModel<List<News>> response) {

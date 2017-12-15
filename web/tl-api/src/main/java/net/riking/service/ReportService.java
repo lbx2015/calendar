@@ -20,6 +20,8 @@ public interface ReportService {
 	 */
 	List<ReportListResult> getReportByParam(String reportName);
 	
+	List<ReportResult> getReportResultByParam(String reportName);
+	
 	List<ReportFrequency> findAppUserReportById(String userId);
 
 }

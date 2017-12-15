@@ -29,7 +29,6 @@ import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.StringUtil;
-import net.riking.util.Utils;
 
 /**
  * app用户信息操作
@@ -57,10 +56,8 @@ public class AppUserServer {
 
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
-	public AppResp get_(@RequestBody Map<String, Object> params)
-			throws IllegalArgumentException, IllegalAccessException {
-		// 将map转换成参数对象
-		UserParams userParams = Utils.map2Obj(params, UserParams.class);
+	public AppResp get_(@RequestBody UserParams userParams) throws IllegalArgumentException, IllegalAccessException {
+
 		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
 		AppUserResp appUserResp = new AppUserResp();
 		appUserResp.setUserId(appUser.getId());
@@ -69,9 +66,8 @@ public class AppUserServer {
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
 		// appUserResp从appUserDetail取值
 		appUserResp = (AppUserResp) fromObjToObjValue(appUserResp, appUserDetail);
-		// 将对象转换成map
-		Map<String, Object> appUserRespMapNew = Utils.objProps2Map(appUserResp, true);
-		return new AppResp(appUserRespMapNew, CodeDef.SUCCESS);
+
+		return new AppResp(appUserResp, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -100,13 +96,12 @@ public class AppUserServer {
 
 	@ApiOperation(value = "更新用户信息", notes = "POST")
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public AppResp modify_(@RequestBody Map<String, Object> params)
+	public AppResp modify_(@RequestBody UpdUserParams userParams)
 			throws IllegalArgumentException, IllegalAccessException {
-		UpdUserParams userParams = Utils.map2Obj(params, UpdUserParams.class);
 
 		AppUser dbUser = appUserRepo.findOne(userParams.getUserId());
 		if (null == dbUser) {
-			return new AppResp(false, CodeDef.EMP.DATA_NOT_FOUND);
+			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
 
 		AppUser appUser = appUserRepo.findOne(dbUser.getId());
@@ -129,12 +124,12 @@ public class AppUserServer {
 		try {
 			appUserRepo.save(appUser);
 		} catch (Exception e) {
-			return new AppResp(false, CodeDef.ERROR);
+			return new AppResp("", CodeDef.ERROR);
 		}
 
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(dbUser.getId());
 		if (null == appUserDetail) {
-			return new AppResp(false, CodeDef.EMP.DATA_NOT_FOUND);
+			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
@@ -156,40 +151,39 @@ public class AppUserServer {
 			try {
 				appUserDetailRepo.save(appUserDetail);
 			} catch (Exception e) {
-				return new AppResp(false, CodeDef.ERROR);
+				return new AppResp("", CodeDef.ERROR);
 			}
 
 		}
-		return new AppResp(true, CodeDef.SUCCESS);
+		return new AppResp("", CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
 	@RequestMapping(value = "/IsChangeDevice", method = RequestMethod.POST)
-	public AppResp IsChangeDevice_(@RequestBody Map<String, Object> params) {
+	public AppResp IsChangeDevice_(@RequestBody UserParams userParams) {
 		// 将map转换成参数对象
-		UserParams userParams = Utils.map2Obj(params, UserParams.class);
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(userParams.getUserId());
 		if (null == appUserDetail) {
-			return new AppResp(false, CodeDef.EMP.DATA_NOT_FOUND);
+			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
 		String seqNum = userParams.getPhoneDeviceid();
 		if (appUserDetail != null && !seqNum.equals(appUserDetail.getPhoneDeviceid())) {
 			appUserDetail.setPhoneDeviceid(seqNum);
 			appUserDetail.setPhoneType(userParams.getPhoneType());
 			appUserDetailRepo.save(appUserDetail);
-			return new AppResp(true, CodeDef.SUCCESS);
+			return new AppResp("", CodeDef.SUCCESS);
 		}
-		return new AppResp(false, CodeDef.ERROR);
+		return new AppResp("", CodeDef.ERROR);
 	}
 
 	@AuthPass
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
-	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("userId") String userId) {
+	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestBody UserParams userParams) {
 		String url = request.getRequestURL().toString();
 		String fileName = null;
 		try {
-			fileName = appUserService.uploadPhoto(mFile, userId);
+			fileName = appUserService.uploadPhoto(mFile, userParams.getUserId());
 		} catch (RuntimeException e) {
 			// TODO: handle exception
 			if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) {
@@ -202,13 +196,6 @@ public class AppUserServer {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("photoUrl", photoUrl);
 		return new AppResp(result, CodeDef.SUCCESS);
-	}
-
-	@ApiOperation(value = "更新用户信息", notes = "POST")
-	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-	public AppResp updateUser(@RequestBody AppUser appUser) {
-		appUserRepo.save(appUser);
-		return new AppResp(CodeDef.ERROR);
 	}
 
 	private <T> T merge(T dbObj, T appObj) throws Exception {

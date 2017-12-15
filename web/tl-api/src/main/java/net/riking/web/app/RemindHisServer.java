@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,8 +42,8 @@ public class RemindHisServer {
 
 	@ApiOperation(value = "批量删除提醒历史信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public AppResp delMore(@RequestParam("remindHisId") String remindHisId) {
-		remindHisRepo.delete(remindHisId);
+	public AppResp delMore(@RequestBody RemindHis remindHis) {
+		remindHisRepo.delete(remindHis.getRemindHisId());
 
 		return new AppResp().setCode(CodeDef.SUCCESS);
 	}

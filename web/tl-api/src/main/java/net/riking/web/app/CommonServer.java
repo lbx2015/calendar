@@ -1,8 +1,6 @@
 package net.riking.web.app;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,19 +24,25 @@ import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.dao.repo.AppVersionRepo;
 import net.riking.dao.repo.IndustryRepo;
+import net.riking.dao.repo.TQuestionRelRepo;
+import net.riking.dao.repo.TopicRelRepo;
+import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserRecommend;
 import net.riking.entity.model.AppVersion;
 import net.riking.entity.model.Industry;
+import net.riking.entity.model.TQuestionRel;
+import net.riking.entity.model.TopicRel;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.AppVersionParams;
 import net.riking.entity.params.IndustryParams;
+import net.riking.entity.params.TQuestionParams;
 import net.riking.entity.params.ValidParams;
 import net.riking.service.AppUserCommendService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
-import net.riking.util.Utils;
 
 /**
  * 公共模块
@@ -68,6 +72,15 @@ public class CommonServer {
 	SmsUtil smsUtil;
 
 	@Autowired
+	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	TQuestionRelRepo tQuestionRelRepo;
+
+	@Autowired
+	TopicRelRepo topicRelRepo;
+
+	@Autowired
 	AppUserCommendService appUserCommendServie;
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
@@ -84,19 +97,16 @@ public class CommonServer {
 
 	@ApiOperation(value = "获取系统版本", notes = "POST")
 	@RequestMapping(value = "/getAppVersion", method = RequestMethod.POST)
-	public AppResp getAppVersion(@RequestBody Map<String, Object> params) {
-		AppVersionParams appVersionParams = Utils.map2Obj(params, AppVersionParams.class);
+	public AppResp getAppVersion(@RequestBody AppVersionParams appVersionParams) {
 		AppVersion appVersion = appVersionRepo.hasUpdateAppVersion(appVersionParams.getVersionNo(),
 				appVersionParams.getClientType());
-		Map<String, Object> result = Utils.objProps2Map(appVersion, true);
-		return new AppResp(result, CodeDef.SUCCESS);
+		return new AppResp(appVersion, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "发送验证码", notes = "POST")
 	@RequestMapping(value = "/getValidCode", method = RequestMethod.POST)
-	public AppResp getValidCode_(@RequestBody Map<String, Object> params) throws ClientException {
+	public AppResp getValidCode_(@RequestBody ValidParams validParams) throws ClientException {
 		// user = appUser;
-		ValidParams validParams = Utils.map2Obj(params, ValidParams.class);
 		String phone = validParams.getPhone();
 		if (null == phone) {
 			return new AppResp(CodeDef.EMP.PHONE_NULL_ERROR, CodeDef.EMP.PHONE_NULL_ERROR_DESC);
@@ -150,40 +160,128 @@ public class CommonServer {
 	@ApiOperation(value = "获取行业列表", notes = "POST")
 	@RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
 	public AppResp findIndustry() {
-		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
 		List<Industry> list = industryRepo.findIndustry(0);// 查询行业
-		for (Industry industry : list) {
-			Map<String, Object> map = Utils.objProps2Map(industry, true);
-			maps.add(map);
-		}
-		return new AppResp(maps, CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
 	@RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
-	public AppResp getPositionByIndustry(@RequestBody Map<String, Object> params) {
-		IndustryParams industryParams = Utils.map2Obj(params, IndustryParams.class);
-		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+	public AppResp getPositionByIndustry(@RequestBody IndustryParams industryParams) {
 		List<Industry> list = industryRepo.findPositionByIndustry(industryParams.getIndustryId());
 		if (null == list) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
-		for (Industry industry : list) {
-			Map<String, Object> map = Utils.objProps2Map(industry, true);
-			maps.add(map);
-		}
-		return new AppResp(maps, CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "获取推荐报表", notes = "POST")
-	@RequestMapping(value = "/getCommend", method = RequestMethod.POST)
+	@RequestMapping(value = "/getRecommendReport", method = RequestMethod.POST)
 	public AppResp getCommend() {
 		Set<AppUserRecommend> appUserRecommends = appUserCommendServie.findALL();
-		Set<Map<String, Object>> sets = new HashSet<Map<String, Object>>();
-		for (AppUserRecommend appUserRecommend : appUserRecommends) {
-			Map<String, Object> map = Utils.objProps2Map(appUserRecommend, true);
-			sets.add(map);
-		}
-		return new AppResp(sets, CodeDef.SUCCESS);
+		return new AppResp(appUserRecommends, CodeDef.SUCCESS);
 	}
+
+	/**
+	 * 问题，话题，用户的关注[userId,objType(1-问题；2-话题；3-用户),attentObjId（关注类型ID）,enabled（1-关注；0-取消）]
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "问题，话题，用户的关注", notes = "POST")
+	@RequestMapping(value = "/follow", method = RequestMethod.POST)
+	public AppResp follow_(@RequestBody TQuestionParams tQuestionParams) {
+		switch (tQuestionParams.getObjType()) {
+			// 问题关注
+			case Const.OBJ_TYPE_1:
+				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
+					TQuestionRel rels = tQuestionRelRepo.findByOne(tQuestionParams.getUserId(),
+							tQuestionParams.getAttentObjId(), 0);// 0-关注
+					if (null == rels) {
+						// 如果传过来的参数是关注，保存新的一条关注记录
+						TQuestionRel topQuestionRel = new TQuestionRel();
+						topQuestionRel.setUserId(tQuestionParams.getUserId());
+						topQuestionRel.setTqId(tQuestionParams.getAttentObjId());
+						topQuestionRel.setDataType(0);// 关注
+						tQuestionRelRepo.save(topQuestionRel);
+					}
+				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
+					// 如果传过来是取消关注，把之前一条记录物理删除
+					tQuestionRelRepo.deleteByUIdAndTqId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
+							0);// 0-关注 3-屏蔽
+				} else {
+					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+				}
+				break;
+			// 话题关注
+			case Const.OBJ_TYPE_2:
+				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
+					TopicRel rels = topicRelRepo.findByOne(tQuestionParams.getUserId(),
+							tQuestionParams.getAttentObjId(), 0);// 0-关注
+					if (null == rels) {
+						// 如果传过来的参数是关注，保存新的一条关注记录
+						TopicRel topicRel = new TopicRel();
+						topicRel.setUserId(tQuestionParams.getUserId());
+						topicRel.setTopicId(tQuestionParams.getAttentObjId());
+						topicRel.setDataType(0);// 关注
+						topicRelRepo.save(topicRel);
+					}
+				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
+					// 如果传过来是取消关注，把之前一条记录物理删除
+					topicRelRepo.deleteByUIdAndTopId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(), 0);// 0-关注3-屏蔽
+
+				} else {
+					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+				}
+				break;
+			// 用户关注
+			case Const.OBJ_TYPE_3:
+				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
+					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：1-互相关注
+					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
+							tQuestionParams.getUserId());// 对方的点赞记录
+					if (toUserFollowRel != null) {
+						UserFollowRel rels = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getUserId(),
+								tQuestionParams.getAttentObjId());
+						if (null == rels) {
+							// 更新对方关注表，互相关注
+							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
+									toUserFollowRel.getToUserId(), 1);// 1-互相关注
+							// 如果传过来的参数是关注，保存新的一条关注记录
+							UserFollowRel userFollowRel = new UserFollowRel();
+							userFollowRel.setUserId(tQuestionParams.getUserId());
+							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
+							userFollowRel.setFollowStatus(1);// 互相关注
+							userFollowRelRepo.save(userFollowRel);
+						}
+					} else {
+						// 如果传过来的参数是关注，保存新的一条关注记录
+						UserFollowRel userFollowRel = new UserFollowRel();
+						userFollowRel.setUserId(tQuestionParams.getUserId());
+						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
+						userFollowRel.setFollowStatus(0);// 非互相关注
+						userFollowRelRepo.save(userFollowRel);
+					}
+				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
+					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
+							tQuestionParams.getUserId());// 对方的点赞记录
+					if (null != toUserFollowRel) {
+						userFollowRelRepo.updFollowStatus(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
+								0);// 0-非互相关注
+					}
+					// 如果传过来是取消关注，把之前一条记录物理删除
+					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
+				} else {
+					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
+					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+				}
+				break;
+			default:
+				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+
+		return new AppResp("", CodeDef.SUCCESS);
+	}
+
 }

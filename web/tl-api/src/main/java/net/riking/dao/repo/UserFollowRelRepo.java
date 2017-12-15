@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,7 +47,7 @@ public interface UserFollowRelRepo
 	void updFollowStatus(String userId, String toUserId, Integer followStatus);
 
 	/**
-	 * 根据主键找到唯一一条点赞记录
+	 * 根据主键找到唯一一条关注记录
 	 * @param userId
 	 * @param toUserId
 	 * @return
@@ -53,4 +55,19 @@ public interface UserFollowRelRepo
 	@Query(" from UserFollowRel where userId = ?1 and toUserId = ?2")
 	UserFollowRel getByUIdAndToId(String userId, String toUserId);
 
+	/**
+	 * 查询用户关注的id
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select toUserId from UserFollowRel where userId = ?1 ")
+	List<String> findByUser(String userId);
+
+	/**
+	 * 查询用户粉丝数
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select count(*) from UserFollowRel where toUserId = ?1 ")
+	Integer countByToUser(String userId);
 }

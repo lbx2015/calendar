@@ -111,4 +111,37 @@ public class Const {
 	public static final int OBJ_TYPE_NEWS = 2;// 资讯
 
 	/** --------------------操作类型 end-------------------------- */
+
+	/** -------------------话题操作类型 begin-------------------------- */
+
+	public static final int TOP_OBJ_OPT_ESSENCE = 1;// 精华
+
+	public static final int TOP_OBJ_OPT_QUEST = 2;// 问题
+
+	public static final int TOP_OBJ_OPT_EXRESP = 3;// 优秀回答者
+
+	/** --------------------话题操作类型 end-------------------------- */
+
+	/** -------------------操作类型状态 begin-------------------------- */
+
+	public static final int OPT_TYPE_BLANK_STATUS = 0;// 不显示状态
+
+	public static final int OPT_TYPE_FOLLOW_STATUS = 1;// 显示关注状态
+
+	public static final int OPT_TYPE_INVITE_STATUS = 2;// 显示邀请状态
+
+	public static final int OPT_TYPE_SUBSCRIBE_STATUS = 3;// 显示订阅状态
+	/** --------------------操作类型状态 end-------------------------- */
+
+	/** -------------------搜索栏操作对象状态 begin-------------------------- */
+	public static final int OPJ_TYPE_REPORT = 1;// 1-报表
+
+	public static final int OPJ_TYPE_TOPIC = 2;// 2-话题
+
+	public static final int OPJ_TYPE_CONTACTS = 3;// 3-人脉
+
+	public static final int OPJ_TYPE_NEWS = 4;// 4-资讯
+
+	public static final int OPJ_TYPE_QUEST = 5;// 5-问题
+	/** --------------------搜索栏操作对象状态 end-------------------------- */
 }

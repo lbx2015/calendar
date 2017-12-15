@@ -4,11 +4,23 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
+import net.riking.entity.resp.FromUser;
+import net.riking.entity.resp.ToUser;
 
 /**
  * 
@@ -19,6 +31,8 @@ import net.riking.entity.BaseAuditProp;
 @Comment("行业资讯的评论回复表")
 @Entity
 @Table(name = "t_nc_reply")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class NCReply extends BaseAuditProp {
 
 	/**
@@ -26,12 +40,22 @@ public class NCReply extends BaseAuditProp {
 	 */
 	private static final long serialVersionUID = -1461884746264578424L;
 
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("replyId")
+	private String id;
+
 	@Comment("操作人主键: fk t_app_user 发表回复的user_id")
-	@Column(name = "user_id", nullable = false)
-	private String userId;
+	@Column(name = "from_user_id", nullable = false)
+	@JsonIgnore
+	private String fromUserId;
 
 	@Comment("被操作人主键: fk t_app_user 被评论人ID")
 	@Column(name = "to_user_id")
+	@JsonIgnore
 	private String toUserId;
 
 	@Comment("目标对象评论主键: fk t_news_comment 行业资讯的评论表")
@@ -40,6 +64,7 @@ public class NCReply extends BaseAuditProp {
 
 	@Comment("目标对象评论回复主键: fk t_nc_reply 回复ID")
 	@Column(name = "reply_id")
+	@JsonProperty("lastReplyId")
 	private String replyId;
 
 	@Comment("内容")
@@ -47,9 +72,17 @@ public class NCReply extends BaseAuditProp {
 	private String content;
 
 	@Transient
+	FromUser fromUser;
+
+	@Transient
+	ToUser toUser;
+
+	@Transient
+	@JsonIgnore
 	private String userName;
 
 	@Transient
+	@JsonIgnore
 	private String toUserName;
 
 	public NCReply() {
@@ -57,13 +90,13 @@ public class NCReply extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NCReply(String id, Date createdTime, Date modifiedTime, String userId, String toUserId, String commentId,
+	public NCReply(String id, Date createdTime, Date modifiedTime, String fromUserId, String toUserId, String commentId,
 			String replyId, String content, String userName, String toUserName) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.userId = userId;
+		this.fromUserId = fromUserId;
 		this.toUserId = toUserId;
 		this.commentId = commentId;
 		this.replyId = replyId;
@@ -72,12 +105,20 @@ public class NCReply extends BaseAuditProp {
 		this.toUserName = toUserName;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getId() {
+		return id;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getFromUserId() {
+		return fromUserId;
+	}
+
+	public void setFromUserId(String fromUserId) {
+		this.fromUserId = fromUserId;
 	}
 
 	public String getUserName() {
@@ -86,6 +127,22 @@ public class NCReply extends BaseAuditProp {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public FromUser getFromUser() {
+		return fromUser;
+	}
+
+	public void setFromUser(FromUser fromUser) {
+		this.fromUser = fromUser;
+	}
+
+	public ToUser getToUser() {
+		return toUser;
+	}
+
+	public void setToUser(ToUser toUser) {
+		this.toUser = toUser;
 	}
 
 	public String getContent() {

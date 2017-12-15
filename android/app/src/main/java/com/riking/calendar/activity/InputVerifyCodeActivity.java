@@ -20,7 +20,6 @@ import com.necer.ncalendar.view.IdentifyingCodeView;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.resp.AppUserResp;
@@ -133,12 +132,18 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 }
                             });
 
-                           String nextActivityClassName = ZPreference.pref.getString(CONST.JUMP_CLASS_NAME, null);
-                            if (nextActivityClassName != null) {
+                            if (ZR.jumpClass != null) {
                                 //delete the the jump class name
-                                ZPreference.remove(CONST.JUMP_CLASS_NAME);
-                                Class<Activity> c = (Class<Activity>) Class.forName(nextActivityClassName);
+                                Class<Activity> c = (Class<Activity>) Class.forName(ZR.jumpClass);
                                 ZGoto.to(c);
+                                ZR.jumpClass = null;
+                            }
+                            //sent broadcast when not login check by on click
+                            else if (ZPreference.pref.getBoolean(CONST.CHECK_NOT_LOGIN_ON_CLICK, false)) {
+                                ZPreference.remove(CONST.CHECK_NOT_LOGIN_ON_CLICK);
+                                Intent intent = new Intent("android.intent.action.MY_BROADCAST");
+                                intent.putExtra("msg", "hello receiver.");
+                                sendBroadcast(intent);
                             } else if (u.isGuide == null || u.isGuide == (0)) {
                                 ZGoto.to(IndustrySelectActivity.class);
                             }

@@ -12,6 +12,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
@@ -45,6 +47,7 @@ public class QAnswerRel extends BaseEntity {
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")

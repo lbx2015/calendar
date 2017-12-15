@@ -15,6 +15,7 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
@@ -25,13 +26,28 @@ import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.CommentParams;
+import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QAExcellentResp;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.TQuestionResult;
+import com.riking.calendar.pojo.server.Topic;
+import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
@@ -57,6 +73,7 @@ import java.util.TimeZone;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -556,5 +573,73 @@ public class APIClient {
 
     public static void findNewsCommentList(NewsParams params, ZCallBack<ResponseModel<List<NewsComment>>> c) {
         apiInterface.findNewsCommentList(params).enqueue(c);
+    }
+
+    public static void newsCollect(NewsParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.newsCollect(params).enqueue(c);
+    }
+
+    public static void newsCommentPub(NewsParams params, ZCallBackWithFail<ResponseModel<NewsComment>> c) {
+        apiInterface.newsCommentPub(params).enqueue(c);
+    }
+
+    public static void commentReply(CommentParams params, ZCallBackWithFail<ResponseModel<NCReply>> c) {
+        apiInterface.commentReply(params).enqueue(c);
+    }
+
+    public static void commentAgree(CommentParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.commentAgree(params).enqueue(c);
+    }
+
+    public static void shieldQuestion(HomeParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.shielfProblem(params).enqueue(c);
+    }
+
+    public static void getTopicQuestion(TQuestionParams params, ZCallBack<ResponseModel<TopicQuestion>> c) {
+        apiInterface.getTopicQuestion(params).enqueue(c);
+    }
+
+    public static void follow(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.follow(params).enqueue(c);
+    }
+
+    public static void qAnswerAgree(QAnswerParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.qAnswerAgree(params).enqueue(c);
+    }
+
+    public static void qACommentList(QAnswerParams params, ZCallBack<ResponseModel<List<QAComment>>> c) {
+        apiInterface.qACommentList(params).enqueue(c);
+    }
+
+    public static void qACommentPub(QAnswerParams params, ZCallBack<ResponseModel<QAComment>> c) {
+        apiInterface.qACommentPub(params).enqueue(c);
+    }
+
+    public static void findSearchList(SearchParams params, Callback<ResponseBody> c) {
+        apiInterface.findSearchList(params).enqueue(c);
+    }
+
+    public static void getTopic(TopicParams params, ZCallBack<ResponseModel<Topic>> c) {
+        apiInterface.getTopic(params).enqueue(c);
+    }
+
+    public static void getEssenceAnswer(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QAnswerResult>>> c) {
+        apiInterface.getEssenceAnswer(params).enqueue(c);
+    }
+
+    public static void getQuestionsOfTopic(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QuestResult>>> c) {
+        apiInterface.getQuestionsOfTopic(params).enqueue(c);
+    }
+
+    public static void getExcellentAnswer(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QAExcellentResp>>> c) {
+        apiInterface.getExcellentResp(params).enqueue(c);
+    }
+
+    public static void findHomePageData(HomeParams params, ZCallBackWithoutProgress<ResponseModel<List<TQuestionResult>>> c) {
+        apiInterface.findHomePageData(params).enqueue(c);
+    }
+
+    public static void getAnswerInfo(QAnswerParams params, ZCallBack<ResponseModel<QuestionAnswer>> c) {
+        apiInterface.getAnswerInfo(params).enqueue(c);
     }
 }

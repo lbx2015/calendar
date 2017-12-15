@@ -4,9 +4,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -27,6 +33,14 @@ public class News extends BaseAuditProp {
 	 */
 	private static final long serialVersionUID = -766591260385281272L;
 
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("newsId")
+	private String id;
+
 	@Comment("资讯标题")
 	@Column(name = "title", length = 128)
 	private String title;
@@ -36,7 +50,7 @@ public class News extends BaseAuditProp {
 	@Column(name = "seat", length = 10)
 	private String seat;
 
-	@Comment("多个封面URL，封号分隔")
+	@Comment("多个封面URL，';'分隔")
 	@Lob
 	@Column(name = "cover_urls", length = 255)
 	private String coverUrls;
@@ -52,6 +66,22 @@ public class News extends BaseAuditProp {
 
 	@Transient
 	private Integer experience;
+
+	// 用户名
+	@Transient
+	private String userName;
+
+	// 评论数
+	@Transient
+	private Integer commentNumber;
+
+	// 用户头像Url
+	@Transient
+	private String photoUrl;
+
+	// 是否收藏（0-未收藏，1-已收藏）
+	@Transient
+	private Integer isCollect;
 
 	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
 			String content, String issued, String userName, String photoUrl, Integer experience) {
@@ -82,24 +112,28 @@ public class News extends BaseAuditProp {
 		this.issued = issued;
 	}
 
-	// 用户名
-	@Transient
-	private String userName;
-
-	// 评论数
-	@Transient
-	private Integer commentNumber;
-
-	// 用户头像Url
-	@Transient
-	private String photoUrl;
-
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Integer getIsCollect() {
+		return isCollect;
+	}
+
+	public void setIsCollect(Integer isCollect) {
+		this.isCollect = isCollect;
 	}
 
 	public Integer getExperience() {

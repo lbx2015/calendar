@@ -110,55 +110,13 @@ public class ReportSubcribeRelServer {
 		for (String title : map.keySet()) {
 			ReportResult reportResult = new ReportResult();
 			reportResult.setTitle(title);
-//			reportResult.setResult(map.get(title));
+			// reportResult.setResult(map.get(title));
 			listes.add(reportResult);
 		}
 		return new AppResp(listes, CodeDef.SUCCESS);
 	}
 
-	// @ApiOperation(value = "用户添加所属报表", notes = "POST")
-	// @RequestMapping(value = "/userAddReport", method = RequestMethod.POST)
-	// public AppResp userAddReport_(@ModelAttribute String appUserId){
-	// Set<String> reportIds = appUserReportRepo.findbyAppUserId(appUserId);
-	// List<ReportList> reportLists = reportListRepo.findByReoprtId(reportIds);
-	// return new AppResp(reportLists, CodeDef.SUCCESS);
-	// }
 
-	// @ApiOperation(value = "获取行业列表", notes = "POST")
-	// @RequestMapping(value = "/findIndustry", method = RequestMethod.POST)
-	// public AppResp findIndustry(){
-	// //List<Industry> list = industryRepo.findIndustry("0");//查询行业
-	// return new AppResp(industryRepo.findIndustry(0),CodeDef.SUCCESS);
-	// }
-	//
-	// @ApiOperation(value = "获取行业下面的职位列表", notes = "POST")
-	// @RequestMapping(value = "/getPositionByIndustry", method = RequestMethod.POST)
-	// public AppResp getPositionByIndustry(@RequestParam("id") Long id){
-	// return new AppResp(industryRepo.findPositionByIndustry(id),CodeDef.SUCCESS);
-	// }
-	//
-	// @ApiOperation(value = "获取职位关联的订阅", notes = "POST")
-	// @RequestMapping(value = "/getReportList", method = RequestMethod.POST)
-	// public AppResp getReportList(){
-	//
-	// return new AppResp(CodeDef.SUCCESS);
-	// }
-
-	/*@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
-	@RequestMapping(value = "/findUserReportList", method = RequestMethod.POST)
-	public AppResp findUserReportList(@RequestParam("userId") String userId) {
-		// List<Report> list = appUserReportRepo.findUserReportList(appUser.getId());
-		// List<ReportFrequency> list = reportLisService.findAppUserReportById(userId);
-		List<Map<String, Object>> newsInfoMapList = new ArrayList<Map<String, Object>>();
-		List<ReportSubcribeRel> ReportSubcribeRelList = reportRepo.findByUserId(userId);
-		for (ReportSubcribeRel reportSubcribeRel : ReportSubcribeRelList) {
-			Map<String, Object> newsInfoMap = Utils.objProps2Map(reportSubcribeRel, true);
-			newsInfoMapList.add(newsInfoMap);
-		}
-		return new AppResp(newsInfoMapList, CodeDef.SUCCESS);
-	}*/
-
-	
 	// TODO
 	// @ApiOperation(value = "新增报表订阅", notes = "POST")
 	// @RequestMapping(value = "/updateUserReportRelById", method = RequestMethod.POST)
@@ -171,7 +129,7 @@ public class ReportSubcribeRelServer {
 	// appUserReportRepo.save(appUserReportRel);
 	// }
 	//
-	// return new AppResp(CodeDef.SUCCESS);
+	// return new AppResp(null,CodeDef.SUCCESS);
 	// }
 	//
 	// @ApiOperation(value = "历史核销和逾期报表", notes = "POST")

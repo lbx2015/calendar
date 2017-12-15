@@ -1,12 +1,12 @@
 package net.riking.entity.model;
 
-import net.riking.core.annos.Comment;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
+
+import net.riking.core.annos.Comment;
+import net.riking.core.entity.BaseEntity;
 
 /**
  * @author Lucky.Liu on 2017/8/05.
@@ -14,12 +14,11 @@ import java.io.Serializable;
 @Comment("日历")
 @Entity
 @Table(name = "v_businessDay")
-public class BusinessDay  implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class BusinessDay extends BaseEntity {
 
-    @Id
-    @Column(name="Businessday")
-    private String businessDay;
+	@Id
+	@Column(name = "Businessday")
+	private String businessDay;
 
 	public String getBusinessDay() {
 		return businessDay;
@@ -28,5 +27,5 @@ public class BusinessDay  implements Serializable {
 	public void setBusinessDay(String businessDay) {
 		this.businessDay = businessDay;
 	}
-   
+
 }

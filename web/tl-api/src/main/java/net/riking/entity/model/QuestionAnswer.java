@@ -4,9 +4,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -27,6 +33,14 @@ public class QuestionAnswer extends BaseAuditProp {
 	 */
 	private static final long serialVersionUID = -449237590873319540L;
 
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("questionAnswerId")
+	private String id;
+
 	@Comment("回答人主键: fk t_app_user")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
@@ -34,6 +48,11 @@ public class QuestionAnswer extends BaseAuditProp {
 	@Comment("问题主键: fk t_topic_question")
 	@Column(name = "question_id", nullable = false)
 	private String questionId;
+
+	@Comment("封面url")
+	@Lob
+	@Column(name = "cover_url", length = 128)
+	private String coverUrl;
 
 	@Comment("回答内容")
 	@Lob
@@ -70,6 +89,14 @@ public class QuestionAnswer extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 是否已点赞（0-未点赞；1-已点赞）
+	@Transient
+	private Integer isAgree;
+
+	// 是否已收藏（0-未收藏；1-已收藏）
+	@Transient
+	private Integer isCollect;
+
 	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,
 			String content, String userName, String photoUrl, Integer experience) {
 		super();
@@ -104,12 +131,44 @@ public class QuestionAnswer extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getIsCollect() {
+		return isCollect;
+	}
+
+	public void setIsCollect(Integer isCollect) {
+		this.isCollect = isCollect;
+	}
+
+	public Integer getIsAgree() {
+		return isAgree;
+	}
+
+	public void setIsAgree(Integer isAgree) {
+		this.isAgree = isAgree;
 	}
 
 	public Integer getExperience() {

@@ -22,13 +22,28 @@ import com.riking.calendar.pojo.User;
 import com.riking.calendar.pojo.UserList;
 import com.riking.calendar.pojo.WorkDate;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.CommentParams;
+import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QAExcellentResp;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.TQuestionResult;
+import com.riking.calendar.pojo.server.Topic;
+import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 
@@ -54,7 +69,6 @@ import retrofit2.http.Url;
  */
 
 public interface APIInterface {
-
     @GET
     Call<ResponseBody> doGetListResources(@Url String url);
 
@@ -196,4 +210,91 @@ public interface APIInterface {
 
     @POST("news/findNewsCommentList")
     Call<ResponseModel<List<NewsComment>>> findNewsCommentList(@Body NewsParams params);
+
+    @POST("news/newsCommentPub")
+    Call<ResponseModel<NewsComment>> newsCommentPub(@Body NewsParams params);
+
+    @POST("news/newsCollect")
+    Call<ResponseModel<String>> newsCollect(@Body NewsParams params);
+
+    @POST("comment/commentReply")
+    Call<ResponseModel<NCReply>> commentReply(@Body CommentParams params);
+
+    @POST("comment/commentAgree")
+    Call<ResponseModel<String>> commentAgree(@Body CommentParams params);
+
+    @POST("homePage/shield")
+    Call<ResponseModel<String>> shielfProblem(@Body HomeParams params);
+
+    @POST("topicQuestion/getTopicQuestion")
+    Call<ResponseModel<TopicQuestion>> getTopicQuestion(@Body TQuestionParams params);
+
+    @POST("common/follow")
+    Call<ResponseModel<String>> follow(@Body TQuestionParams params);
+
+    /**
+     * 问题回答的点赞/收藏
+     *
+     * @param params [userId,questAnswerId,optType,enabled]
+     * @return
+     */
+    @POST("qAnswer/agreeOrCollect")
+    Call<ResponseModel<String>> qAnswerAgree(@Body QAnswerParams params);
+
+    /**
+     * TODO 问题回答评论列表[userId,tqId，questAnswerId]
+     *
+     * @param params
+     * @return
+     */
+    @POST("qAnswer/qACommentList")
+    Call<ResponseModel<List<QAComment>>> qACommentList(@Body QAnswerParams params);
+
+    /**
+     * 问题回答的评论
+     *
+     * @param params [userId,questAnswerId,content]
+     * @return
+     */
+    @POST("qAnswer/qACommentPub")
+    Call<ResponseModel<QAComment>> qACommentPub(@Body QAnswerParams params);
+
+    @POST("searchList/findSearchList")
+    Call<ResponseBody> findSearchList(@Body SearchParams params);
+
+    @POST("topic/getTopic")
+    Call<ResponseModel<Topic>> getTopic(@Body TopicParams params);
+
+    /**
+     * 精华的问题
+     */
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<List<QAnswerResult>>> getEssenceAnswer(@Body TopicParams params);
+
+    /**
+     * 得到话题的问题
+     *
+     * @param params
+     * @return
+     */
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<List<QuestResult>>> getQuestionsOfTopic(@Body TopicParams params);
+
+    /**
+     * 得到话题的优秀回答者
+     *
+     * @param params
+     * @return
+     */
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<List<QAExcellentResp>>> getExcellentResp(@Body TopicParams params);
+
+    @POST("homePage/findHomePageData")
+    Call<ResponseModel<List<TQuestionResult>>> findHomePageData(@Body HomeParams params);
+
+    /**
+     * get the detail information of answer
+     */
+    @POST("qAnswer/getQAnswer")
+    Call<ResponseModel<QuestionAnswer>> getAnswerInfo(@Body QAnswerParams params);
 }

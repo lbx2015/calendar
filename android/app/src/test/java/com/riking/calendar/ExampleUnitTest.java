@@ -3,16 +3,19 @@ package com.riking.calendar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.Industry;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.util.Debug;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,6 +34,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ExampleUnitTest {
     String repeatWeekReminds;
+
 
     @Test
     public void testTimeFormat() throws Exception {
@@ -92,10 +97,15 @@ public class ExampleUnitTest {
         AppUser a = new AppUser();
         String js = "{userId:0}";
         Gson g = new Gson();
-        AppUser user = g.fromJson(js,AppUser.class);
+        AppUser user = g.fromJson(js, AppUser.class);
         System.out.println(user.userId);
         System.out.println(new Gson().toJson(j));
         System.out.println(new Gson().toJson(a));
+        ArrayList<String>  arrayList = new ArrayList();
+        arrayList.add("dd");
+        arrayList.add("dd");
+        arrayList.add("dd");
+        System.out.println(g.toJson(arrayList));
 
     }
 
@@ -240,5 +250,78 @@ public class ExampleUnitTest {
         for (int i = 0; i < a.size(); i++) {
             System.out.println(a.get(i));
         }
+    }
+
+    @Test
+    public void testSmartOperation() {
+        int i = 0;
+        i = i & 0;
+        System.out.println(i);
+        i = i & 0;
+        System.out.println(i);
+
+        int j = 0;
+        j = 0 ^ j;
+        System.out.println(j);
+        j = 0 ^ j;
+        System.out.println(j);
+
+        long[] numbers = new long[]{1, 0, 100, 7, 12, 856, 1000, 5821, 10500, 101800, 2000000, 7885000, 92150000, 123200000, 99999993333l};
+        for (long number : numbers) {
+            String[] suffix = new String[]{"", "k", "m", "b", "t"};
+            int MAX_LENGTH = 4;
+            String r = new DecimalFormat("##0E0").format(number);
+            System.out.println(r);
+            r = r.replaceAll("E[0-9]", suffix[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+            while (r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")) {
+                r = r.substring(0, r.length() - 2) + r.substring(r.length() - 1);
+            }
+            System.out.println(number + " = " + r);
+        }
+    }
+
+    @Test
+    public void testGsonList() {
+        List<ReportResult> list = new ArrayList<>();
+        ReportResult r = new ReportResult();
+        r.code = "dd";
+        list.add(r);
+        Gson g = new Gson();
+
+        String s = g.toJson(list);
+
+        System.out.print(s);
+
+        TypeToken<List<ReportResult>> token = new TypeToken<List<ReportResult>>() {
+        };
+
+        List<ReportResult> results = g.fromJson(s, token.getType());
+
+        System.out.print(results.get(0).code);
+    }
+
+    @Test
+    public void testStringEmpty() {
+        String s = "";
+        System.out.print(s.length());
+        System.out.println(isChinese("你"));
+        System.out.println(isChinese("a"));
+    }
+
+    /**
+     * 判断该字符串是否为中文
+     *
+     * @param string
+     * @return
+     */
+    public static boolean isChinese(String string) {
+        int n = 0;
+        for (int i = 0; i < string.length(); i++) {
+            n = (int) string.charAt(i);
+            if (!(19968 <= n && n < 40869)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.riking.calendar.pojo.server;
 
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 //@Entity
 //@Table(name = "t_news_comment")
 public class NewsComment extends BaseAuditProp {
+    public String newsCommentId;
 
     //	@Comment("操作人主键 : fk t_app_user 发表评论的用户id")
 //	@Column(name = "user_id", nullable = false)
@@ -52,6 +54,9 @@ public class NewsComment extends BaseAuditProp {
 
     // 评论的回复list
 //	@Transient
-    public List<NCReply> nCommentReplyInfoList;
+    public List<NCReply> ncReplyList;
+
+    //0 disagree 1 agree
+    public int isAgree;
 
 }

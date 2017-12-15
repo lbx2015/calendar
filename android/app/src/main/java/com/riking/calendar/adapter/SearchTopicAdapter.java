@@ -9,16 +9,17 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
+import com.riking.calendar.viewholder.SearchTopicViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
+public class SearchTopicAdapter extends RecyclerView.Adapter<SearchTopicViewHolder> {
     private Context context;
-    private List<String> mList;
+    private List<TopicResult> mList;
 
     public SearchTopicAdapter(Context context) {
         this.context = context;
@@ -26,14 +27,16 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
     }
 
     @Override
-    public ExcellentViewHolderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public SearchTopicViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.search_topic_item, viewGroup, false);
-        return new ExcellentViewHolderViewHolder(view);
+        return new SearchTopicViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ExcellentViewHolderViewHolder h, int i) {
+    public void onBindViewHolder(final SearchTopicViewHolder h, int i) {
+        TopicResult topicResult = mList.get(i);
+
         h.userName.setText("银民银行数据大集中");
         RequestOptions options = new RequestOptions();
         Glide.with(h.userImage.getContext()).load(R.drawable.img_user_head)
@@ -63,7 +66,7 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
         showInvited(h);
     }
 
-    private void showInvited(ExcellentViewHolderViewHolder h) {
+    private void showInvited(SearchTopicViewHolder h) {
         if (!h.invited) {
             h.followTv.setText("关注");
             h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
@@ -83,8 +86,8 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
+    public void setData(List<TopicResult> data) {
+        this.mList = data;
         notifyDataSetChanged();
     }
 

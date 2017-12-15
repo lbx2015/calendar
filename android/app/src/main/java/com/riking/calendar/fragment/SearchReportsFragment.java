@@ -9,36 +9,49 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.SearchActivity;
-import com.riking.calendar.adapter.ReportsOrderAdapter;
+import com.riking.calendar.adapter.SearchReportsAdapter;
+import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class SearchReportsFragment extends Fragment implements SubscribeReport {
+public class SearchReportsFragment extends Fragment implements SubscribeReport<ReportResult>, PerformInputSearch {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
-    ReportsOrderAdapter mAdapter;
+    SearchReportsAdapter mAdapter;
+    String searchCondition;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -69,9 +82,9 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
         mRecyclerView.setLayoutManager(manager);
         //adding dividers.
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        mAdapter = new ReportsOrderAdapter(this);
+        mAdapter = new SearchReportsAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        mPullToLoadView.isLoadMoreEnabled(true);
+        mPullToLoadView.isLoadMoreEnabled(false);
         mPullToLoadView.setPullCallback(new PullCallback() {
             @Override
             public void onLoadMore() {
@@ -100,7 +113,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
 
     private void loadData(final int page) {
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
+/*        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPullToLoadView.setComplete();
@@ -119,11 +132,11 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 1000);
+        }, 1000)*/
+        search(searchCondition);
     }
 
-
-    public void orderReport(ReportFrequency report) {
+    public void orderReport(ReportResult report) {
         Activity ac = getActivity();
         if (ac instanceof SearchActivity) {
             SearchActivity searchActivity = (SearchActivity) ac;
@@ -132,7 +145,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
-        a.reportName = report.reportName;
+        a.reportName = report.title;
         a.type = "1";
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
@@ -142,7 +155,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
         });
     }
 
-    public void unorderReport(ReportFrequency report) {
+    public void unorderReport(ReportResult report) {
         Activity ac = getActivity();
         if (ac instanceof SearchActivity) {
             SearchActivity searchActivity = (SearchActivity) ac;
@@ -151,7 +164,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
-        a.reportName = report.reportName;
+        a.reportName = report.title;
         a.type = "0";
 
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
@@ -163,7 +176,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
     }
 
     @Override
-    public boolean isAddedToMyOrder(ReportFrequency report) {
+    public boolean isAddedToMyOrder(ReportResult report) {
         return false;
     }
 
@@ -172,5 +185,74 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport {
         return true;
     }
 
+    @Override
+    public void search(String searchCondition) {
+        this.searchCondition = searchCondition;
 
+        if (mPullToLoadView != null) {
+            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+        }
+        if (TextUtils.isEmpty(searchCondition)) {
+            return;
+        }
+
+        SearchParams params = new SearchParams();
+        params.keyWord = searchCondition;
+        //search reports
+        params.objType = 1;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mPullToLoadView != null) {
+                    mPullToLoadView.setComplete();
+                }
+            }
+        }, 2000);
+        APIClient.findSearchList(params, new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ResponseBody r = response.body();
+                try {
+                    String sourceString = r.source().readUtf8();
+                    Gson s = new Gson();
+                    JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
+                    String _data = jsonObject.get("_data").toString();
+
+                    MyLog.d("_data " + _data);
+                    //do nothing when the data is empty.
+                    if (TextUtils.isEmpty(_data.trim())) {
+                        return;
+                    }
+                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
+                    };
+
+                    ResponseModel<List<ReportResult>> responseModel = s.fromJson(sourceString, token.getType());
+                    if (mPullToLoadView != null) {
+                        mPullToLoadView.setComplete();
+                    }
+
+                    List<ReportResult> list = responseModel._data;
+
+                    if (list.isEmpty()) {
+                        Toast.makeText(getContext(), "没有更多数据了",
+                                Toast.LENGTH_SHORT).show();
+                        isHasLoadedAll = true;
+                        return;
+                    }
+
+                    mAdapter.setData(list);
+                    isLoading = false;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
+    }
 }

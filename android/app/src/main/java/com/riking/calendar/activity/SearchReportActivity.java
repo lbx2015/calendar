@@ -41,7 +41,7 @@ import io.realm.Sort;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class SearchReportActivity extends AppCompatActivity implements SubscribeReport, PerformSearch {
+public class SearchReportActivity extends AppCompatActivity implements SubscribeReport<ReportFrequency>, PerformSearch {
 
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
     public boolean editMode = false;

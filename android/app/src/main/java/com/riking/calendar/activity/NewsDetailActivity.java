@@ -13,6 +13,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.server.News;
@@ -28,6 +30,9 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ExpandCollapseExtention;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZGoto;
+import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 import java.io.File;
@@ -41,11 +46,13 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     String newsId;
     TextView commentNumberTv;
+    News news;
     //    RecyclerView suggestionQuestionsRecyclerView;
 //    RecyclerView reviewsRecyclerView;
     private WebView webView;
     private LinearLayout bottomBar;
     private AppBarLayout appBarLayout;
+    private ImageView favoriteIv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,14 +74,20 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
         APIClient.getNewsDetail(p, new ZCallBack<ResponseModel<News>>() {
             @Override
             public void callBack(ResponseModel<News> response) {
-                News news = response._data;
+                news = response._data;
                 webView.loadUrl(news.content);
                 commentNumberTv.setText(news.commentNumber.toString());
+                if (news.isCollect == 0) {
+                    favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_n));
+                } else {
+                    favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_p));
+                }
             }
         });
     }
 
     void init() {
+        favoriteIv = findViewById(R.id.favorite_iv);
         commentNumberTv = findViewById(R.id.comment_number_tv);
         appBarLayout = findViewById(R.id.appbar);
         bottomBar = findViewById(R.id.bottom_bar);
@@ -167,11 +180,40 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickFavorite(final View v) {
-
+        final NewsParams params = new NewsParams();
+        params.newsId = newsId;
+        params.userId = ZPreference.getUserId();
+        if (news.isCollect == 1) {
+            params.enabled = 0;
+        } else {
+            params.enabled = 1;
+        }
+        APIClient.newsCollect(params, new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+                if (params.enabled == 1) {
+                    news.isCollect = 1;
+                    favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_p));
+                    ZToast.toast("收藏成功");
+                } else {
+                    news.isCollect = 0;
+                    favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_n));
+                    ZToast.toast("取消收藏");
+                }
+            }
+        });
     }
 
     public void clickShare(final View v) {
-        new ShareBottomDialog(v.getContext()).show();
+        ShareBottomDialog dialog = new ShareBottomDialog(v.getContext());
+        dialog.shieldButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+
+        dialog.show();
     }
 
     class WebAppInterface {

@@ -1,12 +1,19 @@
 package net.riking.entity.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseAuditProp;
@@ -26,6 +33,14 @@ public class TopicQuestion extends BaseAuditProp {
 	 * 
 	 */
 	private static final long serialVersionUID = 8785572228225541248L;
+
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("topicQuestionId")
+	private String id;
 
 	@Comment("标题")
 	@Column(name = "title", length = 512, nullable = false)
@@ -64,13 +79,20 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
-	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
+	@Transient
+	@Comment("是否已关注 0-未关注，1-已关注")
+	private Integer isFollow;
+
+	@Transient
+	private List<QuestionAnswer> questionAnswers;
+
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
 			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAduit(isAduit);
+		this.setIsAudit(isAudit);
 		this.title = title;
 		this.content = content;
 		this.topicId = topicId;
@@ -88,6 +110,22 @@ public class TopicQuestion extends BaseAuditProp {
 		this.title = title;
 	}
 
+	public List<QuestionAnswer> getQuestionAnswers() {
+		return questionAnswers;
+	}
+
+	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
+		this.questionAnswers = questionAnswers;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public Integer getExperience() {
 		return experience;
 	}
@@ -102,6 +140,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	public Integer getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Integer isFollow) {
+		this.isFollow = isFollow;
 	}
 
 	public String getContent() {

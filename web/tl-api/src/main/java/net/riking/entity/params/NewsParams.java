@@ -1,8 +1,11 @@
 package net.riking.entity.params;
 
-import java.io.Serializable;
+import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import net.riking.entity.BaseEntity;
+import net.riking.entity.MyDateFormat;
 
 /**
  * 资讯类的接收参数
@@ -11,7 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @see
  * @since 1.0
  */
-public class NewsParams implements Serializable {
+public class NewsParams extends BaseEntity {
 	/**
 	 * 
 	 */
@@ -30,8 +33,9 @@ public class NewsParams implements Serializable {
 	private Integer enabled;
 
 	// 请求上翻最新时间戳
-	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
-	private String reqTimeStamp;
+	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
+	private Date reqTimeStamp;
 
 	// 评论内容
 	private String content;
@@ -98,11 +102,11 @@ public class NewsParams implements Serializable {
 		this.direct = direct;
 	}
 
-	public String getReqTimeStamp() {
+	public Date getReqTimeStamp() {
 		return reqTimeStamp;
 	}
 
-	public void setReqTimeStamp(String reqTimeStamp) {
+	public void setReqTimeStamp(Date reqTimeStamp) {
 		this.reqTimeStamp = reqTimeStamp;
 	}
 

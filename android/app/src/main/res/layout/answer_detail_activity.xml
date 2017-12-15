@@ -112,6 +112,7 @@
                     app:layout_constraintStart_toStartOf="@+id/user_name" />
 
                 <FrameLayout
+                    android:id="@+id/follow_button"
                     android:layout_width="68dp"
                     android:layout_height="28dp"
                     android:layout_marginRight="15dp"
@@ -120,28 +121,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/follow_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="5dp"
-                            android:src="@drawable/com_btn_icon_plus" />
-
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="关注"
-                            android:textColor="@color/color_489dfff"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                        android:drawableLeft="@drawable/com_btn_icon_plus_w"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:text="关注"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
                 </FrameLayout>
             </android.support.constraint.ConstraintLayout>
         </android.support.design.widget.AppBarLayout>
@@ -283,26 +273,17 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <LinearLayout
-                    android:id="@+id/comment_layout"
+                <TextView
+                    android:id="@+id/comments_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:drawablePadding="1dp"
+                    android:drawableTop="@drawable/com_icon_comment"
                     android:gravity="center"
                     android:onClick="clickComments"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/com_icon_comment" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="360" />
-                </LinearLayout>
+                    android:text="0"
+                    android:textColor="@color/color_999999" />
             </FrameLayout>
 
             <FrameLayout
@@ -311,25 +292,17 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/agree_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:drawablePadding="1dp"
+                    android:drawableTop="@drawable/com_icon_zan_n"
                     android:gravity="center"
                     android:onClick="clickAgree"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/com_icon_zan_n" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="360" />
-                </LinearLayout>
+                    android:text="0"
+                    android:textColor="@color/color_999999" />
             </FrameLayout>
 
             <FrameLayout
@@ -338,25 +311,17 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/collect_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:drawablePadding="1dp"
+                    android:drawableTop="@drawable/com_toolbar_icon_collect_n"
                     android:gravity="center"
                     android:onClick="clickFavorite"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/com_toolbar_icon_collect_n" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="360" />
-                </LinearLayout>
+                    android:text="收藏"
+                    android:textColor="@color/color_999999" />
             </FrameLayout>
 
             <FrameLayout
@@ -365,24 +330,17 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/share_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:drawablePadding="1dp"
+                    android:drawableTop="@drawable/com_toolbar_icon_share"
                     android:gravity="center"
                     android:onClick="clickShare"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/com_toolbar_icon_share" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="360" />
-                </LinearLayout>
+                    android:text="分享"
+                    android:textColor="@color/color_999999" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

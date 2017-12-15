@@ -25,6 +25,11 @@ public class ReportServiceImpl implements ReportService {
 		// TODO Auto-generated method stub
 		return reportDao.findAppUserReportById(userId);
 	}
+	
+	@Override
+	public List<ReportResult> getReportResultByParam(String reportName){
+		return reportDao.getAllReportByParams(reportName);
+	}
 
 	@Override
 	public List<ReportListResult> getReportByParam(String reportName) {

@@ -24,14 +24,31 @@ public class StringUtil {
         else return phone.trim().matches(telRegex);
     }
 
-    public  static  String getPhoneNumber(String mobiles) {
+    public static String getPhoneNumber(String mobiles) {
         return mobiles.replaceAll("[^\\d]", "");
     }
 
-    public static boolean isMobileNO(CharSequence mobiles){
-        if(mobiles== null){
+    public static boolean isMobileNO(CharSequence mobiles) {
+        if (mobiles == null) {
             return false;
         }
         return isMobileNO(mobiles.toString());
+    }
+
+    public static boolean isEmpty(String s) {
+        if (s == null) {
+            return true;
+        }
+        String str = s.trim();
+
+        if (str.equals("") || str.length() == 0) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public static boolean isHttpUrl(String s){
+     return s.startsWith("http");
     }
 }

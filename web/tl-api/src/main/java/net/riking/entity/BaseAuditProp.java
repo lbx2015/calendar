@@ -3,14 +3,13 @@ package net.riking.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.riking.core.annos.Comment;
 
@@ -23,13 +22,6 @@ import net.riking.core.annos.Comment;
 @MappedSuperclass
 public class BaseAuditProp extends BaseEntity {
 
-	@Comment("物理主键")
-	@Id
-	@Column(name = "id", length = 32)
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@GeneratedValue(generator = "system-uuid")
-	private String id;
-
 	@Comment("创建人ID")
 	@Column(name = "created_by", updatable = false)
 	private String createdBy;
@@ -38,14 +30,17 @@ public class BaseAuditProp extends BaseEntity {
 	@Column(name = "modified_by")
 	private String modifiedBy;
 
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
 	@Comment("修改时间")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	@org.hibernate.annotations.UpdateTimestamp
@@ -54,21 +49,13 @@ public class BaseAuditProp extends BaseEntity {
 
 	@Comment("是否审核： 0-未审核，1-已审核,2-不通过")
 	@org.hibernate.annotations.ColumnDefault("0")
-	@Column(name = "is_aduit", nullable = false, precision = 1)
-	private Integer isAduit;
+	@Column(name = "is_audit", nullable = false, precision = 1)
+	private Integer isAudit;
 
 	@Comment("是否删除： 0-删除，1-未删除")
 	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
 	private Integer isDeleted;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getCreatedBy() {
 		return createdBy;
@@ -102,12 +89,12 @@ public class BaseAuditProp extends BaseEntity {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public Integer getIsAduit() {
-		return isAduit;
+	public Integer getIsAudit() {
+		return isAudit;
 	}
 
-	public void setIsAduit(Integer isAduit) {
-		this.isAduit = isAduit;
+	public void setIsAudit(Integer isAudit) {
+		this.isAudit = isAudit;
 	}
 
 	public Integer getIsDeleted() {

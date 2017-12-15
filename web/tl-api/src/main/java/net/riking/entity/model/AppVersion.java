@@ -2,7 +2,13 @@ package net.riking.entity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseProp;
@@ -19,10 +25,18 @@ import net.riking.entity.BaseProp;
 public class AppVersion extends BaseProp {
 	private static final long serialVersionUID = 1L;
 
+	@Comment("物理主键")
+	@Id
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("appVersionId")
+	private String id;
+
 	@Comment("app版本号")
 	@Column(name = "version_no", length = 32)
 	private String versionNo;
-	
+
 	@Comment("移动端：1-IOS；2-Android")
 	@Column(name = "client_type", length = 1)
 	private Integer clientType;
@@ -30,7 +44,7 @@ public class AppVersion extends BaseProp {
 	@Comment("是否强制更新(0-不强制；1-强制)")
 	@Column(name = "enforce")
 	private Integer enforce;
-	
+
 	@Comment("用户状态 0-禁用 1-启用")
 	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "enabled", nullable = false, precision = 1)
@@ -39,13 +53,13 @@ public class AppVersion extends BaseProp {
 	@Comment("下载更新地址")
 	@Column(name = "url", length = 255)
 	private String url;
-	
+
 	@Comment("备注")
 	@Column(name = "remark", length = 255)
 	private String remark;
-	
-	public AppVersion(){}
 
+	public AppVersion() {
+	}
 
 	public AppVersion(String versionNo, Integer enforce, String url, String remark) {
 		super();
@@ -61,6 +75,14 @@ public class AppVersion extends BaseProp {
 
 	public void setVersionNo(String versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Integer getClientType() {
@@ -102,5 +124,5 @@ public class AppVersion extends BaseProp {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
+
 }
