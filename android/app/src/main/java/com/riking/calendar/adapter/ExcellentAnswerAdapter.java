@@ -40,20 +40,14 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
     @Override
     public void onBindViewHolder(final ExcellentViewHolderViewHolder h, int i) {
         final QAExcellentResp user = mList.get(i);
-        h.userName.setText(user.userName);
         h.summary.setText("此话题下" + user.qanswerNum + "个回答，" + user.qaAgreeNum + "赞");
 
         //hide divider for the last item
         if (i == mList.size() - 1) {
             h.divider.setVisibility(View.GONE);
         }
-        if (user.experience == 3) {
-            h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
-        } else if (user.experience == 4) {
-            h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v4, 0);
-        } else if (user.experience == 5) {
-            h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
-        }
+
+         ZR.setUserName(h.userName,user.userName,user.experience);
 
         ZR.setUserImage(h.userImage, user.photoUrl);
 

@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -98,8 +99,21 @@ public class ZR {
                 .into(v);
     }
 
-    public static  void setAnswerImage(ImageView v, String imageUrl){
+    public static void setAnswerImage(ImageView v, String imageUrl) {
         GlideApp.with(v.getContext()).load(imageUrl).placeholder(R.drawable.banner).fitCenter().into(v);
+    }
+
+    public static void setUserName(TextView userNameTv, String name, int grand) {
+        userNameTv.setText(name);
+        if (grand == 3) {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
+        } else if (grand == 4) {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v4, 0);
+        } else if (grand == 5) {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
+        } else {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
     }
 
     public void getDensity(Activity activity) {

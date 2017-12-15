@@ -97,11 +97,11 @@
                     android:text="周云丽"
                     android:textColor="@color/color_333333"
                     android:textSize="17sp"
-                    app:layout_constraintBottom_toTopOf="@+id/answer_summary"
+                    app:layout_constraintBottom_toTopOf="@+id/answer_create_time"
                     app:layout_constraintStart_toEndOf="@+id/user_icon" />
 
                 <TextView
-                    android:id="@+id/answer_summary"
+                    android:id="@+id/answer_create_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
