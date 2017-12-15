@@ -280,6 +280,7 @@
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
                     android:drawableTop="@drawable/com_icon_comment"
+                    android:gravity="center"
                     android:onClick="clickComments"
                     android:text="0"
                     android:textColor="@color/color_999999" />
@@ -298,6 +299,7 @@
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
                     android:drawableTop="@drawable/com_icon_zan_n"
+                    android:gravity="center"
                     android:onClick="clickAgree"
                     android:text="0"
                     android:textColor="@color/color_999999" />
@@ -316,6 +318,7 @@
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
                     android:drawableTop="@drawable/com_toolbar_icon_collect_n"
+                    android:gravity="center"
                     android:onClick="clickFavorite"
                     android:text="收藏"
                     android:textColor="@color/color_999999" />
@@ -334,6 +337,7 @@
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
                     android:drawableTop="@drawable/com_toolbar_icon_share"
+                    android:gravity="center"
                     android:onClick="clickShare"
                     android:text="分享"
                     android:textColor="@color/color_999999" />

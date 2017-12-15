@@ -76,7 +76,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         followTv = findViewById(R.id.follow_text);
         commentsTv = findViewById(R.id.comments_tv);
         agreeTv = findViewById(R.id.agree_tv);
-        collectTv = findViewById(R.id.comments_tv);
+        collectTv = findViewById(R.id.collect_tv);
         shareTv = findViewById(R.id.share_tv);
         appBarLayout = findViewById(R.id.appbar);
         bottomBar = findViewById(R.id.bottom_bar);
@@ -268,15 +268,17 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
                 APIClient.qAnswerAgree(p, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                            answer.isAgree = p.enabled;
+                        answer.isAgree = p.enabled;
                         if (p.enabled == 1) {
-                            answer.agreeNum = answer.agreeNum+ 1;
+                            answer.agreeNum = answer.agreeNum + 1;
                             agreeTv.setText(ZR.getNumberString(answer.agreeNum));
-                            agreeTv.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.com_icon_zan_p,  0, 0);
+                            agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+                            agreeTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_icon_zan_p, 0, 0);
                             Toast.makeText(agreeTv.getContext(), "点赞成功", Toast.LENGTH_SHORT).show();
                         } else {
                             answer.agreeNum = answer.agreeNum - 1;
                             agreeTv.setText(ZR.getNumberString(answer.agreeNum));
+                            agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
                             ZToast.toast("取消点赞");
                             agreeTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_icon_zan_n, 0, 0);
                         }
@@ -287,6 +289,35 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickFavorite(final View v) {
+        collectTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                final QAnswerParams p = new QAnswerParams();
+                p.questAnswerId = answer.questionAnswerId;
+                //answer collect type
+                p.optType = 2;
+                if (answer.isCollect == 1) {
+                    p.enabled = 0;
+                } else {
+                    p.enabled = 1;
+                }
+                APIClient.qAnswerAgree(p, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        answer.isCollect = p.enabled;
+                        if (p.enabled == 1) {
+                            collectTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+                            collectTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_toolbar_icon_collect_p, 0, 0);
+                            Toast.makeText(agreeTv.getContext(), "收藏成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            collectTv.setTextColor(ZR.getColor(R.color.color_999999));
+                            ZToast.toast("取消收藏");
+                            collectTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_toolbar_icon_collect_n, 0, 0);
+                        }
+                    }
+                });
+            }
+        });
 
     }
 
