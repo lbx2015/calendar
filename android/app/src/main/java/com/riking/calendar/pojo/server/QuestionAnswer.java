@@ -2,13 +2,8 @@ package com.riking.calendar.pojo.server;
 
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
-import java.util.Date;
-
-import javax.annotation.PropertyKey;
-
 
 /**
- * 
  * @author jc.tan 2017年11月27日
  * @see
  * @since 1.0
@@ -17,7 +12,7 @@ import javax.annotation.PropertyKey;
 //@Entity
 //@Table(name = "t_question_answer")
 public class QuestionAnswer extends BaseAuditProp {
-//	@Comment("物理主键")
+    //	@Comment("物理主键")
 //	@Id
 //	@Column(name = "id", length = 32)
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -25,62 +20,62 @@ public class QuestionAnswer extends BaseAuditProp {
 //	@JsonProperty("questionAnswerId")
 	public String questionAnswerId;
 
-//	@Comment("回答人主键: fk t_app_user")
+    //	@Comment("回答人主键: fk t_app_user")
 //	@Column(name = "user_id", nullable = false)
-	public String userId;
+    public String userId;
 
-//	@Comment("问题主键: fk t_topic_question")
+    //	@Comment("问题主键: fk t_topic_question")
 //	@Column(name = "question_id", nullable = false)
-	public String questionId;
+    public String questionId;
 
-//	@Comment("封面url")
+    //	@Comment("封面url")
 //	@Lob
 //	@Column(name = "cover_url", length = 128)
-	public String coverUrl;
+    public String coverUrl;
 
-//	@Comment("回答内容")
+    //	@Comment("回答内容")
 //	@Lob
 //	@Column(name = "content", nullable = false)
-	public String content;
+    public String content;
 
-	// @Comment("用户收藏数")
-	// @org.hibernate.annotations.ColumnDefault("0")
-	// @Column(name="collect_num",insertable=false, nullable=false)
-	 public int collectNum;
+    // @Comment("用户收藏数")
+    // @org.hibernate.annotations.ColumnDefault("0")
+    // @Column(name="collect_num",insertable=false, nullable=false)
+    public int collectNum;
 
-	// 用户名
+    // 用户名
 //	@Transient
-	public String userName;
+    public String userName;
 
-	// 用户评论数
+    // 用户评论数
 //	@Transient
-	public int commentNum;
+    public int commentNum;
 
-	// 用户点赞数
+    // 用户点赞数
 //	@Transient
-	public int agreeNum;
+    public int agreeNum;
 
-	// 用户头像路径
+    // 用户头像路径
 //	@Transient
-	public String photoUrl;
+    public String photoUrl;
 
-	// 问题的标题
+    // 问题的标题
 //	@Transient
-	public String title;
+    public String title;
 
-	// 经验值
+    // 经验值
 //	@Transient
-	public int experience;
+    public int experience;
 
-	// 是否已点赞（0-未点赞；1-已点赞）
+    // 是否已点赞（0-未点赞；1-已点赞）
 //	@Transient
-	public int isAgree;
+    public int isAgree;
 
-	// 是否已收藏（0-未收藏；1-已收藏）
+    // 是否已收藏（0-未收藏；1-已收藏）
 //	@Transient
-	public int isCollect;
+    public int isCollect;
 
-	//是否已经关注回答的作者。
-	public int isFollow;
+    //是否已经关注回答的作者。
+    public int isFollow;
 
 }

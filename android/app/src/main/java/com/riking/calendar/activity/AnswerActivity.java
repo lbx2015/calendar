@@ -56,6 +56,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     private TextView collectTv;
     private TextView agreeTv;
     private TextView commentsTv;
+    private TextView questionTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     void init() {
+        questionTitle = findViewById(R.id.question_title);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
         commentsTv = findViewById(R.id.comments_tv);
@@ -136,6 +138,9 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
 
         //set follow user click listener
         setFollowClickListener();
+        //set question click
+        setQuestionTitleClick();
+
        /* //init recycler view
         suggestionQuestionsRecyclerView = findViewById(R.userId.suggestion_questions_recyclerview);
         suggestionQuestionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -144,6 +149,18 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         reviewsRecyclerView = findViewById(R.userId.review_recyclerview);
         reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         reviewsRecyclerView.setAdapter(new ReviewsAdapter(this));*/
+    }
+
+    private void setQuestionTitleClick() {
+        questionTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AnswerActivity.this, QuestionActivity.class);
+                i.putExtra(CONST.QUESTION_ID, answer.questionId);
+                ZGoto.to(i);
+            }
+        });
+
     }
 
     private void setFollowClickListener() {
@@ -201,6 +218,8 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
                 answer = response._data;
                 commentsTv.setText(ZR.getNumberString(answer.commentNum));
                 agreeTv.setText(ZR.getNumberString(answer.agreeNum));
+                //set question title of the answer
+                questionTitle.setText(answer.title);
 
                 if (answer.isAgree == 1) {
                     agreeTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_icon_zan_p, 0, 0);
@@ -252,6 +271,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     public void clickComments(final View view) {
         Intent i = new Intent(this, AnswerCommentsActivity.class);
         i.putExtra(CONST.ANSWER_ID, answer.questionAnswerId);
+        i.putExtra(CONST.ANSWER_COMMENT_NUM,answer.commentNum);
         ZGoto.to(i);
     }
 

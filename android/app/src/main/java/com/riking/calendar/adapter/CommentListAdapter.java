@@ -123,7 +123,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             h.replyListAdapter.add(replies);
             recyclerView.setAdapter(h.replyListAdapter);
         }
-
     }
 
     @Override
