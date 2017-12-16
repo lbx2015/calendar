@@ -16,15 +16,26 @@ public class TopicRelUnionPkId extends BaseEntity {
 
 	private String topicId;
 
+	private Integer dataType;
+
 	public TopicRelUnionPkId() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TopicRelUnionPkId(String userId, String topicId) {
+	public TopicRelUnionPkId(String userId, String topicId, Integer dataType) {
 		super();
 		this.userId = userId;
 		this.topicId = topicId;
+		this.dataType = dataType;
+	}
+
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
 	}
 
 	public String getUserId() {
@@ -47,6 +58,7 @@ public class TopicRelUnionPkId extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dataType == null) ? 0 : dataType.hashCode());
 		result = prime * result + ((topicId == null) ? 0 : topicId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
@@ -61,6 +73,11 @@ public class TopicRelUnionPkId extends BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		TopicRelUnionPkId other = (TopicRelUnionPkId) obj;
+		if (dataType == null) {
+			if (other.dataType != null)
+				return false;
+		} else if (!dataType.equals(other.dataType))
+			return false;
 		if (topicId == null) {
 			if (other.topicId != null)
 				return false;

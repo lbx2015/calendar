@@ -139,13 +139,13 @@ public class TopServer {
 		int pageCount = (topicParams.getPcount() == null || topicParams.getPcount() == 0) ? 30
 				: topicParams.getPcount();
 
-		int pageBegin = topicParams.getPindex() == 0 ? 0 : topicParams.getPindex() + pageCount;
-		int pageEnd = pageBegin + pageCount;
+		int pageBegin = topicParams.getPindex() * pageCount;
+
 		switch (topicParams.getOptType()) {
 			// 精华
 			case Const.TOP_OBJ_OPT_ESSENCE:
 				List<QAnswerResult> tQuestionResults = tQuestionService.findEssenceByTid(topicParams.getTopicId(),
-						pageBegin, pageEnd);
+						pageBegin, pageCount);
 				for (QAnswerResult tQuestionResult : tQuestionResults) {
 					if (null != tQuestionResult.getPhotoUrl()) {
 						tQuestionResult.setPhotoUrl(appUserService.getPhotoUrlPath() + tQuestionResult.getPhotoUrl());
@@ -188,7 +188,7 @@ public class TopServer {
 			// 问题
 			case Const.TOP_OBJ_OPT_QUEST:
 				List<QuestResult> questResults = topicQuestionRepo.findByTid(topicParams.getTopicId(),
-						new PageRequest(pageBegin, pageEnd));
+						new PageRequest(pageBegin, pageCount));
 				for (QuestResult questResult : questResults) {
 					if (null != questResult.getPhotoUrl()) {
 						questResult.setPhotoUrl(appUserService.getPhotoUrlPath() + questResult.getPhotoUrl());
@@ -211,7 +211,7 @@ public class TopServer {
 			// 优秀回答者
 			case Const.TOP_OBJ_OPT_EXRESP:
 				List<QAExcellentResp> excellentResps = tQuestionService.findExcellentResp(topicParams.getTopicId(),
-						pageBegin, pageEnd);
+						pageBegin, pageCount);
 				for (QAExcellentResp qaExcellentResp : excellentResps) {
 					if (null != qaExcellentResp.getPhotoUrl()) {
 						qaExcellentResp.setPhotoUrl(appUserService.getPhotoUrlPath() + qaExcellentResp.getPhotoUrl());
@@ -224,10 +224,10 @@ public class TopServer {
 					if (topicParams.getUserId() != null) {
 						List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(topicParams.getUserId());
 						for (UserFollowRel userFollowRel : userFollowRels) {
-							if (userFollowRel.getFollowStatus() == 0
+							if (userFollowRel.getFollowStatus() == 1
 									&& userFollowRel.getToUserId().equals(qaExcellentResp.getUserId())) {
 								qaExcellentResp.setIsFollow(1);// 已关注
-							} else if (userFollowRel.getFollowStatus() == 1
+							} else if (userFollowRel.getFollowStatus() == 2
 									&& userFollowRel.getToUserId().equals(qaExcellentResp.getUserId())) {
 								qaExcellentResp.setIsFollow(2);// 互相关注
 							}

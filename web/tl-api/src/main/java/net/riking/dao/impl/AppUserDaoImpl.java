@@ -55,7 +55,7 @@ public class AppUserDaoImpl implements AppUserDao {
 	}
 
 	@Override
-	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageEnd) {
+	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call userFollowUser(?,?,?)";
@@ -67,7 +67,7 @@ public class AppUserDaoImpl implements AppUserDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, pageBegin);
-			pstmt.setInt(3, pageEnd);
+			pstmt.setInt(3, pageCount);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AppUserResult appUserResult = new AppUserResult();
@@ -82,6 +82,13 @@ public class AppUserDaoImpl implements AppUserDao {
 				}
 				appUserResult.setAnswerNum(rs.getInt("qanswerNum"));
 				appUserResult.setAgreeNum(rs.getInt("qaAgreeNum"));
+				if (rs.getInt("followStatus") == 0) {
+					appUserResult.setIsFollow(0);// 未关注
+				} else if (rs.getInt("followStatus") == 1) {
+					appUserResult.setIsFollow(1);// 已关注
+				} else if (rs.getInt("followStatus") == 2) {
+					appUserResult.setIsFollow(2);// 互相关注
+				}
 				list.add(appUserResult);
 			}
 		} catch (SQLException e) {
@@ -92,7 +99,7 @@ public class AppUserDaoImpl implements AppUserDao {
 	}
 
 	@Override
-	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageEnd) {
+	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call findMyFans(?,?,?)";
@@ -104,7 +111,7 @@ public class AppUserDaoImpl implements AppUserDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, pageBegin);
-			pstmt.setInt(3, pageEnd);
+			pstmt.setInt(3, pageCount);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AppUserResult appUserResult = new AppUserResult();
@@ -119,6 +126,13 @@ public class AppUserDaoImpl implements AppUserDao {
 				}
 				appUserResult.setAnswerNum(rs.getInt("qanswerNum"));
 				appUserResult.setAgreeNum(rs.getInt("qaAgreeNum"));
+				if (rs.getInt("followStatus") == 0) {
+					appUserResult.setIsFollow(0);// 未关注
+				} else if (rs.getInt("followStatus") == 1) {
+					appUserResult.setIsFollow(1);// 已关注
+				} else if (rs.getInt("followStatus") == 2) {
+					appUserResult.setIsFollow(2);// 互相关注
+				}
 				list.add(appUserResult);
 			}
 		} catch (SQLException e) {

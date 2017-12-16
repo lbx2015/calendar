@@ -148,7 +148,8 @@ public class TopicQuestionServer {
 	}
 
 	private List<QuestionAnswer> findAnswerList(TQuestionParams tQuestionParams) {
-		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId());
+		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId(),
+				tQuestionParams.getUserId());
 		for (QuestionAnswer questionAnswer : questionAnswerList) {
 			if (null != questionAnswer.getPhotoUrl()) {
 				questionAnswer.setPhotoUrl(appUserService.getPhotoUrlPath() + questionAnswer.getPhotoUrl());
@@ -163,15 +164,6 @@ public class TopicQuestionServer {
 			// TODO 统计数后面从redis中取点赞数
 			Integer agreeNum = qAnswerRelRepo.agreeCount(questionAnswer.getId(), 1);// 1-点赞
 			questionAnswer.setAgreeNum(agreeNum);
-			questionAnswer.setIsAgree(0);// 0-未点赞
-			if (null != tQuestionParams.getUserId()) {
-				List<String> qacIds = qAnswerRelRepo.findByUser(tQuestionParams.getUserId(), 1);// 1-点赞
-				for (String qacId : qacIds) {
-					if (questionAnswer.getId().equals(qacId)) {
-						questionAnswer.setIsAgree(1);// 1-已点赞
-					}
-				}
-			}
 		}
 		return questionAnswerList;
 	}

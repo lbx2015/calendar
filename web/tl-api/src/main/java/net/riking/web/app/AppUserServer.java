@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
@@ -171,7 +170,7 @@ public class AppUserServer {
 		}
 		// 截取资源访问路径
 		String projectPath = StringUtil.getProjectPath(url);
-		String photoUrl = projectPath + Const.TL_PHOTO_PATH + fileName;
+		String photoUrl = appUserService.getPhotoUrlPath() + fileName;
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("photoUrl", photoUrl);
 		return new AppResp(result, CodeDef.SUCCESS);
@@ -199,13 +198,12 @@ public class AppUserServer {
 
 		SignIn signIn = signInRepo.getByUIdAndTime(userParams.getUserId(), today, nextDay);
 		Integer integral = appUserDetailRepo.getIntegral(userParams.getUserId());
-		Integer integralNew = signInService.signIn(signIn, userParams.getUserId(), integral);
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("integral", integralNew);
-		if (integral == integralNew) {
-			return new AppResp("", CodeDef.SUCCESS);
+		Map<String, Object> maps = signInService.signIn(signIn, userParams.getUserId(), integral);
+		// 如果总积分相同
+		if (integral == maps.get("integral")) {
+			return new AppResp(CodeDef.EMP.SIGN_ERROR, CodeDef.EMP.SIGN_ERROR_DESC);
 		} else {
-			return new AppResp(map, CodeDef.SUCCESS);
+			return new AppResp(maps, CodeDef.SUCCESS);
 		}
 	}
 
@@ -232,6 +230,17 @@ public class AppUserServer {
 		map.put("followNum", followNum);
 		map.put("answerNum", answerNum);
 		map.put("fansNum", fansNum);
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, +1);// 加一天
+		Date nextDay = DateUtils.StringFormatMS(DateUtils.DateFormatMS(calendar.getTime(), "yyyy-MM-dd"), "yyyy-MM-dd");
+		Date today = DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd");
+
+		SignIn signIn = signInRepo.getByUIdAndTime(userParams.getUserId(), today, nextDay);
+		if (signIn != null) {
+			map.put("signStatus", 1);// 1-已签到
+		} else {
+			map.put("signStatus", 0);// 1-未签到
+		}
 		return new AppResp(map, CodeDef.SUCCESS);
 	}
 

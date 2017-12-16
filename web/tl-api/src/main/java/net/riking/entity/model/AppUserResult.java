@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
@@ -48,12 +50,17 @@ public class AppUserResult extends BaseEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	public AppUserResult(String id, String userName, String photoUrl, Integer experience) {
+	public AppUserResult(String id, String userName, String photoUrl, Integer experience, String userId) {
 		super();
 		this.id = id;
 		this.userName = userName;
 		this.photoUrl = photoUrl;
 		this.experience = experience;
+		if (StringUtils.isNotBlank(userId)) {
+			isFollow = 1;// 已关注
+		} else {
+			isFollow = 0;// 未关注
+		}
 	}
 
 	public String getId() {

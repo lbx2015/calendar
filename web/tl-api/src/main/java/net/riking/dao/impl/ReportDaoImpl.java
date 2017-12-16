@@ -60,7 +60,7 @@ public class ReportDaoImpl implements ReportDao {
 		sql += "a.module_type moduleType, ";
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'MODULE_TYPE' and t.KE=a.module_type) moduleTypeName, ";
 		sql += "a.id reportId, a.`code`, a.title, '0' isSubcribe from t_report a ";
-		sql += "where a.is_deleted=1 and a.is_audit=1 ";
+		sql += "where a.is_deleted=1 and a.is_aduit=1 ";
 		if (StringUtils.isBlank(param)) {
 			sql += "and (a.`code` like '%" + param + "%' or a.title like '%" + param + "%') ";
 		}

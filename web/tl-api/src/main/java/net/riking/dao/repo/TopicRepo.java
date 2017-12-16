@@ -25,7 +25,7 @@ public interface TopicRepo extends JpaRepository<Topic, String>, JpaSpecificatio
 	 * @param topicId
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.Topic(t.id,t.createdTime,t.modifiedTime,t.isAudit,t.title,t.content,t.topicUrl) from Topic t where t.id = ?1 and t.isAudit <> 2 and t.isDeleted = 1")
+	@Query("select new net.riking.entity.model.Topic(t.id,t.createdTime,t.modifiedTime,t.isAduit,t.title,t.content,t.topicUrl) from Topic t where t.id = ?1 and t.isAduit <> 2 and t.isDeleted = 1")
 	Topic getById(String topicId);
 
 	/**
@@ -33,6 +33,6 @@ public interface TopicRepo extends JpaRepository<Topic, String>, JpaSpecificatio
 	 * @param topicId
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.TopicResult(t.id,t.title,t.content) from Topic t where t.isAudit <> 2 and t.isDeleted = 1 and t.title like %?1%")
+	@Query("select new net.riking.entity.model.TopicResult(t.id,t.title,t.content,(select topicId from TopicRel where userId = ?1 and t.id = topic_id and dataType = 0)) from Topic t where t.isAduit <> 2 and t.isDeleted = 1 and t.title like %?1%")
 	List<TopicResult> getTopicByParam(String params);
 }

@@ -1,5 +1,7 @@
 package net.riking.entity.params;
 
+import java.util.List;
+
 import net.riking.entity.BaseEntity;
 
 /**
@@ -21,11 +23,16 @@ public class UserParams extends BaseEntity {
 	// 是否删除： 0-删除，1-未删除
 	private Integer isDeleted;
 
+	// 手机号
+	private String phone;
+
 	// 手机Deviceid
 	private String phoneDeviceid;
 
 	// 手机类型 1-IOS;2-Android;3-其它
 	private Integer phoneType;
+
+	private List<String> phones;
 
 	public String getUserId() {
 		return userId;
@@ -33,6 +40,22 @@ public class UserParams extends BaseEntity {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public List<String> getPhones() {
+		return phones;
+	}
+
+	public void setPhones(List<String> phones) {
+		this.phones = phones;
 	}
 
 	public Integer getPhoneType() {
