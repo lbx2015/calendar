@@ -86,6 +86,11 @@ public class News extends BaseAuditProp {
 	@Transient
 	private Integer isCollect;
 
+	public News() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
 			String content, String issued, String userName, String photoUrl, Integer experience) {
 		super();

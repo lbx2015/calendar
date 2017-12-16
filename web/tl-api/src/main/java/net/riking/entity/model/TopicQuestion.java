@@ -90,13 +90,13 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private List<QuestionAnswer> questionAnswers;
 
-	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
 			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAudit(isAudit);
+		this.setIsAduit(isAduit);
 		this.title = title;
 		this.content = content;
 		this.topicId = topicId;

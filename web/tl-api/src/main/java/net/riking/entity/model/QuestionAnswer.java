@@ -10,6 +10,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -104,6 +105,25 @@ public class QuestionAnswer extends BaseAuditProp {
 	// 用户是否关注
 	@Transient
 	private Integer isFollow;
+
+	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,
+			String content, String userName, String photoUrl, Integer experience, String qaId, Integer isDeleted) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.userId = userId;
+		this.questionId = questionId;
+		this.content = content;
+		this.userName = userName;
+		this.photoUrl = photoUrl;
+		this.experience = experience;
+		if (StringUtils.isNotBlank(qaId)) {
+			this.isAgree = 1;
+		} else {
+			this.isAgree = 0;
+		}
+	}
 
 	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,
 			String content, String userName, String photoUrl, Integer experience) {

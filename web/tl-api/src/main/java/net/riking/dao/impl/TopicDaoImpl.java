@@ -54,7 +54,7 @@ public class TopicDaoImpl implements TopicDao {
 	}
 
 	@Override
-	public List<TopicResult> userFollowTopic(String userId, int begin, int end) {
+	public List<TopicResult> userFollowTopic(String userId, int begin, int pageCount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call userFollowTopic(?,?,?)";
@@ -66,7 +66,7 @@ public class TopicDaoImpl implements TopicDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, begin);
-			pstmt.setInt(3, end);
+			pstmt.setInt(3, pageCount);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TopicResult topicResult = new TopicResult();
@@ -74,6 +74,7 @@ public class TopicDaoImpl implements TopicDao {
 				topicResult.setTopicUrl(rs.getString("topicUrl"));
 				topicResult.setTitle(rs.getString("title"));
 				topicResult.setFollowNum(rs.getInt("followNum"));
+				topicResult.setIsFollow(1);// 已关注
 				list.add(topicResult);
 			}
 		} catch (SQLException e) {

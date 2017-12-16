@@ -217,12 +217,12 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageEnd) {
-		return appUserDao.userFollowUser(userId, pageBegin, pageEnd);
+	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {
+		return appUserDao.userFollowUser(userId, pageBegin, pageCount);
 	}
 
 	@Override
-	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageEnd) {
-		return appUserDao.findMyFans(userId, pageBegin, pageEnd);
+	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount) {
+		return appUserDao.findMyFans(userId, pageBegin, pageCount);
 	}
 }

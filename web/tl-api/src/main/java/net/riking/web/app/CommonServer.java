@@ -237,7 +237,7 @@ public class CommonServer {
 			// 用户关注
 			case Const.OBJ_TYPE_3:
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：1-互相关注
+					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：2-互相关注
 					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
 							tQuestionParams.getUserId());// 对方的点赞记录
 					if (toUserFollowRel != null) {
@@ -246,12 +246,12 @@ public class CommonServer {
 						if (null == rels) {
 							// 更新对方关注表，互相关注
 							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
-									toUserFollowRel.getToUserId(), 1);// 1-互相关注
+									toUserFollowRel.getToUserId(), 2);// 2-互相关注
 							// 如果传过来的参数是关注，保存新的一条关注记录
 							UserFollowRel userFollowRel = new UserFollowRel();
 							userFollowRel.setUserId(tQuestionParams.getUserId());
 							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
-							userFollowRel.setFollowStatus(1);// 互相关注
+							userFollowRel.setFollowStatus(2);// 互相关注
 							userFollowRelRepo.save(userFollowRel);
 						}
 					} else {
@@ -259,7 +259,7 @@ public class CommonServer {
 						UserFollowRel userFollowRel = new UserFollowRel();
 						userFollowRel.setUserId(tQuestionParams.getUserId());
 						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
-						userFollowRel.setFollowStatus(0);// 非互相关注
+						userFollowRel.setFollowStatus(1);// 非互相关注
 						userFollowRelRepo.save(userFollowRel);
 					}
 				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
@@ -267,7 +267,7 @@ public class CommonServer {
 							tQuestionParams.getUserId());// 对方的点赞记录
 					if (null != toUserFollowRel) {
 						userFollowRelRepo.updFollowStatus(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
-								0);// 0-非互相关注
+								1);// 0-非互相关注
 					}
 					// 如果传过来是取消关注，把之前一条记录物理删除
 					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());

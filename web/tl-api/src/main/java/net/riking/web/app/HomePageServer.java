@@ -205,11 +205,7 @@ public class HomePageServer {
 			topicIds = stringBuilder.toString();
 		}
 		List<TopicResult> topics = topicService.findTopicOfInterest(homeParams.getUserId(), topicIds, 0, 8);// 取出0-8条数据
-		for (
-
-		TopicResult topic : topics)
-
-		{
+		for (TopicResult topic : topics) {
 			topic.setIsFollow(0);// 0-未关注
 			for (String topId : topIds) {
 				if (topId.equals(topic.getId())) {
@@ -257,9 +253,9 @@ public class HomePageServer {
 				userResult.setPhotoUrl(appUserService.getPhotoUrlPath() + userResult.getPhotoUrl());
 			}
 			for (UserFollowRel userFollowRel : userFollowRels) {
-				if (userFollowRel.getFollowStatus() == 0 && userFollowRel.getToUserId().equals(userResult.getId())) {
+				if (userFollowRel.getFollowStatus() == 1 && userFollowRel.getToUserId().equals(userResult.getId())) {
 					userResult.setIsFollow(1);// 已关注
-				} else if (userFollowRel.getFollowStatus() == 1
+				} else if (userFollowRel.getFollowStatus() == 2
 						&& userFollowRel.getToUserId().equals(userResult.getId())) {
 					userResult.setIsFollow(2);// 互相关注
 				}

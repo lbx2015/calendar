@@ -37,18 +37,18 @@ public class TQuestionServiceImpl implements TQuestionService {
 	}
 
 	@Override
-	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int end) {
-		return tQuestionDao.findEssenceByTid(topicId, start, end);
+	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int pageCount) {
+		return tQuestionDao.findEssenceByTid(topicId, start, pageCount);
 	}
 
 	@Override
-	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int end) {
-		return tQuestionDao.findExcellentResp(topicId, start, end);
+	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int pageCount) {
+		return tQuestionDao.findExcellentResp(topicId, start, pageCount);
 	}
 
 	@Override
-	public List<QuestResult> userFollowQuest(String userId, int start, int end) {
-		return tQuestionDao.userFollowQuest(userId, start, end);
+	public List<QuestResult> userFollowQuest(String userId, int start, int pageCount) {
+		return tQuestionDao.userFollowQuest(userId, start, pageCount);
 	}
 
 }

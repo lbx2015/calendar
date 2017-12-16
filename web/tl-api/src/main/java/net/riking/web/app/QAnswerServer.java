@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -126,12 +127,13 @@ public class QAnswerServer {
 					}
 				}
 			}
+			questionAnswer.setIsFollow(0);// 未关注
 			List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(qAnswerParams.getUserId());
 			for (UserFollowRel userFollowRel : userFollowRels) {
-				if (userFollowRel.getFollowStatus() == 0
+				if (userFollowRel.getFollowStatus() == 1
 						&& userFollowRel.getToUserId().equals(questionAnswer.getUserId())) {
 					questionAnswer.setIsFollow(1);// 已关注
-				} else if (userFollowRel.getFollowStatus() == 1
+				} else if (userFollowRel.getFollowStatus() == 2
 						&& userFollowRel.getToUserId().equals(questionAnswer.getUserId())) {
 					questionAnswer.setIsFollow(2);// 互相关注
 				}
@@ -170,7 +172,7 @@ public class QAnswerServer {
 		qaComment.setContent(qAnswerParams.getContent());
 		qaComment.setCreatedBy(qAnswerParams.getUserId());
 		qaComment.setModifiedBy(qAnswerParams.getUserId());
-		qaComment.setIsAudit(0);// 未审核
+		qaComment.setIsAduit(0);// 未审核
 		qACommentRepo.save(qaComment);
 		AppUser appUser = appUserRepo.findOne(qaComment.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(qaComment.getUserId());
@@ -268,7 +270,8 @@ public class QAnswerServer {
 	@RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
 	public AppResp qACommentList(@RequestBody QAnswerParams qAnswerParams) {
 		// 返回到前台的问题回答列表
-		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId());
+		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId(),
+				qAnswerParams.getUserId(), new PageRequest(0, 30));
 		for (QAComment qAComment : questionAnswerList) {
 			if (null != qAComment.getPhotoUrl()) {
 				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath() + qAComment.getPhotoUrl());
@@ -279,21 +282,15 @@ public class QAnswerServer {
 			}
 			List<QACReply> qacReplies = qACReplyRepo.getByCommentId(qAComment.getId());
 			for (QACReply qacReply : qacReplies) {
-				AppUser appUser = appUserRepo.findOne(qacReply.getFromUserId());
-				if (null != appUser) {
-					FromUser fromUser = new FromUser();
-					fromUser.setUserId(qacReply.getFromUserId());
-					fromUser.setUserName(appUser.getUserName());
-					qacReply.setFromUser(fromUser);
-				}
+				FromUser fromUser = new FromUser();
+				fromUser.setUserId(qacReply.getFromUserId());
+				fromUser.setUserName(qacReply.getFromUserName());
+				qacReply.setFromUser(fromUser);
 				if (null != qacReply.getToUserId()) {
-					AppUser apptoUser = appUserRepo.findOne(qacReply.getToUserId());
-					if (null != apptoUser) {
-						ToUser toUser = new ToUser();
-						toUser.setUserId(qacReply.getToUserId());
-						toUser.setUserName(apptoUser.getUserName());
-						qacReply.setToUser(toUser);
-					}
+					ToUser toUser = new ToUser();
+					toUser.setUserId(qacReply.getToUserId());
+					toUser.setUserName(qacReply.getToUserName());
+					qacReply.setToUser(toUser);
 				}
 
 			}
@@ -302,16 +299,6 @@ public class QAnswerServer {
 			Integer agreeNum = 0;
 			agreeNum = qACAgreeRelRepo.agreeCount(qAComment.getId(), Const.OBJ_OPT_GREE);// 点赞
 			qAComment.setAgreeNumber(agreeNum);
-			qAComment.setIsAgree(0);// 0-未点赞
-			if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
-				List<String> qacIds = qACAgreeRelRepo.findByUser(qAnswerParams.getUserId(), 1);// 点赞
-				for (String qacId : qacIds) {
-					if (qAComment.getId().equals(qacId)) {
-						qAComment.setIsAgree(1);// 1-已点赞
-					}
-
-				}
-			}
 		}
 
 		return new AppResp(questionAnswerList, CodeDef.SUCCESS);

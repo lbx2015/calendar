@@ -1,14 +1,14 @@
-package net.riking.service;
+package net.riking.dao.repo;
 
 import java.util.List;
 
 import net.riking.entity.model.TopicResult;
 
-public interface TopicService {
+public interface TopicDao {
 
 	/**
 	 * 可能感兴趣的话题
-	 * @param topicId
+	 * @param userId
 	 * @param start
 	 * @param end
 	 * @return
@@ -22,5 +22,5 @@ public interface TopicService {
 	 * @param end
 	 * @return
 	 */
-	public List<TopicResult> userFollowTopic(String userId, int begin, int pageCount);
+	public List<TopicResult> userFollowTopic(String userId, int begin, int end);
 }

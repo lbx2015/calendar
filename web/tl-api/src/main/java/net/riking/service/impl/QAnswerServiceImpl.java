@@ -1,5 +1,7 @@
 package net.riking.service.impl;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.dao.QAnswerDao;
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.service.QAnswerService;
 
@@ -30,4 +33,8 @@ public class QAnswerServiceImpl implements QAnswerService {
 
 	}
 
+	@Override
+	public List<QAnswerResult> findCollectQAnswer(String userId, int start, int pageCount) {
+		return qAnswerDao.findCollectQAnswer(userId, start, pageCount);
+	}
 }

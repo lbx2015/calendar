@@ -74,6 +74,11 @@ public class CodeDef {
 
 		public static final String DATE_FOUND_EMPTY_DESC = "没有更多内容了";
 
+		// 签到失败
+		public static final short SIGN_ERROR = -986;
+
+		public static final String SIGN_ERROR_DESC = "签到失败";
+
 	}
 
 }

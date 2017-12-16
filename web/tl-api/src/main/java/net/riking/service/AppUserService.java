@@ -26,8 +26,8 @@ public interface AppUserService {
 	public String getPhotoUrlPath();
 
 	// 用户关注的人
-	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageEnd);
+	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount);
 
 	// 我的粉丝
-	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageEnd);
+	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount);
 }
