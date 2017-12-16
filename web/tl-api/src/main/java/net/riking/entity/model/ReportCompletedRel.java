@@ -69,6 +69,7 @@ public class ReportCompletedRel extends PageQuery {
 
 	@Transient
 	private String strFrequency;// 频度
+	
 
 	public ReportCompletedRel(String reportId) {
 		super();
@@ -161,6 +162,14 @@ public class ReportCompletedRel extends PageQuery {
 
 	public void setSubmitEndTime(String submitEndTime) {
 		this.submitEndTime = submitEndTime;
+	}
+
+	public String getReportCode() {
+		return reportCode;
+	}
+
+	public void setReportCode(String reportCode) {
+		this.reportCode = reportCode;
 	}
 
 }

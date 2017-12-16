@@ -13,19 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.core.entity.PageQuery;
+import net.riking.dao.ReportCompletedRelDao;
 import net.riking.dao.repo.ReportCompletedRelRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.ReportListResult;
 import net.riking.entity.model.ReportResult;
 import net.riking.entity.model.ReportSubscribeRel;
+import net.riking.entity.params.ReportCompletedRelParam;
 import net.riking.entity.params.ReportParams;
 import net.riking.entity.params.SubscribeReportParam;
+import net.riking.entity.resp.ReportCompletedRelResult;
 import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
-import net.riking.util.DateUtils;
 import net.riking.util.Utils;
 
 /**
@@ -45,6 +48,9 @@ public class AppReportServer {
 	
 	@Autowired
 	ReportCompletedRelRepo reportCompletedRelRepo;
+	
+	@Autowired
+	ReportCompletedRelDao reportCompletedRelDao;
 
 	@Autowired
 	SysDataService sysDataservice;
@@ -129,11 +135,26 @@ public class AppReportServer {
 	
 	@ApiOperation(value = "查询逾期报表", notes = "POST")
 	@RequestMapping(value = "/findExpireTasks", method = RequestMethod.POST)
-	public AppResp findExpireTasks_(@RequestParam("userId") String userId) {
-		String currentDate = DateUtils.getDate("yyyyMMdd");
-		reportCompletedRelRepo.findExpireReport(userId, currentDate);
+	public AppResp findExpireTasks_(@RequestBody Map<String, Object> params) {
+		ReportCompletedRelParam relParams = Utils.map2Obj(params, ReportCompletedRelParam.class);
+		PageQuery page = new PageQuery();
+		page.setPcount(Const.APP_PAGENO_30);
+		page.setPindex(relParams.getPindex());
+		List<ReportCompletedRelResult> list = reportCompletedRelDao.findExpireReportByPage(relParams.getUserId(), page);
 		
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "查询历史核销报表", notes = "POST")
+	@RequestMapping(value = "/findHisCompletedTasks", method = RequestMethod.POST)
+	public AppResp findHisCompletedTasks_(@RequestBody Map<String, Object> params) {
+		ReportCompletedRelParam relParams = Utils.map2Obj(params, ReportCompletedRelParam.class);
+		PageQuery page = new PageQuery();
+		page.setPcount(Const.APP_PAGENO_30);
+		page.setPindex(relParams.getPindex());
+		List<ReportCompletedRelResult> list = reportCompletedRelDao.findHisCompletedReportByPage(relParams.getUserId(), page);
+		
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 
 }
