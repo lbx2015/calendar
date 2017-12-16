@@ -219,7 +219,6 @@ public class NewsServer {
 			List<NCReply> nCommentReplyInfoList = nCReplyRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
-				 AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getFromUserId()); 
 				FromUser fromUser = new FromUser();
 				fromUser.setUserId(nCommentReplyInfo.getFromUserId());
 				fromUser.setUserName(nCommentReplyInfo.getUserName());
