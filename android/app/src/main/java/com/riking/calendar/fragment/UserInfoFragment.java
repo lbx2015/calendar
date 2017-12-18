@@ -25,8 +25,10 @@ import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
@@ -37,6 +39,7 @@ import com.riking.calendar.util.MarketUtils;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.dialog.CheckInDialog;
+import com.riking.calendar.widget.dialog.CheckInFailDialog;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -58,6 +61,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     LinearLayout myRepliesLayout;
     LinearLayout followMeLayout;
     LinearLayout myFollowLayout;
+    AppUserResp currentUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +76,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             notLoginTv.setVisibility(View.GONE);
             loginLinearLayout.setVisibility(View.VISIBLE);
             loginState = 1;
-            AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+            currentUser = ZPreference.getCurrentLoginUser();
             userName.setText(currentUser.userName);
             userComment.setText(currentUser.description);
 
@@ -133,11 +137,24 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         });
 
         //set sign in click listener
+
         checkInTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
-                dialog.show();
+                UserParams userParams = new UserParams();
+                APIClient.signIn(userParams, new ZCallBackWithFail<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) throws Exception {
+                        if (failed) {
+                            CheckInFailDialog dialog = new CheckInFailDialog(checkInTv.getContext());
+                            dialog.show();
+                        } else {
+                            CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
+                            dialog.setExperience(currentUser.experience);
+                            dialog.show();
+                        }
+                    }
+                });
             }
         });
 

@@ -30,6 +30,7 @@ import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
@@ -327,4 +328,11 @@ public interface APIInterface {
     @POST("userDynamic/myDynamic")
     Call<ResponseModel<List<QAnswerResult>>> getMyAnswers(@Body UserFollowParams params);
 
+    /**
+     * User sign in api
+     * @param params
+     * @return
+     */
+    @POST("user/signIn")
+    Call<ResponseModel<String>> signIn(@Body UserParams params);
 }
