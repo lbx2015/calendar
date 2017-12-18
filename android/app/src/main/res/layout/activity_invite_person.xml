@@ -40,7 +40,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@+id/voice_search_button"
                 android:background="@android:color/transparent"
-                android:hint="搜索报表"
+                android:hint="搜索邀请人回答"
                 android:textColor="@color/color_222222"
                 android:textColorHint="@color/color_999999"
                 android:textSize="15sp" />
@@ -53,8 +53,8 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="5dp"
-                android:visibility="gone"
-                android:src="@drawable/work_icon_searchbox_close" />
+                android:src="@drawable/work_icon_searchbox_close"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <TextView
@@ -64,9 +64,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="22dp"
             android:gravity="center_vertical"
+            android:onClick="clickCancel"
             android:singleLine="true"
             android:text="取消"
-            android:onClick="clickCancel"
             android:textColor="@color/color_666666"
             android:textSize="17sp" />
     </LinearLayout>

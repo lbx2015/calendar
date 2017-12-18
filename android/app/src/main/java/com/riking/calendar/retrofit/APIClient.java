@@ -661,4 +661,8 @@ public class APIClient {
     public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.signIn(params).enqueue(c);
     }
+
+    public static void answerInvite(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.answerInvite(params).enqueue(c);
+    }
 }

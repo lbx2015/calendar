@@ -337,4 +337,7 @@ public interface APIInterface {
      */
     @POST("user/signIn")
     Call<ResponseModel<String>> signIn(@Body UserParams params);
+
+    @POST("topicQuestion/answerInvite")
+    Call<ResponseModel<String>> answerInvite(@Body TQuestionParams params);
 }

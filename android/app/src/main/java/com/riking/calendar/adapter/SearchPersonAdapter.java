@@ -42,12 +42,11 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         final AppUserResult user = mList.get(i);
 
         h.userName.setText(user.userName);
-        h.userName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
         h.summary.setText(user.answerNum + "个回答，" + user.agreeNum + "赞");
-        h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
-        RequestOptions options = new RequestOptions();
+        //set user name
+        ZR.setUserName(h.userName, user.userName, user.grade);
 
-        ZR.setUserImage(h.userImage,user.photoUrl);
+        ZR.setUserImage(h.userImage, user.photoUrl);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +56,6 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
                 } else {
                     h.invited = true;
                 }
-                showInvited(h);
                 sendFollowRequest(user, h);
 
             }
