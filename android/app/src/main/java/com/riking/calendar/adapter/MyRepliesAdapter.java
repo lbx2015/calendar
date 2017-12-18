@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QAnswerResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //answer comment adapter
 public class MyRepliesAdapter extends RecyclerView.Adapter<MyRepliesAdapter.MyViewHolder> {
-    public List<QAComment> mList;
+    public List<QAnswerResult> mList;
 
     {
         mList = new ArrayList<>();
@@ -92,10 +92,10 @@ public class MyRepliesAdapter extends RecyclerView.Adapter<MyRepliesAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return mList.size() + 2;
+        return mList.size();
     }
 
-    public void addAll(List<QAComment> mList) {
+    public void addAll(List<QAnswerResult> mList) {
         this.mList.clear();
         this.mList = mList;
         notifyDataSetChanged();

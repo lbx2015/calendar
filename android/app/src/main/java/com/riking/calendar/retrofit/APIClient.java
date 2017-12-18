@@ -652,4 +652,8 @@ public class APIClient {
     public static void getMyFans(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
         apiInterface.myFans(params).enqueue(c);
     }
+
+    public static void getMyAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        apiInterface.getMyAnswers(params).enqueue(c);
+    }
 }

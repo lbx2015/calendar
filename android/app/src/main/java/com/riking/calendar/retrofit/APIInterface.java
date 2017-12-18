@@ -300,9 +300,31 @@ public interface APIInterface {
     @POST("qAnswer/getQAnswer")
     Call<ResponseModel<QuestionAnswer>> getAnswerInfo(@Body QAnswerParams params);
 
+    /**
+     * The users which I am following
+     *
+     * @param params
+     * @return
+     */
     @POST("userFollow/myFollow")
     Call<ResponseModel<List<AppUserResult>>> getMyFavoriteUsers(@Body UserFollowParams params);
 
+    /**
+     * The users which following me
+     *
+     * @param params
+     * @return
+     */
     @POST("userFollow/myFans")
     Call<ResponseModel<List<AppUserResult>>> myFans(@Body UserFollowParams params);
+
+    /**
+     * get my answers
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QAnswerResult>>> getMyAnswers(@Body UserFollowParams params);
+
 }

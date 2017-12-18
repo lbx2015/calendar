@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +19,7 @@ import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
-import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -39,7 +36,6 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
-    protected SwipeRefreshLayout swipeRefreshLayout;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private TextView activityTitle;
 
@@ -51,7 +47,7 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
 
         Intent i = getIntent();
         init();
-            activityTitle.setText("我关注的人");
+        activityTitle.setText("我关注的人");
     }
 
     private void init() {
@@ -116,7 +112,8 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
         }
 
         final UserFollowParams params = new UserFollowParams();
-        params.objType =1;
+        //person type
+        params.objType = 3;
         params.pindex = page;
         APIClient.getMyFavoriateUsers(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
             @Override
