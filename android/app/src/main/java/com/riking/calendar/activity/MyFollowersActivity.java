@@ -12,13 +12,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.MyFollowersAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -105,7 +112,7 @@ public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
                 }
             }, 5000);
         }
-        loadAnswer(page);
+        getFanse(page);
        /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -125,21 +132,28 @@ public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
         }, 1);*/
     }
 
-    private void loadAnswer(final int page) {
-      /*  QAnswerParams params = new QAnswerParams();
-        APIClient.qACommentList(params, new ZCallBack<ResponseModel<List<QAComment>>>() {
+    private void getFanse(final int page) {
+        final UserFollowParams params = new UserFollowParams();
+        params.pindex = page;
+        APIClient.getMyFavoriateUsers(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
             @Override
-            public void callBack(ResponseModel<List<QAComment>> response) {
-                List<QAComment> comments = response._data;
-                isLoading = false;
-                if (comments.size() == 0) {
-                    ZToast.toast("没有更多数据了");
-                    return;
+            public void callBack(ResponseModel<List<AppUserResult>> response) {
+                mPullToLoadView.setComplete();
+
+                List<AppUserResult> list = response._data;
+                MyLog.d("list size: " + list.size());
+                if (list.size() < params.pcount) {
+                    isHasLoadedAll = true;
+                    if (list.size() == 0) {
+                        ZToast.toastEmpty();
+                        return;
+                    }
                 }
-                mAdapter.addAll(comments);
+                isLoading = false;
                 nextPage = page + 1;
+                mAdapter.addAll(list);
             }
-        });*/
+        });
     }
 
     public void clickBack(final View view) {

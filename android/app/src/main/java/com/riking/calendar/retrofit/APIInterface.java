@@ -301,5 +301,8 @@ public interface APIInterface {
     Call<ResponseModel<QuestionAnswer>> getAnswerInfo(@Body QAnswerParams params);
 
     @POST("userFollow/myFollow")
-    Call<ResponseModel<List<AppUserResult>>> getMyFollowingUser(@Body UserFollowParams params);
+    Call<ResponseModel<List<AppUserResult>>> getMyFavoriteUsers(@Body UserFollowParams params);
+
+    @POST("userFollow/myFans")
+    Call<ResponseModel<List<AppUserResult>>> myFans(@Body UserFollowParams params);
 }

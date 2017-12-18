@@ -646,6 +646,10 @@ public class APIClient {
     }
 
     public static void getMyFavoriateUsers(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
-        apiInterface.getMyFollowingUser(params).enqueue(c);
+        apiInterface.getMyFavoriteUsers(params).enqueue(c);
+    }
+
+    public static void getMyFans(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.myFans(params).enqueue(c);
     }
 }
