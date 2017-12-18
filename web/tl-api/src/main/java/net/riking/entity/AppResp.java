@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.riking.config.CodeDef;
 import net.riking.core.entity.ILog;
 import net.riking.core.entity.LogConfig;
 
@@ -47,6 +48,17 @@ public class AppResp implements ILog {
 		this._data = "";
 		this.code = errorCode;
 		this.codeDesc = errorCodeDesc;
+	}
+	
+	public AppResp( String errorCodeDesc,int ... notValidValues) {
+		this._data = "";
+		this.code = (CodeDef.EMP.PARAMS_ERROR);
+		
+		String errorVals ="";
+		for (int i =0;i<notValidValues.length;i++) {
+			errorVals=errorVals+i;
+		}
+		this.codeDesc = "参数"+errorCodeDesc + ""+errorVals;
 	}
 	
 	/*@JsonIgnore

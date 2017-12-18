@@ -69,7 +69,7 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         final TQuestionParams params = new TQuestionParams();
         params.attentObjId = user.userId;
         //follow user
-        params.objType = 2;
+        params.objType = 3;
         //followed
         if (user.isFollow == 1) {
             params.enabled = 0;

@@ -135,7 +135,7 @@ public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
     private void getFanse(final int page) {
         final UserFollowParams params = new UserFollowParams();
         params.pindex = page;
-        APIClient.getMyFavoriateUsers(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
+        APIClient.getMyFans(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
             @Override
             public void callBack(ResponseModel<List<AppUserResult>> response) {
                 mPullToLoadView.setComplete();
