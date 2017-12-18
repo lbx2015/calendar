@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.listener.CustomListener;
-
 import com.riking.calendar.R;
 import com.riking.calendar.bean.DictionaryBean;
 import com.riking.calendar.jiguang.Logger;
@@ -27,11 +26,13 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
@@ -169,12 +170,10 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
                 final UploadImageModel r = response.body();
-
                 if (r != null) {
-//                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
-                    SharedPreferences.Editor editor = preference.edit();
-                    editor.putString(CONST.USER_IMAGE_URL, r._data);
-                    editor.commit();
+                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                    currentUser.photoUrl = r._data;
+                    ZPreference.saveUserInfoAfterLogin(currentUser);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -207,7 +206,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void onPickImage(View view) {
-        ImagePicker.pickImage(this, "Select your image:");
+        ImagePicker.pickImage(this, "选择用户图片:");
     }
 
     @Override

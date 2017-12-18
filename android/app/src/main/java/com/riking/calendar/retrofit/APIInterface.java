@@ -149,7 +149,8 @@ public interface APIInterface {
     Call<ResponseModel<String>> getAgreementHtml(@Query("userId") String notUsed);
 
     @Multipart
-    @POST("appUserApp/upLoad")
+    @POST("user/upLoad")
+//    @POST("appUserApp/upLoad")
     Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("userId") String id);
 
     @POST("modelPropDictApp/T_APP_USER")
@@ -330,6 +331,7 @@ public interface APIInterface {
 
     /**
      * User sign in api
+     *
      * @param params
      * @return
      */

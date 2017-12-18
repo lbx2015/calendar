@@ -228,8 +228,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
                     if (TextUtils.isEmpty(_data.trim())) {
                         return;
                     }
-                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
-                    };
+                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {};
 
                     ResponseModel<List<ReportResult>> responseModel = s.fromJson(sourceString, token.getType());
                     if (mPullToLoadView != null) {
