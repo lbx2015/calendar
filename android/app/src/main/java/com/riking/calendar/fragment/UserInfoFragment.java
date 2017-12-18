@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.LoginNavigateActivity;
+import com.riking.calendar.activity.MyFavoritesUserActivity;
 import com.riking.calendar.activity.MyFollowersActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.SettingActivity;
@@ -160,8 +161,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         myFollowLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                Intent i = new Intent(getContext(), MyFollowersActivity.class);
-                i.putExtra(CONST.MY_FOLLOW, 1);
+                Intent i = new Intent(getContext(), MyFavoritesUserActivity.class);
                 ZGoto.to(i);
             }
         });

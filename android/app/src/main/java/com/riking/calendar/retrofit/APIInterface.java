@@ -29,7 +29,9 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
@@ -297,4 +299,7 @@ public interface APIInterface {
      */
     @POST("qAnswer/getQAnswer")
     Call<ResponseModel<QuestionAnswer>> getAnswerInfo(@Body QAnswerParams params);
+
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<AppUserResult>>> getMyFollowingUser(@Body UserFollowParams params);
 }

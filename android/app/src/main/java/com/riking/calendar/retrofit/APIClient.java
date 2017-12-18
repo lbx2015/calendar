@@ -33,7 +33,9 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
@@ -641,5 +643,9 @@ public class APIClient {
 
     public static void getAnswerInfo(QAnswerParams params, ZCallBack<ResponseModel<QuestionAnswer>> c) {
         apiInterface.getAnswerInfo(params).enqueue(c);
+    }
+
+    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getMyFollowingUser(params).enqueue(c);
     }
 }
