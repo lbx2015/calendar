@@ -12,6 +12,7 @@ import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
+import com.riking.calendar.pojo.ModelPropDict;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
@@ -348,4 +349,7 @@ public interface APIInterface {
 
     @POST("report/findSubscribeReportList")
     Call<ResponseModel<ReportSubscribeRel>> modifyUserInfo(@Body HashMap<String,String> params );
+
+    @POST("common/getAllEmailSuffix")
+    Call<ResponseModel<List<String>>> getAllEmailSuffix();
 }

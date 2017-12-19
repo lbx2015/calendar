@@ -19,15 +19,33 @@ import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/14.
  */
 
 public class ZR {
+    public static String[] emailSufixs = new String[]{"@qq.com", "@163.com", "@126.com", "@gmail.com", "@sina.com", "@hotmail.com",
+            "@yahoo.cn", "@sohu.com", "@foxmail.com", "@139.com", "@yeah.net", "@vip.qq.com", "@vip.sina.com"};
     public static String jumpClass;
+
+    static {
+        APIClient.getAllEmailSuffix(new ZCallBackWithoutProgress<ResponseModel<List<String>>>() {
+            @Override
+            public void callBack(ResponseModel<List<String>> response) {
+                emailSufixs = new String[response._data.size()];
+                for (int i = 0; i < response._data.size(); i++) {
+                    emailSufixs[i] = response._data.get(i);
+                }
+            }
+        });
+    }
 
     /**
      * This method converts dp unit to equivalent pixels, depending on device density.

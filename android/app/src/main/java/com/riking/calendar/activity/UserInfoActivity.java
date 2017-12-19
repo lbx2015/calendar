@@ -301,18 +301,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         final String emailText = input.getText().toString();
                         if (emailText.length() > 0) {
                             email.setText(emailText);
-                            AppUser user = new AppUser();
+                            UpdUserParams user = new UpdUserParams();
                             user.email = emailText;
-                            user.userId = preference.getString(CONST.USER_ID, null);
-
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(CONST.USER_EMAIL, emailText);
-                                    //save the changes.
-                                    editor.commit();
+                                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                                    currentUser.email = emailText;
+                                    ZPreference.saveUserInfoAfterLogin(currentUser);
                                 }
                             });
                         }

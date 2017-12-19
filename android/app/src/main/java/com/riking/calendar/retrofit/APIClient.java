@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
+import com.riking.calendar.pojo.ModelPropDict;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
@@ -669,5 +670,9 @@ public class APIClient {
 
     public static void modifyUserInfo(UpdUserParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.modifyUserInfo(params).enqueue(c);
+    }
+
+    public static void getAllEmailSuffix(ZCallBackWithoutProgress<ResponseModel<List<String>>> c){
+        apiInterface.getAllEmailSuffix().enqueue(c);
     }
 }
