@@ -251,6 +251,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                                     AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                                     currentUser.userName = newName;
                                     ZPreference.saveUserInfoAfterLogin(currentUser);
+                                    Intent i = new Intent();
+                                    i.putExtra(CONST.USER_NAME, newName);
+                                    setResult(CONST.REQUEST_CODE, i);
                                 }
                             });
                         }

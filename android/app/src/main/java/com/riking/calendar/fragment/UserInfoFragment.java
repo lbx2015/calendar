@@ -36,10 +36,13 @@ import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.MarketUtils;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.dialog.CheckInDialog;
 import com.riking.calendar.widget.dialog.CheckInFailDialog;
+
+import static android.app.Activity.RESULT_CANCELED;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -128,7 +131,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             @Override
             public void click(View v) {
                 if (ZPreference.isLogin()) {
-                    startActivity(new Intent(getContext(), UserInfoActivity.class));
+                    startActivityForResult(new Intent(getContext(), UserInfoActivity.class), CONST.UPDATE_USER_INFO_REQUES);
                 } else {
                     startActivity((new Intent(getContext(), LoginNavigateActivity.class)));
 //                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
@@ -241,6 +244,20 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             }
             case R.id.comment_root: {
                 MarketUtils.launchAppDetail(BuildConfig.APPLICATION_ID, "");
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Make sure the request was successful
+        if (resultCode != RESULT_CANCELED && requestCode == CONST.UPDATE_USER_INFO_REQUES) {
+            Bundle b = data.getExtras();
+            currentUser = ZPreference.getCurrentLoginUser();
+            String newName = b.getString(CONST.USER_NAME);
+            if (!StringUtil.isEmpty(newName)) {
+                userName.setText(currentUser.userName);
             }
         }
     }
