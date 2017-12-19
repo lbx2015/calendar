@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.QuestionListAdapter;
 import com.riking.calendar.listener.ZCallBack;
@@ -111,7 +112,10 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void setData() {
+        long startTime = System.currentTimeMillis();
         updateFollowButton();
+        MyLog.d("updateFollowButton used time: " + (System.currentTimeMillis() - startTime));
+        startTime = System.currentTimeMillis();
         //set follow number
         followNumberTv.setText(question.followNum + "人关注");
         //set question title
@@ -119,6 +123,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         //set answer number
         answerNumberTv.setText("" + question.answerNum);
         mAdapter.addAll(question.questionAnswers);
+        MyLog.d("used time: " + (System.currentTimeMillis() - startTime));
     }
 
     private void updateFollowButton() {
@@ -175,7 +180,9 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickInvitePerson(final View view) {
-        ZGoto.to(InvitePersonActivity.class);
+        Intent i = new Intent(this, InvitePersonActivity.class);
+        i.putExtra(CONST.QUESTION_ID, questionId);
+        ZGoto.to(i);
     }
 
     public void clickLetMeAnswer(final View view) {

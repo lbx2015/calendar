@@ -91,7 +91,7 @@
     <string name="error_tag_empty">tag不能为空</string>
     <string name="error_tag_gs_empty">格式不对</string>
     <string name="error_network">网络连接异常,初始化失败 请检查网络！</string>
-    <string name="error_server">Server Error！</string>
+    <string name="error_server">服务器错误！</string>
     <string name="logining">程序在后台执行, 请查看日志！</string>
     <string name="setting_su">设置成功</string>
     <string name="no_found">No records found</string>

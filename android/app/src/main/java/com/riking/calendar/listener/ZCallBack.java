@@ -44,7 +44,7 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
                 mProgressDialog.setCanceledOnTouchOutside(false);
                 mProgressDialog.show();
             }
-        }, 2000);
+        }, 1000);
     }
 
     public abstract void callBack(T response);
