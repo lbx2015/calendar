@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.ContactsInviteRepo;
@@ -84,15 +86,24 @@ public class AppUserContactsServer {
 		if (StringUtils.isBlank(userParams.getUserId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
+		userParams.setPcount(Const.APP_PAGENO_30);
+		if (userParams.getPindex() == null) {
+			userParams.setPindex(0);
+		}
+		if (userParams.getPindex() != 0 && userParams.getPindex() != null) {
+			userParams.setPindex(userParams.getPindex() - 1);
+		}
 		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
 		if (appUser.getEmail() == null) {
 			return new AppResp("", CodeDef.SUCCESS);
 		} else {
-			List<AppUserResult> appUserResults = appUserRepo
-					.findAllByEmail(("@" + appUser.getEmail().split("@")[1]).trim(), userParams.getUserId());
+			List<AppUserResult> appUserResults = appUserRepo.findAllByEmail(
+					("@" + appUser.getEmail().split("@")[1]).trim(), userParams.getUserId(),
+					new PageRequest(userParams.getPindex(), userParams.getPcount()));
 			for (AppUserResult appUserResult : appUserResults) {
 				if (null != appUserResult.getPhotoUrl()) {
-					appUserResult.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResult.getPhotoUrl());
+					appUserResult.setPhotoUrl(
+							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 				}
 				// 等级
 				if (null != appUserResult.getExperience()) {

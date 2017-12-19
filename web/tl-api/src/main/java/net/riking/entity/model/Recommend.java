@@ -15,8 +15,8 @@ import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
 @Entity
-@Table(name = "t_app_user_recommend")
-public class AppUserRecommend extends BaseEntity {
+@Table(name = "t_recommend")
+public class Recommend extends BaseEntity {
 
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class AppUserRecommend extends BaseEntity {
 	@Column(name = "id", length = 32)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	@GeneratedValue(generator = "system-uuid")
-	@JsonProperty("appUserRecommendId")
+	@JsonProperty("recommendId")
 	private String id;
 
 	// 报表id
@@ -41,7 +41,7 @@ public class AppUserRecommend extends BaseEntity {
 	@Transient
 	private String reportName;
 
-	public AppUserRecommend(String reportId, String reportName, Long industryId) {
+	public Recommend(String reportId, String reportName, Long industryId) {
 		this.reportId = reportId;
 		this.reportName = reportName;
 		this.industryId = industryId;

@@ -139,7 +139,8 @@ public class QAnswerServer {
 				}
 			}
 			if (null != questionAnswer.getPhotoUrl()) {
-				questionAnswer.setPhotoUrl(appUserService.getPhotoUrlPath() + questionAnswer.getPhotoUrl());
+				questionAnswer.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
 			}
 			// 等级
 			if (null != questionAnswer.getExperience()) {
@@ -192,7 +193,7 @@ public class QAnswerServer {
 			}
 		}
 		if (null != qaComment.getPhotoUrl()) {
-			qaComment.setPhotoUrl(appUserService.getPhotoUrlPath() + qaComment.getPhotoUrl());
+			qaComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaComment.getPhotoUrl());
 		}
 		// 等级
 		if (null != qaComment.getExperience()) {
@@ -274,7 +275,7 @@ public class QAnswerServer {
 				qAnswerParams.getUserId(), new PageRequest(0, 30));
 		for (QAComment qAComment : questionAnswerList) {
 			if (null != qAComment.getPhotoUrl()) {
-				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath() + qAComment.getPhotoUrl());
+				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAComment.getPhotoUrl());
 			}
 			// 等级
 			if (null != qAComment.getExperience()) {

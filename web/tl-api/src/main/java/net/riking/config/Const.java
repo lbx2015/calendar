@@ -24,6 +24,10 @@ public class Const {
 
 	public static final String TL_PHOTO_PATH = "/images/user/photo/";
 
+	public static final String TL_FEED_BACK_PHOTO_PATH = "/images/feedBack/photo/";
+
+	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/photo/";
+
 	public static final String TL_FLAG_PATH = "/images/flag/";
 
 	public static final String TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
@@ -73,11 +77,13 @@ public class Const {
 	public static final int USER_SEX_WOMAN = 0;// 女
 
 	/** --------------------男女常量 end-------------------------- */
-	
+
 	/** -------------------默认页数 begin-------------------------- */
 
 	public static final int APP_PAGENO_10 = 10;// 默认10页
+
 	public static final int APP_PAGENO_30 = 30;// 默认30页
+
 	public static final int APP_PAGENO_50 = 50;// 默认50页
 
 	/** --------------------男女常量 end-------------------------- */

@@ -47,7 +47,7 @@ public class ReportDaoImpl implements ReportDao {
 	}
 
 	@Override
-	public List<ReportResult> getAllReportByParams(String param) {
+	public List<ReportResult> getAllReportByParams(String param, String userId) {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
@@ -59,7 +59,9 @@ public class ReportDaoImpl implements ReportDao {
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'REPORT_KIND' and t.KE=a.report_kind) reportKindName, ";
 		sql += "a.module_type moduleType, ";
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'MODULE_TYPE' and t.KE=a.module_type) moduleTypeName, ";
-		sql += "a.id reportId, a.`code`, a.title, '0' isSubcribe from t_report a ";
+		sql += "(select tsr.report_id from t_report_subscribe_rel tsr where tsr.user_id = " + userId
+				+ " and  tsr.report_id= a.id) isSubscribe, ";
+		sql += "a.id reportId, a.`code`, a.title from t_report a ";
 		sql += "where a.is_deleted=1 and a.is_aduit=1 ";
 		if (StringUtils.isBlank(param)) {
 			sql += "and (a.`code` like '%" + param + "%' or a.title like '%" + param + "%') ";
@@ -83,7 +85,11 @@ public class ReportDaoImpl implements ReportDao {
 				report.setReportId(rs.getString("reportId"));
 				report.setCode(rs.getString("code"));
 				report.setTitle(rs.getString("title"));
-				report.setIsSubscribe(rs.getString("isSubcribe"));
+				if (StringUtils.isNotBlank(rs.getString("isSubscribe"))) {
+					report.setIsSubscribe(1);// 已订阅
+				} else {
+					report.setIsSubscribe(0);// 未订阅
+				}
 				list.add(report);
 			}
 		} catch (SQLException e) {

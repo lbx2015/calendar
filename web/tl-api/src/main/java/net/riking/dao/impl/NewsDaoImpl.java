@@ -41,7 +41,7 @@ public class NewsDaoImpl implements NewsDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				News news = new News();
-				news.setId("id");
+				news.setId(rs.getString("id"));
 				news.setCreatedTime(rs.getTimestamp("createdTime"));
 				news.setModifiedTime(rs.getTimestamp("modifiedTime"));
 				news.setTitle(rs.getString("title"));

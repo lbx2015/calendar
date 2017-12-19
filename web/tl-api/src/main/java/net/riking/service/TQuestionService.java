@@ -34,7 +34,7 @@ public interface TQuestionService {
 	 * @param end
 	 * @return
 	 */
-	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int pageCount);
+	public List<QAnswerResult> findEssenceByTid(String topicId, String userId, int start, int pageCount);
 
 	/**
 	 * 优秀回答者

@@ -143,7 +143,8 @@ public class AppUserDynamicServer {
 					qaCommentResult.setAgreeNumber(agreeNumber);
 					// 截取资源访问路径
 					if (null != qaCommentResult.getPhotoUrl()) {
-						qaCommentResult.setPhotoUrl(appUserService.getPhotoUrlPath() + qaCommentResult.getPhotoUrl());
+						qaCommentResult.setPhotoUrl(
+								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaCommentResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != qaCommentResult.getExperience()) {
@@ -208,7 +209,8 @@ public class AppUserDynamicServer {
 						pageBegin, pageCount);
 				for (QAnswerResult qAnswerResult : qAnswerResults) {
 					if (null != qAnswerResult.getPhotoUrl()) {
-						qAnswerResult.setPhotoUrl(appUserService.getPhotoUrlPath() + qAnswerResult.getPhotoUrl());
+						qAnswerResult.setPhotoUrl(
+								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAnswerResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != qAnswerResult.getExperience()) {
@@ -245,7 +247,8 @@ public class AppUserDynamicServer {
 					newsInfo.setCommentNumber(count);
 					// 截取资源访问路径
 					if (null != newsInfo.getPhotoUrl()) {
-						newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath() + newsInfo.getPhotoUrl());
+						newsInfo.setPhotoUrl(
+								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
 					}
 					// 等级
 					if (null != newsInfo.getExperience()) {

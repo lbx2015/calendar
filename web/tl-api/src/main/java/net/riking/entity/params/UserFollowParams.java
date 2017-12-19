@@ -18,7 +18,7 @@ public class UserFollowParams extends BaseEntity {
 	// 用户Id
 	private String userId;
 
-	// 1-用户，2-话题，3-问题
+	// 1-问题，2-话题，3-用户
 	private Integer objType;
 
 	// 1-评论；2-回答；3-提问

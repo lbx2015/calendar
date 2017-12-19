@@ -16,5 +16,5 @@ public interface ReportDao {
 	 * @param code和title参数值
 	 * @return
 	 */
-	List<ReportResult> getAllReportByParams(String param);
+	List<ReportResult> getAllReportByParams(String param, String userId);
 }
