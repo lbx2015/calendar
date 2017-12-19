@@ -45,6 +45,7 @@ import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.ReportSubscribeRel;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -344,4 +345,7 @@ public interface APIInterface {
 
     @POST("user/modify")
     Call<ResponseModel<String>> modifyUserInfo(@Body UpdUserParams params );
+
+    @POST("report/findSubscribeReportList")
+    Call<ResponseModel<ReportSubscribeRel>> modifyUserInfo(@Body HashMap<String,String> params );
 }

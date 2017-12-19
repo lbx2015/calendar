@@ -39,6 +39,7 @@ import com.riking.calendar.util.MarketUtils;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.widget.dialog.CheckInDialog;
 import com.riking.calendar.widget.dialog.CheckInFailDialog;
 
@@ -258,6 +259,10 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             String newName = b.getString(CONST.USER_NAME);
             if (!StringUtil.isEmpty(newName)) {
                 userName.setText(currentUser.userName);
+            }
+            //update user image
+            if (!StringUtil.isEmpty(b.getString(CONST.USER_IMAGE_URL))) {
+                ZR.setUserImage(myPhoto, b.getString(CONST.USER_IMAGE_URL));
             }
         }
     }

@@ -175,6 +175,12 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                     AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                     currentUser.photoUrl = r._data;
                     ZPreference.saveUserInfoAfterLogin(currentUser);
+
+                    //update user image in user info fragment
+                    Intent i = new Intent();
+                    i.putExtra(CONST.USER_IMAGE_URL, r._data);
+                    setResult(CONST.REQUEST_CODE, i);
+
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
