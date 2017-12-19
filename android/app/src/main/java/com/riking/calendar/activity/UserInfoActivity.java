@@ -26,6 +26,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
@@ -242,18 +243,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         final String newName = input.getText().toString();
                         if (newName.length() > 0) {
                             userName.setText(newName);
-                            AppUser user = new AppUser();
-                            user.name = newName;
-                            user.userId = preference.getString(CONST.USER_ID, null);
-
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                            UpdUserParams user = new UpdUserParams();
+                            user.userName = newName;
+                            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(CONST.USER_NAME, newName);
-                                    //save the changes.
-                                    editor.commit();
+                                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                                    currentUser.userName = newName;
+                                    ZPreference.saveUserInfoAfterLogin(currentUser);
                                 }
                             });
                         }

@@ -29,6 +29,7 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
@@ -340,4 +341,7 @@ public interface APIInterface {
 
     @POST("topicQuestion/answerInvite")
     Call<ResponseModel<String>> answerInvite(@Body TQuestionParams params);
+
+    @POST("user/modify")
+    Call<ResponseModel<String>> modifyUserInfo(@Body UpdUserParams params );
 }

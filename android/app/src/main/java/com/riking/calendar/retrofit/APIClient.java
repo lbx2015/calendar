@@ -33,6 +33,7 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
@@ -664,5 +665,9 @@ public class APIClient {
 
     public static void answerInvite(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.answerInvite(params).enqueue(c);
+    }
+
+    public static void modifyUserInfo(UpdUserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.modifyUserInfo(params).enqueue(c);
     }
 }
