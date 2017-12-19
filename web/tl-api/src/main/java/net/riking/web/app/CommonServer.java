@@ -1,10 +1,13 @@
 package net.riking.web.app;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.util.TextUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,25 +25,31 @@ import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.model.ModelPropDict;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.AppVersionRepo;
 import net.riking.dao.repo.IndustryRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.AppUserRecommend;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppVersion;
+import net.riking.entity.model.Email;
 import net.riking.entity.model.Industry;
+import net.riking.entity.model.Recommend;
 import net.riking.entity.model.TQuestionRel;
 import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.AppVersionParams;
 import net.riking.entity.params.IndustryParams;
 import net.riking.entity.params.TQuestionParams;
+import net.riking.entity.params.UserParams;
 import net.riking.entity.params.ValidParams;
-import net.riking.service.AppUserCommendService;
+import net.riking.service.AppUserService;
+import net.riking.service.ReCommendService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
+import net.riking.util.EmailUtil;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
 
@@ -81,7 +90,13 @@ public class CommonServer {
 	TopicRelRepo topicRelRepo;
 
 	@Autowired
-	AppUserCommendService appUserCommendServie;
+	AppUserRepo appUserRepo;
+
+	@Autowired
+	AppUserService appUserService;
+
+	@Autowired
+	ReCommendService appUserReCommendServie;
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
 	 */
@@ -133,9 +148,94 @@ public class CommonServer {
 	@RequestMapping(value = "/getAllEmailSuffix", method = RequestMethod.POST)
 	public AppResp getAllEmailSuffix_() {
 		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "EMAILSUFFIX");
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("emailSuffix", list);
-		return new AppResp(result, CodeDef.SUCCESS);
+		List<String> emailSuffixs = new ArrayList<String>();
+		for (ModelPropDict modelPropDict : list) {
+			emailSuffixs.add("@" + modelPropDict.getValu());
+		}
+		return new AppResp(emailSuffixs, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "发送邮箱认证", notes = "POST")
+	@RequestMapping(value = "/sendEmailVerifyCode", method = RequestMethod.POST)
+	public AppResp sendEmailVerifyCode_(@RequestBody UserParams userParams) throws ParseException {
+		if (null == userParams) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (null == userParams.getUserId()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
+
+		Email email = appUserService.getMyEmail();
+		if (StringUtils.isNotBlank(appUser.getEmail())) {
+			String verifyCode = "";
+			for (int i = 0; i < 6; i++) {
+				verifyCode += (int) (Math.random() * 9);
+			}
+			logger.info("邮箱认证{}获取验证码成功", verifyCode);
+			RedisUtil.getInstall().setObject(Const.VALID_ + appUser.getEmail().trim(), Const.VALID_CODE_TIME,
+					verifyCode);
+			email.setReceiveMail(appUser.getEmail());
+			email.setReceiver(appUser.getUserName());
+			email.setTheme("邮箱认证");
+			email.setContent("验证码：" + verifyCode);
+
+			logger.info("邮箱信息：" + email.toString());
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("verifyCode", verifyCode);
+			// 发送邮箱
+			try {
+				EmailUtil.sendEmail(email);
+			} catch (Exception e) {
+				logger.error("邮件发送失败" + e);
+				return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
+			}
+			return new AppResp(result, CodeDef.SUCCESS);
+		} else {
+			return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
+		}
+	}
+
+	/**
+	 * 
+	 * @param userId verifyCode
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "邮箱验证码验证", notes = "POST")
+	@RequestMapping(value = "/emailIdentify", method = RequestMethod.POST)
+	public AppResp emailIdentify_(@RequestBody UserParams userParams) throws ParseException {
+		if (null == userParams) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (null == userParams.getUserId()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
+		try {
+			boolean isRn = smsUtil.checkValidCode(appUser.getEmail(), userParams.getVerifyCode());
+			if (!isRn) {
+				return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
+			} else {
+				appUserRepo.updEmailIndentify(userParams.getUserId());
+				return new AppResp("", CodeDef.SUCCESS);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			if (e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT + "")) {
+				return new AppResp(CodeDef.EMP.CHECK_CODE_TIME_OUT, CodeDef.EMP.CHECK_CODE_TIME_OUT_DESC);
+			} else {
+				return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
+			}
+
+		}
+
 	}
 
 	/**
@@ -177,7 +277,7 @@ public class CommonServer {
 	@ApiOperation(value = "获取推荐报表", notes = "POST")
 	@RequestMapping(value = "/getRecommendReport", method = RequestMethod.POST)
 	public AppResp getCommend() {
-		Set<AppUserRecommend> appUserRecommends = appUserCommendServie.findALL();
+		Set<Recommend> appUserRecommends = appUserReCommendServie.findALL();
 		return new AppResp(appUserRecommends, CodeDef.SUCCESS);
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.IndustryRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -46,6 +47,9 @@ public class LoginServer {
 
 	@Autowired
 	SmsUtil smsUtil;
+
+	@Autowired
+	IndustryRepo industryRepo;
 
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
@@ -156,7 +160,8 @@ public class LoginServer {
 		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {
 			// 截取资源访问路径
 			if (null != user.getDetail().getPhotoUrl()) {
-				userResp.setPhotoUrl(appUserService.getPhotoUrlPath() + user.getDetail().getPhotoUrl());
+				userResp.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + user.getDetail().getPhotoUrl());
 			}
 		} else {
 			userResp.setPhotoUrl("");
@@ -169,7 +174,13 @@ public class LoginServer {
 		userResp.setIsSubscribe(user.getDetail().getIsSubscribe());
 		userResp.setPositionId(user.getDetail().getPositionId());
 		userResp.setIsGuide(user.getDetail().getIsGuide());
-
+		userResp.setIsIdentify(user.getIsIdentified());
+		if (StringUtils.isNotBlank(userResp.getPositionId())) {
+			userResp.setPositionName(industryRepo.findOne(userResp.getPositionId()).getName());
+		}
+		if (StringUtils.isNotBlank(userResp.getIndustryId())) {
+			userResp.setIndustryName(industryRepo.findOne(userResp.getIndustryId()).getName());
+		}
 		return new AppResp(userResp, CodeDef.SUCCESS);
 
 	}

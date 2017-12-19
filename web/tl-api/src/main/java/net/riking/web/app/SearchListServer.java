@@ -34,7 +34,6 @@ import net.riking.entity.model.HotSearch;
 import net.riking.entity.model.NewsResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.ReportResult;
-import net.riking.entity.model.ReportSubscribeRel;
 import net.riking.entity.model.TopicResult;
 import net.riking.entity.params.SearchParams;
 import net.riking.service.AppUserService;
@@ -122,6 +121,9 @@ public class SearchListServer {
 		if (StringUtils.isBlank(searchParams.getKeyWord())) {
 			return new AppResp("", CodeDef.SUCCESS);
 		}
+		if (StringUtils.isBlank(searchParams.getUserId())) {
+			searchParams.setUserId("");
+		}
 
 		switch (searchParams.getObjType()) {
 			// 报表
@@ -158,25 +160,10 @@ public class SearchListServer {
 	 * @return
 	 */
 	private List<ReportResult> findReportByKeyWord(SearchParams searchParams) {
-		// 获取订阅关联表
-		List<ReportSubscribeRel> reportSubcribeRelList = reportSubscribeRelRepo
-				.findUserReportList(searchParams.getUserId());
 
-		List<ReportResult> reportResultList = reportService.getReportResultByParam(searchParams.getKeyWord());
-		for (int i = 0; i < reportResultList.size(); i++) {
-			ReportResult r = reportResultList.get(i);
-			for (ReportSubscribeRel rel : reportSubcribeRelList) {
-				if (r.getReportId().equals(rel.getReportId())) {
-					r.setIsSubscribe("1");// 已订阅
-					// 不显示状态
-					if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
-						r.setIsSubscribe(null);
-					}
-					reportResultList.remove(i);
-					reportResultList.add(i, r);
-				}
-			}
-		}
+		List<ReportResult> reportResultList = reportService.getReportResultByParam(searchParams.getKeyWord(),
+				searchParams.getUserId());
+
 		return reportResultList;
 	}
 
@@ -217,7 +204,8 @@ public class SearchListServer {
 		for (int i = 0; i < appUserResults.size(); i++) {
 			AppUserResult appUserResult = appUserResults.get(i);
 			if (null != appUserResult.getPhotoUrl()) {
-				appUserResult.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResult.getPhotoUrl());
+				appUserResult
+						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 			}
 			// 等级
 			if (null != appUserResult.getExperience()) {
@@ -226,12 +214,13 @@ public class SearchListServer {
 			// TODO 用户的回答数 后面从redis里面取
 			Integer answerNum = questionAnswerRepo.answerCountByUserId(searchParams.getUserId());
 
-			appUserResult.setIsFollow(0);// 0-未关注
 			appUserResult.setAnswerNum(answerNum);// 回答数
 			// 显示邀请状态
 			if (Const.OPT_TYPE_INVITE_STATUS == searchParams.getShowOptType()) {
+				appUserResult.setIsFollow(null);
 				List<String> toUserIds = qAInviteRepo.findToIdByUIdAndQId(searchParams.getUserId(),
 						searchParams.getTqId());
+				appUserResult.setIsInvited(0);// 1-未邀请
 				for (String toUserId : toUserIds) {
 					if (appUserResult.getId().equals(toUserId)) {
 						appUserResult.setIsInvited(1);// 1-已邀请

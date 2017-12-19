@@ -37,8 +37,8 @@ public class TQuestionServiceImpl implements TQuestionService {
 	}
 
 	@Override
-	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int pageCount) {
-		return tQuestionDao.findEssenceByTid(topicId, start, pageCount);
+	public List<QAnswerResult> findEssenceByTid(String topicId, String userId, int start, int pageCount) {
+		return tQuestionDao.findEssenceByTid(topicId, userId, start, pageCount);
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
@@ -95,7 +96,8 @@ public class TopicQuestionServer {
 		}
 		topicQuestion.setQuestionAnswers(findAnswerList(tQuestionParams));
 		if (null != topicQuestion.getPhotoUrl()) {
-			topicQuestion.setPhotoUrl(appUserService.getPhotoUrlPath() + topicQuestion.getPhotoUrl());
+			topicQuestion
+					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topicQuestion.getPhotoUrl());
 		}
 		// 等级
 		if (null != topicQuestion.getExperience()) {
@@ -118,7 +120,7 @@ public class TopicQuestionServer {
 
 	/**
 	 * 邀请回答的邀请
-	 * @param params[userId;toUserId;tqId;]
+	 * @param params[userId;attentObjId;tqId;]
 	 * @return
 	 */
 	@ApiOperation(value = "邀请回答的邀请", notes = "POST")
@@ -127,19 +129,19 @@ public class TopicQuestionServer {
 		if (StringUtils.isBlank(tQuestionParams.getUserId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		if (StringUtils.isBlank(tQuestionParams.getToUserId())) {
+		if (StringUtils.isBlank(tQuestionParams.getAttentObjId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(tQuestionParams.getTqId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		QAInvite qaInvite = qAInviteRepo.findByOne(tQuestionParams.getUserId(), tQuestionParams.getToUserId(),
+		QAInvite qaInvite = qAInviteRepo.findByOne(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
 				tQuestionParams.getTqId());
 		if (null == qaInvite) {
 			// 如果传过来的参数是收藏，保存新的一条收藏记录
 			QAInvite qaInviteNew = new QAInvite();
 			qaInviteNew.setUserId(tQuestionParams.getUserId());
-			qaInviteNew.setToUserId(tQuestionParams.getToUserId());
+			qaInviteNew.setToUserId(tQuestionParams.getAttentObjId());
 			qaInviteNew.setQuestionId(tQuestionParams.getTqId());
 			qAInviteRepo.save(qaInviteNew);
 		}
@@ -152,7 +154,8 @@ public class TopicQuestionServer {
 				tQuestionParams.getUserId());
 		for (QuestionAnswer questionAnswer : questionAnswerList) {
 			if (null != questionAnswer.getPhotoUrl()) {
-				questionAnswer.setPhotoUrl(appUserService.getPhotoUrlPath() + questionAnswer.getPhotoUrl());
+				questionAnswer.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
 			}
 			// 等级
 			if (null != questionAnswer.getExperience()) {

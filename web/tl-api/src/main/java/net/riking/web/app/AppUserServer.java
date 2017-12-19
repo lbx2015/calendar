@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
@@ -36,7 +38,6 @@ import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
 import net.riking.util.DateUtils;
-import net.riking.util.StringUtil;
 
 /**
  * app用户信息操作
@@ -87,7 +88,7 @@ public class AppUserServer {
 		// appUserResp从appUserDetail取值
 		appUserResp = (AppUserResp) fromObjToObjValue(appUserDetail, appUserResp);
 		if (null != appUserResp.getPhotoUrl()) {
-			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResp.getPhotoUrl());
+			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
 		}
 		// 等级
 		if (null != appUserResp.getExperience()) {
@@ -103,12 +104,14 @@ public class AppUserServer {
 		if (userParams.getUserId() == null) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		AppUser dbUser = appUserRepo.findOne(userParams.getUserId());
-		if (null == dbUser) {
+		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
+		if (null == appUser) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
-
-		AppUser appUser = appUserRepo.findOne(dbUser.getId());
+		if (StringUtils.isNotBlank(userParams.getEmail()) && StringUtils.isNotBlank(appUser.getEmail())
+				&& (!userParams.getEmail().equals(appUser.getEmail()))) {
+			userParams.setIsIdentified(0);// 邮箱未认证
+		}
 		if (null != userParams) {
 			appUser = (AppUser) fromObjToObjValue(userParams, appUser);
 		}
@@ -118,7 +121,7 @@ public class AppUserServer {
 			return new AppResp("", CodeDef.ERROR);
 		}
 
-		AppUserDetail appUserDetail = appUserDetailRepo.findOne(dbUser.getId());
+		AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
 		if (null == appUserDetail) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
@@ -161,19 +164,15 @@ public class AppUserServer {
 		String url = request.getRequestURL().toString();
 		String fileName = null;
 		try {
-			fileName = appUserService.uploadPhoto(mFile, userId);
+			fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
+			fileName = appUserService.updUserPhotoUrl(mFile, userId, fileName);
 		} catch (RuntimeException e) {
 			// TODO: handle exception
 			if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) {
 				return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
 			}
 		}
-		// 截取资源访问路径
-		String projectPath = StringUtil.getProjectPath(url);
-		String photoUrl = appUserService.getPhotoUrlPath() + fileName;
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("photoUrl", photoUrl);
-		return new AppResp(result, CodeDef.SUCCESS);
+		return new AppResp(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + fileName, CodeDef.SUCCESS);
 	}
 
 	/**

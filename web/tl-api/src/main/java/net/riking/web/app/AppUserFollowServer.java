@@ -163,7 +163,8 @@ public class AppUserFollowServer {
 	private List<AppUserResult> appendUrlGrade(String userId, List<AppUserResult> userResults) {
 		for (AppUserResult appUserResult : userResults) {
 			if (null != appUserResult.getPhotoUrl()) {
-				appUserResult.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResult.getPhotoUrl());
+				appUserResult
+						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 			}
 			// 等级
 			if (null != appUserResult.getExperience()) {

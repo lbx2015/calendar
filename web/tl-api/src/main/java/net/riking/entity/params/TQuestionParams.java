@@ -18,16 +18,13 @@ public class TQuestionParams extends BaseEntity {
 	// 用户Id
 	private String userId;
 
-	// 目标对象用户Id
-	private String toUserId;
-
 	// 话题下面问题Id
 	private String tqId;
 
 	// (1-问题；2-话题；3-用户)
 	private Integer objType;
 
-	// (关注类型ID)
+	// (目标对象ID)
 	private String attentObjId;
 
 	// (0-取消；1-关注)
@@ -42,14 +39,6 @@ public class TQuestionParams extends BaseEntity {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}
-
-	public String getToUserId() {
-		return toUserId;
-	}
-
-	public void setToUserId(String toUserId) {
-		this.toUserId = toUserId;
 	}
 
 	public String getQuestAnswerId() {

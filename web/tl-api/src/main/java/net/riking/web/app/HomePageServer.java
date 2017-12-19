@@ -158,7 +158,8 @@ public class HomePageServer {
 					// TODO
 					tQuestionResult.setFromImgUrl(tQuestionResult.getFromImgUrl());
 				} else {
-					tQuestionResult.setFromImgUrl(appUserService.getPhotoUrlPath() + tQuestionResult.getFromImgUrl());
+					tQuestionResult.setFromImgUrl(
+							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getFromImgUrl());
 				}
 			}
 			// 等级
@@ -250,7 +251,7 @@ public class HomePageServer {
 			}
 			// 截取资源访问路径
 			if (null != userResult.getPhotoUrl()) {
-				userResult.setPhotoUrl(appUserService.getPhotoUrlPath() + userResult.getPhotoUrl());
+				userResult.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + userResult.getPhotoUrl());
 			}
 			for (UserFollowRel userFollowRel : userFollowRels) {
 				if (userFollowRel.getFollowStatus() == 1 && userFollowRel.getToUserId().equals(userResult.getId())) {

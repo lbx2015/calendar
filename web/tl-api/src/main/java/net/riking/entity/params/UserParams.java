@@ -2,7 +2,7 @@ package net.riking.entity.params;
 
 import java.util.List;
 
-import net.riking.entity.BaseEntity;
+import net.riking.core.entity.PageQuery;
 
 /**
  * 资讯类的接收参数
@@ -11,7 +11,7 @@ import net.riking.entity.BaseEntity;
  * @see
  * @since 1.0
  */
-public class UserParams extends BaseEntity {
+public class UserParams extends PageQuery {
 	/**
 	 * 
 	 */
@@ -19,6 +19,9 @@ public class UserParams extends BaseEntity {
 
 	// 用户Id
 	private String userId;
+
+	// 验证码
+	private String verifyCode;
 
 	// 是否删除： 0-删除，1-未删除
 	private Integer isDeleted;
@@ -56,6 +59,14 @@ public class UserParams extends BaseEntity {
 
 	public void setPhones(List<String> phones) {
 		this.phones = phones;
+	}
+
+	public String getVerifyCode() {
+		return verifyCode;
+	}
+
+	public void setVerifyCode(String verifyCode) {
+		this.verifyCode = verifyCode;
 	}
 
 	public Integer getPhoneType() {

@@ -110,7 +110,7 @@ public class TopServer {
 			}
 		}
 		if (null != topic.getPhotoUrl()) {
-			topic.setPhotoUrl(appUserService.getPhotoUrlPath() + topic.getPhotoUrl());
+			topic.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topic.getPhotoUrl());
 		}
 		// 等级
 		if (null != topic.getExperience()) {
@@ -145,10 +145,11 @@ public class TopServer {
 			// 精华
 			case Const.TOP_OBJ_OPT_ESSENCE:
 				List<QAnswerResult> tQuestionResults = tQuestionService.findEssenceByTid(topicParams.getTopicId(),
-						pageBegin, pageCount);
+						topicParams.getUserId(), pageBegin, pageCount);
 				for (QAnswerResult tQuestionResult : tQuestionResults) {
 					if (null != tQuestionResult.getPhotoUrl()) {
-						tQuestionResult.setPhotoUrl(appUserService.getPhotoUrlPath() + tQuestionResult.getPhotoUrl());
+						tQuestionResult.setPhotoUrl(
+								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != tQuestionResult.getExperience()) {
@@ -158,17 +159,6 @@ public class TopServer {
 					tQuestionResult.setContent(questionAnswer.getContent());
 					tQuestionResult.setQaAgreeNum(questionAnswer.getAgreeNum());
 					tQuestionResult.setQaCommentNum(questionAnswer.getCommentNum());
-					tQuestionResult.setIsAgree(0);// 0-未点赞
-				}
-				if (null != topicParams.getUserId()) {
-					List<String> qaIds = qAnswerRelRepo.findByUser(topicParams.getUserId(), Const.OBJ_OPT_GREE);
-					for (String qaId : qaIds) {
-						for (QAnswerResult tQuestionResult : tQuestionResults) {
-							if (qaId.equals(tQuestionResult.getQaId())) {
-								tQuestionResult.setIsAgree(1);// 1-已点赞
-							}
-						}
-					}
 				}
 				Collections.sort(tQuestionResults, new Comparator<QAnswerResult>() {
 					// TODO 根据评论数和点赞数排序，算法待确认
@@ -191,7 +181,8 @@ public class TopServer {
 						new PageRequest(pageBegin, pageCount));
 				for (QuestResult questResult : questResults) {
 					if (null != questResult.getPhotoUrl()) {
-						questResult.setPhotoUrl(appUserService.getPhotoUrlPath() + questResult.getPhotoUrl());
+						questResult.setPhotoUrl(
+								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != questResult.getExperience()) {
@@ -214,7 +205,8 @@ public class TopServer {
 						pageBegin, pageCount);
 				for (QAExcellentResp qaExcellentResp : excellentResps) {
 					if (null != qaExcellentResp.getPhotoUrl()) {
-						qaExcellentResp.setPhotoUrl(appUserService.getPhotoUrlPath() + qaExcellentResp.getPhotoUrl());
+						qaExcellentResp.setPhotoUrl(
+								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaExcellentResp.getPhotoUrl());
 					}
 					// 等级
 					if (null != qaExcellentResp.getExperience()) {

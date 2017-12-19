@@ -2,6 +2,7 @@ package net.riking.entity.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
@@ -25,9 +26,11 @@ public class QACommentResult extends BaseEntity {
 	private String id;
 
 	@Comment("创建时间")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date createdTime;
 
 	@Comment("修改时间")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date modifiedTime;
 
 	@Comment("操作人主键  ")
@@ -38,6 +41,9 @@ public class QACommentResult extends BaseEntity {
 
 	@Comment("内容")
 	private String content;
+
+	@Comment("问题回答内容")
+	private String qaContent;
 
 	@Comment("问题id")
 	private String tqId;
@@ -88,6 +94,14 @@ public class QACommentResult extends BaseEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getQaContent() {
+		return qaContent;
+	}
+
+	public void setQaContent(String qaContent) {
+		this.qaContent = qaContent;
 	}
 
 	public Date getCreatedTime() {

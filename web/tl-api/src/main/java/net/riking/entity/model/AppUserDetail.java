@@ -99,11 +99,11 @@ public class AppUserDetail extends BaseEntity {
 
 	@Comment("行业ID")
 	@Column(name = "industry_id")
-	private Integer industryId;
+	private String industryId;
 
 	@Comment("职位ID")
 	@Column(name = "position_id")
-	private Integer positionId;
+	private String positionId;
 
 	@Comment("是否引导: 0-未引导；1-已引导")
 	@org.hibernate.annotations.ColumnDefault("0")
@@ -234,19 +234,19 @@ public class AppUserDetail extends BaseEntity {
 		this.isSubscribe = isSubscribe;
 	}
 
-	public Integer getIndustryId() {
+	public String getIndustryId() {
 		return industryId;
 	}
 
-	public void setIndustryId(Integer industryId) {
+	public void setIndustryId(String industryId) {
 		this.industryId = industryId;
 	}
 
-	public Integer getPositionId() {
+	public String getPositionId() {
 		return positionId;
 	}
 
-	public void setPositionId(Integer positionId) {
+	public void setPositionId(String positionId) {
 		this.positionId = positionId;
 	}
 
