@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.FeedBackActivity;
 import com.riking.calendar.activity.LoginNavigateActivity;
+import com.riking.calendar.activity.MyFavoritesUserActivity;
 import com.riking.calendar.activity.MyFollowersActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.SettingActivity;
@@ -24,8 +26,10 @@ import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
@@ -33,9 +37,14 @@ import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.MarketUtils;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.widget.dialog.CheckInDialog;
+import com.riking.calendar.widget.dialog.CheckInFailDialog;
+
+import static android.app.Activity.RESULT_CANCELED;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -57,6 +66,8 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     LinearLayout myRepliesLayout;
     LinearLayout followMeLayout;
     LinearLayout myFollowLayout;
+    AppUserResp currentUser;
+    View suggestionLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +82,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             notLoginTv.setVisibility(View.GONE);
             loginLinearLayout.setVisibility(View.VISIBLE);
             loginState = 1;
-            AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+            currentUser = ZPreference.getCurrentLoginUser();
             userName.setText(currentUser.userName);
             userComment.setText(currentUser.description);
 
@@ -103,6 +114,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initViews() {
+        suggestionLayout = v.findViewById(R.id.suggestion_layout);
         myFollowLayout = v.findViewById(R.id.my_follow_person_layout);
         followMeLayout = v.findViewById(R.id.my_follower_layout);
         myRepliesLayout = v.findViewById(R.id.my_replyes);
@@ -123,7 +135,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             @Override
             public void click(View v) {
                 if (ZPreference.isLogin()) {
-                    startActivity(new Intent(getContext(), UserInfoActivity.class));
+                    startActivityForResult(new Intent(getContext(), UserInfoActivity.class), CONST.UPDATE_USER_INFO_REQUES);
                 } else {
                     startActivity((new Intent(getContext(), LoginNavigateActivity.class)));
 //                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
@@ -132,11 +144,24 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         });
 
         //set sign in click listener
+
         checkInTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
-                dialog.show();
+                UserParams userParams = new UserParams();
+                APIClient.signIn(userParams, new ZCallBackWithFail<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) throws Exception {
+                        if (failed) {
+                            CheckInFailDialog dialog = new CheckInFailDialog(checkInTv.getContext());
+                            dialog.show();
+                        } else {
+                            CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
+                            dialog.setExperience(currentUser.experience);
+                            dialog.show();
+                        }
+                    }
+                });
             }
         });
 
@@ -160,9 +185,14 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         myFollowLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                Intent i = new Intent(getContext(), MyFollowersActivity.class);
-                i.putExtra(CONST.MY_FOLLOW, 1);
+                Intent i = new Intent(getContext(), MyFavoritesUserActivity.class);
                 ZGoto.to(i);
+            }
+        });
+        suggestionLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                ZGoto.to(FeedBackActivity.class);
             }
         });
     }
@@ -224,6 +254,24 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             }
             case R.id.comment_root: {
                 MarketUtils.launchAppDetail(BuildConfig.APPLICATION_ID, "");
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Make sure the request was successful
+        if (resultCode != RESULT_CANCELED && requestCode == CONST.UPDATE_USER_INFO_REQUES) {
+            Bundle b = data.getExtras();
+            currentUser = ZPreference.getCurrentLoginUser();
+            String newName = b.getString(CONST.USER_NAME);
+            if (!StringUtil.isEmpty(newName)) {
+                userName.setText(currentUser.userName);
+            }
+            //update user image
+            if (!StringUtil.isEmpty(b.getString(CONST.USER_IMAGE_URL))) {
+                ZR.setUserImage(myPhoto, b.getString(CONST.USER_IMAGE_URL));
             }
         }
     }

@@ -350,7 +350,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/relation_image"
-                android:text="我的动态"
+                android:text="我的人脉"
                 android:textColor="@color/color_222222"
                 android:textSize="17sp" />
 

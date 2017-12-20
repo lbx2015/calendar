@@ -30,10 +30,16 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.params.UpdUserParams;
+import com.riking.calendar.pojo.params.UserFollowParams;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
@@ -43,8 +49,8 @@ import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
-import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.ReportListResult;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -72,6 +78,7 @@ import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -543,20 +550,12 @@ public class APIClient {
         apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
     }
 
-    public static void getAllReports(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportAgence>>> c) {
-        apiInterface.getAllReports(user).enqueue(c);
+    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportResult>>> c) {
+        apiInterface.findSubscribeReportList(user).enqueue(c);
     }
 
-    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportFrequency>>> c) {
-        apiInterface.findUserReportList(user).enqueue(c);
-    }
-
-    public static void userAddReportEdit(AppUserReportResult reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
-        apiInterface.userAddReportEdit(reportResult).enqueue(z);
-    }
-
-    public static void getReportByName(HashMap<String, String> reportName, ZCallBack<ResponseModel<List<ReportFrequency>>> c) {
-        apiInterface.getReportByName(reportName).enqueue(c);
+    public static void userAddReportEdit(SubscribeReportParam reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
+        apiInterface.saveSubscribeReport(reportResult).enqueue(z);
     }
 
     public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {
@@ -641,5 +640,41 @@ public class APIClient {
 
     public static void getAnswerInfo(QAnswerParams params, ZCallBack<ResponseModel<QuestionAnswer>> c) {
         apiInterface.getAnswerInfo(params).enqueue(c);
+    }
+
+    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getMyFavoriteUsers(params).enqueue(c);
+    }
+
+    public static void getMyFans(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.myFans(params).enqueue(c);
+    }
+
+    public static void getMyAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        apiInterface.getMyAnswers(params).enqueue(c);
+    }
+
+    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.signIn(params).enqueue(c);
+    }
+
+    public static void answerInvite(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.answerInvite(params).enqueue(c);
+    }
+
+    public static void modifyUserInfo(UpdUserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.modifyUserInfo(params).enqueue(c);
+    }
+
+    public static void getAllEmailSuffix(ZCallBackWithoutProgress<ResponseModel<List<String>>> c) {
+        apiInterface.getAllEmailSuffix().enqueue(c);
+    }
+
+    public static void publishFeedBack(List<MultipartBody.Part> file, String userId, String content, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.feedBackPublish(file, userId, content).enqueue(c);
+    }
+
+    public static void getReports(ReportParams params, ZCallBack<ResponseModel<List<ReportListResult>>> c) {
+        apiInterface.getReports(params).enqueue(c);
     }
 }

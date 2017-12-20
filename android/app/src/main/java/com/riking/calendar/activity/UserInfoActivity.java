@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.listener.CustomListener;
-
 import com.riking.calendar.R;
 import com.riking.calendar.bean.DictionaryBean;
 import com.riking.calendar.jiguang.Logger;
@@ -27,11 +26,14 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UpdUserParams;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
@@ -169,12 +171,16 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
                 final UploadImageModel r = response.body();
-
                 if (r != null) {
-//                        Log.d("zzw", "upload ok:  " + r.source().readUtf8());
-                    SharedPreferences.Editor editor = preference.edit();
-                    editor.putString(CONST.USER_IMAGE_URL, r._data);
-                    editor.commit();
+                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                    currentUser.photoUrl = r._data;
+                    ZPreference.saveUserInfoAfterLogin(currentUser);
+
+                    //update user image in user info fragment
+                    Intent i = new Intent();
+                    i.putExtra(CONST.USER_IMAGE_URL, r._data);
+                    setResult(CONST.REQUEST_CODE, i);
+
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -207,7 +213,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void onPickImage(View view) {
-        ImagePicker.pickImage(this, "Select your image:");
+        ImagePicker.pickImage(this, "选择用户图片:");
     }
 
     @Override
@@ -243,18 +249,17 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         final String newName = input.getText().toString();
                         if (newName.length() > 0) {
                             userName.setText(newName);
-                            AppUser user = new AppUser();
-                            user.name = newName;
-                            user.userId = preference.getString(CONST.USER_ID, null);
-
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                            UpdUserParams user = new UpdUserParams();
+                            user.userName = newName;
+                            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(CONST.USER_NAME, newName);
-                                    //save the changes.
-                                    editor.commit();
+                                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                                    currentUser.userName = newName;
+                                    ZPreference.saveUserInfoAfterLogin(currentUser);
+                                    Intent i = new Intent();
+                                    i.putExtra(CONST.USER_NAME, newName);
+                                    setResult(CONST.REQUEST_CODE, i);
                                 }
                             });
                         }
@@ -296,18 +301,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         final String emailText = input.getText().toString();
                         if (emailText.length() > 0) {
                             email.setText(emailText);
-                            AppUser user = new AppUser();
+                            UpdUserParams user = new UpdUserParams();
                             user.email = emailText;
-                            user.userId = preference.getString(CONST.USER_ID, null);
-
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(CONST.USER_EMAIL, emailText);
-                                    //save the changes.
-                                    editor.commit();
+                                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                                    currentUser.email = emailText;
+                                    ZPreference.saveUserInfoAfterLogin(currentUser);
                                 }
                             });
                         }

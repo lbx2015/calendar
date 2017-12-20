@@ -138,7 +138,7 @@ public class SearchPersonFragment extends Fragment implements PerformInputSearch
 
         SearchParams params = new SearchParams();
         params.keyWord = searchCondition;
-        //search topics
+        //search person
         params.objType = 3;
         new Handler().postDelayed(new Runnable() {
             @Override

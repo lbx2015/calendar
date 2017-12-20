@@ -165,7 +165,7 @@ public class QAnswerServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(qAnswerParams.getContent())) {
-			return new AppResp("", CodeDef.SUCCESS);
+			return new AppResp(CodeDef.SUCCESS);
 		}
 		QAComment qaComment = new QAComment();
 		qaComment.setUserId(qAnswerParams.getUserId());
@@ -259,7 +259,7 @@ public class QAnswerServer {
 				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 	/**

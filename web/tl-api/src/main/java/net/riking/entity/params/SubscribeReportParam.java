@@ -1,7 +1,5 @@
 package net.riking.entity.params;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * 订阅报表参数
  * @author james.you
@@ -9,12 +7,13 @@ import org.apache.commons.lang3.StringUtils;
  * @used TODO
  */
 public class SubscribeReportParam {
-	
+
 	private String userId;
-	//订阅的reportIds
+
+	// 订阅的reportIds
 	private String reportIds;
-//	//上报日期
-//	private String submitDate;
+	// //上报日期
+	// private String submitDate;
 
 	public String getUserId() {
 		return userId;

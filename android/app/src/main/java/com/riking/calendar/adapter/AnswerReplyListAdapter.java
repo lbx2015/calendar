@@ -62,6 +62,10 @@ public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyList
             from = from + ": ";
         }
 
+        if (TextUtils.isEmpty(from)) {
+            from = ": ";
+        }
+
         SpannableString fromSpan = new SpannableString(from);
         SpannableString replySpan = new SpannableString(replyText);
         SpannableString contentSpan = new SpannableString(content);

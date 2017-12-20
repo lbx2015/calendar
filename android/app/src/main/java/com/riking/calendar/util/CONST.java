@@ -5,8 +5,6 @@ package com.riking.calendar.util;
  */
 
 public class CONST {
-    public static final int CBRC = 0;
-    public static final int PBOC = 1;
     public static final byte REPEAT_FLAG_WEEK = 3;
     public static final byte REPEAT_FLAG_WORK_DAY = 1;
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
@@ -70,6 +68,8 @@ public class CONST {
     public static final String MY_FOLLOW = "MY_FOLLOW";
     public static final String ANSWER_COMMENT_NUM = "ANSWER_COMMENT_NUM";
     public static final String SEARCH_CONDITION = "SEARCH_CONDITION";
+
+    public static final int UPDATE_USER_INFO_REQUES = 1111;
 
     //滚动事件
     public enum ScrollDirection {

@@ -325,7 +325,7 @@ public class NewsServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 }

@@ -41,8 +41,8 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	@Transactional
 	@Modifying
-	@Query("update AppUser set isIdentify = 1 where id = ?1")
-	void updEmailIndentify(String userId);
+	@Query("update AppUser set isIdentified = 1,email = ?2 where id = ?1")
+	void updEmailIndentify(String userId, String email);
 
 	// @Query("select new
 	// net.riking.entity.resp.AppUserResp(a.id,a.userName,a.openId,a.email,a.phone,ap.realName,ap.companyName,ap.sex,ap.birthday,ap.address,ap.description,ap.phoneDeviceid,ap.integral,ap.experience,ap.photoUrl,ap.remindTime,ap.isSubscribe,ap.industryId,ap.positionId,ap.isGuide)

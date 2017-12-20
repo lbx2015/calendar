@@ -29,11 +29,10 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
-
         Logger.d("zzw", "request ok + " + call.request().toString());
+
         if (response == null || response.body() == null || response.body().code != 200) {
             failed = true;
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT).show();
         }
 
         try {

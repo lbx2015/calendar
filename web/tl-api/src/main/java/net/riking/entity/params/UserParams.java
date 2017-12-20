@@ -23,6 +23,9 @@ public class UserParams extends PageQuery {
 	// 验证码
 	private String verifyCode;
 
+	// 邮箱
+	private String email;
+
 	// 是否删除： 0-删除，1-未删除
 	private Integer isDeleted;
 
@@ -59,6 +62,14 @@ public class UserParams extends PageQuery {
 
 	public void setPhones(List<String> phones) {
 		this.phones = phones;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getVerifyCode() {

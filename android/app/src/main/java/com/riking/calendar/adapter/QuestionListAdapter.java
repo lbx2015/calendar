@@ -109,7 +109,6 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
     }
 
     public void addAll(List<QuestionAnswer> mList) {
-        this.mList.clear();
         this.mList = mList;
         notifyDataSetChanged();
     }

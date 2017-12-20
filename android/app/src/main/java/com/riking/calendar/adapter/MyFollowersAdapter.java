@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.CircleImageView;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 
 //answer comment adapter
 public class MyFollowersAdapter extends RecyclerView.Adapter<MyFollowersAdapter.MyViewHolder> {
-    public List<QAComment> mList;
+    public List<AppUserResult> mList;
 
     {
         mList = new ArrayList<>();
@@ -112,10 +113,10 @@ public class MyFollowersAdapter extends RecyclerView.Adapter<MyFollowersAdapter.
     }
     @Override
     public int getItemCount() {
-        return mList.size() + 2;
+        return mList.size();
     }
 
-    public void addAll(List<QAComment> mList) {
+    public void addAll(List<AppUserResult> mList) {
         this.mList.clear();
         this.mList = mList;
         notifyDataSetChanged();
