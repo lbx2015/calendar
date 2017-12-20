@@ -7,10 +7,10 @@ package net.riking.entity.params;
  * @used TODO
  */
 public class SubscribeReportParam {
-	
+
 	private String userId;
-	
-	//订阅的reportIds
+
+	// 订阅的reportIds
 	private String[] reportIds;
 
 	public String getUserId() {

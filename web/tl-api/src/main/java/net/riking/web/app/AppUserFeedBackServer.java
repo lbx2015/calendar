@@ -76,14 +76,13 @@ public class AppUserFeedBackServer {
 	@AuthPass
 	@ApiOperation(value = "意见反馈", notes = "POST")
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
-	public AppResp publish_(@RequestParam MultipartFile[] mFiles, @RequestParam("userId") String userId,
+	public AppResp publish_(@RequestParam("mFile") MultipartFile[] mFiles, @RequestParam("userId") String userId,
 			@RequestParam("content") String content) {
-		String url = request.getRequestURL().toString();
 		String fileName = "";
 		List<String> fileNames = new ArrayList<String>();
 		try {
 			for (MultipartFile mFile : mFiles) {
-				String photoName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
+				String photoName = appUserService.savePhotoFile(mFile, Const.TL_FEED_BACK_PHOTO_PATH);
 				fileNames.add(photoName);
 			}
 		} catch (RuntimeException e) {
@@ -101,6 +100,9 @@ public class AppUserFeedBackServer {
 		}
 		FeedBack back = new FeedBack(content, fileName, userId);
 		feedBackRepo.save(back);
-		return new AppResp("", CodeDef.SUCCESS);
+		if (mFiles.length == 0) {
+			return new AppResp("上传图片为空", CodeDef.SUCCESS);
+		}
+		return new AppResp(CodeDef.SUCCESS);
 	}
 }

@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
@@ -44,15 +45,25 @@ public class ReportSubscribeRel extends BaseEntity {
 	@Comment("报表ID: fk t_app_user")
 	@Column(name = "report_id", length = 32)
 	private String reportId;
-	
+
 	@Comment("报表code")
 	@Transient
+	@JsonProperty("code")
 	private String reportCode;
 
-	/*@Comment("是否完成核销：0-未完成；1-已完成")
-	@Column(name = "is_complete", length = 32)
-	private Integer isComplete;// 0：未完成；1：已完成
-*/
+	@Transient
+	@JsonProperty("title")
+	private String reportName;// 报表名称
+
+	@Transient
+	@JsonProperty("reportType")
+	private String type;
+
+	/*
+	 * @Comment("是否完成核销：0-未完成；1-已完成")
+	 * 
+	 * @Column(name = "is_complete", length = 32) private Integer isComplete;// 0：未完成；1：已完成
+	 */
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
@@ -60,14 +71,15 @@ public class ReportSubscribeRel extends BaseEntity {
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
-	
-	public ReportSubscribeRel() {}
-	
+
+	public ReportSubscribeRel() {
+	}
+
 	public ReportSubscribeRel(String reportId) {
 		super();
 		this.reportId = reportId;
 	}
-	
+
 	public ReportSubscribeRel(String userId, String reportId, String reportCode) {
 		super();
 		this.reportId = reportId;
@@ -79,19 +91,13 @@ public class ReportSubscribeRel extends BaseEntity {
 		this.reportId = reportId;
 		this.reportName = reportName;
 	}
-	
+
 	public ReportSubscribeRel(String userId, String reportId, Date createdTime) {
 		super();
 		this.userId = userId;
 		this.reportId = reportId;
 		this.createdTime = createdTime;
 	}
-
-	@Transient
-	private String reportName;// 报表名称
-
-	@Transient
-	private String type;
 
 	public String getReportId() {
 		return reportId;

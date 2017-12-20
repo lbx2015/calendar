@@ -48,7 +48,8 @@ public class ReportServiceImpl implements ReportService {
 				// 把报表类型相等并且报表所属模块相等的归一类
 				if (list.get(i).getReportType().toUpperCase().equals(typeListResults.get(j).getAgenceCode())
 						&& list.get(i).getModuleType().equals(typeListResults.get(j).getModuleType())) {
-					typeListResults.get(j).getList().add(list.get(i));
+					if (!typeListResults.get(j).getList().contains(list.get(i)))
+						typeListResults.get(j).getList().add(list.get(i));
 				} else {
 					if (j == typeListResults.size() - 1) {
 						setReportTypeListResult(list, i, typeListResults);

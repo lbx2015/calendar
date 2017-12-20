@@ -136,7 +136,7 @@ public class AppUserServer {
 			}
 
 		}
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
@@ -152,7 +152,7 @@ public class AppUserServer {
 			appUserDetail.setPhoneDeviceid(seqNum);
 			appUserDetail.setPhoneType(userParams.getPhoneType());
 			appUserDetailRepo.save(appUserDetail);
-			return new AppResp("", CodeDef.SUCCESS);
+			return new AppResp(CodeDef.SUCCESS);
 		}
 		return new AppResp("", CodeDef.ERROR);
 	}

@@ -82,7 +82,7 @@ public class RCompleteRelServer {
 		completedRel.setUserId(rCompletedRelParams.getUserId());
 		completedRel.setCompletedDate(DateFormatUtils.format(new Date(), "yyyyMMdd"));
 		reportCompletedRelRepo.save(completedRel);
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 	/**
