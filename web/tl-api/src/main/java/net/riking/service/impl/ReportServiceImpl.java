@@ -63,8 +63,8 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Override
-	public List<ReportResult> getReportResultByParam(String reportName){
-		return reportDao.getAllReportByParams(reportName);
+	public List<ReportResult> getReportResultByParam(String reportName, String userId){
+		return reportDao.getAllReportByParams(reportName, userId);
 	}
 
 	@Override

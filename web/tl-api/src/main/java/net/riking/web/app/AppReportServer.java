@@ -61,9 +61,6 @@ public class AppReportServer {
 	ReportCompletedRelRepo reportCompletedRelRepo;
 	
 	@Autowired
-	ReportCompletedRelDao reportCompletedRelDao;
-
-	@Autowired
 	SysDataService sysDataservice;
 
 	@Autowired
@@ -109,56 +106,10 @@ public class AppReportServer {
 	@ApiOperation(value = "更新用户报表订阅", notes = "POST")
 	@RequestMapping(value = "/modifySubscribeReport", method = RequestMethod.POST)
 	public AppResp modifySubscribeReport_(@RequestBody Map<String, Object> params) {
-		SubscribeReportParam subscribeReport = Utils.map2Obj(params, SubscribeReportParam.class);
-		
-		//先删除不在本次订阅内的reportId
-		reportSubscribeRelRepo.deleteNotSubscribeByUserId(subscribeReport.getUserId(), subscribeReport.getReportIds());
-		
-		//查找该用户剩余订阅的数据
-		List<String> currentReportIds = reportSubscribeRelRepo.findByUserId(subscribeReport.getUserId());
-		
-		// 批量插入
-		for (String reportId : subscribeReport.getReportIds()) {
-			boolean isRn = true;
-			for(String cutReportId : currentReportIds){
-				if(reportId.equals(cutReportId)){
-					//订阅的报表已经在已订阅之内，不让其新增
-					isRn = false;
-				}
-				
-				if(isRn){
-					ReportSubscribeRel rel = new ReportSubscribeRel();
-					rel.setReportId(reportId);
-					rel.setUserId(subscribeReport.getUserId());
-					reportSubscribeRelRepo.save(rel);
-				}
-				
-			}
 		SubscribeReportParam relParam = Utils.map2Obj(params, SubscribeReportParam.class);
 		String[] arr = {};
 		if(StringUtils.isNotBlank(relParam.getReportIds())){
 			arr = relParam.getReportIds().split(",");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		}
 
 		String currentDate = DateUtils.getDate("yyyyMMdd");
@@ -174,7 +125,6 @@ public class AppReportServer {
 		PageQuery page = new PageQuery();
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
-		List<ReportCompletedRelResult> list = reportCompletedRelDao.findExpireReportByPage(relParams.getUserId(), page);
 		List<ReportCompletedRelResult> list = reportService.findExpireReportByPage(relParams.getUserId(), page);
 		
 		return new AppResp(list, CodeDef.SUCCESS);
@@ -187,11 +137,7 @@ public class AppReportServer {
 		PageQuery page = new PageQuery();
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
-		List<ReportCompletedRelResult> list = reportCompletedRelDao.findHisCompletedReportByPage(relParams.getUserId(), page);
-		
 		List<ReportCompletedRelResult> list = reportService.findHisCompletedReportByPage(relParams.getUserId(), page);
-		
-
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
 	
@@ -245,7 +191,7 @@ public class AppReportServer {
 	}
 	
 	/**
-	 * 获取当天之后的打点日期[userId]
+	 * 获取当天之后的打点日期[userId, currentMonth]
 	 * @param params
 	 * @return
 	 * @throws ParseException
@@ -259,7 +205,6 @@ public class AppReportServer {
 		
 		//有任务的日期
 		List<String> taskDateList = new ArrayList<String>();
-//		Map<Integer, String> mTaskDate = new HashMap<Integer, String>();
 		for(ReportCompletedRel data : taskList){
 			String submitEndDate = data.getSubmitEndTime().substring(0, 6);
 			if(Integer.parseInt(submitEndDate) == Integer.parseInt(currentDate)){
@@ -278,29 +223,11 @@ public class AppReportServer {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
 					if(!taskDateList.contains(_date))
 						taskDateList.add(_date);
-					
-//					if(!mTaskDate.containsKey(i))
-//						mTaskDate.put(i, _date);
 				}
 			}
 		}
 		
 		return new AppResp(taskDateList, CodeDef.SUCCESS);
-	}
-	
-	private List<String> getAllTheDateOftheMonth(Date date) {
-		List<String> list = new ArrayList<String>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.DATE, 1);
-		int month = cal.get(Calendar.MONTH);
-		SimpleDateFormat sdf = null;
-		while (cal.get(Calendar.MONTH) == month) {
-			sdf = new SimpleDateFormat("yyyyMMdd");
-			list.add(sdf.format(cal.getTime()));
-			cal.add(Calendar.DATE, 1);
-		}
-		return list;
 	}
 
 }
