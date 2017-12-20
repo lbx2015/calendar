@@ -14,4 +14,7 @@ public interface SysDaysRepo extends JpaRepository<SysDays, String>, JpaSpecific
 
 	@Query("select count(*) from SysDays where dates BETWEEN ?1 and ?2 ")
 	Integer findByAllDate(String date1, String date2);
+	
+	@Query(" from SysDays where dates = ?1 ")
+	SysDays findByDates(String dates);
 }

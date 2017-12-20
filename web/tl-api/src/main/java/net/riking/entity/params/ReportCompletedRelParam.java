@@ -11,6 +11,8 @@ import net.riking.core.entity.PageQuery;
 public class ReportCompletedRelParam extends PageQuery{
 	
 	private String userId;// 用户Id
+	
+	private String currentMonth;//当前月份yyyyMM
 
 	public String getUserId() {
 		return userId;
@@ -18,6 +20,14 @@ public class ReportCompletedRelParam extends PageQuery{
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getCurrentMonth() {
+		return currentMonth;
+	}
+
+	public void setCurrentMonth(String currentMonth) {
+		this.currentMonth = currentMonth;
 	}
 
 }

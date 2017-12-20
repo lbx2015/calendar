@@ -1,7 +1,11 @@
 package net.riking.dao.repo;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.Remind;
@@ -16,6 +20,11 @@ import net.riking.entity.model.Remind;
 @Repository
 public interface RemindRepo extends JpaRepository<Remind, String>, JpaSpecificationExecutor<Remind> {
 
+//	@Transactional
+//	@Modifying
+//	@Query("update ReportSubscribeRel set isCompleted=1 and completedDate=?5 where userId = ?1 and reportId = ?2 and submitStartTime = ?3 and submitEndTime = ?4 ")
+//	public int updateComplated(String userId, String reportId, String submitStartTime, String submitEndTime, String completedDate);
+	
 	// List<Remind> findByUserId(String userId);
 	//
 	// @Query(" from Remind where userId=?1 and (((repeatFlag=3 and repeatValue like %?3% ) or

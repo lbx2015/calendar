@@ -58,7 +58,7 @@ public interface ReportSubscribeRelRepo
 
 	@Transactional
 	@Modifying
-	@Query("delete from ReportSubscribeRel where user_id = ?1 and reportId not in (?2) ")
+	@Query("delete from ReportSubscribeRel where userId = ?1 and reportId not in (?2) ")
 	public int deleteNotSubscribeByUserId(String userId, String[] reportIds);
 
 	// @Transactional

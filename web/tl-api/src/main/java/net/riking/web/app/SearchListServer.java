@@ -119,7 +119,7 @@ public class SearchListServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(searchParams.getKeyWord())) {
-			return new AppResp("", CodeDef.SUCCESS);
+			return new AppResp(CodeDef.SUCCESS);
 		}
 		if (StringUtils.isBlank(searchParams.getUserId())) {
 			searchParams.setUserId("");

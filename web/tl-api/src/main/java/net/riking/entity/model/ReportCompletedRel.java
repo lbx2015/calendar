@@ -40,7 +40,7 @@ public class ReportCompletedRel extends PageQuery {
 	
 	@Comment("是否完成（0-未完成；1-已完成）")
 	@Column(name = "is_completed", length = 8)
-	private String isCompleted;
+	private Integer isCompleted;
 
 	@Comment("报表完成时间（yyyyMMdd）")
 	@Column(name = "completed_date", length = 8)
@@ -89,6 +89,16 @@ public class ReportCompletedRel extends PageQuery {
 		this.completedDate = completedDate;
 		this.reportName = reportName;
 		this.strFrequency = strFrequency;
+	}
+	
+	public ReportCompletedRel(String userId, String reportId, String completedDate, Integer isCompleted, String submitStartTime, String submitEndTime) {
+		super();
+		this.userId = userId;
+		this.reportId = reportId;
+		this.completedDate = completedDate;
+		this.isCompleted = isCompleted;
+		this.submitStartTime = submitStartTime;
+		this.submitEndTime = submitEndTime;
 	}
 
 	public String getUserId() {
@@ -140,11 +150,11 @@ public class ReportCompletedRel extends PageQuery {
 		this.completedDate = completedDate;
 	}
 
-	public String getIsCompleted() {
+	public Integer getIsCompleted() {
 		return isCompleted;
 	}
 
-	public void setIsCompleted(String isCompleted) {
+	public void setIsCompleted(Integer isCompleted) {
 		this.isCompleted = isCompleted;
 	}
 

@@ -146,7 +146,7 @@ public class TopicQuestionServer {
 			qAInviteRepo.save(qaInviteNew);
 		}
 
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 	private List<QuestionAnswer> findAnswerList(TQuestionParams tQuestionParams) {

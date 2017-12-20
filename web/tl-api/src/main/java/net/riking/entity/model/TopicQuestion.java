@@ -106,6 +106,11 @@ public class TopicQuestion extends BaseAuditProp {
 		this.experience = experience;
 	}
 
+	public TopicQuestion() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getTitle() {
 		return title;
 	}

@@ -2,8 +2,6 @@ package net.riking.entity.params;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import net.riking.entity.BaseEntity;
 
 /**
@@ -14,23 +12,25 @@ import net.riking.entity.BaseEntity;
  * @since 1.0
  */
 public class RCompletedRelParams extends BaseEntity {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6952211991459875719L;
 
 	// 用户Id
 	private String userId;
-
 	// 报表id
 	private String reportId;
-
-	// 完成时间（yyyyMMdd）
-	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
-	private Date completedDate;
-
 	// 提醒时间（yyyyMMdd）
 	private Date remindTime;
+	//是否完成：0-未完成；1-完成
+	private int isCompleted;
+	//上报开始时间yyyyMMddHHmm
+	private String submitStartTime;
+	//上报结束时间yyyyMMddHHmm
+	private String submitEndTime;
+	//报表完成时间yyyyMMddHHmm
+	private String completedDate;
+	//闹钟提醒Id
+	private String remindId;
+	//当前选择的日期yyyyMMdd
+	private String currentDate;
 
 	public String getUserId() {
 		return userId;
@@ -40,12 +40,12 @@ public class RCompletedRelParams extends BaseEntity {
 		this.userId = userId;
 	}
 
-	public Date getCompletedDate() {
-		return completedDate;
+	public String getCurrentDate() {
+		return currentDate;
 	}
 
-	public void setCompletedDate(Date completedDate) {
-		this.completedDate = completedDate;
+	public void setCurrentDate(String currentDate) {
+		this.currentDate = currentDate;
 	}
 
 	public Date getRemindTime() {
@@ -64,4 +64,44 @@ public class RCompletedRelParams extends BaseEntity {
 		this.reportId = reportId;
 	}
 
+	public int getIsCompleted() {
+		return isCompleted;
+	}
+
+	public void setIsCompleted(int isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+
+	public String getSubmitStartTime() {
+		return submitStartTime;
+	}
+
+	public void setSubmitStartTime(String submitStartTime) {
+		this.submitStartTime = submitStartTime;
+	}
+
+	public String getSubmitEndTime() {
+		return submitEndTime;
+	}
+
+	public void setSubmitEndTime(String submitEndTime) {
+		this.submitEndTime = submitEndTime;
+	}
+
+	public String getCompletedDate() {
+		return completedDate;
+	}
+
+	public void setCompletedDate(String completedDate) {
+		this.completedDate = completedDate;
+	}
+
+	public String getRemindId() {
+		return remindId;
+	}
+
+	public void setRemindId(String remindId) {
+		this.remindId = remindId;
+	}
+	
 }

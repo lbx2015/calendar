@@ -1,9 +1,9 @@
 package net.riking.dao;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 import net.riking.core.entity.PageQuery;
+import net.riking.entity.resp.CurrentReportTaskResp;
 import net.riking.entity.resp.ReportCompletedRelResult;
 
 public interface ReportCompletedRelDao {
@@ -28,4 +28,14 @@ public interface ReportCompletedRelDao {
 	 */
 	List<ReportCompletedRelResult> findHisCompletedReportByPage(String userId, PageQuery pageQuery);
 	
+	/**
+	 * 查询用户当天已完成/未完成的报表任务
+	 * @author james.you
+	 * @version crateTime：2017年12月16日 下午4:46:35
+	 * @used TODO
+	 * @param userId
+	 * @param currentDate
+	 * @return
+	 */
+	List<CurrentReportTaskResp> findCurrentTasks(String userId, String currentDate);
 }

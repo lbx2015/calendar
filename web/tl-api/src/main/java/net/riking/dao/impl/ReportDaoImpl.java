@@ -9,8 +9,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Transaction;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
@@ -59,11 +61,11 @@ public class ReportDaoImpl implements ReportDao {
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'REPORT_KIND' and t.KE=a.report_kind) reportKindName, ";
 		sql += "a.module_type moduleType, ";
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'MODULE_TYPE' and t.KE=a.module_type) moduleTypeName, ";
-		sql += "(select tsr.report_id from t_report_subscribe_rel tsr where tsr.user_id = " + userId
-				+ " and  tsr.report_id= a.id) isSubscribe, ";
+		sql += "(select tsr.report_id from t_report_subscribe_rel tsr where tsr.user_id = '" + userId
+				+ "' and  tsr.report_id= a.id) isSubscribe, ";
 		sql += "a.id reportId, a.`code`, a.title from t_report a ";
 		sql += "where a.is_deleted=1 and a.is_aduit=1 ";
-		if (StringUtils.isBlank(param)) {
+		if (StringUtils.isNotBlank(param)) {
 			sql += "and (a.`code` like '%" + param + "%' or a.title like '%" + param + "%') ";
 		}
 		sql += "order by a.report_type, a.module_type, a.`code` ";
@@ -98,5 +100,5 @@ public class ReportDaoImpl implements ReportDao {
 		return list;
 
 	}
-
+	
 }

@@ -48,6 +48,8 @@ public class Const {
 
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
+	//系统日历
+	public static final String SYS_DAY = "SYS_DAY_";
 
 	/* 默认头像 */
 	public static final String DEFAULT_PHOTO_URL = "defaultPhotoUrl.jpg";
