@@ -54,6 +54,7 @@ import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
@@ -677,5 +678,9 @@ public class APIClient {
 
     public static void getReports(ReportParams params, ZCallBack<ResponseModel<List<ReportListResult>>> c) {
         apiInterface.getReports(params).enqueue(c);
+    }
+
+    public static void getUserOperationInfo(@Body UserParams params, ZCallBack<ResponseModel<UserOperationInfo>> c) {
+        apiInterface.getUserOperationInfo(params).enqueue(c);
     }
 }

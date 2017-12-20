@@ -50,6 +50,7 @@ import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 
@@ -349,4 +350,6 @@ public interface APIInterface {
     @POST("report/getReports")
     Call<ResponseModel<List<ReportListResult>>> getReports(@Body ReportParams params);
 
+    @POST("user/getOperateNumber")
+    Call<ResponseModel<UserOperationInfo>> getUserOperationInfo(@Body UserParams params);
 }

@@ -1,8 +1,6 @@
 package com.riking.calendar.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,18 +22,17 @@ import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.SettingActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
-import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.MarketUtils;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
@@ -71,6 +68,10 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     AppUserResp currentUser;
     View suggestionLayout;
 
+    TextView myFollowNumbTv;
+    TextView followingMeNumbTv;
+    TextView myAnswerNumbTv;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (v != null) {
@@ -88,19 +89,8 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             userName.setText(currentUser.userName);
             userComment.setText(currentUser.description);
 
-            String imageUrl = currentUser.photoUrl;
-            String imageName = imageUrl == null ? "" : imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
-            if (FileUtil.imageExists(imageName)) {
-                Logger.d("zzw", "no need load url: " + imageName);
-                Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
-                myPhoto.setImageBitmap(bitmap);
-
-            } else if (imageUrl != null && imageUrl.length() > 0) {
-                Logger.d("zzw", " load url: " + imageUrl);
-                LoadUserImageTask myTask = new LoadUserImageTask();
-                myTask.imageView = myPhoto;
-                myTask.execute(imageUrl);
-            }
+            //load the user image
+            ZR.setUserImage(myPhoto, currentUser.photoUrl);
         } else {
             toUserInfoIm.setVisibility(View.GONE);
             notLoginTv.setVisibility(View.VISIBLE);
@@ -113,6 +103,30 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     private void init() {
         initViews();
         initEvents();
+        loadUserOperationInfo();
+    }
+
+    private void loadUserOperationInfo() {
+        UserParams u = new UserParams();
+        APIClient.getUserOperationInfo(u, new ZCallBack<ResponseModel<UserOperationInfo>>() {
+            @Override
+            public void callBack(ResponseModel<UserOperationInfo> response) {
+                UserOperationInfo u = response._data;
+                myFollowNumbTv.setText(ZR.getNumberString(u.followNum));
+                followingMeNumbTv.setText(ZR.getNumberString(u.fansNum));
+                myAnswerNumbTv.setText(ZR.getNumberString(u.answerNum));
+                //already signed in
+                if (u.signStatus == 1) {
+                    checkInTv.setText("已签到");
+                    checkInTv.setClickable(false);
+                    checkInTv.setEnabled(false);
+                } else {
+                    checkInTv.setText("签到");
+                    checkInTv.setClickable(true);
+                    checkInTv.setEnabled(true);
+                }
+            }
+        });
     }
 
     private void initViews() {
@@ -129,6 +143,9 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         checkInTv = v.findViewById(R.id.check_in_button);
         notLoginTv = v.findViewById(R.id.not_login_button);
         myPhoto = v.findViewById(R.id.user_icon);
+        myFollowNumbTv = v.findViewById(R.id.my_follow_person_num);
+        followingMeNumbTv = v.findViewById(R.id.following_me_num);
+        myAnswerNumbTv = v.findViewById(R.id.my_answer_num_tv);
     }
 
     private void initEvents() {
