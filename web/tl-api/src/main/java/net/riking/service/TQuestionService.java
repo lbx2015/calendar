@@ -34,7 +34,7 @@ public interface TQuestionService {
 	 * @param end
 	 * @return
 	 */
-	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int end);
+	public List<QAnswerResult> findEssenceByTid(String topicId, String userId, int start, int pageCount);
 
 	/**
 	 * 优秀回答者
@@ -43,7 +43,7 @@ public interface TQuestionService {
 	 * @param end
 	 * @return
 	 */
-	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int end);
+	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int pageCount);
 
 	/**
 	 * 关注的问题
@@ -52,6 +52,6 @@ public interface TQuestionService {
 	 * @param end
 	 * @return
 	 */
-	public List<QuestResult> userFollowQuest(String userId, int start, int end);
+	public List<QuestResult> userFollowQuest(String userId, int start, int pageCount);
 
 }

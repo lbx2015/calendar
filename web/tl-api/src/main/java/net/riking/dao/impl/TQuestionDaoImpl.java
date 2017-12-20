@@ -123,10 +123,10 @@ public class TQuestionDaoImpl implements TQuestionDao {
 	}
 
 	@Override
-	public List<QAnswerResult> findEssenceByTid(String topicId, int start, int end) {
+	public List<QAnswerResult> findEssenceByTid(String topicId, String userId, int start, int pageCount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call findEssenceByTid(?,?,?)";
+		String sql = "call findEssenceByTid(?,?,?,?)";
 		PreparedStatement pstmt = null;
 		List<QAnswerResult> list = new ArrayList<QAnswerResult>();
 		try {
@@ -134,8 +134,9 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			if (StringUtils.isBlank(topicId))
 				topicId = "";
 			pstmt.setString(1, topicId);
-			pstmt.setInt(2, start);
-			pstmt.setInt(3, end);
+			pstmt.setString(2, userId);
+			pstmt.setInt(3, start);
+			pstmt.setInt(4, pageCount);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QAnswerResult qAnswerResult = new QAnswerResult();
@@ -148,6 +149,11 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				qAnswerResult.setExperience(rs.getInt("experience"));
 				qAnswerResult.setUserId(rs.getString("userId"));
 				qAnswerResult.setCoverUrl(rs.getString("coverUrl"));
+				if (StringUtils.isBlank(rs.getString("isAgree"))) {
+					qAnswerResult.setIsAgree(0);
+				} else {
+					qAnswerResult.setIsAgree(1);
+				}
 				list.add(qAnswerResult);
 			}
 		} catch (SQLException e) {
@@ -158,7 +164,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 	}
 
 	@Override
-	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int end) {
+	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int pageCount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call findExcellentResp(?,?,?)";
@@ -170,7 +176,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				topicId = "";
 			pstmt.setString(1, topicId);
 			pstmt.setInt(2, start);
-			pstmt.setInt(3, end);
+			pstmt.setInt(3, pageCount);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QAExcellentResp qaExcellentResp = new QAExcellentResp();
@@ -190,7 +196,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 	}
 
 	@Override
-	public List<QuestResult> userFollowQuest(String userId, int start, int end) {
+	public List<QuestResult> userFollowQuest(String userId, int start, int pageCount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "call userFollowQuest(?,?,?)";
@@ -202,7 +208,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, start);
-			pstmt.setInt(3, end);
+			pstmt.setInt(3, pageCount);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QuestResult questResult = new QuestResult();

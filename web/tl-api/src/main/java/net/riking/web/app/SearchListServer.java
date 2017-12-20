@@ -23,6 +23,7 @@ import net.riking.dao.repo.NewsRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
+import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
@@ -33,9 +34,7 @@ import net.riking.entity.model.HotSearch;
 import net.riking.entity.model.NewsResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.ReportResult;
-import net.riking.entity.model.ReportSubscribeRel;
 import net.riking.entity.model.TopicResult;
-import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.SearchParams;
 import net.riking.service.AppUserService;
 import net.riking.service.ReportService;
@@ -90,6 +89,9 @@ public class SearchListServer {
 	@Autowired
 	HotSearchRepo hotSearchRepo;
 
+	@Autowired
+	TQuestionRelRepo tQuestionRelRepo;
+
 	/**
 	 * 显示热门资讯（6条）
 	 * @param params[userId]
@@ -118,6 +120,9 @@ public class SearchListServer {
 		}
 		if (StringUtils.isBlank(searchParams.getKeyWord())) {
 			return new AppResp("", CodeDef.SUCCESS);
+		}
+		if (StringUtils.isBlank(searchParams.getUserId())) {
+			searchParams.setUserId("");
 		}
 
 		switch (searchParams.getObjType()) {
@@ -155,25 +160,10 @@ public class SearchListServer {
 	 * @return
 	 */
 	private List<ReportResult> findReportByKeyWord(SearchParams searchParams) {
-		// 获取订阅关联表
-		List<ReportSubscribeRel> reportSubcribeRelList = reportSubscribeRelRepo
-				.findUserReportList(searchParams.getUserId());
 
-		List<ReportResult> reportResultList = reportService.getReportResultByParam(searchParams.getKeyWord());
-		for (int i = 0; i < reportResultList.size(); i++) {
-			ReportResult r = reportResultList.get(i);
-			for (ReportSubscribeRel rel : reportSubcribeRelList) {
-				if (r.getReportId().equals(rel.getReportId())) {
-					r.setIsSubscribe("1");// 已订阅
-					// 不显示状态
-					if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
-						r.setIsSubscribe(null);
-					}
-					reportResultList.remove(i);
-					reportResultList.add(i, r);
-				}
-			}
-		}
+		List<ReportResult> reportResultList = reportService.getReportResultByParam(searchParams.getKeyWord(),
+				searchParams.getUserId());
+
 		return reportResultList;
 	}
 
@@ -185,19 +175,12 @@ public class SearchListServer {
 	 */
 	private List<TopicResult> findTopicByKeyWord(SearchParams searchParams) {
 		List<TopicResult> topicResults = topicRepo.getTopicByParam(searchParams.getKeyWord());
-		List<String> topicIds = topicRelRepo.findByUser(searchParams.getUserId(), 0);// 0-关注
 
 		for (int i = 0; i < topicResults.size(); i++) {
 			TopicResult topicResult = topicResults.get(i);
 			// TODO 话题的关注数 后面从redis里面取
 			Integer followNum = topicRelRepo.followCount(topicResult.getId(), 0);
 			topicResult.setFollowNum(followNum);
-			topicResult.setIsFollow(0);// 0-未关注
-			for (String topicId : topicIds) {
-				if (topicResult.getId().equals(topicId)) {
-					topicResult.setIsFollow(1);// 1-已关注
-				}
-			}
 			// 不显示状态
 			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 				topicResult.setIsFollow(null);
@@ -215,12 +198,14 @@ public class SearchListServer {
 	 * @return
 	 */
 	private List<AppUserResult> findUserByKeyWord(SearchParams searchParams) {
-		List<AppUserResult> appUserResults = appUserRepo.getUserByParam(searchParams.getKeyWord());
+		List<AppUserResult> appUserResults = appUserRepo.getUserByParam(searchParams.getKeyWord(),
+				searchParams.getUserId());
 
 		for (int i = 0; i < appUserResults.size(); i++) {
 			AppUserResult appUserResult = appUserResults.get(i);
 			if (null != appUserResult.getPhotoUrl()) {
-				appUserResult.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResult.getPhotoUrl());
+				appUserResult
+						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 			}
 			// 等级
 			if (null != appUserResult.getExperience()) {
@@ -229,25 +214,13 @@ public class SearchListServer {
 			// TODO 用户的回答数 后面从redis里面取
 			Integer answerNum = questionAnswerRepo.answerCountByUserId(searchParams.getUserId());
 
-			appUserResult.setIsFollow(0);// 0-未关注
 			appUserResult.setAnswerNum(answerNum);// 回答数
-			// 显示关注状态
-			if (Const.OPT_TYPE_FOLLOW_STATUS == searchParams.getShowOptType()) {
-				List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(searchParams.getUserId());
-				for (UserFollowRel userFollowRel : userFollowRels) {
-					if (userFollowRel.getFollowStatus() == 0
-							&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
-						appUserResult.setIsFollow(1);// 已关注
-					} else if (userFollowRel.getFollowStatus() == 1
-							&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
-						appUserResult.setIsFollow(2);// 互相关注
-					}
-				}
-			}
 			// 显示邀请状态
 			if (Const.OPT_TYPE_INVITE_STATUS == searchParams.getShowOptType()) {
+				appUserResult.setIsFollow(null);
 				List<String> toUserIds = qAInviteRepo.findToIdByUIdAndQId(searchParams.getUserId(),
 						searchParams.getTqId());
+				appUserResult.setIsInvited(0);// 1-未邀请
 				for (String toUserId : toUserIds) {
 					if (appUserResult.getId().equals(toUserId)) {
 						appUserResult.setIsInvited(1);// 1-已邀请
@@ -258,6 +231,7 @@ public class SearchListServer {
 			// 不显示状态
 			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 				appUserResult.setIsFollow(null);
+				appUserResult.setIsInvited(null);
 			}
 			appUserResults.remove(i);
 			appUserResults.add(i, appUserResult);
@@ -286,10 +260,11 @@ public class SearchListServer {
 	private List<QuestResult> findQuestByKeyWord(SearchParams searchParams) {
 		List<QuestResult> questResults = topicQuestionRepo.getQuestByParam(searchParams.getKeyWord());
 		for (QuestResult questResult : questResults) {
-
+			Integer tqFollowNum = tQuestionRelRepo.followCount(questResult.getId(), Const.OBJ_OPT_GREE);
+			Integer qanswerNum = questionAnswerRepo.answerCount(questResult.getId());
 			// // TODO 后面从redis中取
-			// questResult.setTqFollowNum(tqFollowNum);
-			// questResult.setQanswerNum(qanswerNum);
+			questResult.setTqFollowNum(tqFollowNum);
+			questResult.setQanswerNum(qanswerNum);
 		}
 		return questResults;
 	}

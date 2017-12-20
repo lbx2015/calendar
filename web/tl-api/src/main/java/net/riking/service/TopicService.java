@@ -22,5 +22,5 @@ public interface TopicService {
 	 * @param end
 	 * @return
 	 */
-	public List<TopicResult> userFollowTopic(String userId, int begin, int end);
+	public List<TopicResult> userFollowTopic(String userId, int begin, int pageCount);
 }

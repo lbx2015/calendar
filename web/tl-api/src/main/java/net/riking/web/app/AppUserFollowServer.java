@@ -24,7 +24,6 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.TopicResult;
-import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.UserFollowParams;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
@@ -97,35 +96,25 @@ public class AppUserFollowServer {
 		int pageCount = (userFollowParams.getPcount() == null || userFollowParams.getPcount() == 0) ? 30
 				: userFollowParams.getPcount();
 
-		int pageBegin = userFollowParams.getPindex() == 0 ? 0 : userFollowParams.getPindex() + pageCount;
-		int pageEnd = pageBegin + pageCount;
+		int pageBegin = userFollowParams.getPindex() * pageCount;
+
 		switch (userFollowParams.getObjType()) {
 			// 问题
 			case Const.OBJ_TYPE_1:
 				List<QuestResult> questResults = tQuestionService.userFollowQuest(userFollowParams.getUserId(),
-						pageBegin, pageEnd);
+						pageBegin, pageCount);
 				return new AppResp(questResults, CodeDef.SUCCESS);
 			// 话题
 			case Const.OBJ_TYPE_2:
 				List<TopicResult> topicResults = topicService.userFollowTopic(userFollowParams.getUserId(), pageBegin,
-						pageEnd);
+						pageCount);
 
-				List<String> topicIds = topicRelRepo.findByUser(userFollowParams.getUserId(), Const.OBJ_OPT_FOLLOW);
-				for (TopicResult topicResult : topicResults) {
-					topicResult.setIsFollow(0);// 0-未关注
-					for (String topicId : topicIds) {
-						if (topicId.equals(topicResult.getId())) {
-							topicResult.setIsFollow(1);// 1-已关注
-						}
-					}
-				}
 				return new AppResp(topicResults, CodeDef.SUCCESS);
 			// 用户
 			case Const.OBJ_TYPE_3:
 				List<AppUserResult> userResults = appUserService.userFollowUser(userFollowParams.getUserId(), pageBegin,
-						pageEnd);
-				userResults = appendFollowStatus(userFollowParams.getUserId(), userResults);
-
+						pageCount);
+				userResults = appendUrlGrade(userFollowParams.getUserId(), userResults);
 				return new AppResp(userResults, CodeDef.SUCCESS);
 			default:
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
@@ -155,36 +144,27 @@ public class AppUserFollowServer {
 		int pageCount = (userFollowParams.getPcount() == null || userFollowParams.getPcount() == 0) ? 30
 				: userFollowParams.getPcount();
 
-		int pageBegin = userFollowParams.getPindex() == 0 ? 0 : userFollowParams.getPindex() + pageCount;
-		int pageEnd = pageBegin + pageCount;
+		int pageBegin = userFollowParams.getPindex() * pageCount;
+
 		// 用户
-		List<AppUserResult> userResults = appUserService.findMyFans(userFollowParams.getUserId(), pageBegin, pageEnd);
-		userResults = appendFollowStatus(userFollowParams.getUserId(), userResults);
+		List<AppUserResult> userResults = appUserService.findMyFans(userFollowParams.getUserId(), pageBegin, pageCount);
+		userResults = appendUrlGrade(userFollowParams.getUserId(), userResults);
 
 		return new AppResp(userResults, CodeDef.SUCCESS);
 
 	}
 
 	/**
-	 * 加用户关注状态
+	 * 加等级，图片地址
 	 * @param userId
 	 * @param userResults
 	 * @return
 	 */
-	private List<AppUserResult> appendFollowStatus(String userId, List<AppUserResult> userResults) {
-		List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(userId);
+	private List<AppUserResult> appendUrlGrade(String userId, List<AppUserResult> userResults) {
 		for (AppUserResult appUserResult : userResults) {
-			appUserResult.setIsFollow(0);// 未关注
-			for (UserFollowRel userFollowRel : userFollowRels) {
-				if (userFollowRel.getFollowStatus() == 0 && userFollowRel.getToUserId().equals(appUserResult.getId())) {
-					appUserResult.setIsFollow(1);// 已关注
-				} else if (userFollowRel.getFollowStatus() == 1
-						&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
-					appUserResult.setIsFollow(2);// 互相关注
-				}
-			}
 			if (null != appUserResult.getPhotoUrl()) {
-				appUserResult.setPhotoUrl(appUserService.getPhotoUrlPath() + appUserResult.getPhotoUrl());
+				appUserResult
+						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 			}
 			// 等级
 			if (null != appUserResult.getExperience()) {

@@ -5,16 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.entity.PageQuery;
+import net.riking.dao.ReportCompletedRelDao;
 import net.riking.dao.repo.RemindRepo;
 import net.riking.dao.repo.ReportCompletedRelRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
@@ -33,7 +28,6 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.Remind;
 import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportListResult;
-import net.riking.entity.model.ReportResult;
 import net.riking.entity.model.ReportSubscribeRel;
 import net.riking.entity.params.RCompletedRelParams;
 import net.riking.entity.params.ReportCompletedRelParam;
@@ -67,6 +61,9 @@ public class AppReportServer {
 	ReportCompletedRelRepo reportCompletedRelRepo;
 	
 	@Autowired
+	ReportCompletedRelDao reportCompletedRelDao;
+
+	@Autowired
 	SysDataService sysDataservice;
 
 	@Autowired
@@ -90,22 +87,15 @@ public class AppReportServer {
 	@RequestMapping(value = "/getReports", method = RequestMethod.POST)
 	public AppResp getReports_(@RequestBody Map<String, Object> params) {
 		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
-		//获取订阅关联表
-		List<ReportSubscribeRel> reportSubcribeRelList = reportSubscribeRelRepo.findSubscribeReportList(reportParams.getUserId());
-		List<ReportListResult> reportListResult = reportService.getReportByParam(reportParams.getReportName());
-		
-		for(ReportListResult rl : reportListResult){
-			List<ReportResult> reportList = rl.getList();
-			for(ReportResult r : reportList){
-				for(ReportSubscribeRel rel : reportSubcribeRelList){
-					if(r.getReportId().equals(rel.getReportId())){
-						r.setIsSubscribe("1");//已订阅
-					}
-				}
-			}
-			
+		if (StringUtils.isBlank(reportParams.getUserId())) {
+			reportParams.setUserId("");
 		}
-		
+		if (StringUtils.isBlank(reportParams.getReportName())) {
+			reportParams.setReportName("");
+		}
+		List<ReportListResult> reportListResult = reportService.getReportByParam(reportParams.getReportName(),
+				reportParams.getUserId());
+
 		return new AppResp(reportListResult, CodeDef.SUCCESS);
 	}
 	
@@ -119,11 +109,58 @@ public class AppReportServer {
 	@ApiOperation(value = "更新用户报表订阅", notes = "POST")
 	@RequestMapping(value = "/modifySubscribeReport", method = RequestMethod.POST)
 	public AppResp modifySubscribeReport_(@RequestBody Map<String, Object> params) {
+		SubscribeReportParam subscribeReport = Utils.map2Obj(params, SubscribeReportParam.class);
+		
+		//先删除不在本次订阅内的reportId
+		reportSubscribeRelRepo.deleteNotSubscribeByUserId(subscribeReport.getUserId(), subscribeReport.getReportIds());
+		
+		//查找该用户剩余订阅的数据
+		List<String> currentReportIds = reportSubscribeRelRepo.findByUserId(subscribeReport.getUserId());
+		
+		// 批量插入
+		for (String reportId : subscribeReport.getReportIds()) {
+			boolean isRn = true;
+			for(String cutReportId : currentReportIds){
+				if(reportId.equals(cutReportId)){
+					//订阅的报表已经在已订阅之内，不让其新增
+					isRn = false;
+				}
+				
+				if(isRn){
+					ReportSubscribeRel rel = new ReportSubscribeRel();
+					rel.setReportId(reportId);
+					rel.setUserId(subscribeReport.getUserId());
+					reportSubscribeRelRepo.save(rel);
+				}
+				
+			}
 		SubscribeReportParam relParam = Utils.map2Obj(params, SubscribeReportParam.class);
 		String[] arr = {};
 		if(StringUtils.isNotBlank(relParam.getReportIds())){
 			arr = relParam.getReportIds().split(",");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		}
+
 		String currentDate = DateUtils.getDate("yyyyMMdd");
 		reportService.addReportTaskByUserSubscribe(relParam.getUserId(), arr, currentDate);
 		return new AppResp(CodeDef.SUCCESS);
@@ -137,6 +174,7 @@ public class AppReportServer {
 		PageQuery page = new PageQuery();
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
+		List<ReportCompletedRelResult> list = reportCompletedRelDao.findExpireReportByPage(relParams.getUserId(), page);
 		List<ReportCompletedRelResult> list = reportService.findExpireReportByPage(relParams.getUserId(), page);
 		
 		return new AppResp(list, CodeDef.SUCCESS);
@@ -149,8 +187,11 @@ public class AppReportServer {
 		PageQuery page = new PageQuery();
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
+		List<ReportCompletedRelResult> list = reportCompletedRelDao.findHisCompletedReportByPage(relParams.getUserId(), page);
+		
 		List<ReportCompletedRelResult> list = reportService.findHisCompletedReportByPage(relParams.getUserId(), page);
 		
+
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
 	

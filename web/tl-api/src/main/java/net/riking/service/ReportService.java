@@ -10,21 +10,19 @@ import net.riking.entity.resp.CurrentReportTaskResp;
 import net.riking.entity.resp.ReportCompletedRelResult;
 
 public interface ReportService {
-	
-	
+
 	/***
-	 * 根据code和title，模糊查询报表集合
-	 * 不传责获取所有报表
+	 * 根据code和title，模糊查询报表集合 不传责获取所有报表
 	 * @author james.you
 	 * @version crateTime：2017年12月5日 上午10:45:13
 	 * @used TODO
 	 * @param reportName
 	 * @return
 	 */
-	List<ReportListResult> getReportByParam(String reportName);
-	
-	List<ReportResult> getReportResultByParam(String reportName);
-	
+	List<ReportListResult> getReportByParam(String reportName, String userId);
+
+	List<ReportResult> getReportResultByParam(String reportName, String userId);
+
 	List<ReportFrequency> findAppUserReportById(String userId);
 
 	/***

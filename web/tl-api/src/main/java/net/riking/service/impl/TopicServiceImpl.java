@@ -27,8 +27,8 @@ public class TopicServiceImpl implements TopicService {
 	}
 
 	@Override
-	public List<TopicResult> userFollowTopic(String userId, int begin, int end) {
-		return topicDao.userFollowTopic(userId, begin, end);
+	public List<TopicResult> userFollowTopic(String userId, int begin, int pageCount) {
+		return topicDao.userFollowTopic(userId, begin, pageCount);
 	}
 
 }

@@ -78,6 +78,32 @@ public class CodeDef {
 		public static final short REPORT_NOTTO_COMPLETEDATE = -986;
 
 		public static final String REPORT_NOTTO_COMPLETEDATE_DESC = "未到核销时间";
+
+// 签到失败
+		public static final short SIGN_ERROR = -986;
+
+		public static final String SIGN_ERROR_DESC = "签到失败";
+
+		// 邮箱发送失败
+		public static final short EMAIL_ERROR = -985;
+
+		public static final String EMAIL_ERROR_DESC = "邮箱发送失败";
+
+<<<<<<< .mine
+
+
+
+
+
+
+=======
+
+		// 邮箱发送失败
+		public static final short EMAIL_ERROR = -985;
+
+		public static final String EMAIL_ERROR_DESC = "邮箱发送失败";
+
+>>>>>>> .theirs
 	}
 
 }

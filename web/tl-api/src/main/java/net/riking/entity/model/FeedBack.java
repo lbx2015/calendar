@@ -37,32 +37,25 @@ public class FeedBack extends BaseProp {
 	@JsonProperty("feedBackId")
 	private String id;
 
-	@Comment("标题")
-	@Column(name = "title", length = 32)
-	private String title;
-
 	@Comment("反馈内容")
-	@Column(name = "feedback_describe")
-	private String feedbackDescribe;
+	@Column(name = "content")
+	private String content;
+
+	@Comment("多个图片名称，以','逗号分隔")
+	@Column(name = "imgs")
+	private String imgs;
 
 	@Comment("是否采纳:0-未操作；1-未采纳；2-采纳")
+	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "accept")
 	private Integer accept;
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getFeedbackDescribe() {
-		return feedbackDescribe;
-	}
-
-	public void setFeedbackDescribe(String feedbackDescribe) {
-		this.feedbackDescribe = feedbackDescribe;
+	public FeedBack(String content, String imgs, String createBy) {
+		super();
+		this.content = content;
+		this.imgs = imgs;
+		this.setCreatedBy(createBy);
+		this.setModifiedBy(createBy);
 	}
 
 	public String getId() {
@@ -71,6 +64,22 @@ public class FeedBack extends BaseProp {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getImgs() {
+		return imgs;
+	}
+
+	public void setImgs(String imgs) {
+		this.imgs = imgs;
 	}
 
 	public Integer getAccept() {

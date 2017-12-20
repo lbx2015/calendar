@@ -1,6 +1,8 @@
 package net.riking.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,8 +28,10 @@ import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportListResult;
 import net.riking.entity.model.ReportResult;
+
 import net.riking.entity.model.ReportSubmitCaliber;
 import net.riking.entity.model.ReportSubscribeRel;
+import net.riking.entity.model.ReportTypeListResult;
 import net.riking.entity.model.SysDays;
 import net.riking.entity.resp.CurrentReportTaskResp;
 import net.riking.entity.resp.ReportCompletedRelResult;
@@ -64,35 +68,71 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public List<ReportListResult> getReportByParam(String reportName) {
+	public List<ReportListResult> getReportByParam(String reportName, String userId) {
 		// TODO Auto-generated method stub
 
-		List<ReportResult> list = reportDao.getAllReportByParams(reportName);
-		
-		Map<String, List<ReportResult>> m = new HashMap<String, List<ReportResult>>();
-		List<ReportResult> rList = null;
-		for (ReportResult r : list) {
-			rList = m.get(r.getReportType().toUpperCase());
-			if (rList == null) {
-				rList = new ArrayList<ReportResult>();
-			}
-			rList.add(r);
-			m.put(r.getReportType().toUpperCase(), rList);
-		}
-		
+		List<ReportResult> list = reportDao.getAllReportByParams(reportName, userId);
 
-		List<ReportListResult> result = new ArrayList<ReportListResult>();
-		Iterator<String> it = m.keySet().iterator();
-		while(it.hasNext()){
-			String key = it.next();
-			List<ReportResult> li = m.get(key);
-			ReportListResult reportListResult = new ReportListResult();
-			reportListResult.setAgenceCode(key);
-			reportListResult.setList(li);
-			result.add(reportListResult);
+		List<ReportTypeListResult> typeListResults = new ArrayList<ReportTypeListResult>();
+
+		List<ReportListResult> reportListResults = new ArrayList<ReportListResult>();
+
+		for (int i = 0; i < list.size(); i++) {
+			// 塞ReportTypeListResult第二层数据
+			if (typeListResults.size() == 0) {
+				setReportTypeListResult(list, i, typeListResults);
+			}
+			for (int j = 0; j < typeListResults.size(); j++) {
+				// 把报表类型相等并且报表所属模块相等的归一类
+				if (list.get(i).getReportType().toUpperCase().equals(typeListResults.get(j).getAgenceCode())
+						&& list.get(i).getModuleType().equals(typeListResults.get(j).getModuleType())) {
+					typeListResults.get(j).getList().add(list.get(i));
+				} else {
+					if (j == typeListResults.size() - 1) {
+						setReportTypeListResult(list, i, typeListResults);
+					}
+				}
+				// 塞ReportListResult第三层数据,在第二层数据塞完才执行
+				if (list.size() - 1 == i) {
+					if (reportListResults.size() == 0) {
+						setReportListResult(typeListResults, j, reportListResults);
+					}
+					for (int k = 0; k < reportListResults.size(); k++) {
+						if (reportListResults.get(k).getAgenceCode().toUpperCase()
+								.equals(typeListResults.get(j).getAgenceCode())) {
+							reportListResults.get(k).getList().add(typeListResults.get(j));
+						} else {
+							if (k == reportListResults.size() - 1) {
+								setReportListResult(typeListResults, j, reportListResults);
+							}
+						}
+					}
+				}
+			}
 		}
-		
-		return result;
+
+		return reportListResults;
+	}
+
+	private void setReportListResult(List<ReportTypeListResult> typeListResults, int j,
+			List<ReportListResult> reportListResults) {
+		ReportListResult reportListResult = new ReportListResult();
+		reportListResult.setAgenceCode(typeListResults.get(j).getAgenceCode());
+		List<ReportTypeListResult> results = new ArrayList<ReportTypeListResult>();
+		results.add(typeListResults.get(j));
+		reportListResult.setList(results);
+		reportListResults.add(reportListResult);
+	}
+
+	private void setReportTypeListResult(List<ReportResult> list, int i, List<ReportTypeListResult> typeListResults) {
+		ReportTypeListResult typeListResult = new ReportTypeListResult();
+		typeListResult.setAgenceCode(list.get(i).getReportType());
+		typeListResult.setModuleType(list.get(i).getModuleType());
+		typeListResult.setModuleTypeName(list.get(i).getModuleTypeName());
+		List<ReportResult> results = new ArrayList<ReportResult>();
+		results.add(list.get(i));
+		typeListResult.setList(results);
+		typeListResults.add(typeListResult);
 	}
 
 	@Override

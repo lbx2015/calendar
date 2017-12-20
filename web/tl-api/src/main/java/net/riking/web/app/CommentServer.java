@@ -168,7 +168,7 @@ public class CommentServer {
 				qACReply.setContent(commentParams.getContent());
 				qACReply.setReplyId(commentParams.getReplyId());
 				qACReply.setToUserId(commentParams.getToUserId());
-				qACReply.setIsAudit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
+				qACReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
 				qACReply = qACReplyRepo.save(qACReply);
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
@@ -198,7 +198,7 @@ public class CommentServer {
 				ncReply.setContent(commentParams.getContent());
 				ncReply.setReplyId(commentParams.getReplyId());
 				ncReply.setToUserId(commentParams.getToUserId());
-				ncReply.setIsAudit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
+				ncReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
 				ncReply = nCReplyRepo.save(ncReply);
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();

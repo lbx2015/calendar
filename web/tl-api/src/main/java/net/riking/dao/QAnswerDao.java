@@ -1,5 +1,8 @@
 package net.riking.dao;
 
+import java.util.List;
+
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestionAnswer;
 
 public interface QAnswerDao {
@@ -9,5 +12,7 @@ public interface QAnswerDao {
 	 * @return
 	 */
 	public QuestionAnswer getAContentByOne(String questionId);
+
+	public List<QAnswerResult> findCollectQAnswer(String userId, int start, int pageCount);
 
 }

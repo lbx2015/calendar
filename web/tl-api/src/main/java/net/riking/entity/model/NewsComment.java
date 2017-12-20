@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -82,7 +83,7 @@ public class NewsComment extends BaseAuditProp {
 	List<NCReply> ncReplyList;
 
 	public NewsComment(String id, Date createdTime, Date modifiedTime, String userId, String newsId, String content,
-			String userName, String photoUrl, Integer experience) {
+			String userName, String photoUrl, Integer experience, String ncId) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
@@ -93,6 +94,11 @@ public class NewsComment extends BaseAuditProp {
 		this.userName = userName;
 		this.photoUrl = photoUrl;
 		this.experience = experience;
+		if (StringUtils.isNotBlank(ncId)) {
+			isAgree = 1;
+		} else {
+			isAgree = 0;
+		}
 	}
 
 	public NewsComment() {

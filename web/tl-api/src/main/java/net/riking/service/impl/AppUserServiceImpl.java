@@ -25,6 +25,7 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.Email;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
@@ -74,7 +75,7 @@ public class AppUserServiceImpl implements AppUserService {
 		/* 详细信息 */
 		detail.setId(uuid);
 		detail.setSex(Const.USER_SEX_MAN);
-		detail.setPhotoUrl(Const.DEFAULT_PHOTO_URL);// 默认头像Url
+		// detail.setPhotoUrl(Const.DEFAULT_PHOTO_URL);// 默认头像Url
 		detail.setIntegral(0);
 		detail.setExperience(0);
 		detail.setIsSubscribe(0);
@@ -91,7 +92,7 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-	public String uploadPhoto(MultipartFile mFile, String userId) throws RuntimeException {
+	public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException {
 		// String suffix =
 		// mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
 		String fileName = UuidUtils.random() + mFile.getOriginalFilename();
@@ -99,7 +100,7 @@ public class AppUserServiceImpl implements AppUserService {
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH;
+			String path = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + url;
 			File dir = new File(path);
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -123,6 +124,12 @@ public class AppUserServiceImpl implements AppUserService {
 				throw new RuntimeException(CodeDef.EMP.GENERAL_ERR + "");
 			}
 		}
+		return fileName;
+	}
+
+	@Override
+	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName) {
+
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(userId);
 		String oldFileName = appUserDetail.getPhotoUrl();
 		String oleFilePath = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH
@@ -208,21 +215,32 @@ public class AppUserServiceImpl implements AppUserService {
 	 * @see net.riking.service.AppUserService#getPhotoUrlPath()
 	 */
 	@Override
-	public String getPhotoUrlPath() {
+	public String getPhotoUrlPath(String photoPath) {
 		// 截取资源访问路径
 		String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
 		String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
-		projectPath = projectPath + "/" + projectName + Const.TL_PHOTO_PATH;
+		projectPath = projectPath + "/" + projectName + photoPath;
 		return projectPath;
 	}
 
 	@Override
-	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageEnd) {
-		return appUserDao.userFollowUser(userId, pageBegin, pageEnd);
+	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {
+		return appUserDao.userFollowUser(userId, pageBegin, pageCount);
 	}
 
 	@Override
-	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageEnd) {
-		return appUserDao.findMyFans(userId, pageBegin, pageEnd);
+	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount) {
+		return appUserDao.findMyFans(userId, pageBegin, pageCount);
 	}
+
+	@Override
+	public Email getMyEmail() {
+		String mySmtpHost = sysDataService.getDict("T_EMAIL", "EMAIL", "MYSMTPHOST").getValu().trim();
+		String myPassWord = sysDataService.getDict("T_EMAIL", "EMAIL", "MYPASSWORD").getValu().trim();
+		String myAccount = sysDataService.getDict("T_EMAIL", "EMAIL", "MYACCOUNT").getValu().trim();
+		String sender = sysDataService.getDict("T_EMAIL", "EMAIL", "SENDER").getValu().trim();
+		Email email = new Email(myAccount, myPassWord, mySmtpHost, sender);
+		return email;
+	}
+
 }

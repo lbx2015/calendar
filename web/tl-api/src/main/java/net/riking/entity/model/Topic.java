@@ -76,13 +76,13 @@ public class Topic extends BaseAuditProp {
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
 
-	public Topic(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
+	public Topic(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
 			String topicUrl) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAudit(isAudit);
+		this.setIsAduit(isAduit);
 		this.title = title;
 		this.content = content;
 		this.topicUrl = topicUrl;

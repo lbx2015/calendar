@@ -9,27 +9,27 @@ public class ReportResult extends BaseEntity {
 
 	@Comment("报表Id")
 	private String reportId;
-	
+
 	@JsonIgnore
 	@Comment("报表类型")
 	private String reportType;
-	
+
 	@JsonIgnore
 	@Comment("报表类型中文名称")
 	private String reportTypeName;
-	
+
 	@Comment("报表种类")
 	private String reportKind;
-	
+
 	@Comment("报表种类名称")
 	private String reportKindName;
-	
+
 	@Comment("报表所属模块")
 	private String moduleType;
-	
+
 	@Comment("报表所属模块名称")
 	private String moduleTypeName;
-	
+
 	@Comment("机构")
 	private String agenceCode;
 
@@ -43,7 +43,7 @@ public class ReportResult extends BaseEntity {
 	private String title;
 
 	@Comment("是否订阅")
-	private String isSubscribe;
+	private Integer isSubscribe;
 
 	public String getReportTypeName() {
 		return reportTypeName;
@@ -133,11 +133,11 @@ public class ReportResult extends BaseEntity {
 		this.title = title;
 	}
 
-	public String getIsSubscribe() {
+	public Integer getIsSubscribe() {
 		return isSubscribe;
 	}
 
-	public void setIsSubscribe(String isSubscribe) {
+	public void setIsSubscribe(Integer isSubscribe) {
 		this.isSubscribe = isSubscribe;
 	}
 

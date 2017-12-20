@@ -1,8 +1,10 @@
 package net.riking.service;
 
+import java.util.Map;
+
 import net.riking.entity.model.SignIn;
 
 public interface SignInService {
 
-	public Integer signIn(SignIn signIn, String userId, Integer integral);
+	public Map<String, Object> signIn(SignIn signIn, String userId, Integer integral);
 }

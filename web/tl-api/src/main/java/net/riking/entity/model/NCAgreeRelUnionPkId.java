@@ -18,15 +18,18 @@ public class NCAgreeRelUnionPkId extends BaseEntity {
 
 	private String ncId;
 
+	private Integer dataType;
+
 	public NCAgreeRelUnionPkId() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public NCAgreeRelUnionPkId(String userId, String ncId) {
+	public NCAgreeRelUnionPkId(String userId, String ncId, Integer dataType) {
 		super();
 		this.userId = userId;
 		this.ncId = ncId;
+		this.dataType = dataType;
 	}
 
 	public String getUserId() {
@@ -45,10 +48,19 @@ public class NCAgreeRelUnionPkId extends BaseEntity {
 		this.ncId = ncId;
 	}
 
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dataType == null) ? 0 : dataType.hashCode());
 		result = prime * result + ((ncId == null) ? 0 : ncId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
@@ -63,6 +75,11 @@ public class NCAgreeRelUnionPkId extends BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		NCAgreeRelUnionPkId other = (NCAgreeRelUnionPkId) obj;
+		if (dataType == null) {
+			if (other.dataType != null)
+				return false;
+		} else if (!dataType.equals(other.dataType))
+			return false;
 		if (ncId == null) {
 			if (other.ncId != null)
 				return false;

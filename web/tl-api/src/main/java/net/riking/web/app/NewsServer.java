@@ -147,7 +147,7 @@ public class NewsServer {
 			newsInfo.setCommentNumber(count);
 			// 截取资源访问路径
 			if (null != newsInfo.getPhotoUrl()) {
-				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath() + newsInfo.getPhotoUrl());
+				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
 			}
 			// 等级
 			if (null != newsInfo.getExperience()) {
@@ -185,7 +185,7 @@ public class NewsServer {
 		}
 		// 截取资源访问路径
 		if (null != newsInfo.getPhotoUrl()) {
-			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath() + newsInfo.getPhotoUrl());
+			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
 		}
 		// 等级
 		if (null != newsInfo.getExperience()) {
@@ -202,15 +202,15 @@ public class NewsServer {
 	@ApiOperation(value = "获取资讯详情评论列表", notes = "POST")
 	@RequestMapping(value = "/findNewsCommentList", method = RequestMethod.POST)
 	public AppResp findNewsCommentList(@RequestBody NewsParams newsParams) {
-		String pattern = "yyyyMMddHHmmssSSS";
 		// 根据NewsId查出资讯详情评论列表（30条）
 		List<NewsComment> newsCommentInfoList = newsCommentRepo.findByNewsId(newsParams.getNewsId(),
-				new PageRequest(0, 30));
+				newsParams.getUserId(), new PageRequest(0, 30));
 
 		// 评论列表
 		for (NewsComment newsCommentInfoNew : newsCommentInfoList) {
 			if (null != newsCommentInfoNew.getPhotoUrl()) {
-				newsCommentInfoNew.setPhotoUrl(appUserService.getPhotoUrlPath() + newsCommentInfoNew.getPhotoUrl());
+				newsCommentInfoNew.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfoNew.getPhotoUrl());
 			}
 			// 等级
 			if (null != newsCommentInfoNew.getExperience()) {
@@ -220,21 +220,15 @@ public class NewsServer {
 			List<NCReply> nCommentReplyInfoList = nCReplyRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
-				 AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getFromUserId()); 
-				if (null != appUser) {
-					FromUser fromUser = new FromUser();
-					fromUser.setUserId(nCommentReplyInfo.getFromUserId());
-					fromUser.setUserName(appUser.getUserName());
-					nCommentReplyInfo.setFromUser(fromUser);
-				}
+				FromUser fromUser = new FromUser();
+				fromUser.setUserId(nCommentReplyInfo.getFromUserId());
+				fromUser.setUserName(nCommentReplyInfo.getUserName());
+				nCommentReplyInfo.setFromUser(fromUser);
 				if (null != nCommentReplyInfo.getToUserId()) {
-					AppUser apptoUser = appUserRepo.findOne(nCommentReplyInfo.getToUserId());
-					if (null != apptoUser) {
-						ToUser toUser = new ToUser();
-						toUser.setUserId(nCommentReplyInfo.getToUserId());
-						toUser.setUserName(apptoUser.getUserName());
-						nCommentReplyInfo.setToUser(toUser);
-					}
+					ToUser toUser = new ToUser();
+					toUser.setUserId(nCommentReplyInfo.getToUserId());
+					toUser.setUserName(nCommentReplyInfo.getToUserName());
+					nCommentReplyInfo.setToUser(toUser);
 				}
 
 			}
@@ -244,15 +238,6 @@ public class NewsServer {
 			Integer agree = 0;
 			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
-			newsCommentInfoNew.setIsAgree(0);// 0-未点赞
-			if (StringUtils.isNotBlank(newsParams.getUserId())) {
-				List<String> ncIds = nCAgreeRelRepo.findByUserId(newsParams.getUserId(), 1);// 点赞
-				for (String ncId : ncIds) {
-					if (newsCommentInfoNew.getId().equals(ncId)) {
-						newsCommentInfoNew.setIsAgree(1);// 1-已点赞
-					}
-				}
-			}
 		}
 		return new AppResp(newsCommentInfoList, CodeDef.SUCCESS);
 	}
@@ -272,7 +257,7 @@ public class NewsServer {
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
-		newsCommentInfo.setIsAudit(0);// 0-未审核，1-已审核,2-不通过
+		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
 		newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
 
 		if (null != appUser) {
@@ -292,7 +277,8 @@ public class NewsServer {
 			}
 		}
 		if (null != newsCommentInfo.getPhotoUrl()) {
-			newsCommentInfo.setPhotoUrl(appUserService.getPhotoUrlPath() + newsCommentInfo.getPhotoUrl());
+			newsCommentInfo
+					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfo.getPhotoUrl());
 		}
 		// 等级
 		if (null != newsCommentInfo.getExperience()) {
@@ -326,6 +312,7 @@ public class NewsServer {
 					NewsRel newsRel = new NewsRel();
 					newsRel.setUserId(newsParams.getUserId());
 					newsRel.setNewsId(newsParams.getNewsId());
+					newsRel.setDataType(2);
 					newsRelRepo.save(newsRel);
 				}
 				break;
