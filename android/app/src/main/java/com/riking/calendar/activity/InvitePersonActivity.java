@@ -21,6 +21,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZPreference;
@@ -44,8 +45,8 @@ public class InvitePersonActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     View localSearchTitle;
     EditText editText;
-    List<ReportFrequency> orderReports;
-    List<ReportFrequency> disOrderReports;
+    List<ReportResult> orderReports;
+    List<ReportResult> disOrderReports;
     ImageView clearSearchInputImage;
     private boolean subscribedReportsChanged = false;
     public String questionId;

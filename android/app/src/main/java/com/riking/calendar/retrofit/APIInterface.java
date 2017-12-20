@@ -47,7 +47,7 @@ import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportListResult;
-import com.riking.calendar.pojo.server.ReportSubscribeRel;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -57,10 +57,8 @@ import com.riking.calendar.pojo.synch.SynResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -70,7 +68,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -198,11 +195,6 @@ public interface APIInterface {
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
 
-    /**
-     * find the repords of user ordered
-     */
-    @POST("/appUserReport/findUserReportList")
-    Call<ResponseModel<List<ReportFrequency>>> findUserReportList(@Body AppUser user);
 
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> userAddReportEdit(@Body AppUserReportResult reportResult);
@@ -349,14 +341,14 @@ public interface APIInterface {
     Call<ResponseModel<String>> modifyUserInfo(@Body UpdUserParams params);
 
     @POST("report/findSubscribeReportList")
-    Call<ResponseModel<ReportSubscribeRel>> modifyUserInfo(@Body HashMap<String, String> params);
+    Call<ResponseModel<List<ReportResult>>> findSubscribeReportList(@Body AppUser params);
 
     @POST("common/getAllEmailSuffix")
     Call<ResponseModel<List<String>>> getAllEmailSuffix();
 
     @Multipart
     @POST("feedBack/publish")
-    Call<ResponseModel<String>> feedBackPublish(@Part  List<MultipartBody.Part> file, @Part("userId") String id, @Part("content") String content);
+    Call<ResponseModel<String>> feedBackPublish(@Part List<MultipartBody.Part> file, @Part("userId") String id, @Part("content") String content);
 
     /**
      * 可根据报表名称查询相关报表

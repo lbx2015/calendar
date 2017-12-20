@@ -28,6 +28,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportListResult;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
@@ -43,7 +44,7 @@ import java.util.List;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class OrderReportActivity extends AppCompatActivity implements SubscribeReport<ReportFrequency> {
+public class OrderReportActivity extends AppCompatActivity implements SubscribeReport<ReportResult> {
     public ZReportFlowLayout zReportFlowLayout;
     public TextView editButton;
     public boolean editMode = false;
@@ -59,7 +60,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     View firstGroupDivider;
     View secondGroupDivider;
     //user subscriber reports
-    List<ReportFrequency> mySubscribedReports;
+    List<ReportResult> mySubscribedReports;
     FrameLayout myOrderLayout;
     View searchButton;
 
@@ -162,7 +163,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             appUserReportResult.userId = ZPreference.pref.getString(CONST.USER_ID, "");
             appUserReportResult.list = new ArrayList<>();
 
-            for (ReportFrequency r : mySubscribedReports) {
+            for (ReportResult r : mySubscribedReports) {
                 appUserReportResult.list.add(r.reportId);
             }
 
@@ -206,8 +207,8 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
             ZPreference.put(CONST.ORDER_REPORTS_CHANGED, false);
 
             Gson gson = new Gson();
-            final ReportFrequency[] orderReports = gson.fromJson(ZPreference.pref.getString(CONST.ORDER_REPORTS, ""), ReportFrequency[].class);
-            final ReportFrequency[] disOrderReports = gson.fromJson(ZPreference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), ReportFrequency[].class);
+            final ReportResult[] orderReports = gson.fromJson(ZPreference.pref.getString(CONST.ORDER_REPORTS, ""), ReportResult[].class);
+            final ReportResult[] disOrderReports = gson.fromJson(ZPreference.pref.getString(CONST.DIS_ORDER_REPORTS, ""), ReportResult[].class);
             boolean reportAdded = false;
             if (orderReports != null) {
                 for (int i = 0; i < orderReports.length; i++) {
@@ -280,9 +281,9 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         AppUser u = new AppUser();
         //set user userId
         u.userId = ZPreference.pref.getString(CONST.USER_ID, "");
-        APIClient.findUserReportList(u, new ZCallBackWithFail<ResponseModel<List<ReportFrequency>>>() {
+        APIClient.findUserReportList(u, new ZCallBackWithFail<ResponseModel<List<ReportResult>>>() {
             @Override
-            public void callBack(ResponseModel<List<ReportFrequency>> response) {
+            public void callBack(ResponseModel<List<ReportResult>> response) {
                 if (failed) {
 
                 } else {
@@ -299,12 +300,12 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         if (mySubscribedReports.size() > 0) {
             myOrderLayout.setVisibility(View.VISIBLE);
             for (int i = 0; i < mySubscribedReports.size(); i++) {
-                final ReportFrequency appUserReportRel = mySubscribedReports.get(i);
+                final ReportResult appUserReportRel = mySubscribedReports.get(i);
                 //inflate the item view from layout xml
                 final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(OrderReportActivity.this).inflate(R.layout.my_order_report_item, null);
                 root.init();
                 //set data
-                root.reportNameTV.setText(appUserReportRel.reportName);
+                root.reportNameTV.setText(appUserReportRel.code);
                 root.checkImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -332,17 +333,17 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
         }
     }
 
-    public void orderReport(ReportFrequency report) {
+    public void orderReport(ReportResult report) {
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
-        a.reportName = report.reportName;
+        a.reportName = report.title;
         mySubscribedReports.add(report);
         enterEditMode();
     }
 
-    public void unorderReport(ReportFrequency report) {
-        for (ReportFrequency r : mySubscribedReports) {
+    public void unorderReport(ReportResult report) {
+        for (ReportResult r : mySubscribedReports) {
             if (r.reportId.equals(report.reportId)) {
                 mySubscribedReports.remove(r);
                 break;
@@ -352,10 +353,10 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     }
 
     @Override
-    public boolean isAddedToMyOrder(ReportFrequency report) {
+    public boolean isAddedToMyOrder(ReportResult report) {
         boolean added = false;
         if (mySubscribedReports != null) {
-            for (ReportFrequency r : mySubscribedReports) {
+            for (ReportResult r : mySubscribedReports) {
                 if (r.reportId.equals(report.reportId)) {
                     added = true;
                     break;

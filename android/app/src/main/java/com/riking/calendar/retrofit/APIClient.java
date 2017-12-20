@@ -51,6 +51,7 @@ import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportListResult;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -554,8 +555,8 @@ public class APIClient {
         apiInterface.getAllReports(user).enqueue(c);
     }
 
-    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportFrequency>>> c) {
-        apiInterface.findUserReportList(user).enqueue(c);
+    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportResult>>> c) {
+        apiInterface.findSubscribeReportList(user).enqueue(c);
     }
 
     public static void userAddReportEdit(AppUserReportResult reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
