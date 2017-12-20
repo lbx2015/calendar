@@ -43,6 +43,7 @@ public class NewsRel extends BaseEntity {
 	@Column(name = "news_id", nullable = false)
 	private String newsId;
 
+	@Id
 	@Comment("数据类型：2-收藏")
 	@org.hibernate.annotations.ColumnDefault("2")
 	@Column(name = "data_type", insertable = false, nullable = false, precision = 1)

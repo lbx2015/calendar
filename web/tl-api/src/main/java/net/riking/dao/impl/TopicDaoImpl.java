@@ -24,10 +24,40 @@ public class TopicDaoImpl implements TopicDao {
 	private EntityManager entityManager;
 
 	@Override
-	public List<TopicResult> findTopicOfInterest(String userId, int begin, int end) {
+	public List<TopicResult> findTopicOfInterest(String userId, String topicIds, int begin, int end) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call findTopicOfInterest(?,?,?)";
+		String sql = "call findTopicOfInterest(?,?,?,?)";
+		PreparedStatement pstmt = null;
+		List<TopicResult> list = new ArrayList<TopicResult>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(userId))
+				userId = "";
+			pstmt.setString(1, userId);
+			pstmt.setString(2, topicIds);
+			pstmt.setInt(3, begin);
+			pstmt.setInt(4, end);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				TopicResult topicResult = new TopicResult();
+				topicResult.setId("id");
+				topicResult.setTopicUrl(rs.getString("topicUrl"));
+				topicResult.setTitle(rs.getString("title"));
+				list.add(topicResult);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+
+	@Override
+	public List<TopicResult> userFollowTopic(String userId, int begin, int pageCount) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call userFollowTopic(?,?,?)";
 		PreparedStatement pstmt = null;
 		List<TopicResult> list = new ArrayList<TopicResult>();
 		try {
@@ -36,13 +66,15 @@ public class TopicDaoImpl implements TopicDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, begin);
-			pstmt.setInt(3, end);
+			pstmt.setInt(3, pageCount);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TopicResult topicResult = new TopicResult();
-				topicResult.setId("id");
+				topicResult.setId("topicId");
 				topicResult.setTopicUrl(rs.getString("topicUrl"));
 				topicResult.setTitle(rs.getString("title"));
+				topicResult.setFollowNum(rs.getInt("followNum"));
+				topicResult.setIsFollow(1);// 已关注
 				list.add(topicResult);
 			}
 		} catch (SQLException e) {

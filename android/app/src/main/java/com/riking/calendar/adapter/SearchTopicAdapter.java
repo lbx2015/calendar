@@ -36,12 +36,12 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<SearchTopicViewHold
     @Override
     public void onBindViewHolder(final SearchTopicViewHolder h, int i) {
         TopicResult topicResult = mList.get(i);
-
-        h.userName.setText("银民银行数据大集中");
+        h.title.setText("银民银行数据大集中");
+        h.summary.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
         RequestOptions options = new RequestOptions();
-        Glide.with(h.userImage.getContext()).load(R.drawable.img_user_head)
+        Glide.with(h.topicImage.getContext()).load(R.drawable.img_user_head)
                 .apply(options.fitCenter())
-                .into(h.userImage);
+                .into(h.topicImage);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override

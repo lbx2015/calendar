@@ -2,10 +2,13 @@ package net.riking.web.app;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +28,7 @@ import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
+import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -32,9 +36,11 @@ import net.riking.entity.model.QACReply;
 import net.riking.entity.model.QAComment;
 import net.riking.entity.model.QAnswerRel;
 import net.riking.entity.model.QuestionAnswer;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
+import net.riking.service.AppUserService;
 
 /**
  * 
@@ -64,6 +70,9 @@ public class QAnswerServer {
 	NewsRelRepo newsRelRepo;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	QACommentRepo qACommentRepo;
 
 	@Autowired
@@ -81,6 +90,12 @@ public class QAnswerServer {
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
 
+	@Autowired
+	AppUserService appUserService;
+
+	@Autowired
+	UserFollowRelRepo userFollowRelRepo;
+
 	/**
 	 * 问题回答详情
 	 * @param params[userId,questAnswerId]
@@ -90,20 +105,46 @@ public class QAnswerServer {
 	@RequestMapping(value = "/getQAnswer", method = RequestMethod.POST)
 	public AppResp getQAnswer(@RequestBody QAnswerParams qAnswerParams) {
 		QuestionAnswer questionAnswer = questionAnswerRepo.getById(qAnswerParams.getQuestAnswerId());
-		questionAnswer.setIsAgree(0);// 0-未点赞
-		questionAnswer.setIsCollect(0);// 0-未收藏
-		if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
-			List<QAnswerRel> rels = qAnswerRelRepo.findByUser(qAnswerParams.getUserId());
-			for (QAnswerRel rel : rels) {
-				if (Const.OBJ_OPT_GREE == rel.getDataType()) {
-					if (questionAnswer.getId().equals(rel.getQaId())) {
-						questionAnswer.setIsAgree(1);// 1-已点赞
-					}
-				} else if (Const.OBJ_OPT_COLLECT == rel.getDataType()) {
-					if (questionAnswer.getId().equals(rel.getQaId())) {
-						questionAnswer.setIsCollect(1);// 1-已收藏
+		if (questionAnswer != null) {
+			// TODO 后面优化从redis中取
+			Integer commentNum = qACommentRepo.commentCount(questionAnswer.getId());
+			Integer agreeNum = qAnswerRelRepo.agreeCount(qAnswerParams.getQuestAnswerId(), 1);// 1-点赞
+			questionAnswer.setCommentNum(commentNum);
+			questionAnswer.setAgreeNum(agreeNum);
+			questionAnswer.setIsAgree(0);// 0-未点赞
+			questionAnswer.setIsCollect(0);// 0-未收藏
+			if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
+				List<QAnswerRel> rels = qAnswerRelRepo.findByUser(qAnswerParams.getUserId());
+				for (QAnswerRel rel : rels) {
+					if (Const.OBJ_OPT_GREE == rel.getDataType()) {
+						if (questionAnswer.getId().equals(rel.getQaId())) {
+							questionAnswer.setIsAgree(1);// 1-已点赞
+						}
+					} else if (Const.OBJ_OPT_COLLECT == rel.getDataType()) {
+						if (questionAnswer.getId().equals(rel.getQaId())) {
+							questionAnswer.setIsCollect(1);// 1-已收藏
+						}
 					}
 				}
+			}
+			questionAnswer.setIsFollow(0);// 未关注
+			List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(qAnswerParams.getUserId());
+			for (UserFollowRel userFollowRel : userFollowRels) {
+				if (userFollowRel.getFollowStatus() == 1
+						&& userFollowRel.getToUserId().equals(questionAnswer.getUserId())) {
+					questionAnswer.setIsFollow(1);// 已关注
+				} else if (userFollowRel.getFollowStatus() == 2
+						&& userFollowRel.getToUserId().equals(questionAnswer.getUserId())) {
+					questionAnswer.setIsFollow(2);// 互相关注
+				}
+			}
+			if (null != questionAnswer.getPhotoUrl()) {
+				questionAnswer.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
+			}
+			// 等级
+			if (null != questionAnswer.getExperience()) {
+				questionAnswer.setGrade(appUserService.transformExpToGrade(questionAnswer.getExperience()));
 			}
 		}
 		return new AppResp(questionAnswer, CodeDef.SUCCESS);
@@ -132,7 +173,7 @@ public class QAnswerServer {
 		qaComment.setContent(qAnswerParams.getContent());
 		qaComment.setCreatedBy(qAnswerParams.getUserId());
 		qaComment.setModifiedBy(qAnswerParams.getUserId());
-		qaComment.setIsAudit(0);// 未审核
+		qaComment.setIsAduit(0);// 未审核
 		qACommentRepo.save(qaComment);
 		AppUser appUser = appUserRepo.findOne(qaComment.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(qaComment.getUserId());
@@ -150,6 +191,13 @@ public class QAnswerServer {
 					qaComment.setIsAgree(1);// 1-已点赞
 				}
 			}
+		}
+		if (null != qaComment.getPhotoUrl()) {
+			qaComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaComment.getPhotoUrl());
+		}
+		// 等级
+		if (null != qaComment.getExperience()) {
+			qaComment.setGrade(appUserService.transformExpToGrade(qaComment.getExperience()));
 		}
 		return new AppResp(qaComment, CodeDef.SUCCESS);
 	}
@@ -223,25 +271,27 @@ public class QAnswerServer {
 	@RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
 	public AppResp qACommentList(@RequestBody QAnswerParams qAnswerParams) {
 		// 返回到前台的问题回答列表
-		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId());
+		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId(),
+				qAnswerParams.getUserId(), new PageRequest(0, 30));
 		for (QAComment qAComment : questionAnswerList) {
+			if (null != qAComment.getPhotoUrl()) {
+				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAComment.getPhotoUrl());
+			}
+			// 等级
+			if (null != qAComment.getExperience()) {
+				qAComment.setGrade(appUserService.transformExpToGrade(qAComment.getExperience()));
+			}
 			List<QACReply> qacReplies = qACReplyRepo.getByCommentId(qAComment.getId());
 			for (QACReply qacReply : qacReplies) {
-				AppUser appUser = appUserRepo.findOne(qacReply.getFromUserId());
-				if (null != appUser) {
-					FromUser fromUser = new FromUser();
-					fromUser.setUserId(qacReply.getFromUserId());
-					fromUser.setUserName(appUser.getUserName());
-					qacReply.setFromUser(fromUser);
-				}
+				FromUser fromUser = new FromUser();
+				fromUser.setUserId(qacReply.getFromUserId());
+				fromUser.setUserName(qacReply.getFromUserName());
+				qacReply.setFromUser(fromUser);
 				if (null != qacReply.getToUserId()) {
-					AppUser apptoUser = appUserRepo.findOne(qacReply.getToUserId());
-					if (null != apptoUser) {
-						ToUser toUser = new ToUser();
-						toUser.setUserId(qacReply.getToUserId());
-						toUser.setUserName(apptoUser.getUserName());
-						qacReply.setToUser(toUser);
-					}
+					ToUser toUser = new ToUser();
+					toUser.setUserId(qacReply.getToUserId());
+					toUser.setUserName(qacReply.getToUserName());
+					qacReply.setToUser(toUser);
 				}
 
 			}
@@ -250,16 +300,6 @@ public class QAnswerServer {
 			Integer agreeNum = 0;
 			agreeNum = qACAgreeRelRepo.agreeCount(qAComment.getId(), Const.OBJ_OPT_GREE);// 点赞
 			qAComment.setAgreeNumber(agreeNum);
-			qAComment.setIsAgree(0);// 0-未点赞
-			if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
-				List<String> qacIds = qACAgreeRelRepo.findByUser(qAnswerParams.getUserId(), 1);// 点赞
-				for (String qacId : qacIds) {
-					if (qAComment.getId().equals(qacId)) {
-						qAComment.setIsAgree(1);// 1-已点赞
-					}
-
-				}
-			}
 		}
 
 		return new AppResp(questionAnswerList, CodeDef.SUCCESS);

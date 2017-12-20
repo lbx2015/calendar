@@ -35,13 +35,25 @@ public class QuestResult extends BaseEntity {
 	@Transient
 	private Integer tqFollowNum;
 
-	// 问题回答评论数
+	// 是否关注 1-已关注，0-未关注
 	@Transient
-	private Integer qaCommentNum;
+	private Integer isFollow;
+
+	// 问题回答数
+	@Transient
+	private Integer qanswerNum;
 
 	// 用户名
 	@Transient
 	private String userName;
+
+	// 经验值
+	@Transient
+	private Integer experience;
+
+	// 经验值
+	@Transient
+	private Integer grade;
 
 	// 用户头像Url
 	@Transient
@@ -52,7 +64,7 @@ public class QuestResult extends BaseEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QuestResult(String id, String title, Date createdTime, Long tqFollowNum, Long qaCommentNum) {
+	public QuestResult(String id, String title, Date createdTime, Long tqFollowNum, Long qanswerNum) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -60,9 +72,16 @@ public class QuestResult extends BaseEntity {
 		if (tqFollowNum != null) {
 			this.tqFollowNum = tqFollowNum.intValue();
 		}
-		if (qaCommentNum != null) {
-			this.qaCommentNum = qaCommentNum.intValue();
+		if (qanswerNum != null) {
+			this.qanswerNum = qanswerNum.intValue();
 		}
+	}
+
+	public QuestResult(String id, String title, Date createdTime) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.createdTime = createdTime;
 	}
 
 	public QuestResult(String id, String title) {
@@ -71,12 +90,36 @@ public class QuestResult extends BaseEntity {
 		this.title = title;
 	}
 
+	public Integer getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Integer experience) {
+		this.experience = experience;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Integer getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Integer isFollow) {
+		this.isFollow = isFollow;
 	}
 
 	public String getTitle() {
@@ -111,12 +154,12 @@ public class QuestResult extends BaseEntity {
 		this.tqFollowNum = tqFollowNum;
 	}
 
-	public Integer getQaCommentNum() {
-		return qaCommentNum;
+	public Integer getQanswerNum() {
+		return qanswerNum;
 	}
 
-	public void setQaCommentNum(Integer qaCommentNum) {
-		this.qaCommentNum = qaCommentNum;
+	public void setQanswerNum(Integer qanswerNum) {
+		this.qanswerNum = qanswerNum;
 	}
 
 	public String getUserName() {

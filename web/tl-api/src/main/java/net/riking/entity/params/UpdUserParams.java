@@ -1,5 +1,6 @@
 package net.riking.entity.params;
 
+import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
 /**
@@ -64,13 +65,16 @@ public class UpdUserParams extends BaseEntity {
 	private Integer isSubscribe;
 
 	// 行业ID
-	private Integer industryId;
+	private String industryId;
 
 	// 职位ID
-	private Integer positionId;
+	private String positionId;
 
 	// 是否引导: 0-未引导；1-已引导
 	private Integer isGuide;
+
+	@Comment("用户邮箱是否已认证： 0-未认证 1-已认证")
+	private Integer isIdentified;
 
 	public UpdUserParams() {
 		super();
@@ -115,6 +119,14 @@ public class UpdUserParams extends BaseEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Integer getIsIdentified() {
+		return isIdentified;
+	}
+
+	public void setIsIdentified(Integer isIdentified) {
+		this.isIdentified = isIdentified;
 	}
 
 	public String getPhone() {
@@ -221,19 +233,19 @@ public class UpdUserParams extends BaseEntity {
 		this.isSubscribe = isSubscribe;
 	}
 
-	public Integer getIndustryId() {
+	public String getIndustryId() {
 		return industryId;
 	}
 
-	public void setIndustryId(Integer industryId) {
+	public void setIndustryId(String industryId) {
 		this.industryId = industryId;
 	}
 
-	public Integer getPositionId() {
+	public String getPositionId() {
 		return positionId;
 	}
 
-	public void setPositionId(Integer positionId) {
+	public void setPositionId(String positionId) {
 		this.positionId = positionId;
 	}
 

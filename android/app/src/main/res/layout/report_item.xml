@@ -3,7 +3,9 @@
     android:id="@+id/item_view"
     android:layout_width="match_parent"
     android:layout_height="59dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
     <TextView
         android:id="@+id/report_name"

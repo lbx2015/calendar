@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -69,6 +70,10 @@ public class QAComment extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	@Transient
 	@Comment("是否已点赞 0-未点赞，1-已点赞")
 	private Integer isAgree;
@@ -83,19 +88,25 @@ public class QAComment extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QAComment(String id, Date createdTime, Date modifiedTime, Integer isAudit, String userId,
-			String questionAnswerId, String content, String userName, String photoUrl, Integer experience) {
+	public QAComment(String id, Date createdTime, Date modifiedTime, Integer isAduit, String userId,
+			String questionAnswerId, String content, String userName, String photoUrl, Integer experience,
+			String qacId) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAudit(isAudit);
+		this.setIsAduit(isAduit);
 		this.userId = userId;
 		this.questionAnswerId = questionAnswerId;
 		this.content = content;
 		this.userName = userName;
 		this.photoUrl = photoUrl;
 		this.experience = experience;
+		if (StringUtils.isNotBlank(qacId)) {
+			this.isAgree = 1;// 已点赞
+		} else {
+			this.isAgree = 0;// 未点赞
+		}
 	}
 
 	public String getUserId() {
@@ -112,6 +123,14 @@ public class QAComment extends BaseAuditProp {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public void setIsAgree(Integer isAgree) {

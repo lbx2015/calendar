@@ -1,7 +1,5 @@
 package com.riking.calendar;
 
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -36,6 +34,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ExampleUnitTest {
     String repeatWeekReminds;
+
 
     @Test
     public void testTimeFormat() throws Exception {
@@ -102,6 +101,11 @@ public class ExampleUnitTest {
         System.out.println(user.userId);
         System.out.println(new Gson().toJson(j));
         System.out.println(new Gson().toJson(a));
+        ArrayList<String>  arrayList = new ArrayList();
+        arrayList.add("dd");
+        arrayList.add("dd");
+        arrayList.add("dd");
+        System.out.println(g.toJson(arrayList));
 
     }
 
@@ -300,5 +304,24 @@ public class ExampleUnitTest {
     public void testStringEmpty() {
         String s = "";
         System.out.print(s.length());
+        System.out.println(isChinese("你"));
+        System.out.println(isChinese("a"));
+    }
+
+    /**
+     * 判断该字符串是否为中文
+     *
+     * @param string
+     * @return
+     */
+    public static boolean isChinese(String string) {
+        int n = 0;
+        for (int i = 0; i < string.length(); i++) {
+            n = (int) string.charAt(i);
+            if (!(19968 <= n && n < 40869)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

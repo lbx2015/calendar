@@ -87,12 +87,12 @@ public class QACReply extends BaseAuditProp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QACReply(String id, Date createdTime, Integer isAudit, String userId, String toUserId, String commentId,
+	public QACReply(String id, Date createdTime, Integer isAduit, String userId, String toUserId, String commentId,
 			String replyId, String content, String fromUserName, String toUserName) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
-		this.setIsAudit(isAudit);
+		this.setIsAduit(isAduit);
 		this.fromUserId = userId;
 		this.toUserId = toUserId;
 		this.commentId = commentId;

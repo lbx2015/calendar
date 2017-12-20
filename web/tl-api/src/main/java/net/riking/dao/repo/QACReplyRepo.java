@@ -22,7 +22,7 @@ public interface QACReplyRepo extends JpaRepository<QACReply, String>, JpaSpecif
 	 * @param questAnswerId
 	 * @return
 	 */
-	@Query("select new QACReply(qr.id,qr.createdTime,qr.isAudit,qr.fromUserId,qr.toUserId,qr.commentId,qr.replyId,qr.content,(select a.userName from AppUser a where qr.fromUserId =a.id),(select au.userName from AppUser au where qr.toUserId = au.id)) from QACReply qr where qr.commentId = ?1 order by createdTime desc")
+	@Query("select new QACReply(qr.id,qr.createdTime,qr.isAduit,qr.fromUserId,qr.toUserId,qr.commentId,qr.replyId,qr.content,(select a.userName from AppUser a where qr.fromUserId =a.id),(select au.userName from AppUser au where qr.toUserId = au.id)) from QACReply qr where qr.commentId = ?1 order by createdTime desc")
 	List<QACReply> getByCommentId(String commentId);
 
 }

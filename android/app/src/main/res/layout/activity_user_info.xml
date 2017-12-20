@@ -71,7 +71,7 @@
                     android:layout_toLeftOf="@+id/next_step"
                     android:onClick="onPickImage"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/default_user_icon" />
+                    android:src="@drawable/user_icon_head_notlogin" />
 
                 <ImageView
                     android:id="@+id/next_step"

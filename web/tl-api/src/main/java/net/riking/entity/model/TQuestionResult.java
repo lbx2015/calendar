@@ -1,6 +1,7 @@
 package net.riking.entity.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -13,6 +14,9 @@ public class TQuestionResult extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 6032956463780926056L;
+
+	@Comment("话题主键")
+	private String topicId;
 
 	@Comment("问题主键")
 	private String tqId;
@@ -45,6 +49,9 @@ public class TQuestionResult extends BaseEntity {
 	@Comment("经验值")
 	private Integer experience;
 
+	@Comment("等级")
+	private Integer grade;
+
 	@Comment("问题回答的评论数")
 	private Integer qaCommentNum;
 
@@ -60,8 +67,20 @@ public class TQuestionResult extends BaseEntity {
 	@Comment("问题的回答数")
 	private Integer qanswerNum;
 
-	@Comment("推送类型 1-根据用户关注的话题推送问题；2-关注的用户点赞的回答；3-关注的用户关注的问题；4-关注的用户回答的问题")
+	@Comment("回答封面url")
+	private String coverUrl;
+
+	@Comment("1-根据用户关注的话题推送问题 2-查询关注的用户点赞的回答 3-关注的用户关注的问题 4-关注的用户回答的问题 5-查询关注的用户收藏的回答 6-可能感兴趣的话题 7-可能感兴趣的人 ")
 	private Integer pushType;
+
+	@Comment("可能感兴趣的话题")
+	private List<TopicResult> topicResults;
+
+	@Comment("可能感兴趣的人")
+	private List<AppUserResult> appUserResults;
+
+	@Comment("是否点赞/关注/收藏状态")
+	private Integer status;
 
 	public TQuestionResult() {
 		super();
@@ -89,6 +108,22 @@ public class TQuestionResult extends BaseEntity {
 		this.pushType = pushType;
 	}
 
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	public String getTqId() {
 		return tqId;
 	}
@@ -97,8 +132,40 @@ public class TQuestionResult extends BaseEntity {
 		this.tqId = tqId;
 	}
 
+	public List<TopicResult> getTopicResults() {
+		return topicResults;
+	}
+
+	public void setTopicResults(List<TopicResult> topicResults) {
+		this.topicResults = topicResults;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+
+	public List<AppUserResult> getAppUserResults() {
+		return appUserResults;
+	}
+
+	public void setAppUserResults(List<AppUserResult> appUserResults) {
+		this.appUserResults = appUserResults;
+	}
+
 	public String getQaId() {
 		return qaId;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
 	}
 
 	public void setQaId(String qaId) {

@@ -49,8 +49,8 @@ public class BaseAuditProp extends BaseEntity {
 
 	@Comment("是否审核： 0-未审核，1-已审核,2-不通过")
 	@org.hibernate.annotations.ColumnDefault("0")
-	@Column(name = "is_audit", nullable = false, precision = 1)
-	private Integer isAudit;
+	@Column(name = "is_aduit", nullable = false, precision = 1)
+	private Integer isAduit;
 
 	@Comment("是否删除： 0-删除，1-未删除")
 	@org.hibernate.annotations.ColumnDefault("1")
@@ -89,12 +89,12 @@ public class BaseAuditProp extends BaseEntity {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public Integer getIsAudit() {
-		return isAudit;
+	public Integer getIsAduit() {
+		return isAduit;
 	}
 
-	public void setIsAudit(Integer isAudit) {
-		this.isAudit = isAudit;
+	public void setIsAduit(Integer isAduit) {
+		this.isAduit = isAduit;
 	}
 
 	public Integer getIsDeleted() {

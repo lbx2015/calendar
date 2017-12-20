@@ -51,6 +51,9 @@ public class AppUserResp extends BaseEntity {
 	// 经验值
 	private Integer experience;
 
+	// 等级
+	private Integer grade;
+
 	// 用户头像（存放用户头像名称）
 	private String photoUrl;
 
@@ -61,18 +64,27 @@ public class AppUserResp extends BaseEntity {
 	private Integer isSubscribe;
 
 	// 行业ID
-	private Integer industryId;
+	private String industryId;
 
 	// 职位ID
-	private Integer positionId;
+	private String positionId;
+
+	// 行业名字
+	private String industryName;
+
+	// 职位名字
+	private String positionName;
 
 	// 是否引导: 0-未引导；1-已引导
 	private Integer isGuide;
 
+	// 用户邮箱是否已认证： 0-未认证 1-已认证
+	private Integer isIdentify;
+
 	public AppUserResp(String userId, String userName, String openId, String email, String phone, String realName,
 			String companyName, Integer sex, String birthday, String address, String descript, String phoneDeviceid,
 			Integer integral, Integer experience, String photoUrl, String remindTime, Integer isSubscribe,
-			Integer industryId, Integer positionId, Integer isGuide) {
+			String industryId, String positionId, Integer isGuide) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -99,6 +111,14 @@ public class AppUserResp extends BaseEntity {
 	public AppUserResp() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getIsIdentify() {
+		return isIdentify;
+	}
+
+	public void setIsIdentify(Integer isIdentify) {
+		this.isIdentify = isIdentify;
 	}
 
 	public String getUserId() {
@@ -197,6 +217,14 @@ public class AppUserResp extends BaseEntity {
 		this.phoneDeviceid = phoneDeviceid;
 	}
 
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+
 	public Integer getIntegral() {
 		return integral;
 	}
@@ -237,20 +265,36 @@ public class AppUserResp extends BaseEntity {
 		this.isSubscribe = isSubscribe;
 	}
 
-	public Integer getIndustryId() {
+	public String getIndustryId() {
 		return industryId;
 	}
 
-	public void setIndustryId(Integer industryId) {
+	public void setIndustryId(String industryId) {
 		this.industryId = industryId;
 	}
 
-	public Integer getPositionId() {
+	public String getPositionId() {
 		return positionId;
 	}
 
-	public void setPositionId(Integer positionId) {
+	public void setPositionId(String positionId) {
 		this.positionId = positionId;
+	}
+
+	public String getIndustryName() {
+		return industryName;
+	}
+
+	public void setIndustryName(String industryName) {
+		this.industryName = industryName;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
 	}
 
 	public Integer getIsGuide() {

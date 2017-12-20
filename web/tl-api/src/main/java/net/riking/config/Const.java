@@ -24,6 +24,10 @@ public class Const {
 
 	public static final String TL_PHOTO_PATH = "/images/user/photo/";
 
+	public static final String TL_FEED_BACK_PHOTO_PATH = "/images/feedBack/photo/";
+
+	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/photo/";
+
 	public static final String TL_FLAG_PATH = "/images/flag/";
 
 	public static final String TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
@@ -44,9 +48,6 @@ public class Const {
 
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
-
-	/* 所有报表数据集 */
-	public static final String ALL_REPORT = "ALL_REPORT";
 
 	/* 默认头像 */
 	public static final String DEFAULT_PHOTO_URL = "defaultPhotoUrl.jpg";
@@ -77,6 +78,16 @@ public class Const {
 
 	/** --------------------男女常量 end-------------------------- */
 
+	/** -------------------默认页数 begin-------------------------- */
+
+	public static final int APP_PAGENO_10 = 10;// 默认10页
+
+	public static final int APP_PAGENO_30 = 30;// 默认30页
+
+	public static final int APP_PAGENO_50 = 50;// 默认50页
+
+	/** --------------------男女常量 end-------------------------- */
+
 	/** -------------------请求方向 begin-------------------------- */
 
 	public static final String DIRECT_UP = "up";
@@ -104,6 +115,12 @@ public class Const {
 	public static final int OBJ_OPT_COLLECT = 2;// 收藏
 
 	public static final int OBJ_OPT_SHIELD = 3;// 屏蔽
+
+	public static final int OBJ_OPT_COMMENT = 1;// 评论
+
+	public static final int OBJ_OPT_ANSWER = 2;// 回答
+
+	public static final int OBJ_OPT_INQUIRY = 3;// 提问
 
 	/** --------------------操作类型 end-------------------------- */
 

@@ -212,6 +212,11 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ResponseBody r = response.body();
+                //adding null protection
+                if (r == null) {
+                    return;
+                }
+
                 try {
                     String sourceString = r.source().readUtf8();
                     Gson s = new Gson();
@@ -223,8 +228,7 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
                     if (TextUtils.isEmpty(_data.trim())) {
                         return;
                     }
-                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
-                    };
+                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {};
 
                     ResponseModel<List<ReportResult>> responseModel = s.fromJson(sourceString, token.getType());
                     if (mPullToLoadView != null) {
@@ -245,7 +249,6 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override

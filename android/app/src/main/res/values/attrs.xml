@@ -12,11 +12,10 @@
     </declare-styleable>
 
     <declare-styleable name="ZEnterImageView">
-        <attr name="buttonTextSize" />
-        <attr name="buttonText" />
+        <attr name="button_color" format="color" />
+        <attr name="buttonTextSize" format="dimension" />
+        <attr name="buttonText" format="string" />
     </declare-styleable>
-    <attr name="buttonTextSize" format="dimension" />
-    <attr name="buttonText" format="string" />
 
     <declare-styleable name="AbstractWheelPicker">
         <attr name="wheel_data" format="reference" />

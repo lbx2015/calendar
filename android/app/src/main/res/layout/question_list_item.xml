@@ -73,7 +73,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:layout_toRightOf="@id/review_image"
             android:drawableLeft="@drawable/com_icon_comment"
             android:drawablePadding="5dp"
             android:text="0" />

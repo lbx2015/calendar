@@ -1,5 +1,7 @@
 package net.riking.web.app;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.IndustryRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -37,10 +40,16 @@ public class LoginServer {
 	AppUserService appUserService;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	SysDataService sysDataService;
 
 	@Autowired
 	SmsUtil smsUtil;
+
+	@Autowired
+	IndustryRepo industryRepo;
 
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
@@ -149,18 +158,29 @@ public class LoginServer {
 		userResp.setIntegral(user.getDetail().getIntegral());
 		userResp.setExperience(user.getDetail().getExperience());
 		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {
-			userResp.setPhotoUrl(Const.TL_PHOTO_PATH + user.getDetail().getPhotoUrl());
+			// 截取资源访问路径
+			if (null != user.getDetail().getPhotoUrl()) {
+				userResp.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + user.getDetail().getPhotoUrl());
+			}
 		} else {
 			userResp.setPhotoUrl("");
+		}
+		// 等级
+		if (null != userResp.getExperience()) {
+			userResp.setGrade(appUserService.transformExpToGrade(userResp.getExperience()));
 		}
 		userResp.setRemindTime(user.getDetail().getRemindTime());
 		userResp.setIsSubscribe(user.getDetail().getIsSubscribe());
 		userResp.setPositionId(user.getDetail().getPositionId());
 		userResp.setIsGuide(user.getDetail().getIsGuide());
-
-		// Map<String, Object> map = Utils.objProps2Map(userResp, true);
-		// Map<String, Object> result = new HashMap<String, Object>();
-		// result.put("user", userResp);
+		userResp.setIsIdentify(user.getIsIdentified());
+		if (StringUtils.isNotBlank(userResp.getPositionId())) {
+			userResp.setPositionName(industryRepo.findOne(userResp.getPositionId()).getName());
+		}
+		if (StringUtils.isNotBlank(userResp.getIndustryId())) {
+			userResp.setIndustryName(industryRepo.findOne(userResp.getIndustryId()).getName());
+		}
 		return new AppResp(userResp, CodeDef.SUCCESS);
 
 	}
@@ -176,46 +196,6 @@ public class LoginServer {
 	// } else {
 	// return new AppResp(user, CodeDef.SUCCESS);// 不管用户是否存在 都直接返回
 	// }
-	// }
-
-	// TODO 暂时注释
-	// @ApiOperation(value = "校验验证码", notes = "POST")
-	// @RequestMapping(value = "/checkValiCode", method = RequestMethod.POST)
-	// public AppResp checkValiCode_(@RequestBody AppUser appUser, HttpSession
-	// session) {
-	// AppUser user = sysDataService.getAppUser(appUser);
-	// if (user == null) {
-	// return new AppResp(user, CodeDef.EMP.CHECK_CODE_TIME_OUT);
-	// }
-	// List<AppUser> list;
-	// AppUser appUser2 = null;
-	// if (appUser.getValiCode().equals(user.getValiCode())) {
-	//
-	// list = appUserRepo.findByDeleteStateAndTelephone("1",
-	// appUser.getPhone());
-	// if (list.size() > 0) {
-	// appUser2 = list.get(0);
-	// }
-	// if (appUser2 == null) {
-	// AppUser appUser3 = new AppUser(appUser.getPhone(), appUser.getPhone(),
-	// appUser.getPhone().substring(5),
-	// user.getPhoneDeviceid(), "1", "1", "0800", user.getOpenId(),
-	// user.getIsSubscribe(),
-	// user.getIsGuide());
-	// appUser2 = appUserRepo.save(appUser3);
-	// // List<AppUserReportRel> appUserReportRels = reportListRepo.findAllId();
-	// // for (AppUserReportRel appUserReportRel : appUserReportRels) {
-	// // appUserReportRel.setAppUserId(appUser2.getId());
-	// // }
-	// // appUserReportRelRepo.save(appUserReportRels);
-	// logger.info("{}注册成功", appUser.getUserName());
-	// }
-	// sysDataService.delAppUser(user);
-	// } else {
-	// return new AppResp(appUser2, CodeDef.EMP.CHECK_CODE_ERR);
-	// }
-	// session.setAttribute("currentUser", appUser2);
-	// return new AppResp(appUser2, CodeDef.SUCCESS);
 	// }
 
 }

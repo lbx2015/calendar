@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUser;
@@ -20,8 +19,9 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
-import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.GlideUtil;
 import com.riking.calendar.util.ZDB;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.dialog.TimeClockPickerDialog;
 
 import java.io.File;
@@ -53,9 +53,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         cacheSizeTextview = (TextView) findViewById(R.id.cache_size);
         bindedPhone = (TextView) findViewById(R.id.binded);
         //set the image cache file size
-        long imageSize = FileUtil.getFileSize(new File(Environment.getExternalStorageDirectory(), CONST.IMAGE_PATH));
+        long imageSize = FileUtil.getFileSize(new File(Environment.getExternalStorageDirectory(), CONST.IMAGE_PATH))+ GlideUtil.getInstance().getCacheImageSize(this);
         if (imageSize > 0) {
-            cacheSizeTextview.setText(FileUtil.formatFileSize(imageSize));
+            cacheSizeTextview.setText(FileUtil.formatFileSize(imageSize) );
         } else {
             cacheSizeTextview.setText(getString(R.string.no_need_to_clear));
         }
@@ -150,6 +150,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             for (File f : imageDirectory.listFiles()) {
                                 f.delete();
                             }
+
+                            //Glide clear cache
+                            GlideUtil.getInstance().clearImageAllCache(SettingActivity.this);
+
                             SettingActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

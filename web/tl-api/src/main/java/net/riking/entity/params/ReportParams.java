@@ -19,8 +19,8 @@ public class ReportParams extends BaseEntity {
 	private String userId;
 
 	// 报表名
-	private String reportTitle;
-
+	private String reportName;
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -29,12 +29,12 @@ public class ReportParams extends BaseEntity {
 		this.userId = userId;
 	}
 
-	public String getReportTitle() {
-		return reportTitle;
+	public String getReportName() {
+		return reportName;
 	}
 
-	public void setReportTitle(String reportTitle) {
-		this.reportTitle = reportTitle;
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
 	}
 
 }

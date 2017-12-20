@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import net.riking.entity.model.QAExcellentResp;
+import net.riking.entity.model.QAnswerResult;
+import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.TQuestionResult;
 
 public interface TQuestionDao {
@@ -14,7 +16,7 @@ public interface TQuestionDao {
 	 * @param count
 	 * @return
 	 */
-	public List<TQuestionResult> findTopicHomeUp(String userId, Date reqTimeStamp, int start, int end);
+	public List<TQuestionResult> findTopicHomeUp(String userId, Date reqTimeStamp, String tqIds, int start, int end);
 
 	/**
 	 * 查询话题首页刷新数据，查询从start到end条数据
@@ -23,7 +25,7 @@ public interface TQuestionDao {
 	 * @param count
 	 * @return
 	 */
-	public List<TQuestionResult> findTopicHomeDown(String userId, Date reqTimeStamp, int start, int end);
+	public List<TQuestionResult> findTopicHomeDown(String userId, Date reqTimeStamp, String tqIds, int start, int end);
 
 	/**
 	 * 根据话题id查询对应问题
@@ -32,7 +34,7 @@ public interface TQuestionDao {
 	 * @param end
 	 * @return
 	 */
-	public List<TQuestionResult> findEssenceByTid(String topicId, int start, int end);
+	public List<QAnswerResult> findEssenceByTid(String topicId, String userId, int start, int pageCount);
 
 	/**
 	 * 优秀回答者
@@ -41,5 +43,14 @@ public interface TQuestionDao {
 	 * @param end
 	 * @return
 	 */
-	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int end);
+	public List<QAExcellentResp> findExcellentResp(String topicId, int start, int pageCount);
+
+	/**
+	 * 关注的问题
+	 * @param userId
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public List<QuestResult> userFollowQuest(String userId, int start, int end);
 }

@@ -59,6 +59,11 @@ public class AppUser extends BaseEntity {
 	@Column(name = "email", length = 32)
 	private String email;
 
+	@Comment("用户邮箱是否已认证： 0-未认证 1-已认证")
+	@org.hibernate.annotations.ColumnDefault("0")
+	@Column(name = "is_identified")
+	private Integer isIdentified;
+
 	@Comment("手机号")
 	@Column(name = "phone", length = 11, nullable = false)
 	private String phone;
@@ -113,6 +118,14 @@ public class AppUser extends BaseEntity {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Integer getIsIdentified() {
+		return isIdentified;
+	}
+
+	public void setIsIdentified(Integer isIdentified) {
+		this.isIdentified = isIdentified;
 	}
 
 	public String getOpenId() {

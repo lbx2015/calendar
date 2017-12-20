@@ -106,7 +106,7 @@ public class FourthFragment extends Fragment implements OnClickListener {
                 getActivity().recreate();
                 loginState = 0;
                 userName.setText(getString(R.string.not_register));
-                myPhoto.setImageDrawable(getResources().getDrawable(R.drawable.default_user_icon));
+                myPhoto.setImageDrawable(getResources().getDrawable(R.drawable.user_icon_head_notlogin));
             }
         }
     }

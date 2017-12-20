@@ -12,7 +12,7 @@ public class ReportListResult extends BaseEntity {
 	@Comment("机构中文名称")
 	private String agenceName;
 
-	public List<ReportResult> list;
+	public List<ReportTypeListResult> list;
 
 	public String getAgenceCode() {
 		return agenceCode;
@@ -31,11 +31,11 @@ public class ReportListResult extends BaseEntity {
 		return agenceName;
 	}
 
-	public List<ReportResult> getList() {
+	public List<ReportTypeListResult> getList() {
 		return list;
 	}
 
-	public void setList(List<ReportResult> list) {
+	public void setList(List<ReportTypeListResult> list) {
 		this.list = list;
 	}
 

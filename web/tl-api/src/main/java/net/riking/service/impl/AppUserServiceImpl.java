@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,11 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.Email;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
+import net.riking.util.StringUtil;
 
 @Service("appUserSerice")
 @Transactional
@@ -40,6 +44,9 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	SysDataService sysDataService;
+
+	@Autowired
+	HttpServletRequest request;
 
 	@Autowired
 	AppUserDao appUserDao;
@@ -68,7 +75,7 @@ public class AppUserServiceImpl implements AppUserService {
 		/* 详细信息 */
 		detail.setId(uuid);
 		detail.setSex(Const.USER_SEX_MAN);
-		detail.setPhotoUrl(Const.DEFAULT_PHOTO_URL);// 默认头像Url
+		// detail.setPhotoUrl(Const.DEFAULT_PHOTO_URL);// 默认头像Url
 		detail.setIntegral(0);
 		detail.setExperience(0);
 		detail.setIsSubscribe(0);
@@ -85,7 +92,7 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-	public String uploadPhoto(MultipartFile mFile, String userId) throws RuntimeException {
+	public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException {
 		// String suffix =
 		// mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
 		String fileName = UuidUtils.random() + mFile.getOriginalFilename();
@@ -93,7 +100,7 @@ public class AppUserServiceImpl implements AppUserService {
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH;
+			String path = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + url;
 			File dir = new File(path);
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -117,17 +124,23 @@ public class AppUserServiceImpl implements AppUserService {
 				throw new RuntimeException(CodeDef.EMP.GENERAL_ERR + "");
 			}
 		}
+		return fileName;
+	}
+
+	@Override
+	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName) {
+
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(userId);
 		String oldFileName = appUserDetail.getPhotoUrl();
 		String oleFilePath = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH
 				+ oldFileName;
 		// 删除服务器上文件
 		ModelPropDict dict = sysDataService.getDict("T_ROOT_URL", "PHOTO_URL", "DEFAULT_URL");
-		if (!dict.getValu().equals(oldFileName) || !oldFileName.equals(mFile.getOriginalFilename())) {
+		if (!dict.getValu().equals(oldFileName) && !oldFileName.equals(mFile.getOriginalFilename())) {
 			this.deleteFile(oleFilePath);
 		}
 		// 数据库保存路径
-		appUserRepo.updatePhoto(userId, fileName);
+		appUserDetailRepo.updatePhoto(userId, fileName);
 		return fileName;
 	}
 
@@ -154,8 +167,80 @@ public class AppUserServiceImpl implements AppUserService {
 		}
 	}
 
-	@Override
-	public List<AppUserResult> findUserMightKnow(String userId, int begin, int end) {
-		return appUserDao.findUserMightKnow(userId, begin, end);
+	/**
+	 * 经验值计算等级
+	 * @param experience
+	 * @return
+	 */
+	public Integer transformExpToGrade(Integer experience) {
+		List<ModelPropDict> propDicts = sysDataService.getDicts("T_APP_USER", "GRADE_RANGE");
+		Integer begin = 0;
+		Integer gradeOneMax = 0;
+		Integer gradeTwoMax = 0;
+		Integer gradeThrMax = 0;
+		Integer gradeFourMax = 0;
+		for (ModelPropDict modelPropDict : propDicts) {
+			if ("V1".equals(modelPropDict.getKe())) {
+				gradeOneMax = Integer.parseInt(modelPropDict.getValu());
+			} else if ("V2".equals(modelPropDict.getKe())) {
+				gradeTwoMax = Integer.parseInt(modelPropDict.getValu());
+			} else if ("V3".equals(modelPropDict.getKe())) {
+				gradeThrMax = Integer.parseInt(modelPropDict.getValu());
+			} else if ("V4".equals(modelPropDict.getKe())) {
+				gradeFourMax = Integer.parseInt(modelPropDict.getValu());
+			}
+		}
+		if (begin <= experience && experience <= gradeOneMax) {
+			return 1;
+		} else if (gradeOneMax + 1 <= experience && experience <= gradeTwoMax) {
+			return 2;
+		} else if (gradeTwoMax + 1 <= experience && experience <= gradeThrMax) {
+			return 3;
+		} else if (gradeThrMax + 1 <= experience && experience <= gradeFourMax) {
+			return 4;
+		} else if (gradeFourMax + 1 <= experience) {
+			return 5;
+		} else {
+			return 0;
+		}
 	}
+
+	@Override
+	public List<AppUserResult> findUserMightKnow(String userId, String userIds, int begin, int end) {
+		return appUserDao.findUserMightKnow(userId, userIds, begin, end);
+	}
+
+	/**
+	 * 获取用户头像路径
+	 * @see net.riking.service.AppUserService#getPhotoUrlPath()
+	 */
+	@Override
+	public String getPhotoUrlPath(String photoPath) {
+		// 截取资源访问路径
+		String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
+		String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
+		projectPath = projectPath + "/" + projectName + photoPath;
+		return projectPath;
+	}
+
+	@Override
+	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {
+		return appUserDao.userFollowUser(userId, pageBegin, pageCount);
+	}
+
+	@Override
+	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount) {
+		return appUserDao.findMyFans(userId, pageBegin, pageCount);
+	}
+
+	@Override
+	public Email getMyEmail() {
+		String mySmtpHost = sysDataService.getDict("T_EMAIL", "EMAIL", "MYSMTPHOST").getValu().trim();
+		String myPassWord = sysDataService.getDict("T_EMAIL", "EMAIL", "MYPASSWORD").getValu().trim();
+		String myAccount = sysDataService.getDict("T_EMAIL", "EMAIL", "MYACCOUNT").getValu().trim();
+		String sender = sysDataService.getDict("T_EMAIL", "EMAIL", "SENDER").getValu().trim();
+		Email email = new Email(myAccount, myPassWord, mySmtpHost, sender);
+		return email;
+	}
+
 }

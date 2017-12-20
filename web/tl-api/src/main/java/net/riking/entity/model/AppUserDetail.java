@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -74,6 +75,7 @@ public class AppUserDetail extends BaseEntity {
 	private Integer phoneType;
 
 	@Comment("积分")
+	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "integral")
 	private Integer integral;
 
@@ -97,16 +99,20 @@ public class AppUserDetail extends BaseEntity {
 
 	@Comment("行业ID")
 	@Column(name = "industry_id")
-	private Integer industryId;
+	private String industryId;
 
 	@Comment("职位ID")
 	@Column(name = "position_id")
-	private Integer positionId;
+	private String positionId;
 
 	@Comment("是否引导: 0-未引导；1-已引导")
 	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "is_guide")
 	private Integer isGuide;
+
+	@Transient
+	@Comment("我的等级")
+	private Integer grade;
 
 	public String getId() {
 		return id;
@@ -122,6 +128,14 @@ public class AppUserDetail extends BaseEntity {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getCompanyName() {
@@ -220,19 +234,19 @@ public class AppUserDetail extends BaseEntity {
 		this.isSubscribe = isSubscribe;
 	}
 
-	public Integer getIndustryId() {
+	public String getIndustryId() {
 		return industryId;
 	}
 
-	public void setIndustryId(Integer industryId) {
+	public void setIndustryId(String industryId) {
 		this.industryId = industryId;
 	}
 
-	public Integer getPositionId() {
+	public String getPositionId() {
 		return positionId;
 	}
 
-	public void setPositionId(Integer positionId) {
+	public void setPositionId(String positionId) {
 		this.positionId = positionId;
 	}
 

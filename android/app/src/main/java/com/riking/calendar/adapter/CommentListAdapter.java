@@ -47,8 +47,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @Override
     public void onBindViewHolder(final CommentListAdapter.MyViewHolder h, int i) {
         final NewsComment c = mList.get(i);
-
-        h.authorName.setText(c.userName);
+        ZR.setUserName(h.authorName, c.userName, c.experience);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
@@ -86,9 +85,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             }
         });
 
+        //set the agree number
+        h.agreeTv.setText(ZR.getNumberString(c.agreeNumber));
+
         if (c.isAgree == 1) {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
         } else {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
@@ -118,7 +122,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             h.replyListAdapter.add(replies);
             recyclerView.setAdapter(h.replyListAdapter);
         }
-
     }
 
     @Override

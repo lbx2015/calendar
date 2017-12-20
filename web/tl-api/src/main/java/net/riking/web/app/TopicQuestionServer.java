@@ -2,6 +2,8 @@ package net.riking.web.app;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
@@ -26,6 +29,7 @@ import net.riking.entity.model.QAInvite;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.params.TQuestionParams;
+import net.riking.service.AppUserService;
 
 /**
  * 问题接口
@@ -48,6 +52,9 @@ public class TopicQuestionServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	TQuestionRelRepo tQuestionRelRepo;
 
 	@Autowired
@@ -61,6 +68,9 @@ public class TopicQuestionServer {
 
 	@Autowired
 	QAInviteRepo qAInviteRepo;
+
+	@Autowired
+	AppUserService appUserService;
 
 	/**
 	 * 问题的详情[userId,tqId]
@@ -84,8 +94,15 @@ public class TopicQuestionServer {
 				topicQuestion.setIsFollow(1);// 1-已关注
 			}
 		}
-
 		topicQuestion.setQuestionAnswers(findAnswerList(tQuestionParams));
+		if (null != topicQuestion.getPhotoUrl()) {
+			topicQuestion
+					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topicQuestion.getPhotoUrl());
+		}
+		// 等级
+		if (null != topicQuestion.getExperience()) {
+			topicQuestion.setGrade(appUserService.transformExpToGrade(topicQuestion.getExperience()));
+		}
 		return new AppResp(topicQuestion, CodeDef.SUCCESS);
 	}
 
@@ -103,7 +120,7 @@ public class TopicQuestionServer {
 
 	/**
 	 * 邀请回答的邀请
-	 * @param params[userId;toUserId;tqId;]
+	 * @param params[userId;attentObjId;tqId;]
 	 * @return
 	 */
 	@ApiOperation(value = "邀请回答的邀请", notes = "POST")
@@ -112,19 +129,19 @@ public class TopicQuestionServer {
 		if (StringUtils.isBlank(tQuestionParams.getUserId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		if (StringUtils.isBlank(tQuestionParams.getToUserId())) {
+		if (StringUtils.isBlank(tQuestionParams.getAttentObjId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(tQuestionParams.getTqId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		QAInvite qaInvite = qAInviteRepo.findByOne(tQuestionParams.getUserId(), tQuestionParams.getToUserId(),
+		QAInvite qaInvite = qAInviteRepo.findByOne(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
 				tQuestionParams.getTqId());
 		if (null == qaInvite) {
 			// 如果传过来的参数是收藏，保存新的一条收藏记录
 			QAInvite qaInviteNew = new QAInvite();
 			qaInviteNew.setUserId(tQuestionParams.getUserId());
-			qaInviteNew.setToUserId(tQuestionParams.getToUserId());
+			qaInviteNew.setToUserId(tQuestionParams.getAttentObjId());
 			qaInviteNew.setQuestionId(tQuestionParams.getTqId());
 			qAInviteRepo.save(qaInviteNew);
 		}
@@ -133,23 +150,23 @@ public class TopicQuestionServer {
 	}
 
 	private List<QuestionAnswer> findAnswerList(TQuestionParams tQuestionParams) {
-		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId());
+		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId(),
+				tQuestionParams.getUserId());
 		for (QuestionAnswer questionAnswer : questionAnswerList) {
+			if (null != questionAnswer.getPhotoUrl()) {
+				questionAnswer.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
+			}
+			// 等级
+			if (null != questionAnswer.getExperience()) {
+				questionAnswer.setGrade(appUserService.transformExpToGrade(questionAnswer.getExperience()));
+			}
 			// TODO 统计数后面从redis中取回答的评论数
 			Integer commentNum = qACommentRepo.commentCount(questionAnswer.getId());
 			questionAnswer.setCommentNum(commentNum);
 			// TODO 统计数后面从redis中取点赞数
 			Integer agreeNum = qAnswerRelRepo.agreeCount(questionAnswer.getId(), 1);// 1-点赞
 			questionAnswer.setAgreeNum(agreeNum);
-			questionAnswer.setIsAgree(0);// 0-未点赞
-			if (null != tQuestionParams.getUserId()) {
-				List<String> qacIds = qAnswerRelRepo.findByUser(tQuestionParams.getUserId(), 1);// 1-点赞
-				for (String qacId : qacIds) {
-					if (questionAnswer.getId().equals(qacId)) {
-						questionAnswer.setIsAgree(1);// 1-已点赞
-					}
-				}
-			}
 		}
 		return questionAnswerList;
 	}

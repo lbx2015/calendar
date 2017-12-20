@@ -8,11 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerCommentsActivity;
-import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -48,6 +45,9 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
     @Override
     public void onBindViewHolder(final AnswerListViewHolder h, int i) {
         final QuestionAnswer questionAnswer = mList.get(i);
+        //set author name
+        ZR.setUserName(h.answerAuthorName, questionAnswer.userName, questionAnswer.experience);
+
         h.agreeTv.setText(ZR.getNumberString(questionAnswer.agreeNum));
         h.commentTV.setText(ZR.getNumberString(questionAnswer.commentNum));
         h.commentTV.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +98,8 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
             }
         });
 
-        RequestOptions options = new RequestOptions();
-        Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
-                .apply(options.fitCenter())
-                .into(h.authorImage);
+        //set user image
+        ZR.setUserImage(h.authorImage, questionAnswer.photoUrl);
     }
 
 
@@ -111,7 +109,6 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
     }
 
     public void addAll(List<QuestionAnswer> mList) {
-        this.mList.clear();
         this.mList = mList;
         notifyDataSetChanged();
     }

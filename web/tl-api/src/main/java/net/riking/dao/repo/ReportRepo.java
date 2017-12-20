@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.Report;
-import net.riking.entity.model.ReportSubcribeRel;
+import net.riking.entity.model.ReportSubscribeRel;
 
 /**
  * 
@@ -41,6 +41,6 @@ public interface ReportRepo extends JpaRepository<Report, String>, JpaSpecificat
 	// r.deleteState='1' ")
 	// List<ReportSubcribeRel> findAllId();
 
-	@Query("SELECT new net.riking.entity.model.ReportSubcribeRel(t.reportId,(select r.title from Report r where t.reportId=r.id)) FROM ReportSubcribeRel t WHERE t.userId=?1")
-	List<ReportSubcribeRel> findByUserId(String userId);
+	@Query("SELECT new net.riking.entity.model.ReportSubscribeRel(t.reportId,(select r.title from Report r where t.reportId=r.id)) FROM ReportSubscribeRel t WHERE t.userId=?1")
+	List<ReportSubscribeRel> findByUserId(String userId);
 }

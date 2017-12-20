@@ -64,6 +64,8 @@ public class AnswerCommentsActivity extends AppCompatActivity { //Fragment 数�
     private boolean isHasLoadedAll = false;
     private int nextPage;
     private String answerId;
+    private int answerCommentsNum;
+    private TextView activityTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,8 +73,10 @@ public class AnswerCommentsActivity extends AppCompatActivity { //Fragment 数�
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         Intent i = getIntent();
-        answerId = i.getStringExtra(CONST.QUESTION_ID);
+        answerId = i.getStringExtra(CONST.ANSWER_ID);
+        answerCommentsNum = i.getIntExtra(CONST.ANSWER_COMMENT_NUM, 0);
         init();
+        activityTitle.setText("评论" + answerCommentsNum);
     }
 
     private void init() {
@@ -81,6 +85,7 @@ public class AnswerCommentsActivity extends AppCompatActivity { //Fragment 数�
     }
 
     private void initViews() {
+        activityTitle = findViewById(R.id.activity_title);
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);
@@ -258,6 +263,7 @@ public class AnswerCommentsActivity extends AppCompatActivity { //Fragment 数�
                     ZToast.toast("没有更多数据了");
                     return;
                 }
+                activityTitle.setText("评论" + comments.size());
                 mAdapter.addAll(comments);
                 nextPage = page + 1;
             }

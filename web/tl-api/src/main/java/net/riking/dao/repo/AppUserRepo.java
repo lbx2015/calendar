@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,8 +28,21 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	 * @param keyWord
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.AppUserResult(a.id,a.userName,(select app.photoUrl from AppUserDetail app where a.id = app.id),(select app.experience from AppUserDetail app where a.id = app.id)) from AppUser a where a.isDeleted = 1 and a.userName like %?1% ")
-	List<AppUserResult> getUserByParam(String keyWord);
+	@Query("select new net.riking.entity.model.AppUserResult(a.id,a.userName,(select app.photoUrl from AppUserDetail app where a.id = app.id),(select app.experience from AppUserDetail app where a.id = app.id),(select userId from UserFollowRel where userId = ?2 and toUserId = a.id)) from AppUser a where a.isDeleted = 1 and a.userName like %?1% ")
+	List<AppUserResult> getUserByParam(String keyWord, String userId);
+
+	/**
+	 * 根据email模糊查询
+	 * @param keyWord
+	 * @return
+	 */
+	@Query("select new net.riking.entity.model.AppUserResult(a.id,a.userName,(select app.photoUrl from AppUserDetail app where a.id = app.id),(select app.experience from AppUserDetail app where a.id = app.id),(select userId from UserFollowRel where userId = ?2 and toUserId = a.id)) from AppUser a where a.id <>?2 and a.isDeleted = 1 and a.email like %?1 ")
+	List<AppUserResult> findAllByEmail(String email, String userId, Pageable pageable);
+
+	@Transactional
+	@Modifying
+	@Query("update AppUser set isIdentify = 1 where id = ?1")
+	void updEmailIndentify(String userId);
 
 	// @Query("select new
 	// net.riking.entity.resp.AppUserResp(a.id,a.userName,a.openId,a.email,a.phone,ap.realName,ap.companyName,ap.sex,ap.birthday,ap.address,ap.description,ap.phoneDeviceid,ap.integral,ap.experience,ap.photoUrl,ap.remindTime,ap.isSubscribe,ap.industryId,ap.positionId,ap.isGuide)
@@ -52,21 +66,11 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	// @Query("update AppUser set enabled = '0' where id = ?1")
 	// int unEnable(String id);
 
-	@Transactional
-	@Modifying
-	@Query("update AppUserDetail set photoUrl = ?2 where id = ?1")
-	int updatePhoto(String userId, String photo);
-
 	// @Transactional
 	// @Modifying
 	// TODO 暂时注释
 	// @Query("update AppUser set passWord = '123456' where id = ?1")
 	// int passwordReset(String id);
-
-	// TODO 暂时注释
-	// @Query("select a.phoneSeqNum from AppUser a where a.deleteState = '1' and
-	// substring(a.birthday, 5, 4) =?1 ")
-	// Set<String> findByDate(String date);
 
 	// TODO 暂时注释
 	// @Query("select a.phoneSeqNum from AppUser a where a.deleteState = '1' and

@@ -24,10 +24,10 @@ public class AppUserDaoImpl implements AppUserDao {
 	private EntityManager entityManager;
 
 	@Override
-	public List<AppUserResult> findUserMightKnow(String userId, int begin, int end) {
+	public List<AppUserResult> findUserMightKnow(String userId, String userIds, int begin, int end) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call findUserMightKnow(?,?,?)";
+		String sql = "call findUserMightKnow(?,?,?,?)";
 		PreparedStatement pstmt = null;
 		List<AppUserResult> list = new ArrayList<AppUserResult>();
 		try {
@@ -35,8 +35,9 @@ public class AppUserDaoImpl implements AppUserDao {
 			if (StringUtils.isBlank(userId))
 				userId = "";
 			pstmt.setString(1, userId);
-			pstmt.setInt(2, begin);
-			pstmt.setInt(3, end);
+			pstmt.setString(2, userIds);
+			pstmt.setInt(3, begin);
+			pstmt.setInt(4, end);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AppUserResult appUserResult = new AppUserResult();
@@ -44,6 +45,94 @@ public class AppUserDaoImpl implements AppUserDao {
 				appUserResult.setUserName(rs.getString("userName"));
 				appUserResult.setPhotoUrl(rs.getString("photoUrl"));
 				appUserResult.setExperience(rs.getInt("experience"));
+				list.add(appUserResult);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+
+	@Override
+	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call userFollowUser(?,?,?)";
+		PreparedStatement pstmt = null;
+		List<AppUserResult> list = new ArrayList<AppUserResult>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(userId))
+				userId = "";
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, pageBegin);
+			pstmt.setInt(3, pageCount);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppUserResult appUserResult = new AppUserResult();
+				appUserResult.setId(rs.getString("userId"));
+				appUserResult.setUserName(rs.getString("userName"));
+				appUserResult.setExperience(rs.getInt("experience"));
+				appUserResult.setPhotoUrl(rs.getString("photoUrl"));
+				if (rs.getString("descript") == null) {
+					appUserResult.setDescript("");
+				} else {
+					appUserResult.setDescript(rs.getString("descript"));
+				}
+				appUserResult.setAnswerNum(rs.getInt("qanswerNum"));
+				appUserResult.setAgreeNum(rs.getInt("qaAgreeNum"));
+				if (rs.getInt("followStatus") == 0) {
+					appUserResult.setIsFollow(0);// 未关注
+				} else if (rs.getInt("followStatus") == 1) {
+					appUserResult.setIsFollow(1);// 已关注
+				} else if (rs.getInt("followStatus") == 2) {
+					appUserResult.setIsFollow(2);// 互相关注
+				}
+				list.add(appUserResult);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+
+	@Override
+	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call findMyFans(?,?,?)";
+		PreparedStatement pstmt = null;
+		List<AppUserResult> list = new ArrayList<AppUserResult>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(userId))
+				userId = "";
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, pageBegin);
+			pstmt.setInt(3, pageCount);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppUserResult appUserResult = new AppUserResult();
+				appUserResult.setId(rs.getString("userId"));
+				appUserResult.setUserName(rs.getString("userName"));
+				appUserResult.setExperience(rs.getInt("experience"));
+				appUserResult.setPhotoUrl(rs.getString("photoUrl"));
+				if (rs.getString("descript") == null) {
+					appUserResult.setDescript("");
+				} else {
+					appUserResult.setDescript(rs.getString("descript"));
+				}
+				appUserResult.setAnswerNum(rs.getInt("qanswerNum"));
+				appUserResult.setAgreeNum(rs.getInt("qaAgreeNum"));
+				if (rs.getInt("followStatus") == 0) {
+					appUserResult.setIsFollow(0);// 未关注
+				} else if (rs.getInt("followStatus") == 1) {
+					appUserResult.setIsFollow(1);// 已关注
+				} else if (rs.getInt("followStatus") == 2) {
+					appUserResult.setIsFollow(2);// 互相关注
+				}
 				list.add(appUserResult);
 			}
 		} catch (SQLException e) {

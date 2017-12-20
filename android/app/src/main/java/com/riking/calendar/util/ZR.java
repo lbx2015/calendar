@@ -12,20 +12,40 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/14.
  */
 
 public class ZR {
+    public static String[] emailSufixs = new String[]{"@qq.com", "@163.com", "@126.com", "@gmail.com", "@sina.com", "@hotmail.com",
+            "@yahoo.cn", "@sohu.com", "@foxmail.com", "@139.com", "@yeah.net", "@vip.qq.com", "@vip.sina.com"};
     public static String jumpClass;
+
+    static {
+        APIClient.getAllEmailSuffix(new ZCallBackWithoutProgress<ResponseModel<List<String>>>() {
+            @Override
+            public void callBack(ResponseModel<List<String>> response) {
+                emailSufixs = new String[response._data.size()];
+                for (int i = 0; i < response._data.size(); i++) {
+                    emailSufixs[i] = response._data.get(i);
+                }
+            }
+        });
+    }
 
     /**
      * This method converts dp unit to equivalent pixels, depending on device density.
@@ -93,8 +113,25 @@ public class ZR {
         RequestOptions options = new RequestOptions();
         //if fail user the default user icon
         Glide.with(v.getContext()).load(imageUrl)
-                .apply(options.fitCenter().placeholder(R.drawable.default_user_icon))
+                .apply(options.fitCenter().placeholder(R.drawable.user_icon_head_notlogin))
                 .into(v);
+    }
+
+    public static void setAnswerImage(ImageView v, String imageUrl) {
+        GlideApp.with(v.getContext()).load(imageUrl).placeholder(R.drawable.banner).fitCenter().into(v);
+    }
+
+    public static void setUserName(TextView userNameTv, String name, int grand) {
+        userNameTv.setText(name);
+        if (grand == 3) {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
+        } else if (grand == 4) {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v4, 0);
+        } else if (grand == 5) {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
+        } else {
+            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
     }
 
     public void getDensity(Activity activity) {

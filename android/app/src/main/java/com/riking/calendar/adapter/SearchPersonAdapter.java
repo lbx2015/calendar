@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
-import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
@@ -43,14 +42,11 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         final AppUserResult user = mList.get(i);
 
         h.userName.setText(user.userName);
-        h.userName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
         h.summary.setText(user.answerNum + "个回答，" + user.agreeNum + "赞");
-        h.userName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
-        RequestOptions options = new RequestOptions();
-        GlideApp.with(h.userImage.getContext()).load(user.photoUrl)
-                .placeholder(R.drawable.default_user_icon)
-                .apply(options.fitCenter())
-                .into(h.userImage);
+        //set user name
+        ZR.setUserName(h.userName, user.userName, user.grade);
+
+        ZR.setUserImage(h.userImage, user.photoUrl);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +56,6 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
                 } else {
                     h.invited = true;
                 }
-                showInvited(h);
                 sendFollowRequest(user, h);
 
             }
@@ -72,7 +67,7 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         final TQuestionParams params = new TQuestionParams();
         params.attentObjId = user.userId;
         //follow user
-        params.objType = 2;
+        params.objType = 3;
         //followed
         if (user.isFollow == 1) {
             params.enabled = 0;

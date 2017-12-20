@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -69,6 +70,10 @@ public class NewsComment extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	@Transient
 	@Comment("是否已点赞 0-未点赞，1-已点赞")
 	private Integer isAgree;
@@ -78,7 +83,7 @@ public class NewsComment extends BaseAuditProp {
 	List<NCReply> ncReplyList;
 
 	public NewsComment(String id, Date createdTime, Date modifiedTime, String userId, String newsId, String content,
-			String userName, String photoUrl, Integer experience) {
+			String userName, String photoUrl, Integer experience, String ncId) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
@@ -89,6 +94,11 @@ public class NewsComment extends BaseAuditProp {
 		this.userName = userName;
 		this.photoUrl = photoUrl;
 		this.experience = experience;
+		if (StringUtils.isNotBlank(ncId)) {
+			isAgree = 1;
+		} else {
+			isAgree = 0;
+		}
 	}
 
 	public NewsComment() {
@@ -102,6 +112,14 @@ public class NewsComment extends BaseAuditProp {
 
 	public void setNcReplyList(List<NCReply> ncReplyList) {
 		this.ncReplyList = ncReplyList;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getUserId() {

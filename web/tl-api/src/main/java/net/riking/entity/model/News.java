@@ -67,6 +67,9 @@ public class News extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	@Transient
+	private Integer grade;
+
 	// 用户名
 	@Transient
 	private String userName;
@@ -82,6 +85,11 @@ public class News extends BaseAuditProp {
 	// 是否收藏（0-未收藏，1-已收藏）
 	@Transient
 	private Integer isCollect;
+
+	public News() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
 			String content, String issued, String userName, String photoUrl, Integer experience) {
@@ -126,6 +134,14 @@ public class News extends BaseAuditProp {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public Integer getIsCollect() {

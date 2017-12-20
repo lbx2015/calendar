@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.ExcellentAnswererFragment;
 import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
@@ -34,15 +35,17 @@ import static com.riking.calendar.util.CONST.TOPIC_ID;
  */
 
 public class TopicActivity extends AppCompatActivity { //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HotAnswerOfTopicFragment(), new QuestionsFragment(), new ExcellentAnswererFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{HotAnswerOfTopicFragment.newInstance(this), QuestionsFragment.newInstance(this), ExcellentAnswererFragment.newInstance(this)};
     public View followButton;
     public TextView followTv;
-    String topicId;
-    Topic topic;
+    public Topic topic;
+    public String topicId;
     private ViewPager mViewPager;
     private TextView topicTitle;
     private MyPagerAdapter mAdapter;
     private TextView followNumberTv;
+    private TextView topicContent;
+    private TextView expandButtonTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +68,10 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                //adding null protection
+                if (topic == null) {
+                    return;
+                }
                 final TQuestionParams params = new TQuestionParams();
                 params.attentObjId = topic.topicId;
                 //topic
@@ -104,8 +111,14 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
                 updateFollowButton();
                 //set follow number
                 followNumberTv.setText(topic.followNum + "人关注");
-                //set question title
+                //set topic title
                 topicTitle.setText(topic.title);
+                //set topic content
+                topicContent.setText(topic.content);
+                if (topicContent.getLineCount() <= 3) {
+                    MyLog.d("expand button set gone");
+                    expandButtonTv.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -128,6 +141,8 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        expandButtonTv = findViewById(R.id.id_expand_textview);
+        topicContent = findViewById(R.id.id_source_textview);
         followNumberTv = findViewById(R.id.follow_number_tv);
         topicTitle = findViewById(R.id.topic_title);
         followButton = findViewById(R.id.follow_button);
@@ -178,7 +193,7 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
                 case 0:
                     return "精华";
                 case 1:
-                    return "回答";
+                    return "问题";
                 case 2:
                     return "优秀回答者";
             }

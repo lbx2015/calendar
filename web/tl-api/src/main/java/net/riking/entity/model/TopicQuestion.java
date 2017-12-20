@@ -79,6 +79,10 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	@Transient
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
@@ -86,13 +90,13 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private List<QuestionAnswer> questionAnswers;
 
-	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
 			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAudit(isAudit);
+		this.setIsAduit(isAduit);
 		this.title = title;
 		this.content = content;
 		this.topicId = topicId;
@@ -116,6 +120,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
 		this.questionAnswers = questionAnswers;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getId() {
