@@ -56,6 +56,7 @@ import com.riking.calendar.pojo.synch.SynResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -324,7 +325,7 @@ public interface APIInterface {
      * @return
      */
     @POST("user/signIn")
-    Call<ResponseModel<String>> signIn(@Body UserParams params);
+    Call<ResponseModel<Map<String, Integer>>> signIn(@Body UserParams params);
 
     @POST("topicQuestion/answerInvite")
     Call<ResponseModel<String>> answerInvite(@Body TQuestionParams params);

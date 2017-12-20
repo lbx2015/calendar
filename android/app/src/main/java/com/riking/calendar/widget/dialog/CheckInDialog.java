@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.view.ZEnterImageView;
 
 /**
  * Created by zw.zhang on 2017/12/14.
@@ -19,6 +20,7 @@ import com.riking.calendar.util.ZR;
 
 public class CheckInDialog extends Dialog {
     int experience;
+    public ZEnterImageView zEnterImageView;
 
     public CheckInDialog(@NonNull Context context) {
         super(context);
@@ -41,6 +43,7 @@ public class CheckInDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_check_in);
+        zEnterImageView = findViewById(R.id.sign_in_success_img);
         findViewById(R.id.close_im).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

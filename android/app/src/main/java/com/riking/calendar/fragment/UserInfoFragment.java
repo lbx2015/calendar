@@ -44,6 +44,8 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.widget.dialog.CheckInDialog;
 import com.riking.calendar.widget.dialog.CheckInFailDialog;
 
+import java.util.Map;
+
 import static android.app.Activity.RESULT_CANCELED;
 
 /**
@@ -149,15 +151,20 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             @Override
             public void click(View v) {
                 UserParams userParams = new UserParams();
-                APIClient.signIn(userParams, new ZCallBackWithFail<ResponseModel<String>>() {
+                APIClient.signIn(userParams, new ZCallBackWithFail<ResponseModel<Map<String, Integer>>>() {
                     @Override
-                    public void callBack(ResponseModel<String> response) throws Exception {
+                    public void callBack(ResponseModel<Map<String, Integer>> response) throws Exception {
                         if (failed) {
                             CheckInFailDialog dialog = new CheckInFailDialog(checkInTv.getContext());
                             dialog.show();
                         } else {
+                            Map<String, Integer> maps = response._data;
+                            checkInTv.setText("已签到");
+                            checkInTv.setClickable(false);
+                            checkInTv.setEnabled(false);
                             CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
-                            dialog.setExperience(currentUser.experience);
+                            dialog.setExperience(maps.get("integral"));
+                            dialog.zEnterImageView.text = "+" + maps.get("signIntegral");
                             dialog.show();
                         }
                     }

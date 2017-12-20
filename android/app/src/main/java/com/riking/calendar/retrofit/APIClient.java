@@ -74,6 +74,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import io.realm.Realm;
@@ -654,7 +655,7 @@ public class APIClient {
         apiInterface.getMyAnswers(params).enqueue(c);
     }
 
-    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<Map<String, Integer>>> c) {
         apiInterface.signIn(params).enqueue(c);
     }
 
