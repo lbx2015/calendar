@@ -22,7 +22,6 @@ import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
-import com.riking.calendar.pojo.ModelPropDict;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.WorkDate;
@@ -31,6 +30,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
@@ -50,6 +50,7 @@ import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -73,14 +74,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
@@ -563,10 +562,6 @@ public class APIClient {
         apiInterface.userAddReportEdit(reportResult).enqueue(z);
     }
 
-    public static void getReportByName(HashMap<String, String> reportName, ZCallBack<ResponseModel<List<ReportFrequency>>> c) {
-        apiInterface.getReportByName(reportName).enqueue(c);
-    }
-
     public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {
         apiInterface.updateUserReportRelById(reportRel).enqueue(c);
     }
@@ -675,11 +670,15 @@ public class APIClient {
         apiInterface.modifyUserInfo(params).enqueue(c);
     }
 
-    public static void getAllEmailSuffix(ZCallBackWithoutProgress<ResponseModel<List<String>>> c){
+    public static void getAllEmailSuffix(ZCallBackWithoutProgress<ResponseModel<List<String>>> c) {
         apiInterface.getAllEmailSuffix().enqueue(c);
     }
 
-    public static void publishFeedBack(List<MultipartBody.Part> file, String userId, String content, ZCallBack<ResponseModel<String>> c){
-        apiInterface.feedBackPublish(file,userId,content).enqueue(c);
+    public static void publishFeedBack(List<MultipartBody.Part> file, String userId, String content, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.feedBackPublish(file, userId, content).enqueue(c);
+    }
+
+    public static void getReports(ReportParams params, ZCallBack<ResponseModel<List<ReportListResult>>> c) {
+        apiInterface.getReports(params).enqueue(c);
     }
 }

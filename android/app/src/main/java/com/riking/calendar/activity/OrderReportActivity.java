@@ -18,14 +18,16 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.ReportFrequencyAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.interfeet.SubscribeReport;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportAgence;
+import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
@@ -49,7 +51,7 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     public RecyclerView reportsRecyclerViews;
     public ReportFrequencyAdapter reportFrequencyAdapter = new ReportFrequencyAdapter(this);
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
-    public List<ReportAgence> reportAgences;
+    public List<ReportListResult> reportAgences;
     //0 meansing CBOC , 1 means PBRC
     public int orgonizeType = 0;
     TextView firstGroupTv;
@@ -248,24 +250,36 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
 
     private void loadReport() {
         //request all reports
-        AppUser u = new AppUser();
-        //set user userId
-        u.userId = ZPreference.pref.getString(CONST.USER_ID, "");
-        APIClient.getAllReports(u, new ZCallBackWithFail<ResponseModel<List<ReportAgence>>>() {
+        ReportParams params = new ReportParams();
+        APIClient.getReports(params, new ZCallBack<ResponseModel<List<ReportListResult>>>() {
             @Override
-            public void callBack(ResponseModel<List<ReportAgence>> response) {
-                if (failed) {
+            public void callBack(ResponseModel<List<ReportListResult>> response) {
+                reportAgences = response._data;
+                if (reportAgences == null) return;
 
+                if (reportAgences.get(0) == null) {
+                    firstGroupTv.setVisibility(View.GONE);
                 } else {
-                    reportAgences = response._data;
+                    firstGroupTv.setVisibility(View.VISIBLE);
                     firstGroupTv.setText(reportAgences.get(0).agenceName);
+                }
+
+                if (reportAgences.get(1) == null) {
+                    secondGroupTv.setVisibility(View.GONE);
+                } else {
+                    secondGroupTv.setVisibility(View.VISIBLE);
                     secondGroupTv.setText(reportAgences.get(1).agenceName);
+                }
+                if (reportAgences.size() > 0) {
                     MyLog.d("reportAgences: " + reportAgences);
                     updateReportAgences();
                 }
             }
         });
 
+        AppUser u = new AppUser();
+        //set user userId
+        u.userId = ZPreference.pref.getString(CONST.USER_ID, "");
         APIClient.findUserReportList(u, new ZCallBackWithFail<ResponseModel<List<ReportFrequency>>>() {
             @Override
             public void callBack(ResponseModel<List<ReportFrequency>> response) {

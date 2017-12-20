@@ -94,7 +94,7 @@ public class FeedBackActivity extends AppCompatActivity implements EasyPermissio
                 MyLog.d(" image url: " + list.get(i));
                 File f = new File(list.get(i));
                 RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), f);
-                builder.addFormDataPart("file", f.getName(), photoRequestBody);
+                builder.addFormDataPart("mFile", f.getName(), photoRequestBody);
             }
 
             MyLog.d("content:" + content);

@@ -26,6 +26,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
@@ -45,6 +46,7 @@ import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportAgence;
 import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportSubscribeRel;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
@@ -205,9 +207,6 @@ public interface APIInterface {
     @POST("/appUserReport/userAddReportEdit")
     Call<ResponseModel<Short>> userAddReportEdit(@Body AppUserReportResult reportResult);
 
-    @POST("/reportListApp/getReportByName")
-    Call<ResponseModel<List<ReportFrequency>>> getReportByName(@Body HashMap<String, String> reporName);
-
     @POST("/appUserReport/updateUserReportRelById")
     Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
 
@@ -358,4 +357,11 @@ public interface APIInterface {
     @Multipart
     @POST("feedBack/publish")
     Call<ResponseModel<String>> feedBackPublish(@Part  List<MultipartBody.Part> file, @Part("userId") String id, @Part("content") String content);
+
+    /**
+     * 可根据报表名称查询相关报表
+     */
+    @POST("report/getReports")
+    Call<ResponseModel<List<ReportListResult>>> getReports(@Body ReportParams params);
+
 }

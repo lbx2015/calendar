@@ -249,7 +249,6 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
