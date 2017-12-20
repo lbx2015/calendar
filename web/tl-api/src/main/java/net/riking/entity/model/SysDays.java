@@ -29,8 +29,16 @@ public class SysDays extends BaseEntity {
 	private Integer weekday;
 
 	@Comment("工作日标识 1：工作日 0：非工作日")
-	@Column(name = "iswork")
+	@Column(name = "is_work")
 	private Integer isWork;
+	
+	@Comment("是否国家节假日：0-否；1-是")
+	@Column(name = "is_holiday")
+	private Integer isHoliday;
+	
+	@Comment("节日名称备注")
+	@Column(name = "remark")
+	private String remark;
 
 	public SysDays() {
 
@@ -60,4 +68,20 @@ public class SysDays extends BaseEntity {
 		this.isWork = isWork;
 	}
 
+	public Integer getIsHoliday() {
+		return isHoliday;
+	}
+
+	public void setIsHoliday(Integer isHoliday) {
+		this.isHoliday = isHoliday;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 }

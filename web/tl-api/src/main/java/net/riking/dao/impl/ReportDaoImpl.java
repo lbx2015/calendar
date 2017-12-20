@@ -9,8 +9,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Transaction;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
@@ -92,5 +94,5 @@ public class ReportDaoImpl implements ReportDao {
 		return list;
 
 	}
-
+	
 }

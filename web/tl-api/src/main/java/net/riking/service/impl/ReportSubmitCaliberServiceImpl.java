@@ -1,6 +1,5 @@
 package net.riking.service.impl;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.dao.impl.ReportSubmitCaliberDaoImpl;
 import net.riking.entity.model.QueryReport;
-import net.riking.entity.model.ReportCompletedRel;
-import net.riking.entity.resp.RCompletedRelResp;
 import net.riking.service.ReportSubmitCaliberService;
 
 @Service("reportSubmitCaliberService")
@@ -43,27 +40,6 @@ public class ReportSubmitCaliberServiceImpl implements ReportSubmitCaliberServic
 	public int updateDelayDateBefer(String type, String remarks, String frequency) {
 		int count = reportSubmitCaliberDao.updateDelayDateBefer(type, remarks, frequency);
 		return count;
-	}
-
-	@Override
-	public List<QueryReport> findAllReport() {
-		// TODO Auto-generated method stub
-		List<QueryReport> list = reportSubmitCaliberDao.findAllReport();
-		return list;
-	}
-
-	@Override
-	public List<RCompletedRelResp> findCompleteReportByIdAndTime(String userId, String completedDate) {
-		// TODO Auto-generated method stub
-		List<RCompletedRelResp> list = reportSubmitCaliberDao.findCompleteReportByIdAndTime(userId, completedDate);
-		return list;
-	}
-
-	@Override
-	public List<ReportCompletedRel> findAllUserReport(ReportCompletedRel appUserReportCompleteRel) {
-		// TODO Auto-generated method stub
-		List<ReportCompletedRel> list = reportSubmitCaliberDao.findAllUserReport(appUserReportCompleteRel);
-		return list;
 	}
 
 }

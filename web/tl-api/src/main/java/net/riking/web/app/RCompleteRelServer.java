@@ -31,7 +31,7 @@ import net.riking.entity.model.Period;
 import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.SysDays;
 import net.riking.entity.params.RCompletedRelParams;
-import net.riking.entity.resp.RCompletedRelResp;
+import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDateService;
 import net.riking.service.impl.SysDateServiceImpl;
@@ -48,6 +48,9 @@ import net.riking.util.DateUtils;
 public class RCompleteRelServer {
 	protected final transient Logger logger = LogManager.getLogger(getClass());
 
+	@Autowired
+	ReportService reportService;
+	
 	@Autowired
 	ReportCompletedRelRepo reportCompletedRelRepo;
 
@@ -69,139 +72,7 @@ public class RCompleteRelServer {
 	@Autowired
 	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
 
-	/**
-	 * 用户报表完成情况新增[userId,reportId]
-	 * @param params
-	 * @return
-	 */
-	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public AppResp save(@RequestBody RCompletedRelParams rCompletedRelParams) {
-		ReportCompletedRel completedRel = new ReportCompletedRel();
-		completedRel.setReportId(rCompletedRelParams.getReportId());
-		completedRel.setUserId(rCompletedRelParams.getUserId());
-		completedRel.setCompletedDate(DateFormatUtils.format(new Date(), "yyyyMMdd"));
-		reportCompletedRelRepo.save(completedRel);
-		return new AppResp("", CodeDef.SUCCESS);
-	}
 
-	/**
-	 * 用户获取当天报表完成情况[userId,completedDate]
-	 * @param params
-	 * @return
-	 * @throws ParseException
-	 */
-	@ApiOperation(value = "用户获取当天报表完成情况", notes = "POST")
-	@RequestMapping(value = "/findNowReport", method = RequestMethod.POST)
-	public AppResp getAllReport(@RequestBody RCompletedRelParams rCompletedRelParams) throws ParseException {
-		// 获取当月的打点数据 如果只打点当月之后的数据
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		// sdf.parse(str);
-		String completedDate = sdf.format(rCompletedRelParams.getCompletedDate());
-		// {
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTime(completedDate);
-		// calendar.add(Calendar.DATE, +1);// 后一天
-		// endDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
-		// }
-		// {
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTime(completedDate);
-		// calendar.add(Calendar.DATE, -1);// 前一天
-		// beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
-		// }
-		List<String> reportIds = reportCompletedRelRepo.findNowReport(rCompletedRelParams.getUserId(), completedDate);
-		List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
-		for (String reportId : reportIds) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("reportId", reportId);
-			maps.add(map);
-		}
-		return new AppResp(maps, CodeDef.SUCCESS);
-	}
-
-	/**
-	 * 获取当天未完成和已完成的报表列表[userId,completedDate]
-	 * @param params
-	 * @return
-	 * @throws ParseException
-	 */
-	@ApiOperation(value = "获取当天未完成和已完成的报表列表", notes = "POST")
-	@RequestMapping(value = "/findByIdAndTime", method = RequestMethod.POST)
-	public AppResp findByIdAndTime(@RequestBody RCompletedRelParams rCompletedRelParams) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String completedDate = sdf.format(rCompletedRelParams.getCompletedDate());
-		// {
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTime(completedDate);
-		// calendar.add(Calendar.DATE, +1);// 后一天
-		// endDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
-		// }
-		// {
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTime(completedDate);
-		// calendar.add(Calendar.DATE, -1);// 前一天
-		// beginDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
-		// }
-		List<RCompletedRelResp> list = reportSubmitCaliberService
-				.findCompleteReportByIdAndTime(rCompletedRelParams.getUserId(), completedDate);
-
-		return new AppResp(list, CodeDef.SUCCESS);
-	}
-
-	/**
-	 * 获取当天之后的打点日期[remindTime,userId]
-	 * @param params
-	 * @return
-	 * @throws ParseException
-	 */
-	@ApiOperation(value = "获取当天之后的打点日期", notes = "POST")
-	@RequestMapping(value = "/getDatedot", method = RequestMethod.POST)
-	public AppResp getDatedot(@RequestBody RCompletedRelParams rCompletedRelParams) throws ParseException {
-		// List<String> list = getDateByToDay();//获取当日之后的一年日期
-		List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();// 存日期 返回
-		Set<String> result = new HashSet<String>();// 取交集用
-
-		// 获取当月的打点数据 如果只打点当月之后的数据
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-		// sdf.parse(str);
-		List<String> dateList = getAllTheDateOftheMonth(sdf.parse(sdf.format(rCompletedRelParams.getRemindTime())));
-
-		// 根据userId去用户订阅表里查询未完成的 报表id 集合
-		String compeltedDate = DateUtils.DateFormatMS(new Date(), "yyyy-MM-dd");
-		List<String> reportIds = reportCompletedRelRepo.findNowReport(rCompletedRelParams.getUserId(), compeltedDate);
-		Set<String> userSetList = rSubscribeRelRepo.findReportByUserIdAndIsComplete(rCompletedRelParams.getUserId(),
-				reportIds);
-		// 循环日期 根据当天日期去查询 报送口径表 相符合的报表id集合
-		for (String date : dateList) {
-			Set<String> setList = getReportList(date);// 计算出的reportId集合
-			result.clear();
-			result.addAll(userSetList);
-			result.retainAll(setList);
-			if (result != null && !result.isEmpty()) {// 如果存在并集 则将日期存进list
-				Map<String, Object> rCompletedRelRespMap = new HashMap<String, Object>();
-				rCompletedRelRespMap.put("date", date);
-				allList.add(rCompletedRelRespMap);
-			}
-		}
-
-		return new AppResp(allList, CodeDef.SUCCESS);
-	}
-
-	private List<String> getAllTheDateOftheMonth(Date date) {
-		List<String> list = new ArrayList<String>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.DATE, 1);
-		int month = cal.get(Calendar.MONTH);
-		SimpleDateFormat sdf = null;
-		while (cal.get(Calendar.MONTH) == month) {
-			sdf = new SimpleDateFormat("yyyyMMdd");
-			list.add(sdf.format(cal.getTime()));
-			cal.add(Calendar.DATE, 1);
-		}
-		return list;
-	}
 
 	public List<String> getDateByToDay() throws ParseException {
 		List<String> list = new ArrayList<>();
@@ -210,10 +81,10 @@ public class RCompleteRelServer {
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
 		String dateNowStr = sdf1.format(d);
 		System.out.println("格式化后的日期：" + dateNowStr);
-
+		
 		Date today = sdf1.parse(dateNowStr);
 		System.out.println("字符串转成日期：" + today);
-
+		
 		Calendar calendar = Calendar.getInstance();
 		Date date = new Date(System.currentTimeMillis());
 		calendar.setTime(date);
