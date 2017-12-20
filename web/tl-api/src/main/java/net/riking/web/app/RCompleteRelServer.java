@@ -5,10 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -35,7 +33,6 @@ import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDateService;
 import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.util.DateUtils;
 
 /**
  * 核销信息接口
@@ -50,7 +47,7 @@ public class RCompleteRelServer {
 
 	@Autowired
 	ReportService reportService;
-	
+
 	@Autowired
 	ReportCompletedRelRepo reportCompletedRelRepo;
 
@@ -72,7 +69,21 @@ public class RCompleteRelServer {
 	@Autowired
 	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
 
-
+	/**
+	 * 用户报表完成情况新增[userId,reportId]
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "用户报表完成情况新增", notes = "POST")
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public AppResp save(@RequestBody RCompletedRelParams rCompletedRelParams) {
+		ReportCompletedRel completedRel = new ReportCompletedRel();
+		completedRel.setReportId(rCompletedRelParams.getReportId());
+		completedRel.setUserId(rCompletedRelParams.getUserId());
+		completedRel.setCompletedDate(DateFormatUtils.format(new Date(), "yyyyMMdd"));
+		reportCompletedRelRepo.save(completedRel);
+		return new AppResp(CodeDef.SUCCESS);
+	}
 
 	public List<String> getDateByToDay() throws ParseException {
 		List<String> list = new ArrayList<>();
@@ -81,10 +92,10 @@ public class RCompleteRelServer {
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
 		String dateNowStr = sdf1.format(d);
 		System.out.println("格式化后的日期：" + dateNowStr);
-		
+
 		Date today = sdf1.parse(dateNowStr);
 		System.out.println("字符串转成日期：" + today);
-		
+
 		Calendar calendar = Calendar.getInstance();
 		Date date = new Date(System.currentTimeMillis());
 		calendar.setTime(date);

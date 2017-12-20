@@ -1,5 +1,7 @@
 package net.riking.web.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,16 +17,19 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
+import net.riking.core.entity.Resp;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
-import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.UserFollowRelRepo;
-import net.riking.entity.AppResp;
+import net.riking.entity.ApiResp;
+import net.riking.entity.model.TopicQuestion;
 import net.riking.service.AppUserService;
+import net.riking.util.StringUtil;
+import net.riking.util.Utils;
 
 /**
  * 问题接口
@@ -50,9 +55,6 @@ public class TopicQuestionController {
 	HttpServletRequest request;
 
 	@Autowired
-	TQuestionRelRepo tQuestionRelRepo;
-
-	@Autowired
 	QACommentRepo qACommentRepo;
 
 	@Autowired
@@ -70,10 +72,8 @@ public class TopicQuestionController {
 	@AuthPass
 	@ApiOperation(value = "提问/回答上传图片到临时路径", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
-	public AppResp upLoad(@RequestParam("file") MultipartFile mFile) {
+	public ApiResp upLoad(@RequestParam("file") MultipartFile mFile) {
 		String fileName = null;
-		// MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
-		// MultipartFile mFile = mRequest.getFile("file");
 		try {
 			fileName = appUserService.savePhotoFile(mFile, Const.TL_TEMP_PHOTO_PATH);
 		} catch (RuntimeException e) {
@@ -81,10 +81,21 @@ public class TopicQuestionController {
 			if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) {
 			}
 		}
-		Data data = new Data("http://localhost:8281" + Const.TL_TEMP_PHOTO_PATH + fileName, "测试");
-		System.err.println(data.getSrc());
-		return new AppResp(data, (short) 0);
+		Data data = new Data(
+				StringUtil.getProjectPath(request.getRequestURL().toString()) + Const.TL_TEMP_PHOTO_PATH + fileName,
+				fileName);
+		return new ApiResp(data, (short) 0);
 
+	}
+
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public Resp update_(@RequestParam HashMap<String, Object> params) {
+		TopicQuestion topicQuestion = Utils.map2Obj(params, TopicQuestion.class);
+		topicQuestion.setCreatedBy(topicQuestion.getUserId());
+		topicQuestion.setModifiedBy(topicQuestion.getUserId());
+		topicQuestion.setIsAduit(0);
+		topicQuestionRepo.save(topicQuestion);
+		return new Resp(topicQuestion, CodeDef.SUCCESS);
 	}
 }
 

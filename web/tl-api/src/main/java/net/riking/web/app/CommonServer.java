@@ -157,7 +157,7 @@ public class CommonServer {
 
 	/**
 	 * 
-	 * @param userId
+	 * @param userId,email
 	 * @return
 	 * @throws ParseException
 	 */
@@ -170,7 +170,9 @@ public class CommonServer {
 		if (null == userParams.getUserId()) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
+		AppUser appUser = new AppUser();
+		appUser = appUserRepo.findOne(userParams.getUserId());
+		appUser.setEmail(userParams.getEmail());
 
 		Email email = appUserService.getMyEmail();
 		if (StringUtils.isNotBlank(appUser.getEmail())) {
@@ -196,7 +198,7 @@ public class CommonServer {
 				logger.error("邮件发送失败" + e);
 				return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 			}
-			return new AppResp(result, CodeDef.SUCCESS);
+			return new AppResp(CodeDef.SUCCESS);
 		} else {
 			return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 		}
@@ -204,7 +206,7 @@ public class CommonServer {
 
 	/**
 	 * 
-	 * @param userId verifyCode
+	 * @param userId verifyCode,email
 	 * @return
 	 * @throws ParseException
 	 */
@@ -217,14 +219,16 @@ public class CommonServer {
 		if (null == userParams.getUserId()) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
+		if (null == userParams.getEmail()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
 		try {
-			boolean isRn = smsUtil.checkValidCode(appUser.getEmail(), userParams.getVerifyCode());
+			boolean isRn = smsUtil.checkValidCode(userParams.getEmail(), userParams.getVerifyCode());
 			if (!isRn) {
 				return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
 			} else {
-				appUserRepo.updEmailIndentify(userParams.getUserId());
-				return new AppResp("", CodeDef.SUCCESS);
+				appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
+				return new AppResp(CodeDef.SUCCESS);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -381,7 +385,7 @@ public class CommonServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(CodeDef.SUCCESS);
 	}
 
 }
