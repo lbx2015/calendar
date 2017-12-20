@@ -110,7 +110,7 @@ public class APIClient {
 //                .baseUrl("http://www.baidu.com")
 //                .baseUrl("https://reqres.in")
 //                .baseUrl(CONST.TL_API_TEST)
-                .baseUrl(CONST.TL_API_DEV)
+                .baseUrl(CONST.TL_API_TEST)
 //                .baseUrl("http://172.16.64.96:8281/")
 //                .baseUrl("http://172.16.64.85:8281/")
                 .addConverterFactory(new GsonStringConverterFactory())
@@ -679,7 +679,7 @@ public class APIClient {
         apiInterface.getAllEmailSuffix().enqueue(c);
     }
 
-    public static void publishFeedBack(Map<String,RequestBody> body, String userId, String content, ZCallBack<ResponseModel<String>> c){
-        apiInterface.feedBackPublish(body,userId,content).enqueue(c);
+    public static void publishFeedBack(List<MultipartBody.Part> file, String userId, String content, ZCallBack<ResponseModel<String>> c){
+        apiInterface.feedBackPublish(file,userId,content).enqueue(c);
     }
 }

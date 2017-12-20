@@ -358,5 +358,5 @@ public interface APIInterface {
 
     @Multipart
     @POST("feedBack/publish")
-    Call<ResponseModel<String>> feedBackPublish(@PartMap Map<String,RequestBody> body, @Part("userId") String id, @Part("content") String content);
+    Call<ResponseModel<String>> feedBackPublish(@Part  List<MultipartBody.Part> file, @Part("userId") String id, @Part("content") String content);
 }

@@ -87,22 +87,19 @@ public class FeedBackActivity extends AppCompatActivity implements EasyPermissio
                 return;
             }
             List<String> list = mPhotosSnpl.getData();
-            MultipartBody.Part[] bodys = new MultipartBody.Part[list.size()];
-            List<MultipartBody.Part> parts = new ArrayList<>();
-            List<RequestBody> files = new ArrayList<>();
-            Map<String, RequestBody> maps = new HashMap();
+
+            MultipartBody.Builder builder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM);//表单类型
             for (int i = 0; i < list.size(); i++) {
                 MyLog.d(" image url: " + list.get(i));
                 File f = new File(list.get(i));
-                RequestBody reqFile = RequestBody.create(MediaType.parse("image/png"), f);
-//                MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", f.getName(), reqFile);
-//                bodys[i] = body;
-//                files.add(reqFile);
-//                parts.add(body);
-                maps.put(f.getName(), reqFile);
+                RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), f);
+                builder.addFormDataPart("file", f.getName(), photoRequestBody);
             }
+
             MyLog.d("content:" + content);
-            APIClient.publishFeedBack(maps, ZPreference.getUserId(), content, new ZCallBack<ResponseModel<String>>() {
+            List<MultipartBody.Part> bodyparts = builder.build().parts();
+            APIClient.publishFeedBack(bodyparts, ZPreference.getUserId(), content, new ZCallBack<ResponseModel<String>>() {
                 @Override
                 public void callBack(ResponseModel<String> response) {
                     ZToast.toast("发布成功");
