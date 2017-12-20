@@ -163,4 +163,8 @@ public class FeedBackActivity extends AppCompatActivity implements EasyPermissio
             mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
         }
     }
+
+    public void clickBack(final View view) {
+        onBackPressed();
+    }
 }

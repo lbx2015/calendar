@@ -355,7 +355,6 @@ public interface APIInterface {
     @POST("common/getAllEmailSuffix")
     Call<ResponseModel<List<String>>> getAllEmailSuffix();
 
-
     @Multipart
     @POST("feedBack/publish")
     Call<ResponseModel<String>> feedBackPublish(@Part  List<MultipartBody.Part> file, @Part("userId") String id, @Part("content") String content);
