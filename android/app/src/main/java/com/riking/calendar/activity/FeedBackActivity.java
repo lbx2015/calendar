@@ -10,17 +10,27 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.Moment;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZToast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import cn.bingoogolapple.photopicker.activity.BGAPPToolbarActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -57,6 +67,7 @@ public class FeedBackActivity extends AppCompatActivity implements EasyPermissio
     protected void initView(Bundle savedInstanceState) {
         mContentEt = findViewById(R.id.et_moment_add_content);
         mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
+        mPhotosSnpl.setMaxItemCount(6);
     }
 
     protected void setListener() {
@@ -75,11 +86,29 @@ public class FeedBackActivity extends AppCompatActivity implements EasyPermissio
                 Toast.makeText(this, "必须填写这一刻的想法或选择照片！", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            Intent intent = new Intent();
-            intent.putExtra(EXTRA_MOMENT, new Moment(mContentEt.getText().toString().trim(), mPhotosSnpl.getData()));
-            setResult(RESULT_OK, intent);
-            finish();
+            List<String> list = mPhotosSnpl.getData();
+            MultipartBody.Part[] bodys = new MultipartBody.Part[list.size()];
+            List<MultipartBody.Part> parts = new ArrayList<>();
+            List<RequestBody> files = new ArrayList<>();
+            Map<String, RequestBody> maps = new HashMap();
+            for (int i = 0; i < list.size(); i++) {
+                MyLog.d(" image url: " + list.get(i));
+                File f = new File(list.get(i));
+                RequestBody reqFile = RequestBody.create(MediaType.parse("image/png"), f);
+//                MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", f.getName(), reqFile);
+//                bodys[i] = body;
+//                files.add(reqFile);
+//                parts.add(body);
+                maps.put(f.getName(), reqFile);
+            }
+            MyLog.d("content:" + content);
+            APIClient.publishFeedBack(maps, ZPreference.getUserId(), content, new ZCallBack<ResponseModel<String>>() {
+                @Override
+                public void callBack(ResponseModel<String> response) {
+                    ZToast.toast("发布成功");
+                    finish();
+                }
+            });
         }
     }
 
@@ -95,7 +124,8 @@ public class FeedBackActivity extends AppCompatActivity implements EasyPermissio
 
     @Override
     public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
-        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mPhotosSnpl.getMaxItemCount(), models, models, position, false), REQUEST_CODE_PHOTO_PREVIEW);
+        int maxItem = 6;
+        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, maxItem, models, models, position, false), REQUEST_CODE_PHOTO_PREVIEW);
     }
 
     @AfterPermissionGranted(REQUEST_CODE_PERMISSION_PHOTO_PICKER)

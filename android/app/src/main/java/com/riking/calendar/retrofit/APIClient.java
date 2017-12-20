@@ -73,11 +73,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
@@ -107,7 +110,7 @@ public class APIClient {
 //                .baseUrl("http://www.baidu.com")
 //                .baseUrl("https://reqres.in")
 //                .baseUrl(CONST.TL_API_TEST)
-                .baseUrl(CONST.TL_API_TEST)
+                .baseUrl(CONST.TL_API_DEV)
 //                .baseUrl("http://172.16.64.96:8281/")
 //                .baseUrl("http://172.16.64.85:8281/")
                 .addConverterFactory(new GsonStringConverterFactory())
@@ -674,5 +677,9 @@ public class APIClient {
 
     public static void getAllEmailSuffix(ZCallBackWithoutProgress<ResponseModel<List<String>>> c){
         apiInterface.getAllEmailSuffix().enqueue(c);
+    }
+
+    public static void publishFeedBack(Map<String,RequestBody> body, String userId, String content, ZCallBack<ResponseModel<String>> c){
+        apiInterface.feedBackPublish(body,userId,content).enqueue(c);
     }
 }

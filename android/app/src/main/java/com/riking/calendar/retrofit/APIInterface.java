@@ -12,7 +12,6 @@ import com.riking.calendar.pojo.CtryHdayCryCondition;
 import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.GetHolidayModel;
 import com.riking.calendar.pojo.HolidayConditionDemo;
-import com.riking.calendar.pojo.ModelPropDict;
 import com.riking.calendar.pojo.MultipleResource;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
@@ -56,8 +55,10 @@ import com.riking.calendar.pojo.synch.SynResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -67,6 +68,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -345,11 +347,16 @@ public interface APIInterface {
     Call<ResponseModel<String>> answerInvite(@Body TQuestionParams params);
 
     @POST("user/modify")
-    Call<ResponseModel<String>> modifyUserInfo(@Body UpdUserParams params );
+    Call<ResponseModel<String>> modifyUserInfo(@Body UpdUserParams params);
 
     @POST("report/findSubscribeReportList")
-    Call<ResponseModel<ReportSubscribeRel>> modifyUserInfo(@Body HashMap<String,String> params );
+    Call<ResponseModel<ReportSubscribeRel>> modifyUserInfo(@Body HashMap<String, String> params);
 
     @POST("common/getAllEmailSuffix")
     Call<ResponseModel<List<String>>> getAllEmailSuffix();
+
+
+    @Multipart
+    @POST("feedBack/publish")
+    Call<ResponseModel<String>> feedBackPublish(@PartMap Map<String,RequestBody> body, @Part("userId") String id, @Part("content") String content);
 }
