@@ -30,5 +30,5 @@ public class ReportResult {
     public String title;
 
     //    @Comment("是否订阅")
-    public Integer isSubscribe;
+    public int isSubscribe;
 }

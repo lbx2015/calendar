@@ -32,6 +32,7 @@ import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
@@ -48,8 +49,6 @@ import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
-import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
@@ -551,16 +550,12 @@ public class APIClient {
         apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
     }
 
-    public static void getAllReports(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportAgence>>> c) {
-        apiInterface.getAllReports(user).enqueue(c);
-    }
-
     public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportResult>>> c) {
         apiInterface.findSubscribeReportList(user).enqueue(c);
     }
 
-    public static void userAddReportEdit(AppUserReportResult reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
-        apiInterface.userAddReportEdit(reportResult).enqueue(z);
+    public static void userAddReportEdit(SubscribeReportParam reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
+        apiInterface.saveSubscribeReport(reportResult).enqueue(z);
     }
 
     public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {

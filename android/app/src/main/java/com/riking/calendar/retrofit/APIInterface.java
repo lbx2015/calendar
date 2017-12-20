@@ -28,6 +28,7 @@ import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
@@ -44,8 +45,6 @@ import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
-import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
@@ -123,13 +122,6 @@ public interface APIInterface {
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
 
-    /**
-     * get all reports when user not login
-     *
-     * @return
-     */
-    @POST("reportListApp/getAllReport")
-    Call<ResponseModel<List<ReportAgence>>> getAllReports(@Body AppUser user);
 
     @POST("common/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
@@ -196,8 +188,8 @@ public interface APIInterface {
     Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
 
 
-    @POST("/appUserReport/userAddReportEdit")
-    Call<ResponseModel<Short>> userAddReportEdit(@Body AppUserReportResult reportResult);
+    @POST("report/modifySubscribeReport")
+    Call<ResponseModel<Short>> saveSubscribeReport(@Body SubscribeReportParam params);
 
     @POST("/appUserReport/updateUserReportRelById")
     Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);

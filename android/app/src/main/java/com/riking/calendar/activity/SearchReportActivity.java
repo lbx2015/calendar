@@ -25,7 +25,6 @@ import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
-import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.retrofit.APIClient;
@@ -50,7 +49,7 @@ import retrofit2.Response;
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class SearchReportActivity extends AppCompatActivity implements SubscribeReport<ReportFrequency>, PerformSearch {
+public class SearchReportActivity extends AppCompatActivity implements SubscribeReport<ReportResult>, PerformSearch {
 
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
     public boolean editMode = false;
@@ -59,8 +58,8 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
-    List<ReportFrequency> orderReports;
-    List<ReportFrequency> disOrderReports;
+    List<ReportResult> orderReports;
+    List<ReportResult> disOrderReports;
     ImageView clearSearchInputImage;
     private boolean subscribedReportsChanged = false;
 
@@ -195,7 +194,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
 
     }
 
-    public void orderReport(ReportFrequency report) {
+    public void orderReport(ReportResult report) {
         saveToRealm();
         if (orderReports == null) {
             orderReports = new ArrayList<>();
@@ -205,7 +204,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
-        a.reportName = report.reportName;
+        a.reportName = report.title;
         a.type = "1";
         orderReports.add(report);
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
@@ -216,7 +215,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         });
     }
 
-    public void unorderReport(ReportFrequency report) {
+    public void unorderReport(ReportResult report) {
         saveToRealm();
         if (disOrderReports == null) {
             disOrderReports = new ArrayList<>();
@@ -226,7 +225,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
-        a.reportName = report.reportName;
+        a.reportName = report.title;
         a.type = "0";
 
         disOrderReports.add(report);
@@ -252,7 +251,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     @Override
-    public boolean isAddedToMyOrder(ReportFrequency report) {
+    public boolean isAddedToMyOrder(ReportResult report) {
         return false;
     }
 

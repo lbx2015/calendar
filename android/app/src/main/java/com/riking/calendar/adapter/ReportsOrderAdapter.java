@@ -15,9 +15,7 @@ import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportResult;
-import com.riking.calendar.pojo.server.ReportTypeListResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZPreference;
@@ -51,7 +49,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
         h.reportName.setText(r.code);
         h.reportName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_formlabel_icon_month, 0);
         h.reportName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
-        if (r.isSubscribe == null || r.isSubscribe.equals("0")) {
+        if (r.isSubscribe == 0) {
             h.subscribed = false;
         } else {
             h.subscribed = true;
@@ -75,6 +73,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
             h.orderButton.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.orderButton.setBackground(h.orderButton.getResources().getDrawable(R.drawable.rounded_order_button));
         }
+
         h.orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

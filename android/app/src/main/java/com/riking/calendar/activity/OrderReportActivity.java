@@ -26,7 +26,7 @@ import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.ReportParams;
-import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
@@ -159,12 +159,11 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
 
     private void saveSubscribedReports() {
         if (editMode) {
-            AppUserReportResult appUserReportResult = new AppUserReportResult();
-            appUserReportResult.userId = ZPreference.pref.getString(CONST.USER_ID, "");
-            appUserReportResult.list = new ArrayList<>();
+            SubscribeReportParam appUserReportResult = new SubscribeReportParam();
+            appUserReportResult.reportIds = new ArrayList<>();
 
             for (ReportResult r : mySubscribedReports) {
-                appUserReportResult.list.add(r.reportId);
+                appUserReportResult.reportIds.add(r.reportId);
             }
 
             APIClient.userAddReportEdit(appUserReportResult, new ZCallBackWithFail<ResponseModel<Short>>() {

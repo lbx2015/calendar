@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.OrderReportActivity;
-import com.riking.calendar.pojo.server.BaseModelPropdict;
-import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportTypeListResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.OneTextViewHolder;

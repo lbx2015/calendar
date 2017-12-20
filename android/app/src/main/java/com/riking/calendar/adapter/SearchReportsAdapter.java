@@ -49,9 +49,9 @@ public class SearchReportsAdapter extends RecyclerView.Adapter<ReportOrderViewHo
         h.reportName.setText(r.code);
         h.reportName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_formlabel_icon_month, 0);
         h.reportName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
-        if (r.isSubscribe == null || r.isSubscribe.equals("0")) {
+        if (r.isSubscribe == 0){
             h.subscribed = false;
-        } else {
+        } else{
             h.subscribed = true;
         }
 

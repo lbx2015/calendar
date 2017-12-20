@@ -20,7 +20,6 @@ import com.riking.calendar.adapter.InvitePersonAdapter;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.server.AppUserResult;
-import com.riking.calendar.pojo.server.ReportFrequency;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
