@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -30,10 +29,10 @@ import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
-import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
@@ -71,13 +70,16 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     private OptionsPickerView departPickerView;
     private ArrayList<DictionaryBean> cardItem = new ArrayList<>();
 
+    public void clickBack(final View view) {
+        onBackPressed();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_user_info);
         myPhoto = (ImageView) findViewById(R.id.my_photo);
-        findViewById(R.id.back).setOnClickListener(this);
         userName = (TextView) findViewById(R.id.name);
         email = (TextView) findViewById(R.id.email);
         department = (TextView) findViewById(R.id.depart);
@@ -104,7 +106,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         if (imageUrl == null) {
             return;
         }
-        String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+
+        ZR.setCircleUserImage(myPhoto, imageUrl);
+      /*  String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
         if (FileUtil.imageExists(imageName)) {
             Logger.d("zzw", "no need load url: " + imageName);
             Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
@@ -115,7 +119,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             LoadUserImageTask myTask = new LoadUserImageTask();
             myTask.imageView = myPhoto;
             myTask.execute(imageUrl);
-        }
+        }*/
     }
 
     @Override
@@ -219,10 +223,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back: {
-                onBackPressed();
-                break;
-            }
             case R.id.user_name_relative_layout: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.name));

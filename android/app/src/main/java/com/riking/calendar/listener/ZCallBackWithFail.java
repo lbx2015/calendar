@@ -24,7 +24,6 @@ public abstract class ZCallBackWithFail<T extends ResponseModel> implements Call
     public ZCallBackWithFail() {
     }
 
-
     public abstract void callBack(T response) throws Exception;
 
     @Override
