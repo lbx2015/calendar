@@ -36,7 +36,6 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.view.OptionsPickerView;
-import com.riking.calendar.widget.EmailAutoCompleteTextView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -261,6 +260,11 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_CANCELED) {
+            //do nothing on operation cancelled
+            return;
+        }
+
         Bitmap bitMap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
         if (bitMap != null) {
             Logger.d("zzw", "bitmap is null");
@@ -349,7 +353,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-          /*  case R.id.user_name_relative_layout: {
+          case R.id.user_name_relative_layout: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.name));
                 // I'm using fragment here so I'm using getView() to provide ViewGroup
@@ -400,6 +404,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 builder.show();
                 break;
             }
+            /**
             case R.id.email_row_relative_layout: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.job_email));

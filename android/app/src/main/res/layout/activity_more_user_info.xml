@@ -88,9 +88,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:background="@color/white"
-        android:src="@color/color_e2e2e2"
         android:paddingLeft="15dp"
-        />
+        android:src="@color/color_e2e2e2" />
     <!--email-->
     <TextView
         android:layout_width="match_parent"
@@ -128,7 +127,7 @@
             android:layout_centerInParent="true"
             android:drawableLeft="@drawable/com_btn_icon_plus"
             android:drawablePadding="5dp"
-            android:text="添加手机号码"
+            android:text="添加邮箱"
             android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
 
@@ -146,9 +145,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:background="@color/white"
-        android:src="@color/color_e2e2e2"
         android:paddingLeft="15dp"
-        />
+        android:src="@color/color_e2e2e2" />
     <!--wechat-->
     <TextView
         android:layout_width="match_parent"
@@ -186,7 +184,7 @@
             android:layout_centerInParent="true"
             android:drawableLeft="@drawable/com_btn_icon_plus"
             android:drawablePadding="5dp"
-            android:text="添加手机号码"
+            android:text="添加微信"
             android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
 
@@ -238,7 +236,7 @@
             android:layout_centerInParent="true"
             android:drawableLeft="@drawable/com_btn_icon_plus"
             android:drawablePadding="5dp"
-            android:text="添加手机号码"
+            android:text="添加公司名称"
             android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
 
@@ -256,9 +254,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:background="@color/white"
-        android:src="@color/color_e2e2e2"
         android:paddingLeft="15dp"
-        />
+        android:src="@color/color_e2e2e2" />
     <!--industry-->
     <TextView
         android:layout_width="match_parent"
@@ -296,7 +293,7 @@
             android:layout_centerInParent="true"
             android:drawableLeft="@drawable/com_btn_icon_plus"
             android:drawablePadding="5dp"
-            android:text="添加手机号码"
+            android:text="添加行业"
             android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
 
@@ -310,13 +307,12 @@
             android:src="@drawable/work_rm_icon_arrow_r" />
     </RelativeLayout>
     <!--divider-->
-     <ImageView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:background="@color/white"
-        android:src="@color/color_e2e2e2"
         android:paddingLeft="15dp"
-        />
+        android:src="@color/color_e2e2e2" />
     <!--position-->
     <TextView
         android:layout_width="match_parent"
@@ -354,7 +350,7 @@
             android:layout_centerInParent="true"
             android:drawableLeft="@drawable/com_btn_icon_plus"
             android:drawablePadding="5dp"
-            android:text="添加手机号码"
+            android:text="添加职位"
             android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
 
@@ -372,9 +368,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:background="@color/white"
-        android:src="@color/color_e2e2e2"
         android:paddingLeft="15dp"
-        />
+        android:src="@color/color_e2e2e2" />
     <!--job location-->
     <TextView
         android:layout_width="match_parent"
@@ -412,7 +407,7 @@
             android:layout_centerInParent="true"
             android:drawableLeft="@drawable/com_btn_icon_plus"
             android:drawablePadding="5dp"
-            android:text="添加手机号码"
+            android:text="添加工作地区"
             android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
 

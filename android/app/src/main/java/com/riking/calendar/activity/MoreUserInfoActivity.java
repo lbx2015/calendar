@@ -1,12 +1,17 @@
 package com.riking.calendar.activity;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +22,7 @@ import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
@@ -24,6 +30,7 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.GetJsonDataUtil;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.OptionsPickerView;
 
 import org.json.JSONArray;
@@ -271,26 +278,93 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         phoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                changePhoneNumberDialog(currentUser.phone, new UpdateUserInfoCallBack() {
+                    @Override
+                    void updateSuccess(String newValue) {
+                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                        currentUser.phone = newValue;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                    }
 
+                    @Override
+                    void newValue(final String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.phone = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                        phoneNumberTv.setText(newValue);
+                    }
+                });
             }
         });
+
         addPhoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                changePhoneNumberDialog(currentUser.phone, new UpdateUserInfoCallBack() {
+                    @Override
+                    public void newValue(final String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.phone = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                    }
 
+                    @Override
+                    void updateSuccess(String newValue) {
+                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                        currentUser.phone = newValue;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                        phoneNumberTv.setVisibility(View.VISIBLE);
+                        addPhoneNumberTv.setVisibility(View.GONE);
+                        phoneNumberTv.setText(newValue);
+                    }
+                });
             }
         });
         //email
         emailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                changePhoneNumberDialog(currentUser.email, new UpdateUserInfoCallBack() {
+                    @Override
+                    public void newValue(final String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.email = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                    }
 
+                    @Override
+                    void updateSuccess(String newValue) {
+                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                        currentUser.email = newValue;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                        emailTv.setVisibility(View.VISIBLE);
+                        addEmailTv.setVisibility(View.GONE);
+                        emailTv.setText(newValue);
+                    }
+                });
             }
         });
         addEmailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                changePhoneNumberDialog(currentUser.email, new UpdateUserInfoCallBack() {
+                    @Override
+                    public void newValue(final String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.email = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                    }
 
+                    @Override
+                    void updateSuccess(String newValue) {
+                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                        currentUser.email = newValue;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                        emailTv.setVisibility(View.VISIBLE);
+                        addEmailTv.setVisibility(View.GONE);
+                        emailTv.setText(newValue);
+                    }
+                });
             }
         });
         //wechat
@@ -310,13 +384,47 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         companyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                changePhoneNumberDialog(currentUser.companyName, new UpdateUserInfoCallBack() {
+                    @Override
+                    public void newValue(final String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.companyName = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                    }
 
+                    @Override
+                    void updateSuccess(String newValue) {
+                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                        currentUser.companyName = newValue;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                        companyTv.setVisibility(View.VISIBLE);
+                        addCompanyTv.setVisibility(View.GONE);
+                        companyTv.setText(newValue);
+                    }
+                });
             }
         });
         addCompanyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                changePhoneNumberDialog(currentUser.companyName, new UpdateUserInfoCallBack() {
+                    @Override
+                    public void newValue(final String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.companyName = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                    }
 
+                    @Override
+                    void updateSuccess(String newValue) {
+                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                        currentUser.companyName = newValue;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                        companyTv.setVisibility(View.VISIBLE);
+                        addCompanyTv.setVisibility(View.GONE);
+                        companyTv.setText(newValue);
+                    }
+                });
             }
         });
         //industry
@@ -358,6 +466,43 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void changePhoneNumberDialog(String initValue, final UpdateUserInfoCallBack callBack) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.user_comments));
+        // I'm using fragment here so I'm using getView() to provide ViewGroup
+        // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+        // Set up the input
+        final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        builder.setView(viewInflated);
+        input.setText(initValue == null ? "" : initValue);
+        input.setSelection(initValue == null ? 0 : initValue.length());
+        // Set up the buttons
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Editable editable = input.getText();
+                if (editable == null) {
+                    return;
+                }
+                final String newComments = input.getText().toString();
+                if (newComments.length() > 0) {
+                    callBack.newValue(newComments);
+                }
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
     }
 
     private void initData() {
@@ -515,6 +660,24 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
     public void clickBack(final View view) {
         onBackPressed();
+    }
+
+    public abstract class UpdateUserInfoCallBack {
+        //call the method when user complete the input and click ok
+        abstract void newValue(String newValue);
+
+        abstract void updateSuccess(String newValue);
+
+        //call server
+        public void callServerApi2UpdateUserInfo(final String newValue, UpdUserParams user) {
+            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
+                @Override
+                public void callBack(ResponseModel<String> response) {
+                    updateSuccess(newValue);
+                    ZToast.toast("信息更新成功！");
+                }
+            });
+        }
     }
 
 }
