@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.dao.repo.RSubscribeRelRepo;
 import net.riking.dao.repo.ReportCompletedRelRepo;
 import net.riking.dao.repo.ReportSubmitCaliberRepo;
@@ -82,7 +83,7 @@ public class RCompleteRelServer {
 		completedRel.setUserId(rCompletedRelParams.getUserId());
 		completedRel.setCompletedDate(DateFormatUtils.format(new Date(), "yyyyMMdd"));
 		reportCompletedRelRepo.save(completedRel);
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	public List<String> getDateByToDay() throws ParseException {

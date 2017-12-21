@@ -7,6 +7,7 @@ package net.riking.config;
  *
  */
 public class Const {
+	public static final String EMPTY = "{}";
 
 	public static final String MODEL_ATTRS_JSON_PATH = "/static/dict/";
 
@@ -28,6 +29,10 @@ public class Const {
 
 	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/photo/";
 
+	public static final String TL_QUESTION_PHOTO_PATH = "/images/question/photo/";
+
+	public static final String TL_ANSWER_PHOTO_PATH = "/images/answer/photo/";
+
 	public static final String TL_FLAG_PATH = "/images/flag/";
 
 	public static final String TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
@@ -37,6 +42,8 @@ public class Const {
 	public static final String TL_REPORT_HTML5_PATH = "/reportListApp.html?id=";
 
 	public static final String TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
+
+	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/Inquiry.html";
 
 	/* 验证码有效时间 */
 	public static final String VALID_ = "VALID_";
@@ -48,7 +55,8 @@ public class Const {
 
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
-	//系统日历
+
+	// 系统日历
 	public static final String SYS_DAY = "SYS_DAY_";
 
 	/* 默认头像 */

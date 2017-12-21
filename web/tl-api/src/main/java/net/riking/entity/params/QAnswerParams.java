@@ -18,6 +18,9 @@ public class QAnswerParams extends BaseEntity {
 	// 问题回答ID
 	private String questAnswerId;
 
+	// 问题ID
+	private String questionId;
+
 	// 用户id
 	private String userId;
 
@@ -36,6 +39,14 @@ public class QAnswerParams extends BaseEntity {
 
 	public void setQuestAnswerId(String questAnswerId) {
 		this.questAnswerId = questAnswerId;
+	}
+
+	public String getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(String questionId) {
+		this.questionId = questionId;
 	}
 
 	public String getUserId() {

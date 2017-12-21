@@ -103,6 +103,6 @@ public class AppUserFeedBackServer {
 		if (mFiles.length == 0) {
 			return new AppResp("上传图片为空", CodeDef.SUCCESS);
 		}
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 	}
 }

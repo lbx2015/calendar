@@ -1,10 +1,8 @@
 package net.riking.web.app;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.entity.PageQuery;
-import net.riking.dao.ReportCompletedRelDao;
 import net.riking.dao.repo.RemindRepo;
 import net.riking.dao.repo.ReportCompletedRelRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
@@ -56,10 +52,10 @@ public class AppReportServer {
 
 	@Autowired
 	ReportSubscribeRelRepo reportSubscribeRelRepo;
-	
+
 	@Autowired
 	ReportCompletedRelRepo reportCompletedRelRepo;
-	
+
 	@Autowired
 	SysDataService sysDataservice;
 
@@ -68,7 +64,7 @@ public class AppReportServer {
 
 	@Autowired
 	ReportAgenceFrencyService reportAgenceFrencyService;
-	
+
 	@Autowired
 	RemindRepo remindRepo;
 
@@ -95,29 +91,28 @@ public class AppReportServer {
 
 		return new AppResp(reportListResult, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
 	@RequestMapping(value = "/findSubscribeReportList", method = RequestMethod.POST)
-	public AppResp findSubscribeReportList_(@RequestParam("userId") String userId) {
-		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(userId);
+	public AppResp findSubscribeReportList_(@RequestBody HashMap<String, String> params) {
+		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(params.get("userId"));
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "更新用户报表订阅", notes = "POST")
 	@RequestMapping(value = "/modifySubscribeReport", method = RequestMethod.POST)
 	public AppResp modifySubscribeReport_(@RequestBody Map<String, Object> params) {
 		SubscribeReportParam relParam = Utils.map2Obj(params, SubscribeReportParam.class);
 		String[] arr = {};
-		if(StringUtils.isNotBlank(relParam.getReportIds())){
+		if (StringUtils.isNotBlank(relParam.getReportIds())) {
 			arr = relParam.getReportIds().split(",");
 		}
 
 		String currentDate = DateUtils.getDate("yyyyMMdd");
 		reportService.addReportTaskByUserSubscribe(relParam.getUserId(), arr, currentDate);
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 	}
 
-	
 	@ApiOperation(value = "查询逾期报表", notes = "POST")
 	@RequestMapping(value = "/findExpireTasks", method = RequestMethod.POST)
 	public AppResp findExpireTasks_(@RequestBody Map<String, Object> params) {
@@ -126,10 +121,10 @@ public class AppReportServer {
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
 		List<ReportCompletedRelResult> list = reportService.findExpireReportByPage(relParams.getUserId(), page);
-		
+
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "查询历史核销报表", notes = "POST")
 	@RequestMapping(value = "/findHisCompletedTasks", method = RequestMethod.POST)
 	public AppResp findHisCompletedTasks_(@RequestBody Map<String, Object> params) {
@@ -140,7 +135,7 @@ public class AppReportServer {
 		List<ReportCompletedRelResult> list = reportService.findHisCompletedReportByPage(relParams.getUserId(), page);
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
-	
+
 	/**
 	 * 获取当天未完成和已完成的报表任务
 	 * @param params [userId] [currentDate]
@@ -151,10 +146,11 @@ public class AppReportServer {
 	@RequestMapping(value = "/findCurrentTasks", method = RequestMethod.POST)
 	public AppResp findCurrentTasks_(@RequestBody Map<String, Object> params) throws ParseException {
 		RCompletedRelParams relParams = Utils.map2Obj(params, RCompletedRelParams.class);
-		List<CurrentReportTaskResp> list = reportService.findCurrentTasks(relParams.getUserId(), relParams.getCurrentDate());
+		List<CurrentReportTaskResp> list = reportService.findCurrentTasks(relParams.getUserId(),
+				relParams.getCurrentDate());
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
-	
+
 	/**
 	 * 报表完成核销
 	 * @author james.you
@@ -167,29 +163,31 @@ public class AppReportServer {
 	@RequestMapping(value = "/complete", method = RequestMethod.POST)
 	public AppResp complete_(@RequestBody Map<String, Object> params) {
 		RCompletedRelParams relParams = Utils.map2Obj(params, RCompletedRelParams.class);
-		
-		if(relParams.getIsCompleted() == 0){//未完成
-			reportCompletedRelRepo.updateNotComplated(relParams.getUserId(), relParams.getReportId(), relParams.getSubmitStartTime(), relParams.getSubmitEndTime());
-			
-		}else{//完成
+
+		if (relParams.getIsCompleted() == 0) {// 未完成
+			reportCompletedRelRepo.updateNotComplated(relParams.getUserId(), relParams.getReportId(),
+					relParams.getSubmitStartTime(), relParams.getSubmitEndTime());
+
+		} else {// 完成
 			String currentDate = DateUtils.getDate("yyyyMMddHHmm");
-			
-			//未到核销时间，给予提示
-			if(Integer.parseInt(currentDate) < Integer.parseInt(relParams.getSubmitStartTime())){
+
+			// 未到核销时间，给予提示
+			if (Integer.parseInt(currentDate) < Integer.parseInt(relParams.getSubmitStartTime())) {
 				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE, CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_DESC);
 			}
-			
-			reportCompletedRelRepo.updateComplated(relParams.getUserId(), relParams.getReportId(), relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), relParams.getCompletedDate());  
-			//移除闹钟设置记录
+
+			reportCompletedRelRepo.updateComplated(relParams.getUserId(), relParams.getReportId(),
+					relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), relParams.getCompletedDate());
+			// 移除闹钟设置记录
 			Remind entity = new Remind();
 			entity.setRemindId(relParams.getRemindId());
 			remindRepo.delete(entity);
-			
+
 		}
-		
-		return new AppResp(CodeDef.SUCCESS);
+
+		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 	}
-	
+
 	/**
 	 * 获取当天之后的打点日期[userId, currentMonth]
 	 * @param params
@@ -201,32 +199,33 @@ public class AppReportServer {
 	public AppResp getTaskDate_(@RequestBody Map<String, Object> params) throws ParseException {
 		ReportCompletedRelParam relParams = Utils.map2Obj(params, ReportCompletedRelParam.class);
 		String currentDate = DateUtils.getDate("yyyyMM");
-		List<ReportCompletedRel> taskList = reportCompletedRelRepo.findTasksByUserId(relParams.getUserId(), relParams.getCurrentMonth());
-		
-		//有任务的日期
+		List<ReportCompletedRel> taskList = reportCompletedRelRepo.findTasksByUserId(relParams.getUserId(),
+				relParams.getCurrentMonth());
+
+		// 有任务的日期
 		List<String> taskDateList = new ArrayList<String>();
-		for(ReportCompletedRel data : taskList){
+		for (ReportCompletedRel data : taskList) {
 			String submitEndDate = data.getSubmitEndTime().substring(0, 6);
-			if(Integer.parseInt(submitEndDate) == Integer.parseInt(currentDate)){
-				//如果是当月情况，添加时间
+			if (Integer.parseInt(submitEndDate) == Integer.parseInt(currentDate)) {
+				// 如果是当月情况，添加时间
 				String submitEndDateDay = data.getSubmitEndTime().substring(6, 8);
-				for(int i=1; i <= Integer.parseInt(submitEndDateDay);  i++){
+				for (int i = 1; i <= Integer.parseInt(submitEndDateDay); i++) {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
-					if(!taskDateList.contains(_date))
+					if (!taskDateList.contains(_date))
 						taskDateList.add(_date);
-					
+
 				}
-			}else{
-				//非当月，则添加当月所有日期
+			} else {
+				// 非当月，则添加当月所有日期
 				int _daysOfMonth = DateUtils.getDaysByMonth(currentDate);
-				for(int i = 0; i < _daysOfMonth; i++){
+				for (int i = 0; i < _daysOfMonth; i++) {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
-					if(!taskDateList.contains(_date))
+					if (!taskDateList.contains(_date))
 						taskDateList.add(_date);
 				}
 			}
 		}
-		
+
 		return new AppResp(taskDateList, CodeDef.SUCCESS);
 	}
 
