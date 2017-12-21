@@ -82,6 +82,7 @@
             android:layout_height="@dimen/divider_height"
             android:background="@color/color_e2e2e2" />
 
+        <!-- name-->
         <RelativeLayout
             android:id="@+id/user_name_relative_layout"
             android:layout_width="match_parent"
@@ -115,6 +116,46 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="15dp"
+                android:src="@drawable/work_rm_icon_arrow_r" />
+        </RelativeLayout>
+        <!--divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/color_e2e2e2" />
+
+        <!-- sex-->
+        <RelativeLayout
+            android:id="@+id/sex_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="@string/sex"
+                android:textColor="@color/color_323232" />
+
+            <TextView
+                android:id="@+id/sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_toLeftOf="@+id/edit_sex" />
+
+            <ImageView
+                android:id="@+id/edit_sex"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="9dp"
                 android:src="@drawable/work_rm_icon_arrow_r" />
         </RelativeLayout>
         <!--divider-->

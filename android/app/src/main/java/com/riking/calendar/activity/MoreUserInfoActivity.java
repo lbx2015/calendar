@@ -47,14 +47,12 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
     private static final int MSG_LOAD_FAILED = 0x0003;
     SharedPreferences preference;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    TextView sexTextView;
     TextView addressTextView;
     TextView birthDayTextView;
     TextView commentsTextView;
     View commentsRelativeLayout;
     View addressRelativeLayout;
     View birthDayRelative;
-    View sexRelativeLayout;
     BirthdayPickerDialog datePickerDialog;
     //reminderTimeCalendar
     Calendar calendar;
@@ -226,13 +224,11 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_more_user_info);
-        sexTextView = (TextView) findViewById(R.id.sex);
         addressTextView = (TextView) findViewById(R.id.address);
         birthDayTextView = (TextView) findViewById(R.id.birthday);
         commentsTextView = (TextView) findViewById(R.id.comments);
         addressRelativeLayout = findViewById(R.id.address_relative_layout);
         birthDayRelative = findViewById(R.id.birthday_relative_layout);
-        sexRelativeLayout = findViewById(R.id.sex_relative_layout);
 
 
         final View.OnClickListener listener = new View.OnClickListener() {
@@ -281,73 +277,6 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        sexRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
-                builder.setTitle(getString(R.string.sex));
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_sex_dialog, null, false);
-                // set up radio buttons
-                final AppCompatRadioButton maleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.male_button);
-                final AppCompatRadioButton femaleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.female_button);
-
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                builder.setView(viewInflated);
-                final int sex = preference.getInt(CONST.USER_SEX, 0);
-                if (sex == 1) {
-                    if (!maleButton.isChecked()) {
-                        maleButton.toggle();
-                    }
-                }
-
-                // Set up the buttons
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        int newSex = -1;
-                        if (maleButton.isChecked()) {
-                            //male
-                            newSex = 1;
-                        } else {
-                            //female
-                            newSex = 0;
-                        }
-                        if (sex != newSex) {
-                            final AppUser user = new AppUser();
-                            user.userId = preference.getString(CONST.USER_ID, null);
-                            user.sex = newSex;
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-                                @Override
-                                public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putInt(CONST.USER_SEX, user.sex);
-                                    editor.commit();
-
-                                    if (user.sex == 1) {
-                                        sexTextView.setText(getString(R.string.male));
-                                    } else {
-                                        sexTextView.setText(getString(R.string.female));
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-
-            }
-        });
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -467,12 +396,6 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 builder.show();
             }
         });
-
-        if (preference.getInt(CONST.USER_SEX, 1) == 1) {
-            sexTextView.setText(getString(R.string.male));
-        } else {
-            sexTextView.setText(getString(R.string.female));
-        }
     }
 
     @Override
