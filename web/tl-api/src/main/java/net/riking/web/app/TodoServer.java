@@ -1,9 +1,8 @@
 package net.riking.web.app;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,25 +54,23 @@ public class TodoServer {
 		return new AppResp().setCode(CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "app获取代办信息", notes = "POST")
+	@ApiOperation(value = "app获取代办未完成信息", notes = "POST")
 	@RequestMapping(value = "/getTodo", method = RequestMethod.POST)
 	public AppResp getTodo(@RequestBody Todo todo) {
-		todo.setIsComplete(1);
-		todo.setSort("isImportant_desc|strDate_asc");
-		PageRequest pageable = new PageRequest(todo.getPcount(), todo.getPindex(), todo.getSortObj());
-		Example<Todo> example = Example.of(todo, ExampleMatcher.matchingAll());
-		Page<Todo> page = todoRepo.findAll(example, pageable);
-		return new AppResp(page, CodeDef.SUCCESS);
+		if (todo.getPindex() == null) {
+			todo.setPindex(0);
+		}
+		List<Todo> todos = todoRepo.findTodo(todo.getUserId(), 0, new PageRequest(todo.getPindex(), 10));
+		return new AppResp(todos, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "app获取历史代办信息", notes = "POST")
 	@RequestMapping(value = "/getTodoHis", method = RequestMethod.POST)
 	public AppResp getTodoHis(@RequestBody Todo todo) {
-		todo.setIsComplete(0);
-		todo.setSort("completeDate_desc");
-		PageRequest pageable = new PageRequest(todo.getPcount(), todo.getPindex(), todo.getSortObj());
-		Example<Todo> example = Example.of(todo, ExampleMatcher.matchingAll());
-		Page<Todo> page = todoRepo.findAll(example, pageable);
-		return new AppResp(page, CodeDef.SUCCESS);
+		if (todo.getPindex() == null) {
+			todo.setPindex(0);
+		}
+		List<Todo> todos = todoRepo.findTodo(todo.getUserId(), 1, new PageRequest(todo.getPindex(), 10));
+		return new AppResp(todos, CodeDef.SUCCESS);
 	}
 }
