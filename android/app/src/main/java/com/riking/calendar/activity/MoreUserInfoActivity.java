@@ -372,7 +372,6 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                             user.remark = newComments;
                             user.userId = preference.getString(CONST.USER_ID, null);
 
-
                             apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
