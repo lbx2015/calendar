@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -26,8 +27,6 @@ import com.riking.calendar.retrofit.APIClient;
 
 import java.text.DecimalFormat;
 import java.util.List;
-
-import javax.xml.transform.TransformerFactory;
 
 /**
  * Created by zw.zhang on 2017/7/14.
@@ -120,9 +119,12 @@ public class ZR {
                 .into(v);
     }
 
-
     public static void setCircleUserImage(ImageView v, String imageUrl) {
-        GlideApp.with(v.getContext()).load(imageUrl).placeholder(R.drawable.user_icon_head_notlogin).transform(new CircleCrop()).fitCenter().into(v);
+        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
+    }
+
+    public static void setCircleUserImage(ImageView v, Bitmap bitmap) {
+        Glide.with(v.getContext()).load(bitmap).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
     }
 
     public static void setAnswerImage(ImageView v, String imageUrl) {

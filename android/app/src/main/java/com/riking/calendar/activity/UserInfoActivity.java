@@ -269,9 +269,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bitmap bitMap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
         if (bitMap != null) {
-            Logger.d("zzw", "bit map is not null");
-            myPhoto.setImageBitmap(bitMap);
-        } else {
             Logger.d("zzw", "bitmap is null");
             return;
         }
@@ -312,7 +309,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         RequestBody reqFile = RequestBody.create(MediaType.parse("image"), mFile2);
         MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", mFile2.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
-//        Logger.d("zzw", "userId: " + preference.getString(CONST.USER_ID, null));
 
         apiInterface.postImage(body, user.userId).enqueue(new Callback<UploadImageModel>() {
             @Override
@@ -327,14 +323,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                     Intent i = new Intent();
                     i.putExtra(CONST.USER_IMAGE_URL, r._data);
                     setResult(CONST.REQUEST_CODE, i);
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            File to = new File(new File(mFile2.getParent()), r._data.substring(r._data.lastIndexOf('/') + 1));
-                            mFile2.renameTo(to);
-                        }
-                    }).start();
+                    ZR.setCircleUserImage(myPhoto, r._data);
                 } else {
                     Logger.d("zzw", "upload ok response body is null");
                 }
