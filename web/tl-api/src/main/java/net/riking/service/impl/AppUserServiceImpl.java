@@ -29,6 +29,7 @@ import net.riking.entity.model.Email;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
+import net.riking.util.FileUtils;
 import net.riking.util.StringUtil;
 
 @Service("appUserSerice")
@@ -137,34 +138,11 @@ public class AppUserServiceImpl implements AppUserService {
 		// 删除服务器上文件
 		ModelPropDict dict = sysDataService.getDict("T_ROOT_URL", "PHOTO_URL", "DEFAULT_URL");
 		if (!dict.getValu().equals(oldFileName) && !oldFileName.equals(mFile.getOriginalFilename())) {
-			this.deleteFile(oleFilePath);
+			FileUtils.deleteFile(oleFilePath);
 		}
 		// 数据库保存路径
 		appUserDetailRepo.updatePhoto(userId, fileName);
 		return fileName;
-	}
-
-	/**
-	 * 删除单个文件
-	 *
-	 * @param fileName 要删除的文件的文件名
-	 * @return 单个文件删除成功返回true，否则返回false
-	 */
-	public boolean deleteFile(String fileName) {
-		File file = new File(fileName);
-		// 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
-		if (file.exists() && file.isFile()) {
-			if (file.delete()) {
-				logger.info("删除单个文件" + fileName + "成功！");
-				return true;
-			} else {
-				logger.info("删除单个文件" + fileName + "失败！");
-				return false;
-			}
-		} else {
-			logger.info("删除单个文件失败：" + fileName + "不存在！");
-			return false;
-		}
 	}
 
 	/**

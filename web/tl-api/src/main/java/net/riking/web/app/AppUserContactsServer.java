@@ -95,7 +95,7 @@ public class AppUserContactsServer {
 		}
 		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
 		if (appUser.getEmail() == null) {
-			return new AppResp(CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 		} else {
 			List<AppUserResult> appUserResults = appUserRepo.findAllByEmail(
 					("@" + appUser.getEmail().split("@")[1]).trim(), userParams.getUserId(),
@@ -170,7 +170,7 @@ public class AppUserContactsServer {
 			contactsInvite.setUserId(userParams.getUserId());
 			contactsInviteRepo.save(contactsInvite);
 		}
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 
 	}
 }

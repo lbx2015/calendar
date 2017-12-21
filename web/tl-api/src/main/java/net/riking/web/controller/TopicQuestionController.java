@@ -1,5 +1,7 @@
 package net.riking.web.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +28,10 @@ import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.ApiResp;
+import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.service.AppUserService;
+import net.riking.util.FileUtils;
 import net.riking.util.StringUtil;
 import net.riking.util.Utils;
 
@@ -88,15 +92,63 @@ public class TopicQuestionController {
 
 	}
 
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public Resp update_(@RequestParam HashMap<String, Object> params) {
+	@RequestMapping(value = "/questionSave", method = RequestMethod.GET)
+	public Resp questionSave_(@RequestParam HashMap<String, Object> params) {
 		TopicQuestion topicQuestion = Utils.map2Obj(params, TopicQuestion.class);
+		try {
+			topicQuestion.setTitle(URLDecoder.decode(topicQuestion.getTitle(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			return new Resp(CodeDef.ERROR);
+		}
 		topicQuestion.setCreatedBy(topicQuestion.getUserId());
 		topicQuestion.setModifiedBy(topicQuestion.getUserId());
 		topicQuestion.setIsAduit(0);
 		topicQuestionRepo.save(topicQuestion);
+		String[] fileNames = topicQuestion.getContent().split("alt=");
+		for (int i = 1; i < fileNames.length; i++) {
+			String fileName = fileNames[i].split(">")[0].replace("\"", "");
+			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_QUESTION_PHOTO_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				return new Resp(CodeDef.ERROR);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+		}
+
 		return new Resp(topicQuestion, CodeDef.SUCCESS);
 	}
+
+	@RequestMapping(value = "/answerSave", method = RequestMethod.GET)
+	public Resp answerSave_(@RequestParam HashMap<String, Object> params) {
+		QuestionAnswer questionAnswer = Utils.map2Obj(params, QuestionAnswer.class);
+		questionAnswer.setCreatedBy(questionAnswer.getUserId());
+		questionAnswer.setModifiedBy(questionAnswer.getUserId());
+		questionAnswer.setIsAduit(0);
+		questionAnswer.setCoverUrl(questionAnswer.getContent().split("alt=")[1].split(">")[0]);
+		questionAnswerRepo.save(questionAnswer);
+		String[] fileNames = questionAnswer.getContent().split("alt=");
+		for (int i = 1; i < fileNames.length; i++) {
+			String fileName = fileNames[i].split(">")[0].replace("\"", "");
+			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_ANSWER_PHOTO_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				return new Resp(CodeDef.ERROR);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+		}
+		return new Resp(questionAnswer, CodeDef.SUCCESS);
+	}
+
 }
 
 class Data {
@@ -129,5 +181,4 @@ class Data {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 }

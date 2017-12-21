@@ -1,6 +1,8 @@
 package net.riking.web.app;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
@@ -30,6 +33,7 @@ import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.params.TQuestionParams;
 import net.riking.service.AppUserService;
+import net.riking.util.Utils;
 
 /**
  * 问题接口
@@ -70,7 +74,26 @@ public class TopicQuestionServer {
 	QAInviteRepo qAInviteRepo;
 
 	@Autowired
+	Config config;
+
+	@Autowired
 	AppUserService appUserService;
+
+	@ApiOperation(value = "提问", notes = "POST")
+	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
+	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
+		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+		String title = "";
+		try {
+			title = java.net.URLEncoder.encode(java.net.URLEncoder.encode(tQuestionParams.getTitle(), "utf-8"),
+					"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
+		}
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_INQUIRY_HTML5_PATH + "?userId="
+				+ tQuestionParams.getUserId() + "&title=" + title + "&topicId=" + tQuestionParams.getTopicId(),
+				CodeDef.SUCCESS);
+	}
 
 	/**
 	 * 问题的详情[userId,tqId]
@@ -146,7 +169,7 @@ public class TopicQuestionServer {
 			qAInviteRepo.save(qaInviteNew);
 		}
 
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	private List<QuestionAnswer> findAnswerList(TQuestionParams tQuestionParams) {

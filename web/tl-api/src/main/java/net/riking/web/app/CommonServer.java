@@ -198,7 +198,7 @@ public class CommonServer {
 				logger.error("邮件发送失败" + e);
 				return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 			}
-			return new AppResp(CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 		} else {
 			return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 		}
@@ -228,7 +228,7 @@ public class CommonServer {
 				return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
 			} else {
 				appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
-				return new AppResp(CodeDef.SUCCESS);
+				return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -385,7 +385,7 @@ public class CommonServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp(CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 	}
 
 }
