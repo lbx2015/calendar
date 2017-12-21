@@ -12,7 +12,7 @@
 
 <body class="iframeBody">
     <div class="formbox layui-form add-formbox">
-        <div class="_tmpl" data-url="edit.html" data-attr="appVersion.json" data-bind="editOnBind" data-param=""></div>
+        <div class="_tmpl" data-url="edit.html" data-attr="news.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
             <button class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" id="submit">确定</button>
             <button class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
@@ -33,12 +33,13 @@
     //var id = window.location.hash.replace("#", "");
     var id = View.getQStr('id');
     var flag= View.getQStr('flag');
+	var topicContent;
     function editOnBind(attrs, param) {
         tmpl = this;
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/appVersion/get";
+                var url = Const.apiUrl + "/news/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -68,10 +69,37 @@
         });
     }
     
+    function loadRichText(){
+	 	$("textarea[name='content']").attr('id','content');
+         layui.use('layedit', function(){
+     	  var layedit = layui.layedit;
+     	  layedit.set({tool: ['strong' //加粗
+							  ,'italic' //斜体
+							  ,'underline' //下划线
+							  ,'del' //删除线
+							  ,'|' //分割线
+							  ,'left' //左对齐
+							  ,'center' //居中对齐
+							  ,'right' //右对齐
+							  ,'|' 
+							  ,'link' //超链接
+							  ,'unlink' //清除链接
+							  ,'face' //表情
+							  ,'image' //插入图片
+							  //,'help' //帮助
+								],height: 250});
+     	 topicContent = layedit.build('content'); //建立编辑器
+     	});
+    }
+    
     //编辑保存
     function edit() {
         var reportList = Utils.formToObj("edit");
-        var url = Const.apiUrl + "/appVersion/save";
+        layui.use('layedit', function(){
+     	  	var layedit = layui.layedit;
+     	  	$("#content").val(layedit.getContent(topicContent));
+     	});
+        var url = Const.apiUrl + "/news/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 

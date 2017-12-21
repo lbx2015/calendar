@@ -1,41 +1,43 @@
 {
 	"table": "T_CTRY_HDAY_CRCY",
-	"groups":[{
-		"prop":"base",
-		"alias":"基础信息"
-	}],
-	"attrs":[
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
 		{
 			"prop": "flagUrl",
 			"alias": "国旗图片url",
-			"group":"base",
-			"hidden":"preview,edit",
+			"group": "base",
+			"hidden": "preview,edit",
 			"type": "imgUrl"
 		},
 		{
 			"prop": "ctryName",
 			"alias": "国家/地区名称",
-			"group":"base",
+			"group": "base",
 			"query": "1",
 			"query_order": "1",
 			"type": "enum",
 			"dict_key": "T_CTRY_HDAY_CRCY.CTRY",
-			"enum_search":"1"
+			"enum_search": "1"
 		},
 		{
 			"prop": "hdayName",
 			"alias": "节假日名称",
-			"group":"base",
+			"group": "base",
 			"query": "1",
 			"query_order": "2",
 			"type": "enum",
 			"dict_key": "T_CTRY_HDAY_CRCY.HDAY",
-			"enum_search":"1"
+			"enum_search": "1"
 		},
 		{
 			"prop": "hdayDate",
 			"alias": "节假日时间",
-			"group":"base",
+			"group": "base",
 			"query": "1",
 			"query_order": "3",
 			"type": "date"
@@ -43,16 +45,16 @@
 		{
 			"prop": "crcy",
 			"alias": "币种",
-			"group":"base",
+			"group": "base",
 			"type": "enum",
 			"dict_key": "T_CTRY_HDAY_CRCY.CRCY",
-			"enum_search":"1"
+			"enum_search": "1"
 		},
 		{
 			"prop": "remark",
 			"alias": "备注信息",
-			"group":"base",
-			"type" : "text"
+			"group": "base",
+			"type": "text"
 		}
 	]
 }

@@ -23,15 +23,15 @@
 					批量审核
 				</button>
 			</div>
-			<div class="_tmpl" data-url="filterCriteria.html" data-attr="appVersion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+			<div class="_tmpl" data-url="filterCriteria.html" data-attr="topic.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
 		<div class="contentLeft layui-form">
-			<div class="_tmpl" data-url="table.html" id="table" data-attr="appVersion.json" data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
+			<div class="_tmpl" data-url="table.html" id="table" data-attr="topic.json" data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
 		</div>
 		<div class="contentRight">
-			<div class="_tmpl" data-url="preview.html" data-attr="appVersion.json" data-bind="previewOnBind" data-param=""></div>
+			<div class="_tmpl" data-url="preview.html" data-attr="topic.json" data-bind="previewOnBind" data-param=""></div>
 		</div>
 		<div style="clear: both"></div>
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
@@ -41,7 +41,7 @@
 <script>
 	$(function() {
 		$("#add-data").click(function() {
-			var url = "appVersionEdit.html";
+			var url = "topicEdit.html";
 			var title = "添加数据";
 			View.openDialog(url, title);
 		});
@@ -79,12 +79,13 @@
 		tbTmpl = tmpl;
 
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/appVersion/getMore";
+			var url = Const.apiUrl + "/topic/getMore";
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
 				if (resp) {
 					data.data = resp;
+					console.log(data);
 					TmplUtils.totalPages = data.data.totalPages;
 				}
 				//是否需要全选checkbox
@@ -106,15 +107,15 @@
 					//col 当前列数 从1开始
 					if (obj.row > 1 && obj.col == 2) {
 						obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='view("
-								+ "\"" + obj.item.appVersionId+ "\"" + ");'>查看</button>";
+								+ "\"" + obj.item.topicId+ "\"" + ");'>查看</button>";
 						obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit("
-								+ "\"" + obj.item.appVersionId + "\"" + ");'>修改</button>";
+								+ "\"" + obj.item.topicId + "\"" + ");'>修改</button>";
 						obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='dele("
-								+ "\"" + obj.item.appVersionId + "\"" + ");'>删除</button>";
+								+ "\"" + obj.item.topicId + "\"" + ");'>删除</button>";
 						if (obj.item.isAduit == 0) { 
 							obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
 									+ "\""
-									+ obj.item.appVersionId
+									+ obj.item.topicId
 									+ "\""
 									+ ");'>审核</button>";
 						}
@@ -153,7 +154,7 @@
 			return;
 		}
 		tmpl.bind(function(callback) {
-			var url = Const.apiUrl + "/appVersion/get";
+			var url = Const.apiUrl + "/topic/get";
 			var data = {};
 			//是否可编辑
 			//data.canEdit = true;
@@ -188,7 +189,7 @@
 
 	//弹出添加iframe
 	function edit(id) {
-		var url = "appVersionEdit.html?id=" + id;
+		var url = "topicEdit.html?id=" + id;
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
@@ -196,13 +197,13 @@
 	//弹出添加iframe
 	function view(id) {
 		var flag = "view";
-		var url = "appVersionEdit.html?id=" + id + "&flag=" + flag;
+		var url = "topicEdit.html?id=" + id + "&flag=" + flag;
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
 	//保存
 	function save() {
-		var url = Const.apiUrl + "/appVersion/save";
+		var url = Const.apiUrl + "/topic/save";
 		var employee = Utils.formToObj("preview");
 		View.post(url, employee, function(resp) {
 			TmplUtils.showMsgSuccess('编辑成功');
@@ -229,7 +230,7 @@
 			return;
 		}
 		TmplUtils.showConfirm('您确定删除这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appVersion/delMore"
+			var url = Const.apiUrl + "/topic/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -248,7 +249,7 @@
 		var ids = [];
 		ids.push(id);
 		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appVersion/delMore"
+			var url = Const.apiUrl + "/topic/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -269,7 +270,9 @@
 		var ids = [];
 		$(arrChk).each(function() {
 			if ($(this).next('div').hasClass("layui-form-checked")) {
-				ids.push($(this).data("id"));
+				if(!$(this).data("topicId")){
+					ids.push($(this).data("id"));
+				}
 			}
 		});
 		if (ids.length < 1) {
@@ -277,7 +280,7 @@
 			return;
 		}
 		TmplUtils.showConfirm('您确定审核这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appVersion/verifyMore"
+			var url = Const.apiUrl + "/topic/verifyMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("审核成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -296,7 +299,7 @@
 		var ids = [];
 		ids.push(id);
 		TmplUtils.showConfirm('您确定审核该条记录吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appVersion/verifyMore"
+			var url = Const.apiUrl + "/topic/verifyMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("审核成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
