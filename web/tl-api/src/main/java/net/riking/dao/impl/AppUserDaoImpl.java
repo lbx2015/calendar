@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.dao.AppUserDao;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.resp.OtherUserResp;
 
 @Repository("appUserDao")
 public class AppUserDaoImpl implements AppUserDao {
@@ -139,6 +140,35 @@ public class AppUserDaoImpl implements AppUserDao {
 			e.printStackTrace();
 		}
 		return list;
+
+	}
+
+	@Override
+	public OtherUserResp getOtherMes(String toUserId, String userId) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "SELECT ";
+		sql += "a.id,a.user_name,ap.sex,ap.descript,ap.experience,ap.photo_Url,";
+		sql += "(select t.follow_status from t_user_follow_rel t where t.user_id = ? and t.to_User_Id = a.id ) followStatus ";
+		sql += "FROM t_app_user a ";
+		sql += "LEFT JOIN t_appuser_detail ap on a.id=ap.id ";
+		sql += "WHERE a.id = ? and a.enabled = 1 and a.is_deleted = 1";
+		PreparedStatement pstmt = null;
+		OtherUserResp otherUserResp = null;
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			pstmt.setString(1, userId);
+			pstmt.setString(2, toUserId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				otherUserResp = new OtherUserResp(rs.getString("id"), rs.getString("user_name"), rs.getInt("sex"),
+						rs.getString("descript"), rs.getInt("experience"), rs.getString("photo_Url"),
+						rs.getInt("followStatus"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return otherUserResp;
 
 	}
 

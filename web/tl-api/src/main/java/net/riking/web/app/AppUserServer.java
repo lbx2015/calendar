@@ -34,6 +34,7 @@ import net.riking.entity.model.UserOperationInfo;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.AppUserResp;
+import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
@@ -97,6 +98,35 @@ public class AppUserServer {
 		return new AppResp(appUserResp, CodeDef.SUCCESS);
 	}
 
+	@ApiOperation(value = "得到他人的信息", notes = "POST")
+	@RequestMapping(value = "/getOther", method = RequestMethod.POST)
+	public AppResp getOther_(@RequestBody UserParams userParams)
+			throws IllegalArgumentException, IllegalAccessException {
+		if (userParams.getUserId() == null) {
+			userParams.setUserId("");
+		}
+		if (userParams.getToUserId() == null) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		OtherUserResp otherUserResp = appUserService.getOtherMes(userParams.getToUserId(), userParams.getUserId());
+		// TODO 暂时从数据库中获取，后面优化从redis中取
+		Integer followNum = userFollowRelRepo.countByUser(userParams.getToUserId());
+		Integer answerNum = questionAnswerRepo.answerCountByUserId(userParams.getToUserId());
+		Integer fansNum = userFollowRelRepo.countByToUser(userParams.getToUserId());
+		otherUserResp.setFollowNum(followNum);
+		otherUserResp.setAnswerNum(answerNum);
+		otherUserResp.setFansNum(fansNum);
+		if (null != otherUserResp.getPhotoUrl()) {
+			otherUserResp
+					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
+		}
+		// 等级
+		if (null != otherUserResp.getExperience()) {
+			otherUserResp.setGrade(appUserService.transformExpToGrade(otherUserResp.getExperience()));
+		}
+		return new AppResp(otherUserResp, CodeDef.SUCCESS);
+	}
+
 	@ApiOperation(value = "更新用户信息", notes = "POST")
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public AppResp modify_(@RequestBody UpdUserParams userParams)
@@ -136,7 +166,7 @@ public class AppUserServer {
 			}
 
 		}
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
@@ -152,7 +182,7 @@ public class AppUserServer {
 			appUserDetail.setPhoneDeviceid(seqNum);
 			appUserDetail.setPhoneType(userParams.getPhoneType());
 			appUserDetailRepo.save(appUserDetail);
-			return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
 		return new AppResp("", CodeDef.ERROR);
 	}

@@ -2,7 +2,9 @@ package net.riking.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -21,10 +23,10 @@ import net.riking.dao.repo.SysDaysRepo;
 import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportListResult;
+import net.riking.entity.model.ReportMoudleTypeResult;
 import net.riking.entity.model.ReportResult;
 import net.riking.entity.model.ReportSubmitCaliber;
 import net.riking.entity.model.ReportSubscribeRel;
-import net.riking.entity.model.ReportTypeListResult;
 import net.riking.entity.resp.CurrentReportTaskResp;
 import net.riking.entity.resp.ReportCompletedRelResult;
 import net.riking.service.ReportService;
@@ -64,7 +66,7 @@ public class ReportServiceImpl implements ReportService {
 		return reportDao.getAllReportByParams(reportName, userId);
 	}
 
-	@Override
+	/*@Override
 	public List<ReportListResult> getReportByParam(String reportName, String userId) {
 		// TODO Auto-generated method stub
 
@@ -110,9 +112,88 @@ public class ReportServiceImpl implements ReportService {
 		}
 
 		return reportListResults;
+	}*/
+	
+	@Override
+	public List<ReportListResult> getReportByParam(String reportName, String userId) {
+		// TODO Auto-generated method stub
+		//获取查询相关报表集合
+		List<ReportResult> list = reportDao.getAllReportByParams(reportName, userId);
+		
+		//存储不同机构的报表结果集
+		Map<String, List<ReportMoudleTypeResult>> agenceMap = new HashMap<String, List<ReportMoudleTypeResult>>();
+		
+		for(ReportResult report : list){
+			//机构下相同模块的集合
+			List<ReportMoudleTypeResult> reportMoudleTypeResultList = null;
+			//模块类别
+			ReportMoudleTypeResult reportMoudleTypeResult = null;
+			List<ReportResult> reportResults = null;
+			if(agenceMap.containsKey(report.getReportType().trim())){
+				/* 存在的机构结果集 */
+				reportMoudleTypeResultList = agenceMap.get(report.getReportType().trim());
+				if(reportMoudleTypeResultList == null || reportMoudleTypeResultList.isEmpty()){
+					//新创建报表模块对象
+					reportMoudleTypeResultList = new ArrayList<ReportMoudleTypeResult>();
+				}
+				
+				//遍历查看二级数据是否有存在的相同类别集合
+				for(ReportMoudleTypeResult data : reportMoudleTypeResultList){
+					if(data.getModuleType().trim().equals(report.getModuleType().trim())){
+						reportMoudleTypeResult = data;
+						break;
+					}
+				}
+				
+				//第二级数据
+				if(reportMoudleTypeResult == null){
+					reportMoudleTypeResult = new ReportMoudleTypeResult();
+					reportMoudleTypeResult.setModuleType(report.getModuleType().trim());
+					reportMoudleTypeResult.setModuleTypeName(report.getModuleTypeName());
+				}
+				/* 第三级数据 */
+				
+				if(reportMoudleTypeResult.getModuleType().trim().equals(report.getModuleType().trim())){
+					//存在的模块
+					reportResults = reportMoudleTypeResult.getList();
+				}
+				
+				if(reportResults == null){
+					reportResults = new ArrayList<ReportResult>();
+				}
+				//添加第三级数据
+				reportResults.add(report);
+				reportMoudleTypeResult.setList(reportResults);
+				reportMoudleTypeResultList.remove(reportMoudleTypeResult);
+				reportMoudleTypeResultList.add(reportMoudleTypeResult);
+			}else{
+				/* 不存在的机构结果集 */
+				reportMoudleTypeResultList = new ArrayList<ReportMoudleTypeResult>();
+				reportMoudleTypeResult = new ReportMoudleTypeResult();
+				reportMoudleTypeResult.setModuleType(report.getModuleType().trim());
+				reportMoudleTypeResult.setModuleTypeName(report.getModuleTypeName());
+				reportResults = new ArrayList<ReportResult>();
+				reportResults.add(report);
+				reportMoudleTypeResult.setList(reportResults);
+				reportMoudleTypeResultList.add(reportMoudleTypeResult);
+			}
+			agenceMap.put(report.getReportType().trim(), reportMoudleTypeResultList);
+		}
+
+		//机构列表
+		List<ReportListResult> resultList = new ArrayList<ReportListResult>();
+		
+		for(String key : agenceMap.keySet()){
+			ReportListResult reportListResult = new ReportListResult();
+			reportListResult.setAgenceCode(key);
+			reportListResult.setList(agenceMap.get(key));
+			resultList.add(reportListResult);
+		}
+		
+		return resultList;
 	}
 
-	private void setReportListResult(List<ReportTypeListResult> typeListResults, int j,
+	/*private void setReportListResult(List<ReportTypeListResult> typeListResults, int j,
 			List<ReportListResult> reportListResults) {
 		ReportListResult reportListResult = new ReportListResult();
 		reportListResult.setAgenceCode(typeListResults.get(j).getAgenceCode());
@@ -131,7 +212,7 @@ public class ReportServiceImpl implements ReportService {
 		results.add(list.get(i));
 		typeListResult.setList(results);
 		typeListResults.add(typeListResult);
-	}
+	}*/
 
 	@Override
 	public List<ReportCompletedRelResult> findExpireReportByPage(String userId, PageQuery pageQuery) {

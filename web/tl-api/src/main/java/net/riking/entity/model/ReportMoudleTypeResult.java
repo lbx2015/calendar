@@ -5,25 +5,20 @@ import java.util.List;
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.BaseEntity;
 
-public class ReportTypeListResult extends BaseEntity {
-	@Comment("机构编号")
-	private String agenceCode;
-
+/***
+ * 报表模块类别结果集
+ * @author james.you
+ * @version crateTime：2017年12月21日 上午10:20:02
+ * @used TODO
+ */
+public class ReportMoudleTypeResult extends BaseEntity {
 	@Comment("报表所属模块")
 	private String moduleType;
 
 	@Comment("报表所属模块名称")
 	private String moduleTypeName;
-
+	
 	List<ReportResult> list;
-
-	public String getAgenceCode() {
-		return agenceCode;
-	}
-
-	public void setAgenceCode(String agenceCode) {
-		this.agenceCode = agenceCode;
-	}
 
 	public String getModuleType() {
 		return moduleType;
