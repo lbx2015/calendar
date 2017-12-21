@@ -9,6 +9,6 @@ import java.util.List;
  * @used TODO
  */
 public class SubscribeReportParam extends BaseParams {
-	//订阅的reportIds
-	public List<String> reportIds;
+	//reportIds which is separated by the comma symbol. wtf.
+	public String reportIds;
 }

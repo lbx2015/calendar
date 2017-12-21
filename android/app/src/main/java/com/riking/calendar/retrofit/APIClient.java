@@ -20,7 +20,6 @@ import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
@@ -482,9 +481,6 @@ public class APIClient {
         APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
     }
 
-    public static void interestingReports(AppUserReportResult result, ZCallBackWithFail<ResponseModel<Short>> zCallBackWithFail) {
-        apiInterface.interestingReports(result).enqueue(zCallBackWithFail);
-    }
 
     /**
      * when user not login ,showing all reports
