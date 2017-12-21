@@ -303,6 +303,11 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             if (!StringUtil.isEmpty(b.getString(CONST.USER_IMAGE_URL))) {
                 ZR.setUserImage(myPhoto, b.getString(CONST.USER_IMAGE_URL));
             }
+
+            //update user description
+            if (!StringUtil.isEmpty(b.getString(CONST.USER_COMMENTS))) {
+                userComment.setText(b.getString(CONST.USER_COMMENTS));
+            }
         }
     }
 }

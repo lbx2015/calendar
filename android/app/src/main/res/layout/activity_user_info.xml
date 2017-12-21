@@ -169,8 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@android:color/white"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/email_row"
@@ -202,40 +201,24 @@
                 android:src="@drawable/work_rm_icon_arrow_r" />
         </RelativeLayout>
 
-        <!--divider-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/color_e2e2e2" />
-
         <RelativeLayout
-            android:id="@+id/depart_row_relative_layout"
+            android:id="@+id/user_introduction_relative"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@android:color/white">
 
             <TextView
-                android:id="@+id/depart_row"
+                android:id="@+id/user_introduction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                android:text="@string/depart"
+                android:text="个人简介 "
                 android:textColor="@color/color_323232" />
 
-            <TextView
-                android:id="@+id/depart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
-                android:layout_toLeftOf="@+id/edit_depart"
-                android:text="产品事业中心" />
-
             <ImageView
-                android:id="@+id/edit_depart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/select_time"
