@@ -46,7 +46,7 @@ public class ReportResult extends BaseEntity {
 	private Integer frequency;
 	
 	@Comment("报表批次")
-	private String reportBatch;
+	private Integer reportBatch;
 
 	public String getReportTypeName() {
 		return reportTypeName;
@@ -144,11 +144,11 @@ public class ReportResult extends BaseEntity {
 		this.frequency = frequency;
 	}
 
-	public String getReportBatch() {
+	public Integer getReportBatch() {
 		return reportBatch;
 	}
 
-	public void setReportBatch(String reportBatch) {
+	public void setReportBatch(Integer reportBatch) {
 		this.reportBatch = reportBatch;
 	}
 	
