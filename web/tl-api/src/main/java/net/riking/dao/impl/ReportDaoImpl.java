@@ -95,7 +95,7 @@ public class ReportDaoImpl implements ReportDao {
 					report.setIsSubscribe(0);// 未订阅
 				}
 				report.setFrequency(rs.getInt("frequency"));
-				report.setReportBatch(rs.getInt("reportBatch"));
+				report.setReportBatch(rs.getString("reportBatch"));
 				list.add(report);
 			}
 		} catch (SQLException e) {
