@@ -21,7 +21,7 @@ public class ZEnterImageView extends android.support.v7.widget.AppCompatImageVie
 
     int textSize;
     AttributeSet attrs;
-    String text = "立即进入";
+   public String text = "立即进入";
     int textColor;
 
     public ZEnterImageView(Context context) {

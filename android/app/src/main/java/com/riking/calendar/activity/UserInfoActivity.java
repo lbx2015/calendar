@@ -2,13 +2,12 @@ package com.riking.calendar.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,18 +21,19 @@ import com.riking.calendar.R;
 import com.riking.calendar.bean.DictionaryBean;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
-import com.riking.calendar.pojo.Dictionary;
 import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
-import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.view.OptionsPickerView;
 import com.riking.calendar.widget.EmailAutoCompleteTextView;
@@ -58,53 +58,37 @@ import retrofit2.Response;
 public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
     public TextView userName;
     public TextView email;
-    public TextView department;
     ImageView myPhoto;
     View userNameRelativeLayout;
-    View departmentRelativeLayout;
     View emailRelativeLayout;
-
-    SharedPreferences preference;
+    TextView sexTextView;
+    View sexRelativeLayout;
+    AppUserResp user;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     View moreUserInfoView;
+
+    View introductionRelative;
 
     private OptionsPickerView departPickerView;
     private ArrayList<DictionaryBean> cardItem = new ArrayList<>();
 
+    public void clickBack(final View view) {
+        onBackPressed();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        user = ZPreference.getCurrentLoginUser();
         setContentView(R.layout.activity_user_info);
-        myPhoto = (ImageView) findViewById(R.id.my_photo);
-        findViewById(R.id.back).setOnClickListener(this);
-        userName = (TextView) findViewById(R.id.name);
-        email = (TextView) findViewById(R.id.email);
-        department = (TextView) findViewById(R.id.depart);
-        userName.setText(preference.getString(CONST.USER_NAME, ""));
-        email.setText(preference.getString(CONST.USER_EMAIL, ""));
-        department.setText(preference.getString(CONST.USER_DEPT, ""));
-        userNameRelativeLayout = findViewById(R.id.user_name_relative_layout);
-        emailRelativeLayout = findViewById(R.id.email_row_relative_layout);
-        departmentRelativeLayout = findViewById(R.id.depart_row_relative_layout);
-        departmentRelativeLayout.setOnClickListener(this);
-        emailRelativeLayout.setOnClickListener(this);
-        userNameRelativeLayout.setOnClickListener(this);
-        moreUserInfoView = findViewById(R.id.more_user_info_relative_layout);
-        moreUserInfoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(UserInfoActivity.this, MoreUserInfoActivity.class));
-            }
-        });
+        init();
+
         // width and height will be at least 600px long (optional).
         ImagePicker.setMinQuality(600, 600);
 
-        String imageUrl = preference.getString(CONST.USER_IMAGE_URL, null);
-        if (imageUrl == null) {
-            return;
-        }
-        String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+
+        ZR.setCircleUserImage(myPhoto, user.photoUrl);
+      /*  String imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
         if (FileUtil.imageExists(imageName)) {
             Logger.d("zzw", "no need load url: " + imageName);
             Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getImageFilePath(imageName));
@@ -115,7 +99,170 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             LoadUserImageTask myTask = new LoadUserImageTask();
             myTask.imageView = myPhoto;
             myTask.execute(imageUrl);
+        }*/
+    }
+
+    private void init() {
+        initViews();
+        initEvents();
+        setData();
+    }
+
+    private void setData() {
+        setSex();
+    }
+
+    private void setSex() {
+        if (user.sex == 1) {
+            sexTextView.setText(getString(R.string.male));
+        } else {
+            sexTextView.setText(getString(R.string.female));
         }
+    }
+
+    private void initViews() {
+        introductionRelative = findViewById(R.id.user_introduction_relative);
+        myPhoto = (ImageView) findViewById(R.id.my_photo);
+        userName = (TextView) findViewById(R.id.name);
+        email = (TextView) findViewById(R.id.email);
+        //sex
+        sexTextView = (TextView) findViewById(R.id.sex);
+        sexRelativeLayout = findViewById(R.id.sex_relative_layout);
+
+        userName.setText(user.userName);
+        email.setText(user.email);
+        userNameRelativeLayout = findViewById(R.id.user_name_relative_layout);
+        emailRelativeLayout = findViewById(R.id.email_row_relative_layout);
+    }
+
+    private void initEvents() {
+        emailRelativeLayout.setOnClickListener(this);
+        userNameRelativeLayout.setOnClickListener(this);
+        moreUserInfoView = findViewById(R.id.more_user_info_relative_layout);
+        moreUserInfoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserInfoActivity.this, MoreUserInfoActivity.class));
+            }
+        });
+
+        sexRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
+                builder.setTitle(getString(R.string.sex));
+                // I'm using fragment here so I'm using getView() to provide ViewGroup
+                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+                View viewInflated = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.edit_sex_dialog, null, false);
+                // set up radio buttons
+                final AppCompatRadioButton maleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.male_button);
+                final AppCompatRadioButton femaleButton = (AppCompatRadioButton) viewInflated.findViewById(R.id.female_button);
+
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+                if (user.sex == 1) {
+                    maleButton.setChecked(true);
+                } else {
+                    femaleButton.setChecked(true);
+                }
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        int newSex = -1;
+                        if (maleButton.isChecked()) {
+                            //male
+                            newSex = 1;
+                        } else {
+                            //female
+                            newSex = 0;
+                        }
+                        if (user.sex != newSex) {
+                            final UpdUserParams user = new UpdUserParams();
+                            user.sex = newSex;
+                            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
+                                @Override
+                                public void callBack(ResponseModel<String> response) {
+                                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                                    currentUser.sex = user.sex;
+                                    ZPreference.saveUserInfoAfterLogin(currentUser);
+                                    if (user.sex == 1) {
+                                        sexTextView.setText(getString(R.string.male));
+                                    } else {
+                                        sexTextView.setText(getString(R.string.female));
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+            }
+        });
+
+        introductionRelative.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
+                builder.setTitle(getString(R.string.user_comments));
+                // I'm using fragment here so I'm using getView() to provide ViewGroup
+                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+                View viewInflated = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.edit_user_name_dialog, null, false);
+                // Set up the input
+                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+                input.setText(user.description == null ? "" : user.description);
+                input.setSelection(user.description == null ? 0 : user.description.length());
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Editable editable = input.getText();
+                        if (editable == null) {
+                            return;
+                        }
+                        final String newComments = input.getText().toString();
+                        if (newComments.length() > 0) {
+
+                            UpdUserParams user = new UpdUserParams();
+                            user.description = newComments;
+
+                            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
+                                @Override
+                                public void callBack(ResponseModel<String> response) {
+                                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                                    currentUser.description = newComments;
+                                    ZPreference.saveUserInfoAfterLogin(currentUser);
+                                    Intent i = new Intent();
+                                    i.putExtra(CONST.USER_COMMENTS, newComments);
+                                    setResult(CONST.REQUEST_CODE, i);
+                                    ZToast.toast("信息更新成功！");
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 
     @Override
@@ -167,7 +314,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 //        Logger.d("zzw", "userId: " + preference.getString(CONST.USER_ID, null));
 
-        apiInterface.postImage(body, preference.getString(CONST.USER_ID, null)).enqueue(new Callback<UploadImageModel>() {
+        apiInterface.postImage(body, user.userId).enqueue(new Callback<UploadImageModel>() {
             @Override
             public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
                 final UploadImageModel r = response.body();
@@ -219,10 +366,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back: {
-                onBackPressed();
-                break;
-            }
             case R.id.user_name_relative_layout: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.name));
@@ -233,9 +376,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                String name = preference.getString(CONST.USER_NAME, "");
-                input.setText(name);
-                input.setSelection(name.length());
+                input.setText(user.userName);
+                input.setSelection(user.userName.length());
 
                 // Set up the buttons
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -285,9 +427,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final EmailAutoCompleteTextView input = (EmailAutoCompleteTextView) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                String name = preference.getString(CONST.USER_EMAIL, "");
-                input.setText(name);
-                input.setSelection(name.length());
+                input.setText(user.email == null ? "" : user.email);
+                input.setSelection(user.email == null ? 0 : user.email.length());
 
                 // Set up the buttons
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -324,7 +465,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 builder.show();
                 break;
             }
-            case R.id.depart_row_relative_layout: {
+           /* case R.id.depart_row_relative_layout: {
 
                 if (cardItem.size() > 0) {
                     departPickerView.show();
@@ -344,60 +485,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         departPickerView.show();
                         Logger.d("zzw", "depart query ok: " + response._data);
                     }
-                });
-
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle(getString(R.string.depart));
-//                // I'm using fragment here so I'm using getView() to provide ViewGroup
-//                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-//                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
-//                // Set up the input
-//                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.userId.input);
-//                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-//                builder.setView(viewInflated);
-//                String name = preference.getString(CONST.USER_DEPT, "");
-//                input.setText(name);
-//                input.setSelection(name.length());
-//
-//                // Set up the buttons
-//                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                        Editable editable = input.getText();
-//                        if (editable == null) {
-//                            return;
-//                        }
-//                        final String departName = input.getText().toString();
-//                        if (departName.length() > 0) {
-//                            department.setText(departName);
-//                            AppUser user = new AppUser();
-//                            user.dept = departName;
-//                            user.userId = preference.getString(CONST.USER_ID, null);
-//
-//
-//                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-//                                @Override
-//                                public void callBack(ResponseModel<String> response) {
-//                                    SharedPreferences.Editor editor = preference.edit();
-//                                    editor.putString(CONST.USER_DEPT, departName);
-//                                    //save the changes.
-//                                    editor.commit();
-//                                }
-//                            });
-//                        }
-//                    }
-//                });
-//                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-
-//                builder.show();
-                break;
-            }
+                });*/
         }
     }
 
@@ -421,16 +509,10 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final String departName = cardItem.get(options1).getPickerViewText();
                 AppUser user = new AppUser();
                 user.dept = departName;
-                user.userId = preference.getString(CONST.USER_ID, null);
                 Logger.d("zzw", "depart selected: " + departName);
                 apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        SharedPreferences.Editor editor = preference.edit();
-                        editor.putString(CONST.USER_DEPT, departName);
-                        //save the changes.
-                        editor.commit();
-                        department.setText(departName);
                     }
                 });
             }

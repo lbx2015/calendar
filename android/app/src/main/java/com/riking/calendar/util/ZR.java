@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.app.GlideApp;
@@ -25,6 +26,8 @@ import com.riking.calendar.retrofit.APIClient;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import javax.xml.transform.TransformerFactory;
 
 /**
  * Created by zw.zhang on 2017/7/14.
@@ -115,6 +118,11 @@ public class ZR {
         Glide.with(v.getContext()).load(imageUrl)
                 .apply(options.fitCenter().placeholder(R.drawable.user_icon_head_notlogin))
                 .into(v);
+    }
+
+
+    public static void setCircleUserImage(ImageView v, String imageUrl) {
+        GlideApp.with(v.getContext()).load(imageUrl).placeholder(R.drawable.user_icon_head_notlogin).transform(new CircleCrop()).fitCenter().into(v);
     }
 
     public static void setAnswerImage(ImageView v, String imageUrl) {

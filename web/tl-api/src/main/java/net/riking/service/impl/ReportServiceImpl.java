@@ -2,10 +2,7 @@ package net.riking.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -37,16 +34,22 @@ import net.riking.util.Utils;
 @Service("reportService")
 public class ReportServiceImpl implements ReportService {
 	protected final transient Logger logger = LogManager.getLogger(getClass());
+
 	@Autowired
 	ReportDao reportDao;
+
 	@Autowired
 	ReportCompletedRelDao reportCompletedRelDao;
+
 	@Autowired
 	ReportCompletedRelRepo reportCompletedRelRepo;
+
 	@Autowired
 	ReportSubscribeRelRepo reportSubscribeRelRepo;
+
 	@Autowired
 	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
+
 	@Autowired
 	SysDaysRepo sysDaysRepo;
 
@@ -55,9 +58,9 @@ public class ReportServiceImpl implements ReportService {
 		// TODO Auto-generated method stub
 		return reportDao.findAppUserReportById(userId);
 	}
-	
+
 	@Override
-	public List<ReportResult> getReportResultByParam(String reportName, String userId){
+	public List<ReportResult> getReportResultByParam(String reportName, String userId) {
 		return reportDao.getAllReportByParams(reportName, userId);
 	}
 
@@ -233,27 +236,29 @@ public class ReportServiceImpl implements ReportService {
 		// TODO Auto-generated method stub
 		String _year = currentDate.substring(0, 4);
 		String _month = currentDate.substring(4, 6);
-		//String _day = currentDate.substring(6, 8);
-		
-		//先删除不在本次订阅内的reportId
+		// String _day = currentDate.substring(6, 8);
+		if (reportIds == null) {
+			reportIds = new String[] {};
+		}
+		// 先删除不在本次订阅内的reportId
 		reportSubscribeRelRepo.deleteNotSubscribeByUserId(userId, reportIds);
-		//删除在该次订阅的时间范围内用户核销相关数据
+		// 删除在该次订阅的时间范围内用户核销相关数据
 		reportCompletedRelRepo.deleteSubscriptTask(userId, reportIds, currentDate);
-		//查找该用户剩余订阅的数据
+		// 查找该用户剩余订阅的数据
 		List<String> currentReportIds = reportSubscribeRelRepo.findByUserId(userId);
-		
+
 		List<String> reportIdList = new ArrayList<String>();
 		// 批量插入
 		for (String reportId : reportIds) {
 			boolean isRn = true;
-			for(String cutReportId : currentReportIds){
-				if(reportId.equals(cutReportId)){
-					//订阅的报表已经在已订阅之内，不让其新增
+			for (String cutReportId : currentReportIds) {
+				if (reportId.equals(cutReportId)) {
+					// 订阅的报表已经在已订阅之内，不让其新增
 					isRn = false;
 				}
 			}
-			if(isRn){
-				//保存该次订阅的数据
+			if (isRn) {
+				// 保存该次订阅的数据
 				ReportSubscribeRel rel = new ReportSubscribeRel();
 				rel.setReportId(reportId);
 				rel.setUserId(userId);
@@ -261,81 +266,82 @@ public class ReportServiceImpl implements ReportService {
 				reportIdList.add(reportId);
 			}
 		}
-		
-		//处理新增核销任务
-		for(String reportId : reportIdList){
-			//新增用户订阅报表的核销任务
+
+		// 处理新增核销任务
+		for (String reportId : reportIdList) {
+			// 新增用户订阅报表的核销任务
 			ReportSubmitCaliber reportSubmitCaliber = reportSubmitCaliberRepo.findByReportId(reportId);
-			if(reportSubmitCaliber != null){
+			if (reportSubmitCaliber != null) {
 				String[] arr_month = reportSubmitCaliber.getSubmitMonth().split(",");
-				
-				for(String month : arr_month){
-					if(Integer.parseInt(month) == Integer.parseInt(_month)){
-						//上报开始时间
+
+				for (String month : arr_month) {
+					if (Integer.parseInt(month) == Integer.parseInt(_month)) {
+						// 上报开始时间
 						String submitStartTime = "";
-						//上报截止时间
+						// 上报截止时间
 						String submitEndTime = "";
 						Date date = null;
-						//延后日期时间
+						// 延后日期时间
 						String afterDateStr = "";
 						switch (reportSubmitCaliber.getFrequency()) {
-							case 0://日
-							case 1://周
-							case 2://旬
-							case 3://月
-							case 4://季
+							case 0:// 日
+							case 1:// 周
+							case 2:// 旬
+							case 3:// 月
+							case 4:// 季
 								date = DateUtils.parseDate(_year + _month + "01");
 								submitStartTime = _year + _month + "01";
 								break;
-							case 5://半年
-								if(Integer.parseInt(_month) < 7){//添加上半年的半年报
+							case 5:// 半年
+								if (Integer.parseInt(_month) < 7) {// 添加上半年的半年报
 									date = DateUtils.parseDate(_year + "0601");
 									submitStartTime = _year + "0601";
-								}else{//添加上半年的半年报
+								} else {// 添加上半年的半年报
 									date = DateUtils.parseDate(_year + "1201");
 									submitStartTime = _year + "1201";
 								}
 								break;
-							case 6://年
-								date = DateUtils.parseDate(_year  + "12" + "01");
+							case 6:// 年
+								date = DateUtils.parseDate(_year + "12" + "01");
 								submitStartTime = _year + "1201";
 								break;
 						}
-					
-						//根据天数得到日期yyyyMMdd
-						afterDateStr = DateUtils.getDateByDays(date, reportSubmitCaliber.getDelayDates() - 1 );
-						
-						//未来日期>=当前日期，新增任务
-						if(Integer.parseInt(currentDate) <= Integer.parseInt(afterDateStr)){
+
+						// 根据天数得到日期yyyyMMdd
+						afterDateStr = DateUtils.getDateByDays(date, reportSubmitCaliber.getDelayDates() - 1);
+
+						// 未来日期>=当前日期，新增任务
+						if (Integer.parseInt(currentDate) <= Integer.parseInt(afterDateStr)) {
 							submitStartTime += "0000";
-							
-							//判断是否与国家节假日，延迟上报截止时间
+
+							// 判断是否与国家节假日，延迟上报截止时间
 							afterDateStr = Utils.getWorkday(afterDateStr);
 							logger.info("afterDateStr={}", afterDateStr);
-							
+
 							submitEndTime = afterDateStr + reportSubmitCaliber.getSubmitTime();
 							logger.info("submitStartTime={}, submitEndTime={}", submitStartTime, submitEndTime);
-							
-							ReportCompletedRel data = reportCompletedRelRepo.findByOne(userId, reportId, submitStartTime, submitEndTime);
-							if(data == null){
+
+							ReportCompletedRel data = reportCompletedRelRepo.findByOne(userId, reportId,
+									submitStartTime, submitEndTime);
+							if (data == null) {
 								data = new ReportCompletedRel();
 								data.setUserId(userId);
 								data.setReportId(reportId);
 								data.setIsCompleted(0);
-								//yyyyMMddHHmm
+								// yyyyMMddHHmm
 								data.setSubmitStartTime(submitStartTime);
 								data.setSubmitEndTime(submitEndTime);
 								reportCompletedRelRepo.save(data);
 							}
 						}
 					}
-					
+
 				}
-				
+
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 }

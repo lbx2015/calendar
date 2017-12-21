@@ -33,7 +33,7 @@
     <string name="set">设置</string>
     <string name="review">求好评</string>
     <string name="about">关于</string>
-    <string name="name">名字</string>
+    <string name="name">昵称</string>
     <string name="depart">部门</string>
     <string name="job_email">公司邮箱</string>
     <string name="more">更多</string>
@@ -87,7 +87,7 @@
     <string name="whole_year">全年</string>
     <string name="welcome_page_text1">每日报表汇总，同步工作进度</string>
     <string name="welcome_page_text2">外币交易市场币种节假日查询</string>
-    <string name="user_info">用户信息</string>
+    <string name="user_info">个人信息</string>
     <string name="click_again_exit">再按一次退出</string>
     <string name="click_again_clear_memory">再按一下清理缓存数据</string>
     <string name="net_connected">Network connected</string>

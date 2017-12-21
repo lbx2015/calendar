@@ -5,7 +5,6 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
@@ -50,12 +49,14 @@ import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -180,13 +181,6 @@ public interface APIInterface {
      */
     @POST("common/getPositionByIndustry")
     Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, String> industryId);
-
-    /**
-     * set user's interesting reports into server
-     */
-    @POST("/appUserReport/userAddReportEdit")
-    Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
-
 
     @POST("report/modifySubscribeReport")
     Call<ResponseModel<Short>> saveSubscribeReport(@Body SubscribeReportParam params);
@@ -324,7 +318,7 @@ public interface APIInterface {
      * @return
      */
     @POST("user/signIn")
-    Call<ResponseModel<String>> signIn(@Body UserParams params);
+    Call<ResponseModel<Map<String, Integer>>> signIn(@Body UserParams params);
 
     @POST("topicQuestion/answerInvite")
     Call<ResponseModel<String>> answerInvite(@Body TQuestionParams params);
@@ -348,4 +342,6 @@ public interface APIInterface {
     @POST("report/getReports")
     Call<ResponseModel<List<ReportListResult>>> getReports(@Body ReportParams params);
 
+    @POST("user/getOperateNumber")
+    Call<ResponseModel<UserOperationInfo>> getUserOperationInfo(@Body UserParams params);
 }

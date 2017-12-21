@@ -17,11 +17,9 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.InterestingReportAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUserRecommend;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.view.InterestingReportLinearLayout;
 import com.riking.calendar.view.ZFlowLayout;
@@ -67,10 +65,17 @@ public class ReportsSelectActivity extends AppCompatActivity {
 
     public void onClickStart(View view) {
         if (selectedReportIds.size() > 0) {
-            AppUserReportResult result = new AppUserReportResult();
-            result.list=selectedReportIds;
-            result.userId = ZPreference.pref.getString(CONST.USER_ID, "");
-            APIClient.interestingReports(result, new ZCallBackWithFail<ResponseModel<Short>>() {
+            SubscribeReportParam appUserReportResult = new SubscribeReportParam();
+            StringBuilder sb = new StringBuilder();
+            for (String r : selectedReportIds) {
+                sb.append(r);
+                if (selectedReportIds.lastIndexOf(r) < selectedReportIds.size() - 1) {
+                    sb.append(",");
+                }
+            }
+
+            appUserReportResult.reportIds = sb.toString();
+            APIClient.userAddReportEdit(appUserReportResult, new ZCallBackWithFail<ResponseModel<Short>>() {
                 @Override
                 public void callBack(ResponseModel<Short> response) {
                     if (failed) {

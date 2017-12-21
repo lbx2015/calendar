@@ -20,7 +20,6 @@ import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
@@ -54,6 +53,7 @@ import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
@@ -74,6 +74,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import io.realm.Realm;
@@ -480,9 +481,6 @@ public class APIClient {
         APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
     }
 
-    public static void interestingReports(AppUserReportResult result, ZCallBackWithFail<ResponseModel<Short>> zCallBackWithFail) {
-        apiInterface.interestingReports(result).enqueue(zCallBackWithFail);
-    }
 
     /**
      * when user not login ,showing all reports
@@ -654,7 +652,7 @@ public class APIClient {
         apiInterface.getMyAnswers(params).enqueue(c);
     }
 
-    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<Map<String, Integer>>> c) {
         apiInterface.signIn(params).enqueue(c);
     }
 
@@ -676,5 +674,9 @@ public class APIClient {
 
     public static void getReports(ReportParams params, ZCallBack<ResponseModel<List<ReportListResult>>> c) {
         apiInterface.getReports(params).enqueue(c);
+    }
+
+    public static void getUserOperationInfo(@Body UserParams params, ZCallBack<ResponseModel<UserOperationInfo>> c) {
+        apiInterface.getUserOperationInfo(params).enqueue(c);
     }
 }

@@ -21,6 +21,12 @@ public class TQuestionParams extends BaseEntity {
 	// 话题下面问题Id
 	private String tqId;
 
+	// (标题)
+	private String title;
+
+	// (话题id,逗号','分隔，最三个)
+	private String topicId;
+
 	// (1-问题；2-话题；3-用户)
 	private Integer objType;
 
@@ -39,6 +45,22 @@ public class TQuestionParams extends BaseEntity {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getQuestAnswerId() {
