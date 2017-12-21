@@ -26,6 +26,7 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
+import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
@@ -137,10 +138,10 @@ public class AppUserServiceImpl implements AppUserService {
 				+ oldFileName;
 		// 删除服务器上文件
 		ModelPropDict dict = sysDataService.getDict("T_ROOT_URL", "PHOTO_URL", "DEFAULT_URL");
-		if (!dict.getValu().equals(oldFileName) && !oldFileName.equals(mFile.getOriginalFilename())) {
+		if (!dict.getValu().equals(oldFileName) && !mFile.getOriginalFilename().equals(oldFileName)) {
 			FileUtils.deleteFile(oleFilePath);
 		}
-		// 数据库保存路径
+		// 数据库保存路径s
 		appUserDetailRepo.updatePhoto(userId, fileName);
 		return fileName;
 	}
@@ -219,6 +220,11 @@ public class AppUserServiceImpl implements AppUserService {
 		String sender = sysDataService.getDict("T_EMAIL", "EMAIL", "SENDER").getValu().trim();
 		Email email = new Email(myAccount, myPassWord, mySmtpHost, sender);
 		return email;
+	}
+
+	@Override
+	public OtherUserResp getOtherMes(String toUserId, String userId) {
+		return appUserDao.getOtherMes(toUserId, userId);
 	}
 
 }

@@ -8,6 +8,7 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
+import net.riking.entity.resp.OtherUserResp;
 
 public interface AppUserService {
 	public AppUser findByPhone(String phone);
@@ -35,5 +36,7 @@ public interface AppUserService {
 	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount);
 
 	public Email getMyEmail();
+
+	public OtherUserResp getOtherMes(String toUserId, String userId);
 
 }
