@@ -2,6 +2,10 @@ package net.riking.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import net.riking.entity.VO.ReportVO;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportListResult;
 import net.riking.entity.model.ReportResult;
@@ -21,5 +25,11 @@ public interface ReportService {
 	List<ReportResult> getReportResultByParam(String reportName, String userId);
 
 	List<ReportFrequency> findAppUserReportById(String userId);
+	
+	
+	/************ web **********/
+	void saveOrUpdate(ReportVO reportVO);
+
+	Page<ReportVO> findAll(ReportVO reportVO, PageRequest pageable);
 
 }

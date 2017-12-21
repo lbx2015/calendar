@@ -1,5 +1,5 @@
 {
-	"table": "T_APP_VERSION",
+	"table": "T_TOPIC",
 	"groups": [
 		{
 			"prop": "base",
@@ -16,51 +16,57 @@
 			"hidden": "table,edit,preview"
 		},
 		{
-			"prop": "versionNo",
-			"alias": "APP版本号",
-			"desc": "APP版本号",
+			"prop": "title",
+			"alias": "资讯标题",
+			"desc": "资讯标题",
 			"type": "string",
 			"group": "base"
 		},
 		{
-			"prop": "enforce",
-			"alias": "是否强制更新",
-			"desc": "是否强制更新",
-			"type": "enum",
-			"dict_key":"T_VERSION.ENFORCE",
-			"group": "base"
-		},
-		{
-			"prop": "clientType",
-			"alias": "移动端",
-			"desc": "移动端",
-			"type": "enum",
-			"dict_key":"T_VERSION.CLIENTTYPE",
-			"group": "base"
-		},
-		{
-			"prop": "enabled",
-			"alias": "用户状态",
-			"desc": "用户状态",
-			"type": "enum",
-			"dict_key":"T_VERSION.ENABLED",
-			"group": "base"
-		},
-		{
-			"prop": "url",
-			"alias": "下载更新地址",
-			"desc": "下载更新地址",
+			"prop": "seat",
+			"alias": "封面位置",
+			"desc": "封面位置",
 			"type": "string",
 			"group": "base"
 		},
 		{
-			"prop": "remark",
-			"alias": "版本说明",
-			"desc": "版本说明",
+			"prop": "coverUrls",
+			"alias": "封面URL",
+			"desc": "封面URL",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "content",
+			"alias": "资讯内容",
+			"desc": "资讯内容",
 			"type": "text",
 			"edit_block": "2",
 			"group": "base",
 			"hidden": "table"
+		},
+		{
+			"prop": "issued",
+			"alias": "发布单位",
+			"desc": "发布单位",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "isAduit",
+			"alias": "是否审核：0-未审核；1-已审核；2-不通过",
+			"desc": "是否审核：0-未审核；1-已审核；2-不通过",
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"group": "base"
+		},
+		{
+			"prop": "enabled",
+			"alias": "用户状态0-禁用；1-启用",
+			"desc": "用户状态0-禁用；1-启用",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
 		},
 		{
 			"prop": "createdBy",
@@ -96,8 +102,8 @@
 		},
 		{
 			"prop": "isDeleted",
-			"alias": "是否删除",
-			"desc": "是否删除",
+			"alias": "是否删除：1-未删除；0-删除",
+			"desc": "是否删除：1-未删除；0-删除",
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"

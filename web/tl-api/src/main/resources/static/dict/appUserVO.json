@@ -1,0 +1,239 @@
+{
+	"table": "T_APP_USER",
+	"groups": [
+		{
+			"prop": "appUser",
+			"alias": "基础信息"
+		},
+		{
+			"prop": "appUserDetail",
+			"alias": "详细信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "id",
+			"alias": "pk",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},	
+		{
+			"prop": "appUser.id",
+			"alias": "pk",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUser.userName",
+			"alias": "用户名称",
+			"desc": "用户名称",
+			"type": "string",
+			"group": "appUser",
+			"query": "1",
+			"query_order": "1"
+		},
+		{
+			"prop": "appUser.openId",
+			"alias": "微信openid",
+			"desc": "微信openid",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUser.email",
+			"alias": "用户邮箱",
+			"desc": "用户邮箱",
+			"type": "string",
+			"query": "1",
+			"query_order": "2",
+			"group": "appUser"
+		},
+		{
+			"prop": "appUser.phone",
+			"alias": "手机号",
+			"desc": "手机号",
+			"query": "1",
+			"query_order": "3",
+			"type": "string",
+			"group": "appUser"
+		},
+		{
+			"prop": "appUser.password",
+			"alias": "用户登录密码",
+			"desc": "用户登录密码",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "table,preview"
+		},
+		{
+			"prop": "appUser.enabled",
+			"alias": "用户状态",
+			"desc": "用户状态",
+			"type": "enum",
+			"dict_key":"T_APP_USER.ENABLED",
+			"group": "appUser"
+		},
+		{
+			"prop": "appUser.createdBy",
+			"alias": "创建人ID",
+			"desc": "创建人ID",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUser.createdTime",
+			"alias": "创建时间",
+			"desc": "创建时间",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUser.modifiedBy",
+			"alias": "修改人ID",
+			"desc": "修改人ID",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUser.modifiedTime",
+			"alias": "最后修改时间",
+			"desc": "最后修改时间",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUser.isDeleted",
+			"alias": "是否删除",
+			"desc": "是否删除",
+			"type": "string",
+			"group": "appUser",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUserDetail.id",
+			"alias": "pk",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUserDetail.realName",
+			"alias": "真实姓名",
+			"desc": "真实姓名",
+			"type": "string",
+			"group": "appUserDetail"
+		},
+		{
+			"prop": "appUserDetail.companyName",
+			"alias": "用户公司",
+			"desc": "用户公司",
+			"type": "string",
+			"group": "appUserDetail"
+		},
+		{
+			"prop": "appUserDetail.sex",
+			"alias": "用户性别",
+			"desc": "用户性别",
+			"type": "enum",
+			"dict_key": "T_APP_USER.SEX",
+			"group": "appUserDetail",
+			"hidden": "table"
+		},
+		{
+			"prop": "appUserDetail.birthday",
+			"alias": "用户生日(yyyyMMdd)",
+			"desc": "用户生日(yyyyMMdd)",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "table"
+		},
+		{
+			"prop": "appUserDetail.address",
+			"alias": "用户工作地区",
+			"desc": "用户工作地区",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "table"
+		},
+		{
+			"prop": "appUserDetail.descript",
+			"alias": "用户描述",
+			"desc": "用户描述",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "table"
+		},
+		{
+			"prop": "appUserDetail.phoneDeviceId",
+			"alias": "手机Deviceid",
+			"desc": "手机Deviceid",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "table,preview"
+		},
+		{
+			"prop": "appUserDetail.phoneType",
+			"alias": "手机类型",
+			"desc": "手机类型",
+			"type": "enum",
+			"dict_key": "T_APP_USER.PHONETYPE",
+			"group": "appUserDetail",
+			"hidden": "table"
+		},
+		{
+			"prop": "appUserDetail.integral",
+			"alias": "积分",
+			"desc": "积分",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "table"
+		},
+		{
+			"prop": "appUserDetail.experience",
+			"alias": "经验值",
+			"desc": "经验值",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "table"
+		},
+		{
+			"prop": "appUserDetail.photoUrl",
+			"alias": "用户头像（存放用户头像名称）",
+			"desc": "用户头像（存放用户头像名称）",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUserDetail.remindTime",
+			"alias": "全天提醒时间HHmm",
+			"desc": "全天提醒时间HHmm",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUserDetail.isSubscribe",
+			"alias": "是否已订阅:0-未订阅；1-已订阅",
+			"desc": "是否已订阅:0-未订阅；1-已订阅",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUserDetail.isGuide",
+			"alias": "是否引导",
+			"desc": "是否引导",
+			"type": "string",
+			"group": "appUserDetail",
+			"hidden": "edit,priview,table"
+		}
+	]
+}

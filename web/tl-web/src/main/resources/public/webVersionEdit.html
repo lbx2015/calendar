@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>dialog2</title>
+    <title>话题详情</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -32,7 +32,7 @@
 
     //var id = window.location.hash.replace("#", "");
     var id = View.getQStr('id');
-
+    var flag= View.getQStr('flag');
     function editOnBind(attrs, param) {
         tmpl = this;
         tmpl.bind(function(callback) {
@@ -47,19 +47,27 @@
                     }
                     //默认展开分组 ，不配置默认展开第一个分组
                     data.showGroup = "base";
+                    if(flag=="view"){
+                    	data.editable = 2;
+                    	$("#submit").hide();
+                    };
+                    
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
+                    loadRichText();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
             } else {
                 var data = {};
-                data.showGroup = "base";
+                data.showGroup = "base,submit";
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
+                loadRichText();
             }
         });
     }
+    
     //编辑保存
     function edit() {
         var reportList = Utils.formToObj("edit");

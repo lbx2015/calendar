@@ -168,4 +168,6 @@ public class Topic extends BaseAuditProp {
 		this.userName = userName;
 	}
 
+	public Topic() {
+	}
 }

@@ -1,5 +1,5 @@
 {
-	"table": "T_APP_VERSION",
+	"table": "T_TOPIC",
 	"groups": [
 		{
 			"prop": "base",
@@ -10,57 +10,45 @@
 		{
 			"prop": "id",
 			"alias": "pk",
-			"desc": "pk",
 			"type": "string",
 			"group": "base",
-			"hidden": "table,edit,preview"
+			"hidden": "edit,priview,table"
 		},
 		{
-			"prop": "versionNo",
-			"alias": "APP版本号",
-			"desc": "APP版本号",
+			"prop": "title",
+			"alias": "标题",
+			"desc": "标题",
+			"type": "string",
+			"group": "base",
+			"query": "1",
+			"query_order": "1"
+		},
+		{
+			"prop": "topicUrl",
+			"alias": "话题url",
+			"desc": "话题url",
 			"type": "string",
 			"group": "base"
 		},
 		{
-			"prop": "enforce",
-			"alias": "是否强制更新",
-			"desc": "是否强制更新",
-			"type": "enum",
-			"dict_key":"T_VERSION.ENFORCE",
-			"group": "base"
-		},
-		{
-			"prop": "clientType",
-			"alias": "移动端",
-			"desc": "移动端",
-			"type": "enum",
-			"dict_key":"T_VERSION.CLIENTTYPE",
-			"group": "base"
-		},
-		{
-			"prop": "enabled",
-			"alias": "用户状态",
-			"desc": "用户状态",
-			"type": "enum",
-			"dict_key":"T_VERSION.ENABLED",
-			"group": "base"
-		},
-		{
-			"prop": "url",
-			"alias": "下载更新地址",
-			"desc": "下载更新地址",
-			"type": "string",
-			"group": "base"
-		},
-		{
-			"prop": "remark",
-			"alias": "版本说明",
-			"desc": "版本说明",
+			"prop": "content",
+			"alias": "内容描述",
+			"desc": "内容描述",
 			"type": "text",
 			"edit_block": "2",
 			"group": "base",
 			"hidden": "table"
+		},
+		{
+			"prop": "isAduit",
+			"alias": "是否审核",
+			"desc": "是否审核",
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"query": "1",
+			"query_order": "2",
+			"group": "base",
+			"hidden": "edit"
 		},
 		{
 			"prop": "createdBy",
@@ -96,8 +84,8 @@
 		},
 		{
 			"prop": "isDeleted",
-			"alias": "是否删除",
-			"desc": "是否删除",
+			"alias": "是否删除：1-未删除；0-删除",
+			"desc": "是否删除：1-未删除；0-删除",
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"

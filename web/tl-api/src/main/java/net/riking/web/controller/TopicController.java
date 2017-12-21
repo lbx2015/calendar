@@ -17,56 +17,54 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
-import net.riking.dao.repo.AppUserRepo;
-import net.riking.dao.repo.WebVersionRepo;
-import net.riking.entity.PageQuery;
-import net.riking.entity.model.WebVersion;
+import net.riking.dao.repo.TopicRepo;
+import net.riking.entity.model.Topic;
 
 @RestController
-@RequestMapping(value = "/webVersion")
-public class WebVersionController {
+@RequestMapping(value = "/topic")
+public class TopicController {
 
 	@Autowired
-	WebVersionRepo webVersionRepo;
+	TopicRepo topicRepo;
 
-	@Autowired
-	AppUserRepo appUserRepo;
-
-	@ApiOperation(value = "得到单个Web版本信息", notes = "GET")
+	@ApiOperation(value = "得到单个信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
-		WebVersion webVersion = webVersionRepo.findOne(id);
-		return new Resp(webVersion, CodeDef.SUCCESS);
+		Topic topic = topicRepo.findOne(id);
+		return new Resp(topic, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "得到所有的Web版本信息", notes = "GET")
+	@ApiOperation(value = "得到信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute WebVersion webVersion) {
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute Topic topic) {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		webVersion.setIsDeleted(1);
-		Example<WebVersion> example = Example.of(webVersion, ExampleMatcher.matchingAll());
-		Page<WebVersion> page = webVersionRepo.findAll(example, pageable);
+		if (null == topic.getIsDeleted()) {
+			topic.setIsDeleted(1);
+		}
+		Example<Topic> example = Example.of(topic, ExampleMatcher.matchingAll());
+		Page<Topic> page = topicRepo.findAll(example, pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "添加或者更新Web版本信息", notes = "POST")
+	@ApiOperation(value = "添加或者更新信息", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Resp save_(@RequestBody WebVersion webVersion) {
-		if (StringUtils.isEmpty(webVersion.getId())) {
-			webVersion.setIsDeleted(1);
+	public Resp save_(@RequestBody Topic topic) {
+		if (StringUtils.isEmpty(topic.getId())) {
+			topic.setIsDeleted(1);
+			topic.setIsAduit(0);
 		}
-		WebVersion save = webVersionRepo.save(webVersion);
+		Topic save = topicRepo.save(topic);
 		return new Resp(save, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "批量删除web版本信息", notes = "POST")
-
+	@ApiOperation(value = "批量删除", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore(@RequestBody Set<String> ids) {
+	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
 		if (ids.size() > 0) {
-			rs = webVersionRepo.deleteById(ids);
+			rs = topicRepo.deleteById(ids);
 		}
 		if (rs > 0) {
 			return new Resp().setCode(CodeDef.SUCCESS);
@@ -75,4 +73,17 @@ public class WebVersionController {
 		}
 	}
 
+	@ApiOperation(value = "批量审核", notes = "POST")
+	@RequestMapping(value = "/verifyMore", method = RequestMethod.POST)
+	public Resp verifyMore_(@RequestBody Set<String> ids) {
+		int rs = 0;
+		if (ids.size() > 0) {
+			rs = topicRepo.verifyById(ids);
+		}
+		if (rs > 0) {
+			return new Resp().setCode(CodeDef.SUCCESS);
+		} else {
+			return new Resp().setCode(CodeDef.ERROR);
+		}
+	}
 }
