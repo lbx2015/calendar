@@ -19,8 +19,8 @@ import com.riking.calendar.view.ZEnterImageView;
  */
 
 public class CheckInDialog extends Dialog {
-    int experience;
     public ZEnterImageView zEnterImageView;
+    int experience;
 
     public CheckInDialog(@NonNull Context context) {
         super(context);
@@ -41,9 +41,24 @@ public class CheckInDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //set background transparent
+//        getWindow().setBackgroundDrawable(new ColorDrawable(ZR.getColor(android.R.color.transparent)));
+        //disable cancel the dialog on touch
+//        setCanceledOnTouchOutside(false);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_check_in);
-        zEnterImageView = findViewById(R.id.sign_in_success_img);
+        //set background transparent
+        getWindow().setBackgroundDrawable(new ColorDrawable(ZR.getColor(android.R.color.transparent)));
+        //disable cancel the dialog on touch
+//        setCanceledOnTouchOutside(false);
+
         findViewById(R.id.close_im).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,11 +71,7 @@ public class CheckInDialog extends Dialog {
                 dismiss();
             }
         });
-        //set background transparent
-        getWindow().setBackgroundDrawable(new ColorDrawable(ZR.getColor(android.R.color.transparent)));
-        //disable cancel the dialog on touch
-//        setCanceledOnTouchOutside(false);
+
         ((TextView) findViewById(R.id.current_experience)).setText("当前" + experience + "积分");
     }
-
 }

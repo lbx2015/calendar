@@ -171,16 +171,22 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                 APIClient.signIn(userParams, new ZCallBackWithFail<ResponseModel<Map<String, Integer>>>() {
                     @Override
                     public void callBack(ResponseModel<Map<String, Integer>> response) throws Exception {
-                        if (failed) {
+                        Map<String, Integer> maps = response._data;
+                        if (maps == null || failed) {
                             CheckInFailDialog dialog = new CheckInFailDialog(checkInTv.getContext());
                             dialog.show();
                         } else {
-                            Map<String, Integer> maps = response._data;
                             checkInTv.setText("已签到");
                             checkInTv.setClickable(false);
                             checkInTv.setEnabled(false);
                             CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
-                            dialog.setExperience(maps.get("integral"));
+                            dialog.setExperience(maps == null ? 0 : maps.get("integral"));
+                            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                            dialog.setContentView(layoutInflater.inflate(R.layout.dialog_check_in, null));
+                            dialog.zEnterImageView = dialog.findViewById(R.id.sign_in_success_img);
+                            dialog.zEnterImageView.text = "+" + (
+                                    maps == null ? 0 : maps.get("signIntegral"));
+                            dialog.show();
                             dialog.zEnterImageView.text = "+" + maps.get("signIntegral");
                             dialog.show();
                         }
