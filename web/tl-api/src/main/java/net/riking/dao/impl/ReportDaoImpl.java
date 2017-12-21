@@ -61,9 +61,10 @@ public class ReportDaoImpl implements ReportDao {
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'REPORT_KIND' and t.KE=a.report_kind) reportKindName, ";
 		sql += "a.module_type moduleType, ";
 		sql += "(select t.VALU from t_base_modelpropdict t WHERE t.TABLENAME = 'T_REPORT' AND t.FIELD = 'MODULE_TYPE' and t.KE=a.module_type) moduleTypeName, ";
-		sql += "(select tsr.report_id from t_report_subscribe_rel tsr where tsr.user_id = '" + userId
-				+ "' and  tsr.report_id= a.id) isSubscribe, ";
-		sql += "a.id reportId, a.`code`, a.title from t_report a ";
+		sql += "(select tsr.report_id from t_report_subscribe_rel tsr where tsr.user_id = ?";
+		sql += " and  tsr.report_id= a.id) isSubscribe, ";
+		sql += "a.id reportId, a.`code`, a.title, b.frequency, a.report_batch reportBatch ";
+		sql += "from t_report a left join t_report_submit_caliber b on b.report_id=a.id ";
 		sql += "where a.is_deleted=1 and a.is_aduit=1 ";
 		if (StringUtils.isNotBlank(param)) {
 			sql += "and (a.`code` like '%" + param + "%' or a.title like '%" + param + "%') ";
@@ -73,6 +74,7 @@ public class ReportDaoImpl implements ReportDao {
 		List<ReportResult> list = new ArrayList<ReportResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			pstmt.setString(1, userId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportResult report = new ReportResult();
@@ -92,6 +94,8 @@ public class ReportDaoImpl implements ReportDao {
 				} else {
 					report.setIsSubscribe(0);// 未订阅
 				}
+				report.setFrequency(rs.getInt("frequency"));
+				report.setReportBatch(rs.getString("reportBatch"));
 				list.add(report);
 			}
 		} catch (SQLException e) {

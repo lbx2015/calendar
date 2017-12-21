@@ -20,7 +20,7 @@ public interface ReportService {
 	 * @return
 	 */
 	List<ReportListResult> getReportByParam(String reportName, String userId);
-
+	
 	List<ReportResult> getReportResultByParam(String reportName, String userId);
 
 	List<ReportFrequency> findAppUserReportById(String userId);

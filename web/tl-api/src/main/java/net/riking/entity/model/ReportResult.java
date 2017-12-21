@@ -30,9 +30,6 @@ public class ReportResult extends BaseEntity {
 	@Comment("报表所属模块名称")
 	private String moduleTypeName;
 
-	@Comment("机构")
-	private String agenceCode;
-
 	@Comment("报表模式分类")
 	private String reportMode;
 
@@ -44,6 +41,12 @@ public class ReportResult extends BaseEntity {
 
 	@Comment("是否订阅")
 	private Integer isSubscribe;
+	
+	@Comment("频度（字典表：T_REPORT-FREQUENTLY：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年）")
+	private Integer frequency;
+	
+	@Comment("报表批次")
+	private String reportBatch;
 
 	public String getReportTypeName() {
 		return reportTypeName;
@@ -93,14 +96,6 @@ public class ReportResult extends BaseEntity {
 		this.reportId = reportId;
 	}
 
-	public String getAgenceCode() {
-		return agenceCode;
-	}
-
-	public void setAgenceCode(String agenceCode) {
-		this.agenceCode = agenceCode;
-	}
-
 	public String getReportType() {
 		return reportType;
 	}
@@ -141,4 +136,20 @@ public class ReportResult extends BaseEntity {
 		this.isSubscribe = isSubscribe;
 	}
 
+	public Integer getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(Integer frequency) {
+		this.frequency = frequency;
+	}
+
+	public String getReportBatch() {
+		return reportBatch;
+	}
+
+	public void setReportBatch(String reportBatch) {
+		this.reportBatch = reportBatch;
+	}
+	
 }
