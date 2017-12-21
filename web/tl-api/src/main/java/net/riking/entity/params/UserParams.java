@@ -20,6 +20,9 @@ public class UserParams extends PageQuery {
 	// 用户Id
 	private String userId;
 
+	// 他人的用户Id
+	private String toUserId;
+
 	// 验证码
 	private String verifyCode;
 
@@ -54,6 +57,14 @@ public class UserParams extends PageQuery {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getToUserId() {
+		return toUserId;
+	}
+
+	public void setToUserId(String toUserId) {
+		this.toUserId = toUserId;
 	}
 
 	public List<String> getPhones() {
