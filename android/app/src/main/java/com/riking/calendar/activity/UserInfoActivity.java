@@ -57,10 +57,8 @@ import retrofit2.Response;
 
 public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
     public TextView userName;
-    public TextView email;
     ImageView myPhoto;
     View userNameRelativeLayout;
-    View emailRelativeLayout;
     TextView sexTextView;
     View sexRelativeLayout;
     AppUserResp user;
@@ -124,19 +122,15 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         introductionRelative = findViewById(R.id.user_introduction_relative);
         myPhoto = (ImageView) findViewById(R.id.my_photo);
         userName = (TextView) findViewById(R.id.name);
-        email = (TextView) findViewById(R.id.email);
         //sex
         sexTextView = (TextView) findViewById(R.id.sex);
         sexRelativeLayout = findViewById(R.id.sex_relative_layout);
 
         userName.setText(user.userName);
-        email.setText(user.email);
         userNameRelativeLayout = findViewById(R.id.user_name_relative_layout);
-        emailRelativeLayout = findViewById(R.id.email_row_relative_layout);
     }
 
     private void initEvents() {
-        emailRelativeLayout.setOnClickListener(this);
         userNameRelativeLayout.setOnClickListener(this);
         moreUserInfoView = findViewById(R.id.more_user_info_relative_layout);
         moreUserInfoView.setOnClickListener(new View.OnClickListener() {
@@ -222,8 +216,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 builder.setView(viewInflated);
-                input.setText(user.description == null ? "" : user.description);
-                input.setSelection(user.description == null ? 0 : user.description.length());
+                input.setText(user.descript == null ? "" : user.descript);
+                input.setSelection(user.descript == null ? 0 : user.descript.length());
                 // Set up the buttons
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -243,7 +237,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
                                     AppUserResp currentUser = ZPreference.getCurrentLoginUser();
-                                    currentUser.description = newComments;
+                                    currentUser.descript = newComments;
                                     ZPreference.saveUserInfoAfterLogin(currentUser);
                                     Intent i = new Intent();
                                     i.putExtra(CONST.USER_COMMENTS, newComments);
@@ -355,7 +349,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.user_name_relative_layout: {
+          /*  case R.id.user_name_relative_layout: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.name));
                 // I'm using fragment here so I'm using getView() to provide ViewGroup
@@ -430,7 +424,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         }
                         final String emailText = input.getText().toString();
                         if (emailText.length() > 0) {
-                            email.setText(emailText);
+//                            email.setText(emailText);
                             UpdUserParams user = new UpdUserParams();
                             user.email = emailText;
                             APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
@@ -453,7 +447,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
                 builder.show();
                 break;
-            }
+            }*/
            /* case R.id.depart_row_relative_layout: {
 
                 if (cardItem.size() > 0) {

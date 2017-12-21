@@ -1,39 +1,33 @@
 package com.riking.calendar.activity;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatRadioButton;
-import android.text.Editable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-
 import com.riking.calendar.R;
 import com.riking.calendar.bean.JsonBean;
-import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.GetJsonDataUtil;
+import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.OptionsPickerView;
-import com.riking.calendar.widget.dialog.BirthdayPickerDialog;
 
 import org.json.JSONArray;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -41,22 +35,46 @@ import java.util.Calendar;
  * Created by zw.zhang on 2017/8/5.
  */
 
-public class MoreUserInfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class MoreUserInfoActivity extends AppCompatActivity {
     private static final int MSG_LOAD_DATA = 0x0001;
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
+    //phone number
+    View phoneNumberLayout;
+    TextView phoneNumberTv;
+    TextView addPhoneNumberTv;
+    //email
+    View emailLayout;
+    TextView emailTv;
+    TextView addEmailTv;
+    //wechat
+    View wechatLayout;
+    TextView wechatTv;
+    TextView addWechatTv;
+    //company
+    View companyLayout;
+    TextView companyTv;
+    TextView addCompanyTv;
+    //industry
+    View industryLayout;
+    TextView industryTv;
+    TextView addIndustryTv;
+    //position
+    View positionLayout;
+    TextView positionTv;
+    TextView addPositionTv;
+    //job place
+    View locationLayout;
+    TextView locationTv;
+    TextView addLocationTv;
     SharedPreferences preference;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    TextView addressTextView;
-    TextView birthDayTextView;
-    TextView commentsTextView;
-    View commentsRelativeLayout;
-    View addressRelativeLayout;
-    View birthDayRelative;
-    BirthdayPickerDialog datePickerDialog;
+    //    TextView addressTextView;
+//    View addressRelativeLayout;
     //reminderTimeCalendar
     Calendar calendar;
     OptionsPickerView pvOptions;
+    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -67,7 +85,6 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
             switch (msg.what) {
                 case MSG_LOAD_DATA:
                     if (thread == null) {//如果已创建就不再重新创建子线程了
-
 //                        Toast.makeText(MoreUserInfoActivity.this, "Begin Parse Data", Toast.LENGTH_SHORT).show();
                         thread = new Thread(new Runnable() {
                             @Override
@@ -121,7 +138,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                             editor.putString(CONST.USER_ADDRESS, departName);
                             //save the changes.
                             editor.commit();
-                            addressTextView.setText(departName);
+//                            addressTextView.setText(departName);
                         }
                     });
                 }
@@ -202,7 +219,6 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-
     public ArrayList<JsonBean> parseData(String result) {//Gson 解析
         ArrayList<JsonBean> detail = new ArrayList<>();
         try {
@@ -219,64 +235,215 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
         return detail;
     }
 
+    private void initViews() {
+        //phone number
+        phoneNumberLayout = findViewById(R.id.cell_phone_number_layout);
+        phoneNumberTv = findViewById(R.id.cell_phone_nubmer_tv);
+        addPhoneNumberTv = findViewById(R.id.add_cell_phone_nubmer_tv);
+        //email
+        emailLayout = findViewById(R.id.email_layout);
+        emailTv = findViewById(R.id.email_tv);
+        addEmailTv = findViewById(R.id.add_email_tv);
+        //wechat
+        wechatLayout = findViewById(R.id.wechat_layout);
+        wechatTv = findViewById(R.id.wechat_tv);
+        addWechatTv = findViewById(R.id.add_wechat_tv);
+        //company
+        companyLayout = findViewById(R.id.company_layout);
+        companyTv = findViewById(R.id.company_tv);
+        addCompanyTv = findViewById(R.id.add_company_tv);
+        //industry
+        industryLayout = findViewById(R.id.industry_layout);
+        industryTv = findViewById(R.id.industry_tv);
+        addIndustryTv = findViewById(R.id.add_industry_tv);
+        //position
+        positionLayout = findViewById(R.id.position_layout);
+        positionTv = findViewById(R.id.position_tv);
+        addPositionTv = findViewById(R.id.add_position_tv);
+        //job place
+        locationLayout = findViewById(R.id.location_layout);
+        locationTv = findViewById(R.id.location_tv);
+        addLocationTv = findViewById(R.id.add_position_tv);
+    }
+
+    private void initEvents() {
+        //phone number
+        phoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        addPhoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        //email
+        emailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        addEmailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        //wechat
+        wechatTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        addWechatTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        //compnay
+        companyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        addCompanyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        //industry
+        industryTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        addIndustryTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        //position
+        positionTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        addPositionTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        //job place
+        locationTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+        addLocationTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+
+            }
+        });
+    }
+
+    private void initData() {
+        //phone number
+        if (StringUtil.isEmpty(currentUser.phone)) {
+            phoneNumberTv.setVisibility(View.GONE);
+            addPhoneNumberTv.setVisibility(View.VISIBLE);
+        } else {
+            phoneNumberTv.setText(currentUser.phone);
+            phoneNumberTv.setVisibility(View.VISIBLE);
+            addPhoneNumberTv.setVisibility(View.GONE);
+        }
+        //email
+        if (StringUtil.isEmpty(currentUser.email)) {
+            emailTv.setVisibility(View.GONE);
+            addEmailTv.setVisibility(View.VISIBLE);
+        } else {
+            emailTv.setText(currentUser.email);
+            emailTv.setVisibility(View.VISIBLE);
+            addEmailTv.setVisibility(View.GONE);
+        }
+        //wechat
+        if (StringUtil.isEmpty(currentUser.wechatNickName)) {
+            wechatTv.setVisibility(View.GONE);
+            addWechatTv.setVisibility(View.VISIBLE);
+        } else {
+            wechatTv.setText(currentUser.wechatNickName);
+            wechatTv.setVisibility(View.VISIBLE);
+            addWechatTv.setVisibility(View.GONE);
+        }
+
+        //company
+        if (StringUtil.isEmpty(currentUser.companyName)) {
+            companyTv.setVisibility(View.GONE);
+            addCompanyTv.setVisibility(View.VISIBLE);
+        } else {
+            companyTv.setText(currentUser.companyName);
+            companyTv.setVisibility(View.VISIBLE);
+            addCompanyTv.setVisibility(View.GONE);
+        }
+
+        //industry
+        if (StringUtil.isEmpty(currentUser.industryName)) {
+            industryTv.setVisibility(View.GONE);
+            addIndustryTv.setVisibility(View.VISIBLE);
+        } else {
+            industryTv.setText(currentUser.industryName);
+            industryTv.setVisibility(View.VISIBLE);
+            addIndustryTv.setVisibility(View.GONE);
+        }
+
+        //position
+        if (StringUtil.isEmpty(currentUser.positionName)) {
+            positionTv.setVisibility(View.GONE);
+            addPositionTv.setVisibility(View.VISIBLE);
+        } else {
+            positionTv.setText(currentUser.positionName);
+            positionTv.setVisibility(View.VISIBLE);
+            addPositionTv.setVisibility(View.GONE);
+        }
+
+        //job place
+        if (StringUtil.isEmpty(currentUser.address)) {
+            locationTv.setVisibility(View.GONE);
+            addLocationTv.setVisibility(View.VISIBLE);
+        } else {
+            locationTv.setText(currentUser.address);
+            locationTv.setVisibility(View.VISIBLE);
+            addLocationTv.setVisibility(View.GONE);
+        }
+    }
+
+    private void init() {
+        initViews();
+        initEvents();
+        initData();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_more_user_info);
-        addressTextView = (TextView) findViewById(R.id.address);
-        birthDayTextView = (TextView) findViewById(R.id.birthday);
-        commentsTextView = (TextView) findViewById(R.id.comments);
+        init();
+       /* addressTextView = (TextView) findViewById(R.id.address);
         addressRelativeLayout = findViewById(R.id.address_relative_layout);
-        birthDayRelative = findViewById(R.id.birthday_relative_layout);
-
-
-        final View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.btnSubmit: {
-                        calendar = Calendar.getInstance();
-                        calendar.set(Calendar.YEAR, Integer.parseInt(datePickerDialog.wheelDatePicker.year));
-                        calendar.set(Calendar.MONTH, Integer.parseInt(datePickerDialog.wheelDatePicker.month) - 1);
-                        calendar.set(Calendar.DATE, Integer.parseInt(datePickerDialog.wheelDatePicker.day) - 1);
-                        AppUser user = new AppUser();
-                        user.userId = preference.getString(CONST.USER_ID, null);
-                        user.birthday = new SimpleDateFormat(CONST.yyyyMMdd).format(calendar.getTime());
-                        apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-                            @Override
-                            public void callBack(ResponseModel<String> response) {
-                                Logger.d("zzw", "request success");
-                                SharedPreferences.Editor editor = preference.edit();
-                                String birthDay = new SimpleDateFormat(CONST.birthDayFormat).format(calendar.getTime());
-                                editor.putString(CONST.USER_BIRTHDAY, birthDay);
-                                editor.commit();
-                                birthDayTextView.setText(birthDay);
-                            }
-                        });
-                        datePickerDialog.dismiss();
-                        break;
-                    }
-                    case R.id.btnCancel: {
-                        datePickerDialog.dismiss();
-                        break;
-                    }
-                }
-            }
-        };
-
-        birthDayRelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (datePickerDialog == null) {
-                    datePickerDialog = new BirthdayPickerDialog(MoreUserInfoActivity.this);
-                    datePickerDialog.btnSubmit.setOnClickListener(listener);
-                    datePickerDialog.btnCancel.setOnClickListener(listener);
-                }
-                datePickerDialog.show();
-            }
-        });
-
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,7 +452,7 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                     ShowPickerView();
                 } else {
                     mHandler.sendEmptyMessage(MSG_LOAD_DATA);
-                }
+                }*/
                 /*AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
                 builder.setTitle(getString(R.string.address));
                 // I'm using fragment here so I'm using getView() to provide ViewGroup
@@ -335,81 +502,19 @@ public class MoreUserInfoActivity extends AppCompatActivity implements View.OnCl
                 });
 
                 builder.show();*/
-            }
+      /*      }
         });
 
-        addressTextView.setText(preference.getString(CONST.USER_ADDRESS, ""));
-        commentsTextView.setText(preference.getString(CONST.USER_COMMENTS, ""));
-        birthDayTextView.setText(preference.getString(CONST.USER_BIRTHDAY, ""));
-        commentsRelativeLayout = findViewById(R.id.comments_relative_layout);
-        commentsRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
-                builder.setTitle(getString(R.string.user_comments));
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_user_name_dialog, null, false);
-                // Set up the input
-                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                builder.setView(viewInflated);
-                input.setText(preference.getString(CONST.USER_COMMENTS, ""));
-                input.setSelection(preference.getString(CONST.USER_COMMENTS, "").length());
-                // Set up the buttons
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Editable editable = input.getText();
-                        if (editable == null) {
-                            return;
-                        }
-                        final String newComments = input.getText().toString();
-                        if (newComments.length() > 0) {
-
-                            AppUser user = new AppUser();
-                            user.remark = newComments;
-                            user.userId = preference.getString(CONST.USER_ID, null);
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-                                @Override
-                                public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(CONST.USER_COMMENTS, newComments);
-                                    //save the changes.
-                                    editor.commit();
-                                    commentsTextView.setText(newComments);
-                                }
-                            });
-                        }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        });
+        addressTextView.setText(preference.getString(CONST.USER_ADDRESS, ""));*/
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        findViewById(R.id.back).setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.back: {
-                onBackPressed();
-                break;
-            }
-        }
+    public void clickBack(final View view) {
+        onBackPressed();
     }
+
 }
