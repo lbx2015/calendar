@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
@@ -24,6 +25,7 @@ public abstract class ZClickListenerWithLoginCheck implements View.OnClickListen
     @Override
     public void onClick(View v) {
         this.v = v;
+        MyLog.d("onClick::" + v.getId());
         if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             click(v);
         } else {

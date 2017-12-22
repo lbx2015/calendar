@@ -12,18 +12,24 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.listener.CustomListener;
 import com.google.gson.Gson;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.bean.JsonBean;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
@@ -37,6 +43,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by zw.zhang on 2017/8/5.
@@ -82,6 +89,8 @@ public class MoreUserInfoActivity extends AppCompatActivity {
     Calendar calendar;
     OptionsPickerView pvOptions;
     AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+    ArrayList<Industry> industries;
+    ArrayList<Industry> positions;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -119,6 +128,86 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         }
     };
+    private OptionsPickerView industryPicker;
+    private OptionsPickerView positionPicker;
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        setContentView(R.layout.activity_more_user_info);
+        init();
+       /* addressTextView = (TextView) findViewById(R.id.address);
+        addressRelativeLayout = findViewById(R.id.address_relative_layout);
+        addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLoaded) {
+                    //address picker view
+                    ShowPickerView();
+                } else {
+                    mHandler.sendEmptyMessage(MSG_LOAD_DATA);
+                }*/
+                /*AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
+                builder.setTitle(getString(R.string.address));
+                // I'm using fragment here so I'm using getView() to provide ViewGroup
+                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+                View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_user_name_dialog, null, false);
+                // Set up the input
+                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.userId.input);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+                String addressText = preference.getString(CONST.USER_ADDRESS, "");
+                input.setText(addressText);
+                input.setSelection(addressText.length());
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Editable editable = input.getText();
+                        if (editable == null) {
+                            return;
+                        }
+                        final String departName = input.getText().toString();
+                        if (departName.length() > 0) {
+                            AppUser user = new AppUser();
+                            user.address = departName;
+                            user.userId = preference.getString(CONST.USER_ID, null);
+
+                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
+                                @Override
+                                public void callBack(ResponseModel<String> response) {
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    editor.putString(CONST.USER_ADDRESS, departName);
+                                    //save the changes.
+                                    editor.commit();
+                                    addressTextView.setText(departName);
+                                }
+                            });
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();*/
+      /*      }
+        });
+
+        addressTextView.setText(preference.getString(CONST.USER_ADDRESS, ""));*/
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     private void ShowPickerView() {
         if (pvOptions != null) {
@@ -273,34 +362,13 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         addLocationTv = findViewById(R.id.add_position_tv);
     }
 
+    //条件选择器初始化，自定义布局
     private void initEvents() {
         //phone number
-        phoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        phoneNumberLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.phone, new UpdateUserInfoCallBack() {
-                    @Override
-                    void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
-                        currentUser.phone = newValue;
-                        ZPreference.saveUserInfoAfterLogin(currentUser);
-                    }
-
-                    @Override
-                    void newValue(final String newValue) {
-                        UpdUserParams user = new UpdUserParams();
-                        user.phone = newValue;
-                        callServerApi2UpdateUserInfo(newValue, user);
-                        phoneNumberTv.setText(newValue);
-                    }
-                });
-            }
-        });
-
-        addPhoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                changePhoneNumberDialog(currentUser.phone, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -310,7 +378,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.phone = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         phoneNumberTv.setVisibility(View.VISIBLE);
@@ -321,10 +388,10 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         });
         //email
-        emailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        emailLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.email, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -334,30 +401,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
-                        currentUser.email = newValue;
-                        ZPreference.saveUserInfoAfterLogin(currentUser);
-                        emailTv.setVisibility(View.VISIBLE);
-                        addEmailTv.setVisibility(View.GONE);
-                        emailTv.setText(newValue);
-                    }
-                });
-            }
-        });
-        addEmailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                changePhoneNumberDialog(currentUser.email, new UpdateUserInfoCallBack() {
-                    @Override
-                    public void newValue(final String newValue) {
-                        UpdUserParams user = new UpdUserParams();
-                        user.email = newValue;
-                        callServerApi2UpdateUserInfo(newValue, user);
-                    }
-
-                    @Override
-                    void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.email = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         emailTv.setVisibility(View.VISIBLE);
@@ -368,23 +411,17 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         });
         //wechat
-        wechatTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        wechatLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
 
             }
         });
-        addWechatTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        //company
+        companyLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-
-            }
-        });
-        //compnay
-        companyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                changePhoneNumberDialog(currentUser.companyName, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -394,7 +431,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.companyName = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         companyTv.setVisibility(View.VISIBLE);
@@ -404,63 +440,24 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 });
             }
         });
-        addCompanyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                changePhoneNumberDialog(currentUser.companyName, new UpdateUserInfoCallBack() {
-                    @Override
-                    public void newValue(final String newValue) {
-                        UpdUserParams user = new UpdUserParams();
-                        user.companyName = newValue;
-                        callServerApi2UpdateUserInfo(newValue, user);
-                    }
 
-                    @Override
-                    void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
-                        currentUser.companyName = newValue;
-                        ZPreference.saveUserInfoAfterLogin(currentUser);
-                        companyTv.setVisibility(View.VISIBLE);
-                        addCompanyTv.setVisibility(View.GONE);
-                        companyTv.setText(newValue);
-                    }
-                });
-            }
-        });
         //industry
-        industryTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        industryLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-
+                setIndustryPicker(currentUser.industryId);
             }
         });
-        addIndustryTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
 
-            }
-        });
         //position
-        positionTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        positionLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-
-            }
-        });
-        addPositionTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-
+                setPositionPicker(currentUser.positionId);
             }
         });
         //job place
-        locationTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-
-            }
-        });
-        addLocationTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        locationLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
 
@@ -468,12 +465,214 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void changePhoneNumberDialog(String initValue, final UpdateUserInfoCallBack callBack) {
+    private void setPositionPicker(String currentPositionId) {
+        MyLog.d("setPositionPicker" + currentPositionId);
+        final UpdateUserInfoCallBack callBack = new UpdateUserInfoCallBack() {
+            @Override
+            void newValue(String newValue) {
+                UpdUserParams user = new UpdUserParams();
+                user.positionId = newValue;
+                MyLog.d("positionId; " + newValue);
+                callServerApi2UpdateUserInfo(newValue, user);
+            }
+
+            @Override
+            void updateSuccess(String newValue) {
+                currentUser.positionId = newValue;
+                ZPreference.saveUserInfoAfterLogin(currentUser);
+                positionTv.setVisibility(View.VISIBLE);
+                addPositionTv.setVisibility(View.GONE);
+                //reset industry name
+                for (Industry i : positions) {
+                    if (i.industryId.equals(newValue)) {
+                        positionTv.setText(i.name);
+                        break;
+                    }
+                }
+            }
+        };
+
+        positionPicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                Industry i = positions.get(options1);
+//                final String positionName = i.getPickerViewText();
+                callBack.newValue(i.industryId);
+
+            }
+        }).setCyclic(true, false, false)
+                .setLayoutRes(R.layout.pickerview_department, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final View tvSubmit = v.findViewById(R.id.tv_finish);
+                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Logger.d("zzw", "click save");
+                                positionPicker.returnData();
+                                positionPicker.dismiss();
+                            }
+                        });
+
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                positionPicker.dismiss();
+                            }
+                        });
+                    }
+                })
+                .isDialog(true)
+                .build();
+
+        if (positions == null || positions.size() == 0) {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("industryId", currentUser.industryId);
+            APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+                @Override
+                public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
+                    positions = response._data;
+                    if (industries == null) {
+                        return;
+                    }
+                    //only one column industry selector
+                    positionPicker.setPicker(positions);
+                    positionPicker.show();
+                }
+            });
+        } else {
+            positionPicker.setPicker(positions);
+            positionPicker.show();
+        }
+
+        //set default position
+        for (int i = 0; i < positions.size(); i++) {
+            Industry industry = positions.get(i);
+            if (industry.industryId.equals(currentPositionId)) {
+                positionPicker.setSelectOptions(i);
+            }
+        }
+    }
+
+    /**
+     * @description 注意事项：
+     * 自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针。
+     * 具体可参考demo 里面的两个自定义layout布局。
+     */
+    private void setIndustryPicker(String currentIndustryId) {
+        final UpdateUserInfoCallBack callBack = new UpdateUserInfoCallBack() {
+            @Override
+            void newValue(String newValue) {
+                UpdUserParams user = new UpdUserParams();
+                user.industryId = newValue;
+                callServerApi2UpdateUserInfo(newValue, user);
+            }
+
+            @Override
+            void updateSuccess(String newValue) {
+                currentUser.industryId = newValue;
+                ZPreference.saveUserInfoAfterLogin(currentUser);
+                industryTv.setVisibility(View.VISIBLE);
+                addIndustryTv.setVisibility(View.GONE);
+                //reset industry name
+                for (Industry i : industries) {
+                    if (i.industryId.equals(newValue)) {
+                        industryTv.setText(i.name);
+                        break;
+                    }
+                }
+                //clear the user position information
+                currentUser.positionId = null;
+                positionTv.setVisibility(View.GONE);
+                addPositionTv.setVisibility(View.VISIBLE);
+            }
+        };
+
+        industryPicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                Industry i = industries.get(options1);
+//                final String positionName = i.getPickerViewText();
+                callBack.newValue(i.industryId);
+
+            }
+        }).setCyclic(true, false, false)
+                .setLayoutRes(R.layout.pickerview_department, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final View tvSubmit = v.findViewById(R.id.tv_finish);
+                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Logger.d("zzw", "click save");
+                                industryPicker.returnData();
+                                industryPicker.dismiss();
+                            }
+                        });
+
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                industryPicker.dismiss();
+                            }
+                        });
+                    }
+                })
+                .isDialog(true)
+                .build();
+
+        if (industries == null || industries.size() == 0) {
+            APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+                @Override
+                public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
+                    industries = response._data;
+                    if (industries == null) {
+                        return;
+                    }
+                    //only one column industry selector
+                    industryPicker.setPicker(industries);
+                    industryPicker.show();
+                }
+            });
+        } else {
+            industryPicker.setPicker(industries);
+            industryPicker.show();
+        }
+
+        //set default industry
+        for (int i = 0; i < industries.size(); i++) {
+            Industry industry = industries.get(i);
+            if (industry.industryId.equals(currentIndustryId)) {
+                industryPicker.setSelectOptions(i);
+            }
+        }
+    }
+
+    /**
+     * @param type      0 company name,1 email,3 phone number
+     * @param initValue
+     * @param callBack
+     */
+    private void changeCompanyDialog(final int type, String initValue, final UpdateUserInfoCallBack callBack) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.user_comments));
+        if (type == 0) {
+            builder.setTitle("公司名称");
+        } else if (type == 1) {
+            builder.setTitle("邮箱");
+        } else if (type == 1) {
+            builder.setTitle("电话号码");
+        }
         // I'm using fragment here so I'm using getView() to provide ViewGroup
         // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+        View viewInflated;
+        if (type == 1) {
+            viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_email_dialog, null, false);
+        } else {
+            viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+        }
+
         // Set up the input
         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
@@ -491,6 +690,13 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 }
                 final String newComments = input.getText().toString();
                 if (newComments.length() > 0) {
+                    //phone
+                    if (type == 3) {
+                        if (!StringUtil.isMobileNO(newComments)) {
+                            ZToast.toast("电话号码不正确");
+                            return;
+                        }
+                    }
                     callBack.newValue(newComments);
                 }
             }
@@ -502,7 +708,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         });
         builder.show();
-
     }
 
     private void initData() {
@@ -573,89 +778,35 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             locationTv.setVisibility(View.VISIBLE);
             addLocationTv.setVisibility(View.GONE);
         }
+
+        loadIndustries();
+        loadPostions();
+    }
+
+    private void loadPostions() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("industryId", currentUser.industryId);
+        APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+            @Override
+            public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
+                positions = response._data;
+            }
+        });
+    }
+
+    private void loadIndustries() {
+        APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+            @Override
+            public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
+                industries = response._data;
+            }
+        });
     }
 
     private void init() {
         initViews();
         initEvents();
         initData();
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
-        setContentView(R.layout.activity_more_user_info);
-        init();
-       /* addressTextView = (TextView) findViewById(R.id.address);
-        addressRelativeLayout = findViewById(R.id.address_relative_layout);
-        addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLoaded) {
-                    //address picker view
-                    ShowPickerView();
-                } else {
-                    mHandler.sendEmptyMessage(MSG_LOAD_DATA);
-                }*/
-                /*AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
-                builder.setTitle(getString(R.string.address));
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                View viewInflated = LayoutInflater.from(MoreUserInfoActivity.this).inflate(R.layout.edit_user_name_dialog, null, false);
-                // Set up the input
-                final AutoCompleteTextView input = (AutoCompleteTextView) viewInflated.findViewById(R.userId.input);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                builder.setView(viewInflated);
-                String addressText = preference.getString(CONST.USER_ADDRESS, "");
-                input.setText(addressText);
-                input.setSelection(addressText.length());
-
-                // Set up the buttons
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Editable editable = input.getText();
-                        if (editable == null) {
-                            return;
-                        }
-                        final String departName = input.getText().toString();
-                        if (departName.length() > 0) {
-                            AppUser user = new AppUser();
-                            user.address = departName;
-                            user.userId = preference.getString(CONST.USER_ID, null);
-
-                            apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-                                @Override
-                                public void callBack(ResponseModel<String> response) {
-                                    SharedPreferences.Editor editor = preference.edit();
-                                    editor.putString(CONST.USER_ADDRESS, departName);
-                                    //save the changes.
-                                    editor.commit();
-                                    addressTextView.setText(departName);
-                                }
-                            });
-                        }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();*/
-      /*      }
-        });
-
-        addressTextView.setText(preference.getString(CONST.USER_ADDRESS, ""));*/
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     public void clickBack(final View view) {

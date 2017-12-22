@@ -37,6 +37,10 @@ public class Remind extends PageQuery {
 	@Column(name = "user_id", length = 32)
 	private String userId;
 
+	@Comment("报表id")
+	@Column(name = "report_id", length = 32)
+	private String reportId;
+
 	@Comment("内容")
 	@Column(name = "content", length = 255)
 	private String content;
@@ -89,6 +93,14 @@ public class Remind extends PageQuery {
 
 	public void setRemindId(String remindId) {
 		this.remindId = remindId;
+	}
+
+	public String getReportId() {
+		return reportId;
+	}
+
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
 	}
 
 	public String getUserId() {

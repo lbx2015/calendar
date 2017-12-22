@@ -15,6 +15,7 @@ public class DictionaryBean implements IPickerViewData {
     public String ke;
     public String valu;
 
+    public DictionaryBean(){}
     public DictionaryBean(Dictionary dictionary) {
         id = dictionary.id;
         clazz = dictionary.clazz;

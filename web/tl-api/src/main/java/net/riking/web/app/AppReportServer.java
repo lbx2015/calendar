@@ -36,6 +36,7 @@ import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
 import net.riking.util.DateUtils;
+import net.riking.util.MergeUtil;
 import net.riking.util.Utils;
 
 /**
@@ -110,7 +111,7 @@ public class AppReportServer {
 
 		String currentDate = DateUtils.getDate("yyyyMMdd");
 		reportService.addReportTaskByUserSubscribe(relParam.getUserId(), arr, currentDate);
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "查询逾期报表", notes = "POST")
@@ -185,7 +186,7 @@ public class AppReportServer {
 
 		}
 
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -229,4 +230,28 @@ public class AppReportServer {
 		return new AppResp(taskDateList, CodeDef.SUCCESS);
 	}
 
+	@ApiOperation(value = "用户提醒新增/修改", notes = "POST")
+	@RequestMapping(value = "/remindSave", method = RequestMethod.POST)
+	public AppResp save(@RequestBody Remind remind) {
+		Remind remind2 = remindRepo.findOne(remind.getRemindId());
+		if (null == remind2) {
+			remind = remindRepo.save(remind);
+		} else {
+			try {
+				remind2 = MergeUtil.merge(remind2, remind);
+			} catch (Exception e) {
+				return new AppResp(CodeDef.ERROR);
+			}
+			remind = remindRepo.save(remind2);
+		}
+		return new AppResp(remind, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
+	@RequestMapping(value = "/remindDel", method = RequestMethod.POST)
+	public AppResp delMore(@RequestBody Remind remind) {
+		remindRepo.delete(remind.getRemindId());
+
+		return new AppResp().setCode(CodeDef.SUCCESS);
+	}
 }
