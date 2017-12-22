@@ -20,6 +20,7 @@ import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NewsCommentRepo;
+import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
@@ -105,6 +106,9 @@ public class AppUserDynamicServer {
 	@Autowired
 	QACommentService qaCommentService;
 
+	@Autowired
+	QACAgreeRelRepo qACAgreeRelRepo;
+
 	/**
 	 * userId;optType(1-评论；2-回答；3-提问)
 	 * @param userParams
@@ -126,6 +130,13 @@ public class AppUserDynamicServer {
 		if (userFollowParams.getPindex() != 0 && userFollowParams.getPindex() != null) {
 			userFollowParams.setPindex(userFollowParams.getPindex() - 1);
 		}
+		// 如果toUserId不为空，userId和toUserId互换，userId是对方，toUserId是当前登录用户
+		if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+			String userId = "";
+			userId = userFollowParams.getUserId();
+			userFollowParams.setUserId(userFollowParams.getToUserId());
+			userFollowParams.setToUserId(userId);
+		}
 		// 分页计算
 		int pageCount = (userFollowParams.getPcount() == null || userFollowParams.getPcount() == 0) ? 30
 				: userFollowParams.getPcount();
@@ -137,7 +148,17 @@ public class AppUserDynamicServer {
 			case Const.OBJ_OPT_COMMENT:
 				List<QACommentResult> qaCommentResults = qaCommentService.findByUserId(userFollowParams.getUserId(),
 						pageBegin, pageCount);
+				List<String> qacIds = null;
+				if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+					qacIds = qACAgreeRelRepo.findByUser(userFollowParams.getToUserId(), Const.OBJ_OPT_GREE);
+				} else {
+					qacIds = qACAgreeRelRepo.findByUser(userFollowParams.getUserId(), Const.OBJ_OPT_GREE);
+				}
 				for (QACommentResult qaCommentResult : qaCommentResults) {
+					qaCommentResult.setIsAgree(0);
+					if (qacIds.contains(qaCommentResult.getId())) {
+						qaCommentResult.setIsAgree(1);
+					}
 					// 点赞数 TODO 后面从redis中取
 					Integer agreeNumber = qACommentRepo.commentCount(qaCommentResult.getQuestionAnswerId());
 					qaCommentResult.setAgreeNumber(agreeNumber);
@@ -157,12 +178,23 @@ public class AppUserDynamicServer {
 				// 回答
 				List<QAnswerResult> qAnswerResults = questionAnswerRepo
 						.findQAnswerByUserId(userFollowParams.getUserId(), new PageRequest(pageBegin, pageCount));
+				List<String> qaIds = null;
+				if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+					qaIds = qAnswerRelRepo.findByUser(userFollowParams.getToUserId(), Const.OBJ_OPT_GREE);
+				} else {
+					qaIds = qAnswerRelRepo.findByUser(userFollowParams.getUserId(), Const.OBJ_OPT_GREE);
+				}
 				for (QAnswerResult qAnswerResult : qAnswerResults) {
+					qAnswerResult.setIsAgree(0);
+					if (qaIds.contains(qAnswerResult.getQaId())) {
+						qAnswerResult.setIsAgree(1);
+					}
 					// TODO 获取评论数，点赞数后面从redis中获取
 					qAnswerResult.setQaCommentNum(qACommentRepo.commentCount(qAnswerResult.getQaId()));
 					qAnswerResult
 							.setQaCommentNum(qAnswerRelRepo.agreeCount(qAnswerResult.getQaId(), Const.OBJ_OPT_GREE));
 				}
+
 				return new AppResp(qAnswerResults, CodeDef.SUCCESS);
 			// 提问
 			case Const.OBJ_OPT_INQUIRY:
@@ -176,7 +208,7 @@ public class AppUserDynamicServer {
 	}
 
 	/**
-	 * userId;objType(1-问题回答，2-行业资讯)
+	 * userId;objType(1-问题回答，2-行业资讯)toUserId
 	 * @param userFollowParams
 	 * @return
 	 * @throws IllegalArgumentException
@@ -196,6 +228,13 @@ public class AppUserDynamicServer {
 		if (userFollowParams.getPindex() != 0 && userFollowParams.getPindex() != null) {
 			userFollowParams.setPindex(userFollowParams.getPindex() - 1);
 		}
+		// 如果toUserId不为空，userId和toUserId互换，userId是对方，toUserId是当前登录用户
+		if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+			String userId = "";
+			userId = userFollowParams.getUserId();
+			userFollowParams.setUserId(userFollowParams.getToUserId());
+			userFollowParams.setToUserId(userId);
+		}
 		// 分页计算
 		int pageCount = (userFollowParams.getPcount() == null || userFollowParams.getPcount() == 0) ? 30
 				: userFollowParams.getPcount();
@@ -207,6 +246,10 @@ public class AppUserDynamicServer {
 			case Const.OBJ_TYPE_ANSWER:
 				List<QAnswerResult> qAnswerResults = qAnswerService.findCollectQAnswer(userFollowParams.getUserId(),
 						pageBegin, pageCount);
+				List<String> list = null;
+				if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+					list = qAnswerRelRepo.findByUser(userFollowParams.getToUserId(), Const.OBJ_OPT_GREE);
+				}
 				for (QAnswerResult qAnswerResult : qAnswerResults) {
 					if (null != qAnswerResult.getPhotoUrl()) {
 						qAnswerResult.setPhotoUrl(
@@ -220,6 +263,12 @@ public class AppUserDynamicServer {
 					qAnswerResult.setContent(questionAnswer.getContent());
 					qAnswerResult.setQaAgreeNum(questionAnswer.getAgreeNum());
 					qAnswerResult.setQaCommentNum(questionAnswer.getCommentNum());
+					if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+						qAnswerResult.setIsAgree(0);// 0-未点赞
+						if (list.contains(qAnswerResult.getQaId())) {
+							qAnswerResult.setIsAgree(1);// 1-已点赞
+						}
+					}
 				}
 				Collections.sort(qAnswerResults, new Comparator<QAnswerResult>() {
 					// TODO 根据评论数和点赞数排序，算法待确认

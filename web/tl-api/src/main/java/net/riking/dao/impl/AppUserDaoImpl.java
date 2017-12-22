@@ -149,16 +149,15 @@ public class AppUserDaoImpl implements AppUserDao {
 		Connection connection = session.connection();
 		String sql = "SELECT ";
 		sql += "a.id,a.user_name,ap.sex,ap.descript,ap.experience,ap.photo_Url,";
-		sql += "(select t.follow_status from t_user_follow_rel t where t.user_id = ? and t.to_User_Id = a.id ) followStatus ";
+		sql += "(select t.follow_status from t_user_follow_rel t where t.user_id = '" + userId
+				+ "' and t.to_user_Id = a.id ) followStatus ";
 		sql += "FROM t_app_user a ";
 		sql += "LEFT JOIN t_appuser_detail ap on a.id=ap.id ";
-		sql += "WHERE a.id = ? and a.enabled = 1 and a.is_deleted = 1";
+		sql += "WHERE a.id = '" + toUserId + "' and a.enabled = 1 and a.is_deleted = 1";
 		PreparedStatement pstmt = null;
 		OtherUserResp otherUserResp = null;
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
-			pstmt.setString(1, userId);
-			pstmt.setString(2, toUserId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				otherUserResp = new OtherUserResp(rs.getString("id"), rs.getString("user_name"), rs.getInt("sex"),

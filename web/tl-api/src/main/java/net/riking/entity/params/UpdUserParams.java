@@ -70,6 +70,12 @@ public class UpdUserParams extends BaseEntity {
 	// 职位ID
 	private String positionId;
 
+	// 行业名字
+	public String industryName;
+
+	// 职位名字
+	public String positionName;
+
 	// 是否引导: 0-未引导；1-已引导
 	private Integer isGuide;
 
