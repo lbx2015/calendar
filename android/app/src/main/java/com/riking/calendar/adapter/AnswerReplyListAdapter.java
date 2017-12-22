@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -28,11 +29,11 @@ import butterknife.ButterKnife;
 
 public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyListAdapter.MyViewHolder> {
     public List<NCReply> mList;
-    AnswerCommentsActivity a;
+    Context a;
     String from;
     RecyclerView recyclerView;
 
-    public AnswerReplyListAdapter(AnswerCommentsActivity c, RecyclerView recyclerView) {
+    public AnswerReplyListAdapter(Context c, RecyclerView recyclerView) {
         a = c;
         this.recyclerView = recyclerView;
         mList = new ArrayList<>();
@@ -69,71 +70,74 @@ public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyList
         SpannableString fromSpan = new SpannableString(from);
         SpannableString replySpan = new SpannableString(replyText);
         SpannableString contentSpan = new SpannableString(content);
+        if (a instanceof AnswerCommentsActivity) {
+            final AnswerCommentsActivity answerCommentsActivity = (AnswerCommentsActivity) a;
 
-        ClickableSpan fromClick = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                a.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
-            }
+            ClickableSpan fromClick = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    answerCommentsActivity.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
+                }
 
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                ds.setColor(ZR.getColor(R.color.color_489dfff));
-                ds.setTextSize(ZR.convertDpToPx(15));
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    ds.setColor(ZR.getColor(R.color.color_489dfff));
+                    ds.setTextSize(ZR.convertDpToPx(15));
 //                ds.setUnderlineText(false);
-            }
-        };
+                }
+            };
 
-        ClickableSpan replyClick = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                a.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
-            }
+            ClickableSpan replyClick = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    answerCommentsActivity.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
+                }
 
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                ds.setColor(ZR.getColor(R.color.color_222222));
-                ds.setTextSize(ZR.convertDpToPx(15));
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    ds.setColor(ZR.getColor(R.color.color_222222));
+                    ds.setTextSize(ZR.convertDpToPx(15));
 //                ds.setUnderlineText(false);
-            }
-        };
+                }
+            };
 
-        ClickableSpan toClick = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                a.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
-            }
+            ClickableSpan toClick = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    answerCommentsActivity.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
+                }
 
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                ds.setColor(ZR.getColor(R.color.color_489dfff));
-                ds.setTextSize(ZR.convertDpToPx(15));
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    ds.setColor(ZR.getColor(R.color.color_489dfff));
+                    ds.setTextSize(ZR.convertDpToPx(15));
 //                ds.setUnderlineText(false);
-            }
-        };
+                }
+            };
 
 
-        ClickableSpan contentClick = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                a.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
-            }
+            ClickableSpan contentClick = new ClickableSpan() {
+                @Override
+                public void onClick(View widget) {
+                    answerCommentsActivity.clickReply(reply, AnswerReplyListAdapter.this, recyclerView);
+                }
 
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                ds.setColor(ZR.getColor(R.color.color_222222));
-                ds.setTextSize(ZR.convertDpToPx(15));
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    ds.setColor(ZR.getColor(R.color.color_222222));
+                    ds.setTextSize(ZR.convertDpToPx(15));
 //                ds.setUnderlineText(false);
+                }
+            };
+
+
+            fromSpan.setSpan(fromClick, 0, from.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            if (toSpan != null) {
+                toSpan.setSpan(toClick, 0, to.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             }
-        };
-
-
-        fromSpan.setSpan(fromClick, 0, from.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        if (toSpan != null) {
-            toSpan.setSpan(toClick, 0, to.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            replySpan.setSpan(replyClick, 0, replyText.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            contentSpan.setSpan(contentClick, 0, content.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
-        replySpan.setSpan(replyClick, 0, replyText.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        contentSpan.setSpan(contentClick, 0, content.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         Spanned richText = null;
         if (toSpan == null) {
             richText = (Spanned) TextUtils.concat(fromSpan, contentSpan);

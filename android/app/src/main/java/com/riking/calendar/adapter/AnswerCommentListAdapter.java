@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,9 +33,9 @@ import java.util.List;
 //answer comment adapter
 public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerCommentListAdapter.MyViewHolder> {
     public List<QAComment> mList;
-    private AnswerCommentsActivity a;
+    private Context a;
 
-    public AnswerCommentListAdapter(AnswerCommentsActivity context) {
+    public AnswerCommentListAdapter(Context context) {
         this.a = context;
         mList = new ArrayList<>();
     }
@@ -113,12 +114,15 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
                 .apply(options.fitCenter())
                 .into(h.authorImage);
         setRecyclerView(h.recyclerView, h, i);
-        h.answerContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                a.clickWriteComment(c, h.replyListAdapter, h.recyclerView);
-            }
-        });
+        if (a instanceof AnswerCommentsActivity) {
+            final AnswerCommentsActivity answerCommentsActivity = (AnswerCommentsActivity) a;
+            h.answerContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    answerCommentsActivity.clickWriteComment(c, h.replyListAdapter, h.recyclerView);
+                }
+            });
+        }
     }
 
     private void setRecyclerView(final RecyclerView recyclerView, final AnswerCommentListAdapter.MyViewHolder h, final int position) {
