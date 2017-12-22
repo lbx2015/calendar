@@ -20,6 +20,8 @@
 			"alias": "APP版本号",
 			"desc": "APP版本号",
 			"type": "string",
+			"query": "1",
+			"query_order": "1",
 			"group": "base"
 		},
 		{
@@ -27,7 +29,7 @@
 			"alias": "是否强制更新",
 			"desc": "是否强制更新",
 			"type": "enum",
-			"dict_key":"T_VERSION.ENFORCE",
+			"dict_key": "T_VERSION.ENFORCE",
 			"group": "base"
 		},
 		{
@@ -35,7 +37,7 @@
 			"alias": "移动端",
 			"desc": "移动端",
 			"type": "enum",
-			"dict_key":"T_VERSION.CLIENTTYPE",
+			"dict_key": "T_VERSION.CLIENTTYPE",
 			"group": "base"
 		},
 		{
@@ -43,7 +45,7 @@
 			"alias": "用户状态",
 			"desc": "用户状态",
 			"type": "enum",
-			"dict_key":"T_VERSION.ENABLED",
+			"dict_key": "T_VERSION.ENABLED",
 			"group": "base"
 		},
 		{

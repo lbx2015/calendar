@@ -8,13 +8,6 @@
 	],
 	"attrs": [
 		{
-			"prop": "id",
-			"alias": "pk",
-			"type": "string",
-			"group": "base",
-			"hidden": "edit,priview,table"
-		},
-		{
 			"prop": "title",
 			"alias": "标题",
 			"desc": "标题",

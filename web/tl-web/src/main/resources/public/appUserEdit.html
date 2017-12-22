@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 <head>
 <meta charset="utf-8">
 <title>app用户修改添加页面</title>
@@ -9,263 +8,219 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link type="include" href="/common/depcss.html" />
 </head>
-
 <body class="iframeBody">
 	<div class="formbox layui-form add-formbox">
 		<div class="_tmpl" data-url="edit.html" data-attr="appUserVO.json" data-bind="editOnBind" data-param=""></div>
 		<div class="layui-btn-div" id="layui-btn-fixed">
-			<button class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" id="submit">确定</button>
-			<button class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+			<button class="layui-btn bgc1 layui-btn-small" lay-submit lay-filter="edit" id="submit">确定</button>
+			<button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
 		</div>
 	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
-	String.prototype.endWith = function(endStr) {
-		var d = this.length - endStr.length;
-		return (d >= 0 && this.lastIndexOf(endStr) == d)
-	}
+		String.prototype.endWith = function(endStr) {
+			var d = this.length - endStr.length;
+			return (d >= 0 && this.lastIndexOf(endStr) == d)
+		}
 
-	$(document).ready(function() {
-		$("#submit").click(function() {
-			if (TmplUtils.check('edit')) {
-				edit();
-			}
-		});
-	});
-
-	//var id = window.location.hash.replace("#", "");
-	var id = View.getQStr('id');
-	var flag = View.getQStr('flag');
-
-	function editOnBind(attrs, param) {
-		tmpl = this;
-		tmpl.bind(function(callback) {
-			tmpl.onFinish(function(data) {
-				if (flag == "view") {
-					$("#submit").hide();
-					$("div.layui-colla-item:eq(0) :input").attr("disabled",
-							true);
-					$("div.layui-colla-item:eq(1) :input").attr("disabled",
-							true);
+		$(document).ready(function() {
+			$("#submit").click(function() {
+				if (TmplUtils.check('edit')) {
+					edit();
 				}
-				View.resetUi();
 			});
-			if (id) {
-				var url = Const.apiUrl + "/appUser/get";
-				var _this = this;
-				View.get(url, "id=" + id, function(resp) {
-					var data = {};
-					if (resp) {
-						data.data = resp;
+		});
+
+		//var id = window.location.hash.replace("#", "");
+		var id = View.getQStr('id');
+		var flag = View.getQStr('flag');
+
+		function editOnBind(attrs, param) {
+			tmpl = this;
+			tmpl.bind(function(callback) {
+				tmpl.onFinish(function(data) {
+					if (flag == "view") {
+						$("#submit").hide();
+						$("div.layui-colla-item:eq(0) :input").attr("disabled", true);
+						$("div.layui-colla-item:eq(1) :input").attr("disabled", true);
 					}
-					//默认展开分组 ，不配置默认展开第一个分组
-					data.showGroup = "appUser,appUserDetail";
+					View.resetUi();
+				});
+				if (id) {
+					var url = Const.apiUrl + "/appUser/get";
+					var _this = this;
+					View.get(url, "id=" + id,
+					function(resp) {
+						var data = {};
+						if (resp) {
+							data.data = resp;
+						}
+						//默认展开分组 ，不配置默认展开第一个分组
+						data.showGroup = "base,detail";
+						callback.call(_this, data);
+						TmplUtils.editOnLoad();
+						var enumInput = $("input[data-type='lazyEnum']");
+						for (var i = 0; i < enumInput.length; i++) {
+							lazyEnumEach(enumInput[i], data);
+						}
+					},
+					function() {
+						TmplUtils.showMsgFail('信息获取失败');
+					});
+				} else {
+					var data = {};
+					data.showGroup = "base";
 					callback.call(_this, data);
 					TmplUtils.editOnLoad();
 					var enumInput = $("input[data-type='lazyEnum']");
 					for (var i = 0; i < enumInput.length; i++) {
 						lazyEnumEach(enumInput[i], data);
 					}
-				}, function() {
-					TmplUtils.showMsgFail('信息获取失败');
-				});
-			} else {
-				var data = {};
-				data.showGroup = "base";
-				callback.call(_this, data);
-				TmplUtils.editOnLoad();
-				var enumInput = $("input[data-type='lazyEnum']");
-				for (var i = 0; i < enumInput.length; i++) {
-					lazyEnumEach(enumInput[i], data);
 				}
+			});
+		}
+		//编辑保存
+		function edit() {
+			var appUser = Utils.formToObj("edit");
+			if(id){
+				appUser.appUserId = id;
 			}
-		});
-	}
-	//编辑保存
-	function edit() {
-		var appUser = Utils.formToObj("edit");
-		appUser.id = id;
-		/*   appUser.email = appUser.email.split(",")[0] + "@" + appUser.email.split(",")[1]; */
-		var url = Const.apiUrl + "/appUser/addOrUpdate";
-		View.post(url, appUser, function(resp) {
-			TmplUtils.showMsgSuccess('编辑成功');
-			parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1)
-					+ "&pcount=" + parent.TmplUtils.pageSize
-					+ parent.TmplUtils.searchParam);
-			parent.previewTmpl.refresh();
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			parent.layer.close(index);
-		}, function(code) {
-			TmplUtils.showMsgFail('编辑失败');
-		});
-	}
+			/*   appUser.email = appUser.email.split(",")[0] + "@" + appUser.email.split(",")[1]; */
+			var url = Const.apiUrl + "/appUser/addOrUpdate";
+			View.post(url, appUser,
+			function(resp) {
+				TmplUtils.showMsgSuccess('编辑成功');
+				parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) + "&pcount=" + parent.TmplUtils.pageSize + parent.TmplUtils.searchParam);
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+			},
+			function(code) {
+				TmplUtils.showMsgFail('编辑失败');
+			});
+		}
 
-	function lazyEnumEach(self, data) {
-		var _this = self;
-		var $ul = $(_this).next().next();
-		var _hidden = $(self).next();
-		var _name = $(self).next().attr("name");
+		function lazyEnumEach(self, data) {
+			var _this = self;
+			var $ul = $(_this).next().next();
+			var _hidden = $(self).next();
+			var _name = $(self).next().attr("name");
 
-		if (_name.endWith("0")) {
-			var name = _name.substring(0, _name.indexOf("-"));
-			var _key = data.data[name];
-			if (_key) {
-				var keys = _key.split(",");
+			if (_name.endWith("0")) {
+				var name = _name.substring(0, _name.indexOf("-"));
+				var _key = data.data[name];
+				if (_key) {
+					var keys = _key.split(",");
 
-				var param = {
-					"table" : "T_APP_USER",
-					"field" : "SF",
-					"key" : keys[0]
-				};
-				View.get(Const.apiUrl + "/modelPropDict/get", param, function(
-						data) {
-					$(_this).val(data.valu);
-					$(_hidden).val(data.ke);
-				});
-				if (keys[0] && keys[1]) {
 					var param = {
-						"table" : "T_APP_USER",
-						"field" : keys[0],
-						"key" : keys[1]
+						"table": "T_APP_USER",
+						"field": "SF",
+						"key": keys[0]
 					};
-					View
-							.get(Const.apiUrl + "/modelPropDict/get", param,
-									function(data) {
-										if (data.ke && data.valu) {
-											$(
-													$(_this).parent().next()
-															.find("input")[0])
-													.val(data.valu);
-											$(
-													$(_this).parent().next()
-															.find("input")[1])
-													.val(data.ke);
-										}
-									});
-				}
-			}
-		}
-
-		$ul.hide();
-		$(_this).bind("focus", function() {
-			if (_this.oninput === null) {
-				$(_this).bind("input", inputChange);
-			} else if (_this.onpropertychange === null) {
-				$(_this).bind("propertychange", inputChange);
-			}
-		});
-	}
-
-	document.onclick = function() {
-		var uls = $("input[data-type='lazyEnum']").next().next();
-		$(uls).each(function() {
-			if (!$(this).is(":hidden")) {
-				$(this).prev().val("");
-				$(this).prev().prev().val("");
-				$(this).empty();
-				$(this).hide();
-			}
-		});
-	}
-
-	function inputChange(event) {
-		var _this = event.currentTarget;
-		var _hidden = $(_this).next();
-		var $ul = $(_this).next().next();
-
-		var url = $(_this).attr("data-url");
-		var _nameNum = _hidden.attr("name").match(/\-\|\-(\S*)/)[1];
-
-		_hidden.val("");
-		if (_nameNum == 0) {
-			$($(_this).parent().next().find("input")[0]).val("");
-			$($(_this).parent().next().find("input")[1]).val("");
-		} else {
-			var key = $($(_this).parent().prev().find("input")[1]).val();
-			if (key != "") {
-				url += "?key=" + key;
-			} else {
-				return;
-			}
-		}
-		if ($(_this).val() == '') {
-			$ul.hide();
-			return;
-		}
-
-		View
-				.get(
-						Const.apiUrl + url,
-						{
-							"keyword" : $(this).val()
-						},
+					View.get(Const.apiUrl + "/modelPropDict/get", param,
+					function(data) {
+						$(_this).val(data.valu);
+						$(_hidden).val(data.ke);
+					});
+					if (keys[0] && keys[1]) {
+						var param = {
+							"table": "T_APP_USER",
+							"field": keys[0],
+							"key": keys[1]
+						};
+						View.get(Const.apiUrl + "/modelPropDict/get", param,
 						function(data) {
-							if (data.length > 0) {
-								$ul.empty();
-								$(data)
-										.each(
-												function() {
-													var $li = $("<li key='{0}'>{1}</li>"
-															.format(this.key,
-																	this.value));
-
-													$li
-															.click(
-																	function(e) {
-																		if (_this.onpropertychange === null) {
-																			$(
-																					_this)
-																					.unbind(
-																							"propertychange");
-																		}
-																		e = e == undefined ? window.event
-																				: e;
-																		var curTarget = e.currentTarget == undefined ? e.srcElement
-																				: e.currentTarget;
-																		var key = $(
-																				curTarget)
-																				.attr(
-																						"key");
-																		$(_this)
-																				.next()
-																				.val(
-																						key);
-																		$(_this)
-																				.val(
-																						$(
-																								curTarget)
-																								.text());
-																		$ul
-																				.empty();
-																		$ul
-																				.hide();
-																	})
-															.mousemove(
-																	function(e) {
-																		$(
-																				e.currentTarget)
-																				.css(
-																						"background",
-																						"#08c");
-																	})
-															.mouseout(
-																	function(e) {
-																		$(
-																				e.currentTarget)
-																				.css(
-																						"background",
-																						"none");
-																	});
-													$ul.append($li);
-												});
-								$ul.show();
-							} else {
-								$ul.empty();
-								$ul.hide();
+							if (data.ke && data.valu) {
+								$($(_this).parent().next().find("input")[0]).val(data.valu);
+								$($(_this).parent().next().find("input")[1]).val(data.ke);
 							}
 						});
-	}
-</script>
+					}
+				}
+			}
+
+			$ul.hide();
+			$(_this).bind("focus",
+			function() {
+				if (_this.oninput === null) {
+					$(_this).bind("input", inputChange);
+				} else if (_this.onpropertychange === null) {
+					$(_this).bind("propertychange", inputChange);
+				}
+			});
+		}
+
+		document.onclick = function() {
+			var uls = $("input[data-type='lazyEnum']").next().next();
+			$(uls).each(function() {
+				if (!$(this).is(":hidden")) {
+					$(this).prev().val("");
+					$(this).prev().prev().val("");
+					$(this).empty();
+					$(this).hide();
+				}
+			});
+		}
+
+		function inputChange(event) {
+			var _this = event.currentTarget;
+			var _hidden = $(_this).next();
+			var $ul = $(_this).next().next();
+
+			var url = $(_this).attr("data-url");
+			var _nameNum = _hidden.attr("name").match(/\-\|\-(\S*)/)[1];
+
+			_hidden.val("");
+			if (_nameNum == 0) {
+				$($(_this).parent().next().find("input")[0]).val("");
+				$($(_this).parent().next().find("input")[1]).val("");
+			} else {
+				var key = $($(_this).parent().prev().find("input")[1]).val();
+				if (key != "") {
+					url += "?key=" + key;
+				} else {
+					return;
+				}
+			}
+			if ($(_this).val() == '') {
+				$ul.hide();
+				return;
+			}
+
+			View.get(Const.apiUrl + url, {
+				"keyword": $(this).val()
+			},
+			function(data) {
+				if (data.length > 0) {
+					$ul.empty();
+					$(data).each(function() {
+						var $li = $("<li key='{0}'>{1}</li>".format(this.key, this.value));
+
+						$li.click(function(e) {
+							if (_this.onpropertychange === null) {
+								$(_this).unbind("propertychange");
+							}
+							e = e == undefined ? window.event: e;
+							var curTarget = e.currentTarget == undefined ? e.srcElement: e.currentTarget;
+							var key = $(curTarget).attr("key");
+							$(_this).next().val(key);
+							$(_this).val($(curTarget).text());
+							$ul.empty();
+							$ul.hide();
+						}).mousemove(function(e) {
+							$(e.currentTarget).css("background", "#08c");
+						}).mouseout(function(e) {
+							$(e.currentTarget).css("background", "none");
+						});
+						$ul.append($li);
+					});
+					$ul.show();
+				} else {
+					$ul.empty();
+					$ul.hide();
+				}
+			});
+		}
+	</script>
 
 </html>
