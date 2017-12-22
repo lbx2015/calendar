@@ -365,28 +365,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
     //条件选择器初始化，自定义布局
     private void initEvents() {
         //phone number
-        phoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
-                    @Override
-                    void updateSuccess(String newValue) {
-                        currentUser.phone = newValue;
-                        ZPreference.saveUserInfoAfterLogin(currentUser);
-                    }
-
-                    @Override
-                    void newValue(final String newValue) {
-                        UpdUserParams user = new UpdUserParams();
-                        user.phone = newValue;
-                        callServerApi2UpdateUserInfo(newValue, user);
-                        phoneNumberTv.setText(newValue);
-                    }
-                });
-            }
-        });
-
-        addPhoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        phoneNumberLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
                 changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
@@ -409,29 +388,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         });
         //email
-        emailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
-                    @Override
-                    public void newValue(final String newValue) {
-                        UpdUserParams user = new UpdUserParams();
-                        user.email = newValue;
-                        callServerApi2UpdateUserInfo(newValue, user);
-                    }
-
-                    @Override
-                    void updateSuccess(String newValue) {
-                        currentUser.email = newValue;
-                        ZPreference.saveUserInfoAfterLogin(currentUser);
-                        emailTv.setVisibility(View.VISIBLE);
-                        addEmailTv.setVisibility(View.GONE);
-                        emailTv.setText(newValue);
-                    }
-                });
-            }
-        });
-        addEmailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        emailLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
                 changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
@@ -454,42 +411,14 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         });
         //wechat
-        wechatTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-
-            }
-        });
-        addWechatTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        wechatLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
 
             }
         });
         //company
-        companyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
-                    @Override
-                    public void newValue(final String newValue) {
-                        UpdUserParams user = new UpdUserParams();
-                        user.companyName = newValue;
-                        callServerApi2UpdateUserInfo(newValue, user);
-                    }
-
-                    @Override
-                    void updateSuccess(String newValue) {
-                        currentUser.companyName = newValue;
-                        ZPreference.saveUserInfoAfterLogin(currentUser);
-                        companyTv.setVisibility(View.VISIBLE);
-                        addCompanyTv.setVisibility(View.GONE);
-                        companyTv.setText(newValue);
-                    }
-                });
-            }
-        });
-        addCompanyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        companyLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
                 changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
@@ -528,13 +457,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         });
         //job place
-        locationTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-
-            }
-        });
-        addLocationTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+        locationLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
 
@@ -549,6 +472,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             void newValue(String newValue) {
                 UpdUserParams user = new UpdUserParams();
                 user.positionId = newValue;
+                MyLog.d("positionId; " + newValue);
                 callServerApi2UpdateUserInfo(newValue, user);
             }
 
@@ -602,21 +526,23 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 .isDialog(true)
                 .build();
 
-        if (industries == null || industries.size() == 0) {
-            APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+        if (positions == null || positions.size() == 0) {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("industryId", currentUser.industryId);
+            APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                    industries = response._data;
+                    positions = response._data;
                     if (industries == null) {
                         return;
                     }
                     //only one column industry selector
-                    positionPicker.setPicker(industries);
+                    positionPicker.setPicker(positions);
                     positionPicker.show();
                 }
             });
         } else {
-            positionPicker.setPicker(industries);
+            positionPicker.setPicker(positions);
             positionPicker.show();
         }
 
@@ -627,7 +553,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 positionPicker.setSelectOptions(i);
             }
         }
-
     }
 
     /**
@@ -653,7 +578,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 //reset industry name
                 for (Industry i : industries) {
                     if (i.industryId.equals(newValue)) {
-                        companyTv.setText(i.name);
+                        industryTv.setText(i.name);
                         break;
                     }
                 }
@@ -860,7 +785,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
     private void loadPostions() {
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("industryId", currentUser.positionId);
+        hashMap.put("industryId", currentUser.industryId);
         APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
