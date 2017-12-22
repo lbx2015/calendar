@@ -8,30 +8,29 @@
 
 <body class="iframeBody">
 	<div class="content">
-		<div class="layui-elem-field">
-			<div class="group-button FL">
-				<button class="layui-btn layui-btn-small layui-btn-primary modal-full" id="add-data">
+		<div class="layui-elem-field actionBar">
+			<div class="layui-btn-group absolute">
+				<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
 					<i class="layui-icon">&#xe608;</i>
 					添加
 				</button>
-				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+				<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
 					<i class="layui-icon">&#xe640;</i>
 					批量删除
 				</button>
 				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
 					<i class="layui-icon">&#xe6b2;</i>
 					批量审核
-				</button>
+				</button> -->
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html" data-attr="topicQuestion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
-		<div class="contentLeft layui-form">
-			<div class="_tmpl" data-url="table.html" id="table" data-attr="topicQuestion.json" data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
-		</div>
-		<div class="contentRight">
-			<div class="_tmpl" data-url="preview.html" data-attr="topicQuestion.json" data-bind="previewOnBind" data-param=""></div>
+		<div class="tableBar">
+			<div class="tableContent layui-form">
+				<div class="_tmpl" data-url="table.html" id="table" data-attr="topicQuestion.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+			</div>
 		</div>
 		<div style="clear: both"></div>
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
@@ -46,7 +45,7 @@
 			View.openDialog(url, title);
 		});
 
-		var form = layui.form();
+		var form = layui.form;
 		//监听提交，设置为不刷新页面
 		form.on('submit', function(data) {
 			return false;
@@ -54,7 +53,7 @@
 	});
 </script>
 <script>
-	var form = layui.form(), layer = layui.layer;
+	var form = layui.form, layer = layui.layer;
 	//全选
 	form.on('checkbox(allChoose)', function(data) {
 		var child = $(data.elem).parents('table').find(
@@ -86,6 +85,7 @@
 				if (resp) {
 					data.data = resp;
 					TmplUtils.totalPages = data.data.totalPages;
+					TmplUtils.totalCount = data.data.totalElements;
 				}
 				//是否需要全选checkbox
 				data.hasCheckbox = true;
@@ -94,8 +94,7 @@
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
 				//表格显示列数
-				data.trClick = "bindPro";
-
+				data.operationWidth = 10;
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
 					//obj = {item,prop,html,row,col};
@@ -104,21 +103,31 @@
 					//html 当前单元格html内容
 					//row 当前行数 从1开始
 					//col 当前列数 从1开始
-					if (obj.row > 1 && obj.col == 2) {
-						obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='view("
-								+ "\"" + obj.item.topicQuestionId+ "\"" + ");'>查看</button>";
-						obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit("
-								+ "\"" + obj.item.topicQuestionId + "\"" + ");'>修改</button>";
-						obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='dele("
-								+ "\"" + obj.item.topicQuestionId + "\"" + ");'>删除</button>";
-						if (obj.item.isAduit == 0) { 
-							obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
+					if (obj['item']) {
+						if (obj.isOperColumn) {
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
 									+ "\""
 									+ obj.item.topicQuestionId
 									+ "\""
-									+ ");'>审核</button>";
+									+ ");'>查看</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
+									+ "\""
+									+ obj.item.topicQuestionId
+									+ "\""
+									+ ");'>修改</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
+									+ "\""
+									+ obj.item.topicQuestionId
+									+ "\""
+									+ ");'>删除</button>";
+							if (obj.item.isAduit == 0) {
+								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
+										+ "\""
+										+ obj.item.topicQuestionId
+										+ "\"" + ");'>审核</button>";
+							}
+							return obj.html;
 						}
-						return obj.html;
 					}
 					return obj.html;
 				}
@@ -126,7 +135,7 @@
 				if (TmplUtils.pageTmpl.refresh) {
 					TmplUtils.pageTmpl.refresh();
 				}
-				TmplUtils.tableOnLoad();
+
 			};
 			View.get(url, param, _succ, function(code) {
 				TmplUtils.showMsgFail('查询出错');

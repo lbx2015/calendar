@@ -10,20 +10,28 @@
 		{
 			"prop": "versionNo",
 			"alias": "Web版本号",
+			"desc": "Web版本号",
 			"type": "string",
-			"group": "base"
+			"group": "base",
+			"query": "1",
+			"query_order": "1"
 		},
 		{
 			"prop": "sqlVersionNo",
 			"alias": "数据库脚本版本号",
+			"desc": "数据库脚本版本号",
 			"group": "base",
-			"type": "string"
+			"type": "string",
+			"query": "1",
+			"query_order": "2"
 		},
 		{
 			"prop": "remark",
 			"alias": "版本说明",
+			"desc": "版本说明",
 			"group": "base",
-			"type": "text"
+			"type": "text",
+			"hidden":"table"
 		},
 		{
 			"prop": "createdBy",

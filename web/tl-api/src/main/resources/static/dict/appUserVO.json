@@ -2,35 +2,21 @@
 	"table": "T_APP_USER",
 	"groups": [
 		{
-			"prop": "appUser",
+			"prop": "base",
 			"alias": "基础信息"
 		},
 		{
-			"prop": "appUserDetail",
+			"prop": "detail",
 			"alias": "详细信息"
 		}
 	],
 	"attrs": [
 		{
-			"prop": "id",
-			"alias": "pk",
-			"type": "string",
-			"group": "appUser",
-			"hidden": "edit,priview,table"
-		},	
-		{
-			"prop": "appUser.id",
-			"alias": "pk",
-			"type": "string",
-			"group": "appUser",
-			"hidden": "edit,priview,table"
-		},
-		{
 			"prop": "appUser.userName",
 			"alias": "用户名称",
 			"desc": "用户名称",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"query": "1",
 			"query_order": "1"
 		},
@@ -39,7 +25,7 @@
 			"alias": "微信openid",
 			"desc": "微信openid",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -49,7 +35,7 @@
 			"type": "string",
 			"query": "1",
 			"query_order": "2",
-			"group": "appUser"
+			"group": "base"
 		},
 		{
 			"prop": "appUser.phone",
@@ -58,14 +44,14 @@
 			"query": "1",
 			"query_order": "3",
 			"type": "string",
-			"group": "appUser"
+			"group": "base"
 		},
 		{
 			"prop": "appUser.password",
 			"alias": "用户登录密码",
 			"desc": "用户登录密码",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"hidden": "table,preview"
 		},
 		{
@@ -73,15 +59,15 @@
 			"alias": "用户状态",
 			"desc": "用户状态",
 			"type": "enum",
-			"dict_key":"T_APP_USER.ENABLED",
-			"group": "appUser"
+			"dict_key": "T_APP_USER.ENABLED",
+			"group": "base"
 		},
 		{
 			"prop": "appUser.createdBy",
 			"alias": "创建人ID",
 			"desc": "创建人ID",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -89,7 +75,7 @@
 			"alias": "创建时间",
 			"desc": "创建时间",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -97,7 +83,7 @@
 			"alias": "修改人ID",
 			"desc": "修改人ID",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -105,7 +91,7 @@
 			"alias": "最后修改时间",
 			"desc": "最后修改时间",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -113,14 +99,14 @@
 			"alias": "是否删除",
 			"desc": "是否删除",
 			"type": "string",
-			"group": "appUser",
+			"group": "base",
 			"hidden": "edit,priview,table"
 		},
 		{
 			"prop": "appUserDetail.id",
 			"alias": "pk",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -128,14 +114,14 @@
 			"alias": "真实姓名",
 			"desc": "真实姓名",
 			"type": "string",
-			"group": "appUserDetail"
+			"group": "detail"
 		},
 		{
 			"prop": "appUserDetail.companyName",
 			"alias": "用户公司",
 			"desc": "用户公司",
 			"type": "string",
-			"group": "appUserDetail"
+			"group": "detail"
 		},
 		{
 			"prop": "appUserDetail.sex",
@@ -143,7 +129,7 @@
 			"desc": "用户性别",
 			"type": "enum",
 			"dict_key": "T_APP_USER.SEX",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table"
 		},
 		{
@@ -151,7 +137,7 @@
 			"alias": "用户生日(yyyyMMdd)",
 			"desc": "用户生日(yyyyMMdd)",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table"
 		},
 		{
@@ -159,7 +145,7 @@
 			"alias": "用户工作地区",
 			"desc": "用户工作地区",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table"
 		},
 		{
@@ -167,7 +153,7 @@
 			"alias": "用户描述",
 			"desc": "用户描述",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table"
 		},
 		{
@@ -175,7 +161,7 @@
 			"alias": "手机Deviceid",
 			"desc": "手机Deviceid",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table,preview"
 		},
 		{
@@ -184,7 +170,7 @@
 			"desc": "手机类型",
 			"type": "enum",
 			"dict_key": "T_APP_USER.PHONETYPE",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table"
 		},
 		{
@@ -192,7 +178,7 @@
 			"alias": "积分",
 			"desc": "积分",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table"
 		},
 		{
@@ -200,7 +186,7 @@
 			"alias": "经验值",
 			"desc": "经验值",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "table"
 		},
 		{
@@ -208,7 +194,7 @@
 			"alias": "用户头像（存放用户头像名称）",
 			"desc": "用户头像（存放用户头像名称）",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -216,7 +202,7 @@
 			"alias": "全天提醒时间HHmm",
 			"desc": "全天提醒时间HHmm",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -224,7 +210,7 @@
 			"alias": "是否已订阅:0-未订阅；1-已订阅",
 			"desc": "是否已订阅:0-未订阅；1-已订阅",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "edit,priview,table"
 		},
 		{
@@ -232,7 +218,7 @@
 			"alias": "是否引导",
 			"desc": "是否引导",
 			"type": "string",
-			"group": "appUserDetail",
+			"group": "detail",
 			"hidden": "edit,priview,table"
 		}
 	]
