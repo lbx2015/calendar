@@ -12,18 +12,23 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.listener.CustomListener;
 import com.google.gson.Gson;
 import com.riking.calendar.R;
 import com.riking.calendar.bean.JsonBean;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
@@ -82,6 +87,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
     Calendar calendar;
     OptionsPickerView pvOptions;
     AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+    ArrayList<Industry> industries;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -119,6 +125,8 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         }
     };
+    private OptionsPickerView industryPicker;
+    private OptionsPickerView positionPicker;
 
     private void ShowPickerView() {
         if (pvOptions != null) {
@@ -273,6 +281,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         addLocationTv = findViewById(R.id.add_position_tv);
     }
 
+    //条件选择器初始化，自定义布局
     private void initEvents() {
         //phone number
         phoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
@@ -376,7 +385,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
             }
         });
-        //compnay
+        //company
         companyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
@@ -421,17 +430,64 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 });
             }
         });
+
         //industry
         industryTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                setIndustryPicker(currentUser.industryId, new UpdateUserInfoCallBack() {
+                    @Override
+                    void newValue(String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.industryId = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                    }
 
+                    @Override
+                    void updateSuccess(String newValue) {
+                        currentUser.industryId = newValue;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                        industryTv.setVisibility(View.VISIBLE);
+                        addIndustryTv.setVisibility(View.GONE);
+                        //reset industry name
+                        for (Industry i : industries) {
+                            if (i.industryId.equals(newValue)) {
+                                companyTv.setText(i.name);
+                                break;
+                            }
+                        }
+                    }
+                });
             }
         });
         addIndustryTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                setIndustryPicker(currentUser.industryId, new UpdateUserInfoCallBack() {
+                    @Override
+                    void newValue(String newValue) {
+                        UpdUserParams user = new UpdUserParams();
+                        user.industryId = newValue;
+                        callServerApi2UpdateUserInfo(newValue, user);
+                    }
 
+                    @Override
+                    void updateSuccess(String newValue) {
+                        currentUser.industryId = newValue;
+                        industryTv.setVisibility(View.VISIBLE);
+                        addIndustryTv.setVisibility(View.GONE);
+                        //reset industry name
+                        for (Industry i : industries) {
+                            if (i.industryId.equals(newValue)) {
+                                industryTv.setText(i.name);
+                                currentUser.industryName = i.name;
+                                break;
+                            }
+                        }
+
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                    }
+                });
             }
         });
         //position
@@ -460,6 +516,65 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    /**
+     * @description 注意事项：
+     * 自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针。
+     * 具体可参考demo 里面的两个自定义layout布局。
+     */
+    private void setIndustryPicker(String currentIndustryId, final UpdateUserInfoCallBack callBack) {
+        industryPicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                Industry i = industries.get(options1);
+//                final String positionName = i.getPickerViewText();
+                callBack.newValue(i.industryId);
+
+            }
+        }).setCyclic(true, false, false)
+                .setLayoutRes(R.layout.pickerview_department, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final View tvSubmit = v.findViewById(R.id.tv_finish);
+                        ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Logger.d("zzw", "click save");
+                                industryPicker.returnData();
+                                industryPicker.dismiss();
+                            }
+                        });
+
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                industryPicker.dismiss();
+                            }
+                        });
+                    }
+                })
+                .isDialog(true)
+                .build();
+
+        if (industries == null || industries.size() == 0) {
+            APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+                @Override
+                public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
+                    industries = response._data;
+                    if (industries == null) {
+                        return;
+                    }
+                    //only one column industry selector
+                    industryPicker.setPicker(industries);
+                    industryPicker.show();
+                }
+            });
+        } else {
+            industryPicker.setPicker(industries);
+            industryPicker.show();
+        }
     }
 
     /**
@@ -590,6 +705,17 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             locationTv.setVisibility(View.VISIBLE);
             addLocationTv.setVisibility(View.GONE);
         }
+
+        loadIndustries();
+    }
+
+    private void loadIndustries() {
+        APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
+            @Override
+            public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
+                industries = response._data;
+            }
+        });
     }
 
     private void init() {

@@ -404,55 +404,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 builder.show();
                 break;
             }
-            /**
-            case R.id.email_row_relative_layout: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(getString(R.string.job_email));
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_email_dialog, null, false);
-                // Set up the input
-                final EmailAutoCompleteTextView input = (EmailAutoCompleteTextView) viewInflated.findViewById(R.id.input);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                builder.setView(viewInflated);
-                input.setText(user.email == null ? "" : user.email);
-                input.setSelection(user.email == null ? 0 : user.email.length());
 
-                // Set up the buttons
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Editable editable = input.getText();
-                        if (editable == null) {
-                            return;
-                        }
-                        final String emailText = input.getText().toString();
-                        if (emailText.length() > 0) {
-//                            email.setText(emailText);
-                            UpdUserParams user = new UpdUserParams();
-                            user.email = emailText;
-                            APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
-                                @Override
-                                public void callBack(ResponseModel<String> response) {
-                                    AppUserResp currentUser = ZPreference.getCurrentLoginUser();
-                                    currentUser.email = emailText;
-                                    ZPreference.saveUserInfoAfterLogin(currentUser);
-                                }
-                            });
-                        }
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-                break;
-            }*/
            /* case R.id.depart_row_relative_layout: {
 
                 if (cardItem.size() > 0) {
