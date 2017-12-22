@@ -25,7 +25,6 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
-import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
@@ -117,7 +116,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 //                    Toast.makeText(MoreUserInfoActivity.this, "Parse Succeed", Toast.LENGTH_SHORT).show();
                     isLoaded = true;
                     if (isLoaded) {
-                        ShowPickerView();
+                        showPickerView();
                     }
                     break;
 
@@ -138,18 +137,18 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         preference = getSharedPreferences(CONST.PREFERENCE_FILE_NAME, MODE_PRIVATE);
         setContentView(R.layout.activity_more_user_info);
         init();
-       /* addressTextView = (TextView) findViewById(R.id.address);
+    /*   addressTextView = (TextView) findViewById(R.id.address);
         addressRelativeLayout = findViewById(R.id.address_relative_layout);
         addressRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isLoaded) {
                     //address picker view
-                    ShowPickerView();
+                    showPickerView();
                 } else {
                     mHandler.sendEmptyMessage(MSG_LOAD_DATA);
-                }*/
-                /*AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
+                }
+               AlertDialog.Builder builder = new AlertDialog.Builder(MoreUserInfoActivity.this);
                 builder.setTitle(getString(R.string.address));
                 // I'm using fragment here so I'm using getView() to provide ViewGroup
                 // but you can provide here any other instance of ViewGroup from your Fragment / Activity
@@ -197,8 +196,8 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                     }
                 });
 
-                builder.show();*/
-      /*      }
+                builder.show();
+          }
         });
 
         addressTextView.setText(preference.getString(CONST.USER_ADDRESS, ""));*/
@@ -209,36 +208,40 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    private void ShowPickerView() {
+    private void showPickerView() {
         if (pvOptions != null) {
             pvOptions.show();
             return;
         }
+        final UpdateUserInfoCallBack callBack = new UpdateUserInfoCallBack() {
+            @Override
+            void newValue(String newValue) {
+                UpdUserParams user = new UpdUserParams();
+                user.address = newValue;
+                MyLog.d("positionId; " + newValue);
+                callServerApi2UpdateUserInfo(newValue, user);
+            }
+
+            @Override
+            void updateSuccess(String newValue) {
+                currentUser.address = newValue;
+                locationTv.setVisibility(View.VISIBLE);
+                addLocationTv.setVisibility(View.GONE);
+                locationTv.setText(newValue);
+                ZPreference.saveUserInfoAfterLogin(currentUser);
+            }
+        };
         // 弹出选择器
         pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
-                final String departName = options1Items.get(options1).getPickerViewText() +
+                final String location = options1Items.get(options1).getPickerViewText() +
                         options2Items.get(options1).get(options2) +
                         options3Items.get(options1).get(options2).get(options3);
-                if (departName.length() > 0) {
-                    AppUser user = new AppUser();
-                    user.address = departName;
-                    user.userId = preference.getString(CONST.USER_ID, null);
-
-                    apiInterface.updateUserInfo(user).enqueue(new ZCallBack<ResponseModel<String>>() {
-                        @Override
-                        public void callBack(ResponseModel<String> response) {
-                            SharedPreferences.Editor editor = preference.edit();
-                            editor.putString(CONST.USER_ADDRESS, departName);
-                            //save the changes.
-                            editor.commit();
-//                            addressTextView.setText(departName);
-                        }
-                    });
+                if (location.length() > 0) {
+                    callBack.newValue(location);
                 }
-                Toast.makeText(MoreUserInfoActivity.this, departName, Toast.LENGTH_SHORT).show();
             }
         })
 
@@ -359,7 +362,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         //job place
         locationLayout = findViewById(R.id.location_layout);
         locationTv = findViewById(R.id.location_tv);
-        addLocationTv = findViewById(R.id.add_position_tv);
+        addLocationTv = findViewById(R.id.add_location_tv);
     }
 
     //条件选择器初始化，自定义布局
@@ -460,7 +463,12 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         locationLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-
+                if (isLoaded) {
+                    //address picker view
+                    showPickerView();
+                } else {
+                    mHandler.sendEmptyMessage(MSG_LOAD_DATA);
+                }
             }
         });
     }
@@ -479,16 +487,18 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             @Override
             void updateSuccess(String newValue) {
                 currentUser.positionId = newValue;
-                ZPreference.saveUserInfoAfterLogin(currentUser);
                 positionTv.setVisibility(View.VISIBLE);
                 addPositionTv.setVisibility(View.GONE);
                 //reset industry name
                 for (Industry i : positions) {
                     if (i.industryId.equals(newValue)) {
                         positionTv.setText(i.name);
+                        currentUser.positionName = i.name;
                         break;
                     }
                 }
+
+                ZPreference.saveUserInfoAfterLogin(currentUser);
             }
         };
 
