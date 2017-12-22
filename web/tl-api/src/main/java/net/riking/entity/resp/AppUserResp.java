@@ -81,6 +81,9 @@ public class AppUserResp extends BaseEntity {
 	// 用户邮箱是否已认证： 0-未认证 1-已认证
 	private Integer isIdentify;
 
+	// 微信名
+	private String wechatNickName;
+
 	public AppUserResp(String userId, String userName, String openId, String email, String phone, String realName,
 			String companyName, Integer sex, String birthday, String address, String descript, String phoneDeviceid,
 			Integer integral, Integer experience, String photoUrl, String remindTime, Integer isSubscribe,
@@ -119,6 +122,14 @@ public class AppUserResp extends BaseEntity {
 
 	public void setIsIdentify(Integer isIdentify) {
 		this.isIdentify = isIdentify;
+	}
+
+	public String getWechatNickName() {
+		return wechatNickName;
+	}
+
+	public void setWechatNickName(String wechatNickName) {
+		this.wechatNickName = wechatNickName;
 	}
 
 	public String getUserId() {
