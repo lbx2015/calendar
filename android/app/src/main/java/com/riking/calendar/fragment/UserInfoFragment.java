@@ -87,7 +87,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             loginState = 1;
             currentUser = ZPreference.getCurrentLoginUser();
             userName.setText(currentUser.userName);
-            userComment.setText(currentUser.description);
+            userComment.setText(currentUser.descript);
 
             //load the user image
             ZR.setUserImage(myPhoto, currentUser.photoUrl);
@@ -240,7 +240,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                 loginState = 1;
                 AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                 userName.setText(currentUser.userName);
-                userComment.setText(currentUser.description);
+                userComment.setText(currentUser.descript);
 
                 String imageUrl = currentUser.photoUrl;
                 if (imageUrl != null && imageUrl.length() > 0) {

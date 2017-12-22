@@ -6,6 +6,9 @@ import java.io.Serializable;
  * APP用户信息返回
  */
 public class AppUserResp implements Serializable {
+
+	//微信昵称
+	public String wechatNickName;
 	// 用户ID
 	public String userId;
 
@@ -28,7 +31,7 @@ public class AppUserResp implements Serializable {
 	public String companyName;
 
 	// 用户性别:1-男,0-女
-	public Integer sex;
+	public int sex;
 
 	// 出身日期(yyyyMMdd)
 	public String birthday;
@@ -37,16 +40,19 @@ public class AppUserResp implements Serializable {
 	public String address;
 
 	// 个性签名
-	public String description;
+	public String descript;
 
-	// 手机Macid
-	public String phoneMacid;
+	// 手机Deviceid
+	public String phoneDeviceid;
 
 	// 积分
-	public Integer integral;
+	public int integral;
 
 	// 经验值
-	public Integer experience;
+	public int experience;
+
+	// 等级
+	public int grade;
 
 	// 用户头像（存放用户头像名称）
 	public String photoUrl;
@@ -58,12 +64,20 @@ public class AppUserResp implements Serializable {
 	public int isSubscribe;
 
 	// 行业ID
-	public int industryId;
+	public String industryId;
 
 	// 职位ID
-	public int positionId;
+	public String positionId;
+
+	// 行业名字
+	public String industryName;
+
+	// 职位名字
+	public String positionName;
 
 	// 是否引导: 0-未引导；1-已引导
 	public int isGuide;
 
+	// 用户邮箱是否已认证： 0-未认证 1-已认证
+	public int isIdentify;
 }

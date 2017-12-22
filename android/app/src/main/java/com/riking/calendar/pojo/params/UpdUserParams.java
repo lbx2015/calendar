@@ -9,6 +9,11 @@ package com.riking.calendar.pojo.params;
 public class UpdUserParams extends BaseParams {
 	// 用户名称
 	public String userName;
+	// 行业名字
+	public String industryName;
+
+	// 职位名字
+	public String positionName;
 
 	// 微信openid
 	public String openId;

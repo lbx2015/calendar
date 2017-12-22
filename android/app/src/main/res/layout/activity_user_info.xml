@@ -54,7 +54,8 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/user_image"
-                android:textColor="@color/color_222222" />
+                android:textColor="@color/color_222222"
+                android:textSize="17sp" />
 
             <ImageView
                 android:id="@+id/my_photo"
@@ -98,7 +99,8 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/name"
-                android:textColor="@color/color_323232" />
+                android:textColor="@color/color_222222"
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/name"
@@ -139,7 +141,8 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/sex"
-                android:textColor="@color/color_323232" />
+                android:textColor="@color/color_222222"
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/sex"
@@ -147,12 +150,14 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
-                android:layout_toLeftOf="@+id/edit_sex" />
+                android:layout_toLeftOf="@+id/edit_sex"
+                android:textColor="@color/color_222222"
+                android:textSize="17sp" />
 
             <ImageView
                 android:id="@+id/edit_sex"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="9dp"
@@ -163,43 +168,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:background="@color/color_e2e2e2" />
-
-        <RelativeLayout
-            android:id="@+id/email_row_relative_layout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@android:color/white"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/email_row"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:text="@string/job_email"
-                android:textColor="@color/color_323232" />
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
-                android:layout_toLeftOf="@+id/edit_email" />
-
-            <ImageView
-                android:id="@+id/edit_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/select_time"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:src="@drawable/work_rm_icon_arrow_r" />
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/user_introduction_relative"
@@ -216,7 +184,8 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="个人简介 "
-                android:textColor="@color/color_323232" />
+                android:textColor="@color/color_222222"
+                android:textSize="17sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -247,7 +216,8 @@
             android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="@string/more"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
         <ImageView
             android:id="@+id/check_more"
