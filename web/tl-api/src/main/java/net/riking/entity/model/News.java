@@ -50,7 +50,7 @@ public class News extends BaseAuditProp {
 	@Column(name = "seat", length = 10)
 	private String seat;
 
-	@Comment("多个封面URL，';'分隔")
+	@Comment("多个封面URL，','分隔")
 	@Lob
 	@Column(name = "cover_urls", length = 255)
 	private String coverUrls;

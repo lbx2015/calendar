@@ -40,6 +40,7 @@ import net.riking.entity.params.NewsParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
+import net.riking.service.NewsService;
 import net.riking.util.DateUtils;
 
 /**
@@ -82,6 +83,9 @@ public class NewsServer {
 
 	@Autowired
 	AppUserService appUserService;
+
+	@Autowired
+	NewsService newsService;
 
 	/**
 	 * 获取资讯列表
@@ -145,6 +149,8 @@ public class NewsServer {
 			int count = 0;
 			count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
+			newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
+
 			// 截取资源访问路径
 			if (null != newsInfo.getPhotoUrl()) {
 				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
@@ -183,6 +189,7 @@ public class NewsServer {
 				}
 			}
 		}
+		newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
 		// 截取资源访问路径
 		if (null != newsInfo.getPhotoUrl()) {
 			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
@@ -325,7 +332,7 @@ public class NewsServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 }

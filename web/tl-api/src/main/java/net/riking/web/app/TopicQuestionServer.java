@@ -79,6 +79,12 @@ public class TopicQuestionServer {
 	@Autowired
 	AppUserService appUserService;
 
+	@ApiOperation(value = "问题详情分享", notes = "POST")
+	@RequestMapping(value = "/questionShare", method = RequestMethod.POST)
+	public AppResp questionShare_() {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_QUESTIONSHARE_HTML5_PATH, CodeDef.SUCCESS);
+	}
+
 	@ApiOperation(value = "提问", notes = "POST")
 	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
 	public AppResp aboutApp(@RequestBody Map<String, Object> params) {

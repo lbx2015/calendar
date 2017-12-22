@@ -27,6 +27,8 @@ public class Const {
 
 	public static final String TL_FEED_BACK_PHOTO_PATH = "/images/feedBack/photo/";
 
+	public static final String TL_NEWS_PHOTO_PATH = "/images/news/photo/";
+
 	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/photo/";
 
 	public static final String TL_QUESTION_PHOTO_PATH = "/images/question/photo/";
@@ -38,6 +40,10 @@ public class Const {
 	public static final String TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
 
 	public static final String TL_AGREEMENT_HTML5_PATH = "/agreement.html";
+
+	public static final String TL_MYGRADE_HTML5_PATH = "/myGrade.html";
+
+	public static final String TL_QUESTIONSHARE_HTML5_PATH = "/questionShare.html";
 
 	public static final String TL_REPORT_HTML5_PATH = "/reportListApp.html?id=";
 

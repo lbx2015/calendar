@@ -14,4 +14,11 @@ public interface NewsService {
 	 * @return
 	 */
 	public List<News> findCollectNews(String userId, int start, int pageCount);
+
+	/**
+	 * 
+	 * @param coverUrls
+	 * @return
+	 */
+	public String concatCoverUrls(String coverUrls);
 }
