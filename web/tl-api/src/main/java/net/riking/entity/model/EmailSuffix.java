@@ -5,12 +5,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,26 +28,24 @@ import net.riking.entity.MyDateFormat;
 @Comment("邮箱后缀表")
 @Entity
 @Table(name = "t_email_suffix")
-public class emailSuffix extends BaseEntity {
+public class EmailSuffix extends BaseEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3940163346158751094L;
 
-	@Comment("物理主键")
 	@Id
-	@Column(name = "grade")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer grade;
+	@GeneratedValue(generator = "idGenerator")
+	@GenericGenerator(name = "idGenerator", strategy = "assigned")
+	@Column(name = "emailSuffix", length = 20)
+	@Comment("邮箱后缀")
+	private String emailSuffix;
 
-	@Comment("最小经验值")
-	@Column(name = "min_exp")
-	private Integer minExp;
-
-	@Comment("最大经验值")
-	@Column(name = "max_exp", length = 32)
-	private Integer maxExp;
+	@Comment("用户状态 0-禁用 1-启用")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "enabled", nullable = false, precision = 1)
+	private Integer enabled;
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -62,28 +60,28 @@ public class emailSuffix extends BaseEntity {
 	@Column(name = "remark", length = 255)
 	private String remark;// 备注
 
-	public Integer getGrade() {
-		return grade;
+	public String getEmailSuffix() {
+		return emailSuffix;
 	}
 
-	public void setGrade(Integer grade) {
-		this.grade = grade;
+	public void setEmailSuffix(String emailSuffix) {
+		this.emailSuffix = emailSuffix;
 	}
 
-	public Integer getMinExp() {
-		return minExp;
+	public Integer getEnabled() {
+		return enabled;
 	}
 
-	public void setMinExp(Integer minExp) {
-		this.minExp = minExp;
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
 
-	public Integer getMaxExp() {
-		return maxExp;
+	public Date getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setMaxExp(Integer maxExp) {
-		this.maxExp = maxExp;
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	public String getRemark() {

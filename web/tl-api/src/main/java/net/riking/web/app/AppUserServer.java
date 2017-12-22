@@ -155,9 +155,15 @@ public class AppUserServer {
 		if (null == appUserDetail) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
+		String positionId = appUserDetail.getPositionId();
+		if (StringUtils.isNotBlank(appUserDetail.getIndustryId()) && StringUtils.isNotBlank(userParams.getIndustryId())
+				&& (!userParams.getIndustryId().equals(appUserDetail.getIndustryId()))) {
+			positionId = null;
+		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
 				appUserDetail = (AppUserDetail) fromObjToObjValue(userParams, appUserDetail);
+				appUserDetail.setPositionId(positionId);
 			}
 			try {
 				appUserDetailRepo.save(appUserDetail);
