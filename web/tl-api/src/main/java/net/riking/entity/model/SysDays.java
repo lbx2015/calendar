@@ -31,11 +31,16 @@ public class SysDays extends BaseEntity {
 	@Comment("工作日标识 1：工作日 0：非工作日")
 	@Column(name = "is_work")
 	private Integer isWork;
-	
+
 	@Comment("是否国家节假日：0-否；1-是")
 	@Column(name = "is_holiday")
 	private Integer isHoliday;
-	
+
+	@Comment("用户状态 0-禁用 1-启用")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "enabled", nullable = false, precision = 1)
+	private Integer enabled;
+
 	@Comment("节日名称备注")
 	@Column(name = "remark")
 	private String remark;
@@ -50,6 +55,14 @@ public class SysDays extends BaseEntity {
 
 	public void setDates(String dates) {
 		this.dates = dates;
+	}
+
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
 
 	public Integer getWeekday() {
@@ -83,5 +96,5 @@ public class SysDays extends BaseEntity {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+
 }

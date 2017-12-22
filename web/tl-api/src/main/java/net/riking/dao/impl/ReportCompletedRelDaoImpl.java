@@ -43,7 +43,7 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			pstmt.setString(1, userId);
-			pstmt.setInt(2, (pageQuery.getPindex()-1) * pageQuery.getPcount());
+			pstmt.setInt(2, (pageQuery.getPindex() - 1) * pageQuery.getPcount());
 			pstmt.setInt(3, pageQuery.getPcount());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -60,7 +60,7 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		return list;
 
 	}
-	
+
 	@Override
 	public List<ReportCompletedRelResult> findHisCompletedReportByPage(String userId, PageQuery pageQuery) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
@@ -72,14 +72,14 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		sql += "LEFT JOIN t_report_submit_caliber c on a.report_id=c.report_id ";
 		sql += "WHERE a.user_id = ? AND a.is_completed = 1 and b.is_aduit =1 and b.is_deleted=1 ";
 		sql += "AND SUBSTR(a.completed_date, 1, 8) < REPLACE(CURRENT_DATE(), '-', '') ";
-		sql += "order by completed_date desc "; 
+		sql += "order by completed_date desc ";
 		sql += "LIMIT ? , ?";
 		PreparedStatement pstmt = null;
 		List<ReportCompletedRelResult> list = new ArrayList<ReportCompletedRelResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			pstmt.setString(1, userId);
-			pstmt.setInt(2, (pageQuery.getPindex()-1) * pageQuery.getPcount());
+			pstmt.setInt(2, (pageQuery.getPindex() - 1) * pageQuery.getPcount());
 			pstmt.setInt(3, pageQuery.getPcount());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -96,7 +96,7 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		return list;
 
 	}
-	
+
 	@Override
 	public List<CurrentReportTaskResp> findCurrentTasks(String userId, String currentDate) {
 		// TODO Auto-generated method stub
@@ -104,12 +104,12 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		Connection connection = session.connection();
 		String sql = "select ";
 		sql += "a.report_id reportId, b.code reportCode, b.title reportName, ";
-		sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequencyType, "; 
+		sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequencyType, ";
 		sql += "SUBSTR(a.submit_start_time, 1, 8) submitStartTime, SUBSTR(a.submit_end_time, 1, 8) submitEndTime, ";
 		sql += "a.is_completed isCompleted, d.remind_id remindId, d.content remindContent ";
 		sql += "from t_report_completed_rel a INNER join t_report b on a.report_id=b.id ";
 		sql += "LEFT JOIN t_report_submit_caliber c on a.report_id=c.report_id ";
-		sql += "LEFT JOIN t_remind d on d.report_id=a.report_id and d.user_id=a.user_id "; 
+		sql += "LEFT JOIN t_remind d on d.report_id=a.report_id and d.user_id=a.user_id ";
 		sql += "where a.user_id= ? and ? BETWEEN a.submit_start_time and a.submit_end_time ";
 		sql += "order by a.is_completed, a.submit_end_time, c.frequency ";
 		PreparedStatement pstmt = null;
@@ -137,7 +137,5 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		}
 		return list;
 	}
-	
-
 
 }

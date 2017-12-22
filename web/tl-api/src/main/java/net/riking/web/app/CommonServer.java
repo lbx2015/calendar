@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
-import net.riking.core.entity.model.ModelPropDict;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.AppVersionRepo;
 import net.riking.dao.repo.IndustryRepo;
@@ -35,6 +34,7 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppVersion;
 import net.riking.entity.model.Email;
+import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.Industry;
 import net.riking.entity.model.Recommend;
 import net.riking.entity.model.TQuestionRel;
@@ -147,10 +147,10 @@ public class CommonServer {
 	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/getAllEmailSuffix", method = RequestMethod.POST)
 	public AppResp getAllEmailSuffix_() {
-		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "EMAILSUFFIX");
+		List<EmailSuffix> list = sysDataservice.getEmailSuffix(EmailSuffix.class.getName().toUpperCase());
 		List<String> emailSuffixs = new ArrayList<String>();
-		for (ModelPropDict modelPropDict : list) {
-			emailSuffixs.add("@" + modelPropDict.getValu());
+		for (EmailSuffix emailSuffix : list) {
+			emailSuffixs.add("@" + emailSuffix.getEmailSuffix());
 		}
 		return new AppResp(emailSuffixs, CodeDef.SUCCESS);
 	}

@@ -27,8 +27,13 @@ public interface TopicQuestionRepo
 	 * @param tqId
 	 * @return
 	 */
-	@Query("select new TopicQuestion(t.id,t.createdTime,t.modifiedTime,t.isAduit,t.title,t.content,t.topicId,t.userId,(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where t.createdBy = ap.id),(select app.experience from AppUserDetail app where t.createdBy = app.id)) from TopicQuestion t where t.id = ?1 ")
-	TopicQuestion getById(String tqId);
+	@Query("select new TopicQuestion(t.id,t.createdTime,t.modifiedTime,t.isAduit,t.title,t.content,t.topicId,t.userId,"
+			+ "(select a.userName from AppUser a where t.createdBy = a.id and a.isDeleted=1),"
+			+ "(select ap.photoUrl from AppUserDetail ap where t.createdBy = ap.id),"
+			+ "(select app.experience from AppUserDetail app where t.createdBy = app.id),"
+			+ "(select tq.tqId from TQuestionRel tq where tq.userId = ?2 and tq.dataType = 0 and tq.tqId = t.id)) "
+			+ "from TopicQuestion t where t.id = ?1 ")
+	TopicQuestion getById(String tqId, String userId);
 
 	/**
 	 * 根据关键字模糊查询title

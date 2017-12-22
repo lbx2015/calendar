@@ -12,7 +12,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.EmailSuffix;
 
 @Repository
 public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser> {
@@ -22,6 +24,12 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	@Query(" from AppUser where isDeleted = 1 and openId = ?1 ")
 	AppUser findByOpenId(String openId);
+
+	@Query(" from AppUserGrade")
+	List<AppUserGrade> findGrade();
+
+	@Query(" from EmailSuffix where enabled = 1")
+	List<EmailSuffix> findEmailSuffix();
 
 	/**
 	 * 根据关键字模糊查询userName

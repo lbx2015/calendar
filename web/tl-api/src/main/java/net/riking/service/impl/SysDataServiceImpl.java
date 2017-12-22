@@ -16,9 +16,10 @@ import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.core.utils.ExceptUtils;
-import net.riking.dao.repo.SysDaysRepo;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.SysDays;
+import net.riking.entity.model.AppUserGrade;
+import net.riking.entity.model.EmailSuffix;
 import net.riking.service.ReportService;
 import net.riking.service.SysDataService;
 import net.riking.util.RedisUtil;
@@ -35,12 +36,15 @@ public class SysDataServiceImpl implements SysDataService {
 
 	@Autowired
 	ModelPropdictRepo modelPropdictRepo;
-	
+
 	@Autowired
 	ReportService reportService;
-	
-	/*@Autowired
-	SysDaysRepo sysDaysRepo;*/
+
+	@Autowired
+	AppUserRepo appUserRepo;
+	/*
+	 * @Autowired SysDaysRepo sysDaysRepo;
+	 */
 
 	// @Autowired
 	// CtryHdayCrcyRepo ctryHdayCrcyRepo;
@@ -52,11 +56,26 @@ public class SysDataServiceImpl implements SysDataService {
 	 * @used TODO
 	 */
 	public void initData() {
-		logger.info("====================================================initData=======================================================");
+		logger.info(
+				"====================================================initData=======================================================");
 		initDict();
-		//initSysDays();
+		initAppGrade();
+		initEmailSuffix();
+		// initSysDays();
 
 		// initCtryHdayCrcy();
+	}
+
+	@SuppressWarnings("static-access")
+	private void initEmailSuffix() {
+		List<EmailSuffix> emailSuffixs = appUserRepo.findEmailSuffix();
+		RedisUtil.getInstall().setList(EmailSuffix.class.getName().toUpperCase(), emailSuffixs);
+	}
+
+	@SuppressWarnings("static-access")
+	private void initAppGrade() {
+		List<AppUserGrade> appUserGrades = appUserRepo.findGrade();
+		RedisUtil.getInstall().setList(AppUserGrade.class.getName().toUpperCase(), appUserGrades);
 	}
 
 	@SuppressWarnings("static-access")
@@ -78,14 +97,12 @@ public class SysDataServiceImpl implements SysDataService {
 			}
 		}
 	}
-	
-	/*@SuppressWarnings("static-access")
-	private void initSysDays() {
-		List<SysDays> list = sysDaysRepo.findAll();
-		for(SysDays day : list){
-			RedisUtil.getInstall().setObject(Const.SYS_DAY + day.getDates()  + day.getDates(), day);
-		}
-	}*/
+
+	/*
+	 * @SuppressWarnings("static-access") private void initSysDays() { List<SysDays> list =
+	 * sysDaysRepo.findAll(); for(SysDays day : list){
+	 * RedisUtil.getInstall().setObject(Const.SYS_DAY + day.getDates() + day.getDates(), day); } }
+	 */
 
 	/***
 	 * 通过tableName和field获取字典
@@ -200,6 +217,33 @@ public class SysDataServiceImpl implements SysDataService {
 		// RedisUtil.getInstall().del(user.getPhoneDeviceid() + ":" + user.getPhone());
 	}
 
+	/**
+	 * 取等级相关信息
+	 * @see net.riking.service.SysDataService#getGrade(java.lang.String)
+	 */
+	@SuppressWarnings("static-access")
+	@Override
+	public List<AppUserGrade> getGrade(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
+		List<AppUserGrade> appUserGrades = RedisUtil.getInstall().getList(AppUserGrade.class.getName().toUpperCase());
+		return appUserGrades;
+	}
+
+	/**
+	 * 取邮箱后缀
+	 * @see net.riking.service.SysDataService#getGrade(java.lang.String)
+	 */
+	@SuppressWarnings("static-access")
+	@Override
+	public List<EmailSuffix> getEmailSuffix(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
+		List<EmailSuffix> emailSuffixs = RedisUtil.getInstall().getList(EmailSuffix.class.getName().toUpperCase());
+		return emailSuffixs;
+	}
 	// @SuppressWarnings("static-access")
 	// private void initCtryHdayCrcy(){
 	// CtryHdayCrcy ctryHdayCrcy = new CtryHdayCrcy();

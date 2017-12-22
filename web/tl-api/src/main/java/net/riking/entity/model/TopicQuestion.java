@@ -11,6 +11,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -104,6 +105,27 @@ public class TopicQuestion extends BaseAuditProp {
 		this.userName = userName;
 		this.photoUrl = photoUrl;
 		this.experience = experience;
+	}
+
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
+			String topicId, String userId, String userName, String photoUrl, Integer experience, String isFollow) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.setIsAduit(isAduit);
+		this.title = title;
+		this.content = content;
+		this.topicId = topicId;
+		this.userId = userId;
+		this.userName = userName;
+		this.photoUrl = photoUrl;
+		this.experience = experience;
+		if (StringUtils.isBlank(isFollow)) {
+			this.isFollow = 0;
+		} else {
+			this.isFollow = 1;
+		}
 	}
 
 	public TopicQuestion() {

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -21,7 +22,7 @@ import net.riking.entity.BaseProp;
  */
 @Comment("行业职务表")
 @Entity
-@Table(name = "t_industry")
+@Table(name = "t_industry", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) })
 public class Industry extends BaseProp {
 
 	/**
