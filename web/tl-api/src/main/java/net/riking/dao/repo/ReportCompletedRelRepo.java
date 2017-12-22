@@ -29,7 +29,7 @@ public interface ReportCompletedRelRepo extends JpaRepository<ReportCompletedRel
 	 * @param currentMonth 当月yyyyMM
 	 * @return
 	 */
-	@Query("select new ReportCompletedRel(userId, reportId, completedDate, isCompleted, SUBSTRING(submitStartTime, 1, 8), SUBSTRING(submitEndTime, 1, 8) ) from ReportCompletedRel where userId = ?1 and SUBSTRING(submitStartTime, 1, 6) >= ?2 and ?2 <= SUBSTRING(submitEndTime, 1, 6) ")
+	@Query("select new ReportCompletedRel(userId, reportId, completedDate, isCompleted, SUBSTRING(submitStartTime, 1, 8), SUBSTRING(submitEndTime, 1, 8) ) from ReportCompletedRel where userId = ?1 and ?2 >= SUBSTRING(submitStartTime, 1, 6) and ?2 <= SUBSTRING(submitEndTime, 1, 6) ")
 	List<ReportCompletedRel> findTasksByUserId(String userId, String currentMonth);
 	
 	@Query(" from ReportCompletedRel where userId = ?1 and reportId = ?2 and submitStartTime = ?3 and submitEndTime = ?4 ")

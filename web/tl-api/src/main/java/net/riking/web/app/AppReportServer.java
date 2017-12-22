@@ -199,7 +199,7 @@ public class AppReportServer {
 	@RequestMapping(value = "/getTaskDate", method = RequestMethod.POST)
 	public AppResp getTaskDate_(@RequestBody Map<String, Object> params) throws ParseException {
 		ReportCompletedRelParam relParams = Utils.map2Obj(params, ReportCompletedRelParam.class);
-		String currentDate = DateUtils.getDate("yyyyMM");
+		String currentMonth = relParams.getCurrentMonth();
 		List<ReportCompletedRel> taskList = reportCompletedRelRepo.findTasksByUserId(relParams.getUserId(),
 				relParams.getCurrentMonth());
 
@@ -207,7 +207,7 @@ public class AppReportServer {
 		List<String> taskDateList = new ArrayList<String>();
 		for (ReportCompletedRel data : taskList) {
 			String submitEndDate = data.getSubmitEndTime().substring(0, 6);
-			if (Integer.parseInt(submitEndDate) == Integer.parseInt(currentDate)) {
+			if (Integer.parseInt(submitEndDate) == Integer.parseInt(currentMonth)) {
 				// 如果是当月情况，添加时间
 				String submitEndDateDay = data.getSubmitEndTime().substring(6, 8);
 				for (int i = 1; i <= Integer.parseInt(submitEndDateDay); i++) {
@@ -217,9 +217,9 @@ public class AppReportServer {
 				}
 			} else {
 				// 非当月，则添加当月所有日期
-				int _daysOfMonth = DateUtils.getDaysByMonth(currentDate);
-				for (int i = 1; i < _daysOfMonth; i++) {
-					String _date = submitEndDate + (i < 10 ? "0" + i : i);
+				int _daysOfMonth = DateUtils.getDaysByMonth(currentMonth);
+				for (int i = 1; i <= _daysOfMonth; i++) {
+					String _date = currentMonth + (i < 10 ? "0" + i : i);
 					if (!taskDateList.contains(_date))
 						taskDateList.add(_date);
 				}
