@@ -28,7 +28,7 @@ import com.riking.calendar.util.ZToast;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class QuestionActivity extends AppCompatActivity { //Fragment 数组
+public class QuestionActivity extends AppCompatActivity {
     public View followButton;
     public TextView followTv;
     QuestionListAdapter mAdapter;

@@ -46,7 +46,7 @@ import java.util.List;
  * answer comments page
  */
 
-public class AnswerCommentsActivity extends AppCompatActivity { //Fragment 数组
+public class AnswerCommentsActivity extends AppCompatActivity {
     AnswerCommentListAdapter mAdapter;
     RecyclerView recyclerView;
     TextView publicButton;
