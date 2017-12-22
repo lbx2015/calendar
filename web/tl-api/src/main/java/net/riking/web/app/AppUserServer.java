@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
@@ -75,6 +76,15 @@ public class AppUserServer {
 
 	@Autowired
 	SignInService signInService;
+
+	@Autowired
+	Config config;
+
+	@ApiOperation(value = "我的等级详情", notes = "POST")
+	@RequestMapping(value = "/myGrade", method = RequestMethod.POST)
+	public AppResp myGrade_() {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_MYGRADE_HTML5_PATH, CodeDef.SUCCESS);
+	}
 
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)

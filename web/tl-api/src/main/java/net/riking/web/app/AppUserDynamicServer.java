@@ -294,6 +294,7 @@ public class AppUserDynamicServer {
 					int count = 0;
 					count = newsCommentRepo.commentCount(newsInfo.getId());
 					newsInfo.setCommentNumber(count);
+					newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
 					// 截取资源访问路径
 					if (null != newsInfo.getPhotoUrl()) {
 						newsInfo.setPhotoUrl(

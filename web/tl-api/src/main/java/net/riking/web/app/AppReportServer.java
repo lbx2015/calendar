@@ -173,16 +173,18 @@ public class AppReportServer {
 			String currentDate = DateUtils.getDate("yyyyMMddHHmm");
 
 			// 未到核销时间，给予提示
-			if (Integer.parseInt(currentDate) < Integer.parseInt(relParams.getSubmitStartTime())) {
+			if (Long.parseLong(currentDate) < Long.parseLong(relParams.getSubmitStartTime())) {
 				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE, CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_DESC);
 			}
 
 			reportCompletedRelRepo.updateComplated(relParams.getUserId(), relParams.getReportId(),
 					relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), relParams.getCompletedDate());
 			// 移除闹钟设置记录
-			Remind entity = new Remind();
-			entity.setRemindId(relParams.getRemindId());
-			remindRepo.delete(entity);
+			if (null != relParams.getRemindId()) {
+				Remind entity = new Remind();
+				entity.setRemindId(relParams.getRemindId());
+				remindRepo.delete(entity);
+			}
 
 		}
 
