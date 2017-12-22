@@ -103,7 +103,7 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
             h.answerImage.setVisibility(View.GONE);
         } else {
             h.answerImage.setVisibility(View.VISIBLE);
-            ZR.setAnswerImage(h.answerImage, qAnswerResult.coverUrl);
+            ZR.setImage(h.answerImage, qAnswerResult.coverUrl);
         }
 
         //set user image

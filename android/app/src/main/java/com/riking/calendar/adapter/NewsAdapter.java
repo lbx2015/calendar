@@ -8,14 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.NewsDetailActivity;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
+import com.riking.calendar.util.ZR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,43 +68,49 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             }
         });
         holder.newsTitle.setText(news.title);
+        holder.newsCommentsNoTv.setText(ZR.getNumberString(news.commentNumber)+"评论");
+        holder.newsIssuedFromTv.setText(news.issued);
+        holder.newsPublishTime.setText(DateUtil.showTime(news.createdTime, CONST.yyyy_mm_dd_hh_mm));
+        String[] imageUrls = news.coverUrls.split(";");
         RequestOptions options = new RequestOptions();
+        if (!StringUtil.isEmpty(imageUrls[0])) {
+            ZR.setImage(holder.newsImage1, imageUrls[0]);
+        }
         switch (getItemViewType(position)) {
             case 0: {
                 holder.newsTitle.setText("间接持有同业存单该如何填报？");
-                Glide.with(holder.newsImage1.getContext()).load(R.drawable.profile2)
-                        .apply(options.centerCrop())
-                        .into(holder.newsImage1);
-                Glide.with(holder.newsImage2.getContext()).load(R.drawable.profile3)
-                        .apply(options.centerCrop())
-                        .into(holder.newsImage2);
-                Glide.with(holder.newsImage3.getContext()).load(R.drawable.banner)
-                        .apply(options.centerCrop())
-                        .into(holder.newsImage3);
+                if (!StringUtil.isEmpty(imageUrls[1])) {
+                    ZR.setImage(holder.newsImage1, imageUrls[1]);
+                }
+                if (!StringUtil.isEmpty(imageUrls[2])) {
+                    ZR.setImage(holder.newsImage1, imageUrls[2]);
+                }
                 break;
             }
             case 1: {
                 holder.newsTitle.setText("什么是证券投资基金？");
-                Glide.with(holder.newsImage1.getContext()).load(R.drawable.profile3)
-                        .apply(options.centerCrop())
-                        .into(holder.newsImage1);
                 break;
             }
             case 2: {
                 holder.newsTitle.setText("证券投资基金原来是这么一回事，对投资理财的影响超过你的想象？");
-                Glide.with(holder.newsImage1.getContext()).load(R.drawable.banner)
-                        .apply(options.centerCrop())
-                        .into(holder.newsImage1);
+//                Glide.with(holder.newsImage1.getContext()).load(R.drawable.banner)
+//                        .apply(options.centerCrop())
+//                        .into(holder.newsImage1);
 
                 break;
             }
         }
-
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position % 3;
+        String seat = mList.get(position).seat;
+        if (seat.equals("right")) {
+            return 2;
+        } else if (seat.equals("center")) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
@@ -120,6 +128,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         ImageView newsImage1;
         ImageView newsImage2;
         ImageView newsImage3;
+        TextView newsIssuedFromTv;
+        TextView newsCommentsNoTv;
+        TextView newsPublishTime;
 
         public MyViewHolder(View v) {
             super(v);
@@ -127,6 +138,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             newsImage1 = v.findViewById(R.id.news_image_1);
             newsImage2 = v.findViewById(R.id.news_image_2);
             newsImage3 = v.findViewById(R.id.news_image_3);
+            newsIssuedFromTv = v.findViewById(R.id.news_sources);
+            newsCommentsNoTv = v.findViewById(R.id.news_comments_no);
+            newsPublishTime = v.findViewById(R.id.news_publish_time);
         }
     }
 }
