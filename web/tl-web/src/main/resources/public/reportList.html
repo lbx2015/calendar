@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>话题</title>
+<title>demo</title>
 <link type="include" href="/common/depcss.html" />
 </head>
 
@@ -14,22 +14,22 @@
 					<i class="layui-icon">&#xe608;</i>
 					添加
 				</button>
-				<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
 					<i class="layui-icon">&#xe640;</i>
 					批量删除
 				</button>
 				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
 					<i class="layui-icon">&#xe6b2;</i>
 					批量审核
-				</button> -->
+				</button>
 			</div>
-			<div class="_tmpl" data-url="filterCriteria.html" data-attr="webVersion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+			<div class="_tmpl" data-url="filterCriteria.html" data-attr="report.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
 		<div class="tableBar">
 			<div class="tableContent layui-form">
-				<div class="_tmpl" data-url="table.html" id="table" data-attr="webVersion.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+				<div class="_tmpl" data-url="table.html" id="table" data-attr="report.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
 			</div>
 		</div>
 		<div style="clear: both"></div>
@@ -40,7 +40,7 @@
 <script>
 	$(function() {
 		$("#add-data").click(function() {
-			var url = "webVersionEdit.html";
+			var url = "reportListEdit.html";
 			var title = "添加数据";
 			View.openDialog(url, title);
 		});
@@ -78,7 +78,7 @@
 		tbTmpl = tmpl;
 
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/webVersion/getMore";
+			var url = Const.apiUrl + "/reportList/getMore";
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
@@ -97,40 +97,33 @@
 				data.operationWidth = 10;
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
-					//obj = {item,prop,html,row,col};
-					//item 当前行数据 第一行无item
-					//prop 当前单元格属性
-					//html 当前单元格html内容
-					//row 当前行数 从1开始
-					//col 当前列数 从1开始
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
 									+ "\""
-									+ obj.item.webVersionId
+									+ obj.item.id
 									+ "\""
 									+ ");'>查看</button>";
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
 									+ "\""
-									+ obj.item.webVersionId
+									+ obj.item.id
 									+ "\""
 									+ ");'>修改</button>";
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
 									+ "\""
-									+ obj.item.webVersionId
+									+ obj.item.id
 									+ "\""
 									+ ");'>删除</button>";
-							if (obj.item.isAduit == 0) {
+							if (obj.item.report.isAduit == 0) { //禁用
 								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
 										+ "\""
-										+ obj.item.webVersionId
+										+ obj.item.id
 										+ "\""
 										+ ");'>审核</button>";
 							}
-							return obj.html;
 						}
-						return obj.html;
 					}
+					return obj.html;
 				}
 				callback.call(_this, data);
 				if (TmplUtils.pageTmpl.refresh) {
@@ -163,7 +156,7 @@
 			return;
 		}
 		tmpl.bind(function(callback) {
-			var url = Const.apiUrl + "/webVersion/get";
+			var url = Const.apiUrl + "/reportList/get";
 			var data = {};
 			//是否可编辑
 			//data.canEdit = true;
@@ -198,7 +191,7 @@
 
 	//弹出添加iframe
 	function edit(id) {
-		var url = "webVersionEdit.html?id=" + id;
+		var url = "reportListEdit.html?id=" + id;
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
@@ -206,13 +199,20 @@
 	//弹出添加iframe
 	function view(id) {
 		var flag = "view";
-		var url = "webVersionEdit.html?id=" + id + "&flag=" + flag;
+		var url = "reportListEdit.html?id=" + id + "&flag=" + flag;
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
+
+	function reportSubmitCaliber(id) {
+		var url = "reportSubmitCaliberList.html?id=" + id;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
 	//保存
 	function save() {
-		var url = Const.apiUrl + "/webVersion/save";
+		var url = Const.apiUrl + "/reportList/save";
 		var employee = Utils.formToObj("preview");
 		View.post(url, employee, function(resp) {
 			TmplUtils.showMsgSuccess('编辑成功');
@@ -239,7 +239,7 @@
 			return;
 		}
 		TmplUtils.showConfirm('您确定删除这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/delMore"
+			var url = Const.apiUrl + "/reportList/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -258,7 +258,7 @@
 		var ids = [];
 		ids.push(id);
 		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/delMore"
+			var url = Const.apiUrl + "/reportList/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -287,7 +287,7 @@
 			return;
 		}
 		TmplUtils.showConfirm('您确定审核这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/verifyMore"
+			var url = Const.apiUrl + "/reportList/verifyMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("审核成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -306,7 +306,7 @@
 		var ids = [];
 		ids.push(id);
 		TmplUtils.showConfirm('您确定审核该条记录吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/verifyMore"
+			var url = Const.apiUrl + "/reportList/verifyMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("审核成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -318,6 +318,12 @@
 		}, function() {
 
 		});
+	}
+
+	function addMore() {
+		var url = "reportListAddMore.html";
+		var title = "批量添加";
+		View.openDialog(url, title);
 	}
 </script>
 </html>

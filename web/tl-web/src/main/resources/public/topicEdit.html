@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>报表详情</title>
+    <title>话题详情</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -12,7 +12,7 @@
 
 <body class="iframeBody">
     <div class="formbox layui-form add-formbox">
-        <div class="_tmpl" data-url="edit.html" data-attr="report.json" data-bind="editOnBind" data-param=""></div>
+        <div class="_tmpl" data-url="edit.html" data-attr="topic.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
             <button class="layui-btn bgc1 layui-btn-small" lay-submit lay-filter="edit" id="submit">确定</button>
             <button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
@@ -33,14 +33,13 @@
     //var id = window.location.hash.replace("#", "");
     var id = View.getQStr('id');
     var flag= View.getQStr('flag');
-	var reportRuleIndex;
-	var reportNoteIndex;
+	var topicContent;
     function editOnBind(attrs, param) {
         tmpl = this;
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/reportList/get";
+                var url = Const.apiUrl + "/topic/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -48,7 +47,7 @@
                         data.data = resp;
                     }
                     //默认展开分组 ，不配置默认展开第一个分组
-                    data.showGroup = "base,submit";
+                    data.showGroup = "base";
                     if(flag=="view"){
                     	data.editable = 2;
                     	$("#submit").hide();
@@ -71,8 +70,7 @@
     }
     
     function loadRichText(){
-	 	$("textarea[name='report.summary']").attr('id','summary');
-         $("textarea[name='report.fillinNote']").attr('id','fillinNote');
+	 	$("textarea[name='content']").attr('id','content');
          layui.use('layedit', function(){
      	  var layedit = layui.layedit;
      	  layedit.set({tool: ['strong' //加粗
@@ -90,19 +88,21 @@
 							  ,'image' //插入图片
 							  //,'help' //帮助
 								],height: 250});
-            reportRuleIndex = layedit.build('summary'); //建立编辑器
-     	  	reportNoteIndex = layedit.build('fillinNote');
+     	 topicContent = layedit.build('content'); //建立编辑器
      	});
     }
+    
     //编辑保存
     function edit() {
-	   layui.use('layedit', function(){
-     	  	var layedit = layui.layedit;
-     	  	$("#summary").val(layedit.getContent(reportRuleIndex));
-     		$("#fillinNote").val(layedit.getContent(reportNoteIndex));
-     	});
         var reportList = Utils.formToObj("edit");
-        var url = Const.apiUrl + "/reportList/save";
+        if(id){
+			reportList.topicId=id;
+		}
+        layui.use('layedit', function(){
+     	  	var layedit = layui.layedit;
+     	  	$("#content").val(layedit.getContent(topicContent));
+     	});
+        var url = Const.apiUrl + "/topic/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 

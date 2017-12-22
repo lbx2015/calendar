@@ -1,10 +1,14 @@
 package net.riking.dao.repo;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -58,4 +62,16 @@ public interface TopicQuestionRepo
 	 */
 	@Query("select new net.riking.entity.model.QuestResult(tq.id,tq.title,tq.createdTime) FROM TopicQuestion tq  where  tq.isAduit <> 2 and tq.isDeleted = 1 and tq.userId = ?1 order by tq.createdTime DESC")
 	List<QuestResult> findByUserId(String userId, Pageable pageable);
+	
+	
+	/*********** WEB ************/
+	@Transactional
+	@Modifying
+	@Query(" update TopicQuestion set isDeleted=0 where id in ?1 ")
+	int deleteById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update TopicQuestion set isAduit=1 where id in ?1 ")
+	int verifyById(Set<String> ids);
 }

@@ -2,296 +2,333 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>app用户list页面</title>
-    <link type="include" href="/common/depcss.html" />
+<meta charset="utf-8">
+<title>app用户list页面</title>
+<link type="include" href="/common/depcss.html" />
 </head>
 
 <body class="iframeBody">
-    <div class="content">
-        <div class="layui-elem-field">
-            <div class="group-button FL">
-                <button class="layui-btn layui-btn-small layui-btn-danger ajax-all" id="deleteBtn" onclick="del()">
-					<i class="layui-icon">&#xe640;</i> 删除
+	<div class="content">
+		<div class="layui-elem-field actionBar">
+			<div class="layui-btn-group absolute">
+				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+					<i class="layui-icon">&#xe640;</i>
+					批量删除
 				</button>
-                <button class="layui-btn layui-btn-normal layui-btn-small modal-full" id="add-data">
+				<!--   <button class="layui-btn layui-btn-small" id="add-data">
 					<i class="layui-icon">&#xe608;</i> 添加
-				</button>
-            </div>
-            <div class="_tmpl" data-url="filterCriteria.html" data-attr="appUser.json" data-bind="filterCriteriaOnBind" data-param=""></div>
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-        <div class="contentLeft layui-form">
-            <div class="_tmpl" data-url="table.html" id="table" data-attr="appUser.json" data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
-        </div>
-        <div class="contentRight">
-            <div class="_tmpl" data-url="preview.html" data-attr="appUser.json" data-bind="previewOnBind" data-param=""></div>
-        </div>
-        <div style="clear: both"></div>
-        <div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
-    </div>
+				</button> -->
+			</div>
+			<div class="_tmpl" data-url="filterCriteria.html" data-attr="appUserVO.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="tableBar">
+			<div class="tableContent layui-form">
+				<div class="_tmpl" data-url="table.html" id="table" data-attr="appUserVO.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+			</div>
+		</div>
+		<div style="clear: both"></div>
+		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
-    $(function() {
-        $("#add-data").click(function() {
-            var url = "appUserEdit.html";
-            var title = "添加数据";
-            View.openDialog(url, title);
-        });
+	$(function() {
+		$("#add-data").click(function() {
+			var url = "appUserEdit.html";
+			var title = "添加数据";
+			View.openDialog(url, title);
+		});
 
-        var form = layui.form();
-        //监听提交，设置为不刷新页面
-        form.on('submit', function(data) {
-            return false;
-        });
-    });
+		var form = layui.form;
+		//监听提交，设置为不刷新页面
+		form.on('submit', function(data) {
+			return false;
+		});
+	});
 </script>
 <script>
-    var form = layui.form(),
-        layer = layui.layer;
-    //全选
-    form.on('checkbox(allChoose)', function(data) {
-        var child = $(data.elem).parents('table').find(
-            'tbody input[type="checkbox"]');
-        child.each(function(index, item) {
-            item.checked = data.elem.checked;
-        });
-        form.render('checkbox');
-    });
+	var form = layui.form, layer = layui.layer;
+	//全选
+	form.on('checkbox(allChoose)', function(data) {
+		var child = $(data.elem).parents('table').find(
+				'tbody input[type="checkbox"]');
+		child.each(function(index, item) {
+			item.checked = data.elem.checked;
+		});
+		form.render('checkbox');
+	});
 </script>
 <script>
-    var item;
-    var tbTmpl;
+	var item;
+	var tbTmpl;
 
-    function forbbit(id) {
+	function forbbit(id) {
 
-    }
+	}
 
-    function tbOnBind(attrs, param) {
-        tmpl = this;
-        tbTmpl = tmpl;
+	function tbOnBind(attrs, param) {
+		tmpl = this;
+		tbTmpl = tmpl;
 
-        var _bind = function(callback) {
-            var url = Const.apiUrl + "/appUser/getMore";
-            var _this = this;
-            var _succ = function(resp) {
-                var data = {};
-                if (resp) {
-                    data.data = resp;
-                    TmplUtils.totalPages = data.data.totalPages;
-                }
-                //是否需要全选checkbox
-                data.hasCheckbox = true;
-                //是否有操作列
-                data.hasOperation = true;
-                //操作按钮
-                /*  data.operations = [{
-                     "value": "修改",
-                     "onclick": "edit",
-                     "class": "layui-btn layui-btn-mini layui-btn-normal"
-                 }]; */
-                //tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
-                data.trClick = "bindPro";
-                //表格显示列数
-                /* data.cellLeftCount = 4;
-                 data.cellRightCount = 3;*/
-                //表格各列显示比例
-               /*  data.tdLeftWidth = [ 10, 20, 30, 10 ];
-                data.tdRightWidth = [ 10, 100, 10 ]; */
+		var _bind = function(callback) {
+			var url = Const.apiUrl + "/appUser/getMore";
+			var _this = this;
+			var _succ = function(resp) {
+				var data = {};
+				if (resp) {
+					data.data = resp;
+					TmplUtils.totalPages = data.data.totalPages;
+					TmplUtils.totalCount = data.data.totalElements;
+				}
+				//是否需要全选checkbox
+				data.hasCheckbox = true;
+				//是否有操作列
+				data.hasOperation = true;
+				data.cellCount = 20;
+				 data.operationWidth =10;
+				//如果要修改表格内容 ，无需修改的忽略此项
+				data.tdBeforeFill = function(obj) {
+					if (obj['item']) {
+						if (obj.isOperColumn) {
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
+									+ "\""
+									+ obj.item.id
+									+ "\""
+									+ ");'>查看</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
+									+ "\""
+									+ obj.item.id
+									+ "\""
+									+ ");'>修改</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='dele("
+									+ "\""
+									+ obj.item.id
+									+ "\""
+									+ ");'>删除</button>";
+							/*   obj.html += "<button class='layui-btn layui-btn-mini' onclick='passwordReset(" + "\"" + obj.item.id + "\"" + ");'>重置密码</button>"; */
+							/*  obj.html += "<button class='layui-btn layui-btn-mini' onclick='report(" + "\"" + obj.item.id + "\"" + ");'>查看报表</button>"; */
+							if (obj.item.appUser.enabled == "0") { //禁用
+								obj.html += "<button class='layui-btn layui-btn-mini' onclick='enable("
+										+ "\""
+										+ obj.item.id
+										+ "\""
+										+ ");'>启用</button>";
+							} else {
+								obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='unEnable("
+										+ "\""
+										+ obj.item.id
+										+ "\""
+										+ ");'>禁用</button>";
+							}
+						}
+						return obj.html;
+					}
+				}
+				//操作栏的宽度
+				/*   data.operationWidth = 10; */
+				callback.call(_this, data);
+				if (TmplUtils.pageTmpl.refresh) {
+					TmplUtils.pageTmpl.refresh();
+				}
+				TmplUtils.tableOnLoad();
+			};
+			View.get(url, param, _succ, function(code) {
+				TmplUtils.showMsgFail('查询出错');
+			});
+		}
 
-                //如果要修改表格内容 ，无需修改的忽略此项
-                data.tdBeforeFill = function(obj) {
-                    //obj = {item,prop,html,row,col};
-                    //item 当前行数据 第一行无item
-                    //prop 当前单元格属性
-                    //html 当前单元格html内容
-                    //row 当前行数 从1开始
-                    //col 当前列数 从1开始
-                    if (obj.row > 1 && obj.col == 2) {
-                	obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='fileUpLoad(" + "\"" + obj.item.id + "\"" + ");'>头像上传</button>";
-                        obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='edit(" + "\"" + obj.item.id + "\"" + ");'>修改</button>";
-                        obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='passwordReset(" + "\"" + obj.item.id + "\"" + ");'>重置密码</button>";
-                        obj.html += "<button class='layui-btn layui-btn-mini layui-btn-normal' onclick='report(" + "\"" + obj.item.id + "\"" + ");'>查看报表</button>";
-                        if (obj.item.enabled == "0") { //禁用
-                            return obj.html + "<button class='layui-btn layui-btn-mini' onclick='enable(" + "\"" + obj.item.id + "\"" + ");'>启用</button>";
-                        } else {
-                            return obj.html + "<button class='layui-btn layui-btn-danger layui-btn-mini' onclick='unEnable(" + "\"" + obj.item.id + "\"" + ");'>禁用</button>";
-                        }
-                    }
-                    return obj.html;
-                }
-                //操作栏的宽度
-                data.operationWidth = 10;
-                callback.call(_this, data);
-                if (TmplUtils.pageTmpl.refresh) {
-                    TmplUtils.pageTmpl.refresh();
-                }
-                TmplUtils.tableOnLoad();
-            };
-            View.get(url, param, _succ, function(code) {
-                TmplUtils.showMsgFail('查询出错');
-            });
-        }
+		tmpl.bind(_bind);
+	}
 
-        tmpl.bind(_bind);
-    }
+	//表格单元格点击事件
+	function bindPro(item) {
+		if (!TmplUtils.isEditing) {
+			this.item = item;
+			previewTmpl.refresh();
+		}
+	}
 
-    //表格单元格点击事件
-    function bindPro(item) {
-        if (!TmplUtils.isEditing) {
-            this.item = item;
-            previewTmpl.refresh();
-        }
-    }
+	//预览绑定
+	var previewTmpl;
 
-    //预览绑定
-    var previewTmpl;
+	function previewOnBind(attrs, param) {
+		tmpl = this;
+		previewTmpl = tmpl;
+		if (!item) {
+			return;
+		}
+		tmpl.bind(function(callback) {
+			var url = Const.apiUrl + "/appUser/get";
+			var data = {};
+			//是否可编辑
+			//data.canEdit = true;
+			data.data = item;
+			//绑定点击事件
+			data.checkClick = "check";
+			data.saveClick = "save";
+			callback.call(this, data);
+			TmplUtils.previewOnLoad();
+		});
+	}
 
-    function previewOnBind(attrs, param) {
-        tmpl = this;
-        previewTmpl = tmpl;
-        if (!item) {
-            return;
-        }
-        tmpl.bind(function(callback) {
-            var url = Const.apiUrl + "/appUser/get";
-            var data = {};
-            //是否可编辑
-            //data.canEdit = true;
-            data.data = item;
-            //绑定点击事件
-            data.checkClick = "check";
-            data.saveClick = "save";
-            callback.call(this, data);
-            TmplUtils.previewOnLoad();
-        });
-    }
+	//查询条件绑定
+	function filterCriteriaOnBind(attrs, param) {
+		tmpl = this;
+		var _this = this;
+		tmpl.bind(function(callback) {
+			var data = {};
+			data.searchClick = "search";
+			callback.call(_this, data);
+			TmplUtils.filterCriteriaOnLoad();
+		});
+	}
+	//查询
+	function search() {
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tbTmpl.refresh("pindex=0" + "&pcount=" + TmplUtils.pageSize
+				+ TmplUtils.searchParam);
+		TmplUtils.currPage = 1;
+		TmplUtils.closePreview();
+	}
+	//弹出添加iframe
+	function edit(id) {
+		var url = "appUserEdit.html?id=" + id;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+	//弹出添加iframe
+	function view(id) {
+		var flag = "view"
+		var url = "appUserEdit.html?id=" + id + "&flag=" + flag;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
 
-    //查询条件绑定
-    function filterCriteriaOnBind(attrs, param) {
-        tmpl = this;
-        var _this = this;
-        tmpl.bind(function(callback) {
-            var data = {};
-            data.searchClick = "search";
-            callback.call(_this, data);
-            TmplUtils.filterCriteriaOnLoad();
-        });
-    }
-    //查询
-    function search() {
-        TmplUtils.searchParam = Utils.formToStr("filterCriteria");
-        tbTmpl.refresh("pindex=0" + "&pcount=" + TmplUtils.pageSize +
-            TmplUtils.searchParam);
-        TmplUtils.currPage = 1;
-        TmplUtils.closePreview();
-    }
-    //弹出添加iframe
-    function edit(id) {
-        var url = "appUserEdit.html?id=" + id;
-        var title = "数据处理";
-        View.openDialog(url, title);
-    }
+	function fileUpLoad(id) {
+		var url = "photoUpload.html?id=" + id;
+		var title = "头像上传";
+		View.openDialog(url, title);
+	}
+	function enable(id) {
+		TmplUtils.showConfirm('您确定启用该用户吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/appUser/enable";
+			View.get(url, "id=" + id, function(resp) {
+				TmplUtils.showMsgSuccess('启用成功');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('启用失败');
+			});
+		}, function() {
 
-    function fileUpLoad(id) {
-        var url = "photoUpload.html?id=" + id;
-        var title = "头像上传";
-        View.openDialog(url, title);
-    }
-    function enable(id) {
-        TmplUtils.showConfirm('您确定启用该用户吗？', '确定', '取消', function() {
-            var url = Const.apiUrl + "/appUser/enable";
-            View.get(url, "id=" + id, function(resp) {
-                TmplUtils.showMsgSuccess('启用成功');
-                tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                    TmplUtils.pageSize + TmplUtils.searchParam);
-                TmplUtils.closePreview();
-            }, function(code) {
-                TmplUtils.showMsgFail('启用失败');
-            });
-        }, function() {
+		});
+	}
 
-        });
-    }
+	function report(id) {
+		var url = "userReportList.html?id=" + id;
+		var title = "所属报表";
+		View.openDialog(url, title);
+	}
 
-    function report(id){
-    	var url = "userReportList.html?id="+id;
-        var title = "所属报表";
-        View.openDialog(url, title);
-    }
-    
-    function unEnable(id) {
-        TmplUtils.showConfirm('您确定禁用该用户吗？', '确定', '取消', function() {
-            var url = Const.apiUrl + "/appUser/unEnable";
-            View.get(url, "id=" + id, function(resp) {
-                TmplUtils.showMsgSuccess('禁用成功');
-                tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                    TmplUtils.pageSize + TmplUtils.searchParam);
-                TmplUtils.closePreview();
-            }, function(code) {
-                TmplUtils.showMsgFail('禁用失败');
-            });
-        }, function() {
+	function unEnable(id) {
+		TmplUtils.showConfirm('您确定禁用该用户吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/appUser/unEnable";
+			View.get(url, "id=" + id, function(resp) {
+				TmplUtils.showMsgSuccess('禁用成功');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('禁用失败');
+			});
+		}, function() {
 
-        });
-    }
-    //保存
-    function save() {
+		});
+	}
+	//保存
+	function save() {
 
-        var url = Const.apiUrl + "/appUser/addOrUpdate";
-        var employee = Utils.formToObj("preview");
-        View.post(url, employee, function(resp) {
-            TmplUtils.showMsgSuccess('编辑成功');
-            tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                TmplUtils.pageSize + TmplUtils.searchParam);
-            TmplUtils.closePreview();
-        }, function() {
-            TmplUtils.showMsgFail('编辑失败');
-        });
-    }
+		var url = Const.apiUrl + "/appUser/addOrUpdate";
+		var employee = Utils.formToObj("preview");
+		View.post(url, employee, function(resp) {
+			TmplUtils.showMsgSuccess('编辑成功');
+			tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount="
+					+ TmplUtils.pageSize + TmplUtils.searchParam);
+			TmplUtils.closePreview();
+		}, function() {
+			TmplUtils.showMsgFail('编辑失败');
+		});
+	}
 
-    //删除
-    function del() {
-        TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
-            var arrChk = $("input[name='tdCheckbox']");
-            var ids = [];
-            $(arrChk).each(function() {
-                if ($(this).next('div').hasClass("layui-form-checked")) {
-                    ids.push($(this).data("id"));
-                }
-            });
-            var url = Const.apiUrl + "/appUser/delMore"
-            View.post(url, ids, function(resp) {
-                TmplUtils.showMsgSuccess("删除成功");
-                tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) +
-                    "&pcount=" + TmplUtils.pageSize +
-                    TmplUtils.searchParam);
-            }, function() {
-                TmplUtils.showMsgFail('删除失败');
-            });
-        }, function() {
+	//删除
+	function del() {
+		//获取选择的id
+		var arrChk = $("input[name='tdCheckbox']");
+		var ids = [];
+		$(arrChk).each(function() {
+			if ($(this).next('div').hasClass("layui-form-checked")) {
+				ids.push($(this).data("id"));
+			}
+		});
+		if (ids.length < 1) {
+			TmplUtils.showMsgFail("请至少选择一项数据");
+			return;
+		}
+		TmplUtils.showConfirm('您确定删除这些数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/appUser/delMore"
+			View.post(url, ids, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function() {
 
-        });
-    }
-    
-   function passwordReset(id){
-       TmplUtils.showConfirm('您确定重置该用户密码吗？', '确定', '取消', function() {
-           var url = Const.apiUrl + "/appUser/passwordReset";
-           View.get(url, "id=" + id, function(resp) {
-               TmplUtils.showMsgSuccess('重置成功');
-               tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                   TmplUtils.pageSize + TmplUtils.searchParam);
-               TmplUtils.closePreview();
-           }, function(code) {
-               TmplUtils.showMsgFail('重置失败');
-           });
-       }, function() {
+		});
+	}
 
-       });
-   }
-   
+	//删除
+	function dele(id) {
+		var ids = [];
+		ids.push(id);
+		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/appUser/delMore"
+			View.post(url, ids, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function() {
+
+		});
+	}
+
+	function passwordReset(id) {
+		TmplUtils.showConfirm('您确定重置该用户密码吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/appUser/passwordReset";
+			View.get(url, "id=" + id, function(resp) {
+				TmplUtils.showMsgSuccess('重置成功');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('重置失败');
+			});
+		}, function() {
+
+		});
+	}
 </script>
 
 </html>

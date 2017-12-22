@@ -2,38 +2,40 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>邮箱后缀列表页面</title>
-    <link type="include" href="/common/depcss.html" />
+<meta charset="utf-8">
+<title>邮箱后缀列表页面</title>
+<link type="include" href="/common/depcss.html" />
 </head>
 
 <body class="iframeBody">
-    <div class="content">
-        <div class="layui-elem-field">
-            <div class="group-button FL">
-                <button class="layui-btn layui-btn-small layui-btn-danger ajax-all" id="deleteBtn" onclick="del()">
-					<i class="layui-icon">&#xe640;</i> 删除
+	<div class="content">
+		<div class="layui-elem-field actionBar">
+			<div class="layui-btn-group absolute">
+				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+					<i class="layui-icon">&#xe640;</i>
+					删除
 				</button>
-                <button class="layui-btn layui-btn-normal layui-btn-small modal-full" id="add-data">
-					<i class="layui-icon">&#xe608;</i> 添加
+				<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
+					<i class="layui-icon">&#xe608;</i>
+					添加
 				</button>
-				<button class="layui-btn layui-btn-normal layui-btn-small modal-full" onclick="addMore()" >
-					<i class="layui-icon">&#xe608;</i> 批量添加
+				<button class="layui-btn layui-btn-small layui-btn-primary" onclick="addMore()">
+					<i class="layui-icon">&#xe608;</i>
+					批量添加
 				</button>
-            </div>
-            <div class="_tmpl" data-url="filterCriteria.html" data-attr="emailSuffix.json" data-bind="filterCriteriaOnBind" data-param=""></div>
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-        <div class="contentLeft layui-form">
-            <div class="_tmpl" data-url="table.html" id="table" data-attr="emailSuffix.json" data-bind="tbOnBind" data-param="pindex=0&pcount=10"></div>
-        </div>
-        <div class="contentRight">
-            <div class="_tmpl" data-url="preview.html" data-attr="emailSuffix.json" data-bind="previewOnBind" data-param=""></div>
-        </div>
-        <div style="clear: both"></div>
-        <div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
-    </div>
+			</div>
+			<div class="_tmpl" data-url="filterCriteria.html" data-attr="emailSuffix.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="tableBar">
+			<div class="tableContent layui-form">
+				<div class="_tmpl" data-url="table.html" id="table" data-attr="emailSuffix.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+			</div>
+		</div>
+		<div style="clear: both"></div>
+		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
@@ -44,7 +46,7 @@
             View.openDialog(url, title);
         });
 
-        var form = layui.form();
+        var form = layui.form;
         //监听提交，设置为不刷新页面
         form.on('submit', function(data) {
             return false;
@@ -52,7 +54,7 @@
     });
 </script>
 <script>
-    var form = layui.form(),
+    var form = layui.form,
         layer = layui.layer;
     //全选
     form.on('checkbox(allChoose)', function(data) {
@@ -84,6 +86,7 @@
                 if (resp) {
                     data.data = resp;
                     TmplUtils.totalPages = data.data.totalPages;
+                    TmplUtils.totalCount = data.data.totalElements;
                 }
                 //是否需要全选checkbox
                 data.hasCheckbox = true;
@@ -93,10 +96,10 @@
                 data.operations = [{
                      "value": "修改",
                      "onclick": "edit",
-                     "class": "layui-btn layui-btn-mini layui-btn-normal"
+                     "class": "iconfont icon-bianji"
                  }];
                 //tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
-                data.trClick = "bindPro";
+                
                 //表格显示列数
                 /* data.cellLeftCount = 4;
                  data.cellRightCount = 3;*/
@@ -110,7 +113,7 @@
                 if (TmplUtils.pageTmpl.refresh) {
                     TmplUtils.pageTmpl.refresh();
                 }
-                TmplUtils.tableOnLoad();
+                
             };
             View.get(url, param, _succ, function(code) {
                 TmplUtils.showMsgFail('查询出错');

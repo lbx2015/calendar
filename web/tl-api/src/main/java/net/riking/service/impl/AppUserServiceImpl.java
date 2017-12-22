@@ -4,13 +4,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +32,7 @@ import net.riking.core.utils.UuidUtils;
 import net.riking.dao.AppUserDao;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.entity.VO.AppUserVO;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserGrade;
@@ -149,6 +160,7 @@ public class AppUserServiceImpl implements AppUserService {
 
 	/**
 	 * 经验值计算等级
+	 * 
 	 * @param experience
 	 * @return
 	 */
@@ -175,6 +187,7 @@ public class AppUserServiceImpl implements AppUserService {
 
 	/**
 	 * 获取用户头像路径
+	 * 
 	 * @see net.riking.service.AppUserService#getPhotoUrlPath()
 	 */
 	@Override
@@ -211,4 +224,80 @@ public class AppUserServiceImpl implements AppUserService {
 		return appUserDao.getOtherMes(toUserId, userId);
 	}
 
+	/********************* WEB ***************/
+
+	@Override
+	public Page<AppUserVO> findAll(AppUserVO appUserVO, PageRequest pageable) {
+		Specification<AppUser> bCondi = whereCondition(appUserVO);
+		// 1.得到Page<AppUser>对象
+		Page<AppUser> pageB = appUserRepo.findAll(bCondi, pageable);
+		if (null != pageB) {
+			// 2.得到AppUser对象集合
+			List<AppUser> appUsers = pageB.getContent();
+			List<AppUserVO> appUserVOs = getVos(appUsers);
+			Page<AppUserVO> modulePage = new PageImpl<AppUserVO>(appUserVOs, pageable, pageB.getTotalElements());
+			return modulePage;
+		}
+		return null;
+	}
+
+	private List<AppUserVO> getVos(List<AppUser> appUsers) {
+		List<AppUserVO> appUserVOs = new ArrayList<AppUserVO>();
+		for (AppUser appUser : appUsers) {
+			String id = appUser.getId();
+			AppUserDetail appUserDetail = appUserDetailRepo.findOne(id);
+			AppUserVO appUserVO = new AppUserVO();
+			appUserVO.setId(appUser.getId());
+			appUserVO.setAppUser(appUser);
+			appUserVO.setAppUserDetail(appUserDetail);
+			appUserVOs.add(appUserVO);
+		}
+		return appUserVOs;
+	}
+
+	private Specification<AppUser> whereCondition(AppUserVO appUserVO) {
+		return new Specification<AppUser>() {
+			@Override
+			public Predicate toPredicate(Root<AppUser> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				// 默认查询条件
+				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
+
+				if (null != appUserVO.getAppUser()) {
+					if (StringUtils.isNotBlank(appUserVO.getAppUser().getUserName())) {
+						predicates.add(cb.like(root.<String> get("userName"),
+								"%" + appUserVO.getAppUser().getUserName() + "%"));
+					}
+					if (StringUtils.isNotBlank(appUserVO.getAppUser().getEmail())) {
+						predicates.add(
+								cb.like(root.<String> get("email"), "%" + appUserVO.getAppUser().getEmail() + "%"));
+					}
+					if (StringUtils.isNotBlank(appUserVO.getAppUser().getPhone())) {
+						predicates.add(
+								cb.like(root.<String> get("phone"), "%" + appUserVO.getAppUser().getPhone() + "%"));
+					}
+				}
+				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+			}
+		};
+	}
+
+	@Override
+	public void updateModule(AppUserVO appUserVO) {
+		if (StringUtils.isNotEmpty(appUserVO.getId())) {
+			appUserVO.getAppUser().setId(appUserVO.getId());
+			appUserVO.getAppUserDetail().setId(appUserVO.getId());
+			appUserRepo.save(appUserVO.getAppUser());
+			appUserDetailRepo.save(appUserVO.getAppUserDetail());
+		}
+	}
+
+	@Override
+	public void del(String id) {
+		AppUser appUser = appUserRepo.findOne(id);
+		appUser.setIsDeleted(0);
+		appUserRepo.save(appUser);
+	}
+
+	/******************** WEB END ***********/
 }

@@ -1,5 +1,5 @@
 {
-	"table": "T_WEB_VERSION",
+	"table": "t_topic_question",
 	"groups": [
 		{
 			"prop": "base",
@@ -8,30 +8,33 @@
 	],
 	"attrs": [
 		{
-			"prop": "versionNo",
-			"alias": "Web版本号",
-			"desc": "Web版本号",
+			"prop": "title",
+			"alias": "标题",
+			"desc": "标题",
 			"type": "string",
 			"group": "base",
 			"query": "1",
 			"query_order": "1"
 		},
 		{
-			"prop": "sqlVersionNo",
-			"alias": "数据库脚本版本号",
-			"desc": "数据库脚本版本号",
+			"prop": "content",
+			"alias": "内容描述",
+			"desc": "内容描述",
+			"type": "text",
+			"edit_block": "2",
 			"group": "base",
-			"type": "string",
-			"query": "1",
-			"query_order": "2"
+			"hidden": "table"
 		},
 		{
-			"prop": "remark",
-			"alias": "版本说明",
-			"desc": "版本说明",
+			"prop": "isAduit",
+			"alias": "是否审核",
+			"desc": "是否审核",
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"query": "1",
+			"query_order": "2",
 			"group": "base",
-			"type": "text",
-			"hidden":"table"
+			"hidden": "edit"
 		},
 		{
 			"prop": "createdBy",
@@ -67,8 +70,8 @@
 		},
 		{
 			"prop": "isDeleted",
-			"alias": "是否删除",
-			"desc": "是否删除",
+			"alias": "是否删除：1-未删除；0-删除",
+			"desc": "是否删除：1-未删除；0-删除",
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"

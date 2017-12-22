@@ -6,20 +6,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import net.riking.core.entity.PageQuery;
 import net.riking.dao.ReportCompletedRelDao;
 import net.riking.dao.ReportDao;
 import net.riking.dao.repo.ReportCompletedRelRepo;
+import net.riking.dao.repo.ReportRepo;
 import net.riking.dao.repo.ReportSubmitCaliberRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.dao.repo.SysDaysRepo;
+import net.riking.entity.VO.ReportVO;
+import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportListResult;
@@ -54,6 +66,12 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	SysDaysRepo sysDaysRepo;
+	
+	@Autowired
+	ReportRepo reportRepo;
+
+	@Autowired
+	ReportSubmitCaliberRepo caliberRepo;
 
 	@Override
 	public List<ReportFrequency> findAppUserReportById(String userId) {
@@ -344,6 +362,72 @@ public class ReportServiceImpl implements ReportService {
 		}
 
 		return true;
+	}
+
+	/********** web **********/
+	@Override
+	public void saveOrUpdate(ReportVO reportVO) {
+		Report report = reportVO.getReport();
+		ReportSubmitCaliber caliber = reportVO.getReportSubmitCaliber();
+		if (StringUtils.isEmpty(reportVO.getId())) {
+			report.setIsDeleted(1);
+			report.setIsAduit(0);
+		}
+		Report pReportList = reportRepo.save(report);
+		caliber.setId(pReportList.getId());
+		caliberRepo.save(caliber);
+	}
+
+	@Override
+	public Page<ReportVO> findAll(ReportVO reportVO, PageRequest pageable) {
+		Specification<Report> bCondi = whereCondition(reportVO);
+		// 1.得到Page<AppUser>对象
+		Page<Report> pageB = reportRepo.findAll(bCondi, pageable);
+		if (null != pageB) {
+			// 2.得到AppUser对象集合
+			List<Report> appUsers = pageB.getContent();
+			List<ReportVO> appUserVOs = getVos(appUsers);
+			Page<ReportVO> modulePage = new PageImpl<ReportVO>(appUserVOs, pageable, pageB.getTotalElements());
+			return modulePage;
+		}
+		return null;
+	}
+
+	private List<ReportVO> getVos(List<Report> reports) {
+		List<ReportVO> reportVOs = new ArrayList<ReportVO>();
+		for (Report report : reports) {
+			String id = report.getId();
+			ReportSubmitCaliber caliber = caliberRepo.findOne(id);
+			ReportVO reportVO = new ReportVO();
+			reportVO.setId(report.getId());
+			reportVO.setReport(report);
+			reportVO.setReportSubmitCaliber(caliber);
+			reportVOs.add(reportVO);
+		}
+		return reportVOs;
+	}
+
+	private Specification<Report> whereCondition(ReportVO reportVO) {
+		return new Specification<Report>() {
+			@Override
+			public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				// 默认查询条件
+				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
+				if (null != reportVO.getReport()) {
+					if (StringUtils.isNotBlank(reportVO.getReport().getCode())) {
+						predicates.add(cb.like(root.<String> get("code"), "%" + reportVO.getReport().getCode() + "%"));
+					}
+					if (StringUtils.isNotBlank(reportVO.getReport().getReportType())) {
+						predicates.add(cb.equal(root.<String> get("reportType"), reportVO.getReport().getReportType()));
+					}
+					if (StringUtils.isNotBlank(reportVO.getReport().getReportKind())) {
+						predicates.add(cb.equal(root.<String> get("reportKind"), reportVO.getReport().getReportKind()));
+					}
+				}
+				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+			}
+		};
 	}
 
 }

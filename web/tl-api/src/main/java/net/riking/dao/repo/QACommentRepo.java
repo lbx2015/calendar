@@ -1,10 +1,14 @@
 package net.riking.dao.repo;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +28,7 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 
 	/**
 	 * 回答的评论数
+	 * 
 	 * @param newsId
 	 * @return
 	 */
@@ -32,6 +37,7 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 
 	/**
 	 * 评论列表
+	 * 
 	 * @param questAnswerId
 	 * @return
 	 */
@@ -40,9 +46,22 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 
 	/**
 	 * 我的评论列表
+	 * 
 	 * @param questAnswerId
 	 * @return
 	 */
 	@Query("select new net.riking.entity.model.QACommentResult(q.id,q.createdTime,q.modifiedTime,q.userId,q.questionAnswerId,q.content,(select qa.questionId from QuestionAnswer qa where qa.id = q.questionAnswerId),(select a.userName from AppUser a where q.userId = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where q.userId = ap.id),(select app.experience from AppUserDetail app where q.userId = app.id)) from QAComment q where q.userId = ?1 and q.isAduit <> 2 and q.isDeleted=1 ORDER BY q.createdTime desc")
 	List<QACommentResult> findByUserId(String userId);
+
+	/*********** WEB ************/
+	@Transactional
+	@Modifying
+	@Query(" update QAComment set isDeleted=0 where id in ?1 ")
+	int deleteById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update QAComment set isAduit=1 where id in ?1 ")
+	int verifyById(Set<String> ids);
+
 }

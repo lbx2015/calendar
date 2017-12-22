@@ -10,26 +10,26 @@
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
-				<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
+				<!-- <button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
 					<i class="layui-icon">&#xe608;</i>
 					添加
-				</button>
-				<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+				</button> -->
+				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
 					<i class="layui-icon">&#xe640;</i>
 					批量删除
 				</button>
 				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
 					<i class="layui-icon">&#xe6b2;</i>
 					批量审核
-				</button> -->
+				</button>
 			</div>
-			<div class="_tmpl" data-url="filterCriteria.html" data-attr="webVersion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+			<div class="_tmpl" data-url="filterCriteria.html" data-attr="qaComment.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
 		<div class="tableBar">
 			<div class="tableContent layui-form">
-				<div class="_tmpl" data-url="table.html" id="table" data-attr="webVersion.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+				<div class="_tmpl" data-url="table.html" id="table" data-attr="qaComment.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
 			</div>
 		</div>
 		<div style="clear: both"></div>
@@ -40,7 +40,7 @@
 <script>
 	$(function() {
 		$("#add-data").click(function() {
-			var url = "webVersionEdit.html";
+			var url = "qaCommentEdit.html";
 			var title = "添加数据";
 			View.openDialog(url, title);
 		});
@@ -78,7 +78,7 @@
 		tbTmpl = tmpl;
 
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/webVersion/getMore";
+			var url = Const.apiUrl + "/qaComment/getMore";
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
@@ -103,34 +103,32 @@
 					//html 当前单元格html内容
 					//row 当前行数 从1开始
 					//col 当前列数 从1开始
-					if (obj['item']) {
-						if (obj.isOperColumn) {
-							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
+					if (obj.col == 2) {
+						obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
+								+ "\""
+								+ obj.item.qACommentId
+								+ "\""
+								+ ");'>查看</button>";
+						obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
+								+ "\""
+								+ obj.item.qACommentId
+								+ "\""
+								+ ");'>修改</button>";
+						obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
+								+ "\""
+								+ obj.item.qACommentId
+								+ "\""
+								+ ");'>删除</button>";
+						if (obj.item.isAduit == 0) {
+							obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
 									+ "\""
-									+ obj.item.webVersionId
+									+ obj.item.qACommentId
 									+ "\""
-									+ ");'>查看</button>";
-							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
-									+ "\""
-									+ obj.item.webVersionId
-									+ "\""
-									+ ");'>修改</button>";
-							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
-									+ "\""
-									+ obj.item.webVersionId
-									+ "\""
-									+ ");'>删除</button>";
-							if (obj.item.isAduit == 0) {
-								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
-										+ "\""
-										+ obj.item.webVersionId
-										+ "\""
-										+ ");'>审核</button>";
-							}
-							return obj.html;
+									+ ");'>审核</button>";
 						}
 						return obj.html;
 					}
+					return obj.html;
 				}
 				callback.call(_this, data);
 				if (TmplUtils.pageTmpl.refresh) {
@@ -163,7 +161,7 @@
 			return;
 		}
 		tmpl.bind(function(callback) {
-			var url = Const.apiUrl + "/webVersion/get";
+			var url = Const.apiUrl + "/qaComment/get";
 			var data = {};
 			//是否可编辑
 			//data.canEdit = true;
@@ -198,7 +196,7 @@
 
 	//弹出添加iframe
 	function edit(id) {
-		var url = "webVersionEdit.html?id=" + id;
+		var url = "qaCommentEdit.html?id=" + id;
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
@@ -206,13 +204,13 @@
 	//弹出添加iframe
 	function view(id) {
 		var flag = "view";
-		var url = "webVersionEdit.html?id=" + id + "&flag=" + flag;
+		var url = "qaCommentEdit.html?id=" + id + "&flag=" + flag;
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
 	//保存
 	function save() {
-		var url = Const.apiUrl + "/webVersion/save";
+		var url = Const.apiUrl + "/qaComment/save";
 		var employee = Utils.formToObj("preview");
 		View.post(url, employee, function(resp) {
 			TmplUtils.showMsgSuccess('编辑成功');
@@ -239,7 +237,7 @@
 			return;
 		}
 		TmplUtils.showConfirm('您确定删除这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/delMore"
+			var url = Const.apiUrl + "/qaComment/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -258,7 +256,7 @@
 		var ids = [];
 		ids.push(id);
 		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/delMore"
+			var url = Const.apiUrl + "/qaComment/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -287,7 +285,7 @@
 			return;
 		}
 		TmplUtils.showConfirm('您确定审核这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/verifyMore"
+			var url = Const.apiUrl + "/qaComment/verifyMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("审核成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -306,7 +304,7 @@
 		var ids = [];
 		ids.push(id);
 		TmplUtils.showConfirm('您确定审核该条记录吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/webVersion/verifyMore"
+			var url = Const.apiUrl + "/qaComment/verifyMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("审核成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)

@@ -8,31 +8,26 @@
 
 <body class="iframeBody">
 	<div class="content">
-		<div class="layui-elem-field">
-			<div class="group-button FL">
-			</div>
+		<div class="layui-elem-field actionBar">
+			<div class="layui-btn-group absolute"></div>
 			<div class="clear">
-			<button class="layui-btn layui-btn-normal modal-full" lay-submit lay-filter="search" onclick="" >查询</button></div>
+				<button class="layui-btn" lay-submit lay-filter="search" onclick="">查询</button>
+			</div>
 		</div>
 		<div class="clear"></div>
-		<div class="contentLeft layui-form">
-			<div class="_tmpl" data-url="table.html" id="table"
-				data-attr="reportList.json" data-bind="tbOnBind"
-				data-param="pindex=0&pcount=10"></div>
-		</div>
-		<div class="contentRight">
-			<div class="_tmpl" data-url="preview.html" data-attr="reportList.json"
-				data-bind="previewOnBind" data-param=""></div>
+		<div class="tableBar">
+			<div class="tableContent layui-form">
+				<div class="_tmpl" data-url="table.html" id="table" data-attr="report.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+			</div>
 		</div>
 		<div style="clear: both"></div>
-		<div class="_tmpl" data-url="pages.html" data-depend="table"
-			data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
 
-		var form = layui.form();
+		var form = layui.form;
 		//监听提交，设置为不刷新页面
 		form.on('submit', function(data) {
 			return false;
@@ -40,7 +35,7 @@
 	});
 </script>
 <script>
-	var form = layui.form(), layer = layui.layer;
+	var form = layui.form, layer = layui.layer;
 	//全选
 	form.on('checkbox(allChoose)', function(data) {
 		var child = $(data.elem).parents('table').find(
@@ -73,12 +68,13 @@
 				if (resp) {
 					data.data = resp;
 					TmplUtils.totalPages = data.data.totalPages;
+					TmplUtils.totalCount = data.data.totalElements;
 				}
 				//是否需要全选checkbox
 				//是否有操作列
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
-				   data.trClick = "bindPro";
+				   
 				//表格显示列数
                /* data.cellLeftCount = 4;
                 data.cellRightCount = 3;*/
@@ -91,7 +87,7 @@
 				if (TmplUtils.pageTmpl.refresh) {
 					TmplUtils.pageTmpl.refresh();
 				}
-				TmplUtils.tableOnLoad();
+				
 			};
 			View.get(url, param, _succ, function(code) {
                 TmplUtils.showMsgFail('查询出错');

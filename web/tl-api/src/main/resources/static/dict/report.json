@@ -1,0 +1,160 @@
+{
+	"table": "t_report",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		},
+		{
+			"prop": "submit",
+			"alias": "配置信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "report.title",
+			"alias": "报表名称",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "report.code",
+			"alias": "报表代码",
+			"type": "string",
+			"query":"1",
+			"query_order":"1",
+			"group": "base"
+		},
+		{
+			"prop": "report.reportType",
+			"alias": "报表类型",
+			"group": "base",
+			"type": "enum",
+			"query":"1",
+			"query_order":"2",
+			"dict_key": "T_REPORT.REPORT_TYPE"
+		},
+		{
+			"prop": "report.reportKind",
+			"alias": "报表种类",
+			"group": "base",
+			"type": "enum",
+			"query":"1",
+			"query_order":"3",
+			"dict_key": "T_REPORT.REPORT_KIND"
+		},
+		{
+			"prop": "report.moduleType",
+			"alias": "报表所属模块",
+			"group": "base",
+			"type": "enum",
+			"dict_key": "T_REPORT.MODULE_TYPE"
+		},
+		{
+			"prop": "report.reportBatch",
+			"alias": "报表批次",
+			"group": "base",
+			"type": "enum",
+			"dict_key": "T_REPORT.REPORT_BATCH"
+		},
+		{
+			"prop": "report.summary",
+			"group": "base",
+			"alias": "报表简介",
+			"type": "text",
+			"edit_block": "2",
+			"hidden": "table,preview"
+		},
+		{
+			"prop": "report.fillinNote",
+			"alias": "报表说明",
+			"group": "base",
+			"type": "text",
+			"edit_block": "2",
+			"hidden": "table,preview"
+		},
+		{
+			"prop": "report.versionNo",
+			"alias": "报表版本号",
+			"group": "base",
+			"type": "string",
+			"hidden": "table"
+		},
+		{
+			"prop": "report.templateName",
+			"alias": "报表模板名称",
+			"group": "base",
+			"type": "string",
+			"hidden": "table"
+		},
+		{
+			"prop": "report.downloadUrl",
+			"alias": "报表模板下载地址",
+			"group": "base",
+			"type": "string",
+			"hidden": "table"
+		},
+		{
+			"prop": "report.isAduit",
+			"alias": "是否审核",
+			"group": "base",
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"editable": "2",
+			"hidden": "edit"
+		},
+		{
+			"prop": "report.isDeleted",
+			"alias": "是否删除",
+			"group": "base",
+			"type": "string",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "reportSubmitCaliber.caliberType",
+			"alias": "口径类型",
+			"group": "submit",
+			"type": "enum",
+			"dict_key":"T_REPORT.CALIBER_TYPE",
+			"hidden": "table"
+		},
+		{
+			"prop": "reportSubmitCaliber.frequency",
+			"alias": "频度",
+			"group": "submit",
+			"type": "enum",
+			"dict_key":"T_REPORT.FREQUENTLY",
+			"hidden": "table"
+		},
+		{
+			"prop": "reportSubmitCaliber.submitMonth",
+			"alias": "报送月份",
+			"group": "submit",
+			"type": "enum",
+			"dict_key":"T_REPORT.MONTH",
+			"hidden": "table"
+		},
+		{
+			"prop": "reportSubmitCaliber.delayDates",
+			"alias": "延后天数（天）",
+			"group": "submit",
+			"type": "string",
+			"hidden": "table"
+		},
+		{
+			"prop": "reportSubmitCaliber.submitTime",
+			"alias": "报送截止时间点0000-2359点",
+			"group": "submit",
+			"type": "string",
+			"hidden": "table"
+		},
+		{
+			"prop": "reportSubmitCaliber.isWorkDay",
+			"alias": "是否为工作日",
+			"group": "submit",
+			"type": "enum",
+			"dict_key":"T_REPORT.ISWORKDAY",
+			"hidden": "table"
+		}
+	]
+}
