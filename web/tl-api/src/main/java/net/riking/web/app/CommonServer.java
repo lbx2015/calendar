@@ -198,7 +198,7 @@ public class CommonServer {
 				logger.error("邮件发送失败" + e);
 				return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 			}
-			return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		} else {
 			return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 		}
@@ -228,7 +228,7 @@ public class CommonServer {
 				return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
 			} else {
 				appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
-				return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -315,7 +315,7 @@ public class CommonServer {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
-				break;
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			// 话题关注
 			case Const.OBJ_TYPE_2:
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
@@ -337,9 +337,10 @@ public class CommonServer {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
-				break;
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			// 用户关注
 			case Const.OBJ_TYPE_3:
+				UserFollowRel userFollowRel = new UserFollowRel();
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
 					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：2-互相关注
 					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
@@ -352,7 +353,6 @@ public class CommonServer {
 							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
 									toUserFollowRel.getToUserId(), 2);// 2-互相关注
 							// 如果传过来的参数是关注，保存新的一条关注记录
-							UserFollowRel userFollowRel = new UserFollowRel();
 							userFollowRel.setUserId(tQuestionParams.getUserId());
 							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 							userFollowRel.setFollowStatus(2);// 互相关注
@@ -360,7 +360,6 @@ public class CommonServer {
 						}
 					} else {
 						// 如果传过来的参数是关注，保存新的一条关注记录
-						UserFollowRel userFollowRel = new UserFollowRel();
 						userFollowRel.setUserId(tQuestionParams.getUserId());
 						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 						userFollowRel.setFollowStatus(1);// 非互相关注
@@ -379,13 +378,12 @@ public class CommonServer {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
-				break;
+				return new AppResp(userFollowRel.getFollowStatus(), CodeDef.SUCCESS);
 			default:
 				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 	}
 
 }

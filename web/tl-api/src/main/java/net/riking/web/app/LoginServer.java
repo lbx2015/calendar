@@ -173,6 +173,7 @@ public class LoginServer {
 		userResp.setRemindTime(user.getDetail().getRemindTime());
 		userResp.setIsSubscribe(user.getDetail().getIsSubscribe());
 		userResp.setPositionId(user.getDetail().getPositionId());
+		userResp.setIndustryId(user.getDetail().getIndustryId());
 		userResp.setIsGuide(user.getDetail().getIsGuide());
 		userResp.setIsIdentify(user.getIsIdentified());
 		if (StringUtils.isNotBlank(userResp.getPositionId())) {
