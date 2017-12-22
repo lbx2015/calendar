@@ -28,7 +28,7 @@ import net.riking.entity.MyDateFormat;
 @Comment("用户等级表")
 @Entity
 @Table(name = "t_appuser_grade")
-public class appUserGrade extends BaseEntity {
+public class AppUserGrade extends BaseEntity {
 
 	/**
 	 * 

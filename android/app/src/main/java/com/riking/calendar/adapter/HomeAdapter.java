@@ -198,7 +198,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             h.answerImage.setVisibility(View.GONE);
         } else {
             h.answerImage.setVisibility(View.VISIBLE);
-            ZR.setAnswerImage(h.answerImage, r.coverUrl);
+            ZR.setImage(h.answerImage, r.coverUrl);
         }
 
         //set from image

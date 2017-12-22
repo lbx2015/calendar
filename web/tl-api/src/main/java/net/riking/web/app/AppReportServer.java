@@ -214,12 +214,11 @@ public class AppReportServer {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
 					if (!taskDateList.contains(_date))
 						taskDateList.add(_date);
-
 				}
 			} else {
 				// 非当月，则添加当月所有日期
 				int _daysOfMonth = DateUtils.getDaysByMonth(currentDate);
-				for (int i = 0; i < _daysOfMonth; i++) {
+				for (int i = 1; i < _daysOfMonth; i++) {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
 					if (!taskDateList.contains(_date))
 						taskDateList.add(_date);
@@ -254,4 +253,5 @@ public class AppReportServer {
 
 		return new AppResp().setCode(CodeDef.SUCCESS);
 	}
+
 }

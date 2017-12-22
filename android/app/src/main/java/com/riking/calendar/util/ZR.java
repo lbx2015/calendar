@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.app.GlideApp;
@@ -127,8 +126,8 @@ public class ZR {
         Glide.with(v.getContext()).load(bitmap).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
     }
 
-    public static void setAnswerImage(ImageView v, String imageUrl) {
-        GlideApp.with(v.getContext()).load(imageUrl).placeholder(R.drawable.banner).fitCenter().into(v);
+    public static void setImage(ImageView v, String imageUrl) {
+        GlideApp.with(v.getContext()).load(imageUrl).centerCrop().placeholder(R.drawable.banner).into(v);
     }
 
     public static void setUserName(TextView userNameTv, String name, int grand) {

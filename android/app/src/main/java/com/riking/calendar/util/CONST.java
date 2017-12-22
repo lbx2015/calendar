@@ -67,6 +67,7 @@ public class CONST {
     public static final String ANSWER_ID = "ANSWER_ID";
     public static final String MY_FOLLOW = "MY_FOLLOW";
     public static final String ANSWER_COMMENT_NUM = "ANSWER_COMMENT_NUM";
+    public static final String COMMENT_NUM = "COMMENT_NUM";
     public static final String SEARCH_CONDITION = "SEARCH_CONDITION";
 
     public static final int UPDATE_USER_INFO_REQUES = 1111;

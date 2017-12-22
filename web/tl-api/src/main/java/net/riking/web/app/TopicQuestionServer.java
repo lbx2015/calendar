@@ -103,20 +103,13 @@ public class TopicQuestionServer {
 	@ApiOperation(value = "问题的详情", notes = "POST")
 	@RequestMapping(value = "/getTopicQuestion", method = RequestMethod.POST)
 	public AppResp getTopicQuestion(@RequestBody TQuestionParams tQuestionParams) {
-		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId());
+		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId(), tQuestionParams.getUserId());
 		// TODO 问题的关注数 后面从redis里面取
 		Integer followNum = tQuestionRelRepo.followCount(tQuestionParams.getTqId(), 0);// 0-关注
 		topicQuestion.setFollowNum(followNum);
 		// TODO 问题的回答数 后面从redis里面取
 		Integer answerNum = questionAnswerRepo.answerCount(tQuestionParams.getTqId());
 		topicQuestion.setAnswerNum(answerNum);
-		topicQuestion.setIsFollow(0);// 0-未关注
-		List<String> questIds = tQuestionRelRepo.findByUser(tQuestionParams.getUserId(), 0);// 0-关注
-		for (String tqId : questIds) {
-			if (topicQuestion.getId().equals(tqId)) {
-				topicQuestion.setIsFollow(1);// 1-已关注
-			}
-		}
 		topicQuestion.setQuestionAnswers(findAnswerList(tQuestionParams));
 		if (null != topicQuestion.getPhotoUrl()) {
 			topicQuestion

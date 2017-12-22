@@ -35,6 +35,7 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.VO.AppUserVO;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
 import net.riking.entity.resp.OtherUserResp;
@@ -164,36 +165,19 @@ public class AppUserServiceImpl implements AppUserService {
 	 * @return
 	 */
 	public Integer transformExpToGrade(Integer experience) {
-		List<ModelPropDict> propDicts = sysDataService.getDicts("T_APP_USER", "GRADE_RANGE");
-		Integer begin = 0;
-		Integer gradeOneMax = 0;
-		Integer gradeTwoMax = 0;
-		Integer gradeThrMax = 0;
-		Integer gradeFourMax = 0;
-		for (ModelPropDict modelPropDict : propDicts) {
-			if ("V1".equals(modelPropDict.getKe())) {
-				gradeOneMax = Integer.parseInt(modelPropDict.getValu());
-			} else if ("V2".equals(modelPropDict.getKe())) {
-				gradeTwoMax = Integer.parseInt(modelPropDict.getValu());
-			} else if ("V3".equals(modelPropDict.getKe())) {
-				gradeThrMax = Integer.parseInt(modelPropDict.getValu());
-			} else if ("V4".equals(modelPropDict.getKe())) {
-				gradeFourMax = Integer.parseInt(modelPropDict.getValu());
+		List<AppUserGrade> appUserGrades = sysDataService.getGrade(AppUserGrade.class.getName().toUpperCase());
+		Integer maxGrade = 0;
+
+		for (AppUserGrade appUserGrade : appUserGrades) {
+			if (appUserGrade.getMinExp() <= experience && experience <= appUserGrade.getMaxExp()) {
+				return appUserGrade.getGrade();
+			}
+			// 如果结束循环没找到所属等级，就把表里面的最大等级+1返回
+			if (appUserGrade.getGrade() > maxGrade) {
+				maxGrade = appUserGrade.getGrade();
 			}
 		}
-		if (begin <= experience && experience <= gradeOneMax) {
-			return 1;
-		} else if (gradeOneMax + 1 <= experience && experience <= gradeTwoMax) {
-			return 2;
-		} else if (gradeTwoMax + 1 <= experience && experience <= gradeThrMax) {
-			return 3;
-		} else if (gradeThrMax + 1 <= experience && experience <= gradeFourMax) {
-			return 4;
-		} else if (gradeFourMax + 1 <= experience) {
-			return 5;
-		} else {
-			return 0;
-		}
+		return maxGrade + 1;
 	}
 
 	@Override
