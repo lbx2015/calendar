@@ -278,10 +278,9 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         phoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.phone, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.phone = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                     }
@@ -300,7 +299,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         addPhoneNumberTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.phone, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -310,7 +309,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.phone = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         phoneNumberTv.setVisibility(View.VISIBLE);
@@ -324,7 +322,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         emailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.email, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -334,7 +332,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.email = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         emailTv.setVisibility(View.VISIBLE);
@@ -347,7 +344,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         addEmailTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.email, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -357,7 +354,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.email = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         emailTv.setVisibility(View.VISIBLE);
@@ -384,7 +380,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         companyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.companyName, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -394,7 +390,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.companyName = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         companyTv.setVisibility(View.VISIBLE);
@@ -407,7 +402,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         addCompanyTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                changePhoneNumberDialog(currentUser.companyName, new UpdateUserInfoCallBack() {
+                changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
                         UpdUserParams user = new UpdUserParams();
@@ -417,7 +412,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                     @Override
                     void updateSuccess(String newValue) {
-                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
                         currentUser.companyName = newValue;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         companyTv.setVisibility(View.VISIBLE);
@@ -468,12 +462,29 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void changePhoneNumberDialog(String initValue, final UpdateUserInfoCallBack callBack) {
+    /**
+     * @param type      0 company name,1 email,3 phone number
+     * @param initValue
+     * @param callBack
+     */
+    private void changeCompanyDialog(final int type, String initValue, final UpdateUserInfoCallBack callBack) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.user_comments));
+        if (type == 0) {
+            builder.setTitle("公司名称");
+        } else if (type == 1) {
+            builder.setTitle("邮箱");
+        } else if (type == 1) {
+            builder.setTitle("电话号码");
+        }
         // I'm using fragment here so I'm using getView() to provide ViewGroup
         // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+        View viewInflated;
+        if (type == 1) {
+            viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_email_dialog, null, false);
+        } else {
+            viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_user_name_dialog, null, false);
+        }
+
         // Set up the input
         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
@@ -491,6 +502,13 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 }
                 final String newComments = input.getText().toString();
                 if (newComments.length() > 0) {
+                    //phone
+                    if (type == 3) {
+                        if (!StringUtil.isMobileNO(newComments)) {
+                            ZToast.toast("电话号码不正确");
+                            return;
+                        }
+                    }
                     callBack.newValue(newComments);
                 }
             }
@@ -502,7 +520,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             }
         });
         builder.show();
-
     }
 
     private void initData() {
