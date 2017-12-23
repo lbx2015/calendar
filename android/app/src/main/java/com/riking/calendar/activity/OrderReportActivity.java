@@ -168,9 +168,9 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
 
             appUserReportResult.reportIds = sb.toString();
 
-            APIClient.userAddReportEdit(appUserReportResult, new ZCallBackWithFail<ResponseModel<Short>>() {
+            APIClient.userAddReportEdit(appUserReportResult, new ZCallBackWithFail<ResponseModel<String>>() {
                 @Override
-                public void callBack(ResponseModel<Short> response) {
+                public void callBack(ResponseModel<String> response) {
                     if (failed) {
                         Toast.makeText(OrderReportActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
                     } else {

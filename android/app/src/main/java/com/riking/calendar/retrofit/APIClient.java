@@ -29,6 +29,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
@@ -553,7 +554,7 @@ public class APIClient {
         apiInterface.findSubscribeReportList(user).enqueue(c);
     }
 
-    public static void userAddReportEdit(SubscribeReportParam reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
+    public static void userAddReportEdit(SubscribeReportParam reportResult, ZCallBackWithFail<ResponseModel<String>> z) {
         apiInterface.saveSubscribeReport(reportResult).enqueue(z);
     }
 
@@ -697,5 +698,9 @@ public class APIClient {
         // 1-评论；2-回答；3-提问
         params.optType = 3;
         apiInterface.getUserDynamicQuestions(params).enqueue(c);
+    }
+
+    public static void getTaskDates(ReportCompletedRelParam param, ZCallBack<ResponseModel<List<String>>> c) {
+        apiInterface.getTaskDates(param).enqueue(c);
     }
 }
