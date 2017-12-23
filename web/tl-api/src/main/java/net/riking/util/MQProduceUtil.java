@@ -1,5 +1,6 @@
 package net.riking.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jms.Connection;
@@ -14,6 +15,10 @@ import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import net.riking.config.Const;
+import net.riking.entity.model.News;
+import net.sf.json.JSONArray;
 
 public class MQProduceUtil {
 	private static final Logger logger = LogManager.getLogger("MQProduceUtil");
@@ -44,8 +49,7 @@ public class MQProduceUtil {
 
 	public static void init(String queueName) {
 		// 创建一个链接工厂
-		connectionFactory = new ActiveMQConnectionFactory(MQProduceUtil.USERNAME, MQProduceUtil.PASSWORD,
-				MQProduceUtil.BROKEURL);
+		connectionFactory = new ActiveMQConnectionFactory(Const.MQ_USER_NAME, Const.MQ_PASSWORD, Const.MQ_BROKE_URL);
 		try {
 			// 从工厂中创建一个链接
 			connection = connectionFactory.createConnection();
@@ -70,16 +74,14 @@ public class MQProduceUtil {
 	 * @param messageProducer 消息生产者
 	 * @throws Exception
 	 */
-	public static void sendTextMessage(String queueName, List<String> msg) {
+	public static void sendTextMessage(String queueName, String msg) {
 
 		MQProduceUtil.init(queueName);
 		try {
 			// 发送消息
-			for (String string : msg) {
-				TextMessage textMessage = session.createTextMessage(string);
-				logger.info(string);
-				messageProducer.send(textMessage);
-			}
+			TextMessage textMessage = session.createTextMessage(msg);
+			logger.info(msg);
+			messageProducer.send(textMessage);
 			session.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,32 +93,6 @@ public class MQProduceUtil {
 			}
 		}
 	}
-
-	// /**
-	// * 发送Map消息
-	// * @param session
-	// * @param messageProducer 消息生产者
-	// * @throws Exception
-	// */
-	// public static void sendMapMessage(String queueName, String msg) {
-	//
-	// MQProduceUtil.init(queueName);
-	// try {
-	// // 发送消息
-	// MapMessage msg = session.createMapMessage();
-	//
-	// messageProducer.send(textMessage);
-	// session.commit();
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// } finally {
-	// try {
-	// resourceClose();
-	// } catch (JMSException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
 
 	private static void resourceClose() throws JMSException {
 		if (messageProducer != null) {
@@ -130,10 +106,13 @@ public class MQProduceUtil {
 		}
 	}
 
-	// public static void main(String[] args) {
-	// List<String> list = new ArrayList<String>();
-	// list.add("asdfs");
-	// list.add("fdsadaf");
-	// MQProduceUtil.sendTextMessage("asdf", "aa");
-	// }
+	public static void main(String[] args) {
+		List<News> list = new ArrayList<News>();
+		News news = new News();
+		news.setContent("aaaaaa");
+		news.setId("weruwoieuhhh");
+		list.add(news);
+		JSONArray jsonArray = JSONArray.fromObject(list);
+		MQProduceUtil.sendTextMessage(Const.SYS_INFO_QUEUE, jsonArray.toString());
+	}
 }

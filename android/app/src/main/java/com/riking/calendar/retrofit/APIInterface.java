@@ -25,6 +25,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
@@ -184,7 +185,7 @@ public interface APIInterface {
     Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, String> industryId);
 
     @POST("report/modifySubscribeReport")
-    Call<ResponseModel<Short>> saveSubscribeReport(@Body SubscribeReportParam params);
+    Call<ResponseModel<String>> saveSubscribeReport(@Body SubscribeReportParam params);
 
     @POST("/appUserReport/updateUserReportRelById")
     Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
@@ -372,4 +373,7 @@ public interface APIInterface {
      */
     @POST("userDynamic/myDynamic")
     Call<ResponseModel<List<QuestResult>>> getUserDynamicQuestions(@Body UserFollowParams params);
+
+    @POST("report/getTaskDate")
+    Call<ResponseModel<List<String>>> getTaskDates(@Body ReportCompletedRelParam param);
 }
