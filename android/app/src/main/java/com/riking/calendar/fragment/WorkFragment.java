@@ -40,14 +40,15 @@ import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
-import com.riking.calendar.adapter.ReportOnlineAdapter;
+import com.riking.calendar.adapter.ReportTaskItemAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.AppUserReportCompleteRel;
-import com.riking.calendar.pojo.QueryReportContainer;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
 import com.riking.calendar.pojo.params.ReportCompletedRelParam;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -99,7 +100,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     Realm realm;
     //current year month
     String yearMonth;
-    ReportOnlineAdapter reportOnlineAdapter;
+    //    ReportOnlineAdapter reportOnlineAdapter;
+    ReportTaskItemAdapter reportTaskItemAdapter;
     View v;
     Date currentDay;
     TimePickerDialog timePickerDialog;
@@ -547,6 +549,12 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         notDoneReportTextView = v.findViewById(R.id.not_done_reports_tv);
         doneReportTextView = v.findViewById(R.id.done_reports_tv);
         emptyView = v.findViewById(R.id.empty);
+        emptyView.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                ZGoto.toWithLoginCheck(OrderReportActivity.class);
+            }
+        });
     }
 
     public boolean isNetAvailable() {
@@ -577,7 +585,25 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         }
 
         if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false) && isNetAvailable()) {
-            AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
+            RCompletedRelParams param = new RCompletedRelParams();
+            SimpleDateFormat s = new SimpleDateFormat(CONST.yyyyMMdd);
+            param.currentDate = s.format(date);
+
+            APIClient.findCurrentTasks(param, new ZCallBack<ResponseModel<List<CurrentReportTaskResp>>>() {
+                @Override
+                public void callBack(ResponseModel<List<CurrentReportTaskResp>> response) {
+                    List<CurrentReportTaskResp> list = response._data;
+                    swipeRefreshLayout.setRefreshing(false);
+                    reportTaskItemAdapter = new ReportTaskItemAdapter(list);
+                    reportRecyclerView.setAdapter(reportTaskItemAdapter);
+                    //put the not done reports here  firstly. changed it later.
+                    notDoneReportsRecyclerView.setAdapter(reportTaskItemAdapter);
+                    //check empty reports
+                    checkEmpty();
+                }
+            });
+
+           /* AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
             requestBody.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
             requestBody.completeDate = new SimpleDateFormat(CONST.yyyyMMdd).format(date);
             APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
@@ -592,7 +618,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     //check empty reports
                     checkEmpty();
                 }
-            });
+            });*/
         } else {
             if (swipeRefreshLayout != null) {
                 swipeRefreshLayout.setRefreshing(false);

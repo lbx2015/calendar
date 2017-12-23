@@ -29,6 +29,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
 import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
@@ -40,6 +41,7 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
@@ -702,5 +704,9 @@ public class APIClient {
 
     public static void getTaskDates(ReportCompletedRelParam param, ZCallBack<ResponseModel<List<String>>> c) {
         apiInterface.getTaskDates(param).enqueue(c);
+    }
+
+    public static void findCurrentTasks(RCompletedRelParams param, ZCallBack<ResponseModel<List<CurrentReportTaskResp>>> c) {
+        apiInterface.findCurrentTasks(param).enqueue(c);
     }
 }
