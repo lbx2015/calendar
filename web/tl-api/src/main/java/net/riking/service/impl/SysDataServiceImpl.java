@@ -17,9 +17,11 @@ import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.core.utils.ExceptUtils;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.SysDaysRepo;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.EmailSuffix;
+import net.riking.entity.model.SysDays;
 import net.riking.service.ReportService;
 import net.riking.service.SysDataService;
 import net.riking.util.RedisUtil;
@@ -42,9 +44,9 @@ public class SysDataServiceImpl implements SysDataService {
 
 	@Autowired
 	AppUserRepo appUserRepo;
-	/*
-	 * @Autowired SysDaysRepo sysDaysRepo;
-	 */
+	
+	@Autowired
+	SysDaysRepo sysDaysRepo;
 
 	// @Autowired
 	// CtryHdayCrcyRepo ctryHdayCrcyRepo;
@@ -61,7 +63,7 @@ public class SysDataServiceImpl implements SysDataService {
 		initDict();
 		initAppGrade();
 		initEmailSuffix();
-		// initSysDays();
+		initSysDays();
 
 		// initCtryHdayCrcy();
 	}
@@ -98,11 +100,16 @@ public class SysDataServiceImpl implements SysDataService {
 		}
 	}
 
-	/*
-	 * @SuppressWarnings("static-access") private void initSysDays() { List<SysDays> list =
-	 * sysDaysRepo.findAll(); for(SysDays day : list){
-	 * RedisUtil.getInstall().setObject(Const.SYS_DAY + day.getDates() + day.getDates(), day); } }
-	 */
+	
+	  @SuppressWarnings("static-access") 
+	  private void initSysDays() { 
+		  List<SysDays> list = sysDaysRepo.findAll(); 
+		  for(SysDays day : list){
+			  RedisUtil.getInstall().setObject(Const.SYS_DAY + day.getDates(), day); 
+		  } 
+	  }
+	  
+	 
 
 	/***
 	 * 通过tableName和field获取字典
