@@ -9,19 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.riking.config.Config;
+import net.riking.config.Const;
 import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.core.workflow.WorkflowMgr;
+import net.riking.service.MQReceiveService;
 import net.riking.service.impl.SysDataServiceImpl;
+import net.riking.task.MQSysInfoListener;
+import net.riking.task.MQSysMesListener;
+import net.riking.task.MQSysOptListener;
 import net.riking.util.RedisUtil;
 
 @Component
 public class StartupListener implements ServletContextListener {
-	private static final Logger logger = LogManager
-			.getLogger(StartupListener.class);
+	private static final Logger logger = LogManager.getLogger(StartupListener.class);
 
 	@Autowired
 	WorkflowMgr workflowMgr;
+
 	@Autowired
 	Config config;
 
@@ -30,15 +35,18 @@ public class StartupListener implements ServletContextListener {
 
 	@Autowired
 	SysDataServiceImpl sysDataServiceImpl;
-	
+
 	@Autowired
 	RedisConfig redisConfig;
-	
-//	@Autowired
-//	TimerManager timerManager;
-	
-//	@Autowired
-//	JedisUtil jedisUtil;
+
+	@Autowired
+	MQReceiveService mQReceiveService;
+
+	// @Autowired
+	// TimerManager timerManager;
+
+	// @Autowired
+	// JedisUtil jedisUtil;
 
 	/**
 	 * {@inheritDoc}
@@ -50,25 +58,26 @@ public class StartupListener implements ServletContextListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		RedisUtil.redisConfig = redisConfig;
 		RedisUtil.getInstall();
 		dataDictService.init();
-//		jedisUtil.init();
+		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
+		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列
+		mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
+		// jedisUtil.init();
 		sysDataServiceImpl.initData();
-//		timerManager.init();
+		// timerManager.init();
 	}
 
-	private void initWorkflow(ServletContextEvent event)
-			throws InterruptedException {
-		
+	private void initWorkflow(ServletContextEvent event) throws InterruptedException {
+
 	}
 
 	/**
 	 * Shutdown servlet context (currently a no-op method).
 	 *
-	 * @param servletContextEvent
-	 *            The servlet context event
+	 * @param servletContextEvent The servlet context event
 	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
