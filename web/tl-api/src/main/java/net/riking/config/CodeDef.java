@@ -74,11 +74,6 @@ public class CodeDef {
 
 		public static final String DATE_FOUND_EMPTY_DESC = "没有更多内容了";
 
-		//未到核销时间
-		public static final short REPORT_NOTTO_COMPLETEDATE = -986;
-
-		public static final String REPORT_NOTTO_COMPLETEDATE_DESC = "未到核销时间";
-
 // 签到失败
 		public static final short SIGN_ERROR = -986;
 
@@ -88,6 +83,16 @@ public class CodeDef {
 		public static final short EMAIL_ERROR = -985;
 
 		public static final String EMAIL_ERROR_DESC = "邮箱发送失败";
+		
+		//未到核销时间
+		public static final short REPORT_NOTTO_COMPLETEDATE_ERROR = -984;
+
+		public static final String REPORT_NOTTO_COMPLETEDATE_ERROR_DESC = "未到核销时间";
+		
+		//逾期报销不能核销
+		public static final short REPORT_EXPIRETASK_ERROR = -983;
+
+		public static final String REPORT_EXPIRETASK_ERROR_DESC = "逾期报销不能核销";
 
 	}
 

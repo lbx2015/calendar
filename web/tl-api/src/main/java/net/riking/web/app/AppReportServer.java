@@ -171,14 +171,19 @@ public class AppReportServer {
 
 		} else {// 完成
 			String currentDate = DateUtils.getDate("yyyyMMddHHmm");
-
+			
+			// 逾期任务核销，给予提示
+			if (Long.parseLong(currentDate) > Long.parseLong(relParams.getSubmitEndTime())) {
+				return new AppResp(CodeDef.EMP.REPORT_EXPIRETASK_ERROR, CodeDef.EMP.REPORT_EXPIRETASK_ERROR_DESC);
+			}
+			
 			// 未到核销时间，给予提示
 			if (Long.parseLong(currentDate) < Long.parseLong(relParams.getSubmitStartTime())) {
-				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE, CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_DESC);
+				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR, CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR_DESC);
 			}
-
+			
 			reportCompletedRelRepo.updateComplated(relParams.getUserId(), relParams.getReportId(),
-					relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), relParams.getCompletedDate());
+					relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), currentDate);
 			// 移除闹钟设置记录
 			if (null != relParams.getRemindId()) {
 				Remind entity = new Remind();

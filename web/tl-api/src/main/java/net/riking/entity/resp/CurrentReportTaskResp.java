@@ -12,7 +12,8 @@ public class CurrentReportTaskResp extends BaseEntity {
 	private String reportId;
 	private String reportCode;
 	private String reportName;//报表名称
-	private String frequencyType;//报表频度
+	private String frequency;//报表频度
+	private String reportBatch;//批次0,1,2,3,4, 其它
 	private String submitStartTime;//上报开始时间yyyyMMdd
 	private String submitEndTime;//上报结束时间yyyyMMdd
 	private String isCompleted;//是否完成：0-未完成；1-完成
@@ -37,12 +38,7 @@ public class CurrentReportTaskResp extends BaseEntity {
 	public void setReportName(String reportName) {
 		this.reportName = reportName;
 	}
-	public String getFrequencyType() {
-		return frequencyType;
-	}
-	public void setFrequencyType(String frequencyType) {
-		this.frequencyType = frequencyType;
-	}
+	
 	public String getSubmitStartTime() {
 		return submitStartTime;
 	}
@@ -73,4 +69,17 @@ public class CurrentReportTaskResp extends BaseEntity {
 	public void setRemindContent(String remindContent) {
 		this.remindContent = remindContent;
 	}
+	public String getFrequency() {
+		return frequency;
+	}
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+	public String getReportBatch() {
+		return reportBatch;
+	}
+	public void setReportBatch(String reportBatch) {
+		this.reportBatch = reportBatch;
+	}
+	
 }
