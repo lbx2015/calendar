@@ -72,7 +72,7 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	ReportSubmitCaliberRepo caliberRepo;
-
+	
 	@Override
 	public List<ReportFrequency> findAppUserReportById(String userId) {
 		// TODO Auto-generated method stub
@@ -289,75 +289,93 @@ public class ReportServiceImpl implements ReportService {
 
 		// 处理新增核销任务
 		for (String reportId : reportIdList) {
-			// 新增用户订阅报表的核销任务
-			ReportSubmitCaliber reportSubmitCaliber = reportSubmitCaliberRepo.findByReportId(reportId);
-			if (reportSubmitCaliber != null) {
-				String[] arr_month = reportSubmitCaliber.getSubmitMonth().split(",");
-
-				for (String month : arr_month) {
-					if (Integer.parseInt(month) == Integer.parseInt(_month)) {
-						// 上报开始时间
-						String submitStartTime = "";
-						// 上报截止时间
-						String submitEndTime = "";
-						Date date = null;
-						// 延后日期时间
-						String afterDateStr = "";
-						switch (reportSubmitCaliber.getFrequency()) {
-							case 0:// 日
-							case 1:// 周
-							case 2:// 旬
-							case 3:// 月
-							case 4:// 季
-								date = DateUtils.parseDate(_year + _month + "01");
-								submitStartTime = _year + _month + "01";
-								break;
-							case 5:// 半年
-								if (Integer.parseInt(_month) < 7) {// 添加上半年的半年报
-									date = DateUtils.parseDate(_year + "0601");
-									submitStartTime = _year + "0601";
-								} else {// 添加上半年的半年报
-									date = DateUtils.parseDate(_year + "1201");
-									submitStartTime = _year + "1201";
+			List<String> yearList = sysDaysRepo.findEnabledOnlyYear();
+			for(String year : yearList){
+				int _mth = Integer.parseInt(_month);
+				if(Integer.parseInt(_year) <= Integer.parseInt(year)){
+					if(Integer.parseInt(_year) < Integer.parseInt(year)){
+						_year = year;
+						_mth = 1;
+					}
+					// 新增用户订阅报表的核销任务
+					ReportSubmitCaliber reportSubmitCaliber = reportSubmitCaliberRepo.findByReportId(reportId);
+					if (reportSubmitCaliber != null) {
+						for(int i=_mth; i <=12; i++){
+							_mth = i;
+							_month = _mth < 10 ? "0" + _mth : _mth + "";
+							
+							String[] arr_month = reportSubmitCaliber.getSubmitMonth().split(",");
+							
+							for (String month : arr_month) {
+								if (Integer.parseInt(month) == Integer.parseInt(_month)) {
+									// 上报开始时间
+									String submitStartTime = "";
+									// 上报截止时间
+									String submitEndTime = "";
+									Date date = null;
+									// 延后日期时间
+									String afterDateStr = "";
+									switch (reportSubmitCaliber.getFrequency()) {
+										case 0:// 日
+										case 1:// 周
+										case 2:// 旬
+										case 3:// 月
+										case 4:// 季
+											date = DateUtils.parseDate(_year + _month + "01");
+											submitStartTime = _year + _month + "01";
+											break;
+										case 5:// 半年
+											if (Integer.parseInt(_month) < 7) {// 添加上半年的半年报
+												date = DateUtils.parseDate(_year + "0601");
+												submitStartTime = _year + "0601";
+											} else {// 添加上半年的半年报
+												date = DateUtils.parseDate(_year + "1201");
+												submitStartTime = _year + "1201";
+											}
+											break;
+										case 6:// 年
+											date = DateUtils.parseDate(_year + "12" + "01");
+											submitStartTime = _year + "1201";
+											break;
+									}
+			
+									// 根据天数得到日期yyyyMMdd
+									afterDateStr = DateUtils.getDateByDays(date, reportSubmitCaliber.getDelayDates() - 1);
+									
+									//获取年份是否有国家节假日
+									String afterYear = afterDateStr.substring(0,4);
+									if(yearList.contains(afterYear)){
+										// 未来日期>=当前日期，新增任务
+										if (Integer.parseInt(currentDate) <= Integer.parseInt(afterDateStr)) {
+											submitStartTime += "0000";
+											
+											// 判断是否与国家节假日，延迟上报截止时间
+											afterDateStr = Utils.getWorkday(afterDateStr);
+											logger.info("afterDateStr={}", afterDateStr);
+											
+											submitEndTime = afterDateStr + reportSubmitCaliber.getSubmitTime();
+											logger.info("submitStartTime={}, submitEndTime={}", submitStartTime, submitEndTime);
+				
+											ReportCompletedRel data = reportCompletedRelRepo.findByOne(userId, reportId,
+													submitStartTime, submitEndTime);
+											if (data == null) {
+												data = new ReportCompletedRel();
+												data.setUserId(userId);
+												data.setReportId(reportId);
+												data.setIsCompleted(0);
+												// yyyyMMddHHmm
+												data.setSubmitStartTime(submitStartTime);
+												data.setSubmitEndTime(submitEndTime);
+												reportCompletedRelRepo.save(data);
+											}
+										}
+									}
 								}
-								break;
-							case 6:// 年
-								date = DateUtils.parseDate(_year + "12" + "01");
-								submitStartTime = _year + "1201";
-								break;
-						}
-
-						// 根据天数得到日期yyyyMMdd
-						afterDateStr = DateUtils.getDateByDays(date, reportSubmitCaliber.getDelayDates() - 1);
-
-						// 未来日期>=当前日期，新增任务
-						if (Integer.parseInt(currentDate) <= Integer.parseInt(afterDateStr)) {
-							submitStartTime += "0000";
-
-							// 判断是否与国家节假日，延迟上报截止时间
-							afterDateStr = Utils.getWorkday(afterDateStr);
-							logger.info("afterDateStr={}", afterDateStr);
-
-							submitEndTime = afterDateStr + reportSubmitCaliber.getSubmitTime();
-							logger.info("submitStartTime={}, submitEndTime={}", submitStartTime, submitEndTime);
-
-							ReportCompletedRel data = reportCompletedRelRepo.findByOne(userId, reportId,
-									submitStartTime, submitEndTime);
-							if (data == null) {
-								data = new ReportCompletedRel();
-								data.setUserId(userId);
-								data.setReportId(reportId);
-								data.setIsCompleted(0);
-								// yyyyMMddHHmm
-								data.setSubmitStartTime(submitStartTime);
-								data.setSubmitEndTime(submitEndTime);
-								reportCompletedRelRepo.save(data);
+			
 							}
 						}
 					}
-
 				}
-
 			}
 		}
 

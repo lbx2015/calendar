@@ -36,7 +36,7 @@ public class SysDays extends BaseEntity {
 	@Column(name = "is_holiday")
 	private Integer isHoliday;
 
-	@Comment("用户状态 0-禁用 1-启用")
+	@Comment("国家节假日是否启用： 0-禁用 1-启用")
 	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "enabled", nullable = false, precision = 1)
 	private Integer enabled;
