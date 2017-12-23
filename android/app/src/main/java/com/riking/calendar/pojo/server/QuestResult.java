@@ -3,9 +3,8 @@ package com.riking.calendar.pojo.server;
 import java.util.Date;
 
 public class QuestResult {
-
-    //	@Comment("物理主键")
-//	@JsonProperty("questionId")
+//    @Comment("物理主键")
+//    @JsonProperty("questionId")
     public String questionId;
 
 //    @Comment("标题")
@@ -33,6 +32,14 @@ public class QuestResult {
     // 用户名
 //    @Transient
     public String userName;
+
+    // 经验值
+//    @Transient
+    public int experience;
+
+    // 经验值
+//    @Transient
+    public int grade;
 
     // 用户头像Url
 //    @Transient

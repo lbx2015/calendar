@@ -44,6 +44,7 @@ import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
@@ -676,7 +677,25 @@ public class APIClient {
         apiInterface.getReports(params).enqueue(c);
     }
 
-    public static void getUserOperationInfo(@Body UserParams params, ZCallBack<ResponseModel<UserOperationInfo>> c) {
+    public static void getUserOperationInfo(UserParams params, ZCallBack<ResponseModel<UserOperationInfo>> c) {
         apiInterface.getUserOperationInfo(params).enqueue(c);
+    }
+
+    public static void getUserDynamicComments(UserFollowParams params, ZCallBack<ResponseModel<List<QACommentResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 1;
+        apiInterface.getUserDynamicComments(params).enqueue(c);
+    }
+
+    public static void getUserDynamicAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 2;
+        apiInterface.getUserDynamicAnswers(params).enqueue(c);
+    }
+
+    public static void getUserDynamicQuestions(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 3;
+        apiInterface.getUserDynamicQuestions(params).enqueue(c);
     }
 }
