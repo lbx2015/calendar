@@ -40,6 +40,7 @@ import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
@@ -344,4 +345,31 @@ public interface APIInterface {
 
     @POST("user/getOperateNumber")
     Call<ResponseModel<UserOperationInfo>> getUserOperationInfo(@Body UserParams params);
+
+    /**
+     * 我的动态：评论列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QACommentResult>>> getUserDynamicComments(@Body UserFollowParams params);
+
+    /**
+     * * 我的动态：回答列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QAnswerResult>>> getUserDynamicAnswers(@Body UserFollowParams params);
+
+    /**
+     * * 我的动态：问题列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QuestResult>>> getUserDynamicQuestions(@Body UserFollowParams params);
 }

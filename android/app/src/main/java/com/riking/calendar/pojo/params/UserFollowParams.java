@@ -10,8 +10,11 @@ package com.riking.calendar.pojo.params;
  */
 public class UserFollowParams extends BaseParams {
 
-	// 1-话题，2-话题，3-用户
+	// 1-问题，2-话题，3-用户
 	public int objType;
+
+	// 目标对象的userId
+	public String toUserId;
 
 	// 1-评论；2-回答；3-提问
 	public int optType;

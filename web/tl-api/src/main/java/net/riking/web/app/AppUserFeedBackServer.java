@@ -86,7 +86,6 @@ public class AppUserFeedBackServer {
 				fileNames.add(photoName);
 			}
 		} catch (RuntimeException e) {
-			// TODO: handle exception
 			if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) {
 				return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
 			}
@@ -103,6 +102,6 @@ public class AppUserFeedBackServer {
 		if (mFiles.length == 0) {
 			return new AppResp("上传图片为空", CodeDef.SUCCESS);
 		}
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 }

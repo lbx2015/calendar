@@ -1,11 +1,11 @@
 package com.riking.calendar.fragment;
 
-import com.riking.calendar.adapter.AnswerCommentListAdapter;
+import com.riking.calendar.adapter.MyDynamicAnswerCommentListAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.params.QAnswerParams;
-import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.params.UserFollowParams;
+import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZToast;
 
@@ -15,11 +15,12 @@ import java.util.List;
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class AnswerCommentsFragment extends ZFragment<AnswerCommentListAdapter> {
+public class AnswerCommentsFragment extends ZFragment<MyDynamicAnswerCommentListAdapter> {
     @Override
-    public AnswerCommentListAdapter getAdapter() {
-        return new AnswerCommentListAdapter(getContext());
+    public MyDynamicAnswerCommentListAdapter getAdapter() {
+        return new MyDynamicAnswerCommentListAdapter(getContext());
     }
+
     public void initViews() {
     }
 
@@ -31,12 +32,14 @@ public class AnswerCommentsFragment extends ZFragment<AnswerCommentListAdapter> 
     }
 
     private void loadAnswerComments(final int page) {
-        QAnswerParams params = new QAnswerParams();
-        APIClient.qACommentList(params, new ZCallBack<ResponseModel<List<QAComment>>>() {
+        UserFollowParams params = new UserFollowParams();
+        params.pindex = page;
+        APIClient.getUserDynamicComments(params, new ZCallBack<ResponseModel<List<QACommentResult>>>() {
             @Override
-            public void callBack(ResponseModel<List<QAComment>> response) {
-                List<QAComment> comments = response._data;
+            public void callBack(ResponseModel<List<QACommentResult>> response) {
+                List<QACommentResult> comments = response._data;
                 isLoading = false;
+                mPullToLoadView.setComplete();
                 if (comments.size() == 0) {
                     ZToast.toast("没有更多数据了");
                     return;
