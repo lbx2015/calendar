@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.AnswerCommentsFragment;
+import com.riking.calendar.fragment.MyAnswersFragment;
+import com.riking.calendar.fragment.MyDynamicQuestionFragment;
 import com.riking.calendar.fragment.SearchNewsFragment;
 import com.riking.calendar.fragment.SearchPersonFragment;
 import com.riking.calendar.fragment.SearchReportsFragment;
@@ -27,7 +29,7 @@ import com.riking.calendar.fragment.SearchTopicFragment;
 
 public class MyStateActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new AnswerCommentsFragment(), new SearchTopicFragment(), new SearchPersonFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new AnswerCommentsFragment(), new MyAnswersFragment(), new MyDynamicQuestionFragment()};
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
