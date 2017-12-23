@@ -214,16 +214,23 @@ public class AppReportServer {
 				String submitEndDateDay = data.getSubmitEndTime().substring(6, 8);
 				for (int i = 1; i <= Integer.parseInt(submitEndDateDay); i++) {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
-					if (!taskDateList.contains(_date))
+					if (!taskDateList.contains(_date)){
+						// 判断是否与国家节假日，延迟上报截止时间
+						_date = Utils.getWorkday(_date);
 						taskDateList.add(_date);
+					}
+						
 				}
 			} else {
 				// 非当月，则添加当月所有日期
 				int _daysOfMonth = DateUtils.getDaysByMonth(currentMonth);
 				for (int i = 1; i <= _daysOfMonth; i++) {
 					String _date = currentMonth + (i < 10 ? "0" + i : i);
-					if (!taskDateList.contains(_date))
+					if (!taskDateList.contains(_date)){
+						// 判断是否与国家节假日，延迟上报截止时间
+						_date = Utils.getWorkday(_date);
 						taskDateList.add(_date);
+					}
 				}
 			}
 		}

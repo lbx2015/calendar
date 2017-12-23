@@ -213,8 +213,7 @@ public class Utils {
 			//如果是节假日，就延后一天，直到返回非节假日
 			if(sysDays.getIsHoliday() == 1){
 				Date date = DateUtils.parseDate(afterDates);
-				String day = DateUtils.getDateByDays(date, 1);
-				afterDates = afterDates.substring(0, 6) + day;
+				afterDates = DateUtils.getDateByDays(date, 1);
 				return getWorkday(afterDates);
 			}
 		}
