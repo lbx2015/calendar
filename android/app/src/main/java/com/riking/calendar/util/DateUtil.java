@@ -148,6 +148,10 @@ public class DateUtil {
         return reqTimeStamp;
     }
 
+    public static String showTime(Date date) {
+        return DateUtil.showTime(date, CONST.yyyy_mm_dd_hh_mm);
+    }
+
     /**
      * 显示时间，如果与当前时间差别小于一天，则自动用**秒(分，小时)前，如果大于一天则用format规定的格式显示
      *
