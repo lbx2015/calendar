@@ -192,9 +192,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="60dp"
                         android:orientation="vertical"
-                        android:visibility="gone"
-                        android:layout_marginTop="60dp">
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -215,11 +215,11 @@
                         <TextView
                             android:layout_width="160dp"
                             android:layout_height="44dp"
-                            android:textSize="17sp"
+                            android:background="@drawable/rounded_order_report_rectangle"
                             android:gravity="center"
                             android:text="立即订阅"
                             android:textColor="@android:color/white"
-                            android:background="@drawable/rounded_order_report_rectangle"/>
+                            android:textSize="17sp" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>

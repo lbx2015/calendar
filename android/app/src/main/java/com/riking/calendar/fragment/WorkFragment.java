@@ -635,11 +635,15 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                 && (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0)) {
             notDoneReportTextView.setVisibility(View.GONE);
             isEmpty++;
+        } else {
+            notDoneReportTextView.setVisibility(View.VISIBLE);
         }
 
         if (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0) {
             doneReportTextView.setVisibility(View.GONE);
             isEmpty++;
+        } else {
+            doneReportTextView.setVisibility(View.VISIBLE);
         }
 
         MyLog.d("isEmpty " + isEmpty);
