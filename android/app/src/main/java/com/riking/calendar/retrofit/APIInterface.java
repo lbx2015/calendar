@@ -389,4 +389,7 @@ public interface APIInterface {
     //当天报表
     @POST("report/findCurrentTasks")
     Call<ResponseModel<List<CurrentReportTaskResp>>> findCurrentTasks(@Body RCompletedRelParams param);
+
+    @POST("topicQuestion/inquiry")
+    Call<ResponseModel<String>> getEditHtmlUrl(@Body TQuestionParams params);
 }

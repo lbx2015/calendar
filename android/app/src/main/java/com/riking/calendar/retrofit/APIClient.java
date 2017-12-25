@@ -720,4 +720,8 @@ public class APIClient {
         params.objType = 1;
         apiInterface.getMyFollowQuestion(params).enqueue(c);
     }
+
+    public static void getEditHtmlUrl(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.getEditHtmlUrl(params).enqueue(c);
+    }
 }

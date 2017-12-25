@@ -208,9 +208,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
         h.itemCator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, TopicActivity.class);
-                i.putExtra(CONST.TOPIC_ID, r.topicId);
-                ZGoto.to(i);
+                //go to topic detail on click
+                if (r.pushType == 1) {
+                    Intent i = new Intent(context, TopicActivity.class);
+                    i.putExtra(CONST.TOPIC_ID, r.topicId);
+                    ZGoto.to(i);
+                }
             }
         });
 
