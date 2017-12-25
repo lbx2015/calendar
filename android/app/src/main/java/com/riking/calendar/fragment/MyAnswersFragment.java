@@ -27,7 +27,6 @@ public class MyAnswersFragment extends ZFragment<MyAnswersAdapter> {
     }
 
     public void initEvents() {
-
     }
 
     public void loadData(final int page) {

@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddTopicActivity;
 import com.riking.calendar.adapter.base.ZAdater;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.SearchTopicViewHolder;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,TopicResult> {
+public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,Topic> {
     private Context context;
 
     public TopicsAdapter(Context context) {
@@ -34,7 +35,7 @@ public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,TopicResult> {
 
     @Override
     public void onBindVH(final SearchTopicViewHolder h, int i) {
-        TopicResult r = mList.get(i);
+        Topic r = mList.get(i);
         h.title.setText(r.title);
         h.followButton.setVisibility(View.GONE);
         h.summary.setText(ZR.getNumberString(r.followNum) + "人关注");

@@ -17,16 +17,12 @@ import com.riking.calendar.R;
 import com.riking.calendar.fragment.AnswerCommentsFragment;
 import com.riking.calendar.fragment.MyAnswersFragment;
 import com.riking.calendar.fragment.MyDynamicQuestionFragment;
+import com.riking.calendar.fragment.MyFollowTopicFragment;
 import com.riking.calendar.fragment.MyFollowerPersonFragment;
-
-/**
- * Created by zw.zhang on 2017/7/24.
- * answer comments page
- */
 
 public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFollowerPersonFragment(), new MyAnswersFragment(), new MyDynamicQuestionFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFollowerPersonFragment(), new MyFollowTopicFragment(), new MyDynamicQuestionFragment()};
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
@@ -95,11 +91,10 @@ public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
                 case 0:
                     return "评论";
                 case 1:
-                    return "回答";
+                    return "话题";
                 case 2:
-                    return "提问";
+                    return "问题";
             }
-
             return null;
         }
     }

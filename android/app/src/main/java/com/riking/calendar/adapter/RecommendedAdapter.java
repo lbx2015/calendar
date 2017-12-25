@@ -13,6 +13,7 @@ import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZR;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.RecommendedViewHolder> {
     //    @Comment("可能感兴趣的话题")
-    public List<TopicResult> topicResults;
+    public List<Topic> topicResults;
 
     //    @Comment("可能感兴趣的人")
     public List<AppUserResult> appUserResults;
@@ -45,7 +46,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         switch (type) {
             //topic
             case 6: {
-                TopicResult topicResult = topicResults.get(position);
+                Topic topicResult = topicResults.get(position);
                 setFollowClickListener(holder, topicResult);
                 holder.recommendedTv.setText(topicResult.title);
                 break;
@@ -80,7 +81,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         }
     }
 
-    private void setFollowClickListener(final RecommendedViewHolder h, final TopicResult topic) {
+    private void setFollowClickListener(final RecommendedViewHolder h, final Topic topic) {
         h.followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {

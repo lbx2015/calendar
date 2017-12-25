@@ -21,6 +21,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.TopicsAdapter;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -155,12 +156,12 @@ public class AddTopicActivity extends AppCompatActivity {
                         return;
                     }
 
-                    TypeToken<ResponseModel<List<TopicResult>>> token = new TypeToken<ResponseModel<List<TopicResult>>>() {
+                    TypeToken<ResponseModel<List<Topic>>> token = new TypeToken<ResponseModel<List<Topic>>>() {
                     };
 
-                    ResponseModel<List<TopicResult>> responseModel = s.fromJson(sourceString, token.getType());
+                    ResponseModel<List<Topic>> responseModel = s.fromJson(sourceString, token.getType());
 
-                    List<TopicResult> list = responseModel._data;
+                    List<Topic> list = responseModel._data;
 
                     mAdapter.setData(list);
                 } catch (IOException e) {

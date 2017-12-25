@@ -23,7 +23,7 @@ import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
-import com.riking.calendar.pojo.server.TopicResult;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -72,7 +72,7 @@ public class SearchTopicFragment extends Fragment implements PerformInputSearch 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new SearchTopicAdapter(getContext());
+        mAdapter = new SearchTopicAdapter();
         mRecyclerView.setAdapter(mAdapter);
         //no pagination
         mPullToLoadView.isLoadMoreEnabled(false);
@@ -150,15 +150,15 @@ public class SearchTopicFragment extends Fragment implements PerformInputSearch 
                         return;
                     }
 
-                    TypeToken<ResponseModel<List<TopicResult>>> token = new TypeToken<ResponseModel<List<TopicResult>>>() {
+                    TypeToken<ResponseModel<List<Topic>>> token = new TypeToken<ResponseModel<List<Topic>>>() {
                     };
 
-                    ResponseModel<List<TopicResult>> responseModel = s.fromJson(sourceString, token.getType());
+                    ResponseModel<List<Topic>> responseModel = s.fromJson(sourceString, token.getType());
                     if (mPullToLoadView != null) {
                         mPullToLoadView.setComplete();
                     }
 
-                    List<TopicResult> list = responseModel._data;
+                    List<Topic> list = responseModel._data;
 
                     if (list.isEmpty()) {
                         Toast.makeText(getContext(), "没有更多数据了",
