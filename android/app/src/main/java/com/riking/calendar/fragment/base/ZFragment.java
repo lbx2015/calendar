@@ -97,15 +97,15 @@ public abstract class ZFragment<T extends RecyclerView.Adapter> extends Fragment
 
         if (mPullToLoadView != null) {
             mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mPullToLoadView != null && isLoading) {
-                        ZToast.toast("加载失败");
-                        mPullToLoadView.setComplete();
-                    }
-                }
-            }, 10000);
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (mPullToLoadView != null && isLoading) {
+//                        ZToast.toast("加载失败");
+//                        mPullToLoadView.setComplete();
+//                    }
+//                }
+//            }, 10000);
         }
 
         loadData(page);
