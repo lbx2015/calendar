@@ -25,6 +25,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
 import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
@@ -36,6 +37,7 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
@@ -295,6 +297,12 @@ public interface APIInterface {
     @POST("userFollow/myFollow")
     Call<ResponseModel<List<AppUserResult>>> getMyFavoriteUsers(@Body UserFollowParams params);
 
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<Topic>>> getMyFollowTopic(@Body UserFollowParams params);
+
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<QuestResult>>> getMyFollowQuestion(@Body UserFollowParams params);
+
     /**
      * The users which following me
      *
@@ -374,6 +382,14 @@ public interface APIInterface {
     @POST("userDynamic/myDynamic")
     Call<ResponseModel<List<QuestResult>>> getUserDynamicQuestions(@Body UserFollowParams params);
 
+    //当月打点
     @POST("report/getTaskDate")
     Call<ResponseModel<List<String>>> getTaskDates(@Body ReportCompletedRelParam param);
+
+    //当天报表
+    @POST("report/findCurrentTasks")
+    Call<ResponseModel<List<CurrentReportTaskResp>>> findCurrentTasks(@Body RCompletedRelParams param);
+
+    @POST("topicQuestion/inquiry")
+    Call<ResponseModel<String>> getEditHtmlUrl(@Body TQuestionParams params);
 }

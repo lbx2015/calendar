@@ -12,6 +12,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +21,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithoutProgress;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 
 import java.text.DecimalFormat;
@@ -140,6 +146,108 @@ public class ZR {
             userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
         } else {
             userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+    }
+
+    public static void showPersonFollowStatus(View followButton, TextView followTv, int isFollow) {
+        if (isFollow == 0) {
+            followTv.setText("关注");
+            followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
+            followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border));
+        } else if (isFollow == 1) {
+            followTv.setText("已关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            followTv.setTextColor(ZR.getColor(R.color.color_999999));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
+        } else if (isFollow == 2) {
+            followTv.setText("互相关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            followTv.setTextColor(ZR.getColor(R.color.color_999999));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
+        }
+    }
+
+    public static void setFollowPersonClickListner(final AppUserResult user, final View followButton, final TextView followTv) {
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final TQuestionParams params = new TQuestionParams();
+                params.attentObjId = user.userId;
+                //follow user
+                params.objType = 3;
+                //followed
+                if (user.isFollow == 0) {
+                    params.enabled = 1;
+                } else {
+                    params.enabled = 0;
+                }
+
+                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        int status = Integer.parseInt(response._data);
+                        user.isFollow = status;
+                        if (user.isFollow == 0) {
+                            ZToast.toast("取消关注");
+                        } else {
+                            ZToast.toast("关注成功");
+                        }
+                        showPersonFollowStatus(followButton, followTv, status);
+                    }
+                });
+            }
+        });
+    }
+
+    public static void setTopicFollowClickListener(final Topic topic, final View followButton, final TextView followTv) {
+        followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                //adding null protection
+                if (topic == null) {
+                    return;
+                }
+                final TQuestionParams params = new TQuestionParams();
+                params.attentObjId = topic.topicId;
+                //topic
+                params.objType = 2;
+                //followed
+                if (topic.isFollow == 1) {
+                    params.enabled = 0;
+                } else {
+                    params.enabled = 1;
+                }
+
+                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        topic.isFollow = params.enabled;
+                        if (topic.isFollow == 1) {
+                            ZToast.toast("关注成功");
+                        } else {
+                            ZToast.toast("取消关注");
+                        }
+                        showTopicFollowStatus(followButton, followTv, params.enabled);
+                    }
+                });
+            }
+        });
+    }
+
+    public static void showTopicFollowStatus(View followButton, TextView followTv, int isFollow) {
+        if (isFollow == 0) {
+            followTv.setText("关注");
+            followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
+            followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border));
+        } else {
+            followTv.setText("已关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            followTv.setTextColor(ZR.getColor(R.color.color_999999));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
         }
     }
 

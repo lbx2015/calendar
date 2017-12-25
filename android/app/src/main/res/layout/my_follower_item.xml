@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
 
     <com.riking.calendar.view.CircleImageView
         android:id="@+id/user_icon"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:src="@drawable/user_icon_head_notlogin"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:src="@drawable/user_icon_head_notlogin" />
 
     <LinearLayout
         android:id="@+id/topic_info"

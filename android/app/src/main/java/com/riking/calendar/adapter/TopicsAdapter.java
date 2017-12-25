@@ -10,21 +10,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AddTopicActivity;
 import com.riking.calendar.adapter.base.ZAdater;
-import com.riking.calendar.pojo.server.TopicResult;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.SearchTopicViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class TopicsAdapter extends ZAdater<SearchTopicViewHolder> {
+public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,Topic> {
     private Context context;
-    private List<TopicResult> mList;
 
     public TopicsAdapter(Context context) {
         this.context = context;
-        mList = new ArrayList<>();
     }
 
     @Override
@@ -36,7 +31,7 @@ public class TopicsAdapter extends ZAdater<SearchTopicViewHolder> {
 
     @Override
     public void onBindVH(final SearchTopicViewHolder h, int i) {
-        TopicResult r = mList.get(i);
+        Topic r = mList.get(i);
         h.title.setText(r.title);
         h.followButton.setVisibility(View.GONE);
         h.summary.setText(ZR.getNumberString(r.followNum) + "人关注");
@@ -56,19 +51,4 @@ public class TopicsAdapter extends ZAdater<SearchTopicViewHolder> {
         });
     }
 
-
-    @Override
-    public int getCount() {
-        return mList.size();
-    }
-
-    public void setData(List<TopicResult> s) {
-        mList = s;
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
-    }
 }

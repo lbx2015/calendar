@@ -131,7 +131,7 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment æ•°ç
                 }
                 isLoading = false;
                 nextPage = page + 1;
-                mAdapter.addAll(list);
+                mAdapter.setData(list);
             }
         });
        /* new Handler().postDelayed(new Runnable() {
