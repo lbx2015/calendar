@@ -8,7 +8,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.Topic;
-import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.SearchTopicViewHolder;
 

@@ -11,12 +11,8 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.AddTopicActivity;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.Topic;
-import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.SearchTopicViewHolder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,Topic> {

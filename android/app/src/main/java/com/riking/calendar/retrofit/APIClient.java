@@ -709,4 +709,10 @@ public class APIClient {
     public static void findCurrentTasks(RCompletedRelParams param, ZCallBack<ResponseModel<List<CurrentReportTaskResp>>> c) {
         apiInterface.findCurrentTasks(param).enqueue(c);
     }
+
+    public static void getMyFollow(UserFollowParams params, ZCallBack<ResponseModel<List<Topic>>> c) {
+        //get topics
+        params.objType = 2;
+        apiInterface.getMyFollowTopic(params).enqueue(c);
+    }
 }

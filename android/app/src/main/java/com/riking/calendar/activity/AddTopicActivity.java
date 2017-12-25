@@ -22,7 +22,6 @@ import com.riking.calendar.adapter.TopicsAdapter;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.server.Topic;
-import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;

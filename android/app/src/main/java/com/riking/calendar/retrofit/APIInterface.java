@@ -297,6 +297,9 @@ public interface APIInterface {
     @POST("userFollow/myFollow")
     Call<ResponseModel<List<AppUserResult>>> getMyFavoriteUsers(@Body UserFollowParams params);
 
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<Topic>>> getMyFollowTopic(@Body UserFollowParams params);
+
     /**
      * The users which following me
      *

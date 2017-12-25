@@ -14,7 +14,6 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Topic;
-import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;

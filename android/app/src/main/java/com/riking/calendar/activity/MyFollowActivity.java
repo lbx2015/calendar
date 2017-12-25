@@ -89,7 +89,7 @@ public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "评论";
+                    return "用户";
                 case 1:
                     return "话题";
                 case 2:

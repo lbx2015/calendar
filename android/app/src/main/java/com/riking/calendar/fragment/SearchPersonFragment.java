@@ -23,7 +23,6 @@ import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.server.AppUserResult;
-import com.riking.calendar.pojo.server.TopicResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
