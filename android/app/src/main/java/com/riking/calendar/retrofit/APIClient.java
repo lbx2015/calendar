@@ -724,4 +724,14 @@ public class APIClient {
     public static void getEditHtmlUrl(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.getEditHtmlUrl(params).enqueue(c);
     }
+
+    public static void getMyCollectAnswer(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        params.objType = 1;
+        apiInterface.getMyCollectAnswer(params).enqueue(c);
+    }
+
+    public static void getMyCollectNews(UserFollowParams params, ZCallBack<ResponseModel<List<News>>> c) {
+        params.objType = 2;
+        apiInterface.getMyCollectNews(params).enqueue(c);
+    }
 }

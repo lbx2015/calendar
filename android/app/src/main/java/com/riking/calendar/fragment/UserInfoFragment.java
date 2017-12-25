@@ -16,6 +16,7 @@ import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.FeedBackActivity;
 import com.riking.calendar.activity.LoginNavigateActivity;
+import com.riking.calendar.activity.MyCollectActivity;
 import com.riking.calendar.activity.MyFavoritesUserActivity;
 import com.riking.calendar.activity.MyFollowActivity;
 import com.riking.calendar.activity.MyFollowersActivity;
@@ -76,6 +77,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
 
     View trendLayout;
     View followLayout;
+    View collecLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,6 +137,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initViews() {
+        collecLayout = v.findViewById(R.id.my_favorite_layout);
         followLayout = v.findViewById(R.id.my_follow_layout);
         trendLayout = v.findViewById(R.id.my_trend_layout);
         suggestionLayout = v.findViewById(R.id.suggestion_layout);
@@ -156,6 +159,12 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initEvents() {
+        collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                ZGoto.to(MyCollectActivity.class);
+            }
+        });
         setLayout.setOnClickListener(this);
         userInfoRelativeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override

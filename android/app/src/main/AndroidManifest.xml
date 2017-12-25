@@ -122,6 +122,7 @@
         <activity android:name=".activity.MyFavoritesUserActivity"></activity>
         <activity android:name=".activity.MyStateActivity"></activity>
         <activity android:name=".activity.MyFollowActivity"></activity>
+        <activity android:name=".activity.MyCollectActivity"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"

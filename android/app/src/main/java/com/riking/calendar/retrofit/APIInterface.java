@@ -392,4 +392,11 @@ public interface APIInterface {
 
     @POST("topicQuestion/inquiry")
     Call<ResponseModel<String>> getEditHtmlUrl(@Body TQuestionParams params);
+
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<QAnswerResult>>> getMyCollectAnswer(@Body UserFollowParams params);
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<News>>> getMyCollectNews(@Body UserFollowParams params);
 }
