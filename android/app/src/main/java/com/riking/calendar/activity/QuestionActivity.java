@@ -83,6 +83,11 @@ public class QuestionActivity extends AppCompatActivity {
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                if (question == null) {
+                    ZToast.toast("数据加载失败");
+                    return;
+                }
+
                 final TQuestionParams params = new TQuestionParams();
                 params.attentObjId = question.topicQuestionId;
                 //question

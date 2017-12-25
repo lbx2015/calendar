@@ -715,4 +715,9 @@ public class APIClient {
         params.objType = 2;
         apiInterface.getMyFollowTopic(params).enqueue(c);
     }
+
+    public static void getMyFollowQuestion(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+        params.objType = 1;
+        apiInterface.getMyFollowQuestion(params).enqueue(c);
+    }
 }

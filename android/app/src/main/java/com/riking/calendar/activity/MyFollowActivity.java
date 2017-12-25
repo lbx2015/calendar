@@ -12,27 +12,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.AnswerCommentsFragment;
-import com.riking.calendar.fragment.MyAnswersFragment;
 import com.riking.calendar.fragment.MyDynamicQuestionFragment;
 import com.riking.calendar.fragment.MyFollowTopicFragment;
 import com.riking.calendar.fragment.MyFollowerPersonFragment;
+import com.riking.calendar.fragment.MyFollowingQuestionFragment;
 
 public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFollowerPersonFragment(), new MyFollowTopicFragment(), new MyDynamicQuestionFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFollowerPersonFragment(), new MyFollowTopicFragment(), new MyFollowingQuestionFragment()};
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
+    private TextView activityTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_state);
-
+        activityTitle = findViewById(R.id.activity_title);
+        activityTitle.setText("我的关注");
         Intent i = getIntent();
         init();
     }

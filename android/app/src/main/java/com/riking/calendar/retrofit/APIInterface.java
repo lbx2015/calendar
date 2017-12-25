@@ -300,6 +300,9 @@ public interface APIInterface {
     @POST("userFollow/myFollow")
     Call<ResponseModel<List<Topic>>> getMyFollowTopic(@Body UserFollowParams params);
 
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<QuestResult>>> getMyFollowQuestion(@Body UserFollowParams params);
+
     /**
      * The users which following me
      *
