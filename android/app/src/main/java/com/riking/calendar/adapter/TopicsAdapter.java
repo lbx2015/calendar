@@ -18,13 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TopicsAdapter extends ZAdater<SearchTopicViewHolder> {
+public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,TopicResult> {
     private Context context;
-    private List<TopicResult> mList;
 
     public TopicsAdapter(Context context) {
         this.context = context;
-        mList = new ArrayList<>();
     }
 
     @Override
@@ -56,19 +54,4 @@ public class TopicsAdapter extends ZAdater<SearchTopicViewHolder> {
         });
     }
 
-
-    @Override
-    public int getCount() {
-        return mList.size();
-    }
-
-    public void setData(List<TopicResult> s) {
-        mList = s;
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
-    }
 }

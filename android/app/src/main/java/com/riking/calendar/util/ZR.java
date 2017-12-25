@@ -12,6 +12,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -140,6 +141,26 @@ public class ZR {
             userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
         } else {
             userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+    }
+
+    public static void showInvited(View followButton, TextView followTv, int isFollow) {
+        if (isFollow == 0) {
+            followTv.setText("关注");
+            followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
+            followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border));
+        } else if (isFollow == 1) {
+            followTv.setText("已关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            followTv.setTextColor(ZR.getColor(R.color.color_999999));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
+        } else if (isFollow == 2) {
+            followTv.setText("互相关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            followTv.setTextColor(ZR.getColor(R.color.color_999999));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
         }
     }
 

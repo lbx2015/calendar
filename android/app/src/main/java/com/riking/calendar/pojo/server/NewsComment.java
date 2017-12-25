@@ -1,6 +1,5 @@
 package com.riking.calendar.pojo.server;
 
-import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
 import java.util.List;
@@ -51,6 +50,10 @@ public class NewsComment extends BaseAuditProp {
     // 用户经验值
 //	@Transient
     public Integer experience;
+
+    // 等级
+//    @Transient
+    public Integer grade;
 
     // 评论的回复list
 //	@Transient

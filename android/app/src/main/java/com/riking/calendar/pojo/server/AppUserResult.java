@@ -30,6 +30,6 @@ public class AppUserResult {
     //    @Comment("是否已关注 0-未关注，1-已关注")
     public int isFollow;
 
-    //    @Comment("是否已邀请 0-未邀请，1-已邀请")
+    // @Comment("是否已邀请 0-未邀请，1-已邀请 2 互相关注")
     public int isInvited;
 }

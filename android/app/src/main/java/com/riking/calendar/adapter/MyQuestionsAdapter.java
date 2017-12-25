@@ -12,24 +12,19 @@ import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class MyQuestionsAdapter extends ZAdater<MyQuestionsAdapter.MyViewHolder> {
+public class MyQuestionsAdapter extends ZAdater<MyQuestionsAdapter.MyViewHolder, QuestResult> {
     private Context context;
-    private List<QuestResult> mList;
 
     public MyQuestionsAdapter(Context context) {
         this.context = context;
-        mList = new ArrayList<>();
     }
 
     @Override
     public void onBindVH(MyViewHolder holder, int position) {
         final QuestResult question = mList.get(position);
         holder.titleTV.setText(question.title);
-        holder.contentTv.setVisibility(View.VISIBLE);
+        holder.contentTv.setVisibility(View.GONE);
         holder.timeTv.setText(DateUtil.showTime(question.createdTime));
     }
 
@@ -38,21 +33,6 @@ public class MyQuestionsAdapter extends ZAdater<MyQuestionsAdapter.MyViewHolder>
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.my_dynamic_answers_item, viewGroup, false);
         return new MyQuestionsAdapter.MyViewHolder(view);
-    }
-
-    @Override
-    public int getCount() {
-        return mList.size();
-    }
-
-    public void setData(List<QuestResult> data) {
-        this.mList = data;
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
     }
 
     class MyViewHolder extends ZViewHolder {

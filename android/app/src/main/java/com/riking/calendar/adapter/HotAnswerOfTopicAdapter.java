@@ -48,7 +48,7 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
         final QAnswerResult qAnswerResult = mList.get(i);
         h.answerTitle.setText(qAnswerResult.title);
         h.answerContent.setText(qAnswerResult.content);
-
+        ZR.setUserName(h.answerAuthorName, qAnswerResult.userName, qAnswerResult.grade);
         h.agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {

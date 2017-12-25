@@ -16,13 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyAnswersAdapter extends ZAdater<MyAnswersAdapter.MyViewHolder> {
+public class MyAnswersAdapter extends ZAdater<MyAnswersAdapter.MyViewHolder,QAnswerResult> {
     private Context context;
-    private List<QAnswerResult> mList;
 
     public MyAnswersAdapter(Context context) {
         this.context = context;
-        mList = new ArrayList<>();
     }
 
     @Override
@@ -38,21 +36,6 @@ public class MyAnswersAdapter extends ZAdater<MyAnswersAdapter.MyViewHolder> {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.my_dynamic_answers_item, viewGroup, false);
         return new MyAnswersAdapter.MyViewHolder(view);
-    }
-
-    @Override
-    public int getCount() {
-        return mList.size();
-    }
-
-    public void setData(List<QAnswerResult> data) {
-        this.mList = data;
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
     }
 
     class MyViewHolder extends ZViewHolder {

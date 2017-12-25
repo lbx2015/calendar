@@ -4,13 +4,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.viewholder.base.ZViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/12/15.
  */
 
-public abstract class ZAdater<VH extends ZViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends RecyclerView.Adapter<VH> {
+    public List<ItemBean> mList;
+
+    {
+        mList = new ArrayList<>();
+    }
+
+    public void setData(List<ItemBean> mList) {
+        this.mList.clear();
+        this.mList = mList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         return onCreateVH(parent, viewType);
@@ -19,7 +35,7 @@ public abstract class ZAdater<VH extends ZViewHolder> extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(VH holder, int position) {
         //hide the divider of the last item.
-        if (position == getCount() - 1) {
+        if (position == mList.size() - 1) {
             holder.divider.setVisibility(View.GONE);
         } else {
             holder.divider.setVisibility(View.VISIBLE);
@@ -32,10 +48,13 @@ public abstract class ZAdater<VH extends ZViewHolder> extends RecyclerView.Adapt
 
     public abstract VH onCreateVH(ViewGroup parent, int viewType);
 
-    public abstract int getCount();
+    public void clear() {
+        mList.clear();
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
-        return getCount();
+        return mList.size();
     }
 }
