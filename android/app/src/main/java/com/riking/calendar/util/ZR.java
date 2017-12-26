@@ -28,6 +28,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 
@@ -156,6 +157,170 @@ public class ZR {
         userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
     }
 
+    public static void setReportName(TextView reportNameTv, String name, ReportResult r) {
+        reportNameTv.setText(name);
+        @DrawableRes int drawable = 0;
+        if (StringUtil.isEmpty(r.reportBatch)) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (r.frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (r.reportBatch.equals("0")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (r.frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month0;
+                    break;
+                }
+                //季报
+                case 4: {
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (r.reportBatch.equals("1")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (r.frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month1;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season1;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+
+        } else if (r.reportBatch.equals("2")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (r.frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month2;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season2;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (r.reportBatch.equals("3")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (r.frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month3;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season3;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else {
+            drawable = R.drawable.com_formlabel_icon_monthother;
+        }
+
+        reportNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+    }
 
     public static void showPersonInviteStatus(View followButton, TextView followTv, int isInvite) {
         if (isInvite == 0) {

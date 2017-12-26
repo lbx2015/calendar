@@ -46,9 +46,8 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
     public void onBindViewHolder(final ReportOrderViewHolder h, int i) {
         final ReportResult r = mList.get(i);
         h.reportTitle.setText(r.title);
-        h.reportName.setText(r.code);
-        h.reportName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_formlabel_icon_month, 0);
-        h.reportName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
+        ZR.setReportName(h.reportName, r.title, r);
+
         if (r.isSubscribe == 0) {
             h.subscribed = false;
         } else {
