@@ -32,7 +32,7 @@ layui.use('layedit', function(){
 	layedit= layui.layedit;
    	layedit.set({
    	      			uploadImage: {
-   	     				url: Const.apiUrl +'/tQuestion/upLoad'
+   	     				url: Const.apiUrl + '/tl-api-test' +'/tQuestion/upLoad'
    	      				,type: 'post'
    	    			}	
    	  				,tool: ['strong' //加粗
@@ -59,7 +59,7 @@ layui.use('layedit', function(){
 
 function answerPublish(){
 	$("#text").val(layedit.getContent(index));
-	var url = Const.apiUrl + '/tQuestion/answerSave';
+	var url = Const.apiUrl + '/tl-api-test' + '/tQuestion/answerSave';
 	var param = new Object();
 	param.content = $('form')[0].content.value;
 	param.userId = userId;

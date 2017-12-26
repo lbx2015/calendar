@@ -33,7 +33,9 @@ import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.params.TQuestionParams;
 import net.riking.service.AppUserService;
+import net.riking.util.MQProduceUtil;
 import net.riking.util.Utils;
+import net.sf.json.JSONObject;
 
 /**
  * 问题接口
@@ -157,15 +159,14 @@ public class TopicQuestionServer {
 		if (StringUtils.isBlank(tQuestionParams.getTqId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
+
 		QAInvite qaInvite = qAInviteRepo.findByOne(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
 				tQuestionParams.getTqId());
 		if (null == qaInvite) {
-			// 如果传过来的参数是收藏，保存新的一条收藏记录
-			QAInvite qaInviteNew = new QAInvite();
-			qaInviteNew.setUserId(tQuestionParams.getUserId());
-			qaInviteNew.setToUserId(tQuestionParams.getAttentObjId());
-			qaInviteNew.setQuestionId(tQuestionParams.getTqId());
-			qAInviteRepo.save(qaInviteNew);
+			// 如果传过来的参数是邀请，保存新的一条邀请记录
+			tQuestionParams.setMqOptType(Const.MQ_OPT_ANSWERINVITE);
+			JSONObject jsonArray = JSONObject.fromObject(tQuestionParams);
+			MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		}
 
 		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);

@@ -43,7 +43,9 @@ import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
+import net.riking.util.MQProduceUtil;
 import net.riking.util.Utils;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -181,6 +183,10 @@ public class QAnswerServer {
 		if (StringUtils.isBlank(qAnswerParams.getContent())) {
 			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
+		qAnswerParams.setMqOptType(Const.MQ_OPT_QANSWER_COMMENT);
+		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+
 		QAComment qaComment = new QAComment();
 		qaComment.setUserId(qAnswerParams.getUserId());
 		qaComment.setQuestionAnswerId(qAnswerParams.getQuestAnswerId());
@@ -188,7 +194,7 @@ public class QAnswerServer {
 		qaComment.setCreatedBy(qAnswerParams.getUserId());
 		qaComment.setModifiedBy(qAnswerParams.getUserId());
 		qaComment.setIsAduit(0);// 未审核
-		qACommentRepo.save(qaComment);
+		// qACommentRepo.save(qaComment);
 		AppUser appUser = appUserRepo.findOne(qaComment.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(qaComment.getUserId());
 		if (null != appUser) {
@@ -224,55 +230,10 @@ public class QAnswerServer {
 	@ApiOperation(value = "问题回答的点赞/收藏", notes = "POST")
 	@RequestMapping(value = "/agreeOrCollect", method = RequestMethod.POST)
 	public AppResp QAnswerAgree(@RequestBody QAnswerParams qAnswerParams) {
-		switch (qAnswerParams.getOptType()) {
-			// 1-点赞
-			case 1:
-				if (Const.EFFECTIVE == qAnswerParams.getEnabled()) {
-					QAnswerRel rels = qAnswerRelRepo.findByOne(qAnswerParams.getUserId(),
-							qAnswerParams.getQuestAnswerId(), 1);// 1-点赞
-					if (null == rels) {
-						// 如果传过来的参数是点赞，保存新的一条关注记录
-						QAnswerRel qAnswerRel = new QAnswerRel();
-						qAnswerRel.setUserId(qAnswerParams.getUserId());
-						qAnswerRel.setQaId(qAnswerParams.getQuestAnswerId());
-						qAnswerRel.setDataType(1);// 点赞
-						qAnswerRelRepo.save(qAnswerRel);
-					}
-				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
-					// 如果传过来是取消点赞，把之前一条记录物理删除
-					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
-							Const.OBJ_OPT_GREE);// 点赞
-				} else {
-					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 2-收藏
-			case 2:
-				if (Const.EFFECTIVE == qAnswerParams.getEnabled()) {
-					QAnswerRel rels = qAnswerRelRepo.findByOne(qAnswerParams.getUserId(),
-							qAnswerParams.getQuestAnswerId(), 2);// 1-收藏
-					if (null == rels) {
-						// 如果传过来的参数是收藏，保存新的一条关注记录
-						QAnswerRel qAnswerRel = new QAnswerRel();
-						qAnswerRel.setUserId(qAnswerParams.getUserId());
-						qAnswerRel.setQaId(qAnswerParams.getQuestAnswerId());
-						qAnswerRel.setDataType(2);// 收藏
-						qAnswerRelRepo.save(qAnswerRel);
-					}
-				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
-					// 如果传过来是取消收藏，把之前一条记录物理删除
-					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
-							Const.OBJ_OPT_COLLECT);// 收藏
-				} else {
-					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			default:
-				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
+		// 具体操作在mq队列里面
+		qAnswerParams.setMqOptType(Const.MQ_OPT_QA_AGREEORCOLLECT);
+		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 

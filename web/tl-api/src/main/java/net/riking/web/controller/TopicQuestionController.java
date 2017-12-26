@@ -41,7 +41,6 @@ import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.service.AppUserService;
 import net.riking.util.FileUtils;
-import net.riking.util.StringUtil;
 import net.riking.util.Utils;
 
 /**
@@ -95,9 +94,11 @@ public class TopicQuestionController {
 			if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) {
 			}
 		}
-		Data data = new Data(
-				StringUtil.getProjectPath(request.getRequestURL().toString()) + Const.TL_TEMP_PHOTO_PATH + fileName,
-				fileName);
+		// Data data = new Data(
+		// StringUtil.getProjectPath(request.getRequestURL().toString()) + Const.TL_TEMP_PHOTO_PATH
+		// + fileName,
+		// fileName);
+		Data data = new Data(appUserService.getPhotoUrlPath(Const.TL_TEMP_PHOTO_PATH) + fileName, fileName);
 		return new ApiResp(data, (short) 0);
 
 	}

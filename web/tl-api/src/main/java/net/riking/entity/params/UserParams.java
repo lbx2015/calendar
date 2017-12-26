@@ -2,6 +2,8 @@ package net.riking.entity.params;
 
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import net.riking.core.entity.PageQuery;
 
 /**
@@ -41,6 +43,10 @@ public class UserParams extends PageQuery {
 	// 手机类型 1-IOS;2-Android;3-其它
 	private Integer phoneType;
 
+	@Transient
+	// mq操作类型(消费者根据此类型判断mq操作)
+	private Integer mqOptType;
+
 	private List<String> phones;
 
 	public String getUserId() {
@@ -65,6 +71,14 @@ public class UserParams extends PageQuery {
 
 	public void setToUserId(String toUserId) {
 		this.toUserId = toUserId;
+	}
+
+	public Integer getMqOptType() {
+		return mqOptType;
+	}
+
+	public void setMqOptType(Integer mqOptType) {
+		this.mqOptType = mqOptType;
 	}
 
 	public List<String> getPhones() {

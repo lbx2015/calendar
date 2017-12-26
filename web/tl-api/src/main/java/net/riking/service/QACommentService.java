@@ -2,6 +2,7 @@ package net.riking.service;
 
 import java.util.List;
 
+import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.QACommentResult;
 
 public interface QACommentService {
@@ -14,4 +15,6 @@ public interface QACommentService {
 	 * @return
 	 */
 	public List<QACommentResult> findByUserId(String userId, Integer pageBegin, Integer pageCount);
+
+	public void commentAgree(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
 }

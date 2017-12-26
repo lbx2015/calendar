@@ -4,9 +4,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 
+import org.springframework.stereotype.Component;
+
 import net.riking.task.DeleteTempTimerTask;
 
-//@Component("timerManager")
+@Component("timerManager")
 public class TimerManager {
 
 	// @Autowired BirthdayTimerTask birthdayTimerTask;
