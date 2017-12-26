@@ -57,11 +57,6 @@ public class EmailSuffix extends BaseEntity {
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
-	@Comment("是否删除： 0-删除，1-未删除")
-	@org.hibernate.annotations.ColumnDefault("1")
-	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
-	private Integer isDeleted;
-
 	@Comment("备注")
 	@Column(name = "remark", length = 255)
 	private String remark;// 备注
