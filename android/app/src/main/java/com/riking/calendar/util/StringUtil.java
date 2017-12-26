@@ -17,6 +17,8 @@ public class StringUtil {
      * 总结起来就是第一位必定为1，第二位必定为3或5或8，其他位置的可以为0-9
      */
     public static boolean isMobileNO(String mobiles) {
+        if (mobiles == null) return false;
+
         String phone = mobiles.replaceAll("[^\\d]", "");
         //"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         String telRegex = "[1][34578]\\d{9}";
@@ -48,7 +50,7 @@ public class StringUtil {
 
     }
 
-    public static boolean isHttpUrl(String s){
-     return s.startsWith("http");
+    public static boolean isHttpUrl(String s) {
+        return s.startsWith("http");
     }
 }

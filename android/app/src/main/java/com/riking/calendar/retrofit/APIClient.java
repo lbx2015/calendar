@@ -742,4 +742,12 @@ public class APIClient {
     public static void emailIdentify(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.emailIdentify(params).enqueue(c);
     }
+
+    public static void getColleague(UserParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getColleagues(params).enqueue(c);
+    }
+
+    public static void getContacts(UserParams params, ZCallBack<ResponseModel<List<String>>> c) {
+        apiInterface.getContacts(params).enqueue(c);
+    }
 }

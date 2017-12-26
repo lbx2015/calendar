@@ -201,6 +201,39 @@ public class ZR {
         });
     }
 
+
+    public static void setInviteClickListner(final AppUserResult user, final View followButton, final TextView followTv) {
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final TQuestionParams params = new TQuestionParams();
+                params.attentObjId = user.userId;
+                //follow user
+                params.objType = 3;
+                //followed
+                if (user.isFollow == 0) {
+                    params.enabled = 1;
+                } else {
+                    params.enabled = 0;
+                }
+
+                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        int status = Integer.parseInt(response._data);
+                        user.isFollow = status;
+                        if (user.isFollow == 0) {
+                            ZToast.toast("取消关注");
+                        } else {
+                            ZToast.toast("关注成功");
+                        }
+                        showPersonFollowStatus(followButton, followTv, status);
+                    }
+                });
+            }
+        });
+    }
+
     public static void setTopicFollowClickListener(final Topic topic, final View followButton, final TextView followTv) {
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
