@@ -33,7 +33,6 @@ import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.MarketUtils;
@@ -62,7 +61,6 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     RelativeLayout setLayout;
     ImageView myPhoto;
     RelativeLayout userInfoRelativeLayout;
-    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     int loginState;
     View v;
     LinearLayout myRepliesLayout;
@@ -303,7 +301,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             }
 
             case R.id.about_relative_layout: {
-                apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
+                APIClient.apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(getContext(), WebviewActivity.class);
