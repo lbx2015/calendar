@@ -45,6 +45,10 @@ public class AppUserDetail extends BaseEntity {
 	@Comment("真实姓名")
 	@Column(name = "real_name", length = 32)
 	private String realName;
+	
+	@Comment("用户名称")
+	@Transient
+	private String userName;
 
 	@Comment("用户公司")
 	@Column(name = "company_name", length = 32)
@@ -283,4 +287,12 @@ public class AppUserDetail extends BaseEntity {
 		return true;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 }

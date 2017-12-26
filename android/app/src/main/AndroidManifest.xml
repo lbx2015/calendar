@@ -126,6 +126,7 @@
         <activity android:name=".activity.MyStateActivity"></activity>
         <activity android:name=".activity.MyFollowActivity"></activity>
         <activity android:name=".activity.MyCollectActivity"></activity>
+        <activity android:name=".activity.MyRelationActivity"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
@@ -137,6 +138,7 @@
         <activity android:name=".activity.AnswerCommentsActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RaiseQuestionActivity" />
+        <activity android:name=".activity.SubmitQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />

@@ -15,21 +15,10 @@ import net.riking.entity.PageQuery;
  * @see
  * @since 1.0
  */
-@Comment("代办表")
+@Comment("待办表")
 @Entity
 @Table(name = "t_todo")
 public class Todo extends PageQuery {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3194063320181067468L;
-
-	/**
-	 * 代办事项实体类
-	 * 
-	 * @author Lucky.Liu on 2017/8/05.
-	 */
 
 	@Id
 	@Comment("pk 手机端时间戳：yyyyMMddHHmmssSSS")
@@ -57,31 +46,24 @@ public class Todo extends PageQuery {
 	private String strDate;
 
 	@Comment("手机端提供创建时间（yyyyMMddHHmm）")
-	@Column(name = "app_created_time", length = 12)
-	private String appCreatedTime;
+	@Column(name = "created_time", length = 12)
+	private String createdTime;
 
 	@Comment("是否完成（0-未完成；1-已完成）")
-	@Column(name = "is_complete", length = 1)
-	private Integer isComplete;
+	@Column(name = "is_completed", length = 1)
+	private Integer isCompleted;
 
 	@Comment("客户端数据来源：1-IOS;2-Android;3-其它")
 	@Column(name = "client_type", length = 1)
 	private Integer clientType;
 
 	@Comment("完成时间yyyyMMddHHmm")
-	@Column(name = "complete_date", length = 12)
-	private String completeDate;
+	@Column(name = "completed_date", length = 12)
+	private String completedDate;
 
+	@Comment("删除标志(0-删除;1-不删除)")
 	@Transient
-	private int deleteState;
-
-	public int getDeleteState() {
-		return deleteState;
-	}
-
-	public void setDeleteState(int deleteState) {
-		this.deleteState = deleteState;
-	}
+	private Integer deleteFlag;
 
 	public String getTodoId() {
 		return todoId;
@@ -99,26 +81,6 @@ public class Todo extends PageQuery {
 		this.userId = userId;
 	}
 
-	public Integer getClientType() {
-		return clientType;
-	}
-
-	public void setClientType(Integer clientType) {
-		this.clientType = clientType;
-	}
-
-	public void setIsImportant(Integer isImportant) {
-		this.isImportant = isImportant;
-	}
-
-	public void setIsOpen(Integer isOpen) {
-		this.isOpen = isOpen;
-	}
-
-	public void setIsComplete(Integer isComplete) {
-		this.isComplete = isComplete;
-	}
-
 	public String getContent() {
 		return content;
 	}
@@ -127,19 +89,19 @@ public class Todo extends PageQuery {
 		this.content = content;
 	}
 
-	public int getIsImportant() {
+	public Integer getIsImportant() {
 		return isImportant;
 	}
 
-	public void setIsImportant(int isImportant) {
+	public void setIsImportant(Integer isImportant) {
 		this.isImportant = isImportant;
 	}
 
-	public int getIsOpen() {
+	public Integer getIsOpen() {
 		return isOpen;
 	}
 
-	public void setIsOpen(int isOpen) {
+	public void setIsOpen(Integer isOpen) {
 		this.isOpen = isOpen;
 	}
 
@@ -151,35 +113,44 @@ public class Todo extends PageQuery {
 		this.strDate = strDate;
 	}
 
-	public String getAppCreatedTime() {
-		return appCreatedTime;
+	public String getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setAppCreatedTime(String appCreatedTime) {
-		this.appCreatedTime = appCreatedTime;
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
 	}
 
-	public int getIsComplete() {
-		return isComplete;
+	public Integer getIsCompleted() {
+		return isCompleted;
 	}
 
-	public void setIsComplete(int isComplete) {
-		this.isComplete = isComplete;
+	public void setIsCompleted(Integer isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 
-	public String getCompleteDate() {
-		return completeDate;
+	public Integer getClientType() {
+		return clientType;
 	}
 
-	public void setCompleteDate(String completeDate) {
-		this.completeDate = completeDate;
+	public void setClientType(Integer clientType) {
+		this.clientType = clientType;
 	}
 
-	@Override
-	public String toString() {
-		return "Todo [todoId=" + todoId + ", userId=" + userId + ", content=" + content + ", isImportant=" + isImportant
-				+ ", isOpen=" + isOpen + ", strDate=" + strDate + ", appCreatedTime=" + appCreatedTime + ", isComplete="
-				+ isComplete + ", completeDate=" + completeDate + ", deleteState=" + deleteState + "]";
+	public String getCompletedDate() {
+		return completedDate;
+	}
+
+	public void setCompletedDate(String completedDate) {
+		this.completedDate = completedDate;
+	}
+
+	public Integer getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(Integer deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 
 }

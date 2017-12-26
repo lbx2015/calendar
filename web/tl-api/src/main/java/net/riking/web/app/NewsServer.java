@@ -35,13 +35,14 @@ import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.NCReply;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
-import net.riking.entity.model.NewsRel;
 import net.riking.entity.params.NewsParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
 import net.riking.service.NewsService;
 import net.riking.util.DateUtils;
+import net.riking.util.MQProduceUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -261,11 +262,15 @@ public class NewsServer {
 		AppUser appUser = appUserRepo.findOne(newsParams.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());
 
+		newsParams.setMqOptType(Const.MQ_OPT_NEWS_COMMENT);
+		JSONObject jsonArray = JSONObject.fromObject(newsParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
 		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
-		newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
+		// newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
 
 		if (null != appUser) {
 			newsCommentInfo.setUserName(appUser.getUserName());
@@ -311,27 +316,9 @@ public class NewsServer {
 		if (newsParams.getEnabled() == null) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		switch (newsParams.getEnabled()) {
-			case Const.EFFECTIVE:
-				NewsRel rels = newsRelRepo.findByOne(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏
-				if (null == rels) {
-					// 如果传过来的参数是收藏，保存新的一条收藏记录
-					NewsRel newsRel = new NewsRel();
-					newsRel.setUserId(newsParams.getUserId());
-					newsRel.setNewsId(newsParams.getNewsId());
-					newsRel.setDataType(2);
-					newsRelRepo.save(newsRel);
-				}
-				break;
-			case Const.INVALID:
-				// 如果传过来是取消收藏，把之前一条记录物理删除
-				newsRelRepo.deleteByUIdAndNId(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏
-				break;
-			default:
-				logger.error("参数异常：enabled=" + newsParams.getEnabled());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
-
+		newsParams.setMqOptType(Const.MQ_OPT_NEW_COLLECT);
+		JSONObject jsonArray = JSONObject.fromObject(newsParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 

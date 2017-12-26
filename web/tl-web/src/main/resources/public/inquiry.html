@@ -13,7 +13,42 @@
 <body class="iframeBody">
 <div id = "content"></div>
 </body>
-<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/layui/layui.all.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/utils.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/json2.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/base.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/base64_utf8.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/tmplUtils.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/locale.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/view.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/workflow.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/iefix.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/iframe.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/resize.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript">
+	var _SYS = Tool.parseJSON('{=current_system}' || "{}");
+	var Const = {
+		urlConvert : "{=urlConvert}" == "true",
+		sys : _SYS,
+		apiUrl : _SYS.apiAccessUrl,
+		webPath : "{=web_path}",
+		ctx : "{=ctx}",
+		security : "{=security}" == "true",
+		ADEnable : "{=ADEnable}" == "true",
+		ssoLoginUrl : "{=sso_login_url}",
+		ssoLogoutUrl : "{=sso_logout_url}" == "" ? "{=sso_login_url}"
+				: "{=sso_logout_url}",
+		ssoApiUrl : "{=sso_api_url}",
+		buttonFormat : 1
+	//操作栏按钮格式，1表示图片按钮，2表示文字按钮
+	}
+	if (typeof isAuthIgnore == "undefined") {
+		isAuthIgnore = false;
+	}
+	var token = Tool.getCookie("_TOKEN");
+</script>
 <script type="text/tmpl" id="tmpl">
 <form action="" method="get" class="formbox layui-form parameterSet">
 <input type="hidden" id="text" name="content">
@@ -33,7 +68,7 @@ layui.use('layedit', function(){
 	layedit= layui.layedit;
    	layedit.set({
    	      			uploadImage: {
-   	     				url: Const.apiUrl +'/tQuestion/upLoad'
+   	     				url: Const.apiUrl + '/tQuestion/upLoad'
    	      				,type: 'post'
    	    			}	
    	  				,tool: ['strong' //加粗

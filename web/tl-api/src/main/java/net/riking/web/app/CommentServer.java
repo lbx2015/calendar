@@ -22,13 +22,13 @@ import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
-import net.riking.entity.model.NCAgreeRel;
 import net.riking.entity.model.NCReply;
-import net.riking.entity.model.QACAgreeRel;
 import net.riking.entity.model.QACReply;
 import net.riking.entity.params.CommentParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
+import net.riking.util.MQProduceUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -89,61 +89,11 @@ public class CommentServer {
 		if (commentParams.getEnabled() == null) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		switch (commentParams.getObjType()) {
-			// 回答类
-			case Const.OBJ_TYPE_ANSWER:
-				switch (commentParams.getEnabled()) {
-					case Const.EFFECTIVE:
-						QACAgreeRel rels = qACAgreeRelRepo.findByOne(commentParams.getUserId(),
-								commentParams.getCommentId(), 1);// 1-点赞
-						if (null == rels) {
-							// 如果传过来的参数是点赞，保存新的一条收藏记录
-							QACAgreeRel qACAgreeRel = new QACAgreeRel();
-							qACAgreeRel.setUserId(commentParams.getUserId());
-							qACAgreeRel.setQacId(commentParams.getCommentId());
-							qACAgreeRel.setDataType(Const.OBJ_OPT_GREE);// 点赞
-							qACAgreeRelRepo.save(qACAgreeRel);
-						}
-						break;
-					case Const.INVALID:
-						// 如果传过来是取消点赞，把之前一条记录物理删除
-						qACAgreeRelRepo.deleteByUIdAndQaId(commentParams.getUserId(), commentParams.getCommentId(),
-								Const.OBJ_OPT_GREE);// 1-点赞
-						break;
-					default:
-						logger.error("参数异常：enabled=" + commentParams.getEnabled());
-						return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 资讯类
-			case Const.OBJ_TYPE_NEWS:
-				switch (commentParams.getEnabled()) {
-					case Const.EFFECTIVE:
-						NCAgreeRel rels = nCAgreeRelRepo.findByOne(commentParams.getUserId(),
-								commentParams.getCommentId(), 1);// 1-点赞
-						if (null == rels) {
-							// 如果传过来的参数是点赞，保存新的一条收藏记录
-							NCAgreeRel nCAgreeRel = new NCAgreeRel();
-							nCAgreeRel.setUserId(commentParams.getUserId());
-							nCAgreeRel.setNcId(commentParams.getCommentId());
-							nCAgreeRel.setDataType(Const.OBJ_OPT_GREE);// 点赞
-							nCAgreeRelRepo.save(nCAgreeRel);
-						}
-						break;
-					case Const.INVALID:
-						// 如果传过来是取消点赞，把之前一条记录物理删除
-						nCAgreeRelRepo.deleteByUIdAndNcId(commentParams.getUserId(), commentParams.getCommentId(),
-								Const.OBJ_OPT_GREE);// 1-点赞
-						break;
-					default:
-						logger.error("参数异常：enabled=" + commentParams.getEnabled());
-						return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			default:
-				break;
-		}
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		commentParams.setMqOptType(Const.MQ_OPT_COMMENT_AGREE);
+		JSONObject jsonArray = JSONObject.fromObject(commentParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 
 	}
 
@@ -157,6 +107,9 @@ public class CommentServer {
 	public AppResp commentReply_(@RequestBody CommentParams commentParams) {
 
 		AppUser appUser = appUserRepo.findOne(commentParams.getUserId());
+		commentParams.setMqOptType(Const.MQ_OPT_COMMENT_REPLY);
+		JSONObject jsonArray = JSONObject.fromObject(commentParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		switch (commentParams.getObjType()) {
 			// 回答类
 			case Const.OBJ_TYPE_ANSWER:
@@ -169,7 +122,6 @@ public class CommentServer {
 				qACReply.setReplyId(commentParams.getReplyId());
 				qACReply.setToUserId(commentParams.getToUserId());
 				qACReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
-				qACReply = qACReplyRepo.save(qACReply);
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
 					fromUser.setUserId(commentParams.getUserId());
@@ -185,8 +137,6 @@ public class CommentServer {
 						qACReply.setToUser(toUser);
 					}
 				}
-				// qACReply.setFromUserId(null);
-				// qACReply.setToUserId(null);
 				return new AppResp(qACReply, CodeDef.SUCCESS);
 			// 资讯类
 			case Const.OBJ_TYPE_NEWS:
@@ -199,7 +149,6 @@ public class CommentServer {
 				ncReply.setReplyId(commentParams.getReplyId());
 				ncReply.setToUserId(commentParams.getToUserId());
 				ncReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
-				ncReply = nCReplyRepo.save(ncReply);
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
 					fromUser.setUserId(commentParams.getUserId());
@@ -215,8 +164,6 @@ public class CommentServer {
 						ncReply.setToUser(toUser);
 					}
 				}
-				// ncReply.setUserId(null);
-				// ncReply.setToUserId(null);
 				return new AppResp(ncReply, CodeDef.SUCCESS);
 			default:
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);

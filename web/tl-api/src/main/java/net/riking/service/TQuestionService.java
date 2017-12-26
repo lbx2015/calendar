@@ -3,6 +3,7 @@ package net.riking.service;
 import java.util.Date;
 import java.util.List;
 
+import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestResult;
@@ -53,5 +54,7 @@ public interface TQuestionService {
 	 * @return
 	 */
 	public List<QuestResult> userFollowQuest(String userId, int start, int pageCount);
+
+	public void follow(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
 
 }

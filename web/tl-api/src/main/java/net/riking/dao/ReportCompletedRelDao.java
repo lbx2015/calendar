@@ -38,4 +38,15 @@ public interface ReportCompletedRelDao {
 	 * @return
 	 */
 	List<CurrentReportTaskResp> findCurrentTasks(String userId, String currentDate);
+	
+	/**
+	 * 查询当天未完成报表任务的用户
+	 * @author james.you
+	 * @version crateTime：2017年12月16日 下午4:46:35
+	 * @used TODO
+	 * @param userId
+	 * @param currentDate yyyyMMdd
+	 * @return
+	 */
+	List<CurrentReportTaskResp> findUsersByCurrentDayTasks(String currentDate);
 }

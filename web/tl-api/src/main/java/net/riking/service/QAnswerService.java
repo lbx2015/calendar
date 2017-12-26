@@ -2,6 +2,7 @@ package net.riking.service;
 
 import java.util.List;
 
+import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestionAnswer;
 
@@ -21,4 +22,10 @@ public interface QAnswerService {
 	 * @return
 	 */
 	public List<QAnswerResult> findCollectQAnswer(String userId, int start, int pageCount);
+
+	public void QaAgreeCollect(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException;
+
+	public void qACommentPub(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
+
+	public void commentReply(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
 }

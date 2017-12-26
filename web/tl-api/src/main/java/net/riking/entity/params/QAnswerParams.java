@@ -1,5 +1,7 @@
 package net.riking.entity.params;
 
+import javax.persistence.Transient;
+
 import net.riking.entity.BaseEntity;
 
 /**
@@ -33,6 +35,10 @@ public class QAnswerParams extends BaseEntity {
 	// 0-取消；1-赞同/收藏
 	private Integer enabled;
 
+	@Transient
+	// mq操作类型(消费者根据此类型判断mq操作)
+	private Integer mqOptType;
+
 	public String getQuestAnswerId() {
 		return questAnswerId;
 	}
@@ -43,6 +49,14 @@ public class QAnswerParams extends BaseEntity {
 
 	public String getQuestionId() {
 		return questionId;
+	}
+
+	public Integer getMqOptType() {
+		return mqOptType;
+	}
+
+	public void setMqOptType(Integer mqOptType) {
+		this.mqOptType = mqOptType;
 	}
 
 	public void setQuestionId(String questionId) {

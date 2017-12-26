@@ -17,7 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.riking.core.annos.Comment;
-import net.riking.core.entity.BaseEntity;
+import net.riking.entity.BaseEntity;
 import net.riking.entity.MyDateFormat;
 
 /**
@@ -56,6 +56,11 @@ public class EmailSuffix extends BaseEntity {
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
+
+	@Comment("是否删除： 0-删除，1-未删除")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
+	private Integer isDeleted;
 
 	@Comment("备注")
 	@Column(name = "remark", length = 255)

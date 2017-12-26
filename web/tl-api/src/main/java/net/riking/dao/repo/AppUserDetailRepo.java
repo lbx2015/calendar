@@ -1,7 +1,5 @@
 package net.riking.dao.repo;
 
-import java.util.Set;
-
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,8 +20,6 @@ public interface AppUserDetailRepo
 	@Query("select integral from AppUserDetail where id = ?1 ")
 	Integer getIntegral(String userId);
 
-	@Query("select a.phoneDeviceid from AppUserDetail a where  substring(a.birthday, 5, 4) =?1 ")
-	Set<String> findByDate(String date);
 
 	@Transactional
 	@Modifying

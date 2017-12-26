@@ -15,6 +15,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.AppUserDao;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.resp.OtherUserResp;
 
@@ -23,6 +24,34 @@ public class AppUserDaoImpl implements AppUserDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Override
+	public List<AppUserDetail> findPhoneDeviceByBirthDay(String brithDay) {
+		// TODO Auto-generated method stub
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "SELECT a.user_name userName, b.phone_device_id phoneDeviceId FROM t_app_user a ";
+		sql += "left join t_appuser_detail b on a.id = b.id ";
+		sql += "WHERE a.is_deleted = 1 and a.enabled = 1 and substring(b.birthday, 5, 4) = ?1 ";
+		sql += "and b.phone_device_id <> '' ";
+		PreparedStatement pstmt = null;
+		List<AppUserDetail> list = new ArrayList<AppUserDetail>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			pstmt.setString(1, brithDay);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AppUserDetail data = new AppUserDetail();
+				data.setUserName(rs.getString("userName"));
+				data.setPhoneDeviceid(rs.getString("phoneDeviceId"));
+				list.add(data);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 
 	@Override
 	public List<AppUserResult> findUserMightKnow(String userId, String userIds, int begin, int end) {
