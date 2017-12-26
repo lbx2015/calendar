@@ -1,5 +1,7 @@
 package net.riking.entity.params;
 
+import javax.persistence.Transient;
+
 import net.riking.entity.BaseEntity;
 
 /**
@@ -10,10 +12,6 @@ import net.riking.entity.BaseEntity;
  * @since 1.0
  */
 public class TQuestionParams extends BaseEntity {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6952211991459875719L;
 
 	// 用户Id
 	private String userId;
@@ -39,12 +37,24 @@ public class TQuestionParams extends BaseEntity {
 	// 问题回答Id
 	private String questAnswerId;
 
+	@Transient
+	// mq操作类型(消费者根据此类型判断mq操作)
+	private Integer mqOptType;
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getMqOptType() {
+		return mqOptType;
+	}
+
+	public void setMqOptType(Integer mqOptType) {
+		this.mqOptType = mqOptType;
 	}
 
 	public String getTopicId() {

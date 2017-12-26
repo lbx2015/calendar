@@ -119,7 +119,7 @@ public class SearchListServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(searchParams.getKeyWord())) {
-			return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
 		if (StringUtils.isBlank(searchParams.getUserId())) {
 			searchParams.setUserId("");
@@ -174,7 +174,7 @@ public class SearchListServer {
 	 * @return
 	 */
 	private List<TopicResult> findTopicByKeyWord(SearchParams searchParams) {
-		List<TopicResult> topicResults = topicRepo.getTopicByParam(searchParams.getKeyWord());
+		List<TopicResult> topicResults = topicRepo.getTopicByParam(searchParams.getKeyWord(), searchParams.getUserId());
 
 		for (int i = 0; i < topicResults.size(); i++) {
 			TopicResult topicResult = topicResults.get(i);

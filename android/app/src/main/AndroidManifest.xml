@@ -113,6 +113,9 @@
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".activity.InputEmailVerifyCodeActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".activity.IndustrySelectActivity"></activity>
         <activity android:name=".activity.PositionSelectActivity"></activity>
         <activity android:name=".activity.ReportsSelectActivity"></activity>
@@ -122,6 +125,8 @@
         <activity android:name=".activity.MyFavoritesUserActivity"></activity>
         <activity android:name=".activity.MyStateActivity"></activity>
         <activity android:name=".activity.MyFollowActivity"></activity>
+        <activity android:name=".activity.MyCollectActivity"></activity>
+        <activity android:name=".activity.MyRelationActivity"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
@@ -133,6 +138,7 @@
         <activity android:name=".activity.AnswerCommentsActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RaiseQuestionActivity" />
+        <activity android:name=".activity.SubmitQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />

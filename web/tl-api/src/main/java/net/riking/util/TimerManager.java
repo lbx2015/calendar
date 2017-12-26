@@ -13,34 +13,25 @@ import net.riking.task.BirthdayTimerTask;
 import net.riking.task.DeleteTempTimerTask;
 import net.riking.task.RemindTask;
 
+//@Component("timerManager")
 @Component("timerManager")
 public class TimerManager {
 	protected final transient Logger logger = LogManager.getLogger(TimerManager.class);
 
 	@Autowired
 	BirthdayTimerTask birthdayTimerTask;
-
 	@Autowired
 	RemindTask remindTask;
+	@Autowired
+	DeleteTempTimerTask deleteTempTimerTask;
 
 	// 每天重复时间间隔
 	private static final long PERIOD_DAY = 24 * 60 * 60 * 1000;
 
 	public void init() {
 		logger.info("*************** TimerManager *********************");
-		// *** 定制每日00:00执行删除临时文件方法 ***//
-		Calendar calendar4 = Calendar.getInstance();
-		calendar4.set(Calendar.HOUR_OF_DAY, 0);
-		calendar4.set(Calendar.MINUTE, 0);
-		calendar4.set(Calendar.SECOND, 0);
-		Date date4 = calendar4.getTime();
-		if (date4.before(new Date())) {
-			date4 = this.addDay(date4, 1);
-		}
 		Timer timer = new Timer();
-		DeleteTempTimerTask deleteTempTimerTask = new DeleteTempTimerTask();
-		timer.schedule(deleteTempTimerTask, date4, PERIOD_DAY);
-
+		
 		/*** 定制每日10:00执行生日提醒方法 ***/
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 10);
@@ -63,6 +54,16 @@ public class TimerManager {
 		calendar3.set(Calendar.SECOND, 59);
 		timer.schedule(remindTask, calendar3.getTime(), PERIOD_DAY);
 		
+		// *** 定制每日00:00执行删除临时文件方法 ***//
+		Calendar calendar4 = Calendar.getInstance();
+		calendar4.set(Calendar.HOUR_OF_DAY, 0);
+		calendar4.set(Calendar.MINUTE, 0);
+		calendar4.set(Calendar.SECOND, 0);
+		Date date4 = calendar4.getTime();
+		if (date4.before(new Date())) {
+			date4 = this.addDay(date4, 1);
+		}
+		timer.schedule(deleteTempTimerTask, date4, PERIOD_DAY);
 		
 		logger.info("*************** TimerManager END*********************");
 	}

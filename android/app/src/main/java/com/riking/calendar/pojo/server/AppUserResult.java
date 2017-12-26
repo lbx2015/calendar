@@ -12,6 +12,9 @@ public class AppUserResult {
     //    @Comment("头像url")
     public String photoUrl;
 
+    //phone
+    public String phone;
+
     //    @Comment("经验值")
     public int experience;
 

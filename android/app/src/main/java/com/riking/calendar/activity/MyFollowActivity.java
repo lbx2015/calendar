@@ -15,14 +15,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.MyDynamicQuestionFragment;
+import com.riking.calendar.fragment.MyColleagueFragment;
+import com.riking.calendar.fragment.MyContactsFragment;
 import com.riking.calendar.fragment.MyFollowTopicFragment;
-import com.riking.calendar.fragment.MyFollowerPersonFragment;
-import com.riking.calendar.fragment.MyFollowingQuestionFragment;
 
 public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFollowerPersonFragment(), new MyFollowTopicFragment(), new MyFollowingQuestionFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyColleagueFragment(), new MyFollowTopicFragment(), new MyContactsFragment()};
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;

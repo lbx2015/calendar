@@ -724,4 +724,34 @@ public class APIClient {
     public static void getEditHtmlUrl(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.getEditHtmlUrl(params).enqueue(c);
     }
+
+    public static void getMyCollectAnswer(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        params.objType = 1;
+        apiInterface.getMyCollectAnswer(params).enqueue(c);
+    }
+
+    public static void getMyCollectNews(UserFollowParams params, ZCallBack<ResponseModel<List<News>>> c) {
+        params.objType = 2;
+        apiInterface.getMyCollectNews(params).enqueue(c);
+    }
+
+    public static void sendEmailVerifyCode(UserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.sendEmailVerifyCode(params).enqueue(c);
+    }
+
+    public static void emailIdentify(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.emailIdentify(params).enqueue(c);
+    }
+
+    public static void getColleague(UserParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getColleagues(params).enqueue(c);
+    }
+
+    public static void getContacts(UserParams params, ZCallBack<ResponseModel<List<String>>> c) {
+        apiInterface.getContacts(params).enqueue(c);
+    }
+
+    public static void inviteContact(UserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.contactsInvite(params).enqueue(c);
+    }
 }

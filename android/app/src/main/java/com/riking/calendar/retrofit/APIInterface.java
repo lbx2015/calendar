@@ -392,4 +392,29 @@ public interface APIInterface {
 
     @POST("topicQuestion/inquiry")
     Call<ResponseModel<String>> getEditHtmlUrl(@Body TQuestionParams params);
+
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<QAnswerResult>>> getMyCollectAnswer(@Body UserFollowParams params);
+
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<News>>> getMyCollectNews(@Body UserFollowParams params);
+
+    //发送邮箱认证
+    @POST("common/sendEmailVerifyCode")
+    Call<ResponseModel<String>> sendEmailVerifyCode(@Body UserParams params);
+
+    //verify email code
+    @POST("common/emailIdentify")
+    Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
+
+    @POST("userContacts/colleague")
+    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
+
+    @POST("userContacts/contacts")
+    Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
+
+    @POST("userContacts/contactsInvite")
+    Call<ResponseModel<String>> contactsInvite(@Body UserParams params);
 }

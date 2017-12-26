@@ -1,6 +1,7 @@
 package com.riking.calendar.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
@@ -90,6 +92,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
     AppUserResp currentUser = ZPreference.getCurrentLoginUser();
     ArrayList<Industry> industries;
     ArrayList<Industry> positions;
+    TextView emailValidated;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -129,7 +132,6 @@ public class MoreUserInfoActivity extends AppCompatActivity {
     };
     private OptionsPickerView industryPicker;
     private OptionsPickerView positionPicker;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -340,6 +342,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         phoneNumberTv = findViewById(R.id.cell_phone_nubmer_tv);
         addPhoneNumberTv = findViewById(R.id.add_cell_phone_nubmer_tv);
         //email
+        emailValidated = findViewById(R.id.email_validated);
         emailLayout = findViewById(R.id.email_layout);
         emailTv = findViewById(R.id.email_tv);
         addEmailTv = findViewById(R.id.add_email_tv);
@@ -374,6 +377,9 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
+                        if (currentUser.phone.equals(newValue)) {
+                            return;
+                        }
                         UpdUserParams user = new UpdUserParams();
                         user.phone = newValue;
                         callServerApi2UpdateUserInfo(newValue, user);
@@ -397,6 +403,10 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
+                        if (currentUser.email.equals(newValue)) {
+                            return;
+                        }
+
                         UpdUserParams user = new UpdUserParams();
                         user.email = newValue;
                         callServerApi2UpdateUserInfo(newValue, user);
@@ -405,6 +415,10 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                     @Override
                     void updateSuccess(String newValue) {
                         currentUser.email = newValue;
+                        emailValidated.setClickable(true);
+                        emailValidated.setEnabled(true);
+                        emailValidated.setText("未验证");
+                        currentUser.isIdentify = 0;
                         ZPreference.saveUserInfoAfterLogin(currentUser);
                         emailTv.setVisibility(View.VISIBLE);
                         addEmailTv.setVisibility(View.GONE);
@@ -427,6 +441,9 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
+                        if (currentUser.companyName.equals(newValue)) {
+                            return;
+                        }
                         UpdUserParams user = new UpdUserParams();
                         user.companyName = newValue;
                         callServerApi2UpdateUserInfo(newValue, user);
@@ -570,7 +587,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
      * 自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针。
      * 具体可参考demo 里面的两个自定义layout布局。
      */
-    private void setIndustryPicker(String currentIndustryId) {
+    private void setIndustryPicker(final String currentIndustryId) {
         final UpdateUserInfoCallBack callBack = new UpdateUserInfoCallBack() {
             @Override
             void newValue(String newValue) {
@@ -644,13 +661,17 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                     //only one column industry selector
                     industryPicker.setPicker(industries);
                     industryPicker.show();
+                    setDefaultIndustry(currentIndustryId);
                 }
             });
         } else {
             industryPicker.setPicker(industries);
             industryPicker.show();
+            setDefaultIndustry(currentIndustryId);
         }
+    }
 
+    private void setDefaultIndustry(String currentIndustryId) {
         //set default industry
         for (int i = 0; i < industries.size(); i++) {
             Industry industry = industries.get(i);
@@ -732,9 +753,22 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         }
         //email
         if (StringUtil.isEmpty(currentUser.email)) {
+            emailValidated.setVisibility(View.GONE);
             emailTv.setVisibility(View.GONE);
             addEmailTv.setVisibility(View.VISIBLE);
         } else {
+            emailValidated.setVisibility(View.VISIBLE);
+
+            if (currentUser.isIdentify == 0) {
+                emailValidated.setClickable(true);
+                emailValidated.setEnabled(true);
+                emailValidated.setText("未验证");
+            } else {
+                emailValidated.setClickable(false);
+                emailValidated.setEnabled(false);
+                emailValidated.setText("已验证");
+            }
+
             emailTv.setText(currentUser.email);
             emailTv.setVisibility(View.VISIBLE);
             addEmailTv.setVisibility(View.GONE);
@@ -791,6 +825,30 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
         loadIndustries();
         loadPostions();
+    }
+
+    public void clickInvalidateEmail(View view) {
+        UserParams userParams = new UserParams();
+        userParams.email = currentUser.email;
+        APIClient.sendEmailVerifyCode(userParams, new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+                MoreUserInfoActivity.this.startActivityForResult(new Intent(MoreUserInfoActivity.this, InputEmailVerifyCodeActivity.class), CONST.VERIFY_EMAIL);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Make sure the request was successful
+        if (resultCode != RESULT_CANCELED && requestCode == CONST.VERIFY_EMAIL) {
+            currentUser.isIdentify = data.getIntExtra(CONST.EMAIL_VALIDATE, 0);
+            ZPreference.saveUserInfoAfterLogin(currentUser);
+            emailValidated.setClickable(false);
+            emailValidated.setEnabled(false);
+            emailValidated.setText("已验证");
+        }
     }
 
     private void loadPostions() {

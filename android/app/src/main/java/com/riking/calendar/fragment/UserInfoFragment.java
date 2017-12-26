@@ -16,9 +16,11 @@ import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.FeedBackActivity;
 import com.riking.calendar.activity.LoginNavigateActivity;
+import com.riking.calendar.activity.MyCollectActivity;
 import com.riking.calendar.activity.MyFavoritesUserActivity;
 import com.riking.calendar.activity.MyFollowActivity;
 import com.riking.calendar.activity.MyFollowersActivity;
+import com.riking.calendar.activity.MyRelationActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.MyStateActivity;
 import com.riking.calendar.activity.SettingActivity;
@@ -32,7 +34,6 @@ import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.task.LoadUserImageTask;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.MarketUtils;
@@ -61,7 +62,6 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     RelativeLayout setLayout;
     ImageView myPhoto;
     RelativeLayout userInfoRelativeLayout;
-    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     int loginState;
     View v;
     LinearLayout myRepliesLayout;
@@ -76,6 +76,8 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
 
     View trendLayout;
     View followLayout;
+    View collecLayout;
+    View contactLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,6 +137,8 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initViews() {
+        contactLayout = v.findViewById(R.id.my_relation_layout);
+        collecLayout = v.findViewById(R.id.my_favorite_layout);
         followLayout = v.findViewById(R.id.my_follow_layout);
         trendLayout = v.findViewById(R.id.my_trend_layout);
         suggestionLayout = v.findViewById(R.id.suggestion_layout);
@@ -156,6 +160,18 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
     }
 
     private void initEvents() {
+        contactLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                ZGoto.to(MyRelationActivity.class);
+            }
+        });
+        collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                ZGoto.to(MyCollectActivity.class);
+            }
+        });
         setLayout.setOnClickListener(this);
         userInfoRelativeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
@@ -294,7 +310,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             }
 
             case R.id.about_relative_layout: {
-                apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
+                APIClient.apiInterface.getAboutHtml(BuildConfig.VERSION_NAME).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(getContext(), WebviewActivity.class);

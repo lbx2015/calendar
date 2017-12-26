@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.ArrayList;
@@ -34,11 +33,13 @@ public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends Recycler
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        //hide the divider of the last item.
-        if (position == mList.size() - 1) {
-            holder.divider.setVisibility(View.GONE);
-        } else {
-            holder.divider.setVisibility(View.VISIBLE);
+        if (holder.divider != null) {
+            //hide the divider of the last item.
+            if (position == mList.size() - 1) {
+                holder.divider.setVisibility(View.GONE);
+            } else {
+                holder.divider.setVisibility(View.VISIBLE);
+            }
         }
 
         onBindVH(holder, position);
