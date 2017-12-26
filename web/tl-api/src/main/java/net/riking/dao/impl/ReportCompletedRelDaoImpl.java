@@ -104,7 +104,9 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		Connection connection = session.connection();
 		String sql = "select ";
 		sql += "a.report_id reportId, b.code reportCode, b.title reportName, ";
-		//sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequencyType, ";
+		// sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t
+		// where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency)
+		// frequencyType, ";
 		sql += "c.frequency, b.report_batch reportBatch, ";
 		sql += "SUBSTR(a.submit_start_time, 1, 8) submitStartTime, SUBSTR(a.submit_end_time, 1, 8) submitEndTime, ";
 		sql += "a.is_completed isCompleted, d.remind_id remindId, d.content remindContent ";
@@ -125,7 +127,7 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 				data.setReportId(rs.getString("reportId"));
 				data.setReportCode(rs.getString("reportCode"));
 				data.setReportName(rs.getString("reportName"));
-				data.setFrequency(rs.getString("frequency"));
+				data.setFrequency(rs.getInt("frequency"));
 				data.setReportBatch(rs.getString("reportBatch") == null ? "" : rs.getString("reportBatch"));
 				data.setSubmitStartTime(rs.getString("submitStartTime"));
 				data.setSubmitEndTime(rs.getString("submitEndTime"));
