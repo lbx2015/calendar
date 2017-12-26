@@ -11,6 +11,15 @@ import java.util.List;
  */
 public class UserParams extends BaseParams {
 
+    // 他人的用户Id
+    public String toUserId;
+
+    // 验证码
+    public String verifyCode;
+
+    // 邮箱
+    public String email;
+
     // 是否删除： 0-删除，1-未删除
     public Integer isDeleted;
 
@@ -21,7 +30,7 @@ public class UserParams extends BaseParams {
     public String phoneDeviceid;
 
     // 手机类型 1-IOS;2-Android;3-其它
-    public int phoneType = 2;
+    public Integer phoneType;
 
     public List<String> phones;
 

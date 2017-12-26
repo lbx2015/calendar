@@ -33,6 +33,7 @@ public class CONST {
     public static final String PHONE_SEQ_NUMBER = "phoneSeqNum";
     public static final String USER_NAME = "phoneSeqNum";
     public static final String USER_COMMENTS = "USER_COMMENTS";
+    public static final String EMAIL_VALIDATE = "EMAIL_VALIDATE";
     public static final String USER_EMAIL = "USER_EMAIL";
     public static final String USER_PASSWORD = "USER_PASSWORD";
     public static final String USER_DEPT = "USER_DEPT";
@@ -71,6 +72,7 @@ public class CONST {
     public static final String SEARCH_CONDITION = "SEARCH_CONDITION";
 
     public static final int UPDATE_USER_INFO_REQUES = 1111;
+    public static final int VERIFY_EMAIL = 1112;
 
     //滚动事件
     public enum ScrollDirection {

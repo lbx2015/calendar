@@ -734,4 +734,12 @@ public class APIClient {
         params.objType = 2;
         apiInterface.getMyCollectNews(params).enqueue(c);
     }
+
+    public static void sendEmailVerifyCode(UserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.sendEmailVerifyCode(params).enqueue(c);
+    }
+
+    public static void emailIdentify(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.emailIdentify(params).enqueue(c);
+    }
 }

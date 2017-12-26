@@ -113,6 +113,9 @@
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".activity.InputEmailVerifyCodeActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".activity.IndustrySelectActivity"></activity>
         <activity android:name=".activity.PositionSelectActivity"></activity>
         <activity android:name=".activity.ReportsSelectActivity"></activity>
