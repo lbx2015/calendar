@@ -20,7 +20,6 @@ import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
@@ -30,6 +29,8 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
@@ -40,11 +41,13 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
@@ -54,6 +57,7 @@ import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
@@ -74,6 +78,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import io.realm.Realm;
@@ -480,9 +485,6 @@ public class APIClient {
         APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
     }
 
-    public static void interestingReports(AppUserReportResult result, ZCallBackWithFail<ResponseModel<Short>> zCallBackWithFail) {
-        apiInterface.interestingReports(result).enqueue(zCallBackWithFail);
-    }
 
     /**
      * when user not login ,showing all reports
@@ -554,7 +556,7 @@ public class APIClient {
         apiInterface.findSubscribeReportList(user).enqueue(c);
     }
 
-    public static void userAddReportEdit(SubscribeReportParam reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
+    public static void userAddReportEdit(SubscribeReportParam reportResult, ZCallBackWithFail<ResponseModel<String>> z) {
         apiInterface.saveSubscribeReport(reportResult).enqueue(z);
     }
 
@@ -654,7 +656,7 @@ public class APIClient {
         apiInterface.getMyAnswers(params).enqueue(c);
     }
 
-    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<Map<String, Integer>>> c) {
         apiInterface.signIn(params).enqueue(c);
     }
 
@@ -676,5 +678,68 @@ public class APIClient {
 
     public static void getReports(ReportParams params, ZCallBack<ResponseModel<List<ReportListResult>>> c) {
         apiInterface.getReports(params).enqueue(c);
+    }
+
+    public static void getUserOperationInfo(UserParams params, ZCallBack<ResponseModel<UserOperationInfo>> c) {
+        apiInterface.getUserOperationInfo(params).enqueue(c);
+    }
+
+    public static void getUserDynamicComments(UserFollowParams params, ZCallBack<ResponseModel<List<QACommentResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 1;
+        apiInterface.getUserDynamicComments(params).enqueue(c);
+    }
+
+    public static void getUserDynamicAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 2;
+        apiInterface.getUserDynamicAnswers(params).enqueue(c);
+    }
+
+    public static void getUserDynamicQuestions(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 3;
+        apiInterface.getUserDynamicQuestions(params).enqueue(c);
+    }
+
+    public static void getTaskDates(ReportCompletedRelParam param, ZCallBack<ResponseModel<List<String>>> c) {
+        apiInterface.getTaskDates(param).enqueue(c);
+    }
+
+    public static void findCurrentTasks(RCompletedRelParams param, ZCallBack<ResponseModel<List<CurrentReportTaskResp>>> c) {
+        apiInterface.findCurrentTasks(param).enqueue(c);
+    }
+
+    public static void getMyFollow(UserFollowParams params, ZCallBack<ResponseModel<List<Topic>>> c) {
+        //get topics
+        params.objType = 2;
+        apiInterface.getMyFollowTopic(params).enqueue(c);
+    }
+
+    public static void getMyFollowQuestion(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+        params.objType = 1;
+        apiInterface.getMyFollowQuestion(params).enqueue(c);
+    }
+
+    public static void getEditHtmlUrl(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.getEditHtmlUrl(params).enqueue(c);
+    }
+
+    public static void getMyCollectAnswer(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        params.objType = 1;
+        apiInterface.getMyCollectAnswer(params).enqueue(c);
+    }
+
+    public static void getMyCollectNews(UserFollowParams params, ZCallBack<ResponseModel<List<News>>> c) {
+        params.objType = 2;
+        apiInterface.getMyCollectNews(params).enqueue(c);
+    }
+
+    public static void sendEmailVerifyCode(UserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.sendEmailVerifyCode(params).enqueue(c);
+    }
+
+    public static void emailIdentify(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.emailIdentify(params).enqueue(c);
     }
 }

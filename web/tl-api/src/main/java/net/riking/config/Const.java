@@ -1,5 +1,7 @@
 package net.riking.config;
 
+import org.apache.activemq.ActiveMQConnection;
+
 /**
  * 常量类
  * 
@@ -7,6 +9,7 @@ package net.riking.config;
  *
  */
 public class Const {
+	public static final String EMPTY = "{}";
 
 	public static final String MODEL_ATTRS_JSON_PATH = "/static/dict/";
 
@@ -26,7 +29,13 @@ public class Const {
 
 	public static final String TL_FEED_BACK_PHOTO_PATH = "/images/feedBack/photo/";
 
+	public static final String TL_NEWS_PHOTO_PATH = "/images/news/photo/";
+
 	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/photo/";
+
+	public static final String TL_QUESTION_PHOTO_PATH = "/images/question/photo/";
+
+	public static final String TL_ANSWER_PHOTO_PATH = "/images/answer/photo/";
 
 	public static final String TL_FLAG_PATH = "/images/flag/";
 
@@ -34,9 +43,15 @@ public class Const {
 
 	public static final String TL_AGREEMENT_HTML5_PATH = "/agreement.html";
 
+	public static final String TL_MYGRADE_HTML5_PATH = "/myGrade.html";
+
+	public static final String TL_QUESTIONSHARE_HTML5_PATH = "/questionShare.html";
+
 	public static final String TL_REPORT_HTML5_PATH = "/reportListApp.html?id=";
 
 	public static final String TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
+
+	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/Inquiry.html";
 
 	/* 验证码有效时间 */
 	public static final String VALID_ = "VALID_";
@@ -49,9 +64,28 @@ public class Const {
 	/* 所有数据字典 */
 	public static final String SYS_DICT = "SYS_DICT";
 
-	/* 默认头像 */
-	public static final String DEFAULT_PHOTO_URL = "defaultPhotoUrl.jpg";
+	// 系统日历
+	public static final String SYS_DAY = "SYS_DAY_";
 
+	/** -------------------mq队列 begin-------------------------- */
+	/* 系统通知队列 */
+	public static final String SYS_INFO_QUEUE = "sysInfoQueue";
+
+	/* 系统操作队列 点赞，收藏，关注 */
+	public static final String SYS_OPT_QUEUE = "sysOptQueue";
+
+	/* 系统消息队列 */
+	public static final String SYS_MES_QUEUE = "sysMesQueue";
+
+	/** -------------------mq队列 end-------------------------- */
+	/** -------------------mq连接信息 begin-------------------------- */
+	public static final String MQ_USER_NAME = ActiveMQConnection.DEFAULT_USER;
+
+	public static final String MQ_PASSWORD = ActiveMQConnection.DEFAULT_PASSWORD;
+
+	// 默认连接地址
+	public static final String MQ_BROKE_URL = ActiveMQConnection.DEFAULT_BROKER_URL;
+	/** -------------------mq连接信息 begin-------------------------- */
 	// /* 根据tablename */
 	// public static final String SYS_CLAZZ_DICT = "SYS_CLAZZ_DICT";
 	// public static final String SYS_FIELD_DICT = "SYS_FIELD_DICT";

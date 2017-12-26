@@ -21,7 +21,6 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -151,7 +150,7 @@ public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
                 }
                 isLoading = false;
                 nextPage = page + 1;
-                mAdapter.addAll(list);
+                mAdapter.setData(list);
             }
         });
     }

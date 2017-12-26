@@ -1,40 +1,77 @@
 {
 	"table": "T_WEB_VERSION",
-	"groups":[{
-		"prop":"base",
-		"alias":"基础信息"
-	}],
-	"attrs":[
+	"groups": [
 		{
-			"prop": "versionNumber",
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "versionNo",
 			"alias": "Web版本号",
+			"desc": "Web版本号",
 			"type": "string",
-			"group":"base"
+			"group": "base",
+			"query": "1",
+			"query_order": "1"
 		},
 		{
-			"prop": "sqlVersionNumber",
+			"prop": "sqlVersionNo",
 			"alias": "数据库脚本版本号",
-			"group":"base",
-			"type": "string"
+			"desc": "数据库脚本版本号",
+			"group": "base",
+			"type": "string",
+			"query": "1",
+			"query_order": "2"
 		},
 		{
-			"prop": "renewalTime",
-			"group":"base",
-			"alias": "更新时间",
-			"type": "date"
-		},
-		{
-			"prop": "versionNote",
+			"prop": "remark",
 			"alias": "版本说明",
-			"group":"base",
-			"type": "text"
+			"desc": "版本说明",
+			"group": "base",
+			"type": "text",
+			"hidden":"table"
 		},
 		{
-			"prop": "deleteState",
-			"alias": "删除状态  ",
-			"group":"base",
-			"type" : "text",
-      		"hidden":"table,edit,preview"
+			"prop": "createdBy",
+			"alias": "创建人ID",
+			"desc": "创建人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "createdTime",
+			"alias": "创建时间",
+			"desc": "创建时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "modifiedBy",
+			"alias": "修改人ID",
+			"desc": "修改人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "modifiedTime",
+			"alias": "最后修改时间",
+			"desc": "最后修改时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "isDeleted",
+			"alias": "是否删除",
+			"desc": "是否删除",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
 		}
 	]
 }

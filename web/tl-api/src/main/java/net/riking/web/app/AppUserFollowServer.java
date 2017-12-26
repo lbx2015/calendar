@@ -24,6 +24,7 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.TopicResult;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.UserFollowParams;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
@@ -73,13 +74,13 @@ public class AppUserFollowServer {
 	TopicRelRepo topicRelRepo;
 
 	/**
-	 * userId;objType(1-问题，2-话题，3-用户)
+	 * userId;objType(1-问题，2-话题，3-用户);myUserId
 	 * @param userParams
 	 * @return
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	@ApiOperation(value = "我的关注/人/话题/问题", notes = "POST")
+	@ApiOperation(value = "关注/人/话题/问题", notes = "POST")
 	@RequestMapping(value = "/myFollow", method = RequestMethod.POST)
 	public AppResp myFollow_(@RequestBody UserFollowParams userFollowParams)
 			throws IllegalArgumentException, IllegalAccessException {
@@ -92,6 +93,13 @@ public class AppUserFollowServer {
 		}
 		if (userFollowParams.getPindex() != 0 && userFollowParams.getPindex() != null) {
 			userFollowParams.setPindex(userFollowParams.getPindex() - 1);
+		}
+		// 如果toUserId不为空，userId和toUserId互换，userId是对方，toUserId是当前登录用户
+		if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+			String userId = "";
+			userId = userFollowParams.getUserId();
+			userFollowParams.setUserId(userFollowParams.getToUserId());
+			userFollowParams.setToUserId(userId);
 		}
 		int pageCount = (userFollowParams.getPcount() == null || userFollowParams.getPcount() == 0) ? 30
 				: userFollowParams.getPcount();
@@ -108,13 +116,37 @@ public class AppUserFollowServer {
 			case Const.OBJ_TYPE_2:
 				List<TopicResult> topicResults = topicService.userFollowTopic(userFollowParams.getUserId(), pageBegin,
 						pageCount);
-
+				if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+					List<String> list = topicRelRepo.findByUser(userFollowParams.getToUserId(), 0);// 0-关注
+					for (TopicResult topicResult : topicResults) {
+						topicResult.setIsFollow(0);// 0-未关注
+						if (list.contains(topicResult.getId())) {
+							topicResult.setIsFollow(1);// 1-已关注
+						}
+					}
+				}
 				return new AppResp(topicResults, CodeDef.SUCCESS);
 			// 用户
 			case Const.OBJ_TYPE_3:
 				List<AppUserResult> userResults = appUserService.userFollowUser(userFollowParams.getUserId(), pageBegin,
 						pageCount);
 				userResults = appendUrlGrade(userFollowParams.getUserId(), userResults);
+				if (StringUtils.isNotBlank(userFollowParams.getToUserId())) {
+					List<UserFollowRel> followRels = userFollowRelRepo.findByUser(userFollowParams.getToUserId());
+					for (AppUserResult appUserResult : userResults) {
+						appUserResult.setIsFollow(0);// 未关注
+						for (UserFollowRel userFollowRel : followRels) {
+							if (userFollowRel.getFollowStatus() == 1
+									&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
+								appUserResult.setIsFollow(1);// 已关注
+							} else if (userFollowRel.getFollowStatus() == 2
+									&& userFollowRel.getToUserId().equals(appUserResult.getId())) {
+								appUserResult.setIsFollow(2);// 互相关注
+							}
+						}
+					}
+				}
+
 				return new AppResp(userResults, CodeDef.SUCCESS);
 			default:
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
@@ -173,4 +205,5 @@ public class AppUserFollowServer {
 		}
 		return userResults;
 	}
+
 }

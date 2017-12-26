@@ -25,6 +25,8 @@ public class QAExcellentResp {
 
     // 经验值
     public int experience;
+    // 经验值
+    public Integer grade;
 
     // 是否已关注 0-未关注，1-已关注
     public int isFollow;

@@ -64,6 +64,8 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     private boolean isHasLoadedAll = false;
     private int nextPage;
     private String newsId;
+    private TextView activityTitle;
+    private int commentsNum;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +74,9 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         setContentView(R.layout.activity_comments);
         Intent i = getIntent();
         newsId = i.getStringExtra(CONST.NEWS_ID);
+        commentsNum = i.getIntExtra(CONST.COMMENT_NUM, 0);
         init();
+        activityTitle.setText("评论" + ZR.getNumberString(commentsNum));
     }
 
     private void init() {
@@ -81,6 +85,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        activityTitle = findViewById(R.id.activity_title);
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);

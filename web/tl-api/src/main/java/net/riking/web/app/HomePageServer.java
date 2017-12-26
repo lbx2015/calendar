@@ -333,7 +333,7 @@ public class HomePageServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 	}
 
 	// 加点赞，关注，收藏状态

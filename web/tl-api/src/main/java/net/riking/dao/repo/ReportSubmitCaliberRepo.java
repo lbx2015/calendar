@@ -43,5 +43,8 @@ public interface ReportSubmitCaliberRepo
 	@Query("select r.reportId from ReportSubmitCaliber r where ((r.frequency='1') or (r.frequency='2' and r.delayDates>=?1) or (r.frequency='3' and r.delayDates>=?2) or (r.frequency='4' and r.delayDates>=?3) or(r.frequency='5' and r.delayDates>=?4) or (r.frequency='6' and r.delayDates>=?5) or (r.frequency='7' and r.delayDates>=?6)) and r.isWorkDay=0 and r.enabled = 1")
 	Set<String> findByFreeDatefromReportId(Integer week, Integer ten, Integer month, Integer season, Integer halfYear,
 			Integer Year);
+	
+	@Query(" from ReportSubmitCaliber where reportId = ?1 and enabled = 1 and isDelete = 1")
+	ReportSubmitCaliber findByReportId(String reportId);
 
 }

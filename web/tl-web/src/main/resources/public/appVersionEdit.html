@@ -1,81 +1,79 @@
 <!doctype html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <title>dialog2</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link type="include" href="/common/depcss.html" />
-</head>
-
-<body class="iframeBody">
-    <div class="formbox layui-form add-formbox">
-        <div class="_tmpl" data-url="edit.html" data-attr="appVersion.json" data-bind="editOnBind" data-param=""></div>
-        <div class="layui-btn-div" id="layui-btn-fixed">
-            <button class="layui-btn bgc1 layui-btn-mini" lay-submit lay-filter="edit" id="submit">确定</button>
-            <button class="layui-btn layui-btn-primary layui-btn-mini" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+    <head>
+        <meta charset="utf-8">
+        <title>app版本管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link type="include" href="/common/depcss.html" />
+        <link type="include" href="/common/depjs.html" />
+    </head>
+    <body class="iframeBody">
+        <div class="formbox layui-form add-formbox">
+            <div class="_tmpl" data-url="edit.html" data-attr="appVersion.json"
+                data-bind="editOnBind" data-param=""></div>
+            <div class="layui-btn-div" id="layui-btn-fixed">
+                <div class="ystep4" id="flowsheet"></div>
+                <div class="txt-c">
+                    <button class="layui-btn layui-btn-primary layui-btn-mini"
+                        onclick="back()">返回</button>
+                </div>
+            </div>
         </div>
-    </div>
-</body>
-<link type="include" href="/common/depjs.html" />
-<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
-<script>
-    $(document).ready(function() {
-        $("#submit").click(function() {
-            if (TmplUtils.check('edit')) {
-                edit();
-            }
+    </body>
+    <script>
+        $(document).ready(function() {
+            //使用方式跟独立组件完全一样
         });
-    });
-
-    //var id = window.location.hash.replace("#", "");
-    var id = View.getQStr('id');
-
-    function editOnBind(attrs, param) {
-        tmpl = this;
-        tmpl.bind(function(callback) {
-            var _this = this;
-            if (id) {
-                var url = Const.apiUrl + "/appVersion/get";
+        var id = GetQueryString("id");
+        var flag = View.getQStr('flag');
+        var tmpl = null;
+        function editOnBind(attrs, param) {
+            tmpl = this;
+            tmpl.bind(function(callback) {
                 var _this = this;
-                View.get(url, "id=" + id, function(resp) {
+                if (id) {
+                    var url = "/appVersion/get";
+                    var _this = this;
+                    View.get(url, "id=" + id, function(resp) {
+                        var data = {};
+                        if (resp) {
+                            data.data = resp;
+                        }
+                        View.info(resp);
+                        //默认展开分组 ，不配置默认展开第一个分组
+                        data.showGroup = "head,base";
+                        data.editable = 2;//不可编辑
+                        callback.call(_this, data);
+                        TmplUtils.editOnLoad();
+                    }, function() {
+                        TmplUtils.showMsgFail('信息获取失败');
+                    });
+                } else {
                     var data = {};
-                    if (resp) {
-                        data.data = resp;
-                    }
-                    //默认展开分组 ，不配置默认展开第一个分组
-                    data.showGroup = "base";
+                    data.showGroup = "head,base";
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
-                }, function() {
-                    TmplUtils.showMsgFail('信息获取失败');
-                });
-            } else {
-                var data = {};
-                data.showGroup = "base";
-                callback.call(_this, data);
-                TmplUtils.editOnLoad();
+                }
+            });
+        }
+    
+        //自定义前段校验规则，可以多个
+        TmplUtils.verify.desc = function(value) {
+            if (value.length < 5) {
+                return '描述至少得5个字符';
             }
-        });
-    }
-    //编辑保存
-    function edit() {
-        var reportList = Utils.formToObj("edit");
-        var url = Const.apiUrl + "/appVersion/save";
-        View.post(url, reportList, function(resp) {
-            TmplUtils.showMsgSuccess('编辑成功');
-            parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
-        	    + "&pcount=" + parent.TmplUtils.pageSize 
-                + parent.TmplUtils.searchParam);
-            parent.previewTmpl.refresh();
-            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            parent.layer.close(index);
-        }, function(code) {
-            TmplUtils.showMsgFail('编辑失败');
-        });
-    }
-</script>
-
+        }
+    
+        function check() {
+        }
+        
+      
+        function back() {
+            parent.View.fireEvent("TB_DATA_CHANGE", {
+                "window" : window.name
+            });
+        }
+    </script>
 </html>

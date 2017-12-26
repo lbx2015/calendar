@@ -39,7 +39,7 @@ public interface ReportSubscribeRelRepo
 	 * @param userId
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.ReportSubscribeRel(a.reportId, "
+	@Query("select new net.riking.entity.model.ReportSubscribeRel(a.userId,a.reportId, "
 			+ "(select t.code from Report t where t.id=a.reportId)) "
 			+ "from ReportSubscribeRel a  where a.userId = ?1 ")
 	List<ReportSubscribeRel> findSubscribeReportList(String userId);
@@ -58,7 +58,7 @@ public interface ReportSubscribeRelRepo
 
 	@Transactional
 	@Modifying
-	@Query("delete from ReportSubscribeRel where user_id = ?1 and reportId not in (?2) ")
+	@Query("delete from ReportSubscribeRel where userId = ?1 and reportId not in (?2) ")
 	public int deleteNotSubscribeByUserId(String userId, String[] reportIds);
 
 	// @Transactional

@@ -72,7 +72,7 @@ public class TQuestionResult {
     public int pushType;
 
 //    @Comment("可能感兴趣的话题")
-    public List<TopicResult> topicResults;
+    public List<Topic> topicResults;
 
 //    @Comment("可能感兴趣的人")
     public List<AppUserResult> appUserResults;

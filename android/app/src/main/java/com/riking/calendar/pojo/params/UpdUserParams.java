@@ -2,69 +2,75 @@ package com.riking.calendar.pojo.params;
 
 /**
  * 更新用户信息参数接收
+ *
  * @author james.you
  * @version crateTime：2017年11月29日 下午3:16:14
  * @used TODO
  */
 public class UpdUserParams extends BaseParams {
-	// 用户名称
-	public String userName;
 
-	// 微信openid
-	public String openId;
+    // 用户名称
+    public String userName;
 
-	// 用户邮箱
-	public String email;
+    // 微信openid
+    public String openId;
 
-	// 手机号
-	public String phone;
+    // 用户邮箱
+    public String email;
 
-	// 用户状态 0-禁用 1-启用
-	public String enabled;
+    // 手机号
+    public String phone;
 
-	// 真实姓名
-	public String realName;
+    // 用户状态 0-禁用 1-启用
+    public String enabled;
 
-	// 公司名称
-	public String companyName;
+    // 真实姓名
+    public String realName;
 
-	// 用户性别:1-男,0-女
-	public Integer sex;
+    // 公司名称
+    public String companyName;
 
-	// 出身日期(yyyyMMdd)
-	public String birthday;
+    // 用户性别:1-男,0-女
+    public int sex;
 
-	// 地址
-	public String address;
+    // 出身日期(yyyyMMdd)
+    public String birthday;
 
-	// 个性签名
-	public String description;
+    // 地址
+    public String address;
 
-	// 手机Deviceid
-	public String phoneDeviceid;
+    // 个性签名
+    public String description;
 
-	// 积分
-	public Integer integral;
+    // 手机Deviceid
+    public String phoneDeviceid;
 
-	// 经验值
-	public Integer experience;
+    // 积分
+    public int integral;
 
-	// 用户头像（存放用户头像名称）
-	public String photoUrl;
+    // 经验值
+    public int experience;
 
-	// 全天提醒时间 HHmm时分
-	public String remindTime;
+    // 用户头像（存放用户头像名称）
+    public String photoUrl;
 
-	// 是否已订阅: 0-未订阅；1-已订阅
-	public Integer isSubscribe;
+    // 全天提醒时间 HHmm时分
+    public String remindTime;
 
-	// 行业ID
-	public Integer industryId;
+    // 是否已订阅: 0-未订阅；1-已订阅
+    public int isSubscribe;
 
-	// 职位ID
-	public Integer positionId;
+    // 行业ID
+    public String industryId;
 
-	// 是否引导: 0-未引导；1-已引导
-	public Integer isGuide;
+    // 职位ID
+    public String positionId;
+
+    // 是否引导: 0-未引导；1-已引导
+    public int isGuide;
+
+    //	@Comment("用户邮箱是否已认证： 0-未认证 1-已认证")
+    public int isIdentified;
+
 
 }

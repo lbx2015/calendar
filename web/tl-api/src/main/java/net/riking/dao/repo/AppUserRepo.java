@@ -1,6 +1,7 @@
 package net.riking.dao.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -12,7 +13,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.EmailSuffix;
 
 @Repository
 public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser> {
@@ -23,8 +26,15 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	@Query(" from AppUser where isDeleted = 1 and openId = ?1 ")
 	AppUser findByOpenId(String openId);
 
+	@Query(" from AppUserGrade")
+	List<AppUserGrade> findGrade();
+
+	@Query(" from EmailSuffix where enabled = 1")
+	List<EmailSuffix> findEmailSuffix();
+
 	/**
 	 * 根据关键字模糊查询userName
+	 * 
 	 * @param keyWord
 	 * @return
 	 */
@@ -33,6 +43,7 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	/**
 	 * 根据email模糊查询
+	 * 
 	 * @param keyWord
 	 * @return
 	 */
@@ -41,30 +52,32 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	@Transactional
 	@Modifying
-	@Query("update AppUser set isIdentify = 1 where id = ?1")
-	void updEmailIndentify(String userId);
+	@Query("update AppUser set isIdentified = 1,email = ?2 where id = ?1")
+	void updEmailIndentify(String userId, String email);
 
 	// @Query("select new
 	// net.riking.entity.resp.AppUserResp(a.id,a.userName,a.openId,a.email,a.phone,ap.realName,ap.companyName,ap.sex,ap.birthday,ap.address,ap.description,ap.phoneDeviceid,ap.integral,ap.experience,ap.photoUrl,ap.remindTime,ap.isSubscribe,ap.industryId,ap.positionId,ap.isGuide)
-	// from AppUser a join a.AppUserDetail ap where a.isDeleted = 1 and a.id = ?1 and ap.id = a.id")
+	// from AppUser a join a.AppUserDetail ap where a.isDeleted = 1 and a.id =
+	// ?1 and ap.id = a.id")
 	// AppUserResp getById(String userId);
 
-	// TODO 暂时注释 @Transactional
-	// @Modifying
-	// @Query("update AppUser set deleteState = '0' where id in ?1")
-	// int deleteByIds(Set<String> ids);
+	/******** WEB ************/
+	@Transactional
+	@Modifying
+	@Query("update AppUser set isDeleted =0 where id in ?1")
+	int deleteByIds(Set<String> ids);
 
-	// @Transactional
-	// @Modifying
-	// TODO 暂时注释
-	// @Query("update AppUser set enabled = '1' where id = ?1")
-	// int enable(String id);
+	@Transactional
+	@Modifying
+	@Query("update AppUser set enabled = '1' where id = ?1")
+	int enable(String id);
 
-	// @Transactional
-	// @Modifying
-	// TODO 暂时注释
-	// @Query("update AppUser set enabled = '0' where id = ?1")
-	// int unEnable(String id);
+	@Transactional
+	@Modifying
+	@Query("update AppUser set enabled = '0' where id = ?1")
+	int unEnable(String id);
+
+	/******** WEB END ************/
 
 	// @Transactional
 	// @Modifying

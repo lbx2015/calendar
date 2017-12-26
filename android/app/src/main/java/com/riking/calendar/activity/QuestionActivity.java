@@ -28,7 +28,7 @@ import com.riking.calendar.util.ZToast;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class QuestionActivity extends AppCompatActivity { //Fragment 数组
+public class QuestionActivity extends AppCompatActivity {
     public View followButton;
     public TextView followTv;
     QuestionListAdapter mAdapter;
@@ -83,6 +83,11 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                if (question == null) {
+                    ZToast.toast("数据加载失败");
+                    return;
+                }
+
                 final TQuestionParams params = new TQuestionParams();
                 params.attentObjId = question.topicQuestionId;
                 //question

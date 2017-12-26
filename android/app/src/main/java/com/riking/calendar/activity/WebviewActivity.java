@@ -11,7 +11,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
+import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
@@ -22,12 +22,17 @@ import com.riking.calendar.util.CONST;
  */
 
 public class WebviewActivity extends AppCompatActivity {
+    TextView activityTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+        activityTitle = findViewById(R.id.title);
+        //set activity title
+        activityTitle.setText("关于我们");
+        //set web view
         WebView webview = (WebView) findViewById(R.id.web_view);
 
         Bundle bundle = getIntent().getExtras();

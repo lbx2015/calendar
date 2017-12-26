@@ -1,6 +1,7 @@
 package net.riking.web.app;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
@@ -41,6 +43,7 @@ import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
+import net.riking.util.Utils;
 
 /**
  * 
@@ -95,6 +98,17 @@ public class QAnswerServer {
 
 	@Autowired
 	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	Config config;
+
+	@ApiOperation(value = "回答", notes = "POST")
+	@RequestMapping(value = "/answer", method = RequestMethod.POST)
+	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
+		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_INQUIRY_HTML5_PATH + "?userId="
+				+ qAnswerParams.getUserId() + "&questionId=" + qAnswerParams.getQuestionId(), CodeDef.SUCCESS);
+	}
 
 	/**
 	 * 问题回答详情
@@ -165,7 +179,7 @@ public class QAnswerServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(qAnswerParams.getContent())) {
-			return new AppResp("", CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
 		QAComment qaComment = new QAComment();
 		qaComment.setUserId(qAnswerParams.getUserId());
@@ -259,7 +273,7 @@ public class QAnswerServer {
 				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	/**

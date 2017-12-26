@@ -3,12 +3,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="13dp"
-        android:paddingTop="13dp">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
         <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/back"
@@ -16,9 +15,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginLeft="19dp"
-            android:onClick="onBackClick"
-            android:src="@drawable/back_icon" />
+            android:src="@drawable/nav_icon_back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
     </FrameLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
 
     <WebView
         android:id="@+id/web_view"

@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
@@ -31,9 +31,11 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.SignIn;
+import net.riking.entity.model.UserOperationInfo;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.AppUserResp;
+import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
@@ -75,6 +77,15 @@ public class AppUserServer {
 	@Autowired
 	SignInService signInService;
 
+	@Autowired
+	Config config;
+
+	@ApiOperation(value = "我的等级详情", notes = "POST")
+	@RequestMapping(value = "/myGrade", method = RequestMethod.POST)
+	public AppResp myGrade_() {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_MYGRADE_HTML5_PATH, CodeDef.SUCCESS);
+	}
+
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
 	public AppResp get_(@RequestBody UserParams userParams) throws IllegalArgumentException, IllegalAccessException {
@@ -95,6 +106,35 @@ public class AppUserServer {
 			appUserResp.setGrade(appUserService.transformExpToGrade(appUserResp.getExperience()));
 		}
 		return new AppResp(appUserResp, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "得到他人的信息", notes = "POST")
+	@RequestMapping(value = "/getOther", method = RequestMethod.POST)
+	public AppResp getOther_(@RequestBody UserParams userParams)
+			throws IllegalArgumentException, IllegalAccessException {
+		if (userParams.getUserId() == null) {
+			userParams.setUserId("");
+		}
+		if (userParams.getToUserId() == null) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		OtherUserResp otherUserResp = appUserService.getOtherMes(userParams.getToUserId(), userParams.getUserId());
+		// TODO 暂时从数据库中获取，后面优化从redis中取
+		Integer followNum = userFollowRelRepo.countByUser(userParams.getToUserId());
+		Integer answerNum = questionAnswerRepo.answerCountByUserId(userParams.getToUserId());
+		Integer fansNum = userFollowRelRepo.countByToUser(userParams.getToUserId());
+		otherUserResp.setFollowNum(followNum);
+		otherUserResp.setAnswerNum(answerNum);
+		otherUserResp.setFansNum(fansNum);
+		if (null != otherUserResp.getPhotoUrl()) {
+			otherUserResp
+					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
+		}
+		// 等级
+		if (null != otherUserResp.getExperience()) {
+			otherUserResp.setGrade(appUserService.transformExpToGrade(otherUserResp.getExperience()));
+		}
+		return new AppResp(otherUserResp, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "更新用户信息", notes = "POST")
@@ -125,9 +165,15 @@ public class AppUserServer {
 		if (null == appUserDetail) {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
+		String positionId = appUserDetail.getPositionId();
+		if (StringUtils.isNotBlank(appUserDetail.getIndustryId()) && StringUtils.isNotBlank(userParams.getIndustryId())
+				&& (!userParams.getIndustryId().equals(appUserDetail.getIndustryId()))) {
+			positionId = null;
+		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
 				appUserDetail = (AppUserDetail) fromObjToObjValue(userParams, appUserDetail);
+				appUserDetail.setPositionId(positionId);
 			}
 			try {
 				appUserDetailRepo.save(appUserDetail);
@@ -136,7 +182,7 @@ public class AppUserServer {
 			}
 
 		}
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "更新用户手机设备信息", notes = "POST")
@@ -152,7 +198,7 @@ public class AppUserServer {
 			appUserDetail.setPhoneDeviceid(seqNum);
 			appUserDetail.setPhoneType(userParams.getPhoneType());
 			appUserDetailRepo.save(appUserDetail);
-			return new AppResp("", CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
 		return new AppResp("", CodeDef.ERROR);
 	}
@@ -221,14 +267,14 @@ public class AppUserServer {
 		if (null == userParams.getUserId()) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		Map<String, Integer> map = new HashMap<String, Integer>();
 		// TODO 暂时从数据库中获取，后面优化从redis中取
 		Integer followNum = userFollowRelRepo.countByUser(userParams.getUserId());
 		Integer answerNum = questionAnswerRepo.answerCountByUserId(userParams.getUserId());
 		Integer fansNum = userFollowRelRepo.countByToUser(userParams.getUserId());
-		map.put("followNum", followNum);
-		map.put("answerNum", answerNum);
-		map.put("fansNum", fansNum);
+		UserOperationInfo userOperationInfo = new UserOperationInfo();
+		userOperationInfo.setFollowNum(followNum);
+		userOperationInfo.setAnswerNum(answerNum);
+		userOperationInfo.setFansNum(fansNum);
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, +1);// 加一天
 		Date nextDay = DateUtils.StringFormatMS(DateUtils.DateFormatMS(calendar.getTime(), "yyyy-MM-dd"), "yyyy-MM-dd");
@@ -236,11 +282,11 @@ public class AppUserServer {
 
 		SignIn signIn = signInRepo.getByUIdAndTime(userParams.getUserId(), today, nextDay);
 		if (signIn != null) {
-			map.put("signStatus", 1);// 1-已签到
+			userOperationInfo.setSignStatus(1);// 1-已签到
 		} else {
-			map.put("signStatus", 0);// 1-未签到
+			userOperationInfo.setSignStatus(0);// 0-未签到
 		}
-		return new AppResp(map, CodeDef.SUCCESS);
+		return new AppResp(userOperationInfo, CodeDef.SUCCESS);
 	}
 
 	/**

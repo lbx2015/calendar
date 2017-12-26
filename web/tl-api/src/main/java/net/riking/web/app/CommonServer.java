@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
-import net.riking.core.entity.model.ModelPropDict;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.AppVersionRepo;
 import net.riking.dao.repo.IndustryRepo;
@@ -35,6 +34,7 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppVersion;
 import net.riking.entity.model.Email;
+import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.Industry;
 import net.riking.entity.model.Recommend;
 import net.riking.entity.model.TQuestionRel;
@@ -147,17 +147,17 @@ public class CommonServer {
 	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/getAllEmailSuffix", method = RequestMethod.POST)
 	public AppResp getAllEmailSuffix_() {
-		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "EMAILSUFFIX");
+		List<EmailSuffix> list = sysDataservice.getEmailSuffix(EmailSuffix.class.getName().toUpperCase());
 		List<String> emailSuffixs = new ArrayList<String>();
-		for (ModelPropDict modelPropDict : list) {
-			emailSuffixs.add("@" + modelPropDict.getValu());
+		for (EmailSuffix emailSuffix : list) {
+			emailSuffixs.add("@" + emailSuffix.getEmailSuffix());
 		}
 		return new AppResp(emailSuffixs, CodeDef.SUCCESS);
 	}
 
 	/**
 	 * 
-	 * @param userId
+	 * @param userId,email
 	 * @return
 	 * @throws ParseException
 	 */
@@ -170,7 +170,9 @@ public class CommonServer {
 		if (null == userParams.getUserId()) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
+		AppUser appUser = new AppUser();
+		appUser = appUserRepo.findOne(userParams.getUserId());
+		appUser.setEmail(userParams.getEmail());
 
 		Email email = appUserService.getMyEmail();
 		if (StringUtils.isNotBlank(appUser.getEmail())) {
@@ -196,7 +198,7 @@ public class CommonServer {
 				logger.error("邮件发送失败" + e);
 				return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 			}
-			return new AppResp(result, CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		} else {
 			return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
 		}
@@ -204,7 +206,7 @@ public class CommonServer {
 
 	/**
 	 * 
-	 * @param userId verifyCode
+	 * @param userId verifyCode,email
 	 * @return
 	 * @throws ParseException
 	 */
@@ -217,14 +219,16 @@ public class CommonServer {
 		if (null == userParams.getUserId()) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
+		if (null == userParams.getEmail()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
 		try {
-			boolean isRn = smsUtil.checkValidCode(appUser.getEmail(), userParams.getVerifyCode());
+			boolean isRn = smsUtil.checkValidCode(userParams.getEmail(), userParams.getVerifyCode());
 			if (!isRn) {
 				return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
 			} else {
-				appUserRepo.updEmailIndentify(userParams.getUserId());
-				return new AppResp("", CodeDef.SUCCESS);
+				appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -311,7 +315,7 @@ public class CommonServer {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
-				break;
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			// 话题关注
 			case Const.OBJ_TYPE_2:
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
@@ -333,9 +337,10 @@ public class CommonServer {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
-				break;
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			// 用户关注
 			case Const.OBJ_TYPE_3:
+				UserFollowRel userFollowRel = new UserFollowRel();
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
 					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：2-互相关注
 					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
@@ -348,7 +353,6 @@ public class CommonServer {
 							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
 									toUserFollowRel.getToUserId(), 2);// 2-互相关注
 							// 如果传过来的参数是关注，保存新的一条关注记录
-							UserFollowRel userFollowRel = new UserFollowRel();
 							userFollowRel.setUserId(tQuestionParams.getUserId());
 							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 							userFollowRel.setFollowStatus(2);// 互相关注
@@ -356,7 +360,6 @@ public class CommonServer {
 						}
 					} else {
 						// 如果传过来的参数是关注，保存新的一条关注记录
-						UserFollowRel userFollowRel = new UserFollowRel();
 						userFollowRel.setUserId(tQuestionParams.getUserId());
 						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 						userFollowRel.setFollowStatus(1);// 非互相关注
@@ -375,13 +378,12 @@ public class CommonServer {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
-				break;
+				return new AppResp(userFollowRel.getFollowStatus(), CodeDef.SUCCESS);
 			default:
 				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
-		return new AppResp("", CodeDef.SUCCESS);
 	}
 
 }

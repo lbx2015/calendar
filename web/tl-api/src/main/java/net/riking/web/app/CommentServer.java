@@ -143,7 +143,7 @@ public class CommentServer {
 			default:
 				break;
 		}
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
 
 	}
 

@@ -222,7 +222,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             public void callBack(ResponseModel<QuestionAnswer> response) {
                 answer = response._data;
                 //set the user name of the answer
-                ZR.setUserName(authoName, answer.userName, answer.experience);
+                ZR.setUserName(authoName, answer.userName, answer.grade);
 
                 answerCreateTime.setText(DateUtil.date2String(answer.modifiedTime, CONST.yyyy_mm_dd_hh_mm));
                 commentsTv.setText(ZR.getNumberString(answer.commentNum));

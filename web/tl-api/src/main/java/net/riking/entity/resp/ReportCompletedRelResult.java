@@ -1,7 +1,5 @@
 package net.riking.entity.resp;
 
-import javax.persistence.Transient;
-
 /**
  * 报表核销结果集
  * @author james.you
@@ -9,16 +7,12 @@ import javax.persistence.Transient;
  * @used TODO
  */
 public class ReportCompletedRelResult{
-	@Transient
 	private String reportCode;// 报表code
 	
-	@Transient
 	private String reportName;// 报表名称
 
-	@Transient
 	private String frequencyType;// 频度类型
 	
-	@Transient
 	private String dateStr;// 日期
 
 	public String getReportCode() {

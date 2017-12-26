@@ -5,7 +5,6 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
@@ -26,6 +25,8 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
@@ -36,11 +37,13 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
@@ -50,12 +53,14 @@ import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -181,15 +186,8 @@ public interface APIInterface {
     @POST("common/getPositionByIndustry")
     Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, String> industryId);
 
-    /**
-     * set user's interesting reports into server
-     */
-    @POST("/appUserReport/userAddReportEdit")
-    Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
-
-
     @POST("report/modifySubscribeReport")
-    Call<ResponseModel<Short>> saveSubscribeReport(@Body SubscribeReportParam params);
+    Call<ResponseModel<String>> saveSubscribeReport(@Body SubscribeReportParam params);
 
     @POST("/appUserReport/updateUserReportRelById")
     Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
@@ -299,6 +297,12 @@ public interface APIInterface {
     @POST("userFollow/myFollow")
     Call<ResponseModel<List<AppUserResult>>> getMyFavoriteUsers(@Body UserFollowParams params);
 
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<Topic>>> getMyFollowTopic(@Body UserFollowParams params);
+
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<QuestResult>>> getMyFollowQuestion(@Body UserFollowParams params);
+
     /**
      * The users which following me
      *
@@ -324,7 +328,7 @@ public interface APIInterface {
      * @return
      */
     @POST("user/signIn")
-    Call<ResponseModel<String>> signIn(@Body UserParams params);
+    Call<ResponseModel<Map<String, Integer>>> signIn(@Body UserParams params);
 
     @POST("topicQuestion/answerInvite")
     Call<ResponseModel<String>> answerInvite(@Body TQuestionParams params);
@@ -348,4 +352,60 @@ public interface APIInterface {
     @POST("report/getReports")
     Call<ResponseModel<List<ReportListResult>>> getReports(@Body ReportParams params);
 
+    @POST("user/getOperateNumber")
+    Call<ResponseModel<UserOperationInfo>> getUserOperationInfo(@Body UserParams params);
+
+    /**
+     * 我的动态：评论列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QACommentResult>>> getUserDynamicComments(@Body UserFollowParams params);
+
+    /**
+     * * 我的动态：回答列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QAnswerResult>>> getUserDynamicAnswers(@Body UserFollowParams params);
+
+    /**
+     * * 我的动态：问题列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QuestResult>>> getUserDynamicQuestions(@Body UserFollowParams params);
+
+    //当月打点
+    @POST("report/getTaskDate")
+    Call<ResponseModel<List<String>>> getTaskDates(@Body ReportCompletedRelParam param);
+
+    //当天报表
+    @POST("report/findCurrentTasks")
+    Call<ResponseModel<List<CurrentReportTaskResp>>> findCurrentTasks(@Body RCompletedRelParams param);
+
+    @POST("topicQuestion/inquiry")
+    Call<ResponseModel<String>> getEditHtmlUrl(@Body TQuestionParams params);
+
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<QAnswerResult>>> getMyCollectAnswer(@Body UserFollowParams params);
+
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<News>>> getMyCollectNews(@Body UserFollowParams params);
+
+    //发送邮箱认证
+    @POST("common/sendEmailVerifyCode")
+    Call<ResponseModel<String>> sendEmailVerifyCode(@Body UserParams params);
+
+    //verify email code
+    @POST("common/emailIdentify")
+    Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
 }

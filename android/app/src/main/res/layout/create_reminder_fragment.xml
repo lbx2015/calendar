@@ -60,7 +60,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:src="@drawable/next_step" />
+            android:src="@drawable/work_rm_icon_arrow_r" />
     </RelativeLayout>
 
     <View
@@ -130,7 +130,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:src="@drawable/next_step" />
+            android:src="@drawable/work_rm_icon_arrow_r" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -165,6 +165,6 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:src="@drawable/next_step" />
+            android:src="@drawable/work_rm_icon_arrow_r" />
     </RelativeLayout>
 </LinearLayout>

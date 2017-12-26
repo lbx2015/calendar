@@ -1,215 +1,436 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f2f2f2"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="13dp"
-        android:paddingTop="13dp">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
-        <com.riking.calendar.view.ZCenterImageView
-            android:id="@+id/back"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginLeft="19dp"
-            android:src="@drawable/back_icon" />
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="15dp"
+            android:onClick="clickBack"
+            android:src="@drawable/nav_icon_back" />
 
         <TextView
             android:id="@+id/me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/personal_info"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:text="更多信息"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/action_bar_text_size" />
     </FrameLayout>
 
-    <android.support.v7.widget.CardView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
+
+    <!--phone number-->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="false">
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="手机号码"
+        android:textColor="@color/color_999999"
+        android:textSize="15sp" />
 
-        <LinearLayout
+    <RelativeLayout
+        android:id="@+id/cell_phone_number_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/cell_phone_nubmer_tv"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="18223343324"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
-            <RelativeLayout
-                android:id="@+id/sex_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+        <TextView
+            android:id="@+id/add_cell_phone_nubmer_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/com_btn_icon_plus"
+            android:drawablePadding="5dp"
+            android:text="添加手机号码"
+            android:textColor="@color/color_489dfff"
+            android:textSize="17sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/sex"
-                    android:textColor="@color/color_323232" />
+        <ImageView
+            android:id="@+id/edit_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
+    <!--divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:src="@color/color_e2e2e2" />
+    <!--email-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="邮箱"
+        android:textColor="@color/color_999999"
+        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/sex"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_sex" />
+    <RelativeLayout
+        android:id="@+id/email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
 
-                <ImageView
-                    android:id="@+id/edit_sex"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/email_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="18223343324"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
+        <TextView
+            android:id="@+id/add_email_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/com_btn_icon_plus"
+            android:drawablePadding="5dp"
+            android:text="添加邮箱"
+            android:textColor="@color/color_489dfff"
+            android:textSize="17sp" />
 
-            <RelativeLayout
-                android:id="@+id/address_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+        <TextView
+            android:id="@+id/email_validated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/email_nav"
+            android:onClick="clickInvalidateEmail"
+            android:text="去验证"
+            android:textColor="@color/color_666666"
+            android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/address"
-                    android:textColor="@color/color_323232" />
+        <ImageView
+            android:id="@+id/email_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
+    <!--divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:src="@color/color_e2e2e2" />
+    <!--wechat-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="微信"
+        android:textColor="@color/color_999999"
+        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_address" />
+    <RelativeLayout
+        android:id="@+id/wechat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
 
-                <ImageView
-                    android:id="@+id/edit_address"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/wechat_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="18223343324"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
+        <TextView
+            android:id="@+id/add_wechat_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/com_btn_icon_plus"
+            android:drawablePadding="5dp"
+            android:text="添加微信"
+            android:textColor="@color/color_489dfff"
+            android:textSize="17sp" />
 
-            <RelativeLayout
-                android:id="@+id/birthday_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/birthday"
-                    android:textColor="@color/color_323232" />
+    <!--company name-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="公司"
+        android:textColor="@color/color_999999"
+        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/birthday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_birthday" />
+    <RelativeLayout
+        android:id="@+id/company_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
 
-                <ImageView
-                    android:id="@+id/edit_birthday"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/company_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="18223343324"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
+        <TextView
+            android:id="@+id/add_company_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/com_btn_icon_plus"
+            android:drawablePadding="5dp"
+            android:text="添加公司名称"
+            android:textColor="@color/color_489dfff"
+            android:textSize="17sp" />
 
-            <RelativeLayout
-                android:id="@+id/comments_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
+    <!--divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:src="@color/color_e2e2e2" />
+    <!--industry-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="行业"
+        android:textColor="@color/color_999999"
+        android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/user_comments"
-                    android:textColor="@color/color_323232" />
+    <RelativeLayout
+        android:id="@+id/industry_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
 
-                <TextView
-                    android:id="@+id/comments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/edit_comments" />
+        <TextView
+            android:id="@+id/industry_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="18223343324"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
-                <ImageView
-                    android:id="@+id/edit_comments"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/add_industry_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/com_btn_icon_plus"
+            android:drawablePadding="5dp"
+            android:text="添加行业"
+            android:textColor="@color/color_489dfff"
+            android:textSize="17sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_height"
-                android:background="@color/divider_color_d9d9d9" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
+    <!--divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:src="@color/color_e2e2e2" />
+    <!--position-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="职位"
+        android:textColor="@color/color_999999"
+        android:textSize="15sp" />
 
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+    <RelativeLayout
+        android:id="@+id/position_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/position_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="18223343324"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/add_position_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/com_btn_icon_plus"
+            android:drawablePadding="5dp"
+            android:text="添加职位"
+            android:textColor="@color/color_489dfff"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
+    <!--divider-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:src="@color/color_e2e2e2" />
+    <!--job location-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="工作地区"
+        android:textColor="@color/color_999999"
+        android:textSize="15sp" />
+
+    <RelativeLayout
+        android:id="@+id/location_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/location_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="18223343324"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/add_location_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/com_btn_icon_plus"
+            android:drawablePadding="5dp"
+            android:text="添加工作地区"
+            android:textColor="@color/color_489dfff"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
 </LinearLayout>

@@ -46,7 +46,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
     public void onBindViewHolder(final AnswerListViewHolder h, int i) {
         final QuestionAnswer questionAnswer = mList.get(i);
         //set author name
-        ZR.setUserName(h.answerAuthorName, questionAnswer.userName, questionAnswer.experience);
+        ZR.setUserName(h.answerAuthorName, questionAnswer.userName, questionAnswer.grade);
 
         h.agreeTv.setText(ZR.getNumberString(questionAnswer.agreeNum));
         h.commentTV.setText(ZR.getNumberString(questionAnswer.commentNum));

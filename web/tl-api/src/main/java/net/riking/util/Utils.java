@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.riking.config.Const;
 import net.riking.entity.MyDateFormat;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.SysDays;
 
 public class Utils {
 
@@ -205,11 +207,27 @@ public class Utils {
 		return list;
 	}
 	
+	public static String getWorkday(String afterDates){
+		if(RedisUtil.getInstall().getObject(Const.SYS_DAY + afterDates) != null){
+			SysDays sysDays = (SysDays)RedisUtil.getInstall().getObject(Const.SYS_DAY + afterDates);
+			//如果是节假日，就延后一天，直到返回非节假日
+			if(sysDays.getIsHoliday() == 1){
+				Date date = DateUtils.parseDate(afterDates);
+				afterDates = DateUtils.getDateByDays(date, 1);
+				return getWorkday(afterDates);
+			}
+		}
+		return afterDates;
+	}
+	
 	public static void main(String[] args) {
-		AppUser appUser = new AppUser();
-		appUser.setCreatedTime(new Date());
+//		AppUser appUser = new AppUser();
+//		appUser.setCreatedTime(new Date());
+//		
+//		Map<String, Object> map = Utils.objProps2Map(appUser, true);
+//		System.err.println(map);
 		
-		Map<String, Object> map = Utils.objProps2Map(appUser, true);
-		System.err.println(map);
+		String dates = Utils.getWorkday("20171001");
+		System.out.println(dates);
 	}
 }

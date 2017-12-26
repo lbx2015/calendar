@@ -55,6 +55,7 @@ public class ZPreference {
         e.putString(CONST.USER_NAME, u.userName);
         e.putString(CONST.USER_EMAIL, u.email);
         e.putString(CONST.PHONE_NUMBER, u.phone);
+        e.putInt(CONST.USER_SEX,u.sex);
         e.putString(CONST.USER_REAL_NAME, u.realName);
         e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
         e.putString(CONST.USER_EMAIL, u.email);

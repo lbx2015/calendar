@@ -21,6 +21,9 @@ public class UserFollowParams extends BaseEntity {
 	// 1-问题，2-话题，3-用户
 	private Integer objType;
 
+	// 目标对象的userId
+	private String toUserId;
+
 	// 1-评论；2-回答；3-提问
 	private Integer optType;
 
@@ -34,6 +37,14 @@ public class UserFollowParams extends BaseEntity {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getToUserId() {
+		return toUserId;
+	}
+
+	public void setToUserId(String toUserId) {
+		this.toUserId = toUserId;
 	}
 
 	public Integer getOptType() {

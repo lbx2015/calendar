@@ -7,11 +7,13 @@ package net.riking.entity.params;
  * @used TODO
  */
 public class SubscribeReportParam {
-	
+
 	private String userId;
-	
-	//订阅的reportIds
-	private String[] reportIds;
+
+	// 订阅的reportIds
+	private String reportIds;
+	// //上报日期
+	// private String submitDate;
 
 	public String getUserId() {
 		return userId;
@@ -21,11 +23,11 @@ public class SubscribeReportParam {
 		this.userId = userId;
 	}
 
-	public String[] getReportIds() {
+	public String getReportIds() {
 		return reportIds;
 	}
 
-	public void setReportIds(String[] reportIds) {
+	public void setReportIds(String reportIds) {
 		this.reportIds = reportIds;
 	}
 

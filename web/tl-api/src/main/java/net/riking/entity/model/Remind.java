@@ -37,6 +37,10 @@ public class Remind extends PageQuery {
 	@Column(name = "user_id", length = 32)
 	private String userId;
 
+	@Comment("报表id")
+	@Column(name = "report_id", length = 32)
+	private String reportId;
+
 	@Comment("内容")
 	@Column(name = "content", length = 255)
 	private String content;
@@ -75,6 +79,14 @@ public class Remind extends PageQuery {
 	@Column(name = "curr_week", length = 1)
 	private Integer currWeek;
 
+	@Comment("报送开始时间（yyyyMMddHHmm）")
+	@Column(name = "submit_start_time", length = 8)
+	private String submitStartTime;
+
+	@Comment("报送截止时间（yyyyMMddHHmm）")
+	@Column(name = "submit_end_time", length = 8)
+	private String submitEndTime;
+
 	// 同步标识app端数据状态
 	@Transient
 	private int deleteState;
@@ -89,6 +101,30 @@ public class Remind extends PageQuery {
 
 	public void setRemindId(String remindId) {
 		this.remindId = remindId;
+	}
+
+	public String getSubmitStartTime() {
+		return submitStartTime;
+	}
+
+	public void setSubmitStartTime(String submitStartTime) {
+		this.submitStartTime = submitStartTime;
+	}
+
+	public String getSubmitEndTime() {
+		return submitEndTime;
+	}
+
+	public void setSubmitEndTime(String submitEndTime) {
+		this.submitEndTime = submitEndTime;
+	}
+
+	public String getReportId() {
+		return reportId;
+	}
+
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
 	}
 
 	public String getUserId() {

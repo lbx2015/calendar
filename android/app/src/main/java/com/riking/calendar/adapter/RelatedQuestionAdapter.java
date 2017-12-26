@@ -20,13 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RelatedQuestionAdapter extends ZAdater<RelatedQuestionAdapter.MyViewHolder> {
+public class RelatedQuestionAdapter extends ZAdater<RelatedQuestionAdapter.MyViewHolder,QuestResult> {
     private Context context;
-    public List<QuestResult> mList;
 
     public RelatedQuestionAdapter(Context context) {
         this.context = context;
-        mList = new ArrayList<>();
     }
 
     @Override
@@ -52,22 +50,6 @@ public class RelatedQuestionAdapter extends ZAdater<RelatedQuestionAdapter.MyVie
             }
         });
 
-    }
-
-
-    @Override
-    public int getCount() {
-        return mList.size();
-    }
-
-    public void setData(List<QuestResult> s) {
-        mList = s;
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
     }
 
     public static class MyViewHolder extends ZViewHolder {

@@ -15,18 +15,21 @@ public class RCRelUnionPkId extends PageQuery {
 	private static final long serialVersionUID = 330194607996518109L;
 
 	private String userId;
-
 	private String reportId;
-
+	private String submitStartTime;
+	private String submitEndTime;
+	
 	public RCRelUnionPkId() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public RCRelUnionPkId(String userId, String reportId) {
+	public RCRelUnionPkId(String userId, String reportId, String submitStartTime, String submitEndTime) {
 		super();
 		this.userId = userId;
 		this.reportId = reportId;
+		this.submitStartTime = submitStartTime;
+		this.submitEndTime = submitEndTime;
 	}
 
 	public String getUserId() {
@@ -74,6 +77,22 @@ public class RCRelUnionPkId extends PageQuery {
 		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
+	}
+
+	public String getSubmitStartTime() {
+		return submitStartTime;
+	}
+
+	public void setSubmitStartTime(String submitStartTime) {
+		this.submitStartTime = submitStartTime;
+	}
+
+	public String getSubmitEndTime() {
+		return submitEndTime;
+	}
+
+	public void setSubmitEndTime(String submitEndTime) {
+		this.submitEndTime = submitEndTime;
 	}
 
 }

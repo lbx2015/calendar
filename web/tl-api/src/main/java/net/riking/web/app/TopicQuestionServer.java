@@ -1,6 +1,8 @@
 package net.riking.web.app;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
@@ -30,6 +33,7 @@ import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.params.TQuestionParams;
 import net.riking.service.AppUserService;
+import net.riking.util.Utils;
 
 /**
  * 问题接口
@@ -70,7 +74,32 @@ public class TopicQuestionServer {
 	QAInviteRepo qAInviteRepo;
 
 	@Autowired
+	Config config;
+
+	@Autowired
 	AppUserService appUserService;
+
+	@ApiOperation(value = "问题详情分享", notes = "POST")
+	@RequestMapping(value = "/questionShare", method = RequestMethod.POST)
+	public AppResp questionShare_() {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_QUESTIONSHARE_HTML5_PATH, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "提问", notes = "POST")
+	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
+	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
+		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+		String title = "";
+		try {
+			title = java.net.URLEncoder.encode(java.net.URLEncoder.encode(tQuestionParams.getTitle(), "utf-8"),
+					"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
+		}
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_INQUIRY_HTML5_PATH + "?userId="
+				+ tQuestionParams.getUserId() + "&title=" + title + "&topicId=" + tQuestionParams.getTopicId(),
+				CodeDef.SUCCESS);
+	}
 
 	/**
 	 * 问题的详情[userId,tqId]
@@ -80,20 +109,13 @@ public class TopicQuestionServer {
 	@ApiOperation(value = "问题的详情", notes = "POST")
 	@RequestMapping(value = "/getTopicQuestion", method = RequestMethod.POST)
 	public AppResp getTopicQuestion(@RequestBody TQuestionParams tQuestionParams) {
-		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId());
+		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId(), tQuestionParams.getUserId());
 		// TODO 问题的关注数 后面从redis里面取
 		Integer followNum = tQuestionRelRepo.followCount(tQuestionParams.getTqId(), 0);// 0-关注
 		topicQuestion.setFollowNum(followNum);
 		// TODO 问题的回答数 后面从redis里面取
 		Integer answerNum = questionAnswerRepo.answerCount(tQuestionParams.getTqId());
 		topicQuestion.setAnswerNum(answerNum);
-		topicQuestion.setIsFollow(0);// 0-未关注
-		List<String> questIds = tQuestionRelRepo.findByUser(tQuestionParams.getUserId(), 0);// 0-关注
-		for (String tqId : questIds) {
-			if (topicQuestion.getId().equals(tqId)) {
-				topicQuestion.setIsFollow(1);// 1-已关注
-			}
-		}
 		topicQuestion.setQuestionAnswers(findAnswerList(tQuestionParams));
 		if (null != topicQuestion.getPhotoUrl()) {
 			topicQuestion
@@ -146,7 +168,7 @@ public class TopicQuestionServer {
 			qAInviteRepo.save(qaInviteNew);
 		}
 
-		return new AppResp("", CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	private List<QuestionAnswer> findAnswerList(TQuestionParams tQuestionParams) {

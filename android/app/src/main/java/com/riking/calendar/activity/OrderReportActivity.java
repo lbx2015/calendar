@@ -23,7 +23,6 @@ import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
@@ -37,7 +36,6 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.view.OrderReportFrameLayout;
 import com.riking.calendar.view.ZReportFlowLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -160,15 +158,19 @@ public class OrderReportActivity extends AppCompatActivity implements SubscribeR
     private void saveSubscribedReports() {
         if (editMode) {
             SubscribeReportParam appUserReportResult = new SubscribeReportParam();
-            appUserReportResult.reportIds = new ArrayList<>();
-
+            StringBuilder sb = new StringBuilder();
             for (ReportResult r : mySubscribedReports) {
-                appUserReportResult.reportIds.add(r.reportId);
+                sb.append(r.reportId);
+                if (mySubscribedReports.lastIndexOf(r) < mySubscribedReports.size() - 1) {
+                    sb.append(",");
+                }
             }
 
-            APIClient.userAddReportEdit(appUserReportResult, new ZCallBackWithFail<ResponseModel<Short>>() {
+            appUserReportResult.reportIds = sb.toString();
+
+            APIClient.userAddReportEdit(appUserReportResult, new ZCallBackWithFail<ResponseModel<String>>() {
                 @Override
-                public void callBack(ResponseModel<Short> response) {
+                public void callBack(ResponseModel<String> response) {
                     if (failed) {
                         Toast.makeText(OrderReportActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
                     } else {

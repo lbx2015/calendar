@@ -48,7 +48,7 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
         final QAnswerResult qAnswerResult = mList.get(i);
         h.answerTitle.setText(qAnswerResult.title);
         h.answerContent.setText(qAnswerResult.content);
-
+        ZR.setUserName(h.answerAuthorName, qAnswerResult.userName, qAnswerResult.grade);
         h.agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
@@ -103,7 +103,7 @@ public class HotAnswerOfTopicAdapter extends RecyclerView.Adapter<HotAnswerOfTop
             h.answerImage.setVisibility(View.GONE);
         } else {
             h.answerImage.setVisibility(View.VISIBLE);
-            ZR.setAnswerImage(h.answerImage, qAnswerResult.coverUrl);
+            ZR.setImage(h.answerImage, qAnswerResult.coverUrl);
         }
 
         //set user image

@@ -6,15 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
-import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.AppUserResult;
-import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
 
 import java.util.ArrayList;
@@ -48,21 +42,10 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
 
         ZR.setUserImage(h.userImage, user.photoUrl);
 
-        h.followButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (h.invited) {
-                    h.invited = false;
-                } else {
-                    h.invited = true;
-                }
-                sendFollowRequest(user, h);
-
-            }
-        });
-        showInvited(h);
+        ZR.setFollowPersonClickListner(user, h.followButton, h.followTv);
+        ZR.showPersonFollowStatus(h.followButton, h.followTv, user.isFollow);
     }
-
+/*
     private void sendFollowRequest(final AppUserResult user, final ExcellentViewHolderViewHolder h) {
         final TQuestionParams params = new TQuestionParams();
         params.attentObjId = user.userId;
@@ -87,7 +70,8 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
                 showInvited(h);
             }
         });
-    }
+    }*/
+/*
 
     private void showInvited(ExcellentViewHolderViewHolder h) {
         if (!h.invited) {
@@ -103,6 +87,7 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
             h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border_gray));
         }
     }
+*/
 
     @Override
     public int getItemCount() {

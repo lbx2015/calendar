@@ -1,56 +1,108 @@
 {
 	"table": "T_APP_VERSION",
-	"groups":[{
-		"prop":"base",
-		"alias":"基础信息"
-	}],
-	"attrs":[
+	"groups": [
 		{
-			"prop": "versionNumber",
-			"alias": "app版本号",
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
 			"type": "string",
-			"group":"base"
+			"group": "base",
+			"hidden": "table,edit,preview"
 		},
 		{
-			"prop": "type",
-			"alias": "客户端类型",
-			"group":"base",
-			"type": "enum",
-			"dict_key": "T_APP_VERSION.TYPE",
-			"enum_search":"1"
+			"prop": "versionNo",
+			"alias": "APP版本号",
+			"desc": "APP版本号",
+			"type": "string",
+			"query": "1",
+			"query_order": "1",
+			"group": "base"
 		},
 		{
-			"prop": "forces",
+			"prop": "enforce",
 			"alias": "是否强制更新",
-			"group":"base",
+			"desc": "是否强制更新",
 			"type": "enum",
-			"dict_key": "T_COMMON.JUDGE",
-			"enum_search":"1"
+			"dict_key": "T_VERSION.ENFORCE",
+			"group": "base"
 		},
 		{
-			"prop": "renewalTime",
-			"group":"base",
-			"alias": "更新时间",
-			"type": "date"
+			"prop": "clientType",
+			"alias": "移动端",
+			"desc": "移动端",
+			"type": "enum",
+			"dict_key": "T_VERSION.CLIENTTYPE",
+			"group": "base"
 		},
 		{
-			"prop": "versionNote",
-			"alias": "版本说明",
-			"group":"base",
-			"type": "text"
+			"prop": "enabled",
+			"alias": "用户状态",
+			"desc": "用户状态",
+			"type": "enum",
+			"dict_key": "T_VERSION.ENABLED",
+			"group": "base"
 		},
 		{
-			"prop": "apkUrl",
-			"alias": "apk路径",
+			"prop": "url",
+			"alias": "下载更新地址",
+			"desc": "下载更新地址",
 			"type": "string",
-			"group":"base"
+			"group": "base"
 		},
 		{
-			"prop": "deleteState",
-			"alias": "删除状态  ",
-			"group":"base",
-			"type" : "text",
-      		"hidden":"table,edit,preview"
+			"prop": "remark",
+			"alias": "版本说明",
+			"desc": "版本说明",
+			"type": "text",
+			"edit_block": "2",
+			"group": "base",
+			"hidden": "table"
+		},
+		{
+			"prop": "createdBy",
+			"alias": "创建人ID",
+			"desc": "创建人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "createdTime",
+			"alias": "创建时间",
+			"desc": "创建时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "modifiedBy",
+			"alias": "修改人ID",
+			"desc": "修改人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "modifiedTime",
+			"alias": "最后修改时间",
+			"desc": "最后修改时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "isDeleted",
+			"alias": "是否删除",
+			"desc": "是否删除",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
 		}
 	]
 }

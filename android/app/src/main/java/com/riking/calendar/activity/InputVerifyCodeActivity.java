@@ -144,7 +144,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 Intent intent = new Intent("android.intent.action.MY_BROADCAST");
                                 intent.putExtra("msg", "hello receiver.");
                                 sendBroadcast(intent);
-                            } else if (u.isGuide == null || u.isGuide == (0)) {
+                            } else if (u.isGuide == (0)) {
                                 ZGoto.to(IndustrySelectActivity.class);
                             }
 

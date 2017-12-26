@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,9 +20,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.TopicsAdapter;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
-import com.riking.calendar.pojo.server.TopicResult;
+import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;
@@ -47,21 +51,22 @@ public class AddTopicActivity extends AppCompatActivity {
     public RecyclerView topicRecyclerView;
     public TopicsAdapter mAdapter;
     //user subscriber reports
-    List<String> mySubscribedReports = new ArrayList<>();
+    List<String> topics = new ArrayList<>();
     TextInputEditText textInputEditText;
     TextView nextStep;
     String searchCondition;
     SwipeRefreshLayout swipeRefreshLayout;
+    String questionTitle;
 
     public void clickBack(final View view) {
         onBackPressed();
     }
 
     public void clickAddTopic(String s) {
-        if (mySubscribedReports.size() == 3 || isAddedToMyOrder(s)) {
+        if (topics.size() == 3 || isAddedToMyOrder(s)) {
             return;
         }
-        mySubscribedReports.add(s);
+        topics.add(s);
         enterEditMode();
     }
 
@@ -69,6 +74,7 @@ public class AddTopicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_topic);
+        questionTitle = getIntent().getStringExtra(CONST.SEARCH_CONDITION);
         init();
     }
 
@@ -121,6 +127,31 @@ public class AddTopicActivity extends AppCompatActivity {
                 search(s.toString());
             }
         });
+
+        nextStep.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < topics.size(); i++) {
+                    String s = topics.get(i);
+                    sb.append("s");
+                    if (i < topics.size() - 1) {
+                        sb.append(",");
+                    }
+                }
+                TQuestionParams params = new TQuestionParams();
+                params.title = questionTitle;
+                params.topicId = sb.toString();
+                APIClient.getEditHtmlUrl(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        Intent i = new Intent(AddTopicActivity.this, WebviewActivity.class);
+                        i.putExtra(CONST.WEB_URL, response._data);
+                        startActivity(i);
+                    }
+                });
+            }
+        });
     }
 
     public void search(String searchCondition) {
@@ -155,12 +186,12 @@ public class AddTopicActivity extends AppCompatActivity {
                         return;
                     }
 
-                    TypeToken<ResponseModel<List<TopicResult>>> token = new TypeToken<ResponseModel<List<TopicResult>>>() {
+                    TypeToken<ResponseModel<List<Topic>>> token = new TypeToken<ResponseModel<List<Topic>>>() {
                     };
 
-                    ResponseModel<List<TopicResult>> responseModel = s.fromJson(sourceString, token.getType());
+                    ResponseModel<List<Topic>> responseModel = s.fromJson(sourceString, token.getType());
 
-                    List<TopicResult> list = responseModel._data;
+                    List<Topic> list = responseModel._data;
 
                     mAdapter.setData(list);
                 } catch (IOException e) {
@@ -188,10 +219,10 @@ public class AddTopicActivity extends AppCompatActivity {
     public void drawMyOrders() {
         //redraw the reports
         zReportFlowLayout.removeAllViews();
-        if (mySubscribedReports.size() > 0) {
+        if (topics.size() > 0) {
             zReportFlowLayout.setVisibility(View.VISIBLE);
-            for (int i = 0; i < mySubscribedReports.size(); i++) {
-                final String appUserReportRel = mySubscribedReports.get(i);
+            for (int i = 0; i < topics.size(); i++) {
+                final String appUserReportRel = topics.get(i);
                 //inflate the item view from layout xml
                 final OrderReportFrameLayout root = (OrderReportFrameLayout) LayoutInflater.from(AddTopicActivity.this).inflate(R.layout.add_topic_for_question_item, null);
                 root.init();
@@ -201,8 +232,8 @@ public class AddTopicActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         zReportFlowLayout.removeView(root);
-                        mySubscribedReports.remove(appUserReportRel);
-                        if (mySubscribedReports.size() == 0) {
+                        topics.remove(appUserReportRel);
+                        if (topics.size() == 0) {
                             //hide the title
                             zReportFlowLayout.setVisibility(View.GONE);
                         }
@@ -218,8 +249,8 @@ public class AddTopicActivity extends AppCompatActivity {
 
     public boolean isAddedToMyOrder(String report) {
         boolean added = false;
-        if (mySubscribedReports != null) {
-            for (String r : mySubscribedReports) {
+        if (topics != null) {
+            for (String r : topics) {
                 if (r.equals(report)) {
                     added = true;
                     break;
@@ -235,7 +266,7 @@ public class AddTopicActivity extends AppCompatActivity {
 
     public void enterEditMode() {
         //adding null protection
-        if (mySubscribedReports == null) {
+        if (topics == null) {
             return;
         }
         drawMyOrders();
