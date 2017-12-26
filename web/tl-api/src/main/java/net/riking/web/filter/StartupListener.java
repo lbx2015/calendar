@@ -19,6 +19,7 @@ import net.riking.task.MQSysInfoListener;
 import net.riking.task.MQSysMesListener;
 import net.riking.task.MQSysOptListener;
 import net.riking.util.RedisUtil;
+import net.riking.util.TimerManager;
 
 @Component
 public class StartupListener implements ServletContextListener {
@@ -42,8 +43,8 @@ public class StartupListener implements ServletContextListener {
 	@Autowired
 	MQReceiveService mQReceiveService;
 
-	// @Autowired
-	// TimerManager timerManager;
+	 @Autowired
+	 TimerManager timerManager;
 
 	// @Autowired
 	// JedisUtil jedisUtil;
@@ -67,7 +68,7 @@ public class StartupListener implements ServletContextListener {
 		mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
 		// jedisUtil.init();
 		sysDataServiceImpl.initData();
-		// timerManager.init();
+		timerManager.init();
 	}
 
 	private void initWorkflow(ServletContextEvent event) throws InterruptedException {

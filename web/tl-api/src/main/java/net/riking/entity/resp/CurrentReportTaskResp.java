@@ -20,6 +20,9 @@ public class CurrentReportTaskResp extends BaseEntity {
 	private String remindId;//提醒记录Id
 	private String remindContent;//提醒的报表内容
 	
+	private String userId;//用户Id
+	private String phoneDeviceId;//用户移动端设备号
+	
 	public String getReportId() {
 		return reportId;
 	}
@@ -80,6 +83,18 @@ public class CurrentReportTaskResp extends BaseEntity {
 	}
 	public void setReportBatch(String reportBatch) {
 		this.reportBatch = reportBatch;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getPhoneDeviceId() {
+		return phoneDeviceId;
+	}
+	public void setPhoneDeviceId(String phoneDeviceId) {
+		this.phoneDeviceId = phoneDeviceId;
 	}
 	
 }

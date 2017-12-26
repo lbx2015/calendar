@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 import net.riking.entity.model.Todo;
 
 /**
- * 
- * @author lucky.liu
- * @version crateTime：2017年8月9日 上午10:33:48
+ * 待办数据访问层
+ * @author james.you
+ * @version crateTime：2017年12月26日 下午2:53:15
  * @used TODO
  */
 @Repository
@@ -25,7 +25,7 @@ public interface TodoRepo extends JpaRepository<Todo, String>, JpaSpecificationE
 	 * @param pageable
 	 * @return
 	 */
-	@Query("from Todo where userId =?1 and isComplete = ?2 order by isImportant desc,strDate desc")
+	@Query("from Todo where userId =?1 and isCompleted = ?2 order by isImportant desc,strDate desc")
 	List<Todo> findTodo(String userId, Integer isComplete, Pageable pageable);
 
 	// List<Todo> findByUserId(String userId);

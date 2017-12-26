@@ -38,7 +38,7 @@ public class EmailSuffix extends BaseEntity {
 	@Id
 	@GeneratedValue(generator = "idGenerator")
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
-	@Column(name = "emailSuffix", length = 20)
+	@Column(name = "email_suffix", length = 20)
 	@Comment("邮箱后缀")
 	private String emailSuffix;
 
