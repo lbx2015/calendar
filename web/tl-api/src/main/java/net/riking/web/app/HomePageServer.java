@@ -28,9 +28,7 @@ import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.QuestionAnswer;
-import net.riking.entity.model.TQuestionRel;
 import net.riking.entity.model.TQuestionResult;
-import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.TopicResult;
 import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.HomeParams;
@@ -39,6 +37,8 @@ import net.riking.service.QAnswerService;
 import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
 import net.riking.util.DateUtils;
+import net.riking.util.MQProduceUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 首页接口
@@ -286,54 +286,10 @@ public class HomePageServer {
 	@RequestMapping(value = "/shield", method = RequestMethod.POST)
 	public AppResp shield_(@RequestBody HomeParams homeParams) {
 
-		switch (homeParams.getObjType()) {
-			// 问题
-			case Const.OBJ_TYPE_1:
-				if (Const.EFFECTIVE == homeParams.getEnabled()) {
-					TQuestionRel rels = tQuestionRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
-					if (null == rels) {
-						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-						TQuestionRel tQuestionRel = new TQuestionRel();
-						tQuestionRel.setUserId(homeParams.getUserId());
-						tQuestionRel.setTqId(homeParams.getObjId());
-						tQuestionRel.setDataType(3);// 0-关注 3-屏蔽
-						tQuestionRelRepo.save(tQuestionRel);
-					}
-				} else if (Const.INVALID == homeParams.getEnabled()) {
-					// 如果传过来是取消屏蔽，把之前一条记录物理删除
-					tQuestionRelRepo.deleteByUIdAndTqId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 话题
-			case Const.OBJ_TYPE_2:
-				if (Const.EFFECTIVE == homeParams.getEnabled()) {
-					// TODO 确认是否有话题屏蔽
-					TopicRel rels = topicRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
-					if (null == rels) {
-						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-						TopicRel topicRel = new TopicRel();
-						topicRel.setUserId(homeParams.getUserId());
-						topicRel.setTopicId(homeParams.getObjId());
-						topicRel.setDataType(3);// 0-关注；3-屏蔽
-						topicRelRepo.save(topicRel);
-					}
-				} else if (Const.INVALID == homeParams.getEnabled()) {
-					// 如果传过来是取消屏蔽，把之前一条记录物理删除
-					topicRelRepo.deleteByUIdAndTopId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			default:
-				logger.error("对象类型异常，objType=" + homeParams.getObjType());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
-
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		homeParams.setMqOptType(Const.MQ_OPT_SHIELD_QUEST);
+		JSONObject jsonArray = JSONObject.fromObject(homeParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	// 加点赞，关注，收藏状态

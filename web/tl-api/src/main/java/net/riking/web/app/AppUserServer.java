@@ -40,6 +40,7 @@ import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
 import net.riking.util.DateUtils;
+import net.riking.util.Utils;
 
 /**
  * app用户信息操作
@@ -94,10 +95,10 @@ public class AppUserServer {
 		AppUserResp appUserResp = new AppUserResp();
 		appUserResp.setUserId(appUser.getId());
 		// appUserResp从appUser取值
-		appUserResp = (AppUserResp) fromObjToObjValue(appUser, appUserResp);
+		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUser, appUserResp);
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
 		// appUserResp从appUserDetail取值
-		appUserResp = (AppUserResp) fromObjToObjValue(appUserDetail, appUserResp);
+		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUserDetail, appUserResp);
 		if (null != appUserResp.getPhotoUrl()) {
 			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
 		}
@@ -153,7 +154,7 @@ public class AppUserServer {
 			userParams.setIsIdentified(0);// 邮箱未认证
 		}
 		if (null != userParams) {
-			appUser = (AppUser) fromObjToObjValue(userParams, appUser);
+			appUser = (AppUser) Utils.fromObjToObjValue(userParams, appUser);
 		}
 		try {
 			appUserRepo.save(appUser);
@@ -172,7 +173,7 @@ public class AppUserServer {
 		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
-				appUserDetail = (AppUserDetail) fromObjToObjValue(userParams, appUserDetail);
+				appUserDetail = (AppUserDetail) Utils.fromObjToObjValue(userParams, appUserDetail);
 				appUserDetail.setPositionId(positionId);
 			}
 			try {
@@ -287,32 +288,6 @@ public class AppUserServer {
 			userOperationInfo.setSignStatus(0);// 0-未签到
 		}
 		return new AppResp(userOperationInfo, CodeDef.SUCCESS);
-	}
-
-	/**
-	 * fromObj的值赋在toObj上
-	 * @param fromObj
-	 * @param toObj
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 */
-	private Object fromObjToObjValue(Object fromObj, Object toObj)
-			throws IllegalArgumentException, IllegalAccessException {
-		Field[] fromObjfields = fromObj.getClass().getDeclaredFields();
-		for (Field fromObjfield : fromObjfields) {
-			fromObjfield.setAccessible(true);
-			Field[] toObjfields = toObj.getClass().getDeclaredFields();
-			for (Field toObjfield : toObjfields) {
-				toObjfield.setAccessible(true);
-				if (fromObjfield.getName().equals(toObjfield.getName())) {
-					if (null != fromObjfield.get(fromObj)) {
-						toObjfield.set(toObj, fromObjfield.get(fromObj));
-					}
-				}
-			}
-		}
-		return toObj;
 	}
 
 	private <T> T merge(T dbObj, T appObj) throws Exception {
