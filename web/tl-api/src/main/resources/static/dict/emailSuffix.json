@@ -1,37 +1,38 @@
 {
-	"table": "T_MODEL_PROP_DICT",
+	"table": "T_EMAIL_SUFFIX",
 	"groups":[{
 		"prop":"base",
 		"alias":"基础信息"
 	}],
 	"attrs":[
 		{
-			"prop": "clazz",
-			"alias": "表名",
+			"prop": "emailSuffix",
+			"alias": "邮箱后缀",
 			"group":"base",
-			"hidden":"edit",
+			"type": "string",
+			"verify":"required"
+		},
+		{
+			"prop": "enabled",
+			"alias": "数据状态 ",
+			"group":"base",
+			"type": "enum",
+            "dict_key": "T_EMAIL_SUFFIX.ENABLED",
+            "verify":"required"
+		},
+		{
+			"prop": "remark",
+			"alias": "备注",
+			"group":"base",
 			"type": "string"
 		},
 		{
-			"prop": "field",
-			"alias": "属性",
-			"hidden":"edit",
+			"prop": "opt",
+			"alias": "操作类型",
 			"group":"base",
-			"type": "string"
-		},
-		{
-			"prop": "ke",
-			"alias": "键",
-			"group":"base",
-			"query": "1",
-			"query_order": "1",
-			"type": "string"
-		},
-		{
-			"prop": "valu",
-			"alias": "值",
-			"group":"base",
-			"type": "string"
+			"type": "string",
+			"hidden":"table,edit,preview"
 		}
+		
 	]
 }

@@ -22,6 +22,7 @@
 			"type": "string",
 			"query": "1",
 			"query_order": "1",
+			"verify":"required",
 			"group": "base"
 		},
 		{
@@ -30,6 +31,7 @@
 			"desc": "是否强制更新",
 			"type": "enum",
 			"dict_key": "T_VERSION.ENFORCE",
+			"verify":"required",
 			"group": "base"
 		},
 		{
@@ -38,14 +40,16 @@
 			"desc": "移动端",
 			"type": "enum",
 			"dict_key": "T_VERSION.CLIENTTYPE",
+			"verify":"required",
 			"group": "base"
 		},
 		{
 			"prop": "enabled",
-			"alias": "用户状态",
-			"desc": "用户状态",
+			"alias": "数据状态",
+			"desc": "数据状态",
 			"type": "enum",
 			"dict_key": "T_VERSION.ENABLED",
+			"verify":"required",
 			"group": "base"
 		},
 		{
@@ -53,6 +57,7 @@
 			"alias": "下载更新地址",
 			"desc": "下载更新地址",
 			"type": "string",
+			"edit_block": "1",
 			"group": "base"
 		},
 		{
@@ -60,7 +65,7 @@
 			"alias": "版本说明",
 			"desc": "版本说明",
 			"type": "text",
-			"edit_block": "2",
+			"edit_block": "1",
 			"group": "base",
 			"hidden": "table"
 		},
@@ -103,6 +108,13 @@
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "opt",
+			"alias": "操作类型",
+			"group":"base",
+			"type": "string",
+			"hidden":"table,edit,preview"
 		}
 	]
 }

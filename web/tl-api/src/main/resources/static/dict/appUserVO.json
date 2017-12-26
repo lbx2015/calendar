@@ -12,12 +12,21 @@
 	],
 	"attrs": [
 		{
+			"prop": "id",
+			"alias": "id",
+			"desc": "id",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		},
+		{
 			"prop": "appUser.userName",
 			"alias": "用户名称",
 			"desc": "用户名称",
 			"type": "string",
 			"group": "base",
 			"query": "1",
+			"verify":"required",
 			"query_order": "1"
 		},
 		{
@@ -44,6 +53,7 @@
 			"query": "1",
 			"query_order": "3",
 			"type": "string",
+			"verify":"required",
 			"group": "base"
 		},
 		{
@@ -60,6 +70,7 @@
 			"desc": "用户状态",
 			"type": "enum",
 			"dict_key": "T_APP_USER.ENABLED",
+			"verify":"required",
 			"group": "base"
 		},
 		{
