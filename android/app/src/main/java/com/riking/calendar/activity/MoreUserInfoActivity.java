@@ -377,6 +377,9 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
+                        if (currentUser.phone.equals(newValue)) {
+                            return;
+                        }
                         UpdUserParams user = new UpdUserParams();
                         user.phone = newValue;
                         callServerApi2UpdateUserInfo(newValue, user);
@@ -400,6 +403,10 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
+                        if (currentUser.email.equals(newValue)) {
+                            return;
+                        }
+
                         UpdUserParams user = new UpdUserParams();
                         user.email = newValue;
                         callServerApi2UpdateUserInfo(newValue, user);
@@ -434,6 +441,9 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
+                        if (currentUser.companyName.equals(newValue)) {
+                            return;
+                        }
                         UpdUserParams user = new UpdUserParams();
                         user.companyName = newValue;
                         callServerApi2UpdateUserInfo(newValue, user);
@@ -577,7 +587,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
      * 自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针。
      * 具体可参考demo 里面的两个自定义layout布局。
      */
-    private void setIndustryPicker(String currentIndustryId) {
+    private void setIndustryPicker(final String currentIndustryId) {
         final UpdateUserInfoCallBack callBack = new UpdateUserInfoCallBack() {
             @Override
             void newValue(String newValue) {
@@ -651,13 +661,17 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                     //only one column industry selector
                     industryPicker.setPicker(industries);
                     industryPicker.show();
+                    setDefaultIndustry(currentIndustryId);
                 }
             });
         } else {
             industryPicker.setPicker(industries);
             industryPicker.show();
+            setDefaultIndustry(currentIndustryId);
         }
+    }
 
+    private void setDefaultIndustry(String currentIndustryId) {
         //set default industry
         for (int i = 0; i < industries.size(); i++) {
             Industry industry = industries.get(i);

@@ -9,7 +9,7 @@ public class CONST {
     public static final byte REPEAT_FLAG_WORK_DAY = 1;
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
     public static final byte NOT_REPEAT_FLAG_WEEK = 0;
-    public static final String TL_API_TEST = "http://172.16.64.190:8381/tl-api-test/";
+    public static final String TL_API_TEST = "http://172.16.64.190:4061/tl-api-test/";
     public static final String TL_API_DEV = "http://172.16.64.190:8281/";
     public static final String URL_BASE = "http://172.16.64.190:8281/";
     //    public static final String URL_BASE = "http://172.16.32.14:6061/tl-api/";

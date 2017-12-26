@@ -34,4 +34,7 @@ public class UserParams extends BaseParams {
 
     public List<String> phones;
 
+    public Integer pindex = 0; //
+    public Integer pcount = 30;//
+    public String sort;// like: id_asc|name_desc
 }

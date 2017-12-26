@@ -2,6 +2,7 @@ package com.riking.calendar.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,23 +18,21 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.MyColleagueFragment;
 import com.riking.calendar.fragment.MyContactsFragment;
-import com.riking.calendar.fragment.MyFollowTopicFragment;
 
-public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
+public class MyRelationActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyColleagueFragment(), new MyFollowTopicFragment(), new MyContactsFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyColleagueFragment(), new MyColleagueFragment(), new MyContactsFragment()};
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
     private TextView activityTitle;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_state);
         activityTitle = findViewById(R.id.activity_title);
-        activityTitle.setText("我的关注");
+        activityTitle.setText("我的人脉");
         Intent i = getIntent();
         init();
     }
@@ -90,11 +89,11 @@ public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "用户";
+                    return "可能认识的人";
                 case 1:
-                    return "话题";
+                    return "同事";
                 case 2:
-                    return "问题";
+                    return "通讯录";
             }
             return null;
         }

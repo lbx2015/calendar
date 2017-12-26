@@ -408,4 +408,13 @@ public interface APIInterface {
     //verify email code
     @POST("common/emailIdentify")
     Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
+
+    @POST("userContacts/colleague")
+    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
+
+    @POST("userContacts/contacts")
+    Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
+
+    @POST("userContacts/contactsInvite")
+    Call<ResponseModel<String>> contactsInvite(@Body UserParams params);
 }

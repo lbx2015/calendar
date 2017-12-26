@@ -26,6 +26,7 @@ import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
@@ -149,6 +150,22 @@ public class ZR {
         }
     }
 
+
+    public static void showPersonInviteStatus(View followButton, TextView followTv, int isInvite) {
+        if (isInvite == 0) {
+            followTv.setText("邀请");
+            followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
+            followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border));
+        } else if (isInvite == 1) {
+            followTv.setText("已邀请");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            followTv.setTextColor(ZR.getColor(R.color.color_999999));
+            followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
+        }
+    }
+
     public static void showPersonFollowStatus(View followButton, TextView followTv, int isFollow) {
         if (isFollow == 0) {
             followTv.setText("关注");
@@ -195,6 +212,26 @@ public class ZR {
                             ZToast.toast("关注成功");
                         }
                         showPersonFollowStatus(followButton, followTv, status);
+                    }
+                });
+            }
+        });
+    }
+
+    public static void setInviteClickListener(final AppUserResult user, final View followButton, final TextView followTv) {
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final UserParams params = new UserParams();
+                //follow user
+                params.phone = user.phone;
+
+                APIClient.inviteContact(params, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        user.isInvited = 1;
+                        ZToast.toast("邀请成功成功");
+                        showPersonInviteStatus(followButton, followTv, 1);
                     }
                 });
             }
