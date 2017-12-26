@@ -21,6 +21,7 @@ import com.riking.calendar.util.CONST;
  */
 
 public class SubmitQuestionActivity extends AppCompatActivity {
+    WebView webview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class SubmitQuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_activity);
         //set web view
-        WebView webview = (WebView) findViewById(R.id.web_view);
+        webview = (WebView) findViewById(R.id.web_view);
 
         Bundle bundle = getIntent().getExtras();
         webview.loadUrl(bundle.getString(CONST.WEB_URL, null));
@@ -100,6 +101,11 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public void onClickPublish(View v) {
+        webview.loadUrl("javascript:questionPublish()");
+
     }
 
     public void onBackClick(View v) {

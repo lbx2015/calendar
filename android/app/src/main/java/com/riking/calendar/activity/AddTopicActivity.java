@@ -134,7 +134,7 @@ public class AddTopicActivity extends AppCompatActivity {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < topics.size(); i++) {
                     String s = topics.get(i);
-                    sb.append("s");
+                    sb.append(s);
                     if (i < topics.size() - 1) {
                         sb.append(",");
                     }
