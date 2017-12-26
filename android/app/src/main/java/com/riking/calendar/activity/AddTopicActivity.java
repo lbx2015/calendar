@@ -145,7 +145,7 @@ public class AddTopicActivity extends AppCompatActivity {
                 APIClient.getEditHtmlUrl(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        Intent i = new Intent(AddTopicActivity.this, WebviewActivity.class);
+                        Intent i = new Intent(AddTopicActivity.this, SubmitQuestionActivity.class);
                         i.putExtra(CONST.WEB_URL, response._data);
                         startActivity(i);
                     }

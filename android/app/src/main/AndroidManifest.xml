@@ -138,6 +138,7 @@
         <activity android:name=".activity.AnswerCommentsActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RaiseQuestionActivity" />
+        <activity android:name=".activity.SubmitQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />
