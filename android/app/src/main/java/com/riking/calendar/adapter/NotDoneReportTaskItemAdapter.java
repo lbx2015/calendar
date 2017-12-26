@@ -20,7 +20,6 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZPreference;
-import com.riking.calendar.util.ZR;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
@@ -28,12 +27,12 @@ import java.util.List;
 /**
  * Created by zw.zhang on 2017/7/12.
  */
-public class ReportTaskItemAdapter extends RecyclerView.Adapter<ReportTaskItemAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
+public class NotDoneReportTaskItemAdapter extends RecyclerView.Adapter<NotDoneReportTaskItemAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     private List<CurrentReportTaskResp> reports;
     private int size;
 
-    public ReportTaskItemAdapter(List<CurrentReportTaskResp> r) {
+    public NotDoneReportTaskItemAdapter(List<CurrentReportTaskResp> r) {
         this.reports = r;
         size = reports.size();
     }
@@ -53,9 +52,7 @@ public class ReportTaskItemAdapter extends RecyclerView.Adapter<ReportTaskItemAd
 //            return;
 //        }
         holder.position = position;
-        holder.title.setText(r.reportCode);
-        ZR.setReportName(holder.title,r.reportCode,r.frequency,r.reportBatch);
-        holder.descriptTv.setText(r.reportName);
+        holder.title.setText(r.reportName);
 
         //not enable the swipe function when user is not logged.
         if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
@@ -86,13 +83,11 @@ public class ReportTaskItemAdapter extends RecyclerView.Adapter<ReportTaskItemAd
         public TextView tv;
         public int position;
         public View divider;
-        public TextView descriptTv;
         SwipeHorizontalMenuLayout sml;
         CurrentReportTaskResp r;
 
         public MyViewHolder(final List<CurrentReportTaskResp> reports, View view) {
             super(view);
-            descriptTv = view.findViewById(R.id.descript_tv);
             title = (TextView) view.findViewById(R.id.title);
             divider = view.findViewById(R.id.divider);
             title.setOnClickListener(new View.OnClickListener() {

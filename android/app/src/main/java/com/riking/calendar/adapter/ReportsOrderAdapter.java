@@ -46,7 +46,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
     public void onBindViewHolder(final ReportOrderViewHolder h, int i) {
         final ReportResult r = mList.get(i);
         h.reportTitle.setText(r.title);
-        ZR.setReportName(h.reportName, r.title, r);
+        ZR.setReportName(h.reportName, r.title, r.frequency,r.reportBatch);
 
         if (r.isSubscribe == 0) {
             h.subscribed = false;

@@ -46,7 +46,7 @@ public class SearchReportsAdapter extends RecyclerView.Adapter<ReportOrderViewHo
     public void onBindViewHolder(final ReportOrderViewHolder h, int i) {
         final ReportResult r = mList.get(i);
         h.reportTitle.setText(r.title);
-        ZR.setReportName(h.reportName, r.code, r);
+        ZR.setReportName(h.reportName, r.code, r.frequency,r.reportBatch);
         if (r.isSubscribe == 0) {
             h.subscribed = false;
         } else {

@@ -28,7 +28,6 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.server.AppUserResult;
-import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 
@@ -157,12 +156,12 @@ public class ZR {
         userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
     }
 
-    public static void setReportName(TextView reportNameTv, String name, ReportResult r) {
+    public static void setReportName(TextView reportNameTv, String name, int frequency, String reportBatch) {
         reportNameTv.setText(name);
         @DrawableRes int drawable = 0;
-        if (StringUtil.isEmpty(r.reportBatch)) {
+        if (StringUtil.isEmpty(reportBatch)) {
             //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
-            switch (r.frequency) {
+            switch (frequency) {
                 case 0: {
                     drawable = R.drawable.com_formlabel_icon_day;
                     break;
@@ -191,9 +190,9 @@ public class ZR {
                     break;
                 }
             }
-        } else if (r.reportBatch.equals("0")) {
+        } else if (reportBatch.equals("0")) {
             //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
-            switch (r.frequency) {
+            switch (frequency) {
                 case 0: {
                     drawable = R.drawable.com_formlabel_icon_day;
                     break;
@@ -221,9 +220,9 @@ public class ZR {
                     break;
                 }
             }
-        } else if (r.reportBatch.equals("1")) {
+        } else if (reportBatch.equals("1")) {
             //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
-            switch (r.frequency) {
+            switch (frequency) {
                 case 0: {
                     drawable = R.drawable.com_formlabel_icon_day;
                     break;
@@ -253,9 +252,9 @@ public class ZR {
                 }
             }
 
-        } else if (r.reportBatch.equals("2")) {
+        } else if (reportBatch.equals("2")) {
             //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
-            switch (r.frequency) {
+            switch (frequency) {
                 case 0: {
                     drawable = R.drawable.com_formlabel_icon_day;
                     break;
@@ -284,9 +283,9 @@ public class ZR {
                     break;
                 }
             }
-        } else if (r.reportBatch.equals("3")) {
+        } else if (reportBatch.equals("3")) {
             //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
-            switch (r.frequency) {
+            switch (frequency) {
                 case 0: {
                     drawable = R.drawable.com_formlabel_icon_day;
                     break;

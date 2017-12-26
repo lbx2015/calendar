@@ -65,6 +65,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             public void callBack(ResponseModel<String> response) {
                 Intent i = new Intent(SettingActivity.this, WebviewActivity.class);
                 i.putExtra(CONST.WEB_URL, response._data);
+                i.putExtra(CONST.ACTIVITY_NAME, "SettingActivity");
                 startActivity(i);
             }
         });

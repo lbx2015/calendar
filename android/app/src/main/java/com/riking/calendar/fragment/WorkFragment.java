@@ -38,6 +38,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
+import com.riking.calendar.adapter.NotDoneReportTaskItemAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
 import com.riking.calendar.adapter.ReportTaskItemAdapter;
@@ -101,7 +102,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     //current year month
     String yearMonth;
     //    ReportOnlineAdapter reportOnlineAdapter;
-    ReportTaskItemAdapter reportTaskItemAdapter;
+    ReportTaskItemAdapter reportDoneTaskItemAdapter;
+    NotDoneReportTaskItemAdapter reportNotDoneTaskItemAdapter;
     View v;
     Date currentDay;
     TimePickerDialog timePickerDialog;
@@ -593,11 +595,23 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                 @Override
                 public void callBack(ResponseModel<List<CurrentReportTaskResp>> response) {
                     List<CurrentReportTaskResp> list = response._data;
+                    List<CurrentReportTaskResp> doneReportList = new ArrayList<>();
+                    List<CurrentReportTaskResp> notDoneReportList = new ArrayList<>();
+                    //separating done or not done report
+                    for (CurrentReportTaskResp r : list) {
+                        if (r.isCompleted.equals("1")) {
+                            doneReportList.add(r);
+                        } else {
+                            notDoneReportList.add(r);
+                        }
+                    }
+
                     swipeRefreshLayout.setRefreshing(false);
-                    reportTaskItemAdapter = new ReportTaskItemAdapter(list);
-                    reportRecyclerView.setAdapter(reportTaskItemAdapter);
+                    reportDoneTaskItemAdapter = new ReportTaskItemAdapter(doneReportList);
+                    reportNotDoneTaskItemAdapter = new NotDoneReportTaskItemAdapter(notDoneReportList);
+                    reportRecyclerView.setAdapter(reportDoneTaskItemAdapter);
                     //put the not done reports here  firstly. changed it later.
-                    notDoneReportsRecyclerView.setAdapter(reportTaskItemAdapter);
+                    notDoneReportsRecyclerView.setAdapter(reportNotDoneTaskItemAdapter);
                     //check empty reports
                     checkEmpty();
                 }

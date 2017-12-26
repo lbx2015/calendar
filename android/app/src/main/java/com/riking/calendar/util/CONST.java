@@ -73,6 +73,7 @@ public class CONST {
 
     public static final int UPDATE_USER_INFO_REQUES = 1111;
     public static final int VERIFY_EMAIL = 1112;
+    public static final String ACTIVITY_NAME = "ACTIVITY_NAME";
 
     //滚动事件
     public enum ScrollDirection {
