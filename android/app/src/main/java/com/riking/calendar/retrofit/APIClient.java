@@ -750,4 +750,8 @@ public class APIClient {
     public static void getContacts(UserParams params, ZCallBack<ResponseModel<List<String>>> c) {
         apiInterface.getContacts(params).enqueue(c);
     }
+
+    public static void inviteContact(UserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.contactsInvite(params).enqueue(c);
+    }
 }

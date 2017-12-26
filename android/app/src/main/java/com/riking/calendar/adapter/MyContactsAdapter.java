@@ -20,8 +20,8 @@ public class MyContactsAdapter extends ZAdater<MyContactsAdapter.MyViewHolder, A
     @Override
     public void onBindVH(MyViewHolder h, int i) {
         AppUserResult appUser = mList.get(i);
-        ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
-        ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);
+        ZR.showPersonInviteStatus(h.followButton, h.followTv, appUser.isInvited);
+        ZR.setInviteClickListener(appUser, h.followButton, h.followTv);
         ZR.setUserName(h.userName, appUser.userName, appUser.grade);
         h.summary.setText(appUser.phone);
     }

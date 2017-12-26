@@ -414,4 +414,7 @@ public interface APIInterface {
 
     @POST("userContacts/contacts")
     Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
+
+    @POST("userContacts/contactsInvite")
+    Call<ResponseModel<String>> contactsInvite(@Body UserParams params);
 }
