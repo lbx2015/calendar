@@ -139,15 +139,21 @@ public class ZR {
 
     public static void setUserName(TextView userNameTv, String name, int grand) {
         userNameTv.setText(name);
-        if (grand == 3) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
+        @DrawableRes int drawable;
+        if (grand == 1) {
+            drawable = R.drawable.com_icon_grade_v1;
+        } else if (grand == 2) {
+            drawable = R.drawable.com_icon_grade_v2;
+        } else if (grand == 3) {
+            drawable = R.drawable.com_icon_grade_v3;
         } else if (grand == 4) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v4, 0);
+            drawable = R.drawable.com_icon_grade_v4;
         } else if (grand == 5) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
+            drawable = R.drawable.com_icon_grade_v5;
         } else {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            drawable = 0;
         }
+        userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
     }
 
 
