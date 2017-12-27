@@ -58,6 +58,8 @@ public class MQOptCommon extends BaseEntity {
 	@Transient
 	// mq操作类型(消费者根据此类型判断mq操作)
 	private Integer mqOptType;
+	
+	
 
 	public String getUserId() {
 		return userId;

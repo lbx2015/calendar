@@ -139,6 +139,7 @@ public class LoginServer {
 			detail.setPhoneDeviceid(loginParams.getPhoneDeviceId());
 			detail.setPhoneType(loginParams.getClientType());
 			user = appUserService.register(user, detail);
+			
 			logger.info("用户注册成功：phone={}", user.getPhone());
 		}
 
