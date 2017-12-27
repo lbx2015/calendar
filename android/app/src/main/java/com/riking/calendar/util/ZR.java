@@ -137,6 +137,10 @@ public class ZR {
         GlideApp.with(v.getContext()).load(imageUrl).centerCrop().placeholder(R.drawable.banner).into(v);
     }
 
+    public static void setImage(ImageView v, @DrawableRes int imageUrl) {
+        GlideApp.with(v.getContext()).load(imageUrl).centerCrop().into(v);
+    }
+
     public static void setUserName(TextView userNameTv, String name, int grand) {
         userNameTv.setText(name);
         @DrawableRes int drawable;
