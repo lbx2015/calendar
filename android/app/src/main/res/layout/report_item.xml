@@ -14,6 +14,8 @@
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
         android:drawablePadding="3dp"
+        android:ellipsize="end"
+        android:maxLength="12"
         android:text="TextView"
         android:textColor="@color/color_222222"
         android:textSize="17sp" />

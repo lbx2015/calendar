@@ -75,11 +75,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             }
 
             if (r.isComplete == 1) {
-                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
+                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
                 holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_background_b6b6b6));
                 holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
-                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
+                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_n));
                 holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_323232));
                 holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
@@ -212,13 +212,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                     public void onClick(View v) {
                         if (completed) {
                             completed = false;
-                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
+                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.work_icon_checkbox_n));
                             title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                             //cancel the pending runnable to complete the task
                             handler.removeCallbacks(callBack);
                         } else {
                             completed = true;
-                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
+                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
                             title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                             //complete the task after 5 seconds delay
                             handler.postDelayed(callBack, 5000);

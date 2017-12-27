@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 
 /**
  * Created by zw.zhang on 2017/7/12.
@@ -34,12 +33,6 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
 
     public CompletedTaskAdapter(Realm realm, List<Task> r) {
         this.realm = Realm.getDefaultInstance();
-        realm.addChangeListener(new RealmChangeListener<Realm>() {
-            @Override
-            public void onChange(Realm realm) {
-                notifyDataSetChanged();
-            }
-        });
         this.tasks = r;
         size = tasks.size();
     }
@@ -54,10 +47,9 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Task r = tasks.get(position);
-//        if(!r.isValid()){
-//            notifyItemRemoved(position);
-//            return;
-//        }
+        if (!r.isValid()) {
+            return;
+        }
         holder.position = position;
         holder.title.setText(r.content);
         if (r.isImportant == 1) {
@@ -110,9 +102,9 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
                     sml.smoothCloseMenu();
                     Todo todo = task.getTodo();
                     todo.deleteFlag = 1;
-                    final ArrayList<Todo> tasks = new ArrayList<>(1);
-                    tasks.add(todo);
-                    APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
+                    final ArrayList<Todo> todos = new ArrayList<>(1);
+                    todos.add(todo);
+                    APIClient.saveTodo(todos, new ZCallBackWithFail<ResponseModel<String>>() {
                         @Override
                         public void callBack(ResponseModel<String> response) throws Exception {
                             if (failed) {
@@ -121,6 +113,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
                                 //We should update the adapter after data set is changed. and we had not using RealmResult so for.
                                 //so we need to update teh adapter manually
                                 tasks.remove(task);
+                                notifyDataSetChanged();
                                 realm.executeTransaction(new Realm.Transaction() {
                                     @Override
                                     public void execute(Realm realm) {

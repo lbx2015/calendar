@@ -171,7 +171,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                         SpannableStringBuilder orderReportMenuBuilder = new SpannableStringBuilder("*  订阅报表");
                         SpannableStringBuilder overdueTaskMenuBuilder = new SpannableStringBuilder("*  逾期任务");
                         SpannableStringBuilder completeReportMenuBuilder = new SpannableStringBuilder("*  历史核销");
-                        SpannableStringBuilder historyTodoMenuBuilder = new SpannableStringBuilder("*  历史任务");
+                        SpannableStringBuilder historyTodoMenuBuilder = new SpannableStringBuilder("*  历史待办");
 
                         //replace "*" with icon
                         orderReportMenuBuilder.setSpan(new ImageSpan(getContext(), R.drawable.work_more_icon_add), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

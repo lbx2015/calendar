@@ -27,7 +27,6 @@ import io.realm.Realm;
 /**
  * Created by zw.zhang on 2017/7/11.
  */
-
 public class CreateTaskActivity extends AppCompatActivity {
     //whether the task is an important task
     public byte isImportant;
