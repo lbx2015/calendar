@@ -760,7 +760,7 @@ public class APIClient {
         apiInterface.completeReport(params).enqueue(c);
     }
 
-    public static void saveTodo(Todo params, ZCallBack<ResponseModel<Todo>> c) {
+    public static void saveTodo(Todo params, ZCallBackWithFail<ResponseModel<Todo>> c) {
         apiInterface.saveTodo(params).enqueue(c);
     }
 }

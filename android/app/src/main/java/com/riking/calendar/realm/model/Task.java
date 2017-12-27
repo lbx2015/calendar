@@ -17,7 +17,7 @@ public class Task extends RealmObject {
     @Ignore
     public static String DELETESTATE = "deleteState";
     @Ignore
-    public static String TODO_ID = "todo_Id";
+    public static String TODO_ID = "todoId";
     @Ignore
     public static String COMPLETEDATE = "completeDate";
     @PrimaryKey
@@ -63,6 +63,7 @@ public class Task extends RealmObject {
     public byte syncStatus;//同步的状态0:同步,1待同步
     //used to set alarm, the request code should not same.
     public int requestCode;
+
     public Task() {
     }
 

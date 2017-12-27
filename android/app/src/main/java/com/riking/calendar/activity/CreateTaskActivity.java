@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.realm.model.Task;
@@ -16,7 +16,6 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZDB;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
@@ -54,10 +53,11 @@ public class CreateTaskActivity extends AppCompatActivity {
         final String id = sdf.format(new Date());
         Todo todo = new Todo();
         todo.content = content;
+        todo.todoId = id;
         todo.isImportant = isImportant;
         todo.appCreatedTime = DateUtil.date2String(new Date(), CONST.yyyyMMddHHmm);
 
-        APIClient.saveTodo(todo, new ZCallBack<ResponseModel<Todo>>() {
+        APIClient.saveTodo(todo, new ZCallBackWithFail<ResponseModel<Todo>>() {
             @Override
             public void callBack(ResponseModel<Todo> response) {
                 ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
@@ -66,13 +66,17 @@ public class CreateTaskActivity extends AppCompatActivity {
                         task = realm.createObject(Task.class, id);
                         task.title = content;
                         task.isImportant = isImportant;
+                        if (failed) {
+                            //1 待同步
+                            task.syncStatus = 1;
+                        }
                     }
                 }, new Realm.Transaction.OnSuccess() {
                     @Override
                     public void onSuccess() {
-                        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
-                            APIClient.synchronousTasks(task, CONST.ADD);
-                        }
+//                        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+//                            APIClient.synchronousTasks(task, CONST.ADD);
+//                        }
                         onBackPressed();
                     }
                 });
