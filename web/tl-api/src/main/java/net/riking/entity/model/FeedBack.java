@@ -58,6 +58,10 @@ public class FeedBack extends BaseProp {
 		this.setModifiedBy(createBy);
 	}
 
+	public FeedBack() {
+		super();
+	}
+
 	public String getId() {
 		return id;
 	}

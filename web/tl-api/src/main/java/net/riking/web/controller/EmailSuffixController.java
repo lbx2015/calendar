@@ -138,12 +138,17 @@ public class EmailSuffixController {
 
 	@ApiOperation(value = "批量删除邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
-	public Resp delMore(@RequestBody Set<Long> ids) {
+	public Resp delMore(@RequestBody Set<String> ids) {
 		int rs = 0;
+		List<EmailSuffix> liSuffixs = null;
 		if (ids.size() > 0) {
-			rs = modelPropdictRepo.deleteByIdIn(ids);
+			liSuffixs = emailSuffixRepo.findByIds(ids);
 		}
-		if (rs > 0) {
+		if (liSuffixs != null && liSuffixs.size() > 0) {
+			for (EmailSuffix emailSuffix : liSuffixs) {
+				emailSuffix.setIsDeleted(Const.INVALID);
+			}
+			emailSuffixRepo.save(liSuffixs);
 			return new Resp().setCode(CodeDef.SUCCESS);
 		} else {
 			return new Resp().setCode(CodeDef.ERROR);

@@ -1,0 +1,45 @@
+{
+	"table": "t_feedback",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "content",
+			"alias": "反馈内容",
+			"desc": "反馈内容",
+			"type": "string",
+			"query": "1",
+			"query_order": "1",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "imgs",
+			"alias": "多个图片名称，以','逗号分隔",
+			"desc": "多个图片名称，以','逗号分隔",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "accept",
+			"alias": "是否采纳:0-未操作；1-未采纳；2-采纳",
+			"desc": "是否采纳:0-未操作；1-未采纳；2-采纳",
+			"type": "enum",
+			"dict_key": "T_FEEDBACK.ACCEPT",
+			"verify":"required",
+			"group": "base"
+		}
+	]
+}

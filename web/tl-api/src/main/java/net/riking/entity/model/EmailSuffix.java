@@ -63,7 +63,7 @@ public class EmailSuffix extends BaseEntity {
 
 	@Comment("是否删除： 0-删除，1-未删除")
 	@org.hibernate.annotations.ColumnDefault("1")
-	@Column(name = "is_deleted")
+	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
 	private Integer isDeleted;
 
 	@Comment("操作类型：modify-修改;add-新增")

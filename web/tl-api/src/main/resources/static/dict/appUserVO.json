@@ -62,7 +62,7 @@
 			"desc": "用户登录密码",
 			"type": "string",
 			"group": "base",
-			"hidden": "table,preview"
+			"hidden": "edit"
 		},
 		{
 			"prop": "appUser.enabled",
@@ -79,7 +79,8 @@
 			"desc": "创建人ID",
 			"type": "string",
 			"group": "base",
-			"hidden": "edit,priview,table"
+			"hidden": "edit,priview,table",
+			"verify":"required"
 		},
 		{
 			"prop": "appUser.createdTime",

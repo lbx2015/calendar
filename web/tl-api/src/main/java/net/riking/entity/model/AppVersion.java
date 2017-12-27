@@ -59,7 +59,7 @@ public class AppVersion extends BaseProp {
 	@Column(name = "remark", length = 255)
 	private String remark;
 
-	@Comment("操作类型：modify-修改;add-新增")
+	@Comment("操作类型：edit-修改;add-新增")
 	@Transient
 	private String opt;
 

@@ -62,6 +62,11 @@ public class AppUserGrade extends BaseEntity {
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
+	@Comment("是否删除： 0-删除，1-未删除")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
+	private Integer isDeleted;
+
 	public Integer getGrade() {
 		return grade;
 	}
@@ -100,6 +105,14 @@ public class AppUserGrade extends BaseEntity {
 
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	public Integer getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Integer isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 }
