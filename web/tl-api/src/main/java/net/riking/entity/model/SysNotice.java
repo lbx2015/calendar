@@ -25,10 +25,10 @@ import net.riking.entity.MyDateFormat;
  * @see
  * @since 1.0
  */
-@Comment("通知表")
+@Comment("系统通知表")
 @Entity
-@Table(name = "t_notice")
-public class Notice extends BaseEntity {
+@Table(name = "t_sys_notice")
+public class SysNotice extends BaseEntity {
 
 	@Comment("物理主键")
 	@Id
@@ -38,12 +38,20 @@ public class Notice extends BaseEntity {
 	private String id;
 
 	@Comment("通知标题")
-	@Column(name = "notice_title", length = 32)
-	private String noticeTitle;
+	@Column(name = "title", length = 255)
+	private String title;
 
 	@Comment("通知内容")
-	@Column(name = "notice_describe", length = 1)
-	private Integer noticeDescribe;
+	@Column(name = "content", length = 500)
+	private String content;
+	
+	@Comment("数据类型0-系统信息；1-被邀请回答的邀请；2-问题回答被点赞或收藏；3-问题被关注；4-被关注的用户；5-评论被点赞；6-问题回答的被评论；7-评论的回复和回复的被回复")
+	@Column(name = "data_type", length = 2)
+	private Integer dataType;
+	
+	@Comment("通知用户对象")
+	@Column(name = "notice_user_id", length = 32)
+	private String noticeUserId;
 
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -54,7 +62,7 @@ public class Notice extends BaseEntity {
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
-	public Notice() {
+	public SysNotice() {
 	}
 
 	public String getId() {
@@ -65,20 +73,20 @@ public class Notice extends BaseEntity {
 		this.id = id;
 	}
 
-	public String getNoticeTitle() {
-		return noticeTitle;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setNoticeTitle(String noticeTitle) {
-		this.noticeTitle = noticeTitle;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public Integer getNoticeDescribe() {
-		return noticeDescribe;
+	public String getContent() {
+		return content;
 	}
 
-	public void setNoticeDescribe(Integer noticeDescribe) {
-		this.noticeDescribe = noticeDescribe;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public Date getCreatedTime() {
@@ -89,4 +97,21 @@ public class Notice extends BaseEntity {
 		this.createdTime = createdTime;
 	}
 
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
+	}
+
+	public String getNoticeUserId() {
+		return noticeUserId;
+	}
+
+	public void setNoticeUserId(String noticeUserId) {
+		this.noticeUserId = noticeUserId;
+	}
+
+	
 }

@@ -55,6 +55,17 @@ public interface TQuestionService {
 	 */
 	public List<QuestResult> userFollowQuest(String userId, int start, int pageCount);
 
-	public void follow(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
+	/***
+	 * 问题，话题，用户的关注操作
+	 * 返回：true-关注；false-取消关注
+	 * @author james.you
+	 * @version crateTime：2017年12月27日 下午5:01:33
+	 * @used TODO
+	 * @param optCommon
+	 * @return true-关注；false-取消关注
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	public boolean follow(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
 
 }

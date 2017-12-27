@@ -108,12 +108,12 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		// where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency)
 		// frequencyType, ";
 		sql += "c.frequency, b.report_batch reportBatch, ";
-		sql += "SUBSTR(a.submit_start_time, 1, 8) submitStartTime, SUBSTR(a.submit_end_time, 1, 8) submitEndTime, ";
+		sql += "a.submit_start_time submitStartTime, a.submit_end_time submitEndTime, ";
 		sql += "a.is_completed isCompleted, d.remind_id remindId, d.content remindContent ";
 		sql += "from t_report_completed_rel a INNER join t_report b on a.report_id=b.id ";
 		sql += "LEFT JOIN t_report_submit_caliber c on a.report_id=c.report_id ";
 		sql += "LEFT JOIN t_remind d on d.report_id=a.report_id and d.user_id=a.user_id ";
-		sql += "where a.user_id= ? and ? BETWEEN a.submit_start_time and a.submit_end_time ";
+		sql += "where a.user_id= ? and ? BETWEEN SUBSTRING(a.submit_start_time, 1,8) and SUBSTRING(a.submit_end_time, 1, 8) ";
 		sql += "order by a.is_completed, a.submit_end_time, c.frequency ";
 		PreparedStatement pstmt = null;
 		List<CurrentReportTaskResp> list = new ArrayList<CurrentReportTaskResp>();

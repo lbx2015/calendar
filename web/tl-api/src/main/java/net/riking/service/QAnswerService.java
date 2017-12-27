@@ -23,7 +23,18 @@ public interface QAnswerService {
 	 */
 	public List<QAnswerResult> findCollectQAnswer(String userId, int start, int pageCount);
 
-	public void QaAgreeCollect(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException;
+	/***
+	 * 问题回答点赞或收藏
+	 * 返回：true-点赞或收藏成功；false-取消点赞或收藏
+	 * @author james.you
+	 * @version crateTime：2017年12月27日 下午4:39:39
+	 * @used TODO
+	 * @param common
+	 * @return true-点赞或收藏成功；false-取消点赞或收藏
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	public boolean qaAgreeCollect(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException;
 
 	public void qACommentPub(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
 

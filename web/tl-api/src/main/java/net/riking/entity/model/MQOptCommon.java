@@ -15,7 +15,7 @@ public class MQOptCommon extends BaseEntity {
 
 	@Comment("操作人主键  ")
 	private String userId;
-
+	
 	// 话题下面问题Id
 	private String tqId;
 
