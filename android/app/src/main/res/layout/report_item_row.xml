@@ -30,8 +30,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/user_icon"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="14dp"
+            android:layout_toRightOf="@+id/button_image"
             android:orientation="vertical">
 
             <TextView
@@ -54,13 +55,13 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/follow_button"
-            android:layout_width="68dp"
-            android:layout_height="28dp"
+            android:id="@+id/clock_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:src="@drawable/work_icon_time_s"></ImageView>
+            android:layout_marginTop="14dp"
+            android:src="@drawable/work_icon_time_n"></ImageView>
 
         <View
             android:id="@+id/divider"

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,9 @@ import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.util.List;
@@ -52,7 +55,9 @@ public class NotDoneReportTaskItemAdapter extends RecyclerView.Adapter<NotDoneRe
 //            return;
 //        }
         holder.position = position;
-        holder.title.setText(r.reportName);
+        holder.title.setText(r.reportCode);
+        ZR.setReportName(holder.title, r.reportCode, r.frequency, r.reportBatch);
+        holder.descriptTv.setText(r.reportName);
 
         //not enable the swipe function when user is not logged.
         if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
@@ -67,6 +72,14 @@ public class NotDoneReportTaskItemAdapter extends RecyclerView.Adapter<NotDoneRe
         } else {
             holder.divider.setVisibility(View.VISIBLE);
         }
+
+        if (StringUtil.isEmpty(r.remindId)) {
+            holder.clockImage.setVisibility(View.GONE);
+        } else {
+            holder.clockImage.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     @Override
@@ -83,11 +96,17 @@ public class NotDoneReportTaskItemAdapter extends RecyclerView.Adapter<NotDoneRe
         public TextView tv;
         public int position;
         public View divider;
+        public TextView descriptTv;
+        public ImageView buttonImage;
+        public ImageView clockImage;
         SwipeHorizontalMenuLayout sml;
         CurrentReportTaskResp r;
 
         public MyViewHolder(final List<CurrentReportTaskResp> reports, View view) {
             super(view);
+            clockImage = view.findViewById(R.id.clock_image);
+            buttonImage = view.findViewById(R.id.button_image);
+            descriptTv = view.findViewById(R.id.descript_tv);
             title = (TextView) view.findViewById(R.id.title);
             divider = view.findViewById(R.id.divider);
             title.setOnClickListener(new View.OnClickListener() {
