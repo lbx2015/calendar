@@ -231,7 +231,7 @@ public class QAnswerServer {
 	@RequestMapping(value = "/agreeOrCollect", method = RequestMethod.POST)
 	public AppResp QAnswerAgree(@RequestBody QAnswerParams qAnswerParams) {
 		// 具体操作在mq队列里面
-		qAnswerParams.setMqOptType(Const.MQ_OPT_QA_AGREEORCOLLECT);
+		qAnswerParams.setMqOptType(Const.MQ_OPT_QA_AGREEOR_COLLECT);
 		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
 		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);

@@ -71,7 +71,7 @@ public class TQuestionServiceImpl implements TQuestionService {
 	}
 
 	@Override
-	public void follow(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
+	public boolean follow(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		TQuestionParams tQuestionParams = new TQuestionParams();
 		tQuestionParams = (TQuestionParams) Utils.fromObjToObjValue(optCommon, tQuestionParams);
 		switch (tQuestionParams.getObjType()) {
@@ -87,11 +87,13 @@ public class TQuestionServiceImpl implements TQuestionService {
 						topQuestionRel.setTqId(tQuestionParams.getAttentObjId());
 						topQuestionRel.setDataType(Const.OBJ_OPT_FOLLOW);// 关注
 						tQuestionRelRepo.save(topQuestionRel);
+						return true;
 					}
 				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
 					// 如果传过来是取消关注，把之前一条记录物理删除
 					tQuestionRelRepo.deleteByUIdAndTqId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
 							Const.OBJ_OPT_FOLLOW);// 0-关注 3-屏蔽
+					return false;
 				} else {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
@@ -109,11 +111,13 @@ public class TQuestionServiceImpl implements TQuestionService {
 						topicRel.setTopicId(tQuestionParams.getAttentObjId());
 						topicRel.setDataType(Const.OBJ_OPT_FOLLOW);// 关注
 						topicRelRepo.save(topicRel);
+						return true;
 					}
 				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
 					// 如果传过来是取消关注，把之前一条记录物理删除
 					topicRelRepo.deleteByUIdAndTopId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
 							Const.OBJ_OPT_FOLLOW);// 0-关注3-屏蔽
+					return false;
 
 				} else {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
@@ -139,6 +143,7 @@ public class TQuestionServiceImpl implements TQuestionService {
 							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 							userFollowRel.setFollowStatus(2);// 互相关注
 							userFollowRelRepo.save(userFollowRel);
+							return true;
 						}
 					} else {
 						// 如果传过来的参数是关注，保存新的一条关注记录
@@ -146,6 +151,7 @@ public class TQuestionServiceImpl implements TQuestionService {
 						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 						userFollowRel.setFollowStatus(1);// 非互相关注
 						userFollowRelRepo.save(userFollowRel);
+						return true;
 					}
 				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
 					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
@@ -156,6 +162,7 @@ public class TQuestionServiceImpl implements TQuestionService {
 					}
 					// 如果传过来是取消关注，把之前一条记录物理删除
 					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
+					return false;
 				} else {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
@@ -165,6 +172,7 @@ public class TQuestionServiceImpl implements TQuestionService {
 				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
 				throw new RuntimeException("参数异常：objType=" + tQuestionParams.getObjType());
 		}
+		return false;
 	}
 
 }

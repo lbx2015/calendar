@@ -41,7 +41,7 @@ public class QACommentServiceImpl implements QACommentService {
 	}
 
 	@Override
-	public void commentAgree(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
+	public boolean commentAgree(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		CommentParams commentParams = new CommentParams();
 		commentParams = (CommentParams) Utils.fromObjToObjValue(optCommon, commentParams);
 		switch (commentParams.getObjType()) {
@@ -58,6 +58,7 @@ public class QACommentServiceImpl implements QACommentService {
 							qACAgreeRel.setQacId(commentParams.getCommentId());
 							qACAgreeRel.setDataType(Const.OBJ_OPT_GREE);// 点赞
 							qACAgreeRelRepo.save(qACAgreeRel);
+							return true;
 						}
 						break;
 					case Const.INVALID:
@@ -83,6 +84,7 @@ public class QACommentServiceImpl implements QACommentService {
 							nCAgreeRel.setNcId(commentParams.getCommentId());
 							nCAgreeRel.setDataType(Const.OBJ_OPT_GREE);// 点赞
 							nCAgreeRelRepo.save(nCAgreeRel);
+							return true;
 						}
 						break;
 					case Const.INVALID:
@@ -98,6 +100,7 @@ public class QACommentServiceImpl implements QACommentService {
 			default:
 				break;
 		}
+		return false;
 
 	}
 

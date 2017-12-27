@@ -64,7 +64,7 @@ public class QAnswerServiceImpl implements QAnswerService {
 	}
 
 	@Override
-	public void QaAgreeCollect(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
+	public boolean qaAgreeCollect(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		QAnswerParams qAnswerParams = new QAnswerParams();
 		qAnswerParams = (QAnswerParams) Utils.fromObjToObjValue(optCommon, qAnswerParams);
 		switch (qAnswerParams.getOptType()) {
@@ -80,11 +80,13 @@ public class QAnswerServiceImpl implements QAnswerService {
 						qAnswerRel.setQaId(qAnswerParams.getQuestAnswerId());
 						qAnswerRel.setDataType(Const.OBJ_OPT_GREE);// 点赞
 						qAnswerRelRepo.save(qAnswerRel);
+						return true;
 					}
 				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
 					// 如果传过来是取消点赞，把之前一条记录物理删除
 					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
 							Const.OBJ_OPT_GREE);// 点赞
+					return false;
 				} else {
 					logger.error("问题回答点赞参数异常：enabled=" + qAnswerParams.getEnabled());
 					throw new RuntimeException("问题回答点赞参数异常：enabled=" + qAnswerParams.getEnabled());
@@ -102,11 +104,13 @@ public class QAnswerServiceImpl implements QAnswerService {
 						qAnswerRel.setQaId(qAnswerParams.getQuestAnswerId());
 						qAnswerRel.setDataType(Const.OBJ_OPT_COLLECT);// 收藏
 						qAnswerRelRepo.save(qAnswerRel);
+						return true;
 					}
 				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
 					// 如果传过来是取消收藏，把之前一条记录物理删除
 					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
 							Const.OBJ_OPT_COLLECT);// 收藏
+					return false;
 				} else {
 					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
 					throw new RuntimeException("问题回答收藏参数异常：enabled=" + qAnswerParams.getEnabled());
@@ -116,6 +120,7 @@ public class QAnswerServiceImpl implements QAnswerService {
 				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
 				throw new RuntimeException("问题回答收藏参数异常：obtType=" + qAnswerParams.getOptType());
 		}
+		return false;
 	}
 
 	@Override
