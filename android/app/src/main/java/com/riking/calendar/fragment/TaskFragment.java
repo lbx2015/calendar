@@ -95,8 +95,8 @@ public class TaskFragment extends Fragment {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                         Date date = new Date();
                         Task task = realm.createObject(Task.class, simpleDateFormat.format(date));
-                        task.title = quickAddEditor.getText().toString();
-                        task.appCreatedTime = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(date);
+                        task.content = quickAddEditor.getText().toString();
+                        task.createdTime = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(date);
                         task.isComplete = 0;
                         task.isOpen = 0;
                         task.isImportant = 0;

@@ -84,12 +84,12 @@ public class EditTaskActivity extends AppCompatActivity {
                 Task task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
                 task.isImportant = taskFragment.isImportant;
                 SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
-                task.appCreatedTime = sdf.format(new Date());
+                task.createdTime = sdf.format(new Date());
                 if (taskFragment.needToRemind) {
                     task.isOpen = 1;
                     task.strDate = sdf.format(taskFragment.calendar.getTime());
                 }
-                task.title = taskFragment.title.getText().toString();
+                task.content = taskFragment.title.getText().toString();
                 APIClient.synchronousTasks(task, CONST.UPDATE);
             }
         });

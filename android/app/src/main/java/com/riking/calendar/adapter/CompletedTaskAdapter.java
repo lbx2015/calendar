@@ -54,7 +54,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
 //            return;
 //        }
         holder.position = position;
-        holder.title.setText(r.title);
+        holder.title.setText(r.content);
         if (r.isImportant == 1) {
         } else {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));

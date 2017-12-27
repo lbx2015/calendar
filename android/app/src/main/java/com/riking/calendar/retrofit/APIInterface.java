@@ -57,6 +57,7 @@ import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
+import com.riking.calendar.realm.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,7 +172,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> synchronousReminds(@Body List<ReminderModel> reminderModels);
 
     @POST("synchronous/synchronousTodos")
-    Call<ResponseModel<String>> synchronousTasks(@Body List<TaskModel> tasks);
+    Call<ResponseModel<String>> synchronousTasks(@Body List<Todo> tasks);
 
     @POST("common/getappVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
@@ -424,5 +425,5 @@ public interface APIInterface {
     Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
 
     @POST("todo/save")
-    Call<ResponseModel<Todo>> saveTodo(@Body Todo params);
+    Call<ResponseModel<String>> saveTodo(@Body Task params);
 }

@@ -2,6 +2,7 @@ package com.riking.calendar.realm.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.riking.calendar.pojo.TaskModel;
+import com.riking.calendar.pojo.params.Todo;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -32,7 +33,7 @@ public class Task extends RealmObject {
     // 提醒内容
 //    @Column(name = "content", length = 255)
     @SerializedName("content")
-    public String title;
+    public String content;
 
     // 是否重要（0-不重要；1-重要）
 //    @Column(name = "is_important", length = 1)
@@ -48,7 +49,7 @@ public class Task extends RealmObject {
 
     // 手机端提供创建时间（yyyy-MM-dd HHmm）
 //    @Column(name = "app_created_time", length = 12)
-    public String appCreatedTime;
+    public String createdTime;
 
     // 待办提醒是否开启（0-否；1-是）
 //    @Column(name = "is_complete", length = 1)
@@ -70,12 +71,27 @@ public class Task extends RealmObject {
     public Task(TaskModel m) {
         todoId = m.todoId;
         userId = m.userId;
-        title = m.title;
+        content = m.content;
         isImportant = m.isImportant;
         isOpen = m.isOpen;
         strDate = m.strDate;
-        appCreatedTime = m.appCreatedTime;
+        createdTime = m.appCreatedTime;
         isComplete = m.isComplete;
         completeDate = m.completeDate;
+    }
+
+    public Todo getTodo() {
+        Todo todo = new Todo();
+        todo.todoId = todoId;
+        todo.isImportant = isImportant;
+        todo.content = content;
+        todo.userId = userId;
+        todo.isOpen = isOpen;
+        todo.strDate = strDate;
+        todo.createdTime = createdTime;
+        todo.isCompleted = isComplete;
+        todo.deleteFlag = deleteState;
+        todo.completeDate = completeDate;
+        return todo;
     }
 }

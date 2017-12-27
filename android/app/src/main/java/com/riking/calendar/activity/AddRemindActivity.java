@@ -138,12 +138,12 @@ public class AddRemindActivity extends AppCompatActivity {
                     Task task = realm.createObject(Task.class, id);
                     task.isImportant = taskFragment.isImportant;
                     SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
-                    task.appCreatedTime = sdf.format(new Date());
+                    task.createdTime = sdf.format(new Date());
                     if (taskFragment.needToRemind) {
                         task.isOpen = 1;
                         task.strDate = sdf.format(taskFragment.calendar.getTime());
                     }
-                    task.title = taskTitle;
+                    task.content = taskTitle;
                     task.userId = userId;
                     if (task.isOpen == 1) {
                         task.requestCode = requestCode;

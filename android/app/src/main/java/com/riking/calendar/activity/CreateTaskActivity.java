@@ -19,6 +19,7 @@ import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.realm.Realm;
@@ -55,16 +56,18 @@ public class CreateTaskActivity extends AppCompatActivity {
         todo.content = content;
         todo.todoId = id;
         todo.isImportant = isImportant;
-        todo.appCreatedTime = DateUtil.date2String(new Date(), CONST.yyyyMMddHHmm);
+        todo.createdTime = DateUtil.date2String(new Date(), CONST.yyyyMMddHHmm);
 
-        APIClient.saveTodo(todo, new ZCallBackWithFail<ResponseModel<Todo>>() {
+        final ArrayList<Todo> tasks = new ArrayList<>(1);
+        tasks.add(todo);
+        APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
-            public void callBack(ResponseModel<Todo> response) {
+            public void callBack(ResponseModel<String> response) {
                 ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
                         task = realm.createObject(Task.class, id);
-                        task.title = content;
+                        task.content = content;
                         task.isImportant = isImportant;
                         if (failed) {
                             //1 待同步
