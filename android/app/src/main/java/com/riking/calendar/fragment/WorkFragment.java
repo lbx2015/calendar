@@ -102,8 +102,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     //current year month
     String yearMonth;
     //    ReportOnlineAdapter reportOnlineAdapter;
-    ReportTaskItemAdapter reportDoneTaskItemAdapter;
-    NotDoneReportTaskItemAdapter reportNotDoneTaskItemAdapter;
+    public ReportTaskItemAdapter reportDoneTaskItemAdapter;
+    public NotDoneReportTaskItemAdapter reportNotDoneTaskItemAdapter;
     View v;
     Date currentDay;
     TimePickerDialog timePickerDialog;
@@ -607,8 +607,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     }
 
                     swipeRefreshLayout.setRefreshing(false);
-                    reportDoneTaskItemAdapter = new ReportTaskItemAdapter(doneReportList);
-                    reportNotDoneTaskItemAdapter = new NotDoneReportTaskItemAdapter(notDoneReportList);
+                    reportDoneTaskItemAdapter = new ReportTaskItemAdapter(WorkFragment.this,doneReportList);
+                    reportNotDoneTaskItemAdapter = new NotDoneReportTaskItemAdapter(WorkFragment.this,notDoneReportList);
                     reportRecyclerView.setAdapter(reportDoneTaskItemAdapter);
                     //put the not done reports here  firstly. changed it later.
                     notDoneReportsRecyclerView.setAdapter(reportNotDoneTaskItemAdapter);

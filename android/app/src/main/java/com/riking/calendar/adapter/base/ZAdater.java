@@ -20,10 +20,27 @@ public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends Recycler
         mList = new ArrayList<>();
     }
 
+    public ZAdater() {
+    }
+
+    public ZAdater(List<ItemBean> r) {
+        mList = r;
+    }
+
     public void setData(List<ItemBean> mList) {
         this.mList.clear();
         this.mList = mList;
         notifyDataSetChanged();
+    }
+
+    public void appendStart(ItemBean itemBean) {
+        mList.add(0, itemBean);
+        notifyItemInserted(0);
+    }
+
+    public void remmoveItem(ItemBean itemBean, int position) {
+        mList.remove(itemBean);
+        notifyItemRemoved(position);
     }
 
     @Override

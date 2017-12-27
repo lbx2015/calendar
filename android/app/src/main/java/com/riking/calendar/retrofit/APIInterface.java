@@ -417,4 +417,8 @@ public interface APIInterface {
 
     @POST("userContacts/contactsInvite")
     Call<ResponseModel<String>> contactsInvite(@Body UserParams params);
+
+    //完成报表/也可以取消完成
+    @POST("report/complete")
+    Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
 }

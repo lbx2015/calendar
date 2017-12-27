@@ -754,4 +754,8 @@ public class APIClient {
     public static void inviteContact(UserParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.contactsInvite(params).enqueue(c);
     }
+
+    public static void completeReport(RCompletedRelParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.completeReport(params).enqueue(c);
+    }
 }
