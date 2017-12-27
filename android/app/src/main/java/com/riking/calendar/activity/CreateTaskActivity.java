@@ -8,14 +8,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZR;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.realm.Realm;
@@ -48,22 +52,40 @@ public class CreateTaskActivity extends AppCompatActivity {
         final String content = taskEditText.getText().toString();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         final String id = sdf.format(new Date());
-        ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+        Todo todo = new Todo();
+        todo.content = content;
+        todo.todoId = id;
+        todo.isImportant = isImportant;
+        todo.createdTime = DateUtil.date2String(new Date(), CONST.yyyyMMddHHmm);
+
+        final ArrayList<Todo> tasks = new ArrayList<>(1);
+        tasks.add(todo);
+        APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
-            public void execute(Realm realm) {
-                task = realm.createObject(Task.class, id);
-                task.title = content;
-                task.isImportant = isImportant;
-            }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
-                    APIClient.synchronousTasks(task, CONST.ADD);
-                }
-                onBackPressed();
+            public void callBack(ResponseModel<String> response) {
+                ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        task = realm.createObject(Task.class, id);
+                        task.content = content;
+                        task.isImportant = isImportant;
+                        if (failed) {
+                            //1 待同步
+                            task.syncStatus = 1;
+                        }
+                    }
+                }, new Realm.Transaction.OnSuccess() {
+                    @Override
+                    public void onSuccess() {
+//                        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+//                            APIClient.synchronousTasks(task, CONST.ADD);
+//                        }
+                        onBackPressed();
+                    }
+                });
             }
         });
+
     }
 
     public void clickImportant(View v) {

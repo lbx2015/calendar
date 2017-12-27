@@ -15,7 +15,10 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.CreateTaskActivity;
 import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -24,6 +27,7 @@ import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.realm.Realm;
@@ -63,7 +67,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         if (getItemViewType(position) == NORMAL_TYPE) {
             final Task r = tasks.get(position);
-            holder.title.setText(r.title);
+            holder.title.setText(r.content);
             if (r.isImportant == 1) {
                 holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
             } else {
@@ -95,8 +99,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(v.getContext(), EditTaskActivity.class);
-                    i.putExtra("task_id", r.todo_Id);
-                    i.putExtra("task_title", r.title);
+                    i.putExtra("task_id", r.todoId);
+                    i.putExtra("task_title", r.content);
                     i.putExtra("is_import", r.isImportant);
                     i.putExtra("is_remind", r.isOpen);
                     if (r.isOpen == 1) {
@@ -176,18 +180,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                     Runnable callBack = new Runnable() {
                         @Override
                         public void run() {
-                            realm.executeTransaction
-                                    (new Realm.Transaction() {
-                                        @Override
-                                        public void execute(Realm realm) {
-                                            Task t;
-                                            if (completed) {
-                                                t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
-                                                t.isComplete = 1;
-                                                t.completeDate = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(new Date());
-                                            }
-                                        }
-                                    });
+                            if (completed) {
+                                final ArrayList<Todo> tasks = new ArrayList<>(1);
+                                Todo todo = task.getTodo();
+                                todo.isCompleted = 1;
+                                tasks.add(todo);
+
+                                APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
+                                    @Override
+                                    public void callBack(ResponseModel<String> response) throws Exception {
+                                        realm.executeTransaction
+                                                (new Realm.Transaction() {
+                                                    @Override
+                                                    public void execute(Realm realm) {
+                                                        if (failed) {
+                                                        } else {
+                                                            Task t;
+                                                            t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst();
+                                                            t.isComplete = 1;
+                                                            t.completeDate = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(new Date());
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                });
+                            }
                         }
                     };
 
@@ -219,10 +236,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                                     public void execute(Realm realm) {
                                         if (task.isImportant == 1) {
                                             important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst().isImportant = 0;
+                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 0;
                                         } else {
                                             important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst().isImportant = 1;
+                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 1;
                                         }
                                     }
                                 });

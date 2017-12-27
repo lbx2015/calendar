@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
@@ -31,16 +32,16 @@ import java.util.List;
 /**
  * Created by zw.zhang on 2017/7/12.
  */
-public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewHolder, CurrentReportTaskResp> {
+public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemAdapter.MyViewHolder, CurrentReportTaskResp> {
     WorkFragment fragment;
 
-    public ReportTaskItemAdapter(WorkFragment fragment, List<CurrentReportTaskResp> r) {
+    public NotDoneReportTaskItemAdapter(WorkFragment fragment, List<CurrentReportTaskResp> r) {
         super(r);
         this.fragment = fragment;
     }
 
     @Override
-    public void onBindVH(final MyViewHolder holder, final int position) {
+    public void onBindVH(MyViewHolder holder, final int position) {
         final CurrentReportTaskResp r = mList.get(position);
 //        if(!r.isValid()){
 //            notifyItemRemoved(position);
@@ -51,38 +52,21 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
         ZR.setReportName(holder.title, r.reportCode, r.frequency, r.reportBatch);
         holder.descriptTv.setText(r.reportName);
 
-        //not enable the swipe function for done report
-        holder.sml.setSwipeEnable(false);
+        //not enable the swipe function when user is not logged.
+        if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+            holder.sml.setSwipeEnable(true);
+        } else {
+            holder.sml.setSwipeEnable(false);
+        }
 
         holder.r = r;
+
         if (StringUtil.isEmpty(r.remindId)) {
             holder.clockImage.setVisibility(View.GONE);
         } else {
             holder.clockImage.setVisibility(View.VISIBLE);
         }
 
-        ZR.setImage(holder.buttonImage, R.drawable.work_icon_checkbox_s);
-        holder.title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Logger.d("zzw", "report userId: " + r.reportId);
-                QueryReport report = new QueryReport();
-                report.id = r.reportId;
-                APIClient.apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {
-                    @Override
-                    public void callBack(ResponseModel<String> response) {
-                        String reportUrl = response._data;
-                        Logger.d("zzw", "report Url : " + reportUrl);
-                        if (reportUrl != null) {
-                            Intent i = new Intent(holder.title.getContext(), WebviewActivity.class);
-                            i.putExtra(CONST.WEB_URL, reportUrl);
-                            holder.title.getContext().startActivity(i);
-                        }
-                    }
-                });
-            }
-        });
         //set complete complete click listener
         holder.buttonImage.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
@@ -98,15 +82,16 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
                 APIClient.completeReport(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        r.isCompleted = "0";
-                        fragment.reportNotDoneTaskItemAdapter.appendStart(r);
-                        ReportTaskItemAdapter.this.remmoveItem(r, position);
+                        r.isCompleted = "1";
+                        fragment.reportDoneTaskItemAdapter.appendStart(r);
+                        NotDoneReportTaskItemAdapter.this.remmoveItem(r, position);
                         fragment.checkEmpty();
                     }
                 });
             }
         });
     }
+
 
     @Override
     public MyViewHolder onCreateVH(ViewGroup parent, int viewType) {
@@ -119,6 +104,7 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
         public TextView title;
         public TextView tv;
         public int position;
+        public View divider;
         public TextView descriptTv;
         public ImageView buttonImage;
         public ImageView clockImage;
@@ -131,6 +117,28 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
             buttonImage = view.findViewById(R.id.button_image);
             descriptTv = view.findViewById(R.id.descript_tv);
             title = (TextView) view.findViewById(R.id.title);
+            divider = view.findViewById(R.id.divider);
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Logger.d("zzw", "report userId: " + r.reportId);
+                    QueryReport report = new QueryReport();
+                    report.id = r.reportId;
+                    APIClient.apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {
+                        @Override
+                        public void callBack(ResponseModel<String> response) {
+                            String reportUrl = response._data;
+                            Logger.d("zzw", "report Url : " + reportUrl);
+                            if (reportUrl != null) {
+                                Intent i = new Intent(title.getContext(), WebviewActivity.class);
+                                i.putExtra(CONST.WEB_URL, reportUrl);
+                                title.getContext().startActivity(i);
+                            }
+                        }
+                    });
+                }
+            });
             tv = (TextView) view.findViewById(R.id.tv_text);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
             tv.setOnClickListener(new View.OnClickListener() {

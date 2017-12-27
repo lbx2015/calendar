@@ -18,7 +18,7 @@ public class TaskModel {
     // 提醒内容
 //    @Column(name = "content", length = 255)
     @SerializedName("content")
-    public String title;
+    public String content;
 
     // 是否重要（0-不重要；1-重要）
 //    @Column(name = "is_important", length = 1)
@@ -48,13 +48,13 @@ public class TaskModel {
     public int deleteState;
 
     public TaskModel(Task task) {
-        this.todoId = task.todo_Id;
+        this.todoId = task.todoId;
         this.userId = task.userId;
-        this.title = task.title;
+        this.content = task.content;
         this.isImportant = task.isImportant;
         this.isOpen = task.isOpen;
         this.strDate = task.strDate;
-        this.appCreatedTime = task.appCreatedTime;
+        this.appCreatedTime = task.createdTime;
         this.isComplete = task.isComplete;
         this.completeDate = task.completeDate;
         this.deleteState = task.deleteState;

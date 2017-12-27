@@ -67,17 +67,17 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
         if (response == null || response.body() == null) {
             Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_server), Toast.LENGTH_SHORT).show();
         } else if (response.body().code == CodeDef.EMP.LOGIN_TIME_OUT) {
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_login_time_out) + response.body().code, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_login_time_out) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else if (response.body().code == CodeDef.EMP.USER_PASS_ERR) {
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_password) + response.body().code, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_password) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else if (response.body().code == CodeDef.EMP.CHECK_CODE_ERR) {
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.check_code_password) + response.body().code, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.check_code_password) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else if (response.body().code == CodeDef.EMP.CHECK_CODE_TIME_OUT) {
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.check_code_time_out) + response.body().code, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.check_code_time_out) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else if ((response.body().code == CodeDef.EMP.DATA_NOT_FOUND)) {
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.data_not_found) + response.body().code, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.data_not_found) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else if (response.body().code != CodeDef.SUCCESS) {
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_server) + response.body().code, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_server) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else {
             callBack(response.body());
         }

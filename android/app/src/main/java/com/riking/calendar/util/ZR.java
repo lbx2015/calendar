@@ -137,19 +137,193 @@ public class ZR {
         GlideApp.with(v.getContext()).load(imageUrl).centerCrop().placeholder(R.drawable.banner).into(v);
     }
 
-    public static void setUserName(TextView userNameTv, String name, int grand) {
-        userNameTv.setText(name);
-        if (grand == 3) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
-        } else if (grand == 4) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v4, 0);
-        } else if (grand == 5) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
-        } else {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
+    public static void setImage(ImageView v, @DrawableRes int imageUrl) {
+        GlideApp.with(v.getContext()).load(imageUrl).centerCrop().into(v);
     }
 
+    public static void setUserName(TextView userNameTv, String name, int grand) {
+        userNameTv.setText(name);
+        @DrawableRes int drawable;
+        if (grand == 1) {
+            drawable = R.drawable.com_icon_grade_v1;
+        } else if (grand == 2) {
+            drawable = R.drawable.com_icon_grade_v2;
+        } else if (grand == 3) {
+            drawable = R.drawable.com_icon_grade_v3;
+        } else if (grand == 4) {
+            drawable = R.drawable.com_icon_grade_v4;
+        } else if (grand == 5) {
+            drawable = R.drawable.com_icon_grade_v5;
+        } else {
+            drawable = 0;
+        }
+        userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+    }
+
+    public static void setReportName(TextView reportNameTv, String name, int frequency, String reportBatch) {
+        reportNameTv.setText(name);
+        @DrawableRes int drawable = 0;
+        if (StringUtil.isEmpty(reportBatch)) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (reportBatch.equals("0")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month0;
+                    break;
+                }
+                //季报
+                case 4: {
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (reportBatch.equals("1")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month1;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season1;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+
+        } else if (reportBatch.equals("2")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month2;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season2;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (reportBatch.equals("3")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month3;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season3;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else {
+            drawable = R.drawable.com_formlabel_icon_monthother;
+        }
+
+        reportNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+    }
 
     public static void showPersonInviteStatus(View followButton, TextView followTv, int isInvite) {
         if (isInvite == 0) {

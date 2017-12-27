@@ -34,9 +34,7 @@
             android:drawablePadding="5dp"
             android:text="周云丽"
             android:textColor="@color/color_333333"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toTopOf="@+id/answer_summary"
-            app:layout_constraintStart_toEndOf="@+id/user_icon" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/summary"
@@ -44,9 +42,7 @@
             android:layout_height="wrap_content"
             android:text="专注金融 专注服务"
             android:textColor="@color/color_999999"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@id/divider"
-            app:layout_constraintStart_toStartOf="@+id/user_name" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <FrameLayout

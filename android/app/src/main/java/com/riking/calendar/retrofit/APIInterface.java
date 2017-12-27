@@ -31,6 +31,7 @@ import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
@@ -56,6 +57,7 @@ import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
+import com.riking.calendar.realm.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,7 +172,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> synchronousReminds(@Body List<ReminderModel> reminderModels);
 
     @POST("synchronous/synchronousTodos")
-    Call<ResponseModel<String>> synchronousTasks(@Body List<TaskModel> tasks);
+    Call<ResponseModel<String>> synchronousTasks(@Body List<Todo> tasks);
 
     @POST("common/getappVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
@@ -417,4 +419,11 @@ public interface APIInterface {
 
     @POST("userContacts/contactsInvite")
     Call<ResponseModel<String>> contactsInvite(@Body UserParams params);
+
+    //完成报表/也可以取消完成
+    @POST("report/complete")
+    Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
+
+    @POST("todo/save")
+    Call<ResponseModel<String>> saveTodo(@Body Task params);
 }

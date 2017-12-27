@@ -35,6 +35,7 @@ import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
@@ -168,11 +169,11 @@ public class APIClient {
         final Realm realm = Realm.getDefaultInstance();
         //upload pending tasks
         final RealmResults<Task> tasks = realm.where(Task.class).equalTo("syncStatus", 1).findAll();
-        final List<TaskModel> models = new ArrayList<>();
+        final List<Todo> models = new ArrayList<>();
 
         Logger.d("zzw", "found padding tasks size " + tasks.size());
         for (Task t : tasks) {
-            models.add(new TaskModel(t));
+            models.add(t.getTodo());
         }
 
         apiInterface.synchronousTasks(models).enqueue(new ZCallBack<ResponseModel<String>>() {
@@ -207,10 +208,10 @@ public class APIClient {
         if (!task.isValid()) {
             return;
         }
-        final ArrayList<TaskModel> tasks = new ArrayList<>(1);
-        TaskModel t = new TaskModel(task);
+        final ArrayList<Todo> tasks = new ArrayList<>(1);
+        Todo t = task.getTodo();
         if (operationType == CONST.DELETE) {
-            t.deleteState = 1;
+            t.deleteFlag = 1;
         }
 
         tasks.add(t);
@@ -223,7 +224,7 @@ public class APIClient {
                     public void execute(Realm realm) {
                         if (operationType == CONST.DELETE) {
                             if (failed) {
-                                Logger.d("zzw", "set delete State 1 of " + task.title);
+                                Logger.d("zzw", "set delete State 1 of " + task.content);
                                 task.deleteState = 1;
                                 task.syncStatus = 1;
                             } else {
@@ -314,7 +315,7 @@ public class APIClient {
             SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
             AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(MyApplication.APP, ReminderService.class);
-            intent.putExtra(CONST.REMINDER_TITLE, task.title);
+            intent.putExtra(CONST.REMINDER_TITLE, task.content);
             PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, task.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             try {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, sdf.parse(task.strDate).getTime(), pendingIntent);
@@ -413,7 +414,7 @@ public class APIClient {
                             remindIds.add(r.id);
                         }
                         for (Task t : synchedTasks) {
-                            taskIds.add(t.todo_Id);
+                            taskIds.add(t.todoId);
                         }
 
                         List<ReminderModel> reminders = response._data.remind;
@@ -439,9 +440,9 @@ public class APIClient {
                         if (tasks != null) {
                             for (TaskModel m : tasks) {
                                 Task t = new Task(m);
-                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todo_Id).findFirst().requestCode;
+                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todoId).findFirst().requestCode;
                                 t.requestCode = requestCode;
-                                taskIds.remove(t.todo_Id);
+                                taskIds.remove(t.todoId);
                                 realm.copyToRealmOrUpdate(t);
                                 addAlarm4Task(t);
                             }
@@ -753,5 +754,13 @@ public class APIClient {
 
     public static void inviteContact(UserParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.contactsInvite(params).enqueue(c);
+    }
+
+    public static void completeReport(RCompletedRelParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.completeReport(params).enqueue(c);
+    }
+
+    public static void saveTodo( List<Todo> params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.synchronousTasks(params).enqueue(c);
     }
 }

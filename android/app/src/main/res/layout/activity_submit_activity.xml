@@ -28,13 +28,12 @@
             android:textSize="@dimen/action_bar_text_size" />
 
         <TextView
-            android:id="@+id/next_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:enabled="false"
+            android:onClick="onClickPublish"
             android:text="发布"
-            android:textColor="@color/color_cccccc"
+            android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
     </FrameLayout>
 
