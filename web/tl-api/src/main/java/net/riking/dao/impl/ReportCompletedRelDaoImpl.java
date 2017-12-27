@@ -104,7 +104,9 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		Connection connection = session.connection();
 		String sql = "select ";
 		sql += "a.report_id reportId, b.code reportCode, b.title reportName, ";
-		//sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequencyType, ";
+		// sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t
+		// where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency)
+		// frequencyType, ";
 		sql += "c.frequency, b.report_batch reportBatch, ";
 		sql += "SUBSTR(a.submit_start_time, 1, 8) submitStartTime, SUBSTR(a.submit_end_time, 1, 8) submitEndTime, ";
 		sql += "a.is_completed isCompleted, d.remind_id remindId, d.content remindContent ";
@@ -125,13 +127,45 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 				data.setReportId(rs.getString("reportId"));
 				data.setReportCode(rs.getString("reportCode"));
 				data.setReportName(rs.getString("reportName"));
-				data.setFrequency(rs.getString("frequency"));
+				data.setFrequency(rs.getInt("frequency"));
 				data.setReportBatch(rs.getString("reportBatch") == null ? "" : rs.getString("reportBatch"));
 				data.setSubmitStartTime(rs.getString("submitStartTime"));
 				data.setSubmitEndTime(rs.getString("submitEndTime"));
 				data.setIsCompleted(rs.getString("isCompleted"));
 				data.setRemindId(rs.getString("remindId"));
 				data.setRemindContent(rs.getString("remindContent"));
+				list.add(data);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	@Override
+	public List<CurrentReportTaskResp> findUsersByCurrentDayTasks(String currentDate) {
+		// TODO Auto-generated method stub
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "select ";
+		sql += "a.report_id reportId, a.submit_start_time submitStartTime, a.submit_end_time submitEndTime, "; 
+		sql += "a.user_id userId, c.phone_device_id phoneDeviceId from t_report_completed_rel a ";
+		sql += "inner join t_app_user b on a.user_id = b.id inner join t_appuser_detail c on c.id = b.id "; 
+		sql += "where b.is_deleted=1 and b.enabled=1 and c.phone_device_id <> '' and ?1 BETWEEN a.submit_start_time ";
+		sql += "and a.submit_end_time and a.is_completed=0 group by a.user_id ";
+		PreparedStatement pstmt = null;
+		List<CurrentReportTaskResp> list = new ArrayList<CurrentReportTaskResp>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareStatement(sql);
+			pstmt.setString(1, currentDate);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				CurrentReportTaskResp data = new CurrentReportTaskResp();
+				data.setReportId(rs.getString("reportId"));
+				data.setSubmitStartTime(rs.getString("submitStartTime"));
+				data.setSubmitEndTime(rs.getString("submitEndTime"));
+				data.setIsCompleted(rs.getString("userId"));
+				data.setRemindId(rs.getString("phoneDeviceId"));
 				list.add(data);
 			}
 		} catch (SQLException e) {

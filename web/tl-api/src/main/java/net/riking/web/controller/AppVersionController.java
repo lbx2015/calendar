@@ -1,5 +1,6 @@
 package net.riking.web.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -54,11 +55,47 @@ public class AppVersionController {
 	@ApiOperation(value = "添加或者更新版本信息", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Resp save_(@RequestBody AppVersion webVersion) {
-		if (StringUtils.isEmpty(webVersion.getId())) {
-			webVersion.setIsDeleted(1);
+		if (webVersion.getOpt().equals("add")) {
+			// 校验是否是存在该版本
+			boolean flag = checkLastVersion(webVersion);
+			if (!flag) {
+				return new Resp("-1", CodeDef.ERROR);
+			}
+			if (StringUtils.isEmpty(webVersion.getId())) {
+				webVersion.setIsDeleted(1);
+			}
+		} else {
+			// 存在获取id
+			AppVersion appVersion = appVersionRepo.findByAppVersionNO(webVersion.getVersionNo());
+			webVersion.setId(appVersion.getId());
+			AppVersion save = appVersionRepo.save(webVersion);
+			return new Resp(save, CodeDef.SUCCESS);
 		}
 		AppVersion save = appVersionRepo.save(webVersion);
 		return new Resp(save, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * 校验是否是最新的版本号
+	 * @param webVersion
+	 */
+	private boolean checkLastVersion(AppVersion webVersion) {
+		boolean flag = true;
+		// 获取前台的版本号
+		String versionNO = webVersion.getVersionNo();
+		// 获取版本类型
+		Integer clientType = webVersion.getClientType();
+		// 根据客户端类型获取有效的版本信息
+		List<AppVersion> appVersions = appVersionRepo.findMaxVersion(clientType);
+		for (AppVersion appVersion : appVersions) {
+			if (appVersion.getVersionNo().equals(versionNO)) {
+				flag = false;
+				break;
+			} else {
+				flag = true;
+			}
+		}
+		return flag;
 	}
 
 	@ApiOperation(value = "批量删除版本信息", notes = "POST")

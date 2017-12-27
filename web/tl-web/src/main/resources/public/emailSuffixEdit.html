@@ -31,9 +31,15 @@
 
     //var id = window.location.hash.replace("#", "");
     var id = View.getQStr('id');
-
+    var flag = View.getQStr('flag');
     function editOnBind(attrs, param) {
         tmpl = this;
+        tmpl.onFinish(function(data) {
+			if(flag == "edit"){
+				$("#edit_base input[name='emailSuffix']").attr("disabled",true);
+			}
+			View.resetUi();
+		});
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
@@ -46,6 +52,10 @@
                     }
                     //默认展开分组 ，不配置默认展开第一个分组
                     data.showGroup = "base";
+                    if(flag == "view"){
+                    	data.editable = 2;//不可编辑
+                    	$("#submit").hide();
+                    }
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
                 }, function() {
@@ -61,19 +71,40 @@
     }
     //编辑保存
     function edit() {
-        var emailSuffix = Utils.formToObj("edit");
-        var url = Const.apiUrl + "/emailSuffix/addOrUpdate";
-        View.post(url, emailSuffix, function(resp) {
-            TmplUtils.showMsgSuccess('编辑成功');
-            parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
-        	    + "&pcount=" + parent.TmplUtils.pageSize 
-                + parent.TmplUtils.searchParam);
-            
-            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            parent.layer.close(index);
-        }, function(code) {
-            TmplUtils.showMsgFail('编辑失败');
-        });
+    	if (TmplUtils.check('edit')) {
+    		if(!checkEmailSuffix()){
+				return false;
+			}
+    		 var emailSuffix = Utils.formToObj("edit");
+    	        emailSuffix.opt = flag;
+    	        var url = Const.apiUrl + "/emailSuffix/addOrUpdate";
+    	        View.post(url, emailSuffix, function(resp) {
+    	            TmplUtils.showMsgSuccess('编辑成功');
+    	            parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
+    	        	    + "&pcount=" + parent.TmplUtils.pageSize 
+    	                + parent.TmplUtils.searchParam);
+    	            
+    	            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    	            parent.layer.close(index);
+    	        }, function(code) {
+    	            TmplUtils.showMsgFail('编辑失败');
+    	        });
+    	}
+       
+    }
+  //校验邮箱后缀
+    function checkEmailSuffix() {
+    	//获取邮箱后缀
+		var emailSuffix = $("#edit_base input[name='emailSuffix']").val();
+		if(emailSuffix){
+			//判断当前版本编号首字母是否大写的V并且//V后的格式是否x.x.x的格式
+			var reg=/^(\d+)\.(\d+)$/g; //匹配邮箱地址的正则表达式    
+	        if(reg.test(emailSuffix)){
+	        	return true;
+	        }
+		}
+		TmplUtils.showMsgFail("对不起，格式不正确!");
+		return false;
     }
 </script>
 

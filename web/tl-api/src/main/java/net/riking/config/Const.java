@@ -51,7 +51,7 @@ public class Const {
 
 	public static final String TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
 
-	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/Inquiry.html";
+	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/inquiry.html";
 
 	/* 验证码有效时间 */
 	public static final String VALID_ = "VALID_";
@@ -198,4 +198,29 @@ public class Const {
 
 	public static final int OPJ_TYPE_QUEST = 5;// 5-问题
 	/** --------------------搜索栏操作对象状态 end-------------------------- */
+
+	/** -------------------消息类型 begin-------------------------- */
+	public static final int MQ_SYS_INFO = 0;//系统信息
+	
+	public static final int MQ_OPT_ANSWERINVITE = 1;// 邀请回答的邀请
+
+	public static final int MQ_OPT_QA_AGREEORCOLLECT = 2;// 问题回答点赞或收藏
+
+	public static final int MQ_OPT_NEW_COLLECT = 3;// 资讯的收藏
+
+	public static final int MQ_OPT_SHIELD_QUEST = 4;// 问题的屏蔽
+
+	public static final int MQ_OPT_FOLLOW = 5;// 问题，话题，用户的关注
+
+	public static final int MQ_OPT_COMMENT_AGREE = 6;// 评论点赞
+
+	public static final int MQ_OPT_CONTACTS_INVITE = 7;// 通讯录的邀请
+
+	public static final int MQ_OPT_QANSWER_COMMENT = 8;// 问题回答的评论
+
+	public static final int MQ_OPT_NEWS_COMMENT = 9;// 资讯的评论发布
+
+	public static final int MQ_OPT_COMMENT_REPLY = 10;// 评论的回复和回复的回复
+
+	/** --------------------消息类型 end-------------------------- */
 }

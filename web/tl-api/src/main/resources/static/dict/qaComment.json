@@ -7,6 +7,14 @@
 		}
 	],
 	"attrs": [
+	{
+			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
 		{
 			"prop": "userId",
 			"alias": "发表评论的用户id",

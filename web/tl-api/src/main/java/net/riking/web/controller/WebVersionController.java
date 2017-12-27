@@ -1,5 +1,6 @@
 package net.riking.web.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,11 +54,24 @@ public class WebVersionController {
 	@ApiOperation(value = "添加或者更新Web版本信息", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Resp save_(@RequestBody WebVersion webVersion) {
-		if (StringUtils.isEmpty(webVersion.getId())) {
-			webVersion.setIsDeleted(1);
+		if (webVersion.getOpt().equals("add")) {
+			// 校验是否是存在该版本
+			boolean flag = checkLastVersion(webVersion);
+			if (!flag) {
+				return new Resp("-1", CodeDef.ERROR);
+			}
+			if (StringUtils.isEmpty(webVersion.getId())) {
+				webVersion.setIsDeleted(1);
+			}
+			WebVersion save = webVersionRepo.save(webVersion);
+			return new Resp(save, CodeDef.SUCCESS);
+		} else {
+			WebVersion version = webVersionRepo.findOneByVersionNO(webVersion.getVersionNo());
+			webVersion.setId(version.getId());
+			WebVersion save = webVersionRepo.save(webVersion);
+			return new Resp(save, CodeDef.SUCCESS);
 		}
-		WebVersion save = webVersionRepo.save(webVersion);
-		return new Resp(save, CodeDef.SUCCESS);
+
 	}
 
 	@ApiOperation(value = "批量删除web版本信息", notes = "POST")
@@ -73,6 +87,27 @@ public class WebVersionController {
 		} else {
 			return new Resp().setCode(CodeDef.ERROR);
 		}
+	}
+
+	/**
+	 * 校验是否是最新的web版本号
+	 * @param webVersion
+	 */
+	private boolean checkLastVersion(WebVersion version) {
+		boolean flag = true;
+		// 获取前台的版本号
+		String versionNO = version.getVersionNo();
+		// 获取客户端页面有效的版本信息
+		List<WebVersion> webVersions = webVersionRepo.findMaxVersion();
+		for (WebVersion webVersion : webVersions) {
+			if (webVersion.getVersionNo().equals(versionNO)) {
+				flag = false;
+				break;
+			} else {
+				flag = true;
+			}
+		}
+		return flag;
 	}
 
 }

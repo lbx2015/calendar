@@ -45,6 +45,9 @@ public class AppUserResult extends BaseEntity {
 	@Comment("是否已邀请 0-未邀请，1-已邀请")
 	private Integer isInvited;
 
+	@Comment("手机号")
+	private String phone;
+
 	public AppUserResult() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -69,6 +72,14 @@ public class AppUserResult extends BaseEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getDescript() {

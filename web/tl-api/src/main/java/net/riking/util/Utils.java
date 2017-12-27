@@ -11,7 +11,6 @@ import java.util.Set;
 
 import net.riking.config.Const;
 import net.riking.entity.MyDateFormat;
-import net.riking.entity.model.AppUser;
 import net.riking.entity.model.SysDays;
 
 public class Utils {
@@ -25,8 +24,7 @@ public class Utils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static <T extends Object> Map<String, Object> objProps2Map(T obj,
-			boolean deep) {
+	public static <T extends Object> Map<String, Object> objProps2Map(T obj, boolean deep) {
 		Map<String, Object> map = null;
 		if (deep) {
 			map = objPropsDeep2Map(obj);
@@ -39,10 +37,9 @@ public class Utils {
 		map.put(id, removeValue);
 		return map;
 	}
-	
-	
+
 	/**
-	 * 判断是否是java原生类   true - java类，false - 自己定义的类
+	 * 判断是否是java原生类 true - java类，false - 自己定义的类
 	 * @used TODO
 	 * @param clz
 	 * @return
@@ -58,8 +55,7 @@ public class Utils {
 	 * @param obj
 	 * @param map
 	 */
-	private static <T extends Object> Map<String, Object> objPropsDeep2Map(
-			T obj) {
+	private static <T extends Object> Map<String, Object> objPropsDeep2Map(T obj) {
 		Map<String, Object> map = new HashMap<>();
 		if (null == obj) {
 			return map;
@@ -72,18 +68,19 @@ public class Utils {
 					Field field = fields[i];
 					field.setAccessible(true);
 					String name = field.getName();
-					if(name.equals("serialVersionUID")){
+					if (name.equals("serialVersionUID")) {
 						continue;
 					}
 					Object value = field.get(obj);
 					Class<?> type = field.getType();
 					if (isJavaClass(type)) {
 						if (null != value) {
-							if(type == Date.class){
-								String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
+							if (type == Date.class) {
+								String pattern = null != field.getAnnotation(MyDateFormat.class)
+										? field.getAnnotation(MyDateFormat.class).pattern() : "yyyyMMddHHmmssSSS";
 								SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-								map.put(name, dateFormat.format((Date)value));
-							}else{
+								map.put(name, dateFormat.format((Date) value));
+							} else {
 								map.put(name, value);
 							}
 						}
@@ -118,17 +115,18 @@ public class Utils {
 				Field field = fields[i];
 				field.setAccessible(true);
 				String name = field.getName();
-				if(name.equals("serialVersionUID")){
+				if (name.equals("serialVersionUID")) {
 					continue;
 				}
 				Class<?> type = field.getType();
 				Object value = field.get(obj);
 				if (null != value) {
-					if(type == Date.class){
-						String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
+					if (type == Date.class) {
+						String pattern = null != field.getAnnotation(MyDateFormat.class)
+								? field.getAnnotation(MyDateFormat.class).pattern() : "yyyyMMddHHmmssSSS";
 						SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-						map.put(name, dateFormat.format((Date)value));
-					}else{
+						map.put(name, dateFormat.format((Date) value));
+					} else {
 						map.put(name, value);
 					}
 				}
@@ -147,8 +145,7 @@ public class Utils {
 	 * @param clazz
 	 * @return
 	 */
-	public static <T extends Object> T map2Obj(Map<String, Object> map,
-			Class<T> clazz) {
+	public static <T extends Object> T map2Obj(Map<String, Object> map, Class<T> clazz) {
 		T obj = null;
 		if (null == map || map.size() == 0) {
 			return obj;
@@ -165,7 +162,8 @@ public class Utils {
 				for (Field field : list) {
 					if (field.getName().equals(fieldName)) {
 						if (field.getType() == Date.class) {
-							String pattern =null!=field.getAnnotation(MyDateFormat.class) ? field.getAnnotation(MyDateFormat.class).pattern(): "yyyyMMddHHmmssSSS";
+							String pattern = null != field.getAnnotation(MyDateFormat.class)
+									? field.getAnnotation(MyDateFormat.class).pattern() : "yyyyMMddHHmmssSSS";
 							SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 							map.put(fieldName, dateFormat.parse((String) map.get(fieldName)));
 						}
@@ -206,12 +204,38 @@ public class Utils {
 		}
 		return list;
 	}
-	
-	public static String getWorkday(String afterDates){
-		if(RedisUtil.getInstall().getObject(Const.SYS_DAY + afterDates) != null){
-			SysDays sysDays = (SysDays)RedisUtil.getInstall().getObject(Const.SYS_DAY + afterDates);
-			//如果是节假日，就延后一天，直到返回非节假日
-			if(sysDays.getIsHoliday() == 1){
+
+	/**
+	 * fromObj的值赋在toObj上
+	 * @param fromObj
+	 * @param toObj
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	public static Object fromObjToObjValue(Object fromObj, Object toObj)
+			throws IllegalArgumentException, IllegalAccessException {
+		Field[] fromObjfields = fromObj.getClass().getDeclaredFields();
+		for (Field fromObjfield : fromObjfields) {
+			fromObjfield.setAccessible(true);
+			Field[] toObjfields = toObj.getClass().getDeclaredFields();
+			for (Field toObjfield : toObjfields) {
+				toObjfield.setAccessible(true);
+				if (fromObjfield.getName().equals(toObjfield.getName())) {
+					if (null != fromObjfield.get(fromObj)) {
+						toObjfield.set(toObj, fromObjfield.get(fromObj));
+					}
+				}
+			}
+		}
+		return toObj;
+	}
+
+	public static String getWorkday(String afterDates) {
+		if (RedisUtil.getInstall().getObject(Const.SYS_DAY + afterDates) != null) {
+			SysDays sysDays = (SysDays) RedisUtil.getInstall().getObject(Const.SYS_DAY + afterDates);
+			// 如果是节假日，就延后一天，直到返回非节假日
+			if (sysDays.getIsHoliday() == 1) {
 				Date date = DateUtils.parseDate(afterDates);
 				afterDates = DateUtils.getDateByDays(date, 1);
 				return getWorkday(afterDates);
@@ -219,14 +243,14 @@ public class Utils {
 		}
 		return afterDates;
 	}
-	
+
 	public static void main(String[] args) {
-//		AppUser appUser = new AppUser();
-//		appUser.setCreatedTime(new Date());
-//		
-//		Map<String, Object> map = Utils.objProps2Map(appUser, true);
-//		System.err.println(map);
-		
+		// AppUser appUser = new AppUser();
+		// appUser.setCreatedTime(new Date());
+		//
+		// Map<String, Object> map = Utils.objProps2Map(appUser, true);
+		// System.err.println(map);
+
 		String dates = Utils.getWorkday("20171001");
 		System.out.println(dates);
 	}

@@ -64,4 +64,5 @@ public interface QAnswerRelRepo extends JpaRepository<QAnswerRel, String>, JpaSp
 	 */
 	@Query("select count(*) from QAnswerRel where qaId = ?1 and dataType = ?2")
 	Integer agreeCount(String qaId, Integer dataType);
+
 }

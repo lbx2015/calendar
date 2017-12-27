@@ -8,10 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.riking.config.Const;
 import net.riking.dao.TopicDao;
+import net.riking.dao.repo.TQuestionRelRepo;
+import net.riking.dao.repo.TopicRelRepo;
+import net.riking.entity.model.MQOptCommon;
+import net.riking.entity.model.TQuestionRel;
+import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.TopicResult;
+import net.riking.entity.params.HomeParams;
 import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
+import net.riking.util.Utils;
 
 @Service("topicService")
 @Transactional
@@ -21,6 +29,12 @@ public class TopicServiceImpl implements TopicService {
 	@Autowired
 	TopicDao topicDao;
 
+	@Autowired
+	TQuestionRelRepo tQuestionRelRepo;
+
+	@Autowired
+	TopicRelRepo topicRelRepo;
+
 	@Override
 	public List<TopicResult> findTopicOfInterest(String userId, String topicIds, int begin, int end) {
 		return topicDao.findTopicOfInterest(userId, topicIds, begin, end);
@@ -29,6 +43,62 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public List<TopicResult> userFollowTopic(String userId, int begin, int pageCount) {
 		return topicDao.userFollowTopic(userId, begin, pageCount);
+	}
+
+	@Override
+	public void shield(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException {
+		HomeParams homeParams = new HomeParams();
+		homeParams = (HomeParams) Utils.fromObjToObjValue(common, homeParams);
+		switch (homeParams.getObjType()) {
+			// 问题
+			case Const.OBJ_TYPE_1:
+				if (Const.EFFECTIVE == homeParams.getEnabled()) {
+					TQuestionRel rels = tQuestionRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(),
+							Const.OBJ_OPT_SHIELD);// 3-屏蔽
+					if (null == rels) {
+						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
+						TQuestionRel tQuestionRel = new TQuestionRel();
+						tQuestionRel.setUserId(homeParams.getUserId());
+						tQuestionRel.setTqId(homeParams.getObjId());
+						tQuestionRel.setDataType(Const.OBJ_OPT_SHIELD);// 0-关注 3-屏蔽
+						tQuestionRelRepo.save(tQuestionRel);
+					}
+				} else if (Const.INVALID == homeParams.getEnabled()) {
+					// 如果传过来是取消屏蔽，把之前一条记录物理删除
+					tQuestionRelRepo.deleteByUIdAndTqId(homeParams.getUserId(), homeParams.getObjId(),
+							Const.OBJ_OPT_SHIELD);// 0-关注3-屏蔽
+				} else {
+					logger.error("参数异常：enabled=" + homeParams.getEnabled());
+					throw new RuntimeException("参数异常：enabled=" + homeParams.getEnabled());
+				}
+				break;
+			// 话题
+			case Const.OBJ_TYPE_2:
+				if (Const.EFFECTIVE == homeParams.getEnabled()) {
+					// TODO 确认是否有话题屏蔽
+					TopicRel rels = topicRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(),
+							Const.OBJ_OPT_SHIELD);// 3-屏蔽
+					if (null == rels) {
+						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
+						TopicRel topicRel = new TopicRel();
+						topicRel.setUserId(homeParams.getUserId());
+						topicRel.setTopicId(homeParams.getObjId());
+						topicRel.setDataType(Const.OBJ_OPT_SHIELD);// 0-关注；3-屏蔽
+						topicRelRepo.save(topicRel);
+					}
+				} else if (Const.INVALID == homeParams.getEnabled()) {
+					// 如果传过来是取消屏蔽，把之前一条记录物理删除
+					topicRelRepo.deleteByUIdAndTopId(homeParams.getUserId(), homeParams.getObjId(),
+							Const.OBJ_OPT_SHIELD);// 0-关注3-屏蔽
+				} else {
+					logger.error("参数异常：enabled=" + homeParams.getEnabled());
+					throw new RuntimeException("参数异常：enabled=" + homeParams.getEnabled());
+				}
+				break;
+			default:
+				logger.error("对象类型异常，objType=" + homeParams.getObjType());
+				throw new RuntimeException("对象类型异常，objType=" + homeParams.getObjType());
+		}
 	}
 
 }

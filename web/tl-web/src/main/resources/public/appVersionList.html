@@ -7,40 +7,42 @@
 </head>
 
 <body class="iframeBody">
-	<div class="content">
-		<div class="layui-elem-field actionBar">
-			<div class="layui-btn-group absolute">
-				<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
-					<i class="layui-icon">&#xe608;</i>
-					添加
-				</button>
-				<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
-					<i class="layui-icon">&#xe640;</i>
-					批量删除
-				</button>
-				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
-					<i class="layui-icon">&#xe6b2;</i>
-					批量审核
-				</button> --> 
+	<div class="scrollbar">
+		<div class="content">
+			<div class="layui-elem-field actionBar">
+				<div class="layui-btn-group absolute">
+					<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
+						<i class="layui-icon">&#xe608;</i>
+						添加
+					</button>
+					<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+						<i class="layui-icon">&#xe640;</i>
+						批量删除
+					</button>
+					<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
+						<i class="layui-icon">&#xe6b2;</i>
+						批量审核
+					</button> --> 
+				</div>
+				<div class="_tmpl" data-url="filterCriteria.html" data-attr="appVersion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+				<div class="clear"></div>
 			</div>
-			<div class="_tmpl" data-url="filterCriteria.html" data-attr="appVersion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
-		</div>
-		<div class="clear"></div>
-		<div class="tableBar">
-			<div class="tableContent layui-form">
-				<div class="_tmpl" data-url="table.html" id="table" data-attr="appVersion.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+			<div class="tableBar">
+				<div class="tableContent layui-form">
+					<div class="_tmpl" data-url="table.html" id="table" data-attr="appVersion.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+				</div>
 			</div>
+			<div style="clear: both"></div>
+			<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 		</div>
-		<div style="clear: both"></div>
-		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
 	$(function() {
 		$("#add-data").click(function() {
-			var url = "appVersionEdit.html";
+			var url = "appVersionEdit.html?flag=add";
 			var title = "添加数据";
 			View.openDialog(url, title);
 		});
@@ -187,7 +189,7 @@
 
 	//弹出添加iframe
 	function edit(id) {
-		var url = "appVersionEdit.html?id=" + id;
+		var url = "appVersionEdit.html?id=" + id+"&flag=edit";
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}

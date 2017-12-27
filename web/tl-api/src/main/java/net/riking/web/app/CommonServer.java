@@ -37,8 +37,6 @@ import net.riking.entity.model.Email;
 import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.Industry;
 import net.riking.entity.model.Recommend;
-import net.riking.entity.model.TQuestionRel;
-import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.AppVersionParams;
 import net.riking.entity.params.IndustryParams;
@@ -50,8 +48,10 @@ import net.riking.service.ReCommendService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
 import net.riking.util.EmailUtil;
+import net.riking.util.MQProduceUtil;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 公共模块
@@ -293,51 +293,11 @@ public class CommonServer {
 	@ApiOperation(value = "问题，话题，用户的关注", notes = "POST")
 	@RequestMapping(value = "/follow", method = RequestMethod.POST)
 	public AppResp follow_(@RequestBody TQuestionParams tQuestionParams) {
+		tQuestionParams.setMqOptType(Const.MQ_OPT_FOLLOW);
+		JSONObject jsonArray = JSONObject.fromObject(tQuestionParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		// 实时返回关注用户状态，具体操作放在mq里面操作
 		switch (tQuestionParams.getObjType()) {
-			// 问题关注
-			case Const.OBJ_TYPE_1:
-				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					TQuestionRel rels = tQuestionRelRepo.findByOne(tQuestionParams.getUserId(),
-							tQuestionParams.getAttentObjId(), 0);// 0-关注
-					if (null == rels) {
-						// 如果传过来的参数是关注，保存新的一条关注记录
-						TQuestionRel topQuestionRel = new TQuestionRel();
-						topQuestionRel.setUserId(tQuestionParams.getUserId());
-						topQuestionRel.setTqId(tQuestionParams.getAttentObjId());
-						topQuestionRel.setDataType(0);// 关注
-						tQuestionRelRepo.save(topQuestionRel);
-					}
-				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
-					// 如果传过来是取消关注，把之前一条记录物理删除
-					tQuestionRelRepo.deleteByUIdAndTqId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
-							0);// 0-关注 3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
-			// 话题关注
-			case Const.OBJ_TYPE_2:
-				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					TopicRel rels = topicRelRepo.findByOne(tQuestionParams.getUserId(),
-							tQuestionParams.getAttentObjId(), 0);// 0-关注
-					if (null == rels) {
-						// 如果传过来的参数是关注，保存新的一条关注记录
-						TopicRel topicRel = new TopicRel();
-						topicRel.setUserId(tQuestionParams.getUserId());
-						topicRel.setTopicId(tQuestionParams.getAttentObjId());
-						topicRel.setDataType(0);// 关注
-						topicRelRepo.save(topicRel);
-					}
-				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
-					// 如果传过来是取消关注，把之前一条记录物理删除
-					topicRelRepo.deleteByUIdAndTopId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(), 0);// 0-关注3-屏蔽
-
-				} else {
-					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			// 用户关注
 			case Const.OBJ_TYPE_3:
 				UserFollowRel userFollowRel = new UserFollowRel();
@@ -350,33 +310,12 @@ public class CommonServer {
 								tQuestionParams.getAttentObjId());
 						if (null == rels) {
 							// 更新对方关注表，互相关注
-							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
-									toUserFollowRel.getToUserId(), 2);// 2-互相关注
-							// 如果传过来的参数是关注，保存新的一条关注记录
-							userFollowRel.setUserId(tQuestionParams.getUserId());
-							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 							userFollowRel.setFollowStatus(2);// 互相关注
-							userFollowRelRepo.save(userFollowRel);
 						}
 					} else {
 						// 如果传过来的参数是关注，保存新的一条关注记录
-						userFollowRel.setUserId(tQuestionParams.getUserId());
-						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
 						userFollowRel.setFollowStatus(1);// 非互相关注
-						userFollowRelRepo.save(userFollowRel);
 					}
-				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
-					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
-							tQuestionParams.getUserId());// 对方的点赞记录
-					if (null != toUserFollowRel) {
-						userFollowRelRepo.updFollowStatus(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
-								1);// 0-非互相关注
-					}
-					// 如果传过来是取消关注，把之前一条记录物理删除
-					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
-				} else {
-					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 				}
 				return new AppResp(userFollowRel.getFollowStatus(), CodeDef.SUCCESS);
 			default:

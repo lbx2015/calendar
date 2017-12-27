@@ -114,7 +114,8 @@ public class AppUserServiceImpl implements AppUserService {
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + url;
+			String spath = new String(this.getClass().getResource("/").getPath().getBytes("iso-8859-1"), "UTF-8");
+			String path = spath + Const.TL_STATIC_PATH + url;
 			File dir = new File(path);
 			if (!dir.exists()) {
 				dir.mkdirs();
