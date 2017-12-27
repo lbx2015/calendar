@@ -48,7 +48,7 @@ public class TaskModel {
     public int deleteState;
 
     public TaskModel(Task task) {
-        this.todoId = task.todo_Id;
+        this.todoId = task.todoId;
         this.userId = task.userId;
         this.title = task.title;
         this.isImportant = task.isImportant;

@@ -1,8 +1,6 @@
 package com.riking.calendar.adapter;
 
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +110,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst().deleteFromRealm();
+                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().deleteFromRealm();
                         }
                     });
 

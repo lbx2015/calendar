@@ -23,7 +23,7 @@ public class Task extends RealmObject {
     @PrimaryKey
 //    @Id
 //    @Column(name = "todo_id", length = 17)
-    public String todo_Id;
+    public String todoId;
 
     // 用户Id
 //    @Column(name = "user_id", length = 32)
@@ -67,7 +67,7 @@ public class Task extends RealmObject {
     }
 
     public Task(TaskModel m) {
-        todo_Id = m.todoId;
+        todoId = m.todoId;
         userId = m.userId;
         title = m.title;
         isImportant = m.isImportant;

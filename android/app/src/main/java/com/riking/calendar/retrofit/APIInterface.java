@@ -31,6 +31,7 @@ import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
@@ -421,4 +422,7 @@ public interface APIInterface {
     //完成报表/也可以取消完成
     @POST("report/complete")
     Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
+
+    @POST("todo/save")
+    Call<ResponseModel<Todo>> saveTodo(@Body Todo params);
 }

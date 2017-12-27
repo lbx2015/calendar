@@ -95,7 +95,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(v.getContext(), EditTaskActivity.class);
-                    i.putExtra("task_id", r.todo_Id);
+                    i.putExtra("task_id", r.todoId);
                     i.putExtra("task_title", r.title);
                     i.putExtra("is_import", r.isImportant);
                     i.putExtra("is_remind", r.isOpen);
@@ -182,7 +182,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                                         public void execute(Realm realm) {
                                             Task t;
                                             if (completed) {
-                                                t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst();
+                                                t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst();
                                                 t.isComplete = 1;
                                                 t.completeDate = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(new Date());
                                             }
@@ -219,10 +219,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                                     public void execute(Realm realm) {
                                         if (task.isImportant == 1) {
                                             important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst().isImportant = 0;
+                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 0;
                                         } else {
                                             important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst().isImportant = 1;
+                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 1;
                                         }
                                     }
                                 });

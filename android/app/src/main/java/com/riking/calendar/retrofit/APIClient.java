@@ -35,6 +35,7 @@ import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
@@ -413,7 +414,7 @@ public class APIClient {
                             remindIds.add(r.id);
                         }
                         for (Task t : synchedTasks) {
-                            taskIds.add(t.todo_Id);
+                            taskIds.add(t.todoId);
                         }
 
                         List<ReminderModel> reminders = response._data.remind;
@@ -439,9 +440,9 @@ public class APIClient {
                         if (tasks != null) {
                             for (TaskModel m : tasks) {
                                 Task t = new Task(m);
-                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todo_Id).findFirst().requestCode;
+                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todoId).findFirst().requestCode;
                                 t.requestCode = requestCode;
-                                taskIds.remove(t.todo_Id);
+                                taskIds.remove(t.todoId);
                                 realm.copyToRealmOrUpdate(t);
                                 addAlarm4Task(t);
                             }
@@ -757,5 +758,9 @@ public class APIClient {
 
     public static void completeReport(RCompletedRelParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.completeReport(params).enqueue(c);
+    }
+
+    public static void saveTodo(Todo params, ZCallBack<ResponseModel<Todo>> c) {
+        apiInterface.saveTodo(params).enqueue(c);
     }
 }
