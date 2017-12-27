@@ -1,0 +1,96 @@
+{
+	"table": "T_APP_BANNER",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		},
+		{
+			"prop": "system",
+			"alias": "系统信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "title",
+			"alias": "横幅标题",
+			"desc": "横幅标题",
+			"type": "string",
+			"group": "base",
+			"query": "1",
+			"query_order": "1"
+		},
+		{
+			"prop": "bannerURL",
+			"alias": "横幅url",
+			"desc": "横幅url",
+			"type": "string",
+			"group": "base",
+			"verify":"required"
+		},
+		{
+			"prop": "relationURL",
+			"alias": "友情链接",
+			"desc": "友情链接",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "enabled",
+			"alias": "是否启用 0：未启用 1：启用",
+			"desc": "是否启用 0：未启用 1：启用",
+			"type": "enum",
+			"dict_key": "T_APP_BANNER.ENABLED",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "isAduit",
+			"alias": "是否审核 0：未审核 1：已审核 2：不通过",
+			"desc": "是否审核 0：未审核 1：已审核 2：不通过",
+			"type": "enum",
+			"dict_key": "T_APP_BANNER.ISADUIT",
+			"group": "base"
+		},
+		{
+			"prop": "createdBy",
+			"alias": "创建人ID",
+			"desc": "创建人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "createdTime",
+			"alias": "创建时间",
+			"desc": "创建时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "modifiedBy",
+			"alias": "修改人ID",
+			"desc": "修改人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "modifiedTime",
+			"alias": "最后修改时间",
+			"desc": "最后修改时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "isDeleted",
+			"alias": "是否删除",
+			"desc": "是否删除",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		}
+	]
+}

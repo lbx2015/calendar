@@ -24,7 +24,7 @@ public class AppUserDaoImpl implements AppUserDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
 	public List<AppUserDetail> findPhoneDeviceByBirthDay(String brithDay) {
 		// TODO Auto-generated method stub
@@ -32,7 +32,7 @@ public class AppUserDaoImpl implements AppUserDao {
 		Connection connection = session.connection();
 		String sql = "SELECT a.user_name userName, b.phone_device_id phoneDeviceId FROM t_app_user a ";
 		sql += "left join t_appuser_detail b on a.id = b.id ";
-		sql += "WHERE a.is_deleted = 1 and a.enabled = 1 and substring(b.birthday, 5, 4) = ?1 ";
+		sql += "WHERE a.is_deleted = 1 and a.enabled = 1 and substring(b.birthday, 5, 4) = ? ";
 		sql += "and b.phone_device_id <> '' ";
 		PreparedStatement pstmt = null;
 		List<AppUserDetail> list = new ArrayList<AppUserDetail>();
@@ -51,7 +51,6 @@ public class AppUserDaoImpl implements AppUserDao {
 		}
 		return list;
 	}
-
 
 	@Override
 	public List<AppUserResult> findUserMightKnow(String userId, String userIds, int begin, int end) {
