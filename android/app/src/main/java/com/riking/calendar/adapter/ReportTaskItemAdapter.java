@@ -81,8 +81,10 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
                 APIClient.completeReport(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
+                        r.isCompleted="0";
                         fragment.reportNotDoneTaskItemAdapter.appendStart(r);
                         ReportTaskItemAdapter.this.remmoveItem(r, position);
+                        fragment.checkEmpty();
                     }
                 });
             }

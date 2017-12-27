@@ -92,18 +92,18 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     public Date ealiestRemindHolidayDate;//holiday repeat reminders
     public ArrayList<String> workOnWeekendDates = new ArrayList<>();//work on saturday or sunday
     public ArrayList<String> notWorkOnWorkDates = new ArrayList<>();//not work on monday to friday
+    //    ReportOnlineAdapter reportOnlineAdapter;
+    public ReportTaskItemAdapter reportDoneTaskItemAdapter;
+    public NotDoneReportTaskItemAdapter reportNotDoneTaskItemAdapter;
     ViewPagerActivity a;
-    RecyclerView notDoneReportsRecyclerView;
-    RecyclerView taskRecyclerView;
-    RecyclerView reportRecyclerView;
+    public RecyclerView notDoneReportsRecyclerView;
+    public RecyclerView taskRecyclerView;
+    public RecyclerView reportRecyclerView;
     ReminderAdapter reminderAdapter;
     TaskAdapter taskAdapter;
     Realm realm;
     //current year month
     String yearMonth;
-    //    ReportOnlineAdapter reportOnlineAdapter;
-    public ReportTaskItemAdapter reportDoneTaskItemAdapter;
-    public NotDoneReportTaskItemAdapter reportNotDoneTaskItemAdapter;
     View v;
     Date currentDay;
     TimePickerDialog timePickerDialog;
@@ -599,16 +599,16 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     List<CurrentReportTaskResp> notDoneReportList = new ArrayList<>();
                     //separating done or not done report
                     for (CurrentReportTaskResp r : list) {
-                        if (r.isCompleted.equals("1")) {
-                            doneReportList.add(r);
-                        } else {
-                            notDoneReportList.add(r);
-                        }
+//                        if (r.isCompleted.equals("1")) {
+                        doneReportList.add(r);
+//                        } else {
+                        notDoneReportList.add(r);
+//                        }
                     }
 
                     swipeRefreshLayout.setRefreshing(false);
-                    reportDoneTaskItemAdapter = new ReportTaskItemAdapter(WorkFragment.this,doneReportList);
-                    reportNotDoneTaskItemAdapter = new NotDoneReportTaskItemAdapter(WorkFragment.this,notDoneReportList);
+                    reportDoneTaskItemAdapter = new ReportTaskItemAdapter(WorkFragment.this, doneReportList);
+                    reportNotDoneTaskItemAdapter = new NotDoneReportTaskItemAdapter(WorkFragment.this, notDoneReportList);
                     reportRecyclerView.setAdapter(reportDoneTaskItemAdapter);
                     //put the not done reports here  firstly. changed it later.
                     notDoneReportsRecyclerView.setAdapter(reportNotDoneTaskItemAdapter);
@@ -643,7 +643,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         }
     }
 
-    private void checkEmpty() {
+    public void checkEmpty() {
         byte isEmpty = 0;
         if ((notDoneReportsRecyclerView.getAdapter() == null || notDoneReportsRecyclerView.getAdapter().getItemCount() == 0)
                 && (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0)) {

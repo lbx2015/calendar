@@ -82,8 +82,10 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
                 APIClient.completeReport(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
+                        r.isCompleted = "1";
                         fragment.reportDoneTaskItemAdapter.appendStart(r);
                         NotDoneReportTaskItemAdapter.this.remmoveItem(r, position);
+                        fragment.checkEmpty();
                     }
                 });
             }

@@ -35,12 +35,13 @@ public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends Recycler
 
     public void appendStart(ItemBean itemBean) {
         mList.add(0, itemBean);
-        notifyItemInserted(0);
+        notifyDataSetChanged();
     }
 
     public void remmoveItem(ItemBean itemBean, int position) {
         mList.remove(itemBean);
         notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     @Override
