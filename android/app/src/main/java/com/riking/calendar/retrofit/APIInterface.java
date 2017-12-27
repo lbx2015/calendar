@@ -424,6 +424,4 @@ public interface APIInterface {
     @POST("report/complete")
     Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
 
-    @POST("todo/save")
-    Call<ResponseModel<String>> saveTodo(@Body Task params);
 }
