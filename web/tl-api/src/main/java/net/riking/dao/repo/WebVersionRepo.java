@@ -1,5 +1,6 @@
 package net.riking.dao.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -26,4 +27,10 @@ public interface WebVersionRepo extends JpaRepository<WebVersion, String>, JpaSp
 	@Modifying
 	@Query(" update WebVersion set isDeleted=0 where id in ?1 ")
 	int deleteById(Set<String> ids);
+
+	@Query(" from WebVersion where isDeleted=1 ")
+	List<WebVersion> findMaxVersion();
+
+	@Query(" from WebVersion where isDeleted=1 and versionNo=?1")
+	WebVersion findOneByVersionNO(String versionNo);
 }

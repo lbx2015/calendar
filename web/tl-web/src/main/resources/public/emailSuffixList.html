@@ -8,10 +8,11 @@
 </head>
 
 <body class="iframeBody">
+<div class="scrollbar">
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
-				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="delData()">
 					<i class="layui-icon">&#xe640;</i>
 					删除
 				</button>
@@ -36,12 +37,13 @@
 		<div style="clear: both"></div>
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 	</div>
+	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
     $(function() {
         $("#add-data").click(function() {
-            var url = "emailSuffixEdit.html";
+            var url = "emailSuffixEdit.html?flag=add";
             var title = "添加数据";
             View.openDialog(url, title);
         });
@@ -93,11 +95,36 @@
                 //是否有操作列
                 data.hasOperation = true;
                 //操作按钮
-                data.operations = [{
+               /*  data.operations = [{
                      "value": "修改",
                      "onclick": "edit",
                      "class": "iconfont icon-bianji"
-                 }];
+                 }]; */
+                 data.cellCount = 6;
+                 
+                data.tdBeforeFill = function(obj) {
+					if (obj['item']) {
+						if (obj.isOperColumn) {
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
+									+ "\""
+									+ obj.item.emailSuffix
+									+ "\""
+									+ ");'>查看</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
+									+ "\""
+									+ obj.item.emailSuffix
+									+ "\""
+									+ ");'>修改</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='del("
+									+ "\""
+									+ obj.item.emailSuffix
+									+ "\""
+									+ ");'>删除</button>";
+							
+						}
+					}
+					return obj.html;
+				}
                 //tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
                 
                 //表格显示列数
@@ -108,7 +135,7 @@
                 data.tdRightWidth = [ 30, 20, 50 ];*/
 
                 //操作栏的宽度
-                data.operationWidth = 5;
+                data.operationWidth = 10;
                 callback.call(_this, data);
                 if (TmplUtils.pageTmpl.refresh) {
                     TmplUtils.pageTmpl.refresh();
@@ -175,28 +202,14 @@
     }
     //弹出添加iframe
     function edit(id) {
-        var url = "emailSuffixEdit.html?id=" + id;
+        var url = "emailSuffixEdit.html?id=" + id+"&flag=edit";
         var title = "数据处理";
         View.openDialog(url, title);
     }
 
-    //保存
-    function save() {
-
-        var url = Const.apiUrl + "/emailSuffix/addOrUpdate";
-        var employee = Utils.formToObj("preview");
-        View.post(url, employee, function(resp) {
-            TmplUtils.showMsgSuccess('编辑成功');
-            tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount=" +
-                TmplUtils.pageSize + TmplUtils.searchParam);
-            TmplUtils.closePreview();
-        }, function() {
-            TmplUtils.showMsgFail('编辑失败');
-        });
-    }
 
     //删除
-    function del() {
+    function delData() {
         TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
             var arrChk = $("input[name='tdCheckbox']");
             var ids = [];
@@ -223,6 +236,30 @@
         var title = "批量添加";
         View.openDialog(url, title);
     }
+    
+  //删除
+    function del(id){
+		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/emailSuffix/del"
+			View.post(url, id, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function(id) {
+
+		});
+	}
+  //弹出添加iframe
+	function view(id) {
+		var flag = "view"
+		var url = "emailSuffixEdit.html?id=" + id + "&flag=" + flag;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
     
 </script>
 

@@ -27,7 +27,17 @@
 		$(document).ready(function() {
 			$("#submit").click(function() {
 				if (TmplUtils.check('edit')) {
-					edit();
+					var phone = $("#edit_base input[name='appUser.phone']").val();
+					var email = $("#edit_base input[name='appUser.email']").val();
+					if(email && email!=""){
+						if(!isEmail(email)){
+							TmplUtils.showMsgFail('邮箱格式不正确');
+							return false;
+						}
+					} 
+					if(checkPhone(phone)){
+						edit();
+					}
 				}
 			});
 		});
@@ -84,7 +94,7 @@
 		function edit() {
 			var appUser = Utils.formToObj("edit");
 			if(id){
-				appUser.appUserId = id;
+				appUser.id = id;
 			}
 			/*   appUser.email = appUser.email.split(",")[0] + "@" + appUser.email.split(",")[1]; */
 			var url = Const.apiUrl + "/appUser/addOrUpdate";
@@ -221,6 +231,19 @@
 				}
 			});
 		}
+		//校验电话号码
+		function checkPhone(phone){ 
+		    if(!(/^1[34578]\d{9}$/.test(phone))){ 
+		    	TmplUtils.showMsgFail('手机号码有误，请重填');
+		        return false; 
+		    } 
+		    return true;
+		}
+		//校验邮箱
+		function isEmail(str){ 
+			var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+			return reg.test(str); 
+		} 
 	</script>
 
 </html>

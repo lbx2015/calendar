@@ -7,6 +7,7 @@
 </head>
 
 <body class="iframeBody">
+<div class="scrollbar">
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
@@ -21,7 +22,7 @@
 				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
 					<i class="layui-icon">&#xe6b2;</i>
 					批量审核
-				</button> -->
+				</button> --> 
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html" data-attr="webVersion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
@@ -35,12 +36,13 @@
 		<div style="clear: both"></div>
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 	</div>
+	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
 	$(function() {
 		$("#add-data").click(function() {
-			var url = "webVersionEdit.html";
+			var url = "webVersionEdit.html?flag=add";
 			var title = "添加数据";
 			View.openDialog(url, title);
 		});
@@ -87,22 +89,12 @@
 					TmplUtils.totalPages = data.data.totalPages;
 					TmplUtils.totalCount = data.data.totalElements;
 				}
-				//是否需要全选checkbox
 				data.hasCheckbox = true;
-				//是否有操作列
 				data.hasOperation = true;
-				//操作按钮
-				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
-				//表格显示列数
-				data.operationWidth = 10;
-				//如果要修改表格内容 ，无需修改的忽略此项
+				data.cellCount = 6;
+				 //操作栏的宽度
+                data.operationWidth =10;
 				data.tdBeforeFill = function(obj) {
-					//obj = {item,prop,html,row,col};
-					//item 当前行数据 第一行无item
-					//prop 当前单元格属性
-					//html 当前单元格html内容
-					//row 当前行数 从1开始
-					//col 当前列数 从1开始
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
@@ -115,7 +107,7 @@
 									+ obj.item.webVersionId
 									+ "\""
 									+ ");'>修改</button>";
-							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
+							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='dele("
 									+ "\""
 									+ obj.item.webVersionId
 									+ "\""
@@ -127,10 +119,9 @@
 										+ "\""
 										+ ");'>审核</button>";
 							}
-							return obj.html;
 						}
-						return obj.html;
 					}
+					return obj.html;
 				}
 				callback.call(_this, data);
 				if (TmplUtils.pageTmpl.refresh) {
@@ -198,7 +189,7 @@
 
 	//弹出添加iframe
 	function edit(id) {
-		var url = "webVersionEdit.html?id=" + id;
+		var url = "webVersionEdit.html?id=" + id+"&flag=edit";
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}

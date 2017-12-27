@@ -12,12 +12,14 @@
 			"alias": "资讯标题",
 			"desc": "资讯标题",
 			"type": "string",
+			"verify":"required",
 			"group": "base"
 		},
 		{
 			"prop": "seat",
 			"alias": "封面位置",
 			"desc": "封面位置",
+			"verify":"required",
 			"type": "string",
 			"group": "base"
 		},
@@ -25,6 +27,7 @@
 			"prop": "coverUrls",
 			"alias": "封面URL",
 			"desc": "封面URL",
+			"verify":"required",
 			"type": "string",
 			"group": "base"
 		},
@@ -32,6 +35,7 @@
 			"prop": "content",
 			"alias": "资讯内容",
 			"desc": "资讯内容",
+			"verify":"required",
 			"type": "text",
 			"edit_block": "2",
 			"group": "base",
@@ -41,6 +45,7 @@
 			"prop": "issued",
 			"alias": "发布单位",
 			"desc": "发布单位",
+			"verify":"required",
 			"type": "string",
 			"group": "base"
 		},
@@ -49,6 +54,7 @@
 			"alias": "是否审核：0-未审核；1-已审核；2-不通过",
 			"desc": "是否审核：0-未审核；1-已审核；2-不通过",
 			"type": "enum",
+			"verify":"required",
 			"dict_key": "T_REPORT.ISADUIT",
 			"group": "base"
 		},

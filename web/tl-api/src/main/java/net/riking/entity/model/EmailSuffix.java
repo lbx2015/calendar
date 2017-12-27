@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -42,7 +43,7 @@ public class EmailSuffix extends BaseEntity {
 	@Comment("邮箱后缀")
 	private String emailSuffix;
 
-	@Comment("用户状态 0-禁用 1-启用")
+	@Comment("数据状态 0-禁用 1-启用")
 	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "enabled", nullable = false, precision = 1)
 	private Integer enabled;
@@ -56,14 +57,18 @@ public class EmailSuffix extends BaseEntity {
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
-	@Comment("是否删除： 0-删除，1-未删除")
-	@org.hibernate.annotations.ColumnDefault("1")
-	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
-	private Integer isDeleted;
-
 	@Comment("备注")
 	@Column(name = "remark", length = 255)
 	private String remark;// 备注
+
+	@Comment("是否删除： 0-删除，1-未删除")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "is_deleted")
+	private Integer isDeleted;
+
+	@Comment("操作类型：modify-修改;add-新增")
+	@Transient
+	private String opt;
 
 	public String getEmailSuffix() {
 		return emailSuffix;
@@ -95,6 +100,22 @@ public class EmailSuffix extends BaseEntity {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Integer getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Integer isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public String getOpt() {
+		return opt;
+	}
+
+	public void setOpt(String opt) {
+		this.opt = opt;
 	}
 
 }
