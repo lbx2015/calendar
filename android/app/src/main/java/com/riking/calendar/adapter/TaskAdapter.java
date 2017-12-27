@@ -36,7 +36,6 @@ import io.realm.RealmResults;
 /**
  * Created by zw.zhang on 2017/7/12.
  */
-
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
     //两个final int类型表示ViewType的两种类型
     private final int NORMAL_TYPE = 0;
@@ -98,18 +97,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             holder.editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(v.getContext(), EditTaskActivity.class);
+                    Intent i = new Intent(v.getContext(), CreateTaskActivity.class);
                     i.putExtra("task_id", r.todoId);
                     i.putExtra("task_title", r.content);
                     i.putExtra("is_import", r.isImportant);
-                    i.putExtra("is_remind", r.isOpen);
-                    if (r.isOpen == 1) {
-                        try {
-                            i.putExtra("remind_time", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(CONST.yyyyMMddHHmm).parse(r.strDate)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
                     holder.sml.smoothCloseMenu();
                     v.getContext().startActivity(i);
                 }
@@ -230,19 +221,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
                     @Override
                     public void onClick(View v) {
-                        realm.executeTransaction
-                                (new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        if (task.isImportant == 1) {
-                                            important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 0;
-                                        } else {
-                                            important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 1;
-                                        }
-                                    }
-                                });
+                        Todo todo = task.getTodo();
+                        if (todo.isImportant == 1) {
+                            todo.isImportant = 0;
+                        } else {
+                            todo.isImportant = 1;
+                        }
+                        final ArrayList<Todo> tasks = new ArrayList<>(1);
+                        tasks.add(todo);
+                        APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
+                            @Override
+                            public void callBack(ResponseModel<String> response) throws Exception {
+                                realm.executeTransaction
+                                        (new Realm.Transaction() {
+                                            @Override
+                                            public void execute(Realm realm) {
+                                                if (task.isImportant == 1) {
+                                                    important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
+                                                    realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 0;
+                                                } else {
+                                                    important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
+                                                    realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 1;
+                                                }
+                                            }
+                                        });
+                            }
+                        });
                     }
                 });
             }

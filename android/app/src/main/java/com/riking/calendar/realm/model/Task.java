@@ -32,7 +32,7 @@ public class Task extends RealmObject {
 
     // 提醒内容
 //    @Column(name = "content", length = 255)
-    @SerializedName("content")
+//    @SerializedName("content")
     public String content;
 
     // 是否重要（0-不重要；1-重要）

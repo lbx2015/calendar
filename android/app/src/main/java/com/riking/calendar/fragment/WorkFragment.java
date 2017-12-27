@@ -56,6 +56,7 @@ import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.TimePickerDialog;
@@ -72,7 +73,6 @@ import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
-import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -95,13 +95,12 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     //    ReportOnlineAdapter reportOnlineAdapter;
     public ReportTaskItemAdapter reportDoneTaskItemAdapter;
     public NotDoneReportTaskItemAdapter reportNotDoneTaskItemAdapter;
-    ViewPagerActivity a;
     public RecyclerView notDoneReportsRecyclerView;
     public RecyclerView taskRecyclerView;
     public RecyclerView reportRecyclerView;
+    ViewPagerActivity a;
     ReminderAdapter reminderAdapter;
     TaskAdapter taskAdapter;
-    Realm realm;
     //current year month
     String yearMonth;
     View v;
@@ -299,7 +298,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Create the Realm instance
-        realm = Realm.getDefaultInstance();
         if (v != null) {
             return v;
         }
@@ -320,10 +318,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         weeks.clear();
         ealiestRemindHolidayDate = null;
         ealiestRemindWorkDate = null;
-
-        if (realm.isClosed()) {
-            realm = Realm.getDefaultInstance();
-        }
+        Realm realm = ZDB.Instance.getRealm();
         RealmResults<Reminder> reminders = realm.where(Reminder.class)
                 .beginGroup()
                 .beginsWith("day", yearMonth)//this month
@@ -566,10 +561,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     }
 
     public void updateReportsWithLocalRealm() {
-        RealmConfiguration.Builder defaultRealmConfiguration = new RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded().name(CONST.DEFAUT_REALM_DATABASE_NAME);
-        Realm r = Realm.getInstance(defaultRealmConfiguration.build());
-        RealmResults<QueryReportContainerRealmModel> reports = r.where(QueryReportContainerRealmModel.class).findAll();
+        Realm realm = ZDB.Instance.getRealm();
+        RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
         Logger.d("zzw", "report adapter size: " + reports.size());
         reportAdapter = new ReportAdapter(reports);
         reportRecyclerView.setAdapter(reportAdapter);
@@ -684,10 +677,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         weeks.clear();
         ealiestRemindHolidayDate = null;
         ealiestRemindWorkDate = null;
+        Realm realm = ZDB.Instance.getRealm();
 
-        if (realm.isClosed()) {
-            realm = Realm.getDefaultInstance();
-        }
         RealmResults<Reminder> reminders = realm.where(Reminder.class)
                 .beginGroup()
                 .beginsWith("day", yearMonth)//this month
@@ -752,6 +743,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     }
 
     public void updateReminderAdapter(Calendar c) {
+        Realm realm = ZDB.Instance.getRealm();
         if (notDoneReportsRecyclerView == null) {
             return;
         }
@@ -1009,7 +1001,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        realm.close();
     }
 
     @Override
