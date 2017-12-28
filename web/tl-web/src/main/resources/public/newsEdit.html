@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>话题详情</title>
+    <title>资讯详情</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -39,7 +39,7 @@
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/news/get";
+                var url = Const.apiUrl + "/newsController/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -73,7 +73,12 @@
 	 	$("textarea[name='content']").attr('id','content');
          layui.use('layedit', function(){
      	  var layedit = layui.layedit;
-     	  layedit.set({tool: ['strong' //加粗
+     	  layedit.set({
+      		 uploadImage: {
+  				url: Const.apiUrl + '/commonController/upLoad'
+   				,type: 'post'
+ 			}	
+     		  ,tool: ['strong' //加粗
 							  ,'italic' //斜体
 							  ,'underline' //下划线
 							  ,'del' //删除线
@@ -94,15 +99,15 @@
     
     //编辑保存
     function edit() {
-        var reportList = Utils.formToObj("edit");
-        if(id){
-			reportList.newsId=id;
-		}
         layui.use('layedit', function(){
      	  	var layedit = layui.layedit;
      	  	$("#content").val(layedit.getContent(topicContent));
      	});
-        var url = Const.apiUrl + "/news/save";
+        var reportList = Utils.formToObj("edit");
+        if(id){
+			reportList.newsId=id;
+		}
+        var url = Const.apiUrl + "/newsController/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 

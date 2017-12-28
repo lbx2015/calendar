@@ -42,6 +42,11 @@ public class QAComment extends BaseAuditProp {
 	@JsonProperty("qACommentId")
 	private String id;
 
+	// 后台需要用到
+	@Transient
+	@JsonProperty("id")
+	private String qaId;
+
 	@Comment("操作人主键  ")
 	@Column(name = "user_id", nullable = false)
 	private String userId;
@@ -83,6 +88,7 @@ public class QAComment extends BaseAuditProp {
 	@JsonProperty("qacReplyList")
 	List<QACReply> qacReplyList;
 
+	/* web end */
 	public QAComment() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -107,6 +113,32 @@ public class QAComment extends BaseAuditProp {
 		} else {
 			this.isAgree = 0;// 未点赞
 		}
+	}
+
+	public String getQaId() {
+		return qaId;
+	}
+
+	public QAComment(String id, String userId, String questionAnswerId, String content, String createdBy,
+			String modifiedBy, Date createdTime, Date modifiedTime, Integer isAduit, Integer isDeleted,
+			String userName) {
+		super();
+		this.id = id;
+		this.qaId = id;
+		this.userId = userId;
+		this.questionAnswerId = questionAnswerId;
+		this.content = content;
+		this.userName = userName;
+		this.setCreatedBy(createdBy);
+		this.setModifiedBy(modifiedBy);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.setIsAduit(isAduit);
+		this.setIsDeleted(isDeleted);
+	}
+
+	public void setQaId(String qaId) {
+		this.qaId = qaId;
 	}
 
 	public String getUserId() {

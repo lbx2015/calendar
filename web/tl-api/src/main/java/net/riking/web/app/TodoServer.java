@@ -45,7 +45,7 @@ public class TodoServer {
 			}
 			todo = todoRepo.save(todo2);
 		}
-		return new AppResp(todo, CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "删除待办信息", notes = "POST")
@@ -62,7 +62,8 @@ public class TodoServer {
 		if (todo.getPindex() == null) {
 			todo.setPindex(0);
 		}
-		List<Todo> todos = todoRepo.findTodo(todo.getUserId(), 0, new PageRequest(todo.getPindex(), Const.APP_PAGENO_30));
+		List<Todo> todos = todoRepo.findTodo(todo.getUserId(), 0,
+				new PageRequest(todo.getPindex(), Const.APP_PAGENO_30));
 		return new AppResp(todos, CodeDef.SUCCESS);
 	}
 
@@ -72,7 +73,8 @@ public class TodoServer {
 		if (todo.getPindex() == null) {
 			todo.setPindex(0);
 		}
-		List<Todo> todos = todoRepo.findTodo(todo.getUserId(), 1, new PageRequest(todo.getPindex(), Const.APP_PAGENO_30));
+		List<Todo> todos = todoRepo.findTodo(todo.getUserId(), 1,
+				new PageRequest(todo.getPindex(), Const.APP_PAGENO_30));
 		return new AppResp(todos, CodeDef.SUCCESS);
 	}
 }

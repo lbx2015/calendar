@@ -57,6 +57,16 @@ public interface ReportRepo extends JpaRepository<Report, String>, JpaSpecificat
 	@Modifying
 	@Query(" update Report set isAduit=1 where id in ?1 ")
 	int verifyById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update Report set isAduit=2 where id in ?1 ")
+	int verifyNotPassById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update Report set enabled=?2 where id =?1 ")
+	int updEnable(String id, int enabled);
 	/******** WEB END ************/
 
 }
