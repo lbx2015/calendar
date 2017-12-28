@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
             android:layout_marginTop="14dp"
+            android:layout_toLeftOf="@id/clock_image"
             android:layout_toRightOf="@+id/button_image"
             android:orientation="vertical">
 
@@ -49,6 +50,9 @@
                 android:id="@+id/descript_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:text="资产负债项目统计表"
                 android:textColor="@color/color_999999"
                 android:textSize="12sp" />

@@ -1,47 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/color_f2f2f2"
     android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/remind_title"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/input_text_background"
-        android:hint="@string/input_rememinds"
-        android:padding="10dp"
-        android:textColorHint="@color/color_background_b6b6b6"
-        android:textSize="16sp" />
 
     <RelativeLayout
         android:id="@+id/select_remind_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/white"
-        android:padding="10dp">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/reminder_clock"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:paddingRight="10dp"
-            android:src="@drawable/remind_time_clock" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/work_rm_icon_time" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="17dp"
             android:layout_toEndOf="@+id/reminder_clock"
             android:text="@string/please_select_remind_time"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_222222" />
 
         <TextView
             android:id="@+id/select_time"
@@ -50,43 +38,48 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/select_time_narrow"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_666666"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@id/select_time_narrow"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@id/select_time"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/work_rm_icon_arrow_r" />
     </RelativeLayout>
 
-    <View
+    <ImageView
+        android:id="@+id/top_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
-        android:layout_marginLeft="40dp"
-        android:background="@color/divider_color_d9d9d9" />
+        android:background="@color/white"
+        android:src="@color/color_e2e2e2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="10dp">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/all_day_clock"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:paddingRight="10dp"
-            android:src="@drawable/all_day_clock" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/work_rm_icon_wholeday" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="17dp"
             android:layout_toRightOf="@id/all_day_clock"
             android:text="@string/all_day"
             android:textColor="@color/color_323232" />
@@ -97,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
             android:thumbTint="@color/colorPrimary" />
     </RelativeLayout>
 
@@ -104,67 +98,80 @@
         android:id="@+id/way_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/white"
-        android:padding="10dp">
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/way_of_remind"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:paddingRight="10dp"
-            android:src="@drawable/remind" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/work_rm_icon_mode" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="17dp"
             android:layout_toEndOf="@id/way_of_remind"
             android:text="@string/please_select_remind_way"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/work_rm_icon_arrow_r" />
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/white"
+        android:src="@color/color_e2e2e2" />
 
     <RelativeLayout
         android:id="@+id/repeat_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/white"
-        android:padding="10dp">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/reminder_repeat"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:paddingRight="10dp"
-            android:src="@drawable/repeat" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/work_rm_icon_repeat" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="17dp"
             android:layout_toEndOf="@id/reminder_repeat"
             android:text="@string/remind_repeat_way"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
 
         <ImageView
             android:id="@+id/repeat_clock"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/work_rm_icon_arrow_r" />
     </RelativeLayout>
 </LinearLayout>

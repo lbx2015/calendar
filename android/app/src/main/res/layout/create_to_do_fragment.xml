@@ -30,7 +30,7 @@
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:paddingRight="10dp"
-            android:src="@drawable/remind" />
+            android:src="@drawable/work_rm_icon_mode" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:paddingRight="10dp"
-            android:src="@drawable/remind_time_clock" />
+            android:src="@drawable/work_rm_icon_time" />
 
         <TextView
             android:layout_width="wrap_content"

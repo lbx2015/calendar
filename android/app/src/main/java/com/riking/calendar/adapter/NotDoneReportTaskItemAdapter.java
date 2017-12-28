@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.activity.AddRemindActivity;
+import com.riking.calendar.activity.EditReminderActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.fragment.WorkFragment;
@@ -96,7 +96,7 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
             @Override
             public void onClick(View v) {
                 holder.sml.smoothCloseMenu();
-                ZGoto.to(AddRemindActivity.class);
+                ZGoto.to(EditReminderActivity.class);
 //                notifyItemRemoved(position);
                 //We should update the adapter after data set is changed. and we had not using RealmResult so for.
                 //so we need to update teh adapter manually
