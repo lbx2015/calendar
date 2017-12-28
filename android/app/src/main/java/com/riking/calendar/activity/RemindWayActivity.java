@@ -8,15 +8,14 @@ import android.view.View;
 
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.CreateReminderFragment;
-import com.riking.calendar.widget.wheelpicker.widget.curved.WheelMinutePicker;
+import com.riking.calendar.widget.dialog.MinutePickerDialog;
 
 /**
  * Created by zw.zhang on 2017/7/24.
  */
 
 public class RemindWayActivity extends AppCompatActivity implements View.OnClickListener {
-    WheelMinutePicker wmp;
-    View minutePickerItem;
+    MinutePickerDialog dialog;
     private View notRemindImage;
     private View accurateRemindImage;
     private View customRemindImage;
@@ -27,7 +26,6 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remind_kind);
-        wmp = (WheelMinutePicker) findViewById(R.id.minute_picker);
         View backButton = findViewById(R.id.back);
         View notRemind = findViewById(R.id.not_remind_item);
         View remindAccurately = findViewById(R.id.remind_accurate_item);
@@ -35,7 +33,6 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
         notRemindImage = findViewById(R.id.no_remind_confirm);
         accurateRemindImage = findViewById(R.id.remind_on_intergral_clock_confirm);
         customRemindImage = findViewById(R.id.remind_accurate_confirm);
-        minutePickerItem = findViewById(R.id.minute_picker_item);
 
         //set on click listeners
         backButton.setOnClickListener(this);
@@ -46,22 +43,19 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
 
         Bundle bundle = getIntent().getExtras();
         isRemind = bundle.getByte("is_remind");
-        aheadOfTime = bundle.getByte("ahead_time");
+        aheadOfTime = bundle.getInt("ahead_time");
         if (isRemind == 1) {
             accurateRemindImage.setVisibility(View.VISIBLE);
             notRemindImage.setVisibility(View.GONE);
             customRemindImage.setVisibility(View.GONE);
-            minutePickerItem.setVisibility(View.GONE);
         } else if (aheadOfTime > 0) {
             notRemindImage.setVisibility(View.GONE);
             accurateRemindImage.setVisibility(View.GONE);
             customRemindImage.setVisibility(View.VISIBLE);
-            minutePickerItem.setVisibility(View.VISIBLE);
         } else {
             notRemindImage.setVisibility(View.VISIBLE);
             accurateRemindImage.setVisibility(View.GONE);
             customRemindImage.setVisibility(View.GONE);
-            minutePickerItem.setVisibility(View.GONE);
         }
     }
 
@@ -79,7 +73,6 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
                 notRemindImage.setVisibility(View.VISIBLE);
                 accurateRemindImage.setVisibility(View.GONE);
                 customRemindImage.setVisibility(View.GONE);
-                minutePickerItem.setVisibility(View.GONE);
                 break;
             }
             case R.id.remind_accurate_item: {
@@ -89,29 +82,29 @@ public class RemindWayActivity extends AppCompatActivity implements View.OnClick
                 notRemindImage.setVisibility(View.GONE);
                 accurateRemindImage.setVisibility(View.VISIBLE);
                 customRemindImage.setVisibility(View.GONE);
-                minutePickerItem.setVisibility(View.GONE);
                 break;
             }
             case R.id.custom_remind_item: {
-                if (customRemindImage.getVisibility() == View.VISIBLE) break;
-                //back the init status
-                wmp.setCurrentMinute(aheadOfTime);
                 isRemind = 1;
-                aheadOfTime = wmp.minute;
+                aheadOfTime = aheadOfTime;
                 notRemindImage.setVisibility(View.GONE);
                 accurateRemindImage.setVisibility(View.GONE);
                 customRemindImage.setVisibility(View.VISIBLE);
-                minutePickerItem.setVisibility(View.VISIBLE);
+                //show picker
+                if (dialog == null) {
+                    dialog = new MinutePickerDialog(this);
+                }
+                dialog.wheelTimePicker.setCurrentMinute(aheadOfTime);
+                dialog.show();
                 break;
             }
             case R.id.done: {
                 Intent i = new Intent();
                 i.putExtra("isRemind", isRemind);//0,1
-                i.putExtra("aheadOfTime", aheadOfTime);
+                i.putExtra("aheadOfTime", dialog == null ? aheadOfTime : Integer.valueOf(dialog.currentData));
                 setResult(CreateReminderFragment.REMIND_WAY_ITEMS, i);
                 finish();
             }
         }
-
     }
 }
