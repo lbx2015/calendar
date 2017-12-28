@@ -100,7 +100,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
                 @Override
                 public void onClick(View v) {
                     sml.smoothCloseMenu();
-                    Todo todo = task.getTodo();
+                    Todo todo = new Todo(task);
                     todo.deleteFlag = 1;
                     final ArrayList<Todo> todos = new ArrayList<>(1);
                     todos.add(todo);

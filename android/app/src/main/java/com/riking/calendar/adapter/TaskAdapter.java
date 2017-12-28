@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CreateTaskActivity;
-import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
@@ -25,7 +24,6 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -173,7 +171,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                         public void run() {
                             if (completed) {
                                 final ArrayList<Todo> tasks = new ArrayList<>(1);
-                                Todo todo = task.getTodo();
+                                Todo todo = new Todo(task);
                                 todo.isCompleted = 1;
                                 tasks.add(todo);
 
@@ -221,7 +219,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
                     @Override
                     public void onClick(View v) {
-                        Todo todo = task.getTodo();
+                        Todo todo = new Todo(task);
                         if (todo.isImportant == 1) {
                             todo.isImportant = 0;
                         } else {

@@ -11,6 +11,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.Todo;
+import com.riking.calendar.realm.model.Cat;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -80,10 +81,12 @@ public class CreateTaskActivity extends AppCompatActivity {
                         Task task;
                         if (StringUtil.isEmpty(CreateTaskActivity.this.id)) {
                             task = realm.createObject(Task.class, id);
-                        }else {
-                            task = realm.where(Task.class).equalTo(Task.TODO_ID,id).findFirst();
+                        } else {
+                            task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
+                            realm.createObject(Cat.class, "1");
 
                         }
+
                         task.content = content;
                         task.isImportant = isImportant;
                         if (failed) {

@@ -121,7 +121,9 @@ public abstract class CalendarView extends View {
                 || (fragment.repeatWeekReminds.contains(String.valueOf(weekDayOfCurrentPosition)) && afterRemindTime)
                 || (isTodayWorkDay && workDayAfterRemindTime) || (holidayAfterRemindTime && !isTodayWorkDay)) {
             mLunarPaint.setColor(mPointColor);
-            canvas.drawCircle(rect.centerX(), baseline - rect.width() / 3, mPointSize, mLunarPaint);
+//            canvas.drawCircle(rect.centerX(), baseline - rect.width() / 3, mPointSize, mLunarPaint);
+            //riking todo
+            canvas.drawCircle(rect.centerX(), baseline + rect.width() / 3, mPointSize, mLunarPaint);
         }
     }
 

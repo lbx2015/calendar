@@ -53,6 +53,22 @@ public class Todo extends PageQuery {
     //	@Transient 0不删除，1删除
     public int deleteFlag;
 
+    public Todo() {
+    }
+
+    public Todo(Task t) {
+        todoId = t.todoId;
+        isImportant = t.isImportant;
+        content = t.content;
+        userId = t.userId;
+        isOpen = t.isOpen;
+        strDate = t.strDate;
+        createdTime = t.createdTime;
+        isCompleted = t.isComplete;
+        deleteFlag = t.deleteState;
+        completeDate = t.completeDate;
+    }
+
     @Override
     public String toString() {
         return "Todo [todoId=" + todoId + ", userId=" + userId + ", content=" + content + ", isImportant=" + isImportant

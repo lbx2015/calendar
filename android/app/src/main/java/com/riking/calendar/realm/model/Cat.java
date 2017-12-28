@@ -17,6 +17,7 @@
 package com.riking.calendar.realm.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Cat extends RealmObject {
     public  String name;
