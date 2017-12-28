@@ -1,362 +1,357 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_f2f2f2"
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_f2f2f2"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="start"
+            android:src="@drawable/nav_icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:padding="6dp">
+            android:layout_gravity="center"
+            android:text="@string/remind_repeat_way"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="start"
-                android:src="@drawable/back_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/remind_repeat_way"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/done"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:text="@android:string/ok"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-        </FrameLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:layout_marginTop="20dp"
-            android:background="@color/divider_color_d9d9d9" />
-
-        <RelativeLayout
-            android:id="@+id/not_repeat_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/done"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="center_vertical|end"
+            android:text="@android:string/ok"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:padding="6dp"
-                android:text="@string/no_repeat"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/no_repeat_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_alignParentRight="true"
-                android:padding="6dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/confirm" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_d2d2d2" />
 
-        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/not_repeat_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
-
-        <FrameLayout
-            android:id="@+id/per_monday_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_alignParentLeft="true"
+            android:padding="6dp"
+            android:text="@string/no_repeat"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:color="@color/color_323232"
-                android:padding="6dp"
-                android:text="@string/per_monday"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/no_repeat_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_alignParentRight="true"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/confirm" />
 
-            <ImageView
-                android:id="@+id/per_monday_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
+    </RelativeLayout>
 
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <FrameLayout
+        android:id="@+id/per_monday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:id="@+id/per_tuesday_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:color="@color/color_222222"
+            android:padding="6dp"
+            android:text="@string/per_monday"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/per_tuesday"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/per_monday_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/per_tuesday_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    </FrameLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <FrameLayout
-            android:id="@+id/per_wednesday_item"
-            android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/per_tuesday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/per_tuesday"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/per_wednesday"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/per_tuesday_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/per_wednesday_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <FrameLayout
+        android:id="@+id/per_wednesday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:id="@+id/per_thursday_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/per_wednesday"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/per_thursday"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/per_wednesday_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/per_thursday_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <FrameLayout
+        android:id="@+id/per_thursday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:id="@+id/per_friday_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/per_thursday"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/per_friday"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/per_thursday_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/per_friday_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <FrameLayout
+        android:id="@+id/per_friday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:id="@+id/per_saturday_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/per_friday"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/per_saturday"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/per_friday_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/per_saturday_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <FrameLayout
+        android:id="@+id/per_saturday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:id="@+id/per_sunday_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/per_saturday"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/per_sunday"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/per_saturday_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/per_sunday_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <FrameLayout
+        android:id="@+id/per_sunday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:id="@+id/repeat_on_working_day_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/per_sunday"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/repeat_on_working_day"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/per_sunday_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/repeat_on_working_day_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
+    <FrameLayout
+        android:id="@+id/repeat_on_working_day_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
 
-        <FrameLayout
-            android:id="@+id/repeat_on_holiday_item"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="6dp">
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/repeat_on_working_day"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="6dp"
-                android:text="@string/repeat_on_holiday_item"
-                android:textColor="@color/color_323232"
-                android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/repeat_on_working_day_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <ImageView
-                android:id="@+id/repeat_on_holiday_item_confirm"
-                android:layout_width="@dimen/image_height_30dp"
-                android:layout_height="@dimen/image_height_30dp"
-                android:layout_gravity="center_vertical|end"
-                android:padding="6dp"
-                android:src="@drawable/confirm"
-                android:visibility="gone" />
-        </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@color/divider_color_d9d9d9" />
-    </LinearLayout>
-</ScrollView>
+    <FrameLayout
+        android:id="@+id/repeat_on_holiday_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:padding="6dp"
+            android:text="@string/repeat_on_holiday_item"
+            android:textColor="@color/color_222222"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/repeat_on_holiday_item_confirm"
+            android:layout_width="@dimen/image_height_30dp"
+            android:layout_height="@dimen/image_height_30dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="6dp"
+            android:src="@drawable/confirm"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
+</LinearLayout>

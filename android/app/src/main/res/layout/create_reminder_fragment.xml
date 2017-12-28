@@ -29,7 +29,8 @@
             android:layout_marginTop="17dp"
             android:layout_toEndOf="@+id/reminder_clock"
             android:text="@string/please_select_remind_time"
-            android:textColor="@color/color_222222" />
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/select_time"
@@ -82,7 +83,8 @@
             android:layout_marginTop="17dp"
             android:layout_toRightOf="@id/all_day_clock"
             android:text="@string/all_day"
-            android:textColor="@color/color_323232" />
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
         <Switch
             android:id="@+id/simpleSwitch"

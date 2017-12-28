@@ -77,7 +77,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_n));
-                holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_323232));
+                holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_222222));
                 holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
 

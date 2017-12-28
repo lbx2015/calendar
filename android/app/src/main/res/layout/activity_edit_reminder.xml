@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/reminder"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +36,6 @@
             android:text="完成"
             android:textColor="@color/color_489dfff"
             android:textSize="@dimen/action_bar_text_size" />
-
     </FrameLayout>
 
     <View

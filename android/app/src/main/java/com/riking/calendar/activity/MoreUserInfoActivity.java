@@ -249,7 +249,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                 .setTitleText("城市选择")
                 .setDividerColor(getResources().getColor(R.color.color_background_b6b6b6))
-                .setTextColorCenter(getResources().getColor(R.color.color_323232)) //设置选中项文字颜色
+                .setTextColorCenter(getResources().getColor(R.color.color_222222)) //设置选中项文字颜色
                 .setContentTextSize(16)
                 .setLineSpacingMultiplier(2f)
                 .setCyclic(true, false, false)
