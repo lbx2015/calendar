@@ -84,7 +84,6 @@ public class CreateTaskActivity extends AppCompatActivity {
                         } else {
                             task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
                             realm.createObject(Cat.class, "1");
-
                         }
 
                         task.content = content;

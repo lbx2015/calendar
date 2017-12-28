@@ -78,19 +78,19 @@
 
     <FrameLayout
         android:id="@+id/smMenuViewRight"
-        android:layout_width="140dp"
-        android:layout_height="match_parent">
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="@color/color_489dfff">
 
-        <TextView
+        <ImageView
             android:id="@+id/tv_text"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end|center_vertical"
-            android:background="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:text="完成"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:scaleType="center"
+            android:src="@drawable/work_icon_time_n" />
+
     </FrameLayout>
 
 </com.tubb.smrv.SwipeHorizontalMenuLayout>

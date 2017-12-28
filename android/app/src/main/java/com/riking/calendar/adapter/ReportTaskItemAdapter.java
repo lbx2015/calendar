@@ -117,7 +117,7 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
 
     public class MyViewHolder extends ZViewHolder {
         public TextView title;
-        public TextView tv;
+        public View tv;
         public int position;
         public TextView descriptTv;
         public ImageView buttonImage;
@@ -131,7 +131,7 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
             buttonImage = view.findViewById(R.id.button_image);
             descriptTv = view.findViewById(R.id.descript_tv);
             title = (TextView) view.findViewById(R.id.title);
-            tv = (TextView) view.findViewById(R.id.tv_text);
+            tv = view.findViewById(R.id.tv_text);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -142,7 +142,7 @@ public class APIClient {
         for (Reminder r : reminders) {
             reminderModels.add(new ReminderModel(r));
         }
-        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
+        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 if (callBack != null) {
@@ -176,7 +176,7 @@ public class APIClient {
             models.add(new Todo(t));
         }
 
-        apiInterface.synchronousTasks(models).enqueue(new ZCallBack<ResponseModel<String>>() {
+        apiInterface.synchronousTasks(models).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 realm.executeTransaction(new Realm.Transaction() {

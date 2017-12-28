@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AddRemindActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.fragment.WorkFragment;
@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.base.ZViewHolder;
@@ -41,7 +42,7 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
     }
 
     @Override
-    public void onBindVH(MyViewHolder holder, final int position) {
+    public void onBindVH(final MyViewHolder holder, final int position) {
         final CurrentReportTaskResp r = mList.get(position);
 //        if(!r.isValid()){
 //            notifyItemRemoved(position);
@@ -90,6 +91,19 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
                 });
             }
         });
+
+        holder.tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.sml.smoothCloseMenu();
+                ZGoto.to(AddRemindActivity.class);
+//                notifyItemRemoved(position);
+                //We should update the adapter after data set is changed. and we had not using RealmResult so for.
+                //so we need to update teh adapter manually
+                // reports.remove(task);
+//                Toast.makeText(title.getContext(), "deleted", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
@@ -102,7 +116,7 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
 
     public class MyViewHolder extends ZViewHolder {
         public TextView title;
-        public TextView tv;
+        public View tv;
         public int position;
         public View divider;
         public TextView descriptTv;
@@ -139,19 +153,8 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
                     });
                 }
             });
-            tv = (TextView) view.findViewById(R.id.tv_text);
+            tv = view.findViewById(R.id.tv_text);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sml.smoothCloseMenu();
-                    notifyItemRemoved(position);
-                    //We should update the adapter after data set is changed. and we had not using RealmResult so for.
-                    //so we need to update teh adapter manually
-                    // reports.remove(task);
-                    Toast.makeText(title.getContext(), "deleted", Toast.LENGTH_LONG).show();
-                }
-            });
         }
     }
 }
