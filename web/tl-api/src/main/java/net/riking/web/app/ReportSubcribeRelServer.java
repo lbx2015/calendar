@@ -116,21 +116,6 @@ public class ReportSubcribeRelServer {
 		return new AppResp(listes, CodeDef.SUCCESS);
 	}
 
-
-	// TODO
-	// @ApiOperation(value = "新增报表订阅", notes = "POST")
-	// @RequestMapping(value = "/updateUserReportRelById", method = RequestMethod.POST)
-	// public AppResp updateUserReportRelById(@RequestBody ReportSubcribeRel reportSubcribeRel) {
-	// if (reportSubcribeRel.getType().equals("0")) {// 取消订阅
-	// appUserReportRepo.deleteReportRelByUserIdAndReportId(appUserReportRel.getAppUserId(),
-	// appUserReportRel.getReportId());
-	// } else {
-	// appUserReportRel.setIsComplete("1");
-	// appUserReportRepo.save(appUserReportRel);
-	// }
-	//
-	// return new AppResp(null,CodeDef.SUCCESS);
-	// }
 	//
 	// @ApiOperation(value = "历史核销和逾期报表", notes = "POST")
 	// @RequestMapping(value = "/findAllUserReport", method = RequestMethod.POST)

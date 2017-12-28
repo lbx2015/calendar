@@ -7,6 +7,30 @@
 		}
 	],
 	"attrs": [
+			{
+			"prop": "serialNum",
+			"alias": "序号",
+			"desc": "序号",
+			"type": "string",
+			"group": "base",
+			"hidden":"edit,preview"
+		},
+			{
+			"prop": "topicId",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+				{
+			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
 		{
 			"prop": "title",
 			"alias": "标题",
@@ -15,28 +39,40 @@
 			"group": "base",
 			"query": "1",
 			"verify":"required",
+			"edit_block":"1",
 			"query_order": "1"
 		},
 		{
 			"prop": "topicUrl",
-			"alias": "话题url",
-			"desc": "话题url",
+			"alias": "封面",
+			"desc": "封面",
 			"type": "string",
-			"group": "base"
+			"editable":"2",
+			"group": "base",
+			"edit_block":"1",
+			"hidden":"preview"
 		},
 		{
 			"prop": "content",
 			"alias": "内容描述",
 			"desc": "内容描述",
 			"type": "text",
-			"edit_block": "2",
+			"edit_block": "1",
 			"group": "base",
 			"hidden": "table"
 		},
 		{
+			"prop": "createdTime",
+			"alias": "创建时间",
+			"desc": "创建时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit"
+		},
+		{
 			"prop": "isAduit",
-			"alias": "是否审核",
-			"desc": "是否审核",
+			"alias": "审核状态",
+			"desc": "审核状态",
 			"type": "enum",
 			"dict_key": "T_REPORT.ISADUIT",
 			"query": "1",
@@ -48,14 +84,6 @@
 			"prop": "createdBy",
 			"alias": "创建人ID",
 			"desc": "创建人ID",
-			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
-		},
-		{
-			"prop": "createdTime",
-			"alias": "创建时间",
-			"desc": "创建时间",
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"

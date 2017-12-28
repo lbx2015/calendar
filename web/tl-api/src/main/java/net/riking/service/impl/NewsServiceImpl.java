@@ -12,6 +12,7 @@ import net.riking.config.Const;
 import net.riking.dao.NewsDao;
 import net.riking.dao.repo.NewsCommentRepo;
 import net.riking.dao.repo.NewsRelRepo;
+import net.riking.dao.repo.NewsRepo;
 import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
@@ -20,6 +21,7 @@ import net.riking.entity.params.NewsParams;
 import net.riking.service.AppUserService;
 import net.riking.service.NewsService;
 import net.riking.service.TQuestionService;
+import net.riking.util.FileUtils;
 import net.riking.util.Utils;
 
 @Service("newsService")
@@ -38,6 +40,9 @@ public class NewsServiceImpl implements NewsService {
 
 	@Autowired
 	NewsCommentRepo newsCommentRepo;
+
+	@Autowired
+	NewsRepo newsRepo;
 
 	@Override
 	public List<News> findCollectNews(String userId, int begin, int pageCount) {
@@ -101,6 +106,37 @@ public class NewsServiceImpl implements NewsService {
 		newsCommentInfo.setContent(newsParams.getContent());
 		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
 		newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
+	}
+
+	@Override
+	public void moveFile(News news) {
+		if (news.getIsAduit() == 2) {
+			news.setIsAduit(0);
+		}
+		// 临时文件的图片转移路径
+		String[] contentFileNames = news.getContent().split("alt=");
+		if (contentFileNames.length != 0 && contentFileNames != null) {
+			copyFile(contentFileNames);
+		}
+		news.setContent(news.getContent().replace("temp", "news"));
+		newsRepo.save(news);
+	}
+
+	private void copyFile(String[] fileNames) {
+		for (int i = 1; i < fileNames.length; i++) {
+			String fileName = fileNames[i].split(">")[0].replace("\"", "");
+			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_NEWS_PHOTO_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				throw new RuntimeException("文件复制异常" + e);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+		}
 	}
 
 }

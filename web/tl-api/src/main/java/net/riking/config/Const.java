@@ -31,11 +31,15 @@ public class Const {
 
 	public static final String TL_NEWS_PHOTO_PATH = "/images/news/photo/";
 
+	public static final String TL_TOPIC_PHOTO_PATH = "/images/topic/photo/";
+
 	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/photo/";
 
 	public static final String TL_QUESTION_PHOTO_PATH = "/images/question/photo/";
 
 	public static final String TL_ANSWER_PHOTO_PATH = "/images/answer/photo/";
+
+	public static final String TL_REPORT_PHOTO_PATH = "/images/report/photo/";
 
 	public static final String TL_FLAG_PATH = "/images/flag/";
 
@@ -66,6 +70,18 @@ public class Const {
 
 	// 系统日历
 	public static final String SYS_DAY = "SYS_DAY_";
+
+	/** -------------------审核状态 begin-------------------------- */
+	/* 未审核 */
+	public static final int ADUIT_NO = 0;
+
+	/* 审核通过 */
+	public static final int ADUIT_PASS = 1;
+
+	/* 审核不通过 */
+	public static final int ADUIT_NOT_PASS = 2;
+
+	/** -------------------审核状态 end-------------------------- */
 
 	/** -------------------mq队列 begin-------------------------- */
 	/* 系统通知队列 */
@@ -200,8 +216,8 @@ public class Const {
 	/** --------------------搜索栏操作对象状态 end-------------------------- */
 
 	/** -------------------消息类型 begin-------------------------- */
-	public static final int MQ_SYS_INFO = 0;//系统信息
-	
+	public static final int MQ_SYS_INFO = 0;// 系统信息
+
 	public static final int MQ_OPT_ANSWERINVITE = 1;// 邀请回答的邀请
 
 	public static final int MQ_OPT_QA_AGREEORCOLLECT = 2;// 问题回答点赞或收藏

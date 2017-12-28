@@ -12,8 +12,14 @@ public class SubscribeReportParam {
 
 	// 订阅的reportIds
 	private String reportIds;
+
 	// //上报日期
 	// private String submitDate;
+	// 单个订阅报表id
+	private String reportId;
+
+	// 订阅类型
+	private String subscribeType;
 
 	public String getUserId() {
 		return userId;
@@ -29,6 +35,14 @@ public class SubscribeReportParam {
 
 	public void setReportIds(String reportIds) {
 		this.reportIds = reportIds;
+	}
+
+	public String getReportId() {
+		return reportId;
+	}
+
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
 	}
 
 }

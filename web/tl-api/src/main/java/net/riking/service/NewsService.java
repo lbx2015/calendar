@@ -26,4 +26,6 @@ public interface NewsService {
 	public void newsCollect(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException;
 
 	public void newsCommentPub(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
+
+	public void moveFile(News news);
 }

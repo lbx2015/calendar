@@ -64,4 +64,21 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 	@Query(" update QAComment set isAduit=1 where id in ?1 ")
 	int verifyById(Set<String> ids);
 
+	@Transactional
+	@Modifying
+	@Query(" update QAComment set isAduit=2 where id in ?1 ")
+	int verifyNotPassById(Set<String> ids);
+
+	/**
+	 * getMore统计数
+	 * 
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select count(*) from QAComment where isDeleted = ?1")
+	int countGetMore(Integer isDeleted);
+
+	@Query("select new net.riking.entity.model.QAComment(q.id,q.userId,q.questionAnswerId,q.content,q.createdBy,q.modifiedBy,q.createdTime,q.modifiedTime,q.isAduit,q.isDeleted,(select a.userName from AppUser a where a.id = q.userId)) from QAComment q where q.isDeleted = ?1 order by q.modifiedTime desc")
+	List<QAComment> findAllQAC(Integer isDeleted, Pageable pageable);
+
 }

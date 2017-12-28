@@ -7,8 +7,16 @@
 		}
 	],
 	"attrs": [
-	{
+		{
 			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+			{
+			"prop": "qACommentId",
 			"alias": "pk",
 			"desc": "pk",
 			"type": "string",
@@ -20,14 +28,26 @@
 			"alias": "发表评论的用户id",
 			"desc": "发表评论的用户id",
 			"type": "string",
-			"group": "base"
+			"group": "base",
+			"editable":"2",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "userName",
+			"alias": "发表评论的用户名",
+			"desc": "发表评论的用户名",
+			"type": "string",
+			"group": "base",
+			"editable":"2"
 		},
 		{
 			"prop": "questionAnswerId",
 			"alias": "针对问题的回答",
 			"desc": "针对问题的回答",
 			"type": "string",
-			"group": "base"
+			"editable":"2",
+			"group": "base",
+			"hidden": "table,edit,preview"
 		},
 		{
 			"prop": "content",
@@ -41,8 +61,10 @@
 			"prop": "isAduit",
 			"alias": "是否审核",
 			"desc": "是否审核",
-			"type": "string",
-			"group": "base"
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"group": "base",
+			"hidden": "edit"
 		},
 		{
 			"prop": "createdBy",
@@ -77,7 +99,7 @@
 			"hidden": "table,edit,preview"
 		},
 		{
-			"prop": "is_deleted",
+			"prop": "isDeleted",
 			"alias": "是否删除",
 			"desc": "是否删除",
 			"type": "string",

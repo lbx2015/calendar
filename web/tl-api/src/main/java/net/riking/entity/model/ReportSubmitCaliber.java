@@ -41,7 +41,7 @@ public class ReportSubmitCaliber extends BaseEntity {
 	@Comment("频度（字典表：T_REPORT-FREQUENTLY：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年）")
 	@Column(name = "frequency")
 	private Integer frequency;
-	
+
 	@Comment("报送月份")
 	@org.hibernate.annotations.ColumnDefault("1,2,3,4,5,6,7,8,9,10,11,12")
 	@Column(name = "submit_month", length = 32)
@@ -149,6 +149,5 @@ public class ReportSubmitCaliber extends BaseEntity {
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
-
 
 }
