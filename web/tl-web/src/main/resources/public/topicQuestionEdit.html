@@ -73,7 +73,12 @@
 	 	$("textarea[name='content']").attr('id','content');
          layui.use('layedit', function(){
      	  var layedit = layui.layedit;
-     	  layedit.set({tool: ['strong' //加粗
+     	  layedit.set({
+     		 uploadImage: {
+  				url: Const.apiUrl + '/commonController/upLoad'
+   				,type: 'post'
+ 			}	
+     		  ,tool: ['strong' //加粗
 							  ,'italic' //斜体
 							  ,'underline' //下划线
 							  ,'del' //删除线
@@ -94,14 +99,14 @@
     
     //编辑保存
     function edit() {
-        var reportList = Utils.formToObj("edit");
-        if(id){
-			reportList.webVersionId=id;
-		}
         layui.use('layedit', function(){
      	  	var layedit = layui.layedit;
      	  	$("#content").val(layedit.getContent(tQuestionContent));
      	});
+        var reportList = Utils.formToObj("edit");
+        if(id){
+			reportList.topicQuestionId=id;
+		}
         var url = Const.apiUrl + "/tQuestion/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.riking.config.Const;
 import net.riking.dao.TQuestionDao;
 import net.riking.dao.repo.TQuestionRelRepo;
+import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.model.MQOptCommon;
@@ -42,6 +43,9 @@ public class TQuestionServiceImpl implements TQuestionService {
 
 	@Autowired
 	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	TopicQuestionRepo topicQuestionRepo;
 
 	@Override
 	public List<TQuestionResult> findTopicHomeUp(String userId, Date reqTimeStamp, String tqIds, int start, int end) {

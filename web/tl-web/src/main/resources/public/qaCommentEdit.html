@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>话题详情</title>
+    <title>评论详情</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -18,6 +18,16 @@
             <button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
         </div>
     </div>
+   		<div class="tableBar">
+					<div class="contentLeft layui-form">
+			<div class="_tmpl" id="table" data-url="table.html"
+				data-attr="qaCReply.json" data-bind="tbOnBind"
+				data-param="pindex=0&pcount=10&id=''"></div>
+		</div>
+		<div style="clear: both"></div>
+		<div class="_tmpl" data-url="pages.html" data-depend="table"
+			data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+		</div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
@@ -39,7 +49,7 @@
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
-                var url = Const.apiUrl + "/qaComment/get";
+                var url = Const.apiUrl + "/qaCommentController/get";
                 var _this = this;
                 View.get(url, "id=" + id, function(resp) {
                     var data = {};
@@ -55,7 +65,6 @@
                     
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
-                    loadRichText();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -69,40 +78,63 @@
         });
     }
     
-    function loadRichText(){
-	 	$("textarea[name='content']").attr('id','content');
-         layui.use('layedit', function(){
-     	  var layedit = layui.layedit;
-     	  layedit.set({tool: ['strong' //加粗
-							  ,'italic' //斜体
-							  ,'underline' //下划线
-							  ,'del' //删除线
-							  ,'|' //分割线
-							  ,'left' //左对齐
-							  ,'center' //居中对齐
-							  ,'right' //右对齐
-							  ,'|' 
-							  ,'link' //超链接
-							  ,'unlink' //清除链接
-							  ,'face' //表情
-							  ,'image' //插入图片
-							  //,'help' //帮助
-								],height: 250});
-     	 topicContent = layedit.build('content'); //建立编辑器
-     	});
+    function tbOnBind(attrs, param) {
+    	tmpl = this;
+    	tbTmpl = tmpl;
+
+    	tmpl.bind(function(callback) {
+    		var url = Const.apiUrl + "/qaCommentController/getReply";
+    		var _this = this;
+    		param.id = id;
+    		View.get(url, param, function(resp) {
+    			var data = {};
+    			if (resp) {
+    				data.data = resp;
+    				TmplUtils.totalPages = data.data.totalPages;
+    				TmplUtils.totalCount = data.data.totalElements;
+    			}
+    			//是否需要全选checkbox
+    			data.hasCheckbox = false;
+    			//是否有操作列
+    			data.hasOperation = false;
+    			//操作按钮
+    			data.operationWidth = 6;
+    		
+
+    			//如果要修改表格内容 ，无需修改的忽略此项
+    			data.tdBeforeFill = function(obj) {
+    				//obj = {item,prop,html,row,col};
+    				//item 当前行数据
+    				//prop 当前单元格属性
+    				//html 当前单元格html内容
+    				//row 当前行数
+    				//col 当前列数
+    				
+    				
+    				return obj.html;
+    			}
+    			callback.call(_this, data);
+    			TmplUtils.pageTmpl.refresh();
+    			TmplUtils.tableOnLoad();
+    			
+    		}, function(code) {
+    			layer.msg('查询出错', {
+    				icon : 5
+    			});
+    		});
+    	});
     }
     
     //编辑保存
     function edit() {
-        var reportList = Utils.formToObj("edit");
-        if(id){
-			reportList.qACommentId=id;
-		}
         layui.use('layedit', function(){
      	  	var layedit = layui.layedit;
-     	  	$("#content").val(layedit.getContent(topicContent));
      	});
-        var url = Const.apiUrl + "/qaComment/save";
+        var reportList = Utils.formToObj("edit");
+        if(id){
+			reportList.qaId=id;
+		}
+        var url = Const.apiUrl + "/qaCommentController/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
             parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 

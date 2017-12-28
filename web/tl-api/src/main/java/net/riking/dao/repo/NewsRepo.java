@@ -73,4 +73,9 @@ public interface NewsRepo extends JpaRepository<News, String>, JpaSpecificationE
 	@Modifying
 	@Query(" update News set isAduit=1 where id in ?1 ")
 	int verifyById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update News set isAduit=2 where id in ?1 ")
+	int verifyNotPassById(Set<String> ids);
 }

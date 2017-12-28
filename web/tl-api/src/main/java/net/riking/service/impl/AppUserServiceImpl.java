@@ -109,7 +109,7 @@ public class AppUserServiceImpl implements AppUserService {
 	public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException {
 		// String suffix =
 		// mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
-		String fileName = UuidUtils.random() + mFile.getOriginalFilename();
+		String fileName = UuidUtils.random() + "." + mFile.getOriginalFilename().split("\\.")[1];
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {

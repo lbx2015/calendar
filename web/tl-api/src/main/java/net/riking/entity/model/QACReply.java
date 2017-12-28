@@ -43,6 +43,10 @@ public class QACReply extends BaseAuditProp {
 	@JsonProperty("replyId")
 	private String id;
 
+	@Transient
+	@JsonProperty("id")
+	private String rId;
+
 	@Comment("操作人主键 : fk t_app_user 发表回复的user_id")
 	@Column(name = "from_user_id", nullable = false)
 	@JsonIgnore
@@ -108,6 +112,14 @@ public class QACReply extends BaseAuditProp {
 
 	public void setFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
+	}
+
+	public String getrId() {
+		return rId;
+	}
+
+	public void setrId(String rId) {
+		this.rId = rId;
 	}
 
 	public String getId() {

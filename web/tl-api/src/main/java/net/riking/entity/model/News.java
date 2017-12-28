@@ -41,6 +41,11 @@ public class News extends BaseAuditProp {
 	@JsonProperty("newsId")
 	private String id;
 
+	// 后台使用id
+	@Transient
+	@JsonProperty("id")
+	private String nid;
+
 	@Comment("资讯标题")
 	@Column(name = "title", length = 128)
 	private String title;
@@ -126,6 +131,14 @@ public class News extends BaseAuditProp {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getNid() {
+		return nid;
+	}
+
+	public void setNid(String nid) {
+		this.nid = nid;
 	}
 
 	public String getId() {
