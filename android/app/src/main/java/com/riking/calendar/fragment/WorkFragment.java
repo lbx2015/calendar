@@ -50,7 +50,6 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.RCompletedRelParams;
 import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
-import com.riking.calendar.realm.model.Cat;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
@@ -593,11 +592,11 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     List<CurrentReportTaskResp> notDoneReportList = new ArrayList<>();
                     //separating done or not done report
                     for (CurrentReportTaskResp r : list) {
-//                        if (r.isCompleted.equals("1")) {
-                        doneReportList.add(r);
-//                        } else {
-                        notDoneReportList.add(r);
-//                        }
+                        if (r.isCompleted.equals("1")) {
+                            doneReportList.add(r);
+                        } else {
+                            notDoneReportList.add(r);
+                        }
                     }
 
                     swipeRefreshLayout.setRefreshing(false);
@@ -639,18 +638,23 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 
     public void checkEmpty() {
         byte isEmpty = 0;
-        if ((notDoneReportsRecyclerView.getAdapter() == null || notDoneReportsRecyclerView.getAdapter().getItemCount() == 0)
-                && (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0)) {
+        //hide the not complete reports view on empty
+        if ((notDoneReportsRecyclerView.getAdapter() == null || notDoneReportsRecyclerView.getAdapter().getItemCount() == 0)) {
             notDoneReportTextView.setVisibility(View.GONE);
+            notDoneReportsRecyclerView.setVisibility(View.GONE);
             isEmpty++;
         } else {
+            notDoneReportsRecyclerView.setVisibility(View.VISIBLE);
             notDoneReportTextView.setVisibility(View.VISIBLE);
         }
 
+        //hide the complete reports on empty
         if (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0) {
             doneReportTextView.setVisibility(View.GONE);
+            reportRecyclerView.setVisibility(View.GONE);
             isEmpty++;
         } else {
+            reportRecyclerView.setVisibility(View.VISIBLE);
             doneReportTextView.setVisibility(View.VISIBLE);
         }
 
