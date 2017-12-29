@@ -6,8 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +24,7 @@ import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.SysDaysTempRepo;
 import net.riking.entity.model.SysDaysTemp;
+import net.riking.service.SysDateService;
 import net.riking.util.ExcelToList;
 
 /**
@@ -40,6 +39,9 @@ import net.riking.util.ExcelToList;
 public class SysDaysController {
 	@Autowired
 	SysDaysTempRepo sysDaysTempRepo;
+
+	@Autowired
+	SysDateService sysDateService;
 
 	@ApiOperation(value = "得到<单个>信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -56,8 +58,9 @@ public class SysDaysController {
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute SysDaysTemp sysDaysTemp) {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		Example<SysDaysTemp> example = Example.of(sysDaysTemp, ExampleMatcher.matchingAll());
-		Page<SysDaysTemp> page = sysDaysTempRepo.findAll(example, pageable);
+		// Example<SysDaysTemp> example = Example.of(sysDaysTemp, ExampleMatcher.matchingAll());
+		// Page<SysDaysTemp> page = sysDaysTempRepo.findAll(example, pageable);
+		Page<SysDaysTemp> page = sysDateService.findAllToPage(sysDaysTemp, pageable);
 		return new Resp(page);
 	}
 

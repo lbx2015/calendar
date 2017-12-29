@@ -63,7 +63,6 @@
                     
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
-                    loadRichText();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -72,7 +71,6 @@
                 data.showGroup = "base,submit";
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
-                loadRichText();
             }
         });
     }

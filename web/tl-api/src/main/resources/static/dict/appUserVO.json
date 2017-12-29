@@ -36,6 +36,13 @@
 			"hidden": "edit,priview"
 		},
 		{
+			"prop": "appUserDetail.realName",
+			"alias": "真实姓名",
+			"desc": "真实姓名",
+			"type": "string",
+			"group": "detail"
+		},
+		{
 			"prop": "appUser.userName",
 			"alias": "用户名称",
 			"desc": "用户名称",
@@ -44,6 +51,13 @@
 			"query": "1",
 			"verify":"required",
 			"query_order": "1"
+		},
+		{
+			"prop": "appUserDetail.birthday",
+			"alias": "用户生日",
+			"desc": "用户生日",
+			"type": "string",
+			"group": "detail"
 		},
 		{
 			"prop": "appUser.openId",
@@ -79,15 +93,6 @@
 			"type": "string",
 			"group": "base",
 			"hidden": "edit,table"
-		},
-		{
-			"prop": "appUser.enabled",
-			"alias": "用户状态",
-			"desc": "用户状态",
-			"type": "enum",
-			"dict_key": "T_APP_USER.ENABLED",
-			"verify":"required",
-			"group": "base"
 		},
 		{
 			"prop": "appUser.createdBy",
@@ -138,19 +143,14 @@
 			"hidden": "edit,priview,table"
 		},
 		
-		{
-			"prop": "appUserDetail.realName",
-			"alias": "真实姓名",
-			"desc": "真实姓名",
-			"type": "string",
-			"group": "detail"
-		},
+		
 		{
 			"prop": "appUserDetail.companyName",
 			"alias": "用户公司",
 			"desc": "用户公司",
 			"type": "string",
-			"group": "detail"
+			"group": "detail",
+			"hidden": "table"
 		},
 		{
 			"prop": "appUserDetail.sex",
@@ -161,14 +161,7 @@
 			"group": "detail",
 			"hidden": "table"
 		},
-		{
-			"prop": "appUserDetail.birthday",
-			"alias": "用户生日",
-			"desc": "用户生日",
-			"type": "string",
-			"group": "detail",
-			"hidden": "table"
-		},
+		
 		{
 			"prop": "appUserDetail.address",
 			"alias": "用户工作地区",
@@ -179,8 +172,8 @@
 		},
 		{
 			"prop": "appUserDetail.descript",
-			"alias": "用户描述",
-			"desc": "用户描述",
+			"alias": "个性签名",
+			"desc": "个性签名",
 			"type": "string",
 			"group": "detail",
 			"hidden": "table"
@@ -207,16 +200,14 @@
 			"alias": "积分",
 			"desc": "积分",
 			"type": "string",
-			"group": "detail",
-			"hidden": "table"
+			"group": "detail"
 		},
 		{
 			"prop": "appUserDetail.experience",
 			"alias": "经验值",
 			"desc": "经验值",
 			"type": "string",
-			"group": "detail",
-			"hidden": "table"
+			"group": "detail"
 		},
 		
 		{
@@ -250,6 +241,15 @@
 			"type": "string",
 			"group": "detail",
 			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "appUser.enabled",
+			"alias": "用户状态",
+			"desc": "用户状态",
+			"type": "enum",
+			"dict_key": "T_APP_USER.ENABLED",
+			"verify":"required",
+			"group": "base"
 		}
 	]
 }
