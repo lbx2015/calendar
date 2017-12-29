@@ -103,6 +103,16 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
                 gotoEditRemindActivity(r);
             }
         });
+
+        holder.clockImage.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                updateRemindPosition = position;
+                updateRemindReport = r;
+                holder.sml.smoothCloseMenu();
+                gotoEditRemindActivity(r);
+            }
+        });
     }
 
     private void gotoEditRemindActivity(CurrentReportTaskResp r) {

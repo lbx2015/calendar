@@ -63,9 +63,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:layout_marginTop="14dp"
-            android:src="@drawable/work_icon_time_n"></ImageView>
+            android:src="@drawable/work_icon_time_s"></ImageView>
 
         <View
             android:id="@+id/divider"
