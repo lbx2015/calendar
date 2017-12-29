@@ -38,14 +38,16 @@ public class EditReminderActivity extends AppCompatActivity {
         setFragment(reminderFragment);
 
         Bundle bundle = getIntent().getExtras();
-        id = bundle.getString("reminder_id");
-        reminderFragment.title = bundle.getString("reminder_title");
-        reminderFragment.isRemind = bundle.getByte("is_remind");
-        reminderFragment.isAllDay = bundle.getByte("is_all_day");
-        reminderFragment.aheadTime = bundle.getByte("ahead_time");
-        reminderFragment.repeatFlag = bundle.getByte("repeat_flag");
-        reminderFragment.repeatWeek = bundle.getString("repeat_week");
-        reminderFragment.remiderTime = bundle.getString("repeat_date");
+        if (bundle != null) {
+            id = bundle.getString("reminder_id");
+            reminderFragment.title = bundle.getString("reminder_title");
+            reminderFragment.isRemind = bundle.getByte("is_remind");
+            reminderFragment.isAllDay = bundle.getByte("is_all_day");
+            reminderFragment.aheadTime = bundle.getByte("ahead_time");
+            reminderFragment.repeatFlag = bundle.getByte("repeat_flag");
+            reminderFragment.repeatWeek = bundle.getString("repeat_week");
+            reminderFragment.remiderTime = bundle.getString("repeat_date");
+        }
     }
 
     // This could be moved into an abstract BaseActivity
@@ -75,7 +77,7 @@ public class EditReminderActivity extends AppCompatActivity {
                 Reminder reminder = realm.where(Reminder.class).equalTo("userId", id).findFirst();
                 SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
-                reminder.title = reminderFragment.remindTitle.getText().toString();
+                reminder.title = reminderFragment.title;
                 Date reminderDate = reminderFragment.reminderTimeCalendar.getTime();
                 reminder.day = dayFormat.format(reminderDate);
                 reminder.time = timeFormat.format(reminderDate);
@@ -86,7 +88,7 @@ public class EditReminderActivity extends AppCompatActivity {
                 reminder.isRemind = reminderFragment.isRemind;
                 reminder.isAllDay = reminderFragment.isAllDay;
                 reminder.reminderTime = reminderDate;
-                APIClient.synchronousReminds(reminder, CONST.UPDATE,null);
+                APIClient.synchronousReminds(reminder, CONST.UPDATE, null);
             }
         });
 

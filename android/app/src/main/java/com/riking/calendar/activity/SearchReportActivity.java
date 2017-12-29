@@ -91,6 +91,15 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         initEvents();
     }
 
+    public void clickClearSearchConditions(View v) {
+        ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(SearchConditions.class).findAll().deleteAllFromRealm();
+            }
+        });
+    }
+
     public void clickCancel(View view) {
         onBackPressed();
     }
@@ -146,6 +155,8 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
                 if (r == null) {
                     return;
                 }
+
+                localSearchTitle.setVisibility(View.GONE);
 
                 try {
                     String sourceString = r.source().readUtf8();

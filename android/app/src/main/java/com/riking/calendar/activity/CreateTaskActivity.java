@@ -11,10 +11,12 @@ import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.Todo;
+import com.riking.calendar.realm.model.Cat;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZR;
 
@@ -27,20 +29,29 @@ import io.realm.Realm;
 /**
  * Created by zw.zhang on 2017/7/11.
  */
-
 public class CreateTaskActivity extends AppCompatActivity {
     //whether the task is an important task
     public byte isImportant;
-    public EditText content;
     TextView importantTextView;
     EditText taskEditText;
-    Task task;
+    String title;
+    byte isImport;
     private ImageView importantImage;
+    private Realm realm;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            id = bundle.getString("task_id");
+            title = bundle.getString("task_title");
+            isImport = bundle.getByte("is_import");
+        }
+
         init();
     }
 
@@ -51,7 +62,8 @@ public class CreateTaskActivity extends AppCompatActivity {
     public void clickFinish(View v) {
         final String content = taskEditText.getText().toString();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        final String id = sdf.format(new Date());
+
+        final String id = this.id == null ? sdf.format(new Date()) : this.id;
         Todo todo = new Todo();
         todo.content = content;
         todo.todoId = id;
@@ -66,7 +78,14 @@ public class CreateTaskActivity extends AppCompatActivity {
                 ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        task = realm.createObject(Task.class, id);
+                        Task task;
+                        if (StringUtil.isEmpty(CreateTaskActivity.this.id)) {
+                            task = realm.createObject(Task.class, id);
+                        } else {
+                            task = realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst();
+                            realm.createObject(Cat.class, "1");
+                        }
+
                         task.content = content;
                         task.isImportant = isImportant;
                         if (failed) {
@@ -91,10 +110,17 @@ public class CreateTaskActivity extends AppCompatActivity {
     public void clickImportant(View v) {
         if (isImportant == 0) {
             isImportant = 1;
+        } else {
+            isImportant = 0;
+        }
+        updateImportantImage();
+    }
+
+    private void updateImportantImage() {
+        if (isImportant == 0) {
             importantImage.setImageDrawable(getDrawable(R.drawable.work_icon_star_s));
             importantTextView.setTextColor(ZR.getColor(R.color.color_222222));
         } else {
-            isImportant = 0;
             importantImage.setImageDrawable(getDrawable(R.drawable.word_rm_icon_imp_n));
             importantTextView.setTextColor(ZR.getColor(R.color.color_999999));
         }
@@ -103,6 +129,14 @@ public class CreateTaskActivity extends AppCompatActivity {
     void init() {
         initViews();
         initEvents();
+        initData();
+    }
+
+    private void initData() {
+        if (!StringUtil.isEmpty(id)) {
+            updateImportantImage();
+            taskEditText.setText(title);
+        }
     }
 
     private void initEvents() {

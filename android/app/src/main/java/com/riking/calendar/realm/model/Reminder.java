@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -14,6 +15,8 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Reminder extends RealmObject {
+    @Ignore
+    public static String REMINDER_ID = "id";
     @PrimaryKey
     public String id = UUID.randomUUID().toString();
     public String userId;

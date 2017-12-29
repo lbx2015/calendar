@@ -34,19 +34,19 @@ public class Report extends BasePageQueryProp {
 	@Comment("报表代码")
 	@Column(name = "code", length = 32)
 	private String code;
-	
+
 	@Comment("报表类型（字典表：T_REPORT-REPORT_TYPE:PBOC、CBRC）")
 	@Column(name = "report_type", length = 32)
 	private String reportType;
-	
+
 	@Comment("报表种类（字典表：T_REPORT-REPORT_KIND:1-1104;2-大集中）")
 	@Column(name = "report_kind", length = 32)
 	private String reportKind;
-	
+
 	@Comment("报表所属模块（字典表：T_REPORT-MODLE_TYPE）")
 	@Column(name = "module_type", length = 5)
 	private String moduleType;
-	
+
 	@Comment("报表批次：（字典表：T_REPORT-REPORT_BATCH：0-4批，PBOC使用）")
 	@Column(name = "report_batch", length = 1)
 	private Integer reportBatch;
@@ -64,15 +64,15 @@ public class Report extends BasePageQueryProp {
 	@Column(name = "version_no", length = 16)
 	private String versionNo;
 
-
 	@Comment("报表模板下载地址")
 	@Column(name = "template_name", length = 128)
 	private String templateName;
-	
+
 	@Column(name = "download_url", length = 128)
 	private String downloadUrl;
 
-	public Report(){}
+	public Report() {
+	}
 
 	public String getId() {
 		return id;
@@ -169,7 +169,5 @@ public class Report extends BasePageQueryProp {
 	public void setDownloadUrl(String downloadUrl) {
 		this.downloadUrl = downloadUrl;
 	}
-	
-	
-	
+
 }

@@ -1,0 +1,60 @@
+{
+	"table": "T_APP_BANNER",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "grade",
+			"alias": "等级",
+			"desc": "等级",
+			"type": "string",
+			"group": "base",
+			"query": "1",
+			"query_order": "1",
+			"verify":"required"
+		},
+		{
+			"prop": "minExp",
+			"alias": "最小经验值",
+			"desc": "最小经验值",
+			"type": "string",
+			"group": "base",
+			"verify":"required"
+		},
+		{
+			"prop": "maxExp",
+			"alias": "最大经验值",
+			"desc": "最大经验值",
+			"type": "string",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "remark",
+			"alias": "备注",
+			"desc": "备注",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "createdTime",
+			"alias": "创建时间",
+			"desc": "创建时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "isDeleted",
+			"alias": "是否删除",
+			"desc": "是否删除",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		}
+	]
+}

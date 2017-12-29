@@ -43,6 +43,11 @@ public class TopicQuestion extends BaseAuditProp {
 	@JsonProperty("topicQuestionId")
 	private String id;
 
+	// 后台使用id
+	@Transient
+	@JsonProperty("id")
+	private String tqId;
+
 	@Comment("标题")
 	@Column(name = "title", length = 512, nullable = false)
 	private String title;
@@ -90,7 +95,7 @@ public class TopicQuestion extends BaseAuditProp {
 
 	@Transient
 	private List<QuestionAnswer> questionAnswers;
-	
+
 	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
 			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
@@ -147,6 +152,14 @@ public class TopicQuestion extends BaseAuditProp {
 
 	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
 		this.questionAnswers = questionAnswers;
+	}
+
+	public String getTqId() {
+		return tqId;
+	}
+
+	public void setTqId(String tqId) {
+		this.tqId = tqId;
 	}
 
 	public Integer getGrade() {
@@ -236,5 +249,5 @@ public class TopicQuestion extends BaseAuditProp {
 	public void setAnswerNum(Integer answerNum) {
 		this.answerNum = answerNum;
 	}
-	
+
 }

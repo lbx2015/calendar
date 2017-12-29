@@ -46,7 +46,7 @@ public class SearchReportsAdapter extends RecyclerView.Adapter<ReportOrderViewHo
     public void onBindViewHolder(final ReportOrderViewHolder h, int i) {
         final ReportResult r = mList.get(i);
         h.reportTitle.setText(r.title);
-        ZR.setReportName(h.reportName, r.code, r.frequency,r.reportBatch);
+        ZR.setReportName(h.code, r.code, r.frequency,r.reportBatch);
         if (r.isSubscribe == 0) {
             h.subscribed = false;
         } else {
@@ -86,7 +86,7 @@ public class SearchReportsAdapter extends RecyclerView.Adapter<ReportOrderViewHo
                 }
             }
         });
-        MyLog.d("reportName: " + h.reportName);
+        MyLog.d("reportName: " + h.code);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

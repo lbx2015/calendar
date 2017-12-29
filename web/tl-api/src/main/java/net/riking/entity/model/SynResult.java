@@ -19,16 +19,16 @@ public class SynResult extends BaseEntity {
 
 	private List<SysDays> days;
 
-	private List<QueryReport> reportList;
+	// private List<QueryReport> reportList;
 
 	public SynResult() {
 	}
 
-	public SynResult(List<Remind> remind, List<Todo> todo, List<SysDays> days, List<QueryReport> reportList) {
+	public SynResult(List<Remind> remind, List<Todo> todo, List<SysDays> days) {
+		super();
 		this.remind = remind;
 		this.todo = todo;
 		this.days = days;
-		this.reportList = reportList;
 	}
 
 	public List<SysDays> getDays() {
@@ -53,14 +53,6 @@ public class SynResult extends BaseEntity {
 
 	public void setTodo(List<Todo> todo) {
 		this.todo = todo;
-	}
-
-	public List<QueryReport> getReportList() {
-		return reportList;
-	}
-
-	public void setReportList(List<QueryReport> reportList) {
-		this.reportList = reportList;
 	}
 
 }

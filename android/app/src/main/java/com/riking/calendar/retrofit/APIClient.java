@@ -142,7 +142,7 @@ public class APIClient {
         for (Reminder r : reminders) {
             reminderModels.add(new ReminderModel(r));
         }
-        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
+        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 if (callBack != null) {
@@ -173,10 +173,10 @@ public class APIClient {
 
         Logger.d("zzw", "found padding tasks size " + tasks.size());
         for (Task t : tasks) {
-            models.add(t.getTodo());
+            models.add(new Todo(t));
         }
 
-        apiInterface.synchronousTasks(models).enqueue(new ZCallBack<ResponseModel<String>>() {
+        apiInterface.synchronousTasks(models).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 realm.executeTransaction(new Realm.Transaction() {
@@ -209,7 +209,7 @@ public class APIClient {
             return;
         }
         final ArrayList<Todo> tasks = new ArrayList<>(1);
-        Todo t = task.getTodo();
+        Todo t = new Todo(task);
         if (operationType == CONST.DELETE) {
             t.deleteFlag = 1;
         }
@@ -421,7 +421,7 @@ public class APIClient {
                         List<TaskModel> tasks = response._data.todo;
                         if (reminders != null) {
                             for (ReminderModel m : reminders) {
-                                int requestCode = realm.where(Reminder.class).equalTo("userId", m.id).findFirst().requestCode;
+                                int requestCode = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, m.id).findFirst().requestCode;
                                 Reminder r = new Reminder(m);
                                 remindIds.remove(r.id);
                                 r.requestCode = requestCode;
@@ -440,7 +440,7 @@ public class APIClient {
                         if (tasks != null) {
                             for (TaskModel m : tasks) {
                                 Task t = new Task(m);
-                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todoId).findFirst().requestCode;
+                                int requestCode = realm.where(Task.class).equalTo(Task.TODO_ID, t.todoId).findFirst().requestCode;
                                 t.requestCode = requestCode;
                                 taskIds.remove(t.todoId);
                                 realm.copyToRealmOrUpdate(t);
@@ -449,9 +449,9 @@ public class APIClient {
                         }
 
                         //delete those which is from server
-                        for (String id : taskIds) {
-                            realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst().deleteFromRealm();
-                        }
+//                        for (String id : taskIds) {
+//                            realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst().deleteFromRealm();
+//                        }
                     }
                 });
             }

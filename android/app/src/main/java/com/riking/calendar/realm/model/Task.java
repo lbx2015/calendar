@@ -32,7 +32,7 @@ public class Task extends RealmObject {
 
     // 提醒内容
 //    @Column(name = "content", length = 255)
-    @SerializedName("content")
+//    @SerializedName("content")
     public String content;
 
     // 是否重要（0-不重要；1-重要）
@@ -78,20 +78,5 @@ public class Task extends RealmObject {
         createdTime = m.appCreatedTime;
         isComplete = m.isComplete;
         completeDate = m.completeDate;
-    }
-
-    public Todo getTodo() {
-        Todo todo = new Todo();
-        todo.todoId = todoId;
-        todo.isImportant = isImportant;
-        todo.content = content;
-        todo.userId = userId;
-        todo.isOpen = isOpen;
-        todo.strDate = strDate;
-        todo.createdTime = createdTime;
-        todo.isCompleted = isComplete;
-        todo.deleteFlag = deleteState;
-        todo.completeDate = completeDate;
-        return todo;
     }
 }

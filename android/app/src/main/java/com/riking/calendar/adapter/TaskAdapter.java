@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CreateTaskActivity;
-import com.riking.calendar.activity.EditTaskActivity;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
@@ -25,7 +24,6 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +34,6 @@ import io.realm.RealmResults;
 /**
  * Created by zw.zhang on 2017/7/12.
  */
-
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
     //两个final int类型表示ViewType的两种类型
     private final int NORMAL_TYPE = 0;
@@ -75,12 +72,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             }
 
             if (r.isComplete == 1) {
-                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.done));
+                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
                 holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_background_b6b6b6));
                 holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
-                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
-                holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_323232));
+                holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_n));
+                holder.title.setTextColor(holder.title.getContext().getResources().getColor(R.color.color_222222));
                 holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
 
@@ -98,18 +95,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             holder.editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(v.getContext(), EditTaskActivity.class);
+                    Intent i = new Intent(v.getContext(), CreateTaskActivity.class);
                     i.putExtra("task_id", r.todoId);
                     i.putExtra("task_title", r.content);
                     i.putExtra("is_import", r.isImportant);
-                    i.putExtra("is_remind", r.isOpen);
-                    if (r.isOpen == 1) {
-                        try {
-                            i.putExtra("remind_time", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new SimpleDateFormat(CONST.yyyyMMddHHmm).parse(r.strDate)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
                     holder.sml.smoothCloseMenu();
                     v.getContext().startActivity(i);
                 }
@@ -182,7 +171,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                         public void run() {
                             if (completed) {
                                 final ArrayList<Todo> tasks = new ArrayList<>(1);
-                                Todo todo = task.getTodo();
+                                Todo todo = new Todo(task);
                                 todo.isCompleted = 1;
                                 tasks.add(todo);
 
@@ -212,13 +201,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                     public void onClick(View v) {
                         if (completed) {
                             completed = false;
-                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.not_done));
+                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.work_icon_checkbox_n));
                             title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                             //cancel the pending runnable to complete the task
                             handler.removeCallbacks(callBack);
                         } else {
                             completed = true;
-                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.done));
+                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
                             title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                             //complete the task after 5 seconds delay
                             handler.postDelayed(callBack, 5000);
@@ -230,19 +219,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
                     @Override
                     public void onClick(View v) {
-                        realm.executeTransaction
-                                (new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        if (task.isImportant == 1) {
-                                            important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 0;
-                                        } else {
-                                            important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
-                                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 1;
-                                        }
-                                    }
-                                });
+                        Todo todo = new Todo(task);
+                        if (todo.isImportant == 1) {
+                            todo.isImportant = 0;
+                        } else {
+                            todo.isImportant = 1;
+                        }
+                        final ArrayList<Todo> tasks = new ArrayList<>(1);
+                        tasks.add(todo);
+                        APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
+                            @Override
+                            public void callBack(ResponseModel<String> response) throws Exception {
+                                realm.executeTransaction
+                                        (new Realm.Transaction() {
+                                            @Override
+                                            public void execute(Realm realm) {
+                                                if (task.isImportant == 1) {
+                                                    important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
+                                                    realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 0;
+                                                } else {
+                                                    important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
+                                                    realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 1;
+                                                }
+                                            }
+                                        });
+                            }
+                        });
                     }
                 });
             }

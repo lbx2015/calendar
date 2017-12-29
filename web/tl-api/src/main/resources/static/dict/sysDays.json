@@ -1,0 +1,64 @@
+{
+	"table": "T_SYS_DAYS",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "dates",
+			"alias": "日期",
+			"desc": "日期",
+			"type": "string",
+			"query": "1",
+			"query_order": "1",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "weekday",
+			"alias": "星期(1-7)",
+			"desc": "星期(1-7)",
+			"type": "string",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "isWork",
+			"alias": "工作日标识",
+			"desc": "工作日标识",
+			"type": "enum",
+			"dict_key": "T_SYS_DAYS.ISWORK",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "isHoliday",
+			"alias": "国家节假日",
+			"desc": "国家节假日",
+			"type": "enum",
+			"dict_key": "T_SYS_DAYS.ISHOLIDAY",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "enabled",
+			"alias": "是否启用",
+			"desc": "是否启用",
+			"type": "enum",
+			"dict_key": "T_SYS_DAYS.ENABLED",
+			"group": "base"
+		},
+		{
+			"prop": "remark",
+			"alias": "备注",
+			"desc": "备注",
+			"type": "text",
+			"edit_block": "1",
+			"group": "base",
+			"hidden": "table"
+		}
+	]
+}

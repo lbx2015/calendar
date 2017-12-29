@@ -20,6 +20,22 @@
 			"hidden": "edit,priview,table"
 		},
 		{
+			"prop": "appUser.serialNumber",
+			"alias": "序号",
+			"desc": "序号",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview"
+		},
+		{
+			"prop": "appUserDetail.photoUrl",
+			"alias": "用户头像",
+			"desc": "用户头像",
+			"type": "string",
+			"group": "detail",
+			"hidden": "edit,priview"
+		},
+		{
 			"prop": "appUser.userName",
 			"alias": "用户名称",
 			"desc": "用户名称",
@@ -62,7 +78,7 @@
 			"desc": "用户登录密码",
 			"type": "string",
 			"group": "base",
-			"hidden": "table,preview"
+			"hidden": "edit,table"
 		},
 		{
 			"prop": "appUser.enabled",
@@ -79,7 +95,8 @@
 			"desc": "创建人ID",
 			"type": "string",
 			"group": "base",
-			"hidden": "edit,priview,table"
+			"hidden": "edit,priview,table",
+			"verify":"required"
 		},
 		{
 			"prop": "appUser.createdTime",
@@ -120,6 +137,7 @@
 			"group": "detail",
 			"hidden": "edit,priview,table"
 		},
+		
 		{
 			"prop": "appUserDetail.realName",
 			"alias": "真实姓名",
@@ -145,8 +163,8 @@
 		},
 		{
 			"prop": "appUserDetail.birthday",
-			"alias": "用户生日(yyyyMMdd)",
-			"desc": "用户生日(yyyyMMdd)",
+			"alias": "用户生日",
+			"desc": "用户生日",
 			"type": "string",
 			"group": "detail",
 			"hidden": "table"
@@ -200,14 +218,7 @@
 			"group": "detail",
 			"hidden": "table"
 		},
-		{
-			"prop": "appUserDetail.photoUrl",
-			"alias": "用户头像（存放用户头像名称）",
-			"desc": "用户头像（存放用户头像名称）",
-			"type": "string",
-			"group": "detail",
-			"hidden": "edit,priview,table"
-		},
+		
 		{
 			"prop": "appUserDetail.remindTime",
 			"alias": "全天提醒时间HHmm",
@@ -228,6 +239,14 @@
 			"prop": "appUserDetail.isGuide",
 			"alias": "是否引导",
 			"desc": "是否引导",
+			"type": "string",
+			"group": "detail",
+			"hidden": "edit,priview,table"
+		},
+		{
+			"prop": "prefixPhotoURL",
+			"alias": "前缀地址",
+			"desc": "前缀地址",
 			"type": "string",
 			"group": "detail",
 			"hidden": "edit,priview,table"

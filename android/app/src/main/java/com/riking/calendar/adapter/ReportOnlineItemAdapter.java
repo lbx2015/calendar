@@ -81,7 +81,7 @@ public class ReportOnlineItemAdapter extends RecyclerView.Adapter<ReportOnlineIt
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public TextView tv;
+        public View tv;
         public int position;
         public View divider;
         SwipeHorizontalMenuLayout sml;
@@ -112,7 +112,7 @@ public class ReportOnlineItemAdapter extends RecyclerView.Adapter<ReportOnlineIt
                     });
                 }
             });
-            tv = (TextView) view.findViewById(R.id.tv_text);
+            tv =  view.findViewById(R.id.tv_text);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override

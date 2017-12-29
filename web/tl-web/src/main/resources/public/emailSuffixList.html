@@ -20,10 +20,10 @@
 					<i class="layui-icon">&#xe608;</i>
 					添加
 				</button>
-				<button class="layui-btn layui-btn-small layui-btn-primary" onclick="addMore()">
+				<!-- <button class="layui-btn layui-btn-small layui-btn-primary" onclick="addMore()">
 					<i class="layui-icon">&#xe608;</i>
 					批量添加
-				</button>
+				</button> -->
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html" data-attr="emailSuffix.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
@@ -47,6 +47,7 @@
             var title = "添加数据";
             View.openDialog(url, title);
         });
+        
 
         var form = layui.form;
         //监听提交，设置为不刷新页面
@@ -210,14 +211,17 @@
 
     //删除
     function delData() {
+    	var ids = [];
         TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
-            var arrChk = $("input[name='tdCheckbox']");
-            var ids = [];
-            $(arrChk).each(function() {
-                if ($(this).next('div').hasClass("layui-form-checked")) {
-                    ids.push($(this).data("id"));
-                }
-            });
+        	jQuery("tbody input[name='tdCheckbox']:checked").map(function () {
+        		var id = jQuery.trim(jQuery(this).closest("tr").find("td:eq(1)").text());
+        		ids.push(id);
+        	})
+        	
+            if (ids.length < 1) {
+    			TmplUtils.showMsgFail("请至少选择一项数据");
+    			return;
+    		}
             var url = Const.apiUrl + "/emailSuffix/delMore"
             View.post(url, ids, function(resp) {
                 TmplUtils.showMsgSuccess("删除成功");
