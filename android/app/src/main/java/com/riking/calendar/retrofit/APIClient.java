@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
@@ -69,6 +70,7 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
 import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.convert.DateTypeDeserializer;
 
@@ -237,6 +239,31 @@ public class APIClient {
                             } else {
                                 addAlarm4Task(task);
                             }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public static void addRemind(final ReminderModel r) {
+        MyLog.d(" remind model: " + r);
+        apiInterface.saveRemind(r).enqueue(new ZCallBackWithFail<ResponseModel<ReminderModel>>() {
+            @Override
+            public void callBack(ResponseModel<ReminderModel> response) throws Exception {
+                if (failed) {
+                    Toast.makeText(MyApplication.APP, "上传失败", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MyApplication.APP, "上传成功", Toast.LENGTH_LONG).show();
+                }
+                ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        Reminder reminder = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, r.id).findFirst();
+                        if (failed) {
+                            reminder.syncStatus = 1;
+                        } else {
+                            addAlarm(reminder, reminder.reminderTime);
                         }
                     }
                 });
@@ -432,7 +459,7 @@ public class APIClient {
 
                         //delete those which is from server
                         for (String id : remindIds) {
-                            Reminder r = realm.where(Reminder.class).equalTo("userId", id).findFirst();
+                            Reminder r = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, id).findFirst();
                             cancelAlarm(r.requestCode);
                             r.deleteFromRealm();
                         }
@@ -760,7 +787,11 @@ public class APIClient {
         apiInterface.completeReport(params).enqueue(c);
     }
 
-    public static void saveTodo( List<Todo> params, ZCallBackWithFail<ResponseModel<String>> c) {
+    public static void saveTodo(List<Todo> params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.synchronousTasks(params).enqueue(c);
+    }
+
+    public static void saveRemind(ReminderModel model, ZCallBack<ResponseModel<ReminderModel>> callBack) {
+        apiInterface.saveRemind(model).enqueue(callBack);
     }
 }

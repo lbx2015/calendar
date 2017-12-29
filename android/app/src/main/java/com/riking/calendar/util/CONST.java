@@ -9,7 +9,7 @@ public class CONST {
     public static final byte REPEAT_FLAG_WORK_DAY = 1;
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
     public static final byte NOT_REPEAT_FLAG_WEEK = 0;
-    public static final String TL_API_TEST = "http://172.16.64.160:8281/";
+    public static final String TL_API_TEST = "http://172.16.64.177:6061/tl-api-test/";
     //    public static final String TL_API_TEST = "http://172.16.64.190:4061/tl-api-test/";
     public static final String TL_API_DEV = "http://172.16.64.190:8281/";
     public static final String URL_BASE = "http://172.16.64.190:8281/";
@@ -44,6 +44,7 @@ public class CONST {
     //image path external storage
     public static final String IMAGE_PATH = "/rikingImage";
     public static final String REMINDER_TITLE = "Reminder title";
+    public static final String REMINDER_ID = "REMIND_ID";
     //Date formats
     public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
     public static final String yyyy_mm_dd_hh_mm = "yyyy-MM-dd HH:mm";
@@ -58,6 +59,7 @@ public class CONST {
     public static final String DIS_ORDER_REPORTS = "DIS_ORDER_REPORTS";
     public static final String ORDER_REPORTS_CHANGED = "ORDER_REPORTS_CHANGED";
     public static final int REQUEST_CODE = 1;
+    public static final int REQUEST_CODE_ADD_REMINDER = 1;
     public static final String EDIT_MODE = "EDIT_MODE";
     public static final String USER_REAL_NAME = "USER_REAL_NAME";
     //The whole information of logining user in gson string

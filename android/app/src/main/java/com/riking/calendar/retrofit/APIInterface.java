@@ -100,7 +100,6 @@ public interface APIInterface {
     @POST("api/users?")
     Call<UserList> doCreateUserWithField(@Field("queryParam") String name, @Field("job") String job);
 
-
     @POST("remindApp/save")
     Call<ResponseBody> createRemind(@Body ReminderModel reminder);
 
@@ -127,7 +126,6 @@ public interface APIInterface {
 
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
-
 
     @POST("common/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
@@ -422,5 +420,8 @@ public interface APIInterface {
     //完成报表/也可以取消完成
     @POST("report/complete")
     Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
+
+    @POST("report/remindSave")
+    Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
 
 }
