@@ -11,17 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.entity.PageQuery;
 import net.riking.dao.repo.RemindRepo;
 import net.riking.dao.repo.ReportCompletedRelRepo;
+import net.riking.dao.repo.ReportRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Remind;
+import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportListResult;
 import net.riking.entity.model.ReportSubscribeRel;
@@ -50,6 +54,9 @@ import net.riking.util.Utils;
 public class AppReportServer {
 	@Autowired
 	ReportService reportService;
+	
+	@Autowired
+	ReportRepo reportRepo;
 
 	@Autowired
 	ReportSubscribeRelRepo reportSubscribeRelRepo;
@@ -68,6 +75,25 @@ public class AppReportServer {
 
 	@Autowired
 	RemindRepo remindRepo;
+	
+	@Autowired
+	Config config;
+	
+	
+	@ApiOperation(value = "跳转<报文详情>html5页面", notes = "POST")
+	@RequestMapping(value = "/reportHtml", method = RequestMethod.POST)	
+	public AppResp reportApp(@RequestBody Report report) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH +"?id="+ report.getId() 
+																		+"&url="+config.getAppApiPath(),CodeDef.SUCCESS);
+	}
+	
+	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
+	@RequestMapping(value = "/getOne", method = RequestMethod.GET)
+	public AppResp getOne(@RequestParam("id") String id) {
+		Report reportList = reportRepo.findOne(id);
+		return new AppResp(reportList, CodeDef.SUCCESS);
+	}
+	
 
 	/**
 	 * 可根据报表名称查询相关报表

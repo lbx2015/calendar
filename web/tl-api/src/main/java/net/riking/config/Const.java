@@ -9,6 +9,11 @@ import org.apache.activemq.ActiveMQConnection;
  *
  */
 public class Const {
+	
+	public static final Integer IS_DELETE = 0;
+	
+	public static final Integer IS_NOT_DELETE = 1;
+	
 	public static final String EMPTY = "{}";
 
 	public static final String MODEL_ATTRS_JSON_PATH = "/static/dict/";
@@ -43,17 +48,15 @@ public class Const {
 
 	public static final String TL_FLAG_PATH = "/images/flag/";
 
-	public static final String TL_ABOUT_HTML5_PATH = "/financialDeskAppAbout.html";
+	public static final String TL_ABOUT_HTML5_PATH = "/about.html";
 
-	public static final String TL_AGREEMENT_HTML5_PATH = "/agreement.html";
+	public static final String TL_POLICY_HTML5_PATH = "/policy.html";
 
-	public static final String TL_MYGRADE_HTML5_PATH = "/myGrade.html";
+	public static final String TL_REPORT_HTML5_PATH = "/report.html";
+	
+	public static final String TL_USER_HTML5_PATH ="/userGrade.html";
 
 	public static final String TL_QUESTIONSHARE_HTML5_PATH = "/questionShare.html";
-
-	public static final String TL_REPORT_HTML5_PATH = "/reportListApp.html?id=";
-
-	public static final String TL_REPORT_RICH_TEXT_HTML5_PATH = "/reportRichText.html?id=";
 
 	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/inquiry.html";
 
