@@ -12,7 +12,7 @@ import net.riking.entity.model.AppUserGrade;
 @Repository
 public interface AppUserGradeRepo extends JpaRepository<AppUserGrade, Integer>, JpaSpecificationExecutor<AppUserGrade> {
 
-	@Query("from AppUserGrade ")
+	@Query("from AppUserGrade where isDeleted= ?1")
 	List<AppUserGrade> findByIsDeleted(Integer isDeleted);
 
 }

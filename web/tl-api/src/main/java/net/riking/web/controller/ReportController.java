@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.ReportRepo;
@@ -56,6 +57,7 @@ public class ReportController {
 	// 增，改使用RequestMethod.POST，不能重复请求
 	// 为降低难度与兼容性， DELETE,PUT等操作不用。
 
+	@AuthPass
 	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
@@ -73,7 +75,7 @@ public class ReportController {
 			return new Resp(null, CodeDef.ERROR);
 		}
 	}
-
+	
 	@ApiOperation(value = "得到<全部>报表信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute ReportVO reportVO) {
