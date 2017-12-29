@@ -138,6 +138,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                             shareBottomDialog.dismiss();
                             HomeParams p = new HomeParams();
                             p.enabled = 0;//屏蔽
+                            p.objId = r.qaId;
                             APIClient.shieldQuestion(p, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {

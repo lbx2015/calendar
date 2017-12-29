@@ -424,4 +424,6 @@ public interface APIInterface {
     @POST("report/remindSave")
     Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
 
+    @POST("user/myGrade")
+    Call<ResponseModel<String>> myGrade(@Body UserParams reminderModel);
 }

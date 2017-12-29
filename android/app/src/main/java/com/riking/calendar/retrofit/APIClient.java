@@ -177,7 +177,6 @@ public class APIClient {
         for (Task t : tasks) {
             models.add(new Todo(t));
         }
-
         apiInterface.synchronousTasks(models).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
@@ -793,5 +792,9 @@ public class APIClient {
 
     public static void saveRemind(ReminderModel model, ZCallBack<ResponseModel<ReminderModel>> callBack) {
         apiInterface.saveRemind(model).enqueue(callBack);
+    }
+
+    public static void myGrade( UserParams reminderModel, ZCallBack<ResponseModel<String>> c){
+        apiInterface.myGrade(reminderModel).enqueue(c);
     }
 }
