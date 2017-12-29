@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/margin_dp_7.5"
-            android:src="@drawable/confirm" />
+            android:src="@drawable/work_rm_icon_dh" />
     </RelativeLayout>
 
     <View

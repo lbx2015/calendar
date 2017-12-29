@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
+<Configuration status="info">
 	<Appenders>
+		<RollingFile name="RollingFile" fileName="/riking/logs/tl-api/app.log"
+			filePattern="/riking/logs/tl-api/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout charset="UTF-8">
+				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="80 MB" />
+			</Policies>
+		</RollingFile>
 		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d %-5p - %m%n" />
+			<PatternLayout pattern="%d - %m%n" />
 		</Console>
 	</Appenders>
 	<Loggers>
@@ -14,8 +24,10 @@
 		<Logger name="org.hibernate.validator.internal.util.Version"
 			level="warn" />
 		<Logger name="org.springframework" level="warn" />
-		<Logger name="com.github" level="info" />
+		<Logger name="com.github" level="warn" />
+		<Logger name="net.riking" level="info" />
 		<Root level="debug">
+			<AppenderRef ref="RollingFile" level="info" />
 			<AppenderRef ref="Console" level="info" />
 		</Root>
 	</Loggers>
