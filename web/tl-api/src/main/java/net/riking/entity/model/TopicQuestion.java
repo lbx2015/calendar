@@ -1,6 +1,7 @@
 package net.riking.entity.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,6 +42,11 @@ public class TopicQuestion extends BaseAuditProp {
 	@GeneratedValue(generator = "system-uuid")
 	@JsonProperty("topicQuestionId")
 	private String id;
+
+	// 后台使用id
+	@Transient
+	@JsonProperty("id")
+	private String tqId;
 
 	@Comment("标题")
 	@Column(name = "title", length = 512, nullable = false)
@@ -78,17 +85,24 @@ public class TopicQuestion extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	// 等级
+	@Transient
+	private Integer grade;
+
 	@Transient
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
 
-	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAudit, String title, String content,
+	@Transient
+	private List<QuestionAnswer> questionAnswers;
+
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
 			String topicId, String userId, String userName, String photoUrl, Integer experience) {
 		super();
 		this.setId(id);
 		this.setCreatedTime(createdTime);
 		this.setModifiedTime(modifiedTime);
-		this.setIsAudit(isAudit);
+		this.setIsAduit(isAduit);
 		this.title = title;
 		this.content = content;
 		this.topicId = topicId;
@@ -98,12 +112,62 @@ public class TopicQuestion extends BaseAuditProp {
 		this.experience = experience;
 	}
 
+	public TopicQuestion(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
+			String topicId, String userId, String userName, String photoUrl, Integer experience, String isFollow) {
+		super();
+		this.setId(id);
+		this.setCreatedTime(createdTime);
+		this.setModifiedTime(modifiedTime);
+		this.setIsAduit(isAduit);
+		this.title = title;
+		this.content = content;
+		this.topicId = topicId;
+		this.userId = userId;
+		this.userName = userName;
+		this.photoUrl = photoUrl;
+		this.experience = experience;
+		if (StringUtils.isBlank(isFollow)) {
+			this.isFollow = 0;
+		} else {
+			this.isFollow = 1;
+		}
+	}
+
+	public TopicQuestion() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public List<QuestionAnswer> getQuestionAnswers() {
+		return questionAnswers;
+	}
+
+	public void setQuestionAnswers(List<QuestionAnswer> questionAnswers) {
+		this.questionAnswers = questionAnswers;
+	}
+
+	public String getTqId() {
+		return tqId;
+	}
+
+	public void setTqId(String tqId) {
+		this.tqId = tqId;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getId() {

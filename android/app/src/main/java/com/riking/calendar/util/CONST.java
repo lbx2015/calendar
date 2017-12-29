@@ -5,13 +5,12 @@ package com.riking.calendar.util;
  */
 
 public class CONST {
-    public static final int CBRC = 0;
-    public static final int PBOC = 1;
     public static final byte REPEAT_FLAG_WEEK = 3;
     public static final byte REPEAT_FLAG_WORK_DAY = 1;
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
     public static final byte NOT_REPEAT_FLAG_WEEK = 0;
-    public static final String TL_API_TEST = "http://172.16.64.190:8381/tl-api-test/";
+    public static final String TL_API_TEST = "http://172.16.64.160:8281/";
+    //    public static final String TL_API_TEST = "http://172.16.64.190:4061/tl-api-test/";
     public static final String TL_API_DEV = "http://172.16.64.190:8281/";
     public static final String URL_BASE = "http://172.16.64.190:8281/";
     //    public static final String URL_BASE = "http://172.16.32.14:6061/tl-api/";
@@ -35,6 +34,7 @@ public class CONST {
     public static final String PHONE_SEQ_NUMBER = "phoneSeqNum";
     public static final String USER_NAME = "phoneSeqNum";
     public static final String USER_COMMENTS = "USER_COMMENTS";
+    public static final String EMAIL_VALIDATE = "EMAIL_VALIDATE";
     public static final String USER_EMAIL = "USER_EMAIL";
     public static final String USER_PASSWORD = "USER_PASSWORD";
     public static final String USER_DEPT = "USER_DEPT";
@@ -64,6 +64,17 @@ public class CONST {
     public static final String CURRENT_LOGIN_USER = "CURRENT_LOGIN_USER";
     public static final String NEWS_ID = "NEWS_ID";
     public static final String CHECK_NOT_LOGIN_ON_CLICK = "CHECK_NOT_LOGIN_ON_CLICK";
+    public static final String QUESTION_ID = "QUESTION_ID";
+    public static final String TOPIC_ID = "TOPIC_ID";
+    public static final String ANSWER_ID = "ANSWER_ID";
+    public static final String MY_FOLLOW = "MY_FOLLOW";
+    public static final String ANSWER_COMMENT_NUM = "ANSWER_COMMENT_NUM";
+    public static final String COMMENT_NUM = "COMMENT_NUM";
+    public static final String SEARCH_CONDITION = "SEARCH_CONDITION";
+
+    public static final int UPDATE_USER_INFO_REQUES = 1111;
+    public static final int VERIFY_EMAIL = 1112;
+    public static final String ACTIVITY_NAME = "ACTIVITY_NAME";
 
     //滚动事件
     public enum ScrollDirection {

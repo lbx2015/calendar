@@ -8,16 +8,20 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.riking.config.CodeDef;
 import net.riking.core.entity.ILog;
 import net.riking.core.entity.LogConfig;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class AppResp implements ILog {
-	
+
 	protected Object _data;// 返回的数据
+
 	protected Short code; // 状态码
+
 	protected String codeDesc; // 状态码描述
+
 	protected Integer runtime = 0; // 运行时长
 
 	public AppResp() {
@@ -32,33 +36,37 @@ public class AppResp implements ILog {
 	public AppResp(Object _data) {
 		this(_data, (short) 200);
 	}
-	
+
 	public AppResp(Object _data, Short code) {
 		this(_data, code, "");
 	}
 
 	public AppResp(Object _data, Short code, String codeDesc) {
-		this._data =_data;
+		this._data = _data;
 		this.code = code;
 		this.codeDesc = codeDesc;
 	}
-	
+
 	public AppResp(Short errorCode, String errorCodeDesc) {
-		this._data = "";
 		this.code = errorCode;
 		this.codeDesc = errorCodeDesc;
 	}
-	
-	/*@JsonIgnore
-	public Object getData() {
-		return _data;
+
+	public AppResp(String errorCodeDesc, int... notValidValues) {
+		this.code = (CodeDef.EMP.PARAMS_ERROR);
+
+		String errorVals = "";
+		for (int i = 0; i < notValidValues.length; i++) {
+			errorVals = errorVals + i;
+		}
+		this.codeDesc = "参数" + errorCodeDesc + "" + errorVals;
 	}
 
-	public void setData(Object data) {
-		if (data != null) {
-			this._data = data;
-		}
-	}*/
+	/*
+	 * @JsonIgnore public Object getData() { return _data; }
+	 * 
+	 * public void setData(Object data) { if (data != null) { this._data = data; } }
+	 */
 
 	public Object get_data() {
 		return _data;

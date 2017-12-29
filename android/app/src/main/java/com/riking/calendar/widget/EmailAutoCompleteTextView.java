@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.riking.calendar.R;
+import com.riking.calendar.util.ZR;
 
 /**
  * Created by zw.zhang on 2017/8/16.
@@ -21,8 +21,7 @@ public class EmailAutoCompleteTextView extends AppCompatAutoCompleteTextView {
 
     private static final String TAG = "zzw";
 
-    private String[] emailSufixs = new String[]{"@qq.com", "@163.com", "@126.com", "@gmail.com", "@sina.com", "@hotmail.com",
-            "@yahoo.cn", "@sohu.com", "@foxmail.com", "@139.com", "@yeah.net", "@vip.qq.com", "@vip.sina.com"};
+    private String[] emailSufixs = ZR.emailSufixs;
 
     public EmailAutoCompleteTextView(Context context) {
         super(context);

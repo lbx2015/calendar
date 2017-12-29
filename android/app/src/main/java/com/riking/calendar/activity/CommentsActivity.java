@@ -1,6 +1,7 @@
 package com.riking.calendar.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -42,6 +43,7 @@ import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/24.
+ * news comments page
  */
 
 public class CommentsActivity extends AppCompatActivity { //Fragment 数组
@@ -62,14 +64,19 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     private boolean isHasLoadedAll = false;
     private int nextPage;
     private String newsId;
+    private TextView activityTitle;
+    private int commentsNum;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        newsId = getIntent().getStringExtra(CONST.NEWS_ID);
+        Intent i = getIntent();
+        newsId = i.getStringExtra(CONST.NEWS_ID);
+        commentsNum = i.getIntExtra(CONST.COMMENT_NUM, 0);
         init();
+        activityTitle.setText("评论" + ZR.getNumberString(commentsNum));
     }
 
     private void init() {
@@ -78,6 +85,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        activityTitle = findViewById(R.id.activity_title);
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);
@@ -167,13 +175,12 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                     params.content = commentContent;
                     params.objType = 2;
                     if (replyComment != null) {
-                        params.userId = replyComment.userId;
                         params.commentId = replyComment.newsCommentId;
                         //reset to null
                         replyComment = null;
 
                     } else if (replyReply != null) {
-                        params.userId = replyReply.fromUser.userId;
+                        params.toUserId = replyReply.fromUser.userId;
                         params.commentId = replyReply.commentId;
                         //reset to null
                         replyReply = null;
@@ -189,10 +196,14 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
                             } else {
                                 writeComment.setText("");
-                                MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
-                                replyListAdapter.mList.add(0, response._data);
-                                MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
-                                replyListAdapter.notifyItemInserted(0);
+                                if (replyListAdapter.mList.size() > 0) {
+                                    MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
+                                    replyListAdapter.mList.add(0, response._data);
+                                    MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
+                                    replyListAdapter.notifyItemInserted(0);
+                                } else {
+                                    loadData(1);
+                                }
 //                                replyListAdapter.notifyDataSetChanged();
 //                                replyRecyclerView.scrollToPosition(0);
                                 Toast.makeText(CommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
@@ -227,6 +238,27 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
 
     private void loadData(final int page) {
         isLoading = true;
+        loadNews(page);
+       /* new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (page > 3) {
+                    Toast.makeText(CommentsActivity.this, "没有更多数据了",
+                            Toast.LENGTH_SHORT).show();
+                    isHasLoadedAll = true;
+                    return;
+                }
+                for (int i = 0; i <= 15; i++) {
+                    mAdapter.add(i + "");
+                }
+
+                isLoading = false;
+                nextPage = page + 1;
+            }
+        }, 1);*/
+    }
+
+    private void loadNews(final int page) {
         NewsParams p = new NewsParams();
         p.newsId = newsId;
 
@@ -245,23 +277,6 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                 nextPage = page + 1;
             }
         });
-       /* new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (page > 3) {
-                    Toast.makeText(CommentsActivity.this, "没有更多数据了",
-                            Toast.LENGTH_SHORT).show();
-                    isHasLoadedAll = true;
-                    return;
-                }
-                for (int i = 0; i <= 15; i++) {
-                    mAdapter.add(i + "");
-                }
-
-                isLoading = false;
-                nextPage = page + 1;
-            }
-        }, 1);*/
     }
 
     public void clickBack(final View view) {

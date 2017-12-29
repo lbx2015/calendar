@@ -1,10 +1,13 @@
 package net.riking.web.app;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.util.TextUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,21 +24,34 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
-import net.riking.core.entity.model.ModelPropDict;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.AppVersionRepo;
 import net.riking.dao.repo.IndustryRepo;
+import net.riking.dao.repo.TQuestionRelRepo;
+import net.riking.dao.repo.TopicRelRepo;
+import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.AppUserRecommend;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppVersion;
+import net.riking.entity.model.Email;
+import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.Industry;
+import net.riking.entity.model.Recommend;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.AppVersionParams;
 import net.riking.entity.params.IndustryParams;
+import net.riking.entity.params.TQuestionParams;
+import net.riking.entity.params.UserParams;
 import net.riking.entity.params.ValidParams;
-import net.riking.service.AppUserCommendService;
+import net.riking.service.AppUserService;
+import net.riking.service.ReCommendService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
+import net.riking.util.EmailUtil;
+import net.riking.util.MQProduceUtil;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 公共模块
@@ -65,7 +81,22 @@ public class CommonServer {
 	SmsUtil smsUtil;
 
 	@Autowired
-	AppUserCommendService appUserCommendServie;
+	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	TQuestionRelRepo tQuestionRelRepo;
+
+	@Autowired
+	TopicRelRepo topicRelRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
+
+	@Autowired
+	AppUserService appUserService;
+
+	@Autowired
+	ReCommendService appUserReCommendServie;
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
 	 */
@@ -116,10 +147,99 @@ public class CommonServer {
 	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/getAllEmailSuffix", method = RequestMethod.POST)
 	public AppResp getAllEmailSuffix_() {
-		List<ModelPropDict> list = sysDataservice.getDicts("T_APP_USER", "EMAILSUFFIX");
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("emailSuffix", list);
-		return new AppResp(result, CodeDef.SUCCESS);
+		List<EmailSuffix> list = sysDataservice.getEmailSuffix(EmailSuffix.class.getName().toUpperCase());
+		List<String> emailSuffixs = new ArrayList<String>();
+		for (EmailSuffix emailSuffix : list) {
+			emailSuffixs.add("@" + emailSuffix.getEmailSuffix());
+		}
+		return new AppResp(emailSuffixs, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * 
+	 * @param userId,email
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "发送邮箱认证", notes = "POST")
+	@RequestMapping(value = "/sendEmailVerifyCode", method = RequestMethod.POST)
+	public AppResp sendEmailVerifyCode_(@RequestBody UserParams userParams) throws ParseException {
+		if (null == userParams) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (null == userParams.getUserId()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		AppUser appUser = new AppUser();
+		appUser = appUserRepo.findOne(userParams.getUserId());
+		appUser.setEmail(userParams.getEmail());
+
+		Email email = appUserService.getMyEmail();
+		if (StringUtils.isNotBlank(appUser.getEmail())) {
+			String verifyCode = "";
+			for (int i = 0; i < 6; i++) {
+				verifyCode += (int) (Math.random() * 9);
+			}
+			logger.info("邮箱认证{}获取验证码成功", verifyCode);
+			RedisUtil.getInstall().setObject(Const.VALID_ + appUser.getEmail().trim(), Const.VALID_CODE_TIME,
+					verifyCode);
+			email.setReceiveMail(appUser.getEmail());
+			email.setReceiver(appUser.getUserName());
+			email.setTheme("邮箱认证");
+			email.setContent("验证码：" + verifyCode);
+
+			logger.info("邮箱信息：" + email.toString());
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("verifyCode", verifyCode);
+			// 发送邮箱
+			try {
+				EmailUtil.sendEmail(email);
+			} catch (Exception e) {
+				logger.error("邮件发送失败" + e);
+				return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
+			}
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+		} else {
+			return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
+		}
+	}
+
+	/**
+	 * 
+	 * @param userId verifyCode,email
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "邮箱验证码验证", notes = "POST")
+	@RequestMapping(value = "/emailIdentify", method = RequestMethod.POST)
+	public AppResp emailIdentify_(@RequestBody UserParams userParams) throws ParseException {
+		if (null == userParams) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (null == userParams.getUserId()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (null == userParams.getEmail()) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		try {
+			boolean isRn = smsUtil.checkValidCode(userParams.getEmail(), userParams.getVerifyCode());
+			if (!isRn) {
+				return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
+			} else {
+				appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			if (e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT + "")) {
+				return new AppResp(CodeDef.EMP.CHECK_CODE_TIME_OUT, CodeDef.EMP.CHECK_CODE_TIME_OUT_DESC);
+			} else {
+				return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
+			}
+
+		}
+
 	}
 
 	/**
@@ -161,7 +281,48 @@ public class CommonServer {
 	@ApiOperation(value = "获取推荐报表", notes = "POST")
 	@RequestMapping(value = "/getRecommendReport", method = RequestMethod.POST)
 	public AppResp getCommend() {
-		Set<AppUserRecommend> appUserRecommends = appUserCommendServie.findALL();
+		Set<Recommend> appUserRecommends = appUserReCommendServie.findALL();
 		return new AppResp(appUserRecommends, CodeDef.SUCCESS);
 	}
+
+	/**
+	 * 问题，话题，用户的关注[userId,objType(1-问题；2-话题；3-用户),attentObjId（关注类型ID）,enabled（1-关注；0-取消）]
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "问题，话题，用户的关注", notes = "POST")
+	@RequestMapping(value = "/follow", method = RequestMethod.POST)
+	public AppResp follow_(@RequestBody TQuestionParams tQuestionParams) {
+		tQuestionParams.setMqOptType(Const.MQ_OPT_FOLLOW);
+		JSONObject jsonArray = JSONObject.fromObject(tQuestionParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		// 实时返回关注用户状态，具体操作放在mq里面操作
+		switch (tQuestionParams.getObjType()) {
+			// 用户关注
+			case Const.OBJ_TYPE_3:
+				UserFollowRel userFollowRel = new UserFollowRel();
+				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
+					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：2-互相关注
+					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
+							tQuestionParams.getUserId());// 对方的点赞记录
+					if (toUserFollowRel != null) {
+						UserFollowRel rels = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getUserId(),
+								tQuestionParams.getAttentObjId());
+						if (null == rels) {
+							// 更新对方关注表，互相关注
+							userFollowRel.setFollowStatus(2);// 互相关注
+						}
+					} else {
+						// 如果传过来的参数是关注，保存新的一条关注记录
+						userFollowRel.setFollowStatus(1);// 非互相关注
+					}
+				}
+				return new AppResp(userFollowRel.getFollowStatus(), CodeDef.SUCCESS);
+			default:
+				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+
+	}
+
 }

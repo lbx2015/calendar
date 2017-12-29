@@ -1,44 +1,27 @@
 package com.riking.calendar.adapter;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.adapter.base.ZAdater;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.riking.calendar.viewholder.SearchTopicViewHolder;
 
 
-public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
-    private Context context;
-    private List<String> mList;
-
-    public SearchTopicAdapter(Context context) {
-        this.context = context;
-        mList = new ArrayList<>();
-    }
+public class SearchTopicAdapter extends ZAdater<SearchTopicViewHolder, Topic> {
 
     @Override
-    public ExcellentViewHolderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.search_topic_item, viewGroup, false);
-        return new ExcellentViewHolderViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final ExcellentViewHolderViewHolder h, int i) {
-        h.userName.setText("银民银行数据大集中");
+    public void onBindVH(final SearchTopicViewHolder h, int i) {
+        Topic topicResult = mList.get(i);
+        h.title.setText(topicResult.title);
+        h.summary.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
         RequestOptions options = new RequestOptions();
-        Glide.with(h.userImage.getContext()).load(R.drawable.img_user_head)
-                .apply(options.fitCenter())
-                .into(h.userImage);
+
+        ZR.setImage(h.topicImage, topicResult.topicUrl);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,10 +43,19 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
 
             }
         });
-        showInvited(h);
+
+        ZR.setTopicFollowClickListener(topicResult, h.followButton, h.followTv);
+        ZR.showTopicFollowStatus(h.followButton, h.followTv, topicResult.isFollow);
     }
 
-    private void showInvited(ExcellentViewHolderViewHolder h) {
+    @Override
+    public SearchTopicViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.search_topic_item, viewGroup, false);
+        return new SearchTopicViewHolder(view);
+    }
+/*
+    private void showInvited(SearchTopicViewHolder h) {
         if (!h.invited) {
             h.followTv.setText("关注");
             h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
@@ -76,20 +68,5 @@ public class SearchTopicAdapter extends RecyclerView.Adapter<ExcellentViewHolder
             h.followTv.setTextColor(ZR.getColor(R.color.color_999999));
             h.followButton.setBackground(h.followButton.getResources().getDrawable(R.drawable.follow_border_gray));
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    public void add(String s) {
-        mList.add(s);
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
-    }
+    }*/
 }

@@ -198,7 +198,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.geronimo.javamail</groupId>
+			<artifactId>geronimo-javamail_1.4_mail</artifactId>
+			<version>1.9.0-alpha-2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 		<!-- jedis 2.9 -->
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -207,7 +216,103 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-
+		<!-- mq jar包 -->
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>dmqs-client</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+	 	<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>activemq-client</artifactId>
+			<version>5.14.3</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>activemq-jms-pool</artifactId>
+			<version>5.14.3</version>
+		</dependency>
+ 		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>activemq-pool</artifactId>
+			<version>5.14.3</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>geronimo-j2ee-management_1.1_spec</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>geronimo-jms_1.1_spec</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>geronimo-jta_1.0.1B_spec</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>hawtbuf</artifactId>
+			<version>1.11</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>hawtbuf-proto</artifactId>
+			<version>1.11</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>hawtbuf-protoc</artifactId>
+			<version>1.11</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.13</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>slf4j-nop</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>riking.net</groupId>
+			<artifactId>SHCPE-Client</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- mq jar包 -->
 	</dependencies>
 
 </project>

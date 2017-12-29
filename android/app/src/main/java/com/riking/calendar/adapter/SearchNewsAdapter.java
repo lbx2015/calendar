@@ -1,17 +1,20 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.util.ZR;
-import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
+import com.riking.calendar.activity.NewsDetailActivity;
+import com.riking.calendar.pojo.server.NewsResult;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.ZGoto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ import java.util.List;
 
 public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.MyViewHolder> {
     private Context context;
-    private List<String> mList;
+    private List<NewsResult> mList;
 
     public SearchNewsAdapter(Context context) {
         this.context = context;
@@ -35,6 +38,19 @@ public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.My
 
     @Override
     public void onBindViewHolder(final SearchNewsAdapter.MyViewHolder h, int i) {
+        final NewsResult news = mList.get(i);
+        h.newsTitleTv.setText(news.title);
+        h.newsUpdateTimeTv.setText(DateUtil.date2String(news.createdTime, CONST.yyyy_mm_dd_hh_mm));
+
+        h.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, NewsDetailActivity.class);
+                i.putExtra(CONST.NEWS_ID, news.newsId);
+                MyLog.d("click newsId " + news.newsId);
+                ZGoto.to(i);
+            }
+        });
     }
 
     @Override
@@ -42,8 +58,8 @@ public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.My
         return mList.size();
     }
 
-    public void add(String s) {
-        mList.add(s);
+    public void setData(List<NewsResult> data) {
+        this.mList = data;
         notifyDataSetChanged();
     }
 
@@ -52,10 +68,11 @@ public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.My
         notifyDataSetChanged();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView newsTitleTv;
         TextView newsUpdateTimeTv;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             newsTitleTv = itemView.findViewById(R.id.news_title);

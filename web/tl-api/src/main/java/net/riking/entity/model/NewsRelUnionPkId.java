@@ -18,10 +18,13 @@ public class NewsRelUnionPkId extends BaseEntity {
 
 	private String newsId;
 
-	public NewsRelUnionPkId(String userId, String newsId) {
+	private Integer dataType;
+
+	public NewsRelUnionPkId(String userId, String newsId, Integer dataType) {
 		super();
 		this.userId = userId;
 		this.newsId = newsId;
+		this.dataType = dataType;
 	}
 
 	public NewsRelUnionPkId() {
@@ -45,10 +48,19 @@ public class NewsRelUnionPkId extends BaseEntity {
 		this.newsId = newsId;
 	}
 
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dataType == null) ? 0 : dataType.hashCode());
 		result = prime * result + ((newsId == null) ? 0 : newsId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
@@ -63,6 +75,11 @@ public class NewsRelUnionPkId extends BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		NewsRelUnionPkId other = (NewsRelUnionPkId) obj;
+		if (dataType == null) {
+			if (other.dataType != null)
+				return false;
+		} else if (!dataType.equals(other.dataType))
+			return false;
 		if (newsId == null) {
 			if (other.newsId != null)
 				return false;

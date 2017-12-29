@@ -76,7 +76,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
             public void callBack(ResponseModel<News> response) {
                 news = response._data;
                 webView.loadUrl(news.content);
-                commentNumberTv.setText(news.commentNumber.toString());
+                commentNumberTv.setText(ZR.getNumberString(news.commentNumber));
                 if (news.isCollect == 0) {
                     favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_n));
                 } else {
@@ -176,6 +176,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     public void clickComments(final View view) {
         Intent i = new Intent(this, CommentsActivity.class);
         i.putExtra(CONST.NEWS_ID, newsId);
+        i.putExtra(CONST.COMMENT_NUM,news.commentNumber);
         ZGoto.to(i);
     }
 

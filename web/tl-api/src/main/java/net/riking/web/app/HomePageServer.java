@@ -1,6 +1,13 @@
 package net.riking.web.app;
 
-import java.util.Map;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,12 +21,24 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicRelRepo;
+import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.TQuestionRel;
-import net.riking.entity.model.TopicRel;
+import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.QuestionAnswer;
+import net.riking.entity.model.TQuestionResult;
+import net.riking.entity.model.TopicResult;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.HomeParams;
+import net.riking.service.AppUserService;
+import net.riking.service.QAnswerService;
+import net.riking.service.TQuestionService;
+import net.riking.service.TopicService;
+import net.riking.util.DateUtils;
+import net.riking.util.MQProduceUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 首页接口
@@ -41,87 +60,221 @@ public class HomePageServer {
 	@Autowired
 	TopicRelRepo topicRelRepo;
 
-	// TODO 首页要过滤掉屏蔽的信息
+	@Autowired
+	QAnswerRelRepo qAnswerRelRepo;
+
+	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
+	TopicQuestionServer topicQuestionServer;
+
+	@Autowired
+	TQuestionService tQuestionService;
+
+	@Autowired
+	QAnswerService qAnswerService;
+
+	@Autowired
+	TopicService topicService;
+
+	@Autowired
+	AppUserService appUserService;
+
+	@Autowired
+	UserFollowRelRepo userFollowRelRepo;
+
 	/**
 	 *
 	 * @param params[userId,direct,reqTimeStamp]
 	 * @return
+	 * @throws ParseException
 	 */
 	@ApiOperation(value = "显示首页数据", notes = "POST")
 	@RequestMapping(value = "/findHomePageData", method = RequestMethod.POST)
-	public AppResp findHomePageData(@RequestBody Map<String, Object> params) {
-		// // 将map转换成参数对象
-		// CommonParams commonParams = Utils.map2Obj(params, CommonParams.class);
-		// // 判断用户id是否为空
-		// if (StringUtils.isNotBlank(commonParams.getUserId())) {// 为空 则是未登录 则首页数据显示的是热点数据
-		//
-		// } else {// 查询用户自己关注类(话题、问题),自己订阅类,好友的动态,热门话题、问题、回答
-		// // 分页数据
-		// List<TopicFollowInfo> newsInfoList = new ArrayList<TopicFollowInfo>();
-		// // 把分页数据封装成map传入前台
-		// List<Map<String, Object>> newsInfoMapList = new ArrayList<Map<String, Object>>();
-		//
-		// List<String> ids = new ArrayList<String>();
-		// {
-		// // 1.话题关注表和关注表关联查出用户关注的话题列表
-		// List<TopicInfo> topicInfos = topicInfoRepo.findByUserId(commonParams.getUserId());
-		// List<String> questionIdList = new ArrayList<String>();
-		//
-		// for (TopicInfo topicInfo : topicInfos) {
-		// // 2.根据话题ID(topId)找到话题下面的问题ID(questionId)列表
-		// List<String> questionId = questionInfoRepo.findQidByTopicId(topicInfo.getId());
-		// questionIdList.addAll(questionId);
-		// }
-		// }
-		// {
-		// // 1.用户关注表和用户表关联查出关注用户的的列表
-		// List<AppUser> appUsers = appUserRepo.findFollowInfoByUserId(commonParams.getUserId());
-		// for (AppUser appUser : appUsers) {
-		// // 2.根据关注的用户的Id找
-		// List<String> questionIdList = qAnswerAgreeInfoRepo.findByUserId(appUser.getId());
-		// }
-		// // 根据用户Id找到
-		// for (AppUser appUser : appUsers) {
-		// // 从关注的用户表中找到用户点赞的信息
-		//
-		// appUser.getId();
-		// }
-		// }
-		//
-		// switch (commonParams.getDirect()) {
-		// // 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
-		// case Const.DIRECT_UP:
-		//
-		// newsInfoList = newsInfoRepo.findNewsListPageNext(commonParams.getReqTimeStamp(),
-		// new PageRequest(0, 30));
-		// break;
-		// // 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
-		// case Const.DIRECT_DOWN:
-		// List<NewsInfo> newsInfoAscList =
-		// newsInfoRepo.findNewsListRefresh(commonParams.getReqTimeStamp(),
-		// new PageRequest(0, 30));
-		// // 把查出来的数据按倒序重新排列
-		// for (int i = 0; i < newsInfoAscList.size(); i++) {
-		// newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i));
-		// }
-		// break;
-		// default:
-		// logger.error("请求方向参数异常：direct:" + commonParams.getDirect());
-		// throw new RuntimeException("请求方向参数异常：direct:" + commonParams.getDirect());
-		// }
-		// for (NewsInfo newsInfo : newsInfoList) {
-		// // 从数据库查询评论数插到资讯表
-		// Integer count = newsCommentInfoRepo.commentCount(newsInfo.getId());
-		// newsInfo.setCommentNumber(count);
-		// // 将对象转换成map
-		// Map<String, Object> newsInfoMapNew = Utils.objProps2Map(newsInfo, true);
-		// newsInfoMapList.add(newsInfoMapNew);
-		// }
-		//
-		// return new AppResp(newsInfoMapList, CodeDef.SUCCESS);
-		//
-		// }
-		return new AppResp("", CodeDef.SUCCESS);
+	public AppResp findHomePageData(@RequestBody HomeParams homeParams) throws ParseException {
+		if (homeParams == null) {
+			homeParams = new HomeParams();
+			homeParams.setReqTimeStamp(new Date());
+			homeParams.setDirect(Const.DIRECT_UP);
+		}
+		if (homeParams.getReqTimeStamp() == null || "".equals(homeParams.getReqTimeStamp())) {
+			homeParams.setReqTimeStamp(DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"),
+					"yyyyMMddHHmmssSSS"));
+			homeParams.setDirect(Const.DIRECT_UP);
+		}
+		if (homeParams.getDirect() == null) {
+			homeParams.setDirect(Const.DIRECT_UP);
+		}
+		String tquestIds = "";
+		// 查询用户屏蔽的问题
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			if (homeParams.getUserId() != null) {
+				List<String> tqIds = tQuestionRelRepo.findByUser(homeParams.getUserId(), 3);// 3-屏蔽
+				for (int i = 0; i < tqIds.size(); i++) {
+					stringBuilder.append(tqIds.get(i) + ",");
+					if (i == tqIds.size() - 1) {
+						stringBuilder.append(tqIds.get(i));
+					}
+				}
+			}
+			tquestIds = stringBuilder.toString();
+		}
+		// 分页数据
+		List<TQuestionResult> tQuestionList = new ArrayList<TQuestionResult>();
+		switch (homeParams.getDirect()) {
+			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
+			case Const.DIRECT_UP:
+				// 查询查出前30条数据
+				tQuestionList = tQuestionService.findTopicHomeUp(homeParams.getUserId(), homeParams.getReqTimeStamp(),
+						tquestIds, 0, 30);
+				// 如果查不到数据返回未登录时候数据
+				if (tQuestionList.size() == 0) {
+					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
+							30);
+				}
+				break;
+			// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
+			case Const.DIRECT_DOWN:
+				// 查询查出前30条数据
+				tQuestionList = tQuestionService.findTopicHomeDown(homeParams.getUserId(), homeParams.getReqTimeStamp(),
+						tquestIds, 0, 30);
+				// 如果查不到数据返回未登录时候数据
+				if (tQuestionList.size() == 0) {
+					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
+							30);
+				}
+				break;
+			default:
+				logger.error("请求方向参数异常：direct:" + homeParams.getDirect());
+				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+
+		for (TQuestionResult tQuestionResult : tQuestionList) {
+			// TODO 如果等于1拼接话题图片资源路径，否则拼接用户图片资源路径
+			if (null != tQuestionResult.getFromImgUrl()) {
+				if (tQuestionResult.getPushType() == 1) {
+					// TODO
+					tQuestionResult.setFromImgUrl(tQuestionResult.getFromImgUrl());
+				} else {
+					tQuestionResult.setFromImgUrl(
+							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getFromImgUrl());
+				}
+			}
+			// 等级
+			if (tQuestionResult.getExperience() != null) {
+				tQuestionResult.setGrade(appUserService.transformExpToGrade(tQuestionResult.getExperience()));
+			}
+			/* 1-根据用户关注的话题推送问题 */
+			if (tQuestionResult.getPushType() == 1) {
+				QuestionAnswer questionAnswer = qAnswerService.getAContentByOne(tQuestionResult.getTqId());
+				tQuestionResult.setQaContent(questionAnswer.getContent());
+				tQuestionResult.setQaId(questionAnswer.getId());
+				tQuestionResult.setQaAgreeNum(questionAnswer.getAgreeNum());
+				tQuestionResult.setQaCommentNum(questionAnswer.getCommentNum());
+				tQuestionResult.setCoverUrl(questionAnswer.getCoverUrl());
+			}
+			// 加点赞，关注，收藏状态
+			appendStatusByPushType(tQuestionResult, homeParams);
+		}
+		// 把查出来的数据按倒序重新排列
+		Collections.sort(tQuestionList, new Comparator<TQuestionResult>() {
+			@Override
+			public int compare(TQuestionResult o1, TQuestionResult o2) {
+				if (o1.getCreatedTime().after(o2.getCreatedTime())) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+		});
+		// 可能感兴趣的话题
+		// 除去用户已关注的话题
+		List<String> topIds = topicRelRepo.findByUser(homeParams.getUserId(), Const.OBJ_OPT_FOLLOW);
+		String topicIds = "";
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			if (homeParams.getUserId() != null) {
+				for (int i = 0; i < topIds.size(); i++) {
+					stringBuilder.append(topIds.get(i) + ",");
+					if (i == topIds.size() - 1) {
+						stringBuilder.append(topIds.get(i));
+					}
+				}
+			}
+			topicIds = stringBuilder.toString();
+		}
+		List<TopicResult> topics = topicService.findTopicOfInterest(homeParams.getUserId(), topicIds, 0, 8);// 取出0-8条数据
+		for (TopicResult topic : topics) {
+			topic.setIsFollow(0);// 0-未关注
+			for (String topId : topIds) {
+				if (topId.equals(topic.getId())) {
+					topic.setIsFollow(1);// 1-已关注
+				}
+			}
+		}
+		if (topics.size() != 0)
+
+		{
+			TQuestionResult tQuestionResultTopic = new TQuestionResult();
+			tQuestionResultTopic.setPushType(6);
+			if (tQuestionList.size() != 0) {
+				tQuestionResultTopic.setCreatedTime(tQuestionList.get(tQuestionList.size() - 1).getCreatedTime());
+			}
+			tQuestionResultTopic.setTopicResults(topics);
+			tQuestionList.add(tQuestionResultTopic);
+		}
+
+		// 可能感兴趣的人
+		// 除去用户已关注的话题
+		List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(homeParams.getUserId());
+		String userIds = "";
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			if (homeParams.getUserId() != null) {
+				for (int i = 0; i < userFollowRels.size(); i++) {
+					stringBuilder.append(userFollowRels.get(i).getToUserId() + ",");
+					if (i == userFollowRels.size() - 1) {
+						stringBuilder.append(userFollowRels.get(i).getToUserId());
+					}
+				}
+			}
+			userIds = stringBuilder.toString();
+		}
+		List<AppUserResult> userResults = appUserService.findUserMightKnow(homeParams.getUserId(), userIds, 0, 8);// 取出0-8条数据
+		for (AppUserResult userResult : userResults) {
+			userResult.setIsFollow(0);// 0-未关注
+			// 等级
+			if (userResult.getExperience() != null) {
+				userResult.setGrade(appUserService.transformExpToGrade(userResult.getExperience()));
+			}
+			// 截取资源访问路径
+			if (null != userResult.getPhotoUrl()) {
+				userResult.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + userResult.getPhotoUrl());
+			}
+			for (UserFollowRel userFollowRel : userFollowRels) {
+				if (userFollowRel.getFollowStatus() == 1 && userFollowRel.getToUserId().equals(userResult.getId())) {
+					userResult.setIsFollow(1);// 已关注
+				} else if (userFollowRel.getFollowStatus() == 2
+						&& userFollowRel.getToUserId().equals(userResult.getId())) {
+					userResult.setIsFollow(2);// 互相关注
+				}
+			}
+		}
+		if (userResults.size() != 0)
+
+		{
+			TQuestionResult tQuestionResultUser = new TQuestionResult();
+			tQuestionResultUser.setPushType(7);
+			if (tQuestionList.size() != 0) {
+				tQuestionResultUser.setCreatedTime(tQuestionList.get(tQuestionList.size() - 1).getCreatedTime());
+			}
+			tQuestionResultUser.setAppUserResults(userResults);
+			tQuestionList.add(tQuestionResultUser);
+		}
+		return new AppResp(tQuestionList, CodeDef.SUCCESS);
+
 	}
 
 	/**
@@ -130,57 +283,53 @@ public class HomePageServer {
 	 * @return
 	 */
 	@ApiOperation(value = "屏蔽问题", notes = "POST")
-	@RequestMapping(value = "/shieldProblem", method = RequestMethod.POST)
-	public AppResp shieldProblem(@RequestBody HomeParams homeParams) {
+	@RequestMapping(value = "/shield", method = RequestMethod.POST)
+	public AppResp shield_(@RequestBody HomeParams homeParams) {
 
-		switch (homeParams.getObjType()) {
-			// 问题
-			case Const.OBJ_TYPE_1:
-				if (Const.EFFECTIVE == homeParams.getEnabled()) {
-					TQuestionRel rels = tQuestionRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
-					if (null == rels) {
-						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-						TQuestionRel tQuestionRel = new TQuestionRel();
-						tQuestionRel.setUserId(homeParams.getUserId());
-						tQuestionRel.setTqId(homeParams.getObjId());
-						tQuestionRel.setDataType(3);// 0-关注 3-屏蔽
-						tQuestionRelRepo.save(tQuestionRel);
-					}
-				} else if (Const.INVALID == homeParams.getEnabled()) {
-					// 如果传过来是取消屏蔽，把之前一条记录物理删除
-					tQuestionRelRepo.deleteByUIdAndTqId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 话题
-			case Const.OBJ_TYPE_2:
-				if (Const.EFFECTIVE == homeParams.getEnabled()) {
-					// TODO 确认是否有话题屏蔽
-					TopicRel rels = topicRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
-					if (null == rels) {
-						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-						TopicRel topicRel = new TopicRel();
-						topicRel.setUserId(homeParams.getUserId());
-						topicRel.setTopicId(homeParams.getObjId());
-						topicRel.setDataType(3);// 0-关注；3-屏蔽
-						topicRelRepo.save(topicRel);
-					}
-				} else if (Const.INVALID == homeParams.getEnabled()) {
-					// 如果传过来是取消屏蔽，把之前一条记录物理删除
-					topicRelRepo.deleteByUIdAndTopId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			default:
-				logger.error("对象类型异常，objType=" + homeParams.getObjType());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
-
-		return new AppResp("", CodeDef.SUCCESS);
+		homeParams.setMqOptType(Const.MQ_OPT_SHIELD_QUEST);
+		JSONObject jsonArray = JSONObject.fromObject(homeParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
+	// 加点赞，关注，收藏状态
+	private void appendStatusByPushType(TQuestionResult tQuestionResult, HomeParams homeParams) {
+		if (tQuestionResult.getPushType() == 1 || tQuestionResult.getPushType() == 2
+				|| tQuestionResult.getPushType() == 4) {
+			tQuestionResult.setStatus(0);// 未点赞
+			if (homeParams.getUserId() != null) {
+				List<String> qaIds = qAnswerRelRepo.findByUser(homeParams.getUserId(), Const.OBJ_OPT_GREE);
+				for (String qaId : qaIds) {
+					if (qaId.equals(tQuestionResult.getQaId())) {
+						tQuestionResult.setStatus(1);// 已点赞
+					}
+
+				}
+			}
+		}
+		if (tQuestionResult.getPushType() == 3) {
+			List<String> tqIds = tQuestionRelRepo.findByUser(homeParams.getUserId(), Const.OBJ_OPT_FOLLOW);
+			tQuestionResult.setStatus(0);// 未关注
+			if (homeParams.getUserId() != null) {
+				for (String tqId : tqIds) {
+					if (tqId.equals(tQuestionResult.getTqId())) {
+						tQuestionResult.setStatus(1);// 已关注
+					}
+
+				}
+			}
+		}
+		if (tQuestionResult.getPushType() == 7) {
+			tQuestionResult.setStatus(0);// 未收藏
+			if (homeParams.getUserId() != null) {
+				List<String> qaIds = qAnswerRelRepo.findByUser(homeParams.getUserId(), Const.OBJ_OPT_COLLECT);
+				for (String qaId : qaIds) {
+					if (qaId.equals(tQuestionResult.getQaId())) {
+						tQuestionResult.setStatus(1);// 已收藏
+					}
+
+				}
+			}
+		}
+	}
 }

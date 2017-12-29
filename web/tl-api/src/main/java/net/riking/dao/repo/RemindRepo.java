@@ -1,7 +1,10 @@
 package net.riking.dao.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.Remind;
@@ -15,6 +18,13 @@ import net.riking.entity.model.Remind;
 
 @Repository
 public interface RemindRepo extends JpaRepository<Remind, String>, JpaSpecificationExecutor<Remind> {
+
+	// @Transactional
+	// @Modifying
+	// @Query("update ReportSubscribeRel set isCompleted=1 and completedDate=?5 where userId = ?1
+	// and reportId = ?2 and submitStartTime = ?3 and submitEndTime = ?4 ")
+	// public int updateComplated(String userId, String reportId, String submitStartTime, String
+	// submitEndTime, String completedDate);
 
 	// List<Remind> findByUserId(String userId);
 	//
@@ -32,5 +42,12 @@ public interface RemindRepo extends JpaRepository<Remind, String>, JpaSpecificat
 	// @Query("select count(*) from Remind where userId=?1 and repeatFlag=3 and repeatValue like
 	// %?2%")
 	// Long findMouthByWeek(String userId, String currWeek);
-
+	/**
+	 * 根据userId获取所有的提醒
+	 * @param userId
+	 * @param pageable
+	 * @return
+	 */
+	@Query("from Remind where userId =?1 order by strDate desc")
+	List<Remind> findByUserId(String userId);
 }

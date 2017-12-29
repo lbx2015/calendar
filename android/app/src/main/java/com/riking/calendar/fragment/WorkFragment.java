@@ -38,21 +38,25 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
+import com.riking.calendar.adapter.NotDoneReportTaskItemAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
-import com.riking.calendar.adapter.ReportOnlineAdapter;
+import com.riking.calendar.adapter.ReportTaskItemAdapter;
 import com.riking.calendar.adapter.TaskAdapter;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.AppUserReportCompleteRel;
-import com.riking.calendar.pojo.QueryReportContainer;
+import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.realm.model.QueryReportContainerRealmModel;
 import com.riking.calendar.realm.model.Reminder;
 import com.riking.calendar.realm.model.Task;
 import com.riking.calendar.realm.model.WorkDateRealm;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.widget.TimePickerDialog;
@@ -69,7 +73,6 @@ import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
-import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -89,16 +92,17 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     public Date ealiestRemindHolidayDate;//holiday repeat reminders
     public ArrayList<String> workOnWeekendDates = new ArrayList<>();//work on saturday or sunday
     public ArrayList<String> notWorkOnWorkDates = new ArrayList<>();//not work on monday to friday
+    //    ReportOnlineAdapter reportOnlineAdapter;
+    public ReportTaskItemAdapter reportDoneTaskItemAdapter;
+    public NotDoneReportTaskItemAdapter reportNotDoneTaskItemAdapter;
+    public RecyclerView notDoneReportsRecyclerView;
+    public RecyclerView taskRecyclerView;
+    public RecyclerView reportRecyclerView;
     ViewPagerActivity a;
-    RecyclerView notDoneReportsRecyclerView;
-    RecyclerView taskRecyclerView;
-    RecyclerView reportRecyclerView;
     ReminderAdapter reminderAdapter;
     TaskAdapter taskAdapter;
-    Realm realm;
     //current year month
     String yearMonth;
-    ReportOnlineAdapter reportOnlineAdapter;
     View v;
     Date currentDay;
     TimePickerDialog timePickerDialog;
@@ -166,7 +170,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                         SpannableStringBuilder orderReportMenuBuilder = new SpannableStringBuilder("*  订阅报表");
                         SpannableStringBuilder overdueTaskMenuBuilder = new SpannableStringBuilder("*  逾期任务");
                         SpannableStringBuilder completeReportMenuBuilder = new SpannableStringBuilder("*  历史核销");
-                        SpannableStringBuilder historyTodoMenuBuilder = new SpannableStringBuilder("*  历史任务");
+                        SpannableStringBuilder historyTodoMenuBuilder = new SpannableStringBuilder("*  历史待办");
 
                         //replace "*" with icon
                         orderReportMenuBuilder.setSpan(new ImageSpan(getContext(), R.drawable.work_more_icon_add), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -294,7 +298,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Create the Realm instance
-        realm = Realm.getDefaultInstance();
         if (v != null) {
             return v;
         }
@@ -306,15 +309,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         ncalendar.setOnCalendarChangedListener(this);
         //set fragment
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        List<String> list = new ArrayList<>();
-//                list.add("2017-09-21");
-//                list.add("2017-10-21");
-//                list.add("2017-10-1");
-//                list.add("2017-10-15");
-//                list.add("2017-10-18");
-//                list.add("2017-10-26");
-//                list.add("2017-11-21");
+        loadCurrentMonthPoints(new DateTime());
 
         //reset the values
         notRepeatRemindDaysOfMonth.clear();
@@ -323,19 +318,17 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         weeks.clear();
         ealiestRemindHolidayDate = null;
         ealiestRemindWorkDate = null;
-
-        if (realm.isClosed()) {
-            realm = Realm.getDefaultInstance();
-        }
+        Realm realm = ZDB.Instance.getRealm();
         RealmResults<Reminder> reminders = realm.where(Reminder.class)
                 .beginGroup()
                 .beginsWith("day", yearMonth)//this month
                 .equalTo("repeatFlag", 0)//not repeat reminders.
                 .endGroup().findAllSorted("time", Sort.ASCENDING);
+
         for (Reminder r : reminders) {
             if (r.reminderTime != null) {
-                list.add(dateFormat.format(r.reminderTime));
-                ncalendar.setPoint(list);
+//                list.add(dateFormat.format(r.reminderTime));
+//                ncalendar.setPoint(list);
             }
         }
 
@@ -535,10 +528,30 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         return v;
     }
 
+    public void loadCurrentMonthPoints(DateTime dateTime) {
+        //login check
+        if (ZPreference.isLogin()) {
+            ReportCompletedRelParam params = new ReportCompletedRelParam();
+            params.currentMonth = dateTime.toString("yyyyMM");
+            APIClient.getTaskDates(params, new ZCallBack<ResponseModel<List<String>>>() {
+                @Override
+                public void callBack(ResponseModel<List<String>> response) {
+                    ncalendar.setPoint(response._data);
+                }
+            });
+        }
+    }
+
     private void init() {
         notDoneReportTextView = v.findViewById(R.id.not_done_reports_tv);
         doneReportTextView = v.findViewById(R.id.done_reports_tv);
         emptyView = v.findViewById(R.id.empty);
+        emptyView.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                ZGoto.toWithLoginCheck(OrderReportActivity.class);
+            }
+        });
     }
 
     public boolean isNetAvailable() {
@@ -548,10 +561,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     }
 
     public void updateReportsWithLocalRealm() {
-        RealmConfiguration.Builder defaultRealmConfiguration = new RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded().name(CONST.DEFAUT_REALM_DATABASE_NAME);
-        Realm r = Realm.getInstance(defaultRealmConfiguration.build());
-        RealmResults<QueryReportContainerRealmModel> reports = r.where(QueryReportContainerRealmModel.class).findAll();
+        Realm realm = ZDB.Instance.getRealm();
+        RealmResults<QueryReportContainerRealmModel> reports = realm.where(QueryReportContainerRealmModel.class).findAll();
         Logger.d("zzw", "report adapter size: " + reports.size());
         reportAdapter = new ReportAdapter(reports);
         reportRecyclerView.setAdapter(reportAdapter);
@@ -569,7 +580,37 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         }
 
         if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false) && isNetAvailable()) {
-            AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
+            RCompletedRelParams param = new RCompletedRelParams();
+            SimpleDateFormat s = new SimpleDateFormat(CONST.yyyyMMdd);
+            param.currentDate = s.format(date);
+
+            APIClient.findCurrentTasks(param, new ZCallBack<ResponseModel<List<CurrentReportTaskResp>>>() {
+                @Override
+                public void callBack(ResponseModel<List<CurrentReportTaskResp>> response) {
+                    List<CurrentReportTaskResp> list = response._data;
+                    List<CurrentReportTaskResp> doneReportList = new ArrayList<>();
+                    List<CurrentReportTaskResp> notDoneReportList = new ArrayList<>();
+                    //separating done or not done report
+                    for (CurrentReportTaskResp r : list) {
+                        if (r.isCompleted.equals("1")) {
+                            doneReportList.add(r);
+                        } else {
+                            notDoneReportList.add(r);
+                        }
+                    }
+
+                    swipeRefreshLayout.setRefreshing(false);
+                    reportDoneTaskItemAdapter = new ReportTaskItemAdapter(WorkFragment.this, doneReportList);
+                    reportNotDoneTaskItemAdapter = new NotDoneReportTaskItemAdapter(WorkFragment.this, notDoneReportList);
+                    reportRecyclerView.setAdapter(reportDoneTaskItemAdapter);
+                    //put the not done reports here  firstly. changed it later.
+                    notDoneReportsRecyclerView.setAdapter(reportNotDoneTaskItemAdapter);
+                    //check empty reports
+                    checkEmpty();
+                }
+            });
+
+           /* AppUserReportCompleteRel requestBody = new AppUserReportCompleteRel();
             requestBody.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
             requestBody.completeDate = new SimpleDateFormat(CONST.yyyyMMdd).format(date);
             APIClient.apiInterface.getUserReports(requestBody).enqueue(new ZCallBack<ResponseModel<ArrayList<QueryReportContainer>>>() {
@@ -584,7 +625,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                     //check empty reports
                     checkEmpty();
                 }
-            });
+            });*/
         } else {
             if (swipeRefreshLayout != null) {
                 swipeRefreshLayout.setRefreshing(false);
@@ -595,17 +636,26 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         }
     }
 
-    private void checkEmpty() {
+    public void checkEmpty() {
         byte isEmpty = 0;
-        if ((notDoneReportsRecyclerView.getAdapter() == null || notDoneReportsRecyclerView.getAdapter().getItemCount() == 0)
-                && (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0)) {
+        //hide the not complete reports view on empty
+        if ((notDoneReportsRecyclerView.getAdapter() == null || notDoneReportsRecyclerView.getAdapter().getItemCount() == 0)) {
             notDoneReportTextView.setVisibility(View.GONE);
+            notDoneReportsRecyclerView.setVisibility(View.GONE);
             isEmpty++;
+        } else {
+            notDoneReportsRecyclerView.setVisibility(View.VISIBLE);
+            notDoneReportTextView.setVisibility(View.VISIBLE);
         }
 
+        //hide the complete reports on empty
         if (reportRecyclerView.getAdapter() == null || reportRecyclerView.getAdapter().getItemCount() == 0) {
             doneReportTextView.setVisibility(View.GONE);
+            reportRecyclerView.setVisibility(View.GONE);
             isEmpty++;
+        } else {
+            reportRecyclerView.setVisibility(View.VISIBLE);
+            doneReportTextView.setVisibility(View.VISIBLE);
         }
 
         MyLog.d("isEmpty " + isEmpty);
@@ -632,10 +682,8 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         weeks.clear();
         ealiestRemindHolidayDate = null;
         ealiestRemindWorkDate = null;
+        Realm realm = ZDB.Instance.getRealm();
 
-        if (realm.isClosed()) {
-            realm = Realm.getDefaultInstance();
-        }
         RealmResults<Reminder> reminders = realm.where(Reminder.class)
                 .beginGroup()
                 .beginsWith("day", yearMonth)//this month
@@ -700,6 +748,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     }
 
     public void updateReminderAdapter(Calendar c) {
+        Realm realm = ZDB.Instance.getRealm();
         if (notDoneReportsRecyclerView == null) {
             return;
         }
@@ -942,12 +991,14 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
 
     @Override
     public void onCalendarChanged(DateTime dateTime) {
-        MyLog.d("Date Time: " + "onCalendarChanged");
+        MyLog.d("Date Time: " + "onCalendarChanged" + dateTime.toString());
         StringBuffer textDate = new StringBuffer();
         textDate.append(dateTime.getYear()).append("年").append(dateTime.getMonthOfYear()).append("月").append("\t");
         currentMonth.setText(textDate);
         updateReminderAdapter(dateTime.toCalendar(Locale.getDefault()));
         updateReportAdapter(dateTime.toDate());
+
+        loadCurrentMonthPoints(dateTime);
 //        tv_month.setText(dateTime.getMonthOfYear() + "月");
 //        tv_date.setText(dateTime.getYear() + "年" + dateTime.getMonthOfYear() + "月" + dateTime.getDayOfMonth() + "日");
     }
@@ -955,7 +1006,6 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        realm.close();
     }
 
     @Override

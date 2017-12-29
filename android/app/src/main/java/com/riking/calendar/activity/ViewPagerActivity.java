@@ -17,6 +17,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,16 +40,16 @@ import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.HomeFragment;
+import com.riking.calendar.fragment.UserInfoFragment;
 import com.riking.calendar.fragment.WorkFragment;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.AppInnerDownLoder;
-import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DownLoadApk;
-import com.riking.calendar.util.ZPreference;
-import com.riking.calendar.util.ZGoto;
+import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZR;
 
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //    private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new ConversationListFragment(), new UserInfoFragment()};
     //    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new PlazaFragment(), new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
     //Tab 数目
     private final int COUNT = TAB_FRAGMENTS.length;
@@ -343,6 +345,17 @@ public class ViewPagerActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if (position == 3) {
+                    Window w = getWindow(); // in Activity's onCreate() for instance
+                    w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                    //set transparent background for the status bar
+                    StatusBarUtil.setTransparent(ViewPagerActivity.this);
+
+                } else {
+                    Window w = getWindow(); // in Activity's onCreate() for instance
+                    w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                    w.setStatusBarColor(ZR.getColor(R.color.color_489dfff));
+                }
             }
 
             @Override

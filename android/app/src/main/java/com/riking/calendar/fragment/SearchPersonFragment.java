@@ -7,25 +7,42 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.R;
-import com.riking.calendar.adapter.ExcellentAnswerAdapter;
 import com.riking.calendar.adapter.SearchPersonAdapter;
+import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class SearchPersonFragment extends Fragment {
+public class SearchPersonFragment extends Fragment implements PerformInputSearch {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
     SearchPersonAdapter mAdapter;
+    String searchCondition;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -85,7 +102,8 @@ public class SearchPersonFragment extends Fragment {
 
     private void loadData(final int page) {
         isLoading = true;
-        new Handler().postDelayed(new Runnable() {
+        search(searchCondition);
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPullToLoadView.setComplete();
@@ -102,6 +120,84 @@ public class SearchPersonFragment extends Fragment {
                 isLoading = false;
                 nextPage = page + 1;
             }
-        }, 1000);
+        }, 1000);*/
+    }
+
+    @Override
+    public void search(String searchCondition) {
+        if (mPullToLoadView != null) {
+            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+        }
+
+        if (TextUtils.isEmpty(searchCondition)) {
+            return;
+        }
+
+        this.searchCondition = searchCondition;
+
+        SearchParams params = new SearchParams();
+        params.keyWord = searchCondition;
+        //search person
+        params.objType = 3;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mPullToLoadView != null) {
+                    mPullToLoadView.setComplete();
+                }
+            }
+        }, 2000);
+
+        APIClient.findSearchList(params, new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (mPullToLoadView != null) {
+                    mPullToLoadView.setComplete();
+                }
+
+                ResponseBody r = response.body();
+                try {
+                    String sourceString = r.source().readUtf8();
+                    Gson s = new Gson();
+
+                    JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
+                    String _data = jsonObject.get("_data").toString();
+
+                    //do nothing when the data is empty.
+                    if (TextUtils.isEmpty(_data.trim())) {
+                        return;
+                    }
+
+                    TypeToken<ResponseModel<List<AppUserResult>>> token = new TypeToken<ResponseModel<List<AppUserResult>>>() {
+                    };
+
+                    ResponseModel<List<AppUserResult>> responseModel = s.fromJson(sourceString, token.getType());
+                    if (mPullToLoadView != null) {
+                        mPullToLoadView.setComplete();
+                    }
+
+                    List<AppUserResult> list = responseModel._data;
+
+                    if (list.isEmpty()) {
+                        Toast.makeText(getContext(), "没有更多数据了",
+                                Toast.LENGTH_SHORT).show();
+                        isHasLoadedAll = true;
+                        return;
+                    }
+
+                    mAdapter.setData(list);
+                    isLoading = false;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
     }
 }

@@ -2,8 +2,12 @@ package net.riking.web.app;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -31,11 +35,14 @@ import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.NCReply;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
-import net.riking.entity.model.NewsRel;
 import net.riking.entity.params.NewsParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
+import net.riking.service.AppUserService;
+import net.riking.service.NewsService;
 import net.riking.util.DateUtils;
+import net.riking.util.MQProduceUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -61,6 +68,9 @@ public class NewsServer {
 	NCReplyRepo nCReplyRepo;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	NCAgreeRelRepo nCAgreeRelRepo;
 
 	@Autowired
@@ -71,6 +81,12 @@ public class NewsServer {
 
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
+
+	@Autowired
+	AppUserService appUserService;
+
+	@Autowired
+	NewsService newsService;
 
 	/**
 	 * 获取资讯列表
@@ -109,9 +125,18 @@ public class NewsServer {
 				List<News> newsInfoAscList = newsRepo.findNewsListRefresh(newsParams.getReqTimeStamp(),
 						new PageRequest(0, 30));
 				// 把查出来的数据按倒序重新排列
-				for (int i = 0; i < newsInfoAscList.size(); i++) {
-					newsInfoList.add(newsInfoAscList.get(newsInfoAscList.size() - i - 1));
-				}
+				Collections.sort(newsInfoAscList, new Comparator<News>() {
+
+					@Override
+					public int compare(News o1, News o2) {
+						if (o2.getCreatedTime().after(o1.getCreatedTime())) {
+							return -1;
+						} else {
+							return 1;
+						}
+					}
+				});
+				newsInfoList = newsInfoAscList;
 				break;
 			default:
 				logger.error("请求方向参数异常：direct:" + newsParams.getDirect());
@@ -125,7 +150,16 @@ public class NewsServer {
 			int count = 0;
 			count = newsCommentRepo.commentCount(newsInfo.getId());
 			newsInfo.setCommentNumber(count);
+			newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
 
+			// 截取资源访问路径
+			if (null != newsInfo.getPhotoUrl()) {
+				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
+			}
+			// 等级
+			if (null != newsInfo.getExperience()) {
+				newsInfo.setGrade(appUserService.transformExpToGrade(newsInfo.getExperience()));
+			}
 		}
 
 		return new AppResp(newsInfoList, CodeDef.SUCCESS);
@@ -156,6 +190,15 @@ public class NewsServer {
 				}
 			}
 		}
+		newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
+		// 截取资源访问路径
+		if (null != newsInfo.getPhotoUrl()) {
+			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
+		}
+		// 等级
+		if (null != newsInfo.getExperience()) {
+			newsInfo.setGrade(appUserService.transformExpToGrade(newsInfo.getExperience()));
+		}
 		return new AppResp(newsInfo, CodeDef.SUCCESS);
 	}
 
@@ -167,53 +210,42 @@ public class NewsServer {
 	@ApiOperation(value = "获取资讯详情评论列表", notes = "POST")
 	@RequestMapping(value = "/findNewsCommentList", method = RequestMethod.POST)
 	public AppResp findNewsCommentList(@RequestBody NewsParams newsParams) {
-		String pattern = "yyyyMMddHHmmssSSS";
 		// 根据NewsId查出资讯详情评论列表（30条）
 		List<NewsComment> newsCommentInfoList = newsCommentRepo.findByNewsId(newsParams.getNewsId(),
-				new PageRequest(0, 30));
+				newsParams.getUserId(), new PageRequest(0, 30));
 
 		// 评论列表
 		for (NewsComment newsCommentInfoNew : newsCommentInfoList) {
+			if (null != newsCommentInfoNew.getPhotoUrl()) {
+				newsCommentInfoNew.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfoNew.getPhotoUrl());
+			}
+			// 等级
+			if (null != newsCommentInfoNew.getExperience()) {
+				newsCommentInfoNew.setGrade(appUserService.transformExpToGrade(newsCommentInfoNew.getExperience()));
+			}
 			// 根据评论id取到回复列表
 			List<NCReply> nCommentReplyInfoList = nCReplyRepo.findByNewsCommentId(newsCommentInfoNew.getId());
 			// 回复列表
 			for (NCReply nCommentReplyInfo : nCommentReplyInfoList) {
-				AppUser appUser = appUserRepo.findOne(nCommentReplyInfo.getUserId());
-				if (null != appUser) {
-					FromUser fromUser = new FromUser();
-					fromUser.setUserId(nCommentReplyInfo.getUserId());
-					fromUser.setUserName(appUser.getUserName());
-					nCommentReplyInfo.setFromUser(fromUser);
-				}
+				FromUser fromUser = new FromUser();
+				fromUser.setUserId(nCommentReplyInfo.getFromUserId());
+				fromUser.setUserName(nCommentReplyInfo.getUserName());
+				nCommentReplyInfo.setFromUser(fromUser);
 				if (null != nCommentReplyInfo.getToUserId()) {
-					AppUser apptoUser = appUserRepo.findOne(nCommentReplyInfo.getToUserId());
-					if (null != apptoUser) {
-						ToUser toUser = new ToUser();
-						toUser.setUserId(nCommentReplyInfo.getToUserId());
-						toUser.setUserName(apptoUser.getUserName());
-						nCommentReplyInfo.setToUser(toUser);
-					}
+					ToUser toUser = new ToUser();
+					toUser.setUserId(nCommentReplyInfo.getToUserId());
+					toUser.setUserName(nCommentReplyInfo.getToUserName());
+					nCommentReplyInfo.setToUser(toUser);
 				}
-				nCommentReplyInfo.setUserId(null);
-				nCommentReplyInfo.setUserName(null);
-				nCommentReplyInfo.setToUserId(null);
-				nCommentReplyInfo.setToUserName(null);
-				// 回复的数据列表添加到评论类里面
-				newsCommentInfoNew.getNCReplyList().add(nCommentReplyInfo);
+
 			}
+			// 回复的数据列表添加到评论类里面
+			newsCommentInfoNew.setNcReplyList(nCommentReplyInfoList);
 			// 点赞数 TODO 后面从redis里面去找
 			Integer agree = 0;
 			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
-			newsCommentInfoNew.setIsAgree(0);// 0-未点赞
-			if (StringUtils.isNotBlank(newsParams.getUserId())) {
-				List<String> ncIds = nCAgreeRelRepo.findByUserId(newsParams.getUserId(), 1);// 点赞
-				for (String ncId : ncIds) {
-					if (newsCommentInfoNew.getId().equals(ncId)) {
-						newsCommentInfoNew.setIsAgree(1);// 1-已点赞
-					}
-				}
-			}
 		}
 		return new AppResp(newsCommentInfoList, CodeDef.SUCCESS);
 	}
@@ -230,11 +262,15 @@ public class NewsServer {
 		AppUser appUser = appUserRepo.findOne(newsParams.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());
 
+		newsParams.setMqOptType(Const.MQ_OPT_NEWS_COMMENT);
+		JSONObject jsonArray = JSONObject.fromObject(newsParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
-		newsCommentInfo.setIsAudit(0);// 0-未审核，1-已审核,2-不通过
-		newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
+		newsCommentInfo.setIsAduit(0);// 0-未审核，1-已审核,2-不通过
+		// newsCommentInfo = newsCommentRepo.save(newsCommentInfo);
 
 		if (null != appUser) {
 			newsCommentInfo.setUserName(appUser.getUserName());
@@ -252,6 +288,14 @@ public class NewsServer {
 				}
 			}
 		}
+		if (null != newsCommentInfo.getPhotoUrl()) {
+			newsCommentInfo
+					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfo.getPhotoUrl());
+		}
+		// 等级
+		if (null != newsCommentInfo.getExperience()) {
+			newsCommentInfo.setGrade(appUserService.transformExpToGrade(newsCommentInfo.getExperience()));
+		}
 		return new AppResp(newsCommentInfo, CodeDef.SUCCESS);
 	}
 
@@ -263,28 +307,19 @@ public class NewsServer {
 	@ApiOperation(value = "资讯收藏", notes = "POST")
 	@RequestMapping(value = "/newsCollect", method = RequestMethod.POST)
 	public AppResp newsCollect(@RequestBody NewsParams newsParams) {
-
-		switch (newsParams.getEnabled()) {
-			case Const.EFFECTIVE:
-				NewsRel rels = newsRelRepo.findByOne(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏
-				if (null == rels) {
-					// 如果传过来的参数是收藏，保存新的一条收藏记录
-					NewsRel newsRel = new NewsRel();
-					newsRel.setUserId(newsParams.getUserId());
-					newsRel.setNewsId(newsParams.getNewsId());
-					newsRelRepo.save(newsRel);
-				}
-				break;
-			case Const.INVALID:
-				// 如果传过来是取消收藏，把之前一条记录物理删除
-				newsRelRepo.deleteByUIdAndNId(newsParams.getUserId(), newsParams.getNewsId(), 2);// 2-收藏
-				break;
-			default:
-				logger.error("参数异常：enabled=" + newsParams.getEnabled());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		if (StringUtils.isBlank(newsParams.getUserId())) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-
-		return new AppResp("", CodeDef.SUCCESS);
+		if (StringUtils.isBlank(newsParams.getNewsId())) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (newsParams.getEnabled() == null) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		newsParams.setMqOptType(Const.MQ_OPT_NEW_COLLECT);
+		JSONObject jsonArray = JSONObject.fromObject(newsParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 }

@@ -1,48 +1,48 @@
 package net.riking.task;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.TimerTask;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.AppUserDao;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
+import net.riking.util.DateUtils;
 import net.riking.util.JdpushUtil;
 
 @Component("birthdayTimerTask")
 public class BirthdayTimerTask extends TimerTask {
+	protected final transient Logger logger = LogManager.getLogger(BirthdayTimerTask.class);
 
 	@Autowired
-	AppUserRepo appUserRepo;
+	AppUserDao appUserDao;
 
 	@Override
 	public void run() {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("MMdd");
-			String date = sdf.format(Calendar.getInstance().getTime());
-			Set<String> set = new HashSet<String>();
-			// TODO 暫時注釋
-			// appUserRepo.findByDate(date);
-			if (set.size() < 1) {
-				return;
+			String currentDate = DateUtils.getDate("MMdd");
+			List<AppUserDetail> list = appUserDao.findPhoneDeviceByBirthDay(currentDate);
+			if (list != null && list.size() > 0) {
+				Jdpush jdpush = null;
+				
+				for (AppUserDetail data : list) {
+					jdpush = new Jdpush();
+					jdpush.setNotificationTitle(data.getUserName() + "先生/女士：祝您生日快乐");
+					jdpush.setMsgTitle(data.getUserName() + "先生/女士：祝您生日快乐");
+					jdpush.setMsgContent("亲爱的朋友，今天是你的生日，我为你放飞了一群祝福，为你洒下了一地幸福，祝你生日快乐，生活幸福，笑容天天，美梦实现。");
+					jdpush.setExtrasparam("");
+					
+					jdpush.setRegisrationId(data.getPhoneDeviceid());
+					JdpushUtil.sendToRegistrationId(jdpush);
+				}
 			}
-			Jdpush jdpush = new Jdpush();
-			jdpush.setNotificationTitle("金融台历祝您生日快乐");
-			jdpush.setMsgTitle("今天生日哟，不要忘了。");
-			jdpush.setMsgContent("生日对自己好一点，来场说走就走的旅行吧");
-			jdpush.setExtrasparam("这是空");
-			for (String string : set) {
-				jdpush.setRegisrationId(string);
-				JdpushUtil.sendToRegistrationId(jdpush);
-			}
-			// 在这里写你要执行的内容
-			// System.out.println("执行当前时间"+formatter.format(Calendar.getInstance().getTime()));
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 

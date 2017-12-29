@@ -1,7 +1,12 @@
 package net.riking.web.app;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +17,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
-import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.dao.repo.QACommentRepo;
+import net.riking.dao.repo.QAInviteRepo;
+import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.QAInvite;
 import net.riking.entity.model.QuestionAnswer;
-import net.riking.entity.model.TQuestionRel;
 import net.riking.entity.model.TopicQuestion;
-import net.riking.entity.model.TopicRel;
-import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.TQuestionParams;
+import net.riking.service.AppUserService;
+import net.riking.util.MQProduceUtil;
+import net.riking.util.Utils;
+import net.sf.json.JSONObject;
 
 /**
  * 问题接口
@@ -49,16 +58,50 @@ public class TopicQuestionServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	TQuestionRelRepo tQuestionRelRepo;
 
 	@Autowired
 	QACommentRepo qACommentRepo;
 
 	@Autowired
-	QACAgreeRelRepo qACAgreeRelRepo;
+	QAnswerRelRepo qAnswerRelRepo;
 
 	@Autowired
 	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	QAInviteRepo qAInviteRepo;
+
+	@Autowired
+	Config config;
+
+	@Autowired
+	AppUserService appUserService;
+
+	@ApiOperation(value = "问题详情分享", notes = "POST")
+	@RequestMapping(value = "/questionShare", method = RequestMethod.POST)
+	public AppResp questionShare_() {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_QUESTIONSHARE_HTML5_PATH, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "提问", notes = "POST")
+	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
+	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
+		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+		String title = "";
+		try {
+			title = java.net.URLEncoder.encode(java.net.URLEncoder.encode(tQuestionParams.getTitle(), "utf-8"),
+					"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
+		}
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_INQUIRY_HTML5_PATH + "?userId="
+				+ tQuestionParams.getUserId() + "&title=" + title + "&topicId=" + tQuestionParams.getTopicId(),
+				CodeDef.SUCCESS);
+	}
 
 	/**
 	 * 问题的详情[userId,tqId]
@@ -68,128 +111,27 @@ public class TopicQuestionServer {
 	@ApiOperation(value = "问题的详情", notes = "POST")
 	@RequestMapping(value = "/getTopicQuestion", method = RequestMethod.POST)
 	public AppResp getTopicQuestion(@RequestBody TQuestionParams tQuestionParams) {
-		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId());
+		TopicQuestion topicQuestion = topicQuestionRepo.getById(tQuestionParams.getTqId(), tQuestionParams.getUserId());
 		// TODO 问题的关注数 后面从redis里面取
 		Integer followNum = tQuestionRelRepo.followCount(tQuestionParams.getTqId(), 0);// 0-关注
 		topicQuestion.setFollowNum(followNum);
 		// TODO 问题的回答数 后面从redis里面取
 		Integer answerNum = questionAnswerRepo.answerCount(tQuestionParams.getTqId());
 		topicQuestion.setAnswerNum(answerNum);
-		topicQuestion.setIsFollow(0);// 0-未关注
-		List<String> questIds = tQuestionRelRepo.findByUser(tQuestionParams.getUserId(), 0);// 0-关注
-		for (String tqId : questIds) {
-			if (topicQuestion.getId().equals(tqId)) {
-				topicQuestion.setIsFollow(1);// 1-已关注
-			}
+		topicQuestion.setQuestionAnswers(findAnswerList(tQuestionParams));
+		if (null != topicQuestion.getPhotoUrl()) {
+			topicQuestion
+					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topicQuestion.getPhotoUrl());
+		}
+		// 等级
+		if (null != topicQuestion.getExperience()) {
+			topicQuestion.setGrade(appUserService.transformExpToGrade(topicQuestion.getExperience()));
 		}
 		return new AppResp(topicQuestion, CodeDef.SUCCESS);
 	}
 
 	/**
-	 * 问题，话题，用户的关注[userId,objType(1-问题；2-话题；3-用户),attentObjId（关注类型ID）,enabled（1-关注；0-取消）]
-	 * @param params
-	 * @return
-	 */
-	@ApiOperation(value = "问题，话题，用户的关注", notes = "POST")
-	@RequestMapping(value = "/tQUAgree", method = RequestMethod.POST)
-	public AppResp tQUAgree(@RequestBody TQuestionParams tQuestionParams) {
-		switch (tQuestionParams.getObjType()) {
-			// 问题关注
-			case Const.OBJ_TYPE_1:
-				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					TQuestionRel rels = tQuestionRelRepo.findByOne(tQuestionParams.getUserId(),
-							tQuestionParams.getAttentObjId(), 0);// 0-关注
-					if (null == rels) {
-						// 如果传过来的参数是关注，保存新的一条关注记录
-						TQuestionRel topQuestionRel = new TQuestionRel();
-						topQuestionRel.setUserId(tQuestionParams.getUserId());
-						topQuestionRel.setTqId(tQuestionParams.getAttentObjId());
-						topQuestionRel.setDataType(0);// 关注
-						tQuestionRelRepo.save(topQuestionRel);
-					}
-				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
-					// 如果传过来是取消关注，把之前一条记录物理删除
-					tQuestionRelRepo.deleteByUIdAndTqId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
-							0);// 0-关注 3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 话题关注
-			case Const.OBJ_TYPE_2:
-				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					TopicRel rels = topicRelRepo.findByOne(tQuestionParams.getUserId(),
-							tQuestionParams.getAttentObjId(), 0);// 0-关注
-					if (null == rels) {
-						// 如果传过来的参数是关注，保存新的一条关注记录
-						TopicRel topicRel = new TopicRel();
-						topicRel.setUserId(tQuestionParams.getUserId());
-						topicRel.setTopicId(tQuestionParams.getAttentObjId());
-						topicRel.setDataType(0);// 关注
-						topicRelRepo.save(topicRel);
-					}
-				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
-					// 如果传过来是取消关注，把之前一条记录物理删除
-					topicRelRepo.deleteByUIdAndTopId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(), 0);// 0-关注3-屏蔽
-
-				} else {
-					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 用户关注
-			case Const.OBJ_TYPE_3:
-				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
-					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：1-互相关注
-					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
-							tQuestionParams.getUserId());// 对方的点赞记录
-					if (toUserFollowRel != null) {
-						UserFollowRel rels = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getUserId(),
-								tQuestionParams.getAttentObjId());
-						if (null == rels) {
-							// 更新对方关注表，互相关注
-							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
-									toUserFollowRel.getToUserId(), 1);// 1-互相关注
-							// 如果传过来的参数是关注，保存新的一条关注记录
-							UserFollowRel userFollowRel = new UserFollowRel();
-							userFollowRel.setUserId(tQuestionParams.getUserId());
-							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
-							userFollowRel.setFollowStatus(1);// 互相关注
-							userFollowRelRepo.save(userFollowRel);
-						}
-					} else {
-						// 如果传过来的参数是关注，保存新的一条关注记录
-						UserFollowRel userFollowRel = new UserFollowRel();
-						userFollowRel.setUserId(tQuestionParams.getUserId());
-						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
-						userFollowRel.setFollowStatus(0);// 非互相关注
-						userFollowRelRepo.save(userFollowRel);
-					}
-				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
-					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
-							tQuestionParams.getUserId());// 对方的点赞记录
-					if (null != toUserFollowRel) {
-						userFollowRelRepo.updFollowStatus(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
-								0);// 0-非互相关注
-					}
-					// 如果传过来是取消关注，把之前一条记录物理删除
-					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
-				} else {
-					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			default:
-				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
-
-		return new AppResp("", CodeDef.SUCCESS);
-	}
-
-	/**
-	 * 问题回答列表[tqId]
+	 * 问题回答列表[userId,tqId]
 	 * @param params
 	 * @return
 	 */
@@ -197,26 +139,59 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/questionAnswerList", method = RequestMethod.POST)
 	public AppResp questionAnswerList(@RequestBody TQuestionParams tQuestionParams) {
 
-		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId());
+		return new AppResp(findAnswerList(tQuestionParams), CodeDef.SUCCESS);
+	}
+
+	/**
+	 * 邀请回答的邀请
+	 * @param params[userId;attentObjId;tqId;]
+	 * @return
+	 */
+	@ApiOperation(value = "邀请回答的邀请", notes = "POST")
+	@RequestMapping(value = "/answerInvite", method = RequestMethod.POST)
+	public AppResp answerInvite_(@RequestBody TQuestionParams tQuestionParams) {
+		if (StringUtils.isBlank(tQuestionParams.getUserId())) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (StringUtils.isBlank(tQuestionParams.getAttentObjId())) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		if (StringUtils.isBlank(tQuestionParams.getTqId())) {
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+
+		QAInvite qaInvite = qAInviteRepo.findByOne(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
+				tQuestionParams.getTqId());
+		if (null == qaInvite) {
+			// 如果传过来的参数是邀请，保存新的一条邀请记录
+			tQuestionParams.setMqOptType(Const.MQ_OPT_ANSWERINVITE);
+			JSONObject jsonArray = JSONObject.fromObject(tQuestionParams);
+			MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		}
+
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+	}
+
+	private List<QuestionAnswer> findAnswerList(TQuestionParams tQuestionParams) {
+		List<QuestionAnswer> questionAnswerList = questionAnswerRepo.findByTqId(tQuestionParams.getTqId(),
+				tQuestionParams.getUserId());
 		for (QuestionAnswer questionAnswer : questionAnswerList) {
+			if (null != questionAnswer.getPhotoUrl()) {
+				questionAnswer.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
+			}
+			// 等级
+			if (null != questionAnswer.getExperience()) {
+				questionAnswer.setGrade(appUserService.transformExpToGrade(questionAnswer.getExperience()));
+			}
 			// TODO 统计数后面从redis中取回答的评论数
 			Integer commentNum = qACommentRepo.commentCount(questionAnswer.getId());
 			questionAnswer.setCommentNum(commentNum);
 			// TODO 统计数后面从redis中取点赞数
-			Integer agreeNum = qACAgreeRelRepo.agreeCount(questionAnswer.getId(), 1);// 1-点赞
+			Integer agreeNum = qAnswerRelRepo.agreeCount(questionAnswer.getId(), 1);// 1-点赞
 			questionAnswer.setAgreeNum(agreeNum);
-			questionAnswer.setIsAgree(0);// 0-未点赞
-			if (null != tQuestionParams.getUserId()) {
-				List<String> qacIds = qACAgreeRelRepo.findByUser(tQuestionParams.getUserId(), 1);// 1-点赞
-				for (String qacId : qacIds) {
-					if (questionAnswer.getId().equals(qacId)) {
-						questionAnswer.setIsAgree(1);// 1-已点赞
-					}
-				}
-			}
 		}
-
-		return new AppResp(questionAnswerList, CodeDef.SUCCESS);
+		return questionAnswerList;
 	}
 
 }

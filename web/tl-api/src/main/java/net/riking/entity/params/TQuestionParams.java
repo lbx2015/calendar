@@ -1,5 +1,7 @@
 package net.riking.entity.params;
 
+import javax.persistence.Transient;
+
 import net.riking.entity.BaseEntity;
 
 /**
@@ -10,10 +12,6 @@ import net.riking.entity.BaseEntity;
  * @since 1.0
  */
 public class TQuestionParams extends BaseEntity {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6952211991459875719L;
 
 	// 用户Id
 	private String userId;
@@ -21,10 +19,16 @@ public class TQuestionParams extends BaseEntity {
 	// 话题下面问题Id
 	private String tqId;
 
+	// (标题)
+	private String title;
+
+	// (话题id,逗号','分隔，最三个)
+	private String topicId;
+
 	// (1-问题；2-话题；3-用户)
 	private Integer objType;
 
-	// (关注类型ID)
+	// (目标对象ID)
 	private String attentObjId;
 
 	// (0-取消；1-关注)
@@ -33,12 +37,40 @@ public class TQuestionParams extends BaseEntity {
 	// 问题回答Id
 	private String questAnswerId;
 
+	@Transient
+	// mq操作类型(消费者根据此类型判断mq操作)
+	private Integer mqOptType;
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getMqOptType() {
+		return mqOptType;
+	}
+
+	public void setMqOptType(Integer mqOptType) {
+		this.mqOptType = mqOptType;
+	}
+
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getQuestAnswerId() {

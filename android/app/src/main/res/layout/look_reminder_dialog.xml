@@ -21,7 +21,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
-        android:background="@color/divider_color_d9d9d9" />
+        android:background="@color/color_d2d2d2" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="19dp"
-            android:textColor="@color/color_323232"
+            android:textColor="@color/color_222222"
             android:textSize="16sp" />
     </FrameLayout>
 
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:layout_marginLeft="19dp"
-        android:background="@color/divider_color_d9d9d9" />
+        android:background="@color/color_d2d2d2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
         android:layout_height="@dimen/divider_height"
         android:layout_alignLeft="@id/remind_time"
         android:layout_marginLeft="54dp"
-        android:background="@color/divider_color_d9d9d9" />
+        android:background="@color/color_d2d2d2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -113,7 +113,7 @@
         android:layout_height="@dimen/divider_height"
         android:layout_alignLeft="@id/remind_way"
         android:layout_marginLeft="54dp"
-        android:background="@color/divider_color_d9d9d9" />
+        android:background="@color/color_d2d2d2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -145,7 +145,7 @@
         android:layout_alignLeft="@id/remind_repeat"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="54dp"
-        android:background="@color/divider_color_d9d9d9" />
+        android:background="@color/color_d2d2d2" />
 
     <LinearLayout
         android:layout_width="match_parent"

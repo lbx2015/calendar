@@ -12,7 +12,6 @@ import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 /**
  * With Login check and not jump activity
@@ -20,19 +19,18 @@ import java.util.ArrayList;
  */
 
 public abstract class ZClickListenerWithLoginCheck implements View.OnClickListener {
-    static ArrayList<WeakReference<ZClickListenerWithLoginCheck>> list = new ArrayList<>();
-    {
-        list.add(new WeakReference<ZClickListenerWithLoginCheck>(this));
-    }
+    static WeakReference<ZClickListenerWithLoginCheck> weakRef;
     View v;
 
     @Override
     public void onClick(View v) {
         this.v = v;
+        MyLog.d("onClick::" + v.getId());
         if (ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
             click(v);
         } else {
-            ZPreference.put(CONST.CHECK_NOT_LOGIN_ON_CLICK,true);
+            weakRef = new WeakReference<ZClickListenerWithLoginCheck>(this);
+            ZPreference.put(CONST.CHECK_NOT_LOGIN_ON_CLICK, true);
             ZGoto.toLoginActivity();
         }
     }
@@ -48,9 +46,10 @@ public abstract class ZClickListenerWithLoginCheck implements View.OnClickListen
         public void onReceive(Context context, Intent intent) {
             String msg = intent.getStringExtra("msg");
             Log.i(TAG, msg);
-            for (WeakReference<ZClickListenerWithLoginCheck> weakReference : list) {
-                ZClickListenerWithLoginCheck z = weakReference.get();
+            if (weakRef != null) {
+                ZClickListenerWithLoginCheck z = weakRef.get();
                 if (z != null) {
+                    weakRef = null;
                     z.click(z.v);
                 }
             }

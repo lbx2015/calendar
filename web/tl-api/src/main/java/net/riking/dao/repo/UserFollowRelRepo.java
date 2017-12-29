@@ -47,7 +47,7 @@ public interface UserFollowRelRepo
 	void updFollowStatus(String userId, String toUserId, Integer followStatus);
 
 	/**
-	 * 根据主键找到唯一一条点赞记录
+	 * 根据主键找到唯一一条关注记录
 	 * @param userId
 	 * @param toUserId
 	 * @return
@@ -60,8 +60,8 @@ public interface UserFollowRelRepo
 	 * @param newsId
 	 * @return
 	 */
-	@Query("select toUserId from UserFollowRel where userId = ?1 ")
-	List<String> findByUser(String userId);
+	@Query(" from UserFollowRel where userId = ?1 ")
+	List<UserFollowRel> findByUser(String userId);
 
 	/**
 	 * 查询用户粉丝数
@@ -70,4 +70,12 @@ public interface UserFollowRelRepo
 	 */
 	@Query("select count(*) from UserFollowRel where toUserId = ?1 ")
 	Integer countByToUser(String userId);
+
+	/**
+	 * 查询用户粉丝数
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select count(*) from UserFollowRel where userId = ?1 ")
+	Integer countByUser(String userId);
 }

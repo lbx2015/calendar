@@ -2,6 +2,10 @@ package net.riking.entity.params;
 
 import java.util.Date;
 
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import net.riking.entity.BaseEntity;
 import net.riking.entity.MyDateFormat;
 
@@ -32,6 +36,7 @@ public class NewsParams extends BaseEntity {
 
 	// 请求上翻最新时间戳
 	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date reqTimeStamp;
 
 	// 评论内容
@@ -43,12 +48,24 @@ public class NewsParams extends BaseEntity {
 	// 目标对象id
 	private String objId;
 
+	@Transient
+	// mq操作类型(消费者根据此类型判断mq操作)
+	private Integer mqOptType;
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getMqOptType() {
+		return mqOptType;
+	}
+
+	public void setMqOptType(Integer mqOptType) {
+		this.mqOptType = mqOptType;
 	}
 
 	public Integer getObjType() {

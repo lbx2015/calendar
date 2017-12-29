@@ -41,6 +41,11 @@ public class News extends BaseAuditProp {
 	@JsonProperty("newsId")
 	private String id;
 
+	// 后台使用id
+	@Transient
+	@JsonProperty("id")
+	private String nid;
+
 	@Comment("资讯标题")
 	@Column(name = "title", length = 128)
 	private String title;
@@ -50,7 +55,7 @@ public class News extends BaseAuditProp {
 	@Column(name = "seat", length = 10)
 	private String seat;
 
-	@Comment("多个封面URL，';'分隔")
+	@Comment("多个封面URL，','分隔")
 	@Lob
 	@Column(name = "cover_urls", length = 255)
 	private String coverUrls;
@@ -67,6 +72,9 @@ public class News extends BaseAuditProp {
 	@Transient
 	private Integer experience;
 
+	@Transient
+	private Integer grade;
+
 	// 用户名
 	@Transient
 	private String userName;
@@ -82,6 +90,11 @@ public class News extends BaseAuditProp {
 	// 是否收藏（0-未收藏，1-已收藏）
 	@Transient
 	private Integer isCollect;
+
+	public News() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
 			String content, String issued, String userName, String photoUrl, Integer experience) {
@@ -120,12 +133,28 @@ public class News extends BaseAuditProp {
 		this.title = title;
 	}
 
+	public String getNid() {
+		return nid;
+	}
+
+	public void setNid(String nid) {
+		this.nid = nid;
+	}
+
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public Integer getIsCollect() {

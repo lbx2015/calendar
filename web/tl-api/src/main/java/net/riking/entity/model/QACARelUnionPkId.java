@@ -19,15 +19,18 @@ public class QACARelUnionPkId extends BaseEntity {
 
 	private String qacId;
 
+	private Integer dataType;
+
 	public QACARelUnionPkId() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public QACARelUnionPkId(String userId, String qacId) {
+	public QACARelUnionPkId(String userId, String qacId, Integer dataType) {
 		super();
 		this.userId = userId;
 		this.qacId = qacId;
+		this.dataType = dataType;
 	}
 
 	public String getUserId() {
@@ -36,6 +39,14 @@ public class QACARelUnionPkId extends BaseEntity {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
 	}
 
 	public String getQacId() {
@@ -50,6 +61,7 @@ public class QACARelUnionPkId extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dataType == null) ? 0 : dataType.hashCode());
 		result = prime * result + ((qacId == null) ? 0 : qacId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
@@ -64,6 +76,11 @@ public class QACARelUnionPkId extends BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		QACARelUnionPkId other = (QACARelUnionPkId) obj;
+		if (dataType == null) {
+			if (other.dataType != null)
+				return false;
+		} else if (!dataType.equals(other.dataType))
+			return false;
 		if (qacId == null) {
 			if (other.qacId != null)
 				return false;

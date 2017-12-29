@@ -13,9 +13,6 @@
         android:protectionLevel="signature" />
 
 
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -72,7 +69,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
@@ -107,6 +103,7 @@
         <activity android:name=".activity.SearchReportActivity" />
         <activity android:name=".activity.CreateTaskActivity" />
         <activity android:name=".activity.MomentAddActivity" />
+        <activity android:name=".activity.FeedBackActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"
             android:hardwareAccelerated="true" />
@@ -116,10 +113,20 @@
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".activity.InputEmailVerifyCodeActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".activity.IndustrySelectActivity"></activity>
         <activity android:name=".activity.PositionSelectActivity"></activity>
         <activity android:name=".activity.ReportsSelectActivity"></activity>
         <activity android:name=".activity.AddTopicActivity"></activity>
+        <activity android:name=".activity.MyRepliesActivity"></activity>
+        <activity android:name=".activity.MyFollowersActivity"></activity>
+        <activity android:name=".activity.MyFavoritesUserActivity"></activity>
+        <activity android:name=".activity.MyStateActivity"></activity>
+        <activity android:name=".activity.MyFollowActivity"></activity>
+        <activity android:name=".activity.MyCollectActivity"></activity>
+        <activity android:name=".activity.MyRelationActivity"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
@@ -128,8 +135,10 @@
         <activity android:name=".activity.InvitePersonActivity" />
         <activity android:name=".activity.WriteAnswerActivity" />
         <activity android:name=".activity.CommentsActivity" />
+        <activity android:name=".activity.AnswerCommentsActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RaiseQuestionActivity" />
+        <activity android:name=".activity.SubmitQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />
@@ -145,7 +154,7 @@
 
         <receiver android:name=".listener.ZClickListenerWithLoginCheck$MyReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.MY_BROADCAST"/>
+                <action android:name="android.intent.action.MY_BROADCAST" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

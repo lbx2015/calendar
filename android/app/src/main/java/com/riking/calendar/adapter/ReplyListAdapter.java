@@ -48,19 +48,23 @@ public class ReplyListAdapter extends RecyclerView.Adapter<ReplyListAdapter.MyVi
     @Override
     public void onBindViewHolder(ReplyListAdapter.MyViewHolder h, int i) {
         final NCReply reply = mList.get(i);
-        from = reply.fromUser.userName == null ? "周恩来" : reply.fromUser.userName;
-        String to = reply.toUser.userName == null ? "毛泽东" : reply.toUser.userName;
+        from = reply.fromUser == null ? "" : reply.fromUser.userName;
+        String to = reply.toUser == null ? "" : reply.toUser.userName;
         String replyText = "回复";
-        String content = reply.content == null ? "总理还是我们的总理呀。总理还是我们的总理呀。" : reply.content;
+        String content = reply.content == null ? "" : reply.content;
 
-        SpannableString fromSpan = new SpannableString(from);
-        SpannableString replySpan = new SpannableString(replyText);
+        //set spannable string
         SpannableString toSpan = null;
         if (!TextUtils.isEmpty(to)) {
             toSpan = new SpannableString(to);
+        } else {
+            from = from + ": ";
         }
+        SpannableString fromSpan = new SpannableString(from);
+        SpannableString replySpan = new SpannableString(replyText);
         SpannableString contentSpan = new SpannableString(content);
 
+        //set clickable span
         ClickableSpan fromClick = new ClickableSpan() {
             @Override
             public void onClick(View widget) {

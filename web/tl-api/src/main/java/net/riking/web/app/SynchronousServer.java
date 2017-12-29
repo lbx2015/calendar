@@ -14,10 +14,13 @@ import net.riking.config.CodeDef;
 import net.riking.dao.repo.RemindHisRepo;
 import net.riking.dao.repo.RemindRepo;
 import net.riking.dao.repo.ReportRepo;
+import net.riking.dao.repo.SysDaysRepo;
 import net.riking.dao.repo.TodoRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.Remind;
-import net.riking.entity.model.RemindHis;
+import net.riking.entity.model.SynResult;
+import net.riking.entity.model.SysDays;
 import net.riking.entity.model.Todo;
 import net.riking.service.ReportSubmitCaliberService;
 
@@ -40,8 +43,8 @@ public class SynchronousServer {
 
 	// @Autowired
 	// AppUserReportCompletRelRepo appUserReportCompletesRelRepo;
-	// @Autowired
-	// SysDaysRepo sysDaysRepo;
+	@Autowired
+	SysDaysRepo sysDaysRepo;
 
 	@Autowired
 	ReportRepo reportListRepo;
@@ -49,17 +52,17 @@ public class SynchronousServer {
 	@Autowired
 	ReportSubmitCaliberService reportSubmitCaliberService;
 
-	/*
-	 * @ApiOperation(value = "同步所有信息", notes = "POST")
-	 * 
-	 * @RequestMapping(value = "/synchronousAll", method = RequestMethod.POST) public AppResp
-	 * synchronousAll(@RequestBody AppUser appUser) { List<Remind> reminds =
-	 * remindRepo.findByUserId(appUser.getId()); List<Todo> todos =
-	 * todoRepo.findByUserId(appUser.getId()); List<SysDays> days = sysDaysRepo.findAll();
-	 * //List<ReportList> reportList = reportListRepo.findAll();//查询出所有的报表 List<QueryReport>
-	 * reportList = reportSubmitCaliberService.findAllReport(); SynResult result = new
-	 * SynResult(reminds, todos,days,reportList); return new AppResp(result, CodeDef.SUCCESS); }
-	 */
+	@ApiOperation(value = "同步所有信息", notes = "POST")
+	@RequestMapping(value = "/synchronousAll", method = RequestMethod.POST)
+	public AppResp synchronousAll(@RequestBody AppUser appUser) {
+		List<Remind> reminds = remindRepo.findByUserId(appUser.getId());
+		List<Todo> todos = todoRepo.findByUserId(appUser.getId());
+		List<SysDays> days = sysDaysRepo.findAll();
+		// List<ReportList> reportList = reportListRepo.findAll();//查询出所有的报表 List<QueryReport>
+		// List<ReportList> reportList = reportSubmitCaliberService.findAllReport();
+		SynResult result = new SynResult(reminds, todos, days);
+		return new AppResp(result, CodeDef.SUCCESS);
+	}
 
 	/*
 	 * @ApiOperation(value = "同步提醒信息", notes = "POST")
@@ -67,14 +70,6 @@ public class SynchronousServer {
 	 * @RequestMapping(value = "/synchronousRemindToApp", method = RequestMethod.POST) public
 	 * AppResp synchronousRemindToApp(@RequestBody AppUser appUser) { List<Remind> reminds =
 	 * remindRepo.findByUserId(appUser.getId()); return new AppResp(reminds, CodeDef.SUCCESS); }
-	 */
-
-	/*
-	 * @ApiOperation(value = "同步待办信息", notes = "POST")
-	 * 
-	 * @RequestMapping(value = "/synchronousTodoToApp", method = RequestMethod.POST) public AppResp
-	 * synchronousTodoToApp(@RequestBody AppUser appUser) { List<Todo> todos =
-	 * todoRepo.findByUserId(appUser.getId()); return new AppResp(todos, CodeDef.SUCCESS); }
 	 */
 
 	// @ApiOperation(value = "同步日历信息", notes = "POST")
@@ -101,46 +96,13 @@ public class SynchronousServer {
 		return new AppResp(0, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "同步app提醒历史信息", notes = "POST")
-	@RequestMapping(value = "/synchronousRemindHis", method = RequestMethod.POST)
-	public AppResp synchronousRemindHis(@RequestBody List<RemindHis> remindHis) {
-		List<RemindHis> remindHisSave = new ArrayList<>();
-		List<RemindHis> remindHisDele = new ArrayList<>();
-		for (int i = 0; i < remindHis.size(); i++) {
-			if (remindHis.get(i).getDeleteState() == 0) {
-				remindHisSave.add(remindHis.get(i));
-			} else {
-				remindHisDele.add(remindHis.get(i));
-			}
-		}
-		remindHis = remindHisRepo.save(remindHisSave);
-		remindHisRepo.delete(remindHisDele);
-		return new AppResp(0, CodeDef.SUCCESS);
-	}
-
-	/*
-	 * @ApiOperation(value = "同步用户报表完成信息", notes = "POST")
-	 * 
-	 * @RequestMapping(value = "/synchronousComplete", method = RequestMethod.POST) public AppResp
-	 * synchronousComplete(@RequestBody List<AppUserReportCompleteRel> appUserReportCompleteRel) {
-	 * List<AppUserReportCompleteRel> appUserReportCompleteRelSave = new ArrayList<>();
-	 * List<AppUserReportCompleteRel> AppUserReportCompleteRelDele = new ArrayList<>(); for (int i =
-	 * 0; i < appUserReportCompleteRel.size(); i++) { if
-	 * (appUserReportCompleteRel.get(i).getIsComplete()==0) {
-	 * appUserReportCompleteRelSave.add(appUserReportCompleteRel.get(i)); }else {
-	 * AppUserReportCompleteRelDele.add(appUserReportCompleteRel.get(i)); } }
-	 * appUserReportCompletesRelRepo.save(appUserReportCompleteRelSave);
-	 * appUserReportCompletesRelRepo.delete(AppUserReportCompleteRelDele); return new AppResp(
-	 * CodeDef.SUCCESS); }
-	 */
-
-	@ApiOperation(value = "同步app待办信息", notes = "POST")
+	@ApiOperation(value = "同步待办所有信息", notes = "POST")
 	@RequestMapping(value = "/synchronousTodos", method = RequestMethod.POST)
 	public AppResp synchronousTodos(@RequestBody List<Todo> todos) {
 		List<Todo> todoSave = new ArrayList<>();
 		List<Todo> todoDele = new ArrayList<>();
 		for (int i = 0; i < todos.size(); i++) {
-			if (todos.get(i).getDeleteState() == 0) {
+			if (todos.get(i).getDeleteFlag().intValue() == 0) {// 不删除
 				todoSave.add(todos.get(i));
 			} else {
 				todoDele.add(todos.get(i));

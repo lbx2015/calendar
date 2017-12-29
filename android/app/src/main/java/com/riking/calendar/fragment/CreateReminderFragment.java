@@ -42,7 +42,6 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     public String remiderTime;
     //timeView
     public Calendar reminderTimeCalendar;
-    public EditText remindTitle;
     public byte repeatFlag;
     public byte isRemind = 1;
     public int aheadTime;
@@ -63,7 +62,6 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.create_reminder_fragment, container, false);
-        remindTitle = (EditText) v.findViewById(R.id.remind_title);
 //        popWindow = new WheelPopWindow(getContext());
         selectRemindTime = v.findViewById(R.id.select_remind_time);
 //        popWindow.btnSubmit.setOnsetOnClickListenerClickListener(this);
@@ -144,7 +142,6 @@ public class CreateReminderFragment extends Fragment implements View.OnClickList
 
         //edit
         if (title != null) {
-            remindTitle.setText(title);
 //            remindTime.setText(remiderTime);
             if (isAllDay == 1) {
                 allDaySwitch.toggle();

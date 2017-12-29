@@ -12,4 +12,8 @@ public class ZToast {
     public static void toast(String content) {
         Toast.makeText(MyApplication.APP, content, Toast.LENGTH_SHORT).show();
     }
+
+    public static void toastEmpty(){
+        toast("没有更多数据了");
+    }
 }

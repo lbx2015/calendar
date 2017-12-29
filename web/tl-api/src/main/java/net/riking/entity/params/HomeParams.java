@@ -2,7 +2,11 @@ package net.riking.entity.params;
 
 import java.util.Date;
 
+import javax.persistence.Transient;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.riking.entity.BaseEntity;
 
@@ -28,6 +32,7 @@ public class HomeParams extends BaseEntity {
 
 	// 请求上翻最新时间戳
 	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
+	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	private Date reqTimeStamp;
 
 	// 1-问题；2-话题
@@ -39,12 +44,24 @@ public class HomeParams extends BaseEntity {
 	// 0-屏蔽；1-显示
 	private Integer enabled;
 
+	@Transient
+	// mq操作类型(消费者根据此类型判断mq操作)
+	private Integer mqOptType;
+
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getMqOptType() {
+		return mqOptType;
+	}
+
+	public void setMqOptType(Integer mqOptType) {
+		this.mqOptType = mqOptType;
 	}
 
 	public String getDirect() {

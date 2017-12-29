@@ -19,9 +19,10 @@ import com.riking.calendar.util.ZR;
 
 public class ZEnterImageView extends android.support.v7.widget.AppCompatImageView {
 
-    float textSize;
+    int textSize;
     AttributeSet attrs;
-    String text = "立即进入";
+   public String text = "立即进入";
+    int textColor;
 
     public ZEnterImageView(Context context) {
         super(context);
@@ -32,6 +33,8 @@ public class ZEnterImageView extends android.support.v7.widget.AppCompatImageVie
         super(context, attrs);
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ZEnterImageView);
         CharSequence charSequence = a.getText(R.styleable.ZEnterImageView_buttonText);
+        textColor = a.getColor(R.styleable.ZEnterImageView_button_color, Color.WHITE);
+        textSize = a.getDimensionPixelSize(R.styleable.ZEnterImageView_buttonTextSize, (int) ZR.convertDpToPx(getContext(), 17));
         text = charSequence == null ? "立即进入" : charSequence.toString();
         init();
     }
@@ -44,9 +47,8 @@ public class ZEnterImageView extends android.support.v7.widget.AppCompatImageVie
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float textSize = ZR.convertDpToPx(getContext(), 17);
         TextPaint paint = new TextPaint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(textColor);
         paint.setTextSize(textSize);
         int imgWidth = getMeasuredWidth();
         int imgHeight = getMeasuredHeight();

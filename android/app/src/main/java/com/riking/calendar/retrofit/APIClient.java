@@ -15,11 +15,11 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.CheckCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
@@ -28,15 +28,37 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
+import com.riking.calendar.pojo.params.ReportParams;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
+import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.params.UpdUserParams;
+import com.riking.calendar.pojo.params.UserFollowParams;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
-import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QACommentResult;
+import com.riking.calendar.pojo.server.QAExcellentResp;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.pojo.server.QuestionAnswer;
+import com.riking.calendar.pojo.server.ReportListResult;
+import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.pojo.server.TQuestionResult;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 import com.riking.calendar.realm.model.Reminder;
@@ -57,11 +79,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -117,7 +142,7 @@ public class APIClient {
         for (Reminder r : reminders) {
             reminderModels.add(new ReminderModel(r));
         }
-        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
+        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 if (callBack != null) {
@@ -144,14 +169,14 @@ public class APIClient {
         final Realm realm = Realm.getDefaultInstance();
         //upload pending tasks
         final RealmResults<Task> tasks = realm.where(Task.class).equalTo("syncStatus", 1).findAll();
-        final List<TaskModel> models = new ArrayList<>();
+        final List<Todo> models = new ArrayList<>();
 
         Logger.d("zzw", "found padding tasks size " + tasks.size());
         for (Task t : tasks) {
-            models.add(new TaskModel(t));
+            models.add(new Todo(t));
         }
 
-        apiInterface.synchronousTasks(models).enqueue(new ZCallBack<ResponseModel<String>>() {
+        apiInterface.synchronousTasks(models).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 realm.executeTransaction(new Realm.Transaction() {
@@ -183,10 +208,10 @@ public class APIClient {
         if (!task.isValid()) {
             return;
         }
-        final ArrayList<TaskModel> tasks = new ArrayList<>(1);
-        TaskModel t = new TaskModel(task);
+        final ArrayList<Todo> tasks = new ArrayList<>(1);
+        Todo t = new Todo(task);
         if (operationType == CONST.DELETE) {
-            t.deleteState = 1;
+            t.deleteFlag = 1;
         }
 
         tasks.add(t);
@@ -199,7 +224,7 @@ public class APIClient {
                     public void execute(Realm realm) {
                         if (operationType == CONST.DELETE) {
                             if (failed) {
-                                Logger.d("zzw", "set delete State 1 of " + task.title);
+                                Logger.d("zzw", "set delete State 1 of " + task.content);
                                 task.deleteState = 1;
                                 task.syncStatus = 1;
                             } else {
@@ -290,7 +315,7 @@ public class APIClient {
             SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
             AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(MyApplication.APP, ReminderService.class);
-            intent.putExtra(CONST.REMINDER_TITLE, task.title);
+            intent.putExtra(CONST.REMINDER_TITLE, task.content);
             PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, task.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             try {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, sdf.parse(task.strDate).getTime(), pendingIntent);
@@ -389,14 +414,14 @@ public class APIClient {
                             remindIds.add(r.id);
                         }
                         for (Task t : synchedTasks) {
-                            taskIds.add(t.todo_Id);
+                            taskIds.add(t.todoId);
                         }
 
                         List<ReminderModel> reminders = response._data.remind;
                         List<TaskModel> tasks = response._data.todo;
                         if (reminders != null) {
                             for (ReminderModel m : reminders) {
-                                int requestCode = realm.where(Reminder.class).equalTo("userId", m.id).findFirst().requestCode;
+                                int requestCode = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, m.id).findFirst().requestCode;
                                 Reminder r = new Reminder(m);
                                 remindIds.remove(r.id);
                                 r.requestCode = requestCode;
@@ -415,18 +440,18 @@ public class APIClient {
                         if (tasks != null) {
                             for (TaskModel m : tasks) {
                                 Task t = new Task(m);
-                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todo_Id).findFirst().requestCode;
+                                int requestCode = realm.where(Task.class).equalTo(Task.TODO_ID, t.todoId).findFirst().requestCode;
                                 t.requestCode = requestCode;
-                                taskIds.remove(t.todo_Id);
+                                taskIds.remove(t.todoId);
                                 realm.copyToRealmOrUpdate(t);
                                 addAlarm4Task(t);
                             }
                         }
 
                         //delete those which is from server
-                        for (String id : taskIds) {
-                            realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst().deleteFromRealm();
-                        }
+//                        for (String id : taskIds) {
+//                            realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst().deleteFromRealm();
+//                        }
                     }
                 });
             }
@@ -461,9 +486,6 @@ public class APIClient {
         APIClient.apiInterface.getPositionByIndustry().enqueue(zCallBack);
     }
 
-    public static void interestingReports(AppUserReportResult result, ZCallBackWithFail<ResponseModel<Short>> zCallBackWithFail) {
-        apiInterface.interestingReports(result).enqueue(zCallBackWithFail);
-    }
 
     /**
      * when user not login ,showing all reports
@@ -531,20 +553,12 @@ public class APIClient {
         apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
     }
 
-    public static void getAllReports(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportAgence>>> c) {
-        apiInterface.getAllReports(user).enqueue(c);
+    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportResult>>> c) {
+        apiInterface.findSubscribeReportList(user).enqueue(c);
     }
 
-    public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportFrequency>>> c) {
-        apiInterface.findUserReportList(user).enqueue(c);
-    }
-
-    public static void userAddReportEdit(AppUserReportResult reportResult, ZCallBackWithFail<ResponseModel<Short>> z) {
-        apiInterface.userAddReportEdit(reportResult).enqueue(z);
-    }
-
-    public static void getReportByName(HashMap<String, String> reportName, ZCallBack<ResponseModel<List<ReportFrequency>>> c) {
-        apiInterface.getReportByName(reportName).enqueue(c);
+    public static void userAddReportEdit(SubscribeReportParam reportResult, ZCallBackWithFail<ResponseModel<String>> z) {
+        apiInterface.saveSubscribeReport(reportResult).enqueue(z);
     }
 
     public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {
@@ -589,5 +603,164 @@ public class APIClient {
 
     public static void follow(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.follow(params).enqueue(c);
+    }
+
+    public static void qAnswerAgree(QAnswerParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.qAnswerAgree(params).enqueue(c);
+    }
+
+    public static void qACommentList(QAnswerParams params, ZCallBack<ResponseModel<List<QAComment>>> c) {
+        apiInterface.qACommentList(params).enqueue(c);
+    }
+
+    public static void qACommentPub(QAnswerParams params, ZCallBack<ResponseModel<QAComment>> c) {
+        apiInterface.qACommentPub(params).enqueue(c);
+    }
+
+    public static void findSearchList(SearchParams params, Callback<ResponseBody> c) {
+        apiInterface.findSearchList(params).enqueue(c);
+    }
+
+    public static void getTopic(TopicParams params, ZCallBack<ResponseModel<Topic>> c) {
+        apiInterface.getTopic(params).enqueue(c);
+    }
+
+    public static void getEssenceAnswer(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QAnswerResult>>> c) {
+        apiInterface.getEssenceAnswer(params).enqueue(c);
+    }
+
+    public static void getQuestionsOfTopic(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QuestResult>>> c) {
+        apiInterface.getQuestionsOfTopic(params).enqueue(c);
+    }
+
+    public static void getExcellentAnswer(TopicParams params, ZCallBackWithoutProgress<ResponseModel<List<QAExcellentResp>>> c) {
+        apiInterface.getExcellentResp(params).enqueue(c);
+    }
+
+    public static void findHomePageData(HomeParams params, ZCallBackWithoutProgress<ResponseModel<List<TQuestionResult>>> c) {
+        apiInterface.findHomePageData(params).enqueue(c);
+    }
+
+    public static void getAnswerInfo(QAnswerParams params, ZCallBack<ResponseModel<QuestionAnswer>> c) {
+        apiInterface.getAnswerInfo(params).enqueue(c);
+    }
+
+    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getMyFavoriteUsers(params).enqueue(c);
+    }
+
+    public static void getMyFans(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.myFans(params).enqueue(c);
+    }
+
+    public static void getMyAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        apiInterface.getMyAnswers(params).enqueue(c);
+    }
+
+    public static void signIn(UserParams params, ZCallBackWithFail<ResponseModel<Map<String, Integer>>> c) {
+        apiInterface.signIn(params).enqueue(c);
+    }
+
+    public static void answerInvite(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.answerInvite(params).enqueue(c);
+    }
+
+    public static void modifyUserInfo(UpdUserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.modifyUserInfo(params).enqueue(c);
+    }
+
+    public static void getAllEmailSuffix(ZCallBackWithoutProgress<ResponseModel<List<String>>> c) {
+        apiInterface.getAllEmailSuffix().enqueue(c);
+    }
+
+    public static void publishFeedBack(List<MultipartBody.Part> file, String userId, String content, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.feedBackPublish(file, userId, content).enqueue(c);
+    }
+
+    public static void getReports(ReportParams params, ZCallBack<ResponseModel<List<ReportListResult>>> c) {
+        apiInterface.getReports(params).enqueue(c);
+    }
+
+    public static void getUserOperationInfo(UserParams params, ZCallBack<ResponseModel<UserOperationInfo>> c) {
+        apiInterface.getUserOperationInfo(params).enqueue(c);
+    }
+
+    public static void getUserDynamicComments(UserFollowParams params, ZCallBack<ResponseModel<List<QACommentResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 1;
+        apiInterface.getUserDynamicComments(params).enqueue(c);
+    }
+
+    public static void getUserDynamicAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 2;
+        apiInterface.getUserDynamicAnswers(params).enqueue(c);
+    }
+
+    public static void getUserDynamicQuestions(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+        // 1-评论；2-回答；3-提问
+        params.optType = 3;
+        apiInterface.getUserDynamicQuestions(params).enqueue(c);
+    }
+
+    public static void getTaskDates(ReportCompletedRelParam param, ZCallBack<ResponseModel<List<String>>> c) {
+        apiInterface.getTaskDates(param).enqueue(c);
+    }
+
+    public static void findCurrentTasks(RCompletedRelParams param, ZCallBack<ResponseModel<List<CurrentReportTaskResp>>> c) {
+        apiInterface.findCurrentTasks(param).enqueue(c);
+    }
+
+    public static void getMyFollow(UserFollowParams params, ZCallBack<ResponseModel<List<Topic>>> c) {
+        //get topics
+        params.objType = 2;
+        apiInterface.getMyFollowTopic(params).enqueue(c);
+    }
+
+    public static void getMyFollowQuestion(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+        params.objType = 1;
+        apiInterface.getMyFollowQuestion(params).enqueue(c);
+    }
+
+    public static void getEditHtmlUrl(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.getEditHtmlUrl(params).enqueue(c);
+    }
+
+    public static void getMyCollectAnswer(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+        params.objType = 1;
+        apiInterface.getMyCollectAnswer(params).enqueue(c);
+    }
+
+    public static void getMyCollectNews(UserFollowParams params, ZCallBack<ResponseModel<List<News>>> c) {
+        params.objType = 2;
+        apiInterface.getMyCollectNews(params).enqueue(c);
+    }
+
+    public static void sendEmailVerifyCode(UserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.sendEmailVerifyCode(params).enqueue(c);
+    }
+
+    public static void emailIdentify(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.emailIdentify(params).enqueue(c);
+    }
+
+    public static void getColleague(UserParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getColleagues(params).enqueue(c);
+    }
+
+    public static void getContacts(UserParams params, ZCallBack<ResponseModel<List<String>>> c) {
+        apiInterface.getContacts(params).enqueue(c);
+    }
+
+    public static void inviteContact(UserParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.contactsInvite(params).enqueue(c);
+    }
+
+    public static void completeReport(RCompletedRelParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.completeReport(params).enqueue(c);
+    }
+
+    public static void saveTodo( List<Todo> params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.synchronousTasks(params).enqueue(c);
     }
 }

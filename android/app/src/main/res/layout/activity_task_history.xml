@@ -7,26 +7,32 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
         <ImageView
-            android:id="@+id/cancel"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/image_height_40dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
-            android:onClick="onClickBack"
+            android:layout_marginLeft="15dp"
+            android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/activity_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/completed_task"
             android:textColor="@color/color_222222"
-            android:textSize="18sp" />
+            android:textSize="@dimen/action_bar_text_size" />
+
     </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_d2d2d2" />
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/primary_recycler_view"

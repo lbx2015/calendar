@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.listener.ZCallBack;
@@ -22,13 +20,14 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+//news comment adapter
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.MyViewHolder> {
     public List<NewsComment> mList;
     private CommentsActivity a;
@@ -48,8 +47,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @Override
     public void onBindViewHolder(final CommentListAdapter.MyViewHolder h, int i) {
         final NewsComment c = mList.get(i);
-
-        h.authorName.setText(c.userName);
+        ZR.setUserName(h.authorName, c.userName, c.grade);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
@@ -87,16 +85,20 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             }
         });
 
+        //set the agree number
+        h.agreeTv.setText(ZR.getNumberString(c.agreeNumber));
+
         if (c.isAgree == 1) {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
         } else {
+            h.agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
-        RequestOptions options = new RequestOptions();
-        Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
-                .apply(options.fitCenter())
-                .into(h.authorImage);
+        //set the user image icon
+        ZR.setUserImage(h.authorImage, c.photoUrl);
+
         setRecyclerView(h.recyclerView, h, i);
         CommentsActivity commentsActivity = (CommentsActivity) a;
         h.answerContent.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +114,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         h.replyListAdapter = new ReplyListAdapter(a, recyclerView);
-        List<NCReply> replies = mList.get(position).nCommentReplyInfoList;
+        List<NCReply> replies = mList.get(position).ncReplyList;
         if (replies == null || replies.size() == 0) {
             recyclerView.setVisibility(View.GONE);
         } else {
@@ -120,7 +122,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             h.replyListAdapter.add(replies);
             recyclerView.setAdapter(h.replyListAdapter);
         }
-
     }
 
     @Override

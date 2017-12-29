@@ -48,8 +48,13 @@ public class BasePageQueryProp extends PageQuery {
 
 	@Comment("是否审核： 0-未审核，1-已审核")
 	@org.hibernate.annotations.ColumnDefault("0")
-	@Column(name = "is_audit", nullable = false, precision = 1)
-	private Integer isAudit;
+	@Column(name = "is_aduit", nullable = false, precision = 1)
+	private Integer isAduit;
+
+	@Comment("是否启用：0-禁用；1-启用")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "enabled", length = 1)
+	private Integer enabled;
 
 	@Comment("是否删除： 0-删除，1-未删除")
 	@org.hibernate.annotations.ColumnDefault("1")
@@ -80,6 +85,14 @@ public class BasePageQueryProp extends PageQuery {
 		this.createdTime = createdTime;
 	}
 
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
+	}
+
 	public Date getModifiedTime() {
 		return modifiedTime;
 	}
@@ -88,12 +101,12 @@ public class BasePageQueryProp extends PageQuery {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public Integer getIsAudit() {
-		return isAudit;
+	public Integer getIsAduit() {
+		return isAduit;
 	}
 
-	public void setIsAudit(Integer isAudit) {
-		this.isAudit = isAudit;
+	public void setIsAduit(Integer isAduit) {
+		this.isAduit = isAduit;
 	}
 
 	public Integer getIsDeleted() {

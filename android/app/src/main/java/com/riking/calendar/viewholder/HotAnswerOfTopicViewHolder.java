@@ -2,6 +2,7 @@ package com.riking.calendar.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -16,6 +17,8 @@ import butterknife.ButterKnife;
  */
 public class HotAnswerOfTopicViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.answer_image)
+    public ImageView answerImage;
     @BindView(R.id.answer_author_name)
     public TextView answerAuthorName;
     @BindView(R.id.answer_title)
@@ -24,6 +27,10 @@ public class HotAnswerOfTopicViewHolder extends RecyclerView.ViewHolder {
     public CircleImageView authorImage;
     @BindView(R.id.answer_content)
     public TextView answerContent;
+    @BindView(R.id.review_number)
+    public TextView reviewTv;
+    @BindView(R.id.agree_number)
+    public TextView agreeTv;
 
     public HotAnswerOfTopicViewHolder(View itemView) {
         super(itemView);

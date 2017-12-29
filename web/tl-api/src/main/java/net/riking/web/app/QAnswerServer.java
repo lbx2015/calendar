@@ -1,11 +1,15 @@
 package net.riking.web.app;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
@@ -25,6 +30,7 @@ import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
+import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -32,9 +38,14 @@ import net.riking.entity.model.QACReply;
 import net.riking.entity.model.QAComment;
 import net.riking.entity.model.QAnswerRel;
 import net.riking.entity.model.QuestionAnswer;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
+import net.riking.service.AppUserService;
+import net.riking.util.MQProduceUtil;
+import net.riking.util.Utils;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -64,6 +75,9 @@ public class QAnswerServer {
 	NewsRelRepo newsRelRepo;
 
 	@Autowired
+	HttpServletRequest request;
+
+	@Autowired
 	QACommentRepo qACommentRepo;
 
 	@Autowired
@@ -81,6 +95,23 @@ public class QAnswerServer {
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
 
+	@Autowired
+	AppUserService appUserService;
+
+	@Autowired
+	UserFollowRelRepo userFollowRelRepo;
+
+	@Autowired
+	Config config;
+
+	@ApiOperation(value = "回答", notes = "POST")
+	@RequestMapping(value = "/answer", method = RequestMethod.POST)
+	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
+		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_INQUIRY_HTML5_PATH + "?userId="
+				+ qAnswerParams.getUserId() + "&questionId=" + qAnswerParams.getQuestionId(), CodeDef.SUCCESS);
+	}
+
 	/**
 	 * 问题回答详情
 	 * @param params[userId,questAnswerId]
@@ -90,20 +121,46 @@ public class QAnswerServer {
 	@RequestMapping(value = "/getQAnswer", method = RequestMethod.POST)
 	public AppResp getQAnswer(@RequestBody QAnswerParams qAnswerParams) {
 		QuestionAnswer questionAnswer = questionAnswerRepo.getById(qAnswerParams.getQuestAnswerId());
-		questionAnswer.setIsAgree(0);// 0-未点赞
-		questionAnswer.setIsCollect(0);// 0-未收藏
-		if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
-			List<QAnswerRel> rels = qAnswerRelRepo.findByUser(qAnswerParams.getUserId());
-			for (QAnswerRel rel : rels) {
-				if (Const.OBJ_OPT_GREE == rel.getDataType()) {
-					if (questionAnswer.getId().equals(rel.getQaId())) {
-						questionAnswer.setIsAgree(1);// 1-已点赞
-					}
-				} else if (Const.OBJ_OPT_COLLECT == rel.getDataType()) {
-					if (questionAnswer.getId().equals(rel.getQaId())) {
-						questionAnswer.setIsCollect(1);// 1-已收藏
+		if (questionAnswer != null) {
+			// TODO 后面优化从redis中取
+			Integer commentNum = qACommentRepo.commentCount(questionAnswer.getId());
+			Integer agreeNum = qAnswerRelRepo.agreeCount(qAnswerParams.getQuestAnswerId(), 1);// 1-点赞
+			questionAnswer.setCommentNum(commentNum);
+			questionAnswer.setAgreeNum(agreeNum);
+			questionAnswer.setIsAgree(0);// 0-未点赞
+			questionAnswer.setIsCollect(0);// 0-未收藏
+			if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
+				List<QAnswerRel> rels = qAnswerRelRepo.findByUser(qAnswerParams.getUserId());
+				for (QAnswerRel rel : rels) {
+					if (Const.OBJ_OPT_GREE == rel.getDataType()) {
+						if (questionAnswer.getId().equals(rel.getQaId())) {
+							questionAnswer.setIsAgree(1);// 1-已点赞
+						}
+					} else if (Const.OBJ_OPT_COLLECT == rel.getDataType()) {
+						if (questionAnswer.getId().equals(rel.getQaId())) {
+							questionAnswer.setIsCollect(1);// 1-已收藏
+						}
 					}
 				}
+			}
+			questionAnswer.setIsFollow(0);// 未关注
+			List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(qAnswerParams.getUserId());
+			for (UserFollowRel userFollowRel : userFollowRels) {
+				if (userFollowRel.getFollowStatus() == 1
+						&& userFollowRel.getToUserId().equals(questionAnswer.getUserId())) {
+					questionAnswer.setIsFollow(1);// 已关注
+				} else if (userFollowRel.getFollowStatus() == 2
+						&& userFollowRel.getToUserId().equals(questionAnswer.getUserId())) {
+					questionAnswer.setIsFollow(2);// 互相关注
+				}
+			}
+			if (null != questionAnswer.getPhotoUrl()) {
+				questionAnswer.setPhotoUrl(
+						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
+			}
+			// 等级
+			if (null != questionAnswer.getExperience()) {
+				questionAnswer.setGrade(appUserService.transformExpToGrade(questionAnswer.getExperience()));
 			}
 		}
 		return new AppResp(questionAnswer, CodeDef.SUCCESS);
@@ -124,16 +181,20 @@ public class QAnswerServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(qAnswerParams.getContent())) {
-			return new AppResp("", CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
+		qAnswerParams.setMqOptType(Const.MQ_OPT_QANSWER_COMMENT);
+		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+
 		QAComment qaComment = new QAComment();
 		qaComment.setUserId(qAnswerParams.getUserId());
 		qaComment.setQuestionAnswerId(qAnswerParams.getQuestAnswerId());
 		qaComment.setContent(qAnswerParams.getContent());
 		qaComment.setCreatedBy(qAnswerParams.getUserId());
 		qaComment.setModifiedBy(qAnswerParams.getUserId());
-		qaComment.setIsAudit(0);// 未审核
-		qACommentRepo.save(qaComment);
+		qaComment.setIsAduit(0);// 未审核
+		// qACommentRepo.save(qaComment);
 		AppUser appUser = appUserRepo.findOne(qaComment.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(qaComment.getUserId());
 		if (null != appUser) {
@@ -151,6 +212,13 @@ public class QAnswerServer {
 				}
 			}
 		}
+		if (null != qaComment.getPhotoUrl()) {
+			qaComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaComment.getPhotoUrl());
+		}
+		// 等级
+		if (null != qaComment.getExperience()) {
+			qaComment.setGrade(appUserService.transformExpToGrade(qaComment.getExperience()));
+		}
 		return new AppResp(qaComment, CodeDef.SUCCESS);
 	}
 
@@ -162,56 +230,11 @@ public class QAnswerServer {
 	@ApiOperation(value = "问题回答的点赞/收藏", notes = "POST")
 	@RequestMapping(value = "/agreeOrCollect", method = RequestMethod.POST)
 	public AppResp QAnswerAgree(@RequestBody QAnswerParams qAnswerParams) {
-		switch (qAnswerParams.getOptType()) {
-			// 1-点赞
-			case 1:
-				if (Const.EFFECTIVE == qAnswerParams.getEnabled()) {
-					QAnswerRel rels = qAnswerRelRepo.findByOne(qAnswerParams.getUserId(),
-							qAnswerParams.getQuestAnswerId(), 1);// 1-点赞
-					if (null == rels) {
-						// 如果传过来的参数是点赞，保存新的一条关注记录
-						QAnswerRel qAnswerRel = new QAnswerRel();
-						qAnswerRel.setUserId(qAnswerParams.getUserId());
-						qAnswerRel.setQaId(qAnswerParams.getQuestAnswerId());
-						qAnswerRel.setDataType(1);// 点赞
-						qAnswerRelRepo.save(qAnswerRel);
-					}
-				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
-					// 如果传过来是取消点赞，把之前一条记录物理删除
-					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
-							Const.OBJ_OPT_GREE);// 点赞
-				} else {
-					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 2-收藏
-			case 2:
-				if (Const.EFFECTIVE == qAnswerParams.getEnabled()) {
-					QAnswerRel rels = qAnswerRelRepo.findByOne(qAnswerParams.getUserId(),
-							qAnswerParams.getQuestAnswerId(), 2);// 1-收藏
-					if (null == rels) {
-						// 如果传过来的参数是收藏，保存新的一条关注记录
-						QAnswerRel qAnswerRel = new QAnswerRel();
-						qAnswerRel.setUserId(qAnswerParams.getUserId());
-						qAnswerRel.setQaId(qAnswerParams.getQuestAnswerId());
-						qAnswerRel.setDataType(2);// 收藏
-						qAnswerRelRepo.save(qAnswerRel);
-					}
-				} else if (Const.INVALID == qAnswerParams.getEnabled()) {
-					// 如果传过来是取消收藏，把之前一条记录物理删除
-					qAnswerRelRepo.deleteByUIdAndQaId(qAnswerParams.getUserId(), qAnswerParams.getQuestAnswerId(),
-							Const.OBJ_OPT_COLLECT);// 收藏
-				} else {
-					logger.error("参数异常：enabled=" + qAnswerParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			default:
-				logger.error("参数异常：objType=" + qAnswerParams.getOptType());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
-		return new AppResp("", CodeDef.SUCCESS);
+		// 具体操作在mq队列里面
+		qAnswerParams.setMqOptType(Const.MQ_OPT_QA_AGREEOR_COLLECT);
+		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -223,46 +246,35 @@ public class QAnswerServer {
 	@RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
 	public AppResp qACommentList(@RequestBody QAnswerParams qAnswerParams) {
 		// 返回到前台的问题回答列表
-		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId());
+		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId(),
+				qAnswerParams.getUserId(), new PageRequest(0, 30));
 		for (QAComment qAComment : questionAnswerList) {
+			if (null != qAComment.getPhotoUrl()) {
+				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAComment.getPhotoUrl());
+			}
+			// 等级
+			if (null != qAComment.getExperience()) {
+				qAComment.setGrade(appUserService.transformExpToGrade(qAComment.getExperience()));
+			}
 			List<QACReply> qacReplies = qACReplyRepo.getByCommentId(qAComment.getId());
 			for (QACReply qacReply : qacReplies) {
-				AppUser appUser = appUserRepo.findOne(qacReply.getFromUserId());
-				if (null != appUser) {
-					FromUser fromUser = new FromUser();
-					fromUser.setUserId(qacReply.getFromUserId());
-					fromUser.setUserName(appUser.getUserName());
-					qacReply.setFromUser(fromUser);
-				}
+				FromUser fromUser = new FromUser();
+				fromUser.setUserId(qacReply.getFromUserId());
+				fromUser.setUserName(qacReply.getFromUserName());
+				qacReply.setFromUser(fromUser);
 				if (null != qacReply.getToUserId()) {
-					AppUser apptoUser = appUserRepo.findOne(qacReply.getToUserId());
-					if (null != apptoUser) {
-						ToUser toUser = new ToUser();
-						toUser.setUserId(qacReply.getToUserId());
-						toUser.setUserName(apptoUser.getUserName());
-						qacReply.setToUser(toUser);
-					}
+					ToUser toUser = new ToUser();
+					toUser.setUserId(qacReply.getToUserId());
+					toUser.setUserName(qacReply.getToUserName());
+					qacReply.setToUser(toUser);
 				}
-				qacReply.setToUserId(null);
-				qacReply.setToUserName(null);
-				qacReply.setFromUserId(null);
-				qacReply.setFromUserName(null);
-				qAComment.getQACReplyList().add(qacReply);
+
 			}
+			qAComment.setQacReplyList(qacReplies);
 			// TODO 统计数后面从redis中取点赞数
 			Integer agreeNum = 0;
 			agreeNum = qACAgreeRelRepo.agreeCount(qAComment.getId(), Const.OBJ_OPT_GREE);// 点赞
 			qAComment.setAgreeNumber(agreeNum);
-			qAComment.setIsAgree(0);// 0-未点赞
-			if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
-				List<String> qacIds = qACAgreeRelRepo.findByUser(qAnswerParams.getUserId(), 1);// 点赞
-				for (String qacId : qacIds) {
-					if (qAComment.getId().equals(qacId)) {
-						qAComment.setIsAgree(1);// 1-已点赞
-					}
-
-				}
-			}
 		}
 
 		return new AppResp(questionAnswerList, CodeDef.SUCCESS);

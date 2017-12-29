@@ -5,7 +5,6 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
 import com.riking.calendar.pojo.AppUserReportRel;
-import com.riking.calendar.pojo.AppUserReportResult;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
@@ -25,21 +24,44 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.HomeParams;
 import com.riking.calendar.pojo.params.NewsParams;
+import com.riking.calendar.pojo.params.QAnswerParams;
+import com.riking.calendar.pojo.params.RCompletedRelParams;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
+import com.riking.calendar.pojo.params.ReportParams;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
+import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.params.UpdUserParams;
+import com.riking.calendar.pojo.params.UserFollowParams;
+import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
-import com.riking.calendar.pojo.server.ReportAgence;
-import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QACommentResult;
+import com.riking.calendar.pojo.server.QAExcellentResp;
+import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.pojo.server.QuestionAnswer;
+import com.riking.calendar.pojo.server.ReportListResult;
+import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.pojo.server.TQuestionResult;
+import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
+import com.riking.calendar.pojo.server.UserOperationInfo;
 import com.riking.calendar.pojo.synch.LoginParams;
 import com.riking.calendar.pojo.synch.SynResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -59,7 +81,6 @@ import retrofit2.http.Url;
  */
 
 public interface APIInterface {
-
     @GET
     Call<ResponseBody> doGetListResources(@Url String url);
 
@@ -107,13 +128,6 @@ public interface APIInterface {
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
 
-    /**
-     * get all reports when user not login
-     *
-     * @return
-     */
-    @POST("reportListApp/getAllReport")
-    Call<ResponseModel<List<ReportAgence>>> getAllReports(@Body AppUser user);
 
     @POST("common/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
@@ -137,7 +151,8 @@ public interface APIInterface {
     Call<ResponseModel<String>> getAgreementHtml(@Query("userId") String notUsed);
 
     @Multipart
-    @POST("appUserApp/upLoad")
+    @POST("user/upLoad")
+//    @POST("appUserApp/upLoad")
     Call<UploadImageModel> postImage(@Part MultipartBody.Part body, @Part("userId") String id);
 
     @POST("modelPropDictApp/T_APP_USER")
@@ -156,7 +171,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> synchronousReminds(@Body List<ReminderModel> reminderModels);
 
     @POST("synchronous/synchronousTodos")
-    Call<ResponseModel<String>> synchronousTasks(@Body List<TaskModel> tasks);
+    Call<ResponseModel<String>> synchronousTasks(@Body List<Todo> tasks);
 
     @POST("common/getappVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
@@ -172,25 +187,10 @@ public interface APIInterface {
     @POST("common/getPositionByIndustry")
     Call<ResponseModel<ArrayList<Industry>>> getPositionByIndustry(@Body HashMap<String, String> industryId);
 
-    /**
-     * set user's interesting reports into server
-     */
-    @POST("/appUserReport/userAddReportEdit")
-    Call<ResponseModel<Short>> interestingReports(@Body AppUserReportResult appUserReportResult);
+    @POST("report/modifySubscribeReport")
+    Call<ResponseModel<String>> saveSubscribeReport(@Body SubscribeReportParam params);
 
-    /**
-     * find the repords of user ordered
-     */
-    @POST("/appUserReport/findUserReportList")
-    Call<ResponseModel<List<ReportFrequency>>> findUserReportList(@Body AppUser user);
-
-    @POST("/appUserReport/userAddReportEdit")
-    Call<ResponseModel<Short>> userAddReportEdit(@Body AppUserReportResult reportResult);
-
-    @POST("/reportListApp/getReportByName")
-    Call<ResponseModel<List<ReportFrequency>>> getReportByName(@Body HashMap<String, String> reporName);
-
-    @POST("/appUserReport/updateUserReportRelById")
+    @POST("reportSubcribeRel/updateUserReportRelById")
     Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
 
     @POST("news/findNewsList")
@@ -222,4 +222,205 @@ public interface APIInterface {
 
     @POST("common/follow")
     Call<ResponseModel<String>> follow(@Body TQuestionParams params);
+
+    /**
+     * 问题回答的点赞/收藏
+     *
+     * @param params [userId,questAnswerId,optType,enabled]
+     * @return
+     */
+    @POST("qAnswer/agreeOrCollect")
+    Call<ResponseModel<String>> qAnswerAgree(@Body QAnswerParams params);
+
+    /**
+     * TODO 问题回答评论列表[userId,tqId，questAnswerId]
+     *
+     * @param params
+     * @return
+     */
+    @POST("qAnswer/qACommentList")
+    Call<ResponseModel<List<QAComment>>> qACommentList(@Body QAnswerParams params);
+
+    /**
+     * 问题回答的评论
+     *
+     * @param params [userId,questAnswerId,content]
+     * @return
+     */
+    @POST("qAnswer/qACommentPub")
+    Call<ResponseModel<QAComment>> qACommentPub(@Body QAnswerParams params);
+
+    @POST("searchList/findSearchList")
+    Call<ResponseBody> findSearchList(@Body SearchParams params);
+
+    @POST("topic/getTopic")
+    Call<ResponseModel<Topic>> getTopic(@Body TopicParams params);
+
+    /**
+     * 精华的问题
+     */
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<List<QAnswerResult>>> getEssenceAnswer(@Body TopicParams params);
+
+    /**
+     * 得到话题的问题
+     *
+     * @param params
+     * @return
+     */
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<List<QuestResult>>> getQuestionsOfTopic(@Body TopicParams params);
+
+    /**
+     * 得到话题的优秀回答者
+     *
+     * @param params
+     * @return
+     */
+    @POST("topic/essenceQAList")
+    Call<ResponseModel<List<QAExcellentResp>>> getExcellentResp(@Body TopicParams params);
+
+    @POST("homePage/findHomePageData")
+    Call<ResponseModel<List<TQuestionResult>>> findHomePageData(@Body HomeParams params);
+
+    /**
+     * get the detail information of answer
+     */
+    @POST("qAnswer/getQAnswer")
+    Call<ResponseModel<QuestionAnswer>> getAnswerInfo(@Body QAnswerParams params);
+
+    /**
+     * The users which I am following
+     *
+     * @param params
+     * @return
+     */
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<AppUserResult>>> getMyFavoriteUsers(@Body UserFollowParams params);
+
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<Topic>>> getMyFollowTopic(@Body UserFollowParams params);
+
+    @POST("userFollow/myFollow")
+    Call<ResponseModel<List<QuestResult>>> getMyFollowQuestion(@Body UserFollowParams params);
+
+    /**
+     * The users which following me
+     *
+     * @param params
+     * @return
+     */
+    @POST("userFollow/myFans")
+    Call<ResponseModel<List<AppUserResult>>> myFans(@Body UserFollowParams params);
+
+    /**
+     * get my answers
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QAnswerResult>>> getMyAnswers(@Body UserFollowParams params);
+
+    /**
+     * User sign in api
+     *
+     * @param params
+     * @return
+     */
+    @POST("user/signIn")
+    Call<ResponseModel<Map<String, Integer>>> signIn(@Body UserParams params);
+
+    @POST("topicQuestion/answerInvite")
+    Call<ResponseModel<String>> answerInvite(@Body TQuestionParams params);
+
+    @POST("user/modify")
+    Call<ResponseModel<String>> modifyUserInfo(@Body UpdUserParams params);
+
+    @POST("report/findSubscribeReportList")
+    Call<ResponseModel<List<ReportResult>>> findSubscribeReportList(@Body AppUser params);
+
+    @POST("common/getAllEmailSuffix")
+    Call<ResponseModel<List<String>>> getAllEmailSuffix();
+
+    @Multipart
+    @POST("feedBack/publish")
+    Call<ResponseModel<String>> feedBackPublish(@Part List<MultipartBody.Part> file, @Part("userId") String id, @Part("content") String content);
+
+    /**
+     * 可根据报表名称查询相关报表
+     */
+    @POST("report/getReports")
+    Call<ResponseModel<List<ReportListResult>>> getReports(@Body ReportParams params);
+
+    @POST("user/getOperateNumber")
+    Call<ResponseModel<UserOperationInfo>> getUserOperationInfo(@Body UserParams params);
+
+    /**
+     * 我的动态：评论列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QACommentResult>>> getUserDynamicComments(@Body UserFollowParams params);
+
+    /**
+     * * 我的动态：回答列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QAnswerResult>>> getUserDynamicAnswers(@Body UserFollowParams params);
+
+    /**
+     * * 我的动态：问题列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("userDynamic/myDynamic")
+    Call<ResponseModel<List<QuestResult>>> getUserDynamicQuestions(@Body UserFollowParams params);
+
+    //当月打点
+    @POST("report/getTaskDate")
+    Call<ResponseModel<List<String>>> getTaskDates(@Body ReportCompletedRelParam param);
+
+    //当天报表
+    @POST("report/findCurrentTasks")
+    Call<ResponseModel<List<CurrentReportTaskResp>>> findCurrentTasks(@Body RCompletedRelParams param);
+
+    @POST("topicQuestion/inquiry")
+    Call<ResponseModel<String>> getEditHtmlUrl(@Body TQuestionParams params);
+
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<QAnswerResult>>> getMyCollectAnswer(@Body UserFollowParams params);
+
+    //collect answer
+    @POST("userDynamic/myCollection")
+    Call<ResponseModel<List<News>>> getMyCollectNews(@Body UserFollowParams params);
+
+    //发送邮箱认证
+    @POST("common/sendEmailVerifyCode")
+    Call<ResponseModel<String>> sendEmailVerifyCode(@Body UserParams params);
+
+    //verify email code
+    @POST("common/emailIdentify")
+    Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
+
+    @POST("userContacts/colleague")
+    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
+
+    @POST("userContacts/contacts")
+    Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
+
+    @POST("userContacts/contactsInvite")
+    Call<ResponseModel<String>> contactsInvite(@Body UserParams params);
+
+    //完成报表/也可以取消完成
+    @POST("report/complete")
+    Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
+
 }

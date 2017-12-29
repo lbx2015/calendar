@@ -6,12 +6,16 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.ReportsOrderAdapter;
@@ -20,28 +24,32 @@ import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.server.ReportFrequency;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZDB;
+import com.riking.calendar.util.ZPreference;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by zw.zhang on 2017/7/11.
  */
 
-public class SearchReportActivity extends AppCompatActivity implements SubscribeReport, PerformSearch {
+public class SearchReportActivity extends AppCompatActivity implements SubscribeReport<ReportResult>, PerformSearch {
 
     public ReportsOrderAdapter reportsOrderAdapter = new ReportsOrderAdapter(this);
     public boolean editMode = false;
@@ -50,8 +58,8 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
-    List<ReportFrequency> orderReports;
-    List<ReportFrequency> disOrderReports;
+    List<ReportResult> orderReports;
+    List<ReportResult> disOrderReports;
     ImageView clearSearchInputImage;
     private boolean subscribedReportsChanged = false;
 
@@ -81,6 +89,15 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     void init() {
         initViews();
         initEvents();
+    }
+
+    public void clickClearSearchConditions(View v) {
+        ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(SearchConditions.class).findAll().deleteAllFromRealm();
+            }
+        });
     }
 
     public void clickCancel(View view) {
@@ -125,14 +142,50 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     public void performSearch() {
-        HashMap<String, String> reportName = new LinkedHashMap<>(1);
-        reportName.put("reportName", reportSearchCondition);
-        reportName.put("userId", ZPreference.pref.getString(CONST.USER_ID, ""));
-        APIClient.getReportByName(reportName, new ZCallBack<ResponseModel<List<ReportFrequency>>>() {
+        SearchParams params = new SearchParams();
+        params.keyWord = reportSearchCondition;
+        //search reports
+        params.objType = 1;
+        APIClient.findSearchList(params, new Callback<ResponseBody>() {
+
             @Override
-            public void callBack(ResponseModel<List<ReportFrequency>> response) {
-                reportsOrderAdapter.mList = response._data;
-                recyclerView.setAdapter(reportsOrderAdapter);
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ResponseBody r = response.body();
+                //adding null protection
+                if (r == null) {
+                    return;
+                }
+
+                localSearchTitle.setVisibility(View.GONE);
+
+                try {
+                    String sourceString = r.source().readUtf8();
+                    Gson s = new Gson();
+                    JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
+                    String _data = jsonObject.get("_data").toString();
+
+                    MyLog.d("_data " + _data);
+                    //do nothing when the data is empty.
+                    if (TextUtils.isEmpty(_data.trim())) {
+                        return;
+                    }
+                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
+                    };
+
+                    ResponseModel<List<ReportResult>> responseModel = s.fromJson(sourceString, token.getType());
+
+                    List<ReportResult> list = responseModel._data;
+                    reportsOrderAdapter.mList = list;
+                    recyclerView.setAdapter(reportsOrderAdapter);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
             }
         });
     }
@@ -152,7 +205,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
 
     }
 
-    public void orderReport(ReportFrequency report) {
+    public void orderReport(ReportResult report) {
         saveToRealm();
         if (orderReports == null) {
             orderReports = new ArrayList<>();
@@ -162,7 +215,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
-        a.reportName = report.reportName;
+        a.reportName = report.title;
         a.type = "1";
         orderReports.add(report);
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
@@ -173,7 +226,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         });
     }
 
-    public void unorderReport(ReportFrequency report) {
+    public void unorderReport(ReportResult report) {
         saveToRealm();
         if (disOrderReports == null) {
             disOrderReports = new ArrayList<>();
@@ -183,7 +236,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         AppUserReportRel a = new AppUserReportRel();
         a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
         a.reportId = report.reportId;
-        a.reportName = report.reportName;
+        a.reportName = report.title;
         a.type = "0";
 
         disOrderReports.add(report);
@@ -209,7 +262,7 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
     }
 
     @Override
-    public boolean isAddedToMyOrder(ReportFrequency report) {
+    public boolean isAddedToMyOrder(ReportResult report) {
         return false;
     }
 

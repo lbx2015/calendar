@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -57,6 +58,10 @@ public class AppVersion extends BaseProp {
 	@Comment("备注")
 	@Column(name = "remark", length = 255)
 	private String remark;
+
+	@Comment("操作类型：edit-修改;add-新增")
+	@Transient
+	private String opt;
 
 	public AppVersion() {
 	}
@@ -123,6 +128,14 @@ public class AppVersion extends BaseProp {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getOpt() {
+		return opt;
+	}
+
+	public void setOpt(String opt) {
+		this.opt = opt;
 	}
 
 }

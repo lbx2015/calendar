@@ -29,7 +29,31 @@ public class MonthView extends CalendarView {
     private List<String> lunarList;
     private int mRowNum;
     private OnClickMonthViewListener mOnClickMonthViewListener;
+    private GestureDetector mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
 
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            for (int i = 0; i < mRectList.size(); i++) {
+                Rect rect = mRectList.get(i);
+                if (rect.contains((int) e.getX(), (int) e.getY())) {
+                    DateTime selectDateTime = dateTimes.get(i);
+                    if (Utils.isLastMonth(selectDateTime, mInitialDateTime)) {
+                        mOnClickMonthViewListener.onClickLastMonth(selectDateTime);
+                    } else if (Utils.isNextMonth(selectDateTime, mInitialDateTime)) {
+                        mOnClickMonthViewListener.onClickNextMonth(selectDateTime);
+                    } else {
+                        mOnClickMonthViewListener.onClickCurrentMonth(selectDateTime);
+                    }
+                    break;
+                }
+            }
+            return true;
+        }
+    });
 
     public MonthView(Context context, DateTime dateTime, OnClickMonthViewListener onClickMonthViewListener) {
         super(context);
@@ -51,7 +75,7 @@ public class MonthView extends CalendarView {
         mWidth = getWidth();
         WindowManager wm = (WindowManager) getContext()
                 .getSystemService(Context.WINDOW_SERVICE);
-        MyLog.d("MonthView width: " + mWidth + "Screen width: " + wm.getDefaultDisplay().getWidth() );
+        MyLog.d("MonthView width: " + mWidth + "Screen width: " + wm.getDefaultDisplay().getWidth());
         //绘制高度
         mHeight = getDrawHeight();
         mRectList.clear();
@@ -78,6 +102,9 @@ public class MonthView extends CalendarView {
                         canvas.drawCircle(rect.centerX(), centerY, mSelectCircleRadius, mSorlarPaint);
                         mSorlarPaint.setColor(Color.WHITE);
                         canvas.drawText(dateTime.getDayOfMonth() + "", rect.centerX(), baseline, mSorlarPaint);
+                        //riking add the following line
+                        //绘制圆点
+                        drawPoint(canvas, rect, dateTime, baseline);
                     } else if (mSelectDateTime != null && dateTime.equals(mSelectDateTime)) {
 
                         mSorlarPaint.setColor(mSelectCircleColor);
@@ -88,6 +115,9 @@ public class MonthView extends CalendarView {
 
                         mSorlarPaint.setColor(mSolarTextColor);
                         canvas.drawText(dateTime.getDayOfMonth() + "", rect.centerX(), baseline, mSorlarPaint);
+                        //riking adding the following line
+                        //绘制圆点
+                        drawPoint(canvas, rect, dateTime, baseline);
                     } else {
                         mSorlarPaint.setColor(mSolarTextColor);
                         canvas.drawText(dateTime.getDayOfMonth() + "", rect.centerX(), baseline, mSorlarPaint);
@@ -130,7 +160,6 @@ public class MonthView extends CalendarView {
         return (int) (getMonthHeight() - Utils.dp2px(getContext(), 10));
     }
 
-
     private void drawLunar(Canvas canvas, Rect rect, int baseline, int color, int i, int j) {
         if (isShowLunar) {
             mLunarPaint.setColor(color);
@@ -138,6 +167,14 @@ public class MonthView extends CalendarView {
             canvas.drawText(lunar, rect.centerX(), baseline + getMonthHeight() / 20, mLunarPaint);
         }
     }
+
+    //riking comment out the method to use the parent 绘制圆点
+    /*public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
+        if (pointList != null && pointList.contains(dateTime.toLocalDate().toString())) {
+            mLunarPaint.setColor(mPointColor);
+            canvas.drawCircle(rect.centerX(), baseline - getMonthHeight() / 15, mPointSize, mLunarPaint);
+        }
+    }*/
 
     private void drawHolidays(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
         if (isShowHoliday) {
@@ -151,41 +188,6 @@ public class MonthView extends CalendarView {
             }
         }
     }
-
-    //riking comment out the method to use the parent 绘制圆点
-    /*public void drawPoint(Canvas canvas, Rect rect, DateTime dateTime, int baseline) {
-        if (pointList != null && pointList.contains(dateTime.toLocalDate().toString())) {
-            mLunarPaint.setColor(mPointColor);
-            canvas.drawCircle(rect.centerX(), baseline - getMonthHeight() / 15, mPointSize, mLunarPaint);
-        }
-    }*/
-
-
-    private GestureDetector mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            for (int i = 0; i < mRectList.size(); i++) {
-                Rect rect = mRectList.get(i);
-                if (rect.contains((int) e.getX(), (int) e.getY())) {
-                    DateTime selectDateTime = dateTimes.get(i);
-                    if (Utils.isLastMonth(selectDateTime, mInitialDateTime)) {
-                        mOnClickMonthViewListener.onClickLastMonth(selectDateTime);
-                    } else if (Utils.isNextMonth(selectDateTime, mInitialDateTime)) {
-                        mOnClickMonthViewListener.onClickNextMonth(selectDateTime);
-                    } else {
-                        mOnClickMonthViewListener.onClickCurrentMonth(selectDateTime);
-                    }
-                    break;
-                }
-            }
-            return true;
-        }
-    });
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

@@ -1,16 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f2f2f2"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="13dp"
-        android:paddingTop="13dp">
+        android:layout_height="@dimen/tool_bar_height"
+        android:background="@color/white">
 
         <com.riking.calendar.view.ZCenterImageView
             android:id="@+id/back"
@@ -18,314 +15,104 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginLeft="19dp"
-            android:src="@drawable/back_icon" />
+            android:src="@drawable/nav_icon_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/set"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:text="系统设置"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
     </FrameLayout>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="false">
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
 
-        <LinearLayout
+    <RelativeLayout
+        android:id="@+id/clear_cache_relatvie_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:id="@+id/clear_cache"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="19dp"
-            android:background="@android:color/white"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@string/clear_cache"
+            android:textColor="@color/color_222222"
+            android:textSize="16sp" />
 
-            <!-- <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="48dp"
-                 android:background="@android:color/white">
-
-                 <TextView
-                     andruserIdd:iduserId@+id/first_week_day"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_alignParentLeft="true"
-                     android:layout_centerVertical="true"
-                     android:layout_gravity="center_vertical"
-                     android:gravity="center"
-                     android:text="@string/first_week_day"
-                     android:textColor="@color/color_323232"
-                     android:textSize="16sp" />
-
-                 <TextView
-                     andruserIdd:iduserId@+id/first_day"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_centerVertical="true"
-                     android:layout_margin="5dp"
-                     android:layout_toLeftOfuserId@+id/edit_first_day"
-                     android:text="@string/sundday"
-                     android:textColor="@color/color_background_b6b6b6"
-                     android:textSize="14sp" />
-
-                 <ImageView
-                     andruserIdd:iduserId@+id/edit_first_day"
-                     android:layout_width="10dp"
-                     android:layout_height="10dp"
-                     android:layout_alignBottomuserId@+id/select_time"
-                     android:layout_alignParentEnd="true"
-                     android:layout_centerVertical="true"
-                     android:layout_marginEnd="9dp"
-                     android:src="@drawable/next_step" />
-             </RelativeLayout>
-
-             <View
-                 android:layout_width="match_parent"
-                 android:layout_height="@dimen/divider_height"
-                 android:background="@color/divider_color_d9d9d9" />-->
-
-            <RelativeLayout
-                android:id="@+id/whole_day_event_time_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/white"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
-
-                <TextView
-                    android:id="@+id/whole_day_event_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/whole_day_event_time"
-                    android:textColor="@color/color_323232"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/event_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/look_event_time"
-                    android:text="08:00"
-                    android:textColor="@color/color_background_b6b6b6"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:id="@+id/look_event_time"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
-
-            <!-- <View
-                 android:layout_width="match_parent"
-                 android:layout_height="@dimen/divider_height"
-                 android:background="@color/divider_color_d9d9d9" />
-
-             <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="48dp"
-                 android:background="@android:color/white">
-
-                 <TextView
-                     andruserIdd:iduserId@+id/remind_voice"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_alignParentLeft="true"
-                     android:layout_centerVertical="true"
-                     android:layout_gravity="center_vertical"
-                     android:gravity="center"
-                     android:text="@string/remind_voice"
-                     android:textColor="@color/color_323232" />
-
-                 <TextView
-                     andruserIdd:iduserId@+id/default_remind"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_centerVertical="true"
-                     android:layout_margin="5dp"
-                     android:layout_toLeftOfuserId@+id/look_remind_voice"
-                     android:text="@string/default_remind"
-                     android:textColor="@color/color_background_b6b6b6" />
-
-                 <ImageView
-                     andruserIdd:iduserId@+id/look_remind_voice"
-                     android:layout_width="10dp"
-                     android:layout_height="10dp"
-                     android:layout_alignBottomuserId@+id/select_time"
-                     android:layout_alignParentEnd="true"
-                     android:layout_centerVertical="true"
-                     android:layout_marginEnd="9dp"
-                     android:src="@drawable/next_step" />
-             </RelativeLayout>-->
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="false">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/cache_size"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="19dp"
-            android:background="@android:color/white"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:layout_toLeftOf="@+id/look_clear_cache"
+            android:text="@string/no_need_to_clear"
+            android:textColor="@color/color_999999"
+            android:textSize="15sp" />
 
-            <RelativeLayout
-                android:id="@+id/bind_phone_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/white">
+        <ImageView
+            android:id="@+id/look_clear_cache"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="9dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/bind_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="@string/bind_phone"
-                    android:textColor="@color/color_323232"
-                    android:textSize="16sp" />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
 
-                <TextView
-                    android:id="@+id/binded"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/look_binded_phone"
-                    android:text="@string/binded"
-                    android:textColor="@color/color_background_b6b6b6"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:id="@+id/look_binded_phone"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_alignBottom="@+id/select_time"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="9dp"
-                    android:src="@drawable/next_step" />
-            </RelativeLayout>
-
-            <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:paddingBottom="2dp"-->
-            <!--android:paddingTop="2dp">-->
-
-            <!--<TextView-->
-            <!--andruserIdd:iduserId@+id/bind_wechat"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:gravity="center"-->
-            <!--android:text="@string/bind_wechat"-->
-            <!--android:textColor="@color/color_323232" />-->
-
-            <!--<TextView-->
-            <!--andruserIdd:iduserId@+id/whether_wechat_binded"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:layout_toLeftOfuserId@+id/look_wechat"-->
-            <!--android:text="@string/not_binded"-->
-            <!--android:textColor="@color/color_background_b6b6b6" />-->
-
-            <!--<ImageView-->
-            <!--andruserIdd:iduserId@+id/look_wechat"-->
-            <!--android:layout_width="10dp"-->
-            <!--android:layout_height="10dp"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginEnd="9dp"-->
-            <!--android:src="@drawable/next_step" />-->
-            <!--</RelativeLayout>-->
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
+        android:id="@+id/about_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="false">
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:onClick="onClickAbout"
+        android:paddingLeft="15dp">
 
-        <RelativeLayout
-            android:id="@+id/clear_cache_relatvie_layout"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="19dp"
-            android:background="@android:color/white">
+        <TextView
+            android:id="@+id/about_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="关于我们"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/clear_cache"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:text="@string/clear_cache"
-                android:textColor="@color/color_323232"
-                android:textSize="16sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/cache_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
-                android:layout_toLeftOf="@+id/look_clear_cache"
-                android:text="@string/no_need_to_clear"
-                android:textColor="@color/color_background_b6b6b6"
-                android:textSize="14sp" />
 
-            <ImageView
-                android:id="@+id/look_clear_cache"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="9dp"
-                android:src="@drawable/next_step" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <FrameLayout
         android:id="@+id/login_out_card_view"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12sp"
         android:background="@android:color/white"
-        android:visibility="gone"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="false">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/login_out_button"
@@ -335,6 +122,7 @@
             android:layout_gravity="center"
             android:layout_toLeftOf="@id/look_clear_cache"
             android:text="@string/login_out"
-            android:textSize="16sp" />
-    </android.support.v7.widget.CardView>
+            android:textColor="@color/color_ff5252"
+            android:textSize="17sp" />
+    </FrameLayout>
 </LinearLayout>

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	private static String[] parsePatterns = { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM",
 			"yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM", "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss",
-			"yyyy.MM.dd HH:mm", "yyyy.MM" };
+			"yyyy.MM.dd HH:mm", "yyyy.MM", "yyyyMMdd" };
 
 	/**
 	 * 得到当前日期字符串 格式（yyyy-MM-dd）
@@ -154,6 +154,36 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		long sss = (timeMillis - day * 24 * 60 * 60 * 1000 - hour * 60 * 60 * 1000 - min * 60 * 1000 - s * 1000);
 		return (day > 0 ? day + "," : "") + hour + ":" + min + ":" + s + "." + sss;
 	}
+	
+	/**
+	 * 根据天数得到日期
+	 * 
+	 * @param before
+	 * @param after
+	 * @return
+	 */
+	public static String getDateByDays(Date currentDate, int days) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		Calendar c = Calendar.getInstance();
+		c.setTime(currentDate);
+		c.add(Calendar.DAY_OF_YEAR, days);
+		String d = format.format(c.getTime());
+		return d;
+	}
+	
+	/***
+	 * 得到当月有多少天
+	 * @author james.you
+	 * @version crateTime：2017年12月20日 下午4:49:39
+	 * @used TODO
+	 * @param currentMonth
+	 */
+	public static int getDaysByMonth(String currentMonth){
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, Integer.parseInt(currentMonth.substring(0, 4)));
+		c.set(Calendar.MONTH, Integer.parseInt(currentMonth.substring(4, 6)) - 1);
+		return c.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
 
 	/**
 	 * 获取两个日期之间的天数
@@ -203,5 +233,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		// System.out.println(getDate("yyyy年MM月dd日 E"));
 		// long time = new Date().getTime()-parseDate("2012-11-19").getTime();
 		// System.out.println(time/(24*60*60*1000));
+//		String currentDate = DateUtils.getDate("yyyyMMddHHmm");
+//		System.out.println(currentDate);
+		
+//		Date date = DateUtils.parseDate("20170601");
+//		Date date = DateUtils.parseDate("20171220");
+//		String d = DateUtils.getDateByDays(date, 121);
+//		System.out.println(d);
+		
+		int i = DateUtils.getDaysByMonth("202002");
+		System.out.println(i);
+		
 	}
 }

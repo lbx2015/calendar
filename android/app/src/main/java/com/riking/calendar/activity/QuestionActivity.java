@@ -1,5 +1,6 @@
 package com.riking.calendar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.QuestionListAdapter;
 import com.riking.calendar.listener.ZCallBack;
@@ -17,6 +19,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.TopicQuestion;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
@@ -25,7 +28,7 @@ import com.riking.calendar.util.ZToast;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class QuestionActivity extends AppCompatActivity { //Fragment 数组
+public class QuestionActivity extends AppCompatActivity {
     public View followButton;
     public TextView followTv;
     QuestionListAdapter mAdapter;
@@ -37,12 +40,15 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     private TextView questionTitleTv;
     private TextView followNumberTv;
     private TextView answerNumberTv;
+    private TextView letMeAnswerTv;
+    private String questionId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_activity);
+        questionId = getIntent().getStringExtra(CONST.QUESTION_ID);
         init();
     }
 
@@ -52,6 +58,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        letMeAnswerTv = findViewById(R.id.let_me_answer);
         answerNumberTv = findViewById(R.id.answer_number);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
@@ -67,9 +74,20 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         mAdapter = new QuestionListAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
+        letMeAnswerTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                clickLetMeAnswer(v);
+            }
+        });
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                if (question == null) {
+                    ZToast.toast("数据加载失败");
+                    return;
+                }
+
                 final TQuestionParams params = new TQuestionParams();
                 params.attentObjId = question.topicQuestionId;
                 //question
@@ -99,8 +117,10 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void setData() {
-
+        long startTime = System.currentTimeMillis();
         updateFollowButton();
+        MyLog.d("updateFollowButton used time: " + (System.currentTimeMillis() - startTime));
+        startTime = System.currentTimeMillis();
         //set follow number
         followNumberTv.setText(question.followNum + "人关注");
         //set question title
@@ -108,6 +128,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
         //set answer number
         answerNumberTv.setText("" + question.answerNum);
         mAdapter.addAll(question.questionAnswers);
+        MyLog.d("used time: " + (System.currentTimeMillis() - startTime));
     }
 
     private void updateFollowButton() {
@@ -129,7 +150,7 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     private void loadData(final int page) {
         isLoading = true;
         TQuestionParams params = new TQuestionParams();
-        params.tqId = "1";
+        params.tqId = questionId;
         APIClient.getTopicQuestion(params, new ZCallBack<ResponseModel<TopicQuestion>>() {
             @Override
             public void callBack(ResponseModel<TopicQuestion> response) {
@@ -164,10 +185,14 @@ public class QuestionActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickInvitePerson(final View view) {
-        ZGoto.to(InvitePersonActivity.class);
+        Intent i = new Intent(this, InvitePersonActivity.class);
+        i.putExtra(CONST.QUESTION_ID, questionId);
+        ZGoto.to(i);
     }
 
     public void clickLetMeAnswer(final View view) {
-        ZGoto.toWithLoginCheck(WriteAnswerActivity.class);
+        Intent i = new Intent(this, WriteAnswerActivity.class);
+        i.putExtra(CONST.QUESTION_ID, question.topicQuestionId);
+        ZGoto.to(i);
     }
 }

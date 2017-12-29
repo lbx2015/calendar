@@ -49,6 +49,7 @@ public class AddRemindActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_remind);
         viewPager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -89,7 +90,6 @@ public class AddRemindActivity extends AppCompatActivity {
         final String id = sdf.format(new Date());
         //remind fragment
         if (viewPager.getCurrentItem() == 0) {
-            reminderTitle = reminderFragment.remindTitle.getText().toString();
             if (reminderTitle == null || reminderTitle.trim().equals("")) {
                 Toast.makeText(AddRemindActivity.this, "提醒内容不能为空", Toast.LENGTH_SHORT).show();
                 return;
@@ -138,12 +138,12 @@ public class AddRemindActivity extends AppCompatActivity {
                     Task task = realm.createObject(Task.class, id);
                     task.isImportant = taskFragment.isImportant;
                     SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
-                    task.appCreatedTime = sdf.format(new Date());
+                    task.createdTime = sdf.format(new Date());
                     if (taskFragment.needToRemind) {
                         task.isOpen = 1;
                         task.strDate = sdf.format(taskFragment.calendar.getTime());
                     }
-                    task.title = taskTitle;
+                    task.content = taskTitle;
                     task.userId = userId;
                     if (task.isOpen == 1) {
                         task.requestCode = requestCode;

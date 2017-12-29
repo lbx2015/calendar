@@ -28,7 +28,7 @@ public class PullToLoadViewWithoutFloatButton extends FrameLayout {
     protected int mPrevFirstVisibleItem = 0;
     public SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private ProgressBar mProgressBar;
+    public ProgressBar mProgressBar;
     private PullCallback mPullCallback;
     private RecyclerViewPositionHelper mRecyclerViewHelper;
     private int mLoadMoreOffset = 5;

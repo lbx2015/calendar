@@ -34,7 +34,7 @@ public class MinutePickRelativeLayout extends RelativeLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.divider_color_d9d9d9));
+        paint.setColor(getResources().getColor(R.color.color_d2d2d2));
         float density = getResources().getDisplayMetrics().scaledDensity;
         Log.d("zzw", "density: " + density);
         float halfFontSize = density * 14;

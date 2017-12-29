@@ -130,6 +130,9 @@ public class DateUtil {
     }
 
     public static String date2String(Date time, String pattern) {
+        if (time == null) {
+            return null;
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         String reqTimeStamp;
         reqTimeStamp = dateFormat.format(time);
@@ -143,6 +146,10 @@ public class DateUtil {
         reqTimeStamp = dateFormat.parse(time);
 
         return reqTimeStamp;
+    }
+
+    public static String showTime(Date date) {
+        return DateUtil.showTime(date, CONST.yyyy_mm_dd_hh_mm);
     }
 
     /**

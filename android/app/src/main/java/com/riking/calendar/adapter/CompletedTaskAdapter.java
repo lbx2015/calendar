@@ -1,8 +1,6 @@
 package com.riking.calendar.adapter;
 
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +10,14 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.retrofit.APIClient;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -30,13 +33,6 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
 
     public CompletedTaskAdapter(Realm realm, List<Task> r) {
         this.realm = Realm.getDefaultInstance();
-        ;
-//        realm.addChangeListener(new RealmChangeListener<Realm>() {
-//            @Override
-//            public void onChange(Realm realm) {
-//                notifyDataSetChanged();
-//            }
-//        });
         this.tasks = r;
         size = tasks.size();
     }
@@ -51,12 +47,11 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Task r = tasks.get(position);
-//        if(!r.isValid()){
-//            notifyItemRemoved(position);
-//            return;
-//        }
+        if (!r.isValid()) {
+            return;
+        }
         holder.position = position;
-        holder.title.setText(r.title);
+        holder.title.setText(r.content);
         if (r.isImportant == 1) {
         } else {
             holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
@@ -105,18 +100,32 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
                 @Override
                 public void onClick(View v) {
                     sml.smoothCloseMenu();
-                    notifyItemRemoved(position);
-                    //We should update the adapter after data set is changed. and we had not using RealmResult so for.
-                    //so we need to update teh adapter manually
-                    tasks.remove(task);
-                    realm.executeTransaction(new Realm.Transaction() {
+                    Todo todo = new Todo(task);
+                    todo.deleteFlag = 1;
+                    final ArrayList<Todo> todos = new ArrayList<>(1);
+                    todos.add(todo);
+                    APIClient.saveTodo(todos, new ZCallBackWithFail<ResponseModel<String>>() {
                         @Override
-                        public void execute(Realm realm) {
-                            realm.where(Task.class).equalTo(Task.TODO_ID, task.todo_Id).findFirst().deleteFromRealm();
+                        public void callBack(ResponseModel<String> response) throws Exception {
+                            if (failed) {
+
+                            } else {
+                                //We should update the adapter after data set is changed. and we had not using RealmResult so for.
+                                //so we need to update teh adapter manually
+                                tasks.remove(task);
+                                notifyDataSetChanged();
+                                realm.executeTransaction(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().deleteFromRealm();
+                                    }
+                                });
+
+                                Toast.makeText(done.getContext(), "deleted", Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
 
-                    Toast.makeText(done.getContext(), "deleted", Toast.LENGTH_LONG).show();
                 }
             });
         }

@@ -14,8 +14,8 @@ import butterknife.ButterKnife;
 
 public class ExcellentViewHolderViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.answer_summary)
-    public TextView answerSummary;
+    @BindView(R.id.summary)
+    public TextView summary;
     @BindView(R.id.user_name)
     public TextView userName;
     @BindView(R.id.user_icon)
@@ -27,6 +27,8 @@ public class ExcellentViewHolderViewHolder extends RecyclerView.ViewHolder {
 //    public ImageView followPlusIconImage;
     @BindView(R.id.follow_button)
     public View followButton;
+    @BindView(R.id.divider)
+    public View divider;
 
     public boolean invited;
 

@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
@@ -25,6 +27,12 @@ public class AppUserResult extends BaseEntity {
 	@Comment("经验值")
 	private Integer experience;
 
+	@Comment("用户描述")
+	private String descript;
+
+	@Comment("等级")
+	private Integer grade;
+
 	@Comment("回答数")
 	private Integer answerNum;
 
@@ -34,17 +42,28 @@ public class AppUserResult extends BaseEntity {
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
 
+	@Comment("是否已邀请 0-未邀请，1-已邀请")
+	private Integer isInvited;
+
+	@Comment("手机号")
+	private String phone;
+
 	public AppUserResult() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public AppUserResult(String id, String userName, String photoUrl, Integer experience) {
+	public AppUserResult(String id, String userName, String photoUrl, Integer experience, String userId) {
 		super();
 		this.id = id;
 		this.userName = userName;
 		this.photoUrl = photoUrl;
 		this.experience = experience;
+		if (StringUtils.isNotBlank(userId)) {
+			isFollow = 1;// 已关注
+		} else {
+			isFollow = 0;// 未关注
+		}
 	}
 
 	public String getId() {
@@ -53,6 +72,30 @@ public class AppUserResult extends BaseEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getDescript() {
+		return descript;
+	}
+
+	public void setDescript(String descript) {
+		this.descript = descript;
+	}
+
+	public Integer getIsInvited() {
+		return isInvited;
+	}
+
+	public void setIsInvited(Integer isInvited) {
+		this.isInvited = isInvited;
 	}
 
 	public String getUserName() {
@@ -69,6 +112,14 @@ public class AppUserResult extends BaseEntity {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public Integer getExperience() {

@@ -2,6 +2,7 @@ package com.riking.calendar.realm.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.riking.calendar.pojo.TaskModel;
+import com.riking.calendar.pojo.params.Todo;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -17,13 +18,13 @@ public class Task extends RealmObject {
     @Ignore
     public static String DELETESTATE = "deleteState";
     @Ignore
-    public static String TODO_ID = "todo_Id";
+    public static String TODO_ID = "todoId";
     @Ignore
     public static String COMPLETEDATE = "completeDate";
     @PrimaryKey
 //    @Id
 //    @Column(name = "todo_id", length = 17)
-    public String todo_Id;
+    public String todoId;
 
     // 用户Id
 //    @Column(name = "user_id", length = 32)
@@ -31,8 +32,8 @@ public class Task extends RealmObject {
 
     // 提醒内容
 //    @Column(name = "content", length = 255)
-    @SerializedName("content")
-    public String title;
+//    @SerializedName("content")
+    public String content;
 
     // 是否重要（0-不重要；1-重要）
 //    @Column(name = "is_important", length = 1)
@@ -48,7 +49,7 @@ public class Task extends RealmObject {
 
     // 手机端提供创建时间（yyyy-MM-dd HHmm）
 //    @Column(name = "app_created_time", length = 12)
-    public String appCreatedTime;
+    public String createdTime;
 
     // 待办提醒是否开启（0-否；1-是）
 //    @Column(name = "is_complete", length = 1)
@@ -63,17 +64,18 @@ public class Task extends RealmObject {
     public byte syncStatus;//同步的状态0:同步,1待同步
     //used to set alarm, the request code should not same.
     public int requestCode;
+
     public Task() {
     }
 
     public Task(TaskModel m) {
-        todo_Id = m.todoId;
+        todoId = m.todoId;
         userId = m.userId;
-        title = m.title;
+        content = m.content;
         isImportant = m.isImportant;
         isOpen = m.isOpen;
         strDate = m.strDate;
-        appCreatedTime = m.appCreatedTime;
+        createdTime = m.appCreatedTime;
         isComplete = m.isComplete;
         completeDate = m.completeDate;
     }

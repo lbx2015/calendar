@@ -14,6 +14,7 @@ import com.necer.ncalendar.utils.Utils;
 import com.necer.ncalendar.view.CalendarView;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.WorkFragment;
+import com.riking.calendar.util.CONST;
 
 import org.joda.time.DateTime;
 
@@ -112,7 +113,6 @@ public abstract class CalendarPager extends ViewPager {
         });
 
 
-
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -159,7 +159,9 @@ public abstract class CalendarPager extends ViewPager {
 
         List<String> formatList = new ArrayList<>();
         for (int i = 0; i < pointList.size(); i++) {
-            String format = new DateTime(pointList.get(i)).toString("yyyy-MM-dd");
+            String s = pointList.get(i);
+            String date = s.substring(0, 4) + "-" + s.substring(4, 6) + "-" + s.substring(6);
+            String format = new DateTime(date).toString("yyyy-MM-dd");
             formatList.add(format);
         }
 

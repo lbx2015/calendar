@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.OrderReportActivity;
-import com.riking.calendar.pojo.server.BaseModelPropdict;
+import com.riking.calendar.pojo.server.ReportTypeListResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.OneTextViewHolder;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
-    public List<BaseModelPropdict> mList;
+    public List<ReportTypeListResult> mList;
     private OrderReportActivity activity;
     //the default subscribed position is 0;
     private int checkedPosition = 0;
@@ -36,8 +36,8 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
 
     @Override
     public void onBindViewHolder(final OneTextViewHolder h, final int i) {
-        final BaseModelPropdict m = mList.get(i);
-        h.textView.setText(m.valueName);
+        final ReportTypeListResult m = mList.get(i);
+        h.textView.setText(m.moduleTypeName);
         setColors(h, i);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class ReportFrequencyAdapter extends RecyclerView.Adapter<OneTextViewHold
         return mList.size();
     }
 
-    public void setData(List<BaseModelPropdict> list) {
+    public void setData(List<ReportTypeListResult> list) {
         mList = list;
         notifyDataSetChanged();
     }

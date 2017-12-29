@@ -137,16 +137,15 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 Class<Activity> c = (Class<Activity>) Class.forName(ZR.jumpClass);
                                 ZGoto.to(c);
                                 ZR.jumpClass = null;
-                            } else if (u.isGuide == null || u.isGuide == (0)) {
-                                ZGoto.to(IndustrySelectActivity.class);
                             }
-
                             //sent broadcast when not login check by on click
-                            if (ZPreference.pref.getBoolean(CONST.CHECK_NOT_LOGIN_ON_CLICK, false)) {
+                            else if (ZPreference.pref.getBoolean(CONST.CHECK_NOT_LOGIN_ON_CLICK, false)) {
                                 ZPreference.remove(CONST.CHECK_NOT_LOGIN_ON_CLICK);
                                 Intent intent = new Intent("android.intent.action.MY_BROADCAST");
                                 intent.putExtra("msg", "hello receiver.");
                                 sendBroadcast(intent);
+                            } else if (u.isGuide == (0)) {
+                                ZGoto.to(IndustrySelectActivity.class);
                             }
 
                             //kill self in order to return back.

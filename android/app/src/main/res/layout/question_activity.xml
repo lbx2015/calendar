@@ -55,7 +55,6 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 android:lineSpacingMultiplier="1.2"
-                android:text="最终投向为企业应收账款、福费延、保理业务、票据业务的应当如何填报？"
                 android:textColor="@color/color_222222"
                 android:textSize="18sp"
                 app:layout_scrollFlags="scroll|enterAlways" />
@@ -74,8 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="73人关注" />
+                    android:layout_centerVertical="true" />
 
 
                 <FrameLayout
@@ -90,9 +88,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:drawableLeft="@drawable/com_btn_icon_plus_w"
+                        android:drawablePadding="5dp"
                         android:gravity="center"
-                        android:text="邀请"
-                        android:textColor="@color/color_489dfff"
+                        android:text="关注"
+                        android:textColor="@color/white"
                         android:textSize="14sp" />
                 </FrameLayout>
             </RelativeLayout>
@@ -131,11 +131,11 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
+                    android:id="@+id/let_me_answer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ques_icon_answer"
                     android:drawablePadding="5dp"
-                    android:onClick="clickLetMeAnswer"
                     android:text="我来回答"
                     android:textColor="@color/color_489dfff"
                     android:textSize="16sp"
@@ -187,6 +187,7 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.RecyclerView

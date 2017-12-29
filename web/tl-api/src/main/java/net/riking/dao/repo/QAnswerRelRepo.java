@@ -38,7 +38,15 @@ public interface QAnswerRelRepo extends JpaRepository<QAnswerRel, String>, JpaSp
 	 * @param questAnswerId
 	 * @return
 	 */
-	@Query("select qaId,dataType from QAnswerRel where userId = ?1")
+	@Query("select qaId from QAnswerRel where userId = ?1 and dataType = ?2")
+	List<String> findByUser(String userId, Integer dataType);
+
+	/**
+	 * 查询点赞/收藏的qaId
+	 * @param questAnswerId
+	 * @return
+	 */
+	@Query("from QAnswerRel where userId = ?1 ")
 	List<QAnswerRel> findByUser(String userId);
 
 	/**
@@ -48,4 +56,13 @@ public interface QAnswerRelRepo extends JpaRepository<QAnswerRel, String>, JpaSp
 	 */
 	@Query(" from QAnswerRel where userId = ?1 and qaId = ?2 and dataType = ?3")
 	QAnswerRel findByOne(String userId, String qaId, Integer dataType);
+
+	/**
+	 * 统计回答评论点赞数
+	 * @param newsCommentId
+	 * @return
+	 */
+	@Query("select count(*) from QAnswerRel where qaId = ?1 and dataType = ?2")
+	Integer agreeCount(String qaId, Integer dataType);
+
 }

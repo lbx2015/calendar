@@ -1,7 +1,12 @@
 package net.riking.web.app;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +15,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.dao.repo.ReportSubcribeRelRepo;
+import net.riking.config.Const;
+import net.riking.core.entity.PageQuery;
+import net.riking.dao.repo.RemindRepo;
+import net.riking.dao.repo.ReportCompletedRelRepo;
+import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.entity.AppResp;
+import net.riking.entity.model.Remind;
+import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportListResult;
-import net.riking.entity.model.ReportResult;
-import net.riking.entity.model.ReportSubcribeRel;
+import net.riking.entity.model.ReportSubscribeRel;
+import net.riking.entity.params.RCompletedRelParams;
+import net.riking.entity.params.ReportCompletedRelParam;
 import net.riking.entity.params.ReportParams;
+import net.riking.entity.params.SubscribeReportParam;
+import net.riking.entity.resp.CurrentReportTaskResp;
+import net.riking.entity.resp.ReportCompletedRelResult;
 import net.riking.service.ReportAgenceFrencyService;
 import net.riking.service.ReportService;
 import net.riking.service.ReportSubmitCaliberService;
 import net.riking.service.SysDataService;
+import net.riking.util.DateUtils;
+import net.riking.util.MergeUtil;
+import net.riking.util.Utils;
 
 /**
  * 报表信息接口
@@ -32,10 +50,12 @@ import net.riking.service.SysDataService;
 public class AppReportServer {
 	@Autowired
 	ReportService reportService;
-	// ReportRepo reportRepo;
 
 	@Autowired
-	ReportSubcribeRelRepo reportSubcribeRelRepo;
+	ReportSubscribeRelRepo reportSubscribeRelRepo;
+
+	@Autowired
+	ReportCompletedRelRepo reportCompletedRelRepo;
 
 	@Autowired
 	SysDataService sysDataservice;
@@ -46,95 +66,206 @@ public class AppReportServer {
 	@Autowired
 	ReportAgenceFrencyService reportAgenceFrencyService;
 
+	@Autowired
+	RemindRepo remindRepo;
+
 	/**
-	 * 
-	 * @author tao.yuan[userId]
-	 * @param [userId]
+	 * 可根据报表名称查询相关报表
+	 * @author james.you[userId]
+	 * @param [userId] or [reportName]
 	 * @version crateTime：2017年11月6日 下午3:41:08
 	 * @used TODO
 	 * @return
 	 */
-	@ApiOperation(value = "app获取所有的报表", notes = "POST")
-	@RequestMapping(value = "/getAllReport", method = RequestMethod.POST)
-	public AppResp getAllReport_(@RequestBody ReportParams reportParams) {
-		// List<QueryReport> list = reportSubmitCaliberService.findAllReport();
-		// List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
-		// 获取订阅关联表
-		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo
-				.findUserReportList(reportParams.getUserId());
-
-		List<ReportListResult> reportListResult = reportService.getAllReport();
-
-		for (ReportListResult rl : reportListResult) {
-			List<ReportResult> reportList = rl.getList();
-			for (int i = 0; i < reportList.size(); i++) {
-				ReportResult r = reportList.get(i);
-				for (ReportSubcribeRel rel : reportSubcribeRelList) {
-					if (r.getReportId().equals(rel.getReportId())) {
-						r.setIsSubcribe("1");// 已订阅
-						reportList.remove(i);
-						reportList.add(i, r);
-					}
-				}
-			}
+	@ApiOperation(value = "可根据报表名称查询相关报表", notes = "POST")
+	@RequestMapping(value = "/getReports", method = RequestMethod.POST)
+	public AppResp getReports_(@RequestBody Map<String, Object> params) {
+		ReportParams reportParams = Utils.map2Obj(params, ReportParams.class);
+		if (StringUtils.isBlank(reportParams.getUserId())) {
+			reportParams.setUserId("");
 		}
-
-		/*
-		 * List<ReportAgence> reportAgenceList = new ArrayList<ReportAgence>();// 保存集合数据 传给移动端
-		 * Set<String> agenceList = reportAgenceFrencyService.findALLAgence();// 查询所有的汇报机构
-		 * List<BaseModelPropdict> list = null; // 根据汇报机构 查询字典表 查询出汇报机构下面的中文名称 if (agenceList !=
-		 * null && agenceList.size() > 0) { ReportAgence reportAgence = null; for (String value :
-		 * agenceList) { reportAgence = new ReportAgence(); reportAgence.setAgenceName(value);//
-		 * 汇报机构名称 list = reportAgenceFrencyService.findAgenceNameList(value);// 中文名称 if (list !=
-		 * null && list.size() > 0) {// 如果存在中文名称 则拿到中文名称的主键id 和ke 关联用户的id查询 List<ReportFrequency>
-		 * frencyList = null; for (BaseModelPropdict baseModelPropdict : list) { frencyList =
-		 * reportAgenceFrencyService.findReportByModuleType(baseModelPropdict.getKe());// 根据ke去查询报表
-		 * // if(StringUtils.isNotBlank(appUser.getId())){//用户id不为空 if (frencyList != null &&
-		 * frencyList.size() > 0) { ReportSubcribeRel reportSubcribeRel = null; for (ReportFrequency
-		 * frencey : frencyList) { // 根据用户id和 报表id 查询 此用户是否订阅 reportSubcribeRel =
-		 * reportSubcribeRelRepo .findByUserIdAndReportId(reportParams.getUserId(),
-		 * frencey.getReportId()); if (null != reportSubcribeRel) {// 不为空 则是已经订阅的
-		 * frencey.setIsSubscribe("1"); } else {// 为空 frencey.setIsSubscribe("0"); } } } // }
-		 * baseModelPropdict.setList(frencyList);// 将查询出的报表集合放入 } } reportAgence.setList(list);//
-		 * 将汇报机构下面的中文名称放进去 reportAgenceList.add(reportAgence); } } return new
-		 * AppResp(reportAgenceList, CodeDef.SUCCESS);
-		 */
+		if (StringUtils.isBlank(reportParams.getReportName())) {
+			reportParams.setReportName("");
+		}
+		List<ReportListResult> reportListResult = reportService.getReportByParam(reportParams.getReportName(),
+				reportParams.getUserId());
 
 		return new AppResp(reportListResult, CodeDef.SUCCESS);
 	}
 
+	@ApiOperation(value = "查询用户订阅的报表", notes = "POST")
+	@RequestMapping(value = "/findSubscribeReportList", method = RequestMethod.POST)
+	public AppResp findSubscribeReportList_(@RequestBody HashMap<String, String> params) {
+		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(params.get("userId"));
+		return new AppResp(list, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "更新用户报表订阅", notes = "POST")
+	@RequestMapping(value = "/modifySubscribeReport", method = RequestMethod.POST)
+	public AppResp modifySubscribeReport_(@RequestBody Map<String, Object> params) {
+		SubscribeReportParam relParam = Utils.map2Obj(params, SubscribeReportParam.class);
+		String[] arr = {};
+		if (StringUtils.isNotBlank(relParam.getReportIds())) {
+			arr = relParam.getReportIds().split(",");
+		}
+
+		String currentDate = DateUtils.getDate("yyyyMMdd");
+		reportService.addReportTaskByUserSubscribe(relParam.getUserId(), arr, currentDate);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "查询逾期报表", notes = "POST")
+	@RequestMapping(value = "/findExpireTasks", method = RequestMethod.POST)
+	public AppResp findExpireTasks_(@RequestBody Map<String, Object> params) {
+		ReportCompletedRelParam relParams = Utils.map2Obj(params, ReportCompletedRelParam.class);
+		PageQuery page = new PageQuery();
+		page.setPcount(Const.APP_PAGENO_30);
+		page.setPindex(relParams.getPindex());
+		List<ReportCompletedRelResult> list = reportService.findExpireReportByPage(relParams.getUserId(), page);
+
+		return new AppResp(list, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "查询历史核销报表", notes = "POST")
+	@RequestMapping(value = "/findHisCompletedTasks", method = RequestMethod.POST)
+	public AppResp findHisCompletedTasks_(@RequestBody Map<String, Object> params) {
+		ReportCompletedRelParam relParams = Utils.map2Obj(params, ReportCompletedRelParam.class);
+		PageQuery page = new PageQuery();
+		page.setPcount(Const.APP_PAGENO_30);
+		page.setPindex(relParams.getPindex());
+		List<ReportCompletedRelResult> list = reportService.findHisCompletedReportByPage(relParams.getUserId(), page);
+		return new AppResp(list, CodeDef.SUCCESS);
+	}
+
 	/**
-	 * 报表列表模糊查询[userId,reportTitle]
+	 * 获取当天未完成和已完成的报表任务
+	 * @param params [userId] [currentDate]
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "获取当天未完成和已完成的报表任务", notes = "POST")
+	@RequestMapping(value = "/findCurrentTasks", method = RequestMethod.POST)
+	public AppResp findCurrentTasks_(@RequestBody Map<String, Object> params) throws ParseException {
+		RCompletedRelParams relParams = Utils.map2Obj(params, RCompletedRelParams.class);
+		List<CurrentReportTaskResp> list = reportService.findCurrentTasks(relParams.getUserId(),
+				relParams.getCurrentDate());
+		return new AppResp(list, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * 报表完成核销
+	 * @author james.you
+	 * @version crateTime：2017年12月16日 下午6:36:44
+	 * @used TODO
 	 * @param params
 	 * @return
 	 */
-	@ApiOperation(value = "根据报表名称查询报表列表", notes = "POST")
-	@RequestMapping(value = "/getReportByName", method = RequestMethod.POST)
-	public AppResp getReportByName(@RequestBody ReportParams reportParams) {
-		// List<ReportList> list =
-		// reportListRepo.findReportByreportName(reportList.getReportName());
-		// 获取订阅关联表
-		List<ReportSubcribeRel> reportSubcribeRelList = reportSubcribeRelRepo
-				.findUserReportList(reportParams.getUserId());
+	@ApiOperation(value = "报表完成核销", notes = "POST")
+	@RequestMapping(value = "/complete", method = RequestMethod.POST)
+	public AppResp complete_(@RequestBody Map<String, Object> params) {
+		RCompletedRelParams relParams = Utils.map2Obj(params, RCompletedRelParams.class);
 
-		// List<ReportFrequency> list =
-		// reportAgenceFrencyService.findReportListByName(reportParams.getReportName());
-		List<ReportResult> reportResultList = reportService.getReportByParam(reportParams.getReportTitle());
+		if (relParams.getIsCompleted() == 0) {// 未完成
+			reportCompletedRelRepo.updateNotComplated(relParams.getUserId(), relParams.getReportId(),
+					relParams.getSubmitStartTime(), relParams.getSubmitEndTime());
 
-		if (reportResultList != null && reportResultList.size() > 0) {
-			for (int i = 0; i < reportResultList.size(); i++) {
-				ReportResult reportResult = reportResultList.get(i);
+		} else {// 完成
+			String currentDate = DateUtils.getDate("yyyyMMddHHmm");
+			
+			// 逾期任务核销，给予提示
+			if (Long.parseLong(currentDate) > Long.parseLong(relParams.getSubmitEndTime())) {
+				return new AppResp(CodeDef.EMP.REPORT_EXPIRETASK_ERROR, CodeDef.EMP.REPORT_EXPIRETASK_ERROR_DESC);
+			}
+			
+			// 未到核销时间，给予提示
+			if (Long.parseLong(currentDate) < Long.parseLong(relParams.getSubmitStartTime())) {
+				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR, CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR_DESC);
+			}
+			
+			reportCompletedRelRepo.updateComplated(relParams.getUserId(), relParams.getReportId(),
+					relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), currentDate);
+			// 移除闹钟设置记录
+			if (null != relParams.getRemindId()) {
+				Remind entity = new Remind();
+				entity.setRemindId(relParams.getRemindId());
+				remindRepo.delete(entity);
+			}
 
-				if (reportSubcribeRelList != null && reportSubcribeRelList.size() > 0) {
-					for (ReportSubcribeRel rel : reportSubcribeRelList) {
-						if (reportResult.getReportId().equals(rel.getReportId())) {
-							reportResult.setIsSubcribe("1");// 已订阅
-						}
+		}
+
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * 获取当天之后的打点日期[userId, currentMonth]
+	 * @param params
+	 * @return
+	 * @throws ParseException
+	 */
+	@ApiOperation(value = "获取当月任务日期", notes = "POST")
+	@RequestMapping(value = "/getTaskDate", method = RequestMethod.POST)
+	public AppResp getTaskDate_(@RequestBody Map<String, Object> params) throws ParseException {
+		ReportCompletedRelParam relParams = Utils.map2Obj(params, ReportCompletedRelParam.class);
+		String currentMonth = relParams.getCurrentMonth();
+		List<ReportCompletedRel> taskList = reportCompletedRelRepo.findTasksByUserId(relParams.getUserId(),
+				relParams.getCurrentMonth());
+
+		// 有任务的日期
+		List<String> taskDateList = new ArrayList<String>();
+		for (ReportCompletedRel data : taskList) {
+			String submitEndDate = data.getSubmitEndTime().substring(0, 6);
+			if (Integer.parseInt(submitEndDate) == Integer.parseInt(currentMonth)) {
+				// 如果是当月情况，添加时间
+				String submitEndDateDay = data.getSubmitEndTime().substring(6, 8);
+				for (int i = 1; i <= Integer.parseInt(submitEndDateDay); i++) {
+					String _date = submitEndDate + (i < 10 ? "0" + i : i);
+					if (!taskDateList.contains(_date)){
+						// 判断是否与国家节假日，延迟上报截止时间
+						_date = Utils.getWorkday(_date);
+						taskDateList.add(_date);
+					}
+						
+				}
+			} else {
+				// 非当月，则添加当月所有日期
+				int _daysOfMonth = DateUtils.getDaysByMonth(currentMonth);
+				for (int i = 1; i <= _daysOfMonth; i++) {
+					String _date = currentMonth + (i < 10 ? "0" + i : i);
+					if (!taskDateList.contains(_date)){
+						// 判断是否与国家节假日，延迟上报截止时间
+						_date = Utils.getWorkday(_date);
+						taskDateList.add(_date);
 					}
 				}
 			}
 		}
 
-		return new AppResp(reportResultList, CodeDef.SUCCESS);
+		return new AppResp(taskDateList, CodeDef.SUCCESS);
 	}
+
+	@ApiOperation(value = "用户提醒新增/修改", notes = "POST")
+	@RequestMapping(value = "/remindSave", method = RequestMethod.POST)
+	public AppResp save(@RequestBody Remind remind) {
+		Remind remind2 = remindRepo.findOne(remind.getRemindId());
+		if (null == remind2) {
+			remind = remindRepo.save(remind);
+		} else {
+			try {
+				remind2 = MergeUtil.merge(remind2, remind);
+			} catch (Exception e) {
+				return new AppResp(CodeDef.ERROR);
+			}
+			remind = remindRepo.save(remind2);
+		}
+		return new AppResp(remind, CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
+	@RequestMapping(value = "/remindDel", method = RequestMethod.POST)
+	public AppResp delMore(@RequestBody Remind remind) {
+		remindRepo.delete(remind.getRemindId());
+
+		return new AppResp().setCode(CodeDef.SUCCESS);
+	}
+
 }

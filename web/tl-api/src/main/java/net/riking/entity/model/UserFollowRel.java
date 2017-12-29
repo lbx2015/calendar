@@ -43,8 +43,8 @@ public class UserFollowRel extends BaseEntity {
 	@Column(name = "to_user_id", nullable = false)
 	private String toUserId;
 
-	@Comment("关注状态: 0：非互相关注 1：互相关注 ")
-	@org.hibernate.annotations.ColumnDefault("0")
+	@Comment("关注状态: 1：非互相关注 2：互相关注 ")
+	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "follow_status", nullable = false, precision = 1)
 	private Integer followStatus;
 

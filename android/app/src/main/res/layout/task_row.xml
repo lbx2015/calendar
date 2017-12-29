@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/smContentView"
         android:layout_width="match_parent"
-        android:layout_height="52.5dp"
+        android:layout_height="50dp"
         android:background="@android:color/white">
 
         <ImageView
@@ -21,8 +21,8 @@
             android:layout_height="16dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="19dp"
-            android:layout_marginRight="19dp" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp" />
 
         <TextView
             android:id="@+id/title"
@@ -30,7 +30,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/done"
-            android:textColor="@color/color_323232"
+            android:layout_toStartOf="@+id/image_star"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/color_222222"
             android:textSize="16sp" />
 
         <ImageView
@@ -39,7 +43,7 @@
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="19dp" />
+            android:layout_marginRight="15dp" />
 
         <!--      <View
                   andruserIdd:iduserId@+id/divider"
@@ -47,7 +51,7 @@
                   android:layout_height="@dimen/divider_height"
                   android:layout_alignParentBottom="true"
                   android:layout_marginLeft="54dp"
-                  android:background="@color/divider_color_d9d9d9" />-->
+                  android:background="@color/color_d2d2d2" />-->
     </RelativeLayout>
 
     <TextView
