@@ -21,9 +21,9 @@ import net.riking.entity.model.Jdpush;
 public class JdpushUtil {
 	protected static final Logger LOG = LoggerFactory.getLogger(JdpushUtil.class);
 	private static JPushClient jPushClient = new JPushClient("ae4b5cb2379495f2303019ff", "f7ac0692d540d2a7e15613bb");;
-/**
- * 推送给指定用户
- */
+	/**
+	 * 推送给指定用户
+	 */
 	public static int sendToRegistrationId(Jdpush jdpush) {
 		int result = 0;
 		try {
