@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
-import net.riking.core.entity.BaseEntity;
 
 /**
  * 
@@ -28,7 +27,7 @@ import net.riking.core.entity.BaseEntity;
  */
 @Entity
 @Table(name = "t_app_user")
-public class AppUser extends BaseEntity {
+public class AppUser extends net.riking.entity.BaseEntity {
 
 	/**
 	 * 

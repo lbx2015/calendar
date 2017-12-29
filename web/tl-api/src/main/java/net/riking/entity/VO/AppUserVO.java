@@ -17,6 +17,9 @@ public class AppUserVO {
 
 	private AppUserDetail appUserDetail;
 
+	// 前缀地址
+	private String prefixPhotoURL;
+
 	public String getId() {
 		return id;
 	}
@@ -39,6 +42,14 @@ public class AppUserVO {
 
 	public void setAppUserDetail(AppUserDetail appUserDetail) {
 		this.appUserDetail = appUserDetail;
+	}
+
+	public String getPrefixPhotoURL() {
+		return prefixPhotoURL;
+	}
+
+	public void setPrefixPhotoURL(String prefixPhotoURL) {
+		this.prefixPhotoURL = prefixPhotoURL;
 	}
 
 }

@@ -5,6 +5,7 @@
 <meta charset="utf-8">
 <title>app用户list页面</title>
 <link type="include" href="/common/depcss.html" />
+
 </head>
 
 <body class="iframeBody">
@@ -122,6 +123,22 @@
 										+ "\""
 										+ ");'>禁用</button>";
 							}
+						}
+					}
+					if(obj.item){
+						if(obj.prop == 'appUserDetail.photoUrl'){
+							var photoName = obj.html;
+							if(photoName==""){
+								photoName = "USA.png";
+							}
+							var start  = "<div  align='center' style='width: 28px;height: 28px;border-radius: 50%; overflow:hidden;'>";
+							var end = "</div>"
+							var url = obj.item.prefixPhotoURL+ photoName;
+							obj.html = "";
+							obj.html +=start;
+							obj.html += "<img src='"+url+"' style='width: 28px;height: 28px;'/>";
+							obj.html +=end;
+							
 						}
 					}
 					return obj.html;

@@ -1,5 +1,6 @@
 package net.riking.web.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,14 @@ public class AppUserController {
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute AppUserVO appUserVO) {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		Page<AppUserVO> page = appUserService.findAll(appUserVO, pageable);
+		List<AppUserVO> appUserVOs = page.getContent();
+		int i = query.getPindex() * query.getPcount();
+		for (AppUserVO appUserVO2 : appUserVOs) {
+			i++;
+			// appUserVO2.setPrefixPhotoURL(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH));
+			appUserVO2.setPrefixPhotoURL("http://localhost:8281/images/user/photo/");
+			appUserVO2.getAppUser().setSerialNumber(new Integer(i));
+		}
 		return new Resp(page);
 	}
 

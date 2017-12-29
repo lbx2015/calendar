@@ -43,7 +43,7 @@
 <script type="text/javascript">
     var tmpl = null;
     $(document).ready(function() {
-		$("#downLoad").attr("href", Const.apiUrl + "/excelModel/emailSuffix.xlsx");
+		$("#downLoad").attr("href", Const.apiUrl + "/excelModel/t_sys_days.xlsx");
     });
 
     function checkData() {
@@ -64,7 +64,7 @@
         if (!checkData()) {
             return;
         }
-        var addMoreUrl = Const.apiUrl + "/emailSuffix/addMore";
+        var addMoreUrl = Const.apiUrl + "/sysDays/addMore";
         $("#addMore").attr("action", addMoreUrl);
         $('#addMore').ajaxSubmit({
             type: 'post',

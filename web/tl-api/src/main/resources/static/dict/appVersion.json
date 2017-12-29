@@ -57,18 +57,9 @@
 			"alias": "下载更新地址",
 			"desc": "下载更新地址",
 			"type": "string",
-			"edit_block": "1",
 			"group": "base"
 		},
-		{
-			"prop": "remark",
-			"alias": "版本说明",
-			"desc": "版本说明",
-			"type": "text",
-			"edit_block": "1",
-			"group": "base",
-			"hidden": "table"
-		},
+		
 		{
 			"prop": "createdBy",
 			"alias": "创建人ID",
@@ -115,6 +106,15 @@
 			"group":"base",
 			"type": "string",
 			"hidden":"table,edit,preview"
+		},
+		{
+			"prop": "remark",
+			"alias": "版本说明",
+			"desc": "版本说明",
+			"type": "text",
+			"edit_block": "1",
+			"group": "base",
+			"hidden": "table"
 		}
 	]
 }

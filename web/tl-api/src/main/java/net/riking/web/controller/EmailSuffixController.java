@@ -1,6 +1,7 @@
 package net.riking.web.controller;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +32,7 @@ import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.service.repo.ModelPropdictRepo;
 import net.riking.dao.repo.EmailSuffixRepo;
 import net.riking.entity.PageQuery;
+import net.riking.entity.EO.EmailSuffixEO;
 import net.riking.entity.model.EmailSuffix;
 import net.riking.util.ExcelToList;
 
@@ -106,14 +108,14 @@ public class EmailSuffixController {
 		MultipartFile mFile = multipartRequest.getFile("fileName");
 		String fileName = mFile.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-		List<ModelPropDict> list = null;
+		List<EmailSuffixEO> list = null;
 		try {
 			InputStream is = mFile.getInputStream();
-			String[] fields = { "ke", "valu" };
+			String[] fields = { "emailSuffix", "enabled", "remark" };
 			if (suffix.equals("xlsx")) {
-				list = ExcelToList.readXlsx(is, fields, ModelPropDict.class);
+				list = ExcelToList.readXlsx(is, fields, EmailSuffixEO.class);
 			} else {
-				list = ExcelToList.readXls(is, fields, ModelPropDict.class);
+				list = ExcelToList.readXls(is, fields, EmailSuffixEO.class);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,11 +123,16 @@ public class EmailSuffixController {
 		}
 
 		if (list != null && list.size() > 0) {
-			for (ModelPropDict dict : list) {
-				dict.setClazz("T_APP_USER");
-				dict.setField("EMAILSUFFIX");
+			List<EmailSuffix> emailSuffixs = new ArrayList<>();
+			for (EmailSuffixEO dict : list) {
+				EmailSuffix emailSuffix = new EmailSuffix();
+				emailSuffix.setCreatedTime(new Date());
+				emailSuffix.setEnabled(Integer.parseInt(dict.getEnabled()));
+				emailSuffix.setIsDeleted(1);
+				emailSuffix.setRemark(dict.getRemark());
+				emailSuffix.setEmailSuffix(dict.getEmailSuffix());
 			}
-			List<ModelPropDict> rs = modelPropdictRepo.save(list);
+			List<EmailSuffix> rs = emailSuffixRepo.save(emailSuffixs);
 			if (rs.size() > 0) {
 				return new Resp(true, CodeDef.SUCCESS);
 			} else {
