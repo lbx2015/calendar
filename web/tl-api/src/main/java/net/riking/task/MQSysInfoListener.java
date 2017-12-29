@@ -26,6 +26,7 @@ public class MQSysInfoListener implements MessageListener {
 		TextMessage txtMessage = (TextMessage) message;
 		try {
 			JSONObject jsonobject = JSONObject.fromObject(txtMessage.getText());
+			
 			logger.info("get message " + txtMessage.getText());
 		} catch (JMSException e) {
 			e.printStackTrace();
