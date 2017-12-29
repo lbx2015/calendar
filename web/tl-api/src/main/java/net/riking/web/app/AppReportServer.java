@@ -260,7 +260,7 @@ public class AppReportServer {
 		return new AppResp(remind, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
+	@ApiOperation(value = "单条删除提醒信息", notes = "POST")
 	@RequestMapping(value = "/remindDel", method = RequestMethod.POST)
 	public AppResp delMore(@RequestBody Remind remind) {
 		remindRepo.delete(remind.getRemindId());
