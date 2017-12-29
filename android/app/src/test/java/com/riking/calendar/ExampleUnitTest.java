@@ -15,6 +15,10 @@ import com.riking.calendar.util.Debug;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,7 +57,18 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void testJson() {
+    public void testJson() throws IOException {
+        String[] cmd = new String[]{ "cmd", "/c", "chcp" };
+        Process process = Runtime.getRuntime().exec(cmd);
+        BufferedReader stdInput =
+                new BufferedReader(new InputStreamReader(process.getInputStream(), "gbk"));
+        String ss, result = "";
+        while ((ss = stdInput.readLine()) != null) {
+            if (!ss.isEmpty()) {
+                result += ss + "\n";
+            }
+        }
+        System.out.println(result);
         Gson s = new Gson();
         TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
         };
