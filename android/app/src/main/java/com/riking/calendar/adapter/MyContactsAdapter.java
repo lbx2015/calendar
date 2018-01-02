@@ -22,7 +22,7 @@ public class MyContactsAdapter extends ZAdater<MyContactsAdapter.MyViewHolder, A
         AppUserResult appUser = mList.get(i);
         ZR.showPersonInviteStatus(h.followButton, h.followTv, appUser.isInvited);
         ZR.setInviteClickListener(appUser, h.followButton, h.followTv);
-        ZR.setUserName(h.userName, appUser.userName, appUser.grade);
+        ZR.setUserName(h.userName, appUser.userName, appUser.grade,appUser.userId);
         h.summary.setText(appUser.phone);
     }
 

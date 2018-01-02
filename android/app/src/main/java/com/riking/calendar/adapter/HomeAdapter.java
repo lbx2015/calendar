@@ -14,8 +14,8 @@ import android.widget.Toast;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerCommentsActivity;
-import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.activity.WriteAnswerActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
@@ -212,6 +212,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 if (r.pushType == 1) {
                     Intent i = new Intent(context, TopicActivity.class);
                     i.putExtra(CONST.TOPIC_ID, r.topicId);
+                    ZGoto.to(i);
+                } else if ((r.pushType == 2 || r.pushType == 3 || r.pushType == 4 || r.pushType == 5)) {
+                    Intent i = new Intent(h.itemCator.getContext(), UserActivity.class);
+                    i.putExtra(CONST.USER_ID, r.userId);
                     ZGoto.to(i);
                 }
             }

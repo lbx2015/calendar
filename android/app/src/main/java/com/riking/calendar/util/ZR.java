@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.QuestionActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.listener.ZCallBack;
@@ -144,7 +145,7 @@ public class ZR {
         GlideApp.with(v.getContext()).load(imageUrl).centerCrop().into(v);
     }
 
-    public static void setUserName(TextView userNameTv, String name, int grand) {
+    public static void setUserName(final TextView userNameTv, String name, int grand, final String userId) {
         userNameTv.setText(name);
         @DrawableRes int drawable;
         if (grand == 1) {
@@ -161,6 +162,16 @@ public class ZR {
             drawable = 0;
         }
         userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+
+        //go to user activity on click
+        userNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(userNameTv.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
     }
 
     public static void setReportName(TextView reportNameTv, String name, int frequency, String reportBatch) {

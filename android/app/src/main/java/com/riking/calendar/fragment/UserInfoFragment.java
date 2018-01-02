@@ -94,7 +94,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             loginState = 1;
             currentUser = ZPreference.getCurrentLoginUser();
             userName.setText(currentUser.userName);
-            ZR.setUserName(userName, currentUser.userName, currentUser.grade);
+            ZR.setUserName(userName, currentUser.userName, currentUser.grade, currentUser.userId);
             userComment.setText(currentUser.descript);
 
             userName.setOnClickListener(new ZClickListenerWithLoginCheck() {

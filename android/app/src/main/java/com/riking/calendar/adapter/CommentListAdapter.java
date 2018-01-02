@@ -47,7 +47,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @Override
     public void onBindViewHolder(final CommentListAdapter.MyViewHolder h, int i) {
         final NewsComment c = mList.get(i);
-        ZR.setUserName(h.authorName, c.userName, c.grade);
+        ZR.setUserName(h.authorName, c.userName, c.grade,c.userId);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
