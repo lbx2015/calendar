@@ -13,4 +13,5 @@ public interface QACommentDao {
 	 * @return
 	 */
 	public List<QACommentResult> findByUserId(String userId, Integer pageBegin, Integer pageCount);
+
 }

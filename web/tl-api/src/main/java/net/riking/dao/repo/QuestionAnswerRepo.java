@@ -55,6 +55,14 @@ public interface QuestionAnswerRepo
 	Integer answerCountByUserId(String userId);
 
 	/**
+	 * 统计用户回答问题的回答数
+	 * @param newsCommentId
+	 * @return
+	 */
+	@Query("select count(*) from QuestionAnswer where userId = ?1 and isAduit = ?2 and isDeleted = 1")
+	Integer answerCountByUserIdAndIsAudit(String userId, String isAduit);
+
+	/**
 	 * 用户的回答
 	 * @param userId
 	 * @param pageRequest
