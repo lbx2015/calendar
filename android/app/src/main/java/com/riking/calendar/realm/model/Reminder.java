@@ -46,6 +46,17 @@ public class Reminder extends RealmObject {
     //used to set alarm, the request code should not same.
     public int requestCode;
 
+    //    @Comment("报送开始时间（yyyyMMddHHmm）")
+//    @Column(name = "submit_start_time", length = 8)
+    public String submitStartTime;
+
+    //    @Comment("报送截止时间（yyyyMMddHHmm）")
+//    @Column(name = "submit_end_time", length = 8)
+    public String submitEndTime;
+    //    @Comment("报表id")
+//    @Column(name = "report_id", length = 32)
+    public String reportId;
+
     public Reminder() {
     }
 

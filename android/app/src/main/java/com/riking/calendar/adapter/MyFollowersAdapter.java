@@ -22,7 +22,7 @@ public class MyFollowersAdapter extends ZAdater<MyFollowersAdapter.MyViewHolder,
         AppUserResult appUser = mList.get(i);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
         ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);
-        ZR.setUserName(h.userName, appUser.userName, appUser.grade);
+        ZR.setUserName(h.userName, appUser.userName, appUser.grade,appUser.userId);
         h.summary.setText(appUser.descript);
     }
 

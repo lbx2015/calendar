@@ -1,8 +1,10 @@
 package com.riking.calendar.pojo;
 
 import com.google.gson.annotations.SerializedName;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.gson.ExcludeGsonField;
 import com.riking.calendar.realm.model.Reminder;
+import com.riking.calendar.util.ZPreference;
 
 import io.realm.annotations.PrimaryKey;
 
@@ -12,9 +14,10 @@ import io.realm.annotations.PrimaryKey;
 
 public class ReminderModel {
     @PrimaryKey
-    @SerializedName("reminderId")
+    @SerializedName("remindId")
+//    @Comment("手机端时间戳：yyyyMMddHHmmssSSS")
     public String id;
-    public String userId;
+    public String userId = ZPreference.getUserId();
     //The title of the reminder
     @SerializedName("content")
     public String title;
@@ -44,6 +47,18 @@ public class ReminderModel {
     public byte isRemind = 1;
     public byte clientType = 2;
 
+    //    @Comment("报送开始时间（yyyyMMddHHmm）")
+//    @Column(name = "submit_start_time", length = 8)
+    public String submitStartTime;
+
+    //    @Comment("报送截止时间（yyyyMMddHHmm）")
+//    @Column(name = "submit_end_time", length = 8)
+    public String submitEndTime;
+    //    @Comment("报表id")
+//    @Column(name = "report_id", length = 32)
+    public String reportId;
+
+
     @ExcludeGsonField
     public byte operationType;
 
@@ -51,11 +66,15 @@ public class ReminderModel {
     }
 
     public ReminderModel(Reminder r) {
+        MyLog.d("set report id in RemindModel constructor: " + r.reportId);
+        reportId = r.reportId;
+        submitStartTime = r.submitStartTime;
+        submitEndTime = r.submitEndTime;
         id = r.id;
         userId = r.userId;
         title = r.title;
         day = r.day;
-        time = r.time.replace("[^\\d]","");
+        time = r.time.replace("[^\\d]", "");
         repeatFlag = r.repeatFlag;
         isAllDay = r.isAllDay;
         aheadTime = r.aheadTime;
@@ -69,7 +88,7 @@ public class ReminderModel {
     @Override
     public String toString() {
         return "ReminderModel{" +
-                "userId='" + id + '\'' +
+                "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", title='" + title + '\'' +
                 ", day='" + day + '\'' +
@@ -83,6 +102,10 @@ public class ReminderModel {
                 ", deleteState=" + deleteState +
                 ", isRemind=" + isRemind +
                 ", clientType=" + clientType +
+                ", submitStartTime='" + submitStartTime + '\'' +
+                ", submitEndTime='" + submitEndTime + '\'' +
+                ", reportId='" + reportId + '\'' +
+                ", operationType=" + operationType +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package com.riking.calendar.util;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -19,6 +20,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AnswerActivity;
+import com.riking.calendar.activity.QuestionActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.listener.ZCallBack;
@@ -141,7 +145,20 @@ public class ZR {
         GlideApp.with(v.getContext()).load(imageUrl).centerCrop().into(v);
     }
 
-    public static void setUserName(TextView userNameTv, String name, int grand) {
+    public static void setUserName(final TextView userNameTv, String name, int grand, final String userId) {
+        setUserName(userNameTv, name, grand);
+        //go to user activity on click
+        userNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(userNameTv.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setUserName(final TextView userNameTv, String name, int grand) {
         userNameTv.setText(name);
         @DrawableRes int drawable;
         if (grand == 1) {
@@ -460,6 +477,40 @@ public class ZR {
             followTv.setTextColor(ZR.getColor(R.color.color_999999));
             followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
         }
+    }
+
+    /**
+     * go to question detail activity
+     *
+     * @param v
+     * @param requestId
+     */
+    public static void setRequestClickListener(View v, final String requestId) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyApplication.mCurrentActivity, QuestionActivity.class);
+                i.putExtra(CONST.QUESTION_ID, requestId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    /**
+     * go to answer detail activity
+     *
+     * @param v
+     * @param answerId
+     */
+    public static void setAnswerClickListener(View v, final String answerId) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyApplication.mCurrentActivity, AnswerActivity.class);
+                i.putExtra(CONST.ANSWER_ID, answerId);
+                ZGoto.to(i);
+            }
+        });
     }
 
     public void getDensity(Activity activity) {

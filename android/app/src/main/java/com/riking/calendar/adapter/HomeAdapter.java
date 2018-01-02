@@ -13,10 +13,9 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.AnswerCommentsActivity;
-import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.activity.WriteAnswerActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
@@ -72,7 +71,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, final int i) {
+    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, int i) {
         final TQuestionResult r = mList.get(i);
 
         if (getItemViewType(i) == REMMEND_TYPE) {
@@ -138,11 +137,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
                             shareBottomDialog.dismiss();
                             HomeParams p = new HomeParams();
                             p.enabled = 0;//屏蔽
+                            p.objId = r.qaId;
                             APIClient.shieldQuestion(p, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
-                                    mList.remove(i);
-                                    notifyItemRemoved(i);
+                                    //remove the layout position
+                                    mList.remove(h.getLayoutPosition());
+                                    notifyItemRemoved(h.getLayoutPosition());
                                 }
                             });
                         }
@@ -213,29 +214,19 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     Intent i = new Intent(context, TopicActivity.class);
                     i.putExtra(CONST.TOPIC_ID, r.topicId);
                     ZGoto.to(i);
+                } else if ((r.pushType == 2 || r.pushType == 3 || r.pushType == 4 || r.pushType == 5)) {
+                    Intent i = new Intent(h.itemCator.getContext(), UserActivity.class);
+                    i.putExtra(CONST.USER_ID, r.userId);
+                    ZGoto.to(i);
                 }
             }
         });
 
         //go to question activity on click
-        h.questionTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, QuestionActivity.class);
-                i.putExtra(CONST.QUESTION_ID, r.tqId);
-                ZGoto.to(i);
-            }
-        });
+        ZR.setRequestClickListener(h.questionTitle, r.tqId);
 
         //go to answer activity on click
-        h.answerContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, AnswerActivity.class);
-                i.putExtra(CONST.ANSWER_ID, r.tqId);
-                ZGoto.to(i);
-            }
-        });
+        ZR.setAnswerClickListener(h.answerContent, r.qaId);
     }
 
 

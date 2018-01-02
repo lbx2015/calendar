@@ -16,7 +16,6 @@ import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
-import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
@@ -24,7 +23,6 @@ import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
-import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import butterknife.BindView;
@@ -35,11 +33,14 @@ public class MyCollectAnswerAdapter extends ZAdater<MyCollectAnswerAdapter.MyVie
     @Override
     public void onBindVH(MyViewHolder h, int i) {
         QAnswerResult answer = mList.get(i);
-        ZR.setUserName(h.itemCator, answer.userName, answer.grade);
+        ZR.setUserName(h.itemCator, answer.userName, answer.grade,answer.userId);
         ZR.setUserImage(h.fromImage, answer.photoUrl);
         h.questionTitle.setText(answer.title);
         h.answerContent.setText(answer.content);
         h.timeTv.setText(DateUtil.showTime(answer.createdTime));
+
+        ZR.setRequestClickListener(h.questionTitle, answer.tqId);
+        ZR.setAnswerClickListener(h.answerContent, answer.qaId);
         setAnswerAgreeAndComment(h, answer);
     }
 

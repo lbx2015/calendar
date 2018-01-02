@@ -90,6 +90,11 @@ public class DateUtil {
         }
     }
 
+    public static String getReminderTimeShowString(String date, String time){
+        SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyy_mm_dd_hh_mm);
+        return sdf.format(get(date,time));
+    }
+
     public static String getWeekNoOfYear(Calendar c) {
         return null;
     }

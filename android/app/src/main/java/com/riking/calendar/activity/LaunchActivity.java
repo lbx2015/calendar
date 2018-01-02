@@ -79,7 +79,7 @@ public class LaunchActivity extends AppCompatActivity {
             APIClient.getAllReports();
         } else {
             //get reminders and tasks of user from server
-            APIClient.synchAll();
+//            APIClient.synchAll();
         }
         APIClient.getWorkDays();
 

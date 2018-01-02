@@ -1018,7 +1018,22 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
     public void negativeListener() {
 
     }
-/*
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            // Make sure the request was successful
+            Bundle b = data.getExtras();
+            // Check which request we're responding to
+            if (b != null && requestCode == CONST.REQUEST_CODE_ADD_REMINDER) {
+                reportNotDoneTaskItemAdapter.updateRemindReport.remindId = b.getString(CONST.REMINDER_ID);
+                reportNotDoneTaskItemAdapter.notifyItemChanged(reportNotDoneTaskItemAdapter.updateRemindPosition);
+            }
+        }
+    }
+
+    /*
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {

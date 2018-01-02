@@ -43,6 +43,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
@@ -100,7 +101,6 @@ public interface APIInterface {
     @POST("api/users?")
     Call<UserList> doCreateUserWithField(@Field("queryParam") String name, @Field("job") String job);
 
-
     @POST("remindApp/save")
     Call<ResponseBody> createRemind(@Body ReminderModel reminder);
 
@@ -127,7 +127,6 @@ public interface APIInterface {
 
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
-
 
     @POST("common/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
@@ -423,4 +422,18 @@ public interface APIInterface {
     @POST("report/complete")
     Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
 
+    @POST("report/remindSave")
+    Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
+
+    @POST("user/myGrade")
+    Call<ResponseModel<String>> myGrade(@Body UserParams params);
+
+    /**
+     * get other user info information
+     *
+     * @param params
+     * @return
+     */
+    @POST("user/getOther")
+    Call<ResponseModel<OtherUserResp>> getOther(@Body UserParams params);
 }

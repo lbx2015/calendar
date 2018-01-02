@@ -19,7 +19,6 @@ public class SearchTopicAdapter extends ZAdater<SearchTopicViewHolder, Topic> {
         Topic topicResult = mList.get(i);
         h.title.setText(topicResult.title);
         h.summary.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
-        RequestOptions options = new RequestOptions();
 
         ZR.setImage(h.topicImage, topicResult.topicUrl);
 

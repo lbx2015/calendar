@@ -94,7 +94,23 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             loginState = 1;
             currentUser = ZPreference.getCurrentLoginUser();
             userName.setText(currentUser.userName);
+            ZR.setUserName(userName, currentUser.userName, currentUser.grade, currentUser.userId);
             userComment.setText(currentUser.descript);
+
+            userName.setOnClickListener(new ZClickListenerWithLoginCheck() {
+                @Override
+                public void click(View v) {
+                    UserParams u = new UserParams();
+                    APIClient.myGrade(u, new ZCallBack<ResponseModel<String>>() {
+                        @Override
+                        public void callBack(ResponseModel<String> response) {
+                            Intent i = new Intent(getContext(), WebviewActivity.class);
+                            i.putExtra(CONST.WEB_URL, response._data);
+                            startActivity(i);
+                        }
+                    });
+                }
+            });
 
             //load the user image
             ZR.setUserImage(myPhoto, currentUser.photoUrl);
