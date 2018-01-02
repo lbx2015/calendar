@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.chatuidemo.ui.BaseActivity;
@@ -15,7 +14,6 @@ import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserParams;
-import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -29,11 +27,9 @@ public class UserActivity extends BaseActivity {
     TextView userComment;
     ImageView toUserInfoIm;
     ImageView myPhoto;
-    RelativeLayout userInfoRelativeLayout;
     LinearLayout myRepliesLayout;
     LinearLayout followMeLayout;
     LinearLayout myFollowLayout;
-    AppUserResp currentUser;
 
     TextView myFollowNumbTv;
     TextView followingMeNumbTv;
@@ -42,6 +38,14 @@ public class UserActivity extends BaseActivity {
     View trendLayout;
     View followLayout;
     View collecLayout;
+
+    //text view title
+    TextView followPersonTv;
+    TextView fansTv;
+    TextView answerTv;
+    TextView trendTv;
+    TextView myFollowTv;
+    TextView myFavoriteTv;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -52,13 +56,20 @@ public class UserActivity extends BaseActivity {
     }
 
     private void initView() {
+        //follow persons
+        followPersonTv = findViewById(R.id.follow_person_tv);
+        fansTv = findViewById(R.id.fans_tv);
+        answerTv = findViewById(R.id.answer_tv);
+        trendTv = findViewById(R.id.my_trend_tv);
+        myFollowTv = findViewById(R.id.my_follow_tv);
+        myFavoriteTv = findViewById(R.id.my_favorite_tv);
+
         collecLayout = findViewById(R.id.my_favorite_layout);
         followLayout = findViewById(R.id.my_follow_layout);
         trendLayout = findViewById(R.id.my_trend_layout);
         myFollowLayout = findViewById(R.id.my_follow_person_layout);
         followMeLayout = findViewById(R.id.my_follower_layout);
         myRepliesLayout = findViewById(R.id.my_replyes);
-        userInfoRelativeLayout = findViewById(R.id.user_info_relative_layout);
         userName = findViewById(R.id.user_name);
         loginLinearLayout = findViewById(R.id.login_linear_layout);
         userComment = findViewById(R.id.user_comment);
@@ -69,50 +80,47 @@ public class UserActivity extends BaseActivity {
         myAnswerNumbTv = findViewById(R.id.my_answer_num_tv);
     }
 
-    private void setUserData(OtherUserResp u) {
+    private void setUserData(final OtherUserResp u) {
         myFollowNumbTv.setText(ZR.getNumberString(u.followNum));
         followingMeNumbTv.setText(ZR.getNumberString(u.fansNum));
         myAnswerNumbTv.setText(ZR.getNumberString(u.answerNum));
         userName.setText(u.userName);
-        ZR.setUserName(userName, u.userName, u.grade, u.userId);
+        ZR.setUserName(userName, u.userName, u.grade);
         userComment.setText(u.descript);
 
-        userName.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                UserParams u = new UserParams();
-                APIClient.myGrade(u, new ZCallBack<ResponseModel<String>>() {
-                    @Override
-                    public void callBack(ResponseModel<String> response) {
-                        Intent i = new Intent(UserActivity.this, WebviewActivity.class);
-                        i.putExtra(CONST.WEB_URL, response._data);
-                        startActivity(i);
-                    }
-                });
-            }
-        });
-
         //load the user image
-        ZR.setUserImage(myPhoto, currentUser.photoUrl);
+        ZR.setUserImage(myPhoto, u.photoUrl);
+
+        if (u.userId.equals(ZPreference.getUserId())) {
+            followPersonTv.setText("我关注的人");
+            fansTv.setText("我的粉丝");
+            answerTv.setText("我的回答");
+            trendTv.setText("我的动态");
+            myFollowTv.setText("我的关注");
+            myFavoriteTv.setText("我的收藏");
+        } else if (u.sex == 1) {
+            followPersonTv.setText("他关注的人");
+            fansTv.setText("他的粉丝");
+            answerTv.setText("他的回答");
+            trendTv.setText("他的动态");
+            myFollowTv.setText("他的关注");
+            myFavoriteTv.setText("他的收藏");
+        } else if ((u.sex == 0)) {
+            followPersonTv.setText("她关注的人");
+            fansTv.setText("她的粉丝");
+            answerTv.setText("她的回答");
+            trendTv.setText("她的动态");
+            myFollowTv.setText("她的关注");
+            myFavoriteTv.setText("她的收藏");
+        }
 
         //set click listener
-
         collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                Intent i = new Intent(UserActivity.this, MyCollectActivity.class);
+                i.putExtra(CONST.USER_ID, u.userId);
                 ZGoto.to(MyCollectActivity.class);
-            }
-        });
-
-        userInfoRelativeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                if (ZPreference.isLogin()) {
-                    startActivityForResult(new Intent(UserActivity.this, UserInfoActivity.class), CONST.UPDATE_USER_INFO_REQUES);
-                } else {
-                    startActivity((new Intent(UserActivity.this, LoginNavigateActivity.class)));
-//                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));
-                }
             }
         });
 
@@ -158,10 +166,6 @@ public class UserActivity extends BaseActivity {
     }
 
     private void initListener() {
-        if (ZPreference.isLogin()) {
-            currentUser = ZPreference.getCurrentLoginUser();
-        }
-
         UserParams params = new UserParams();
         params.toUserId = getIntent().getStringExtra(CONST.USER_ID);
         //get other user info

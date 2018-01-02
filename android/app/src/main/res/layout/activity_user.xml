@@ -104,6 +104,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/follow_person_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我关注的人"
@@ -137,6 +138,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/fans_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的粉丝"
@@ -169,6 +171,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/answer_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的回答"

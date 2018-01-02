@@ -146,6 +146,19 @@ public class ZR {
     }
 
     public static void setUserName(final TextView userNameTv, String name, int grand, final String userId) {
+        setUserName(userNameTv, name, grand);
+        //go to user activity on click
+        userNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(userNameTv.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setUserName(final TextView userNameTv, String name, int grand) {
         userNameTv.setText(name);
         @DrawableRes int drawable;
         if (grand == 1) {
@@ -162,16 +175,6 @@ public class ZR {
             drawable = 0;
         }
         userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
-
-        //go to user activity on click
-        userNameTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(userNameTv.getContext(), UserActivity.class);
-                i.putExtra(CONST.USER_ID, userId);
-                ZGoto.to(i);
-            }
-        });
     }
 
     public static void setReportName(TextView reportNameTv, String name, int frequency, String reportBatch) {
