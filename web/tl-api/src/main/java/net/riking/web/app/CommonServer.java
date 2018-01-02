@@ -29,7 +29,7 @@ import net.riking.dao.repo.AppVersionRepo;
 import net.riking.dao.repo.IndustryRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppVersion;
@@ -81,7 +81,7 @@ public class CommonServer {
 	SmsUtil smsUtil;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	TQuestionRelRepo tQuestionRelRepo;

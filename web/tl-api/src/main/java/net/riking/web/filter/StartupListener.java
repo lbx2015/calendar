@@ -1,10 +1,5 @@
 package net.riking.web.filter;
 
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Enumeration;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -15,13 +10,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.mysql.jdbc.AbandonedConnectionCleanupThread;
-
 import net.riking.config.Config;
 import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.core.workflow.WorkflowMgr;
 import net.riking.service.MQReceiveService;
+import net.riking.service.QuestionKeyWordService;
 import net.riking.service.impl.SysDataServiceImpl;
 import net.riking.spring.SpringBeanUtil;
 import net.riking.util.RedisUtil;
@@ -39,6 +33,9 @@ public class StartupListener implements ServletContextListener {
 
 	@Autowired
 	DataDictService dataDictService;
+	
+	@Autowired
+	QuestionKeyWordService questionKeyWordService;
 
 	@Autowired
 	SysDataServiceImpl sysDataServiceImpl;
@@ -76,6 +73,7 @@ public class StartupListener implements ServletContextListener {
 		dataDictService.init();
 		// jedisUtil.init();
 		sysDataServiceImpl.initData();
+		questionKeyWordService.initKeyWord();
 		// timerManager.init();
 //		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
 //		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列

@@ -19,7 +19,7 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.QuestResult;
@@ -62,7 +62,7 @@ public class AppUserFollowServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	TQuestionService tQuestionService;

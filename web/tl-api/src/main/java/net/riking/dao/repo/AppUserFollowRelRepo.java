@@ -1,5 +1,6 @@
 package net.riking.dao.repo;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -21,7 +22,7 @@ import net.riking.entity.model.UserFollowRel;
  * @since 1.0
  */
 @Repository
-public interface UserFollowRelRepo
+public interface AppUserFollowRelRepo
 		extends JpaRepository<UserFollowRel, String>, JpaSpecificationExecutor<UserFollowRel> {
 	/**
 	 * 用户取消关注
@@ -78,4 +79,12 @@ public interface UserFollowRelRepo
 	 */
 	@Query("select count(*) from UserFollowRel where userId = ?1 ")
 	Integer countByUser(String userId);
+	
+	
+	@Query(" from UserFollowRel where (userId = ?1 and followStatus != 0) or (toUserId = ?1 and followStatus= 2) ")
+	List<UserFollowRel> findByUserId(String userId);
+	
+	
+	@Query("from UserFollowRel where (userId in ?1 and followStatus != 0) or (toUserId in ?1 and followStatus= 2) ")
+	List<UserFollowRel> findUserIdByUserIds(Collection<String> userId);
 }

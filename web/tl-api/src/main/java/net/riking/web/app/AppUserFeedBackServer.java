@@ -21,7 +21,7 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.FeedBackRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.FeedBack;
 import net.riking.service.AppUserService;
@@ -59,7 +59,7 @@ public class AppUserFeedBackServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	SignInService signInService;

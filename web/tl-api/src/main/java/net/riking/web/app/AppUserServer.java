@@ -3,6 +3,7 @@ package net.riking.web.app;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -23,16 +24,17 @@ import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.AppUserGradeRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.SignIn;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.model.UserOperationInfo;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
@@ -55,6 +57,9 @@ import net.riking.util.Utils;
 public class AppUserServer {
 	@Autowired
 	AppUserRepo appUserRepo;
+	
+	@Autowired
+	AppUserFollowRelRepo appUserFollowRelRepo;
 
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
@@ -78,7 +83,7 @@ public class AppUserServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	SignInService signInService;
@@ -106,7 +111,32 @@ public class AppUserServer {
 	@ApiOperation(value = "获取好友的好友", notes = "POST")
 	@RequestMapping(value = "/getFOAF", method = RequestMethod.POST)
 	public AppResp getFOAF_(@RequestBody UserParams userParams) {
-		return new AppResp(null, CodeDef.SUCCESS);
+		HashSet<String> set = new HashSet<>();
+		List<UserFollowRel> list = appUserFollowRelRepo.findByUserId(userParams.getUserId());
+		UserFollowRel userFollowRel = null;
+		for (int i = 0; i < list.size(); i++) {
+			userFollowRel = list.get(i);
+			if(userFollowRel.getUserId().equals(userParams.getUserId())){
+				set.add(userFollowRel.getToUserId());
+			}else{
+				set.add(userFollowRel.getUserId());
+			}
+		}
+		if(set.isEmpty()){
+			return new AppResp(null, CodeDef.SUCCESS);
+		}
+		HashSet<String> set2 = new HashSet<>();
+		List<UserFollowRel> list2 = appUserFollowRelRepo.findUserIdByUserIds(set);
+		for (int i = 0; i < list2.size(); i++) {
+			userFollowRel = list2.get(i);
+			if(!set.contains(userFollowRel.getUserId()) && !userFollowRel.getUserId().equals(userParams.getUserId())){
+				set2.add(userFollowRel.getUserId());
+			}
+			if(!set.contains(userFollowRel.getToUserId()) && !userFollowRel.getToUserId().equals(userParams.getUserId())){
+				set2.add(userFollowRel.getToUserId());
+			}
+		}
+		return new AppResp(set2, CodeDef.SUCCESS);
 	}
 	
 

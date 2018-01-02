@@ -27,7 +27,7 @@ import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.HotSearch;
@@ -72,7 +72,7 @@ public class SearchListServer {
 	AppUserRepo appUserRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	QuestionAnswerRepo questionAnswerRepo;

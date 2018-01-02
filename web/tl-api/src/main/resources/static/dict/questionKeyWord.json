@@ -1,0 +1,27 @@
+{
+	"table": "T_APP_QUESTIONKEYWORD",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "keyWord",
+			"alias": "关键字",
+			"group": "base",
+			"type": "string"
+		},
+		{
+			"prop": "topicId",
+			"alias": "话题",
+			"group": "base",
+			"query": "1",
+			"query_order": "1",
+			"type": "enum",
+			"enum_url": "/questionKeyWord/getTopicDict",
+			"enum_search": "1"
+		}
+	]
+}
