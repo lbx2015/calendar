@@ -253,6 +253,46 @@ public class RedisUtil {
 		List<T> list = (List<T>) SerializeUtil.unserialize(in);
 		return list;
 	}
+	
+	
+	/**
+	 * 设置 set集合
+	 * 
+	 * @param <T>
+	 * @param key
+	 * @param value
+	 */
+	public static <T> void setSet(String key, Set<T> set) {
+		Jedis jedis = getJedis();
+		try {
+//			getJedis().set(key.getBytes(), ObjectTranscoder.serialize(list));
+			jedis.set(key.getBytes(), SerializeUtil.serialize(set));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Set key error : " + e);
+		}finally {
+			returnResource(jedis);
+		}
+	}
+
+	/**
+	 * 获取set集合
+	 * 
+	 * @param <T>
+	 * @param key
+	 * @return list
+	 */
+	public static <T> Set<T> getSet(String key) {
+		String bKey = buildKey(key);
+		Jedis jedis = getJedis();
+		if (null == jedis || !jedis.exists(key.getBytes())) {
+			return null;
+		}
+		byte[] in = jedis.get(key.getBytes());
+		returnResource(jedis);
+		Set<T> set = (Set<T>) SerializeUtil.unserialize(in);
+		return set;
+	}
 
 	/**
 	 * 设置 map

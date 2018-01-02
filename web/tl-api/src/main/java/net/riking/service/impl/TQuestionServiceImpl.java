@@ -14,7 +14,7 @@ import net.riking.dao.TQuestionDao;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.QAnswerResult;
@@ -42,7 +42,7 @@ public class TQuestionServiceImpl implements TQuestionService {
 	TopicRelRepo topicRelRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	TopicQuestionRepo topicQuestionRepo;

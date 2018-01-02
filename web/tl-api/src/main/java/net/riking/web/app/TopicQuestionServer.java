@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
@@ -26,13 +27,14 @@ import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.QAInvite;
 import net.riking.entity.model.QuestionAnswer;
+import net.riking.entity.model.Topic;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.params.TQuestionParams;
 import net.riking.service.AppUserService;
+import net.riking.service.QuestionKeyWordService;
 import net.riking.util.MQProduceUtil;
 import net.riking.util.Utils;
 import net.sf.json.JSONObject;
@@ -70,7 +72,7 @@ public class TopicQuestionServer {
 	QAnswerRelRepo qAnswerRelRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	QAInviteRepo qAInviteRepo;
@@ -80,6 +82,9 @@ public class TopicQuestionServer {
 
 	@Autowired
 	AppUserService appUserService;
+	
+	@Autowired
+	QuestionKeyWordService questionKeyWordService;
 
 	@ApiOperation(value = "问题详情分享", notes = "POST")
 	@RequestMapping(value = "/questionShare", method = RequestMethod.POST)
@@ -93,6 +98,9 @@ public class TopicQuestionServer {
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
 		String title = "";
 		try {
+		    if (!tQuestionParams.getTitle().endsWith("?")) {
+		    	tQuestionParams.setTitle(tQuestionParams.getTitle()+ "?");
+            }
 			title = java.net.URLEncoder.encode(java.net.URLEncoder.encode(tQuestionParams.getTitle(), "utf-8"),
 					"utf-8");
 		} catch (UnsupportedEncodingException e) {
@@ -194,4 +202,16 @@ public class TopicQuestionServer {
 		return questionAnswerList;
 	}
 
+	
+	/**
+	 * 根据问题title找出话题列表
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "话题列表", notes = "POST")
+	@RequestMapping(value = "/getTopicByQuest", method = RequestMethod.POST)
+	public AppResp getTopicByQuest_(@RequestBody TQuestionParams Params) {
+		List<Topic> list = questionKeyWordService.getTopicByQuestion(Params.getTitle());
+		return new AppResp(list, CodeDef.SUCCESS);
+	}
 }

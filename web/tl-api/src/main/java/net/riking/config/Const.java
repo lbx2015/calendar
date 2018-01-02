@@ -10,6 +10,8 @@ import org.apache.activemq.ActiveMQConnection;
  */
 public class Const {
 	
+	public static final String KEY_WORD = "KEYWORD";
+	
 	public static final Integer IS_DELETE = 0;
 	
 	public static final Integer IS_NOT_DELETE = 1;
