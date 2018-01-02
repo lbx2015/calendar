@@ -140,10 +140,10 @@ public interface APIInterface {
     @POST("appUserReport/getUserRepor")
     Call<ResponseModel<ArrayList<QueryReportContainer>>> getUserReports(@Body AppUserReportCompleteRel body);
 
-    @POST("appAboutApp/reportHtml")
+    @POST("report/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
-    @POST("appAboutApp/aboutHtml")
+    @POST("appHtml/aboutHtml")
     Call<ResponseModel<String>> getAboutHtml(@Query("versionNumber") String versionNumber);
 
     @POST("appAboutApp/agreementHtml")
@@ -425,7 +425,7 @@ public interface APIInterface {
     @POST("report/remindSave")
     Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
 
-    @POST("user/myGrade")
+    @POST("user/myGradeHtml")
     Call<ResponseModel<String>> myGrade(@Body UserParams params);
 
     /**

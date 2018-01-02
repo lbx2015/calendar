@@ -7,6 +7,8 @@
         android:minSdkVersion="21"
         android:targetSdkVersion="26" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
     <!-- Required -->
     <permission
         android:name="com.riking.calendar.permission.JPUSH_MESSAGE"
@@ -222,6 +224,9 @@
             android:theme="@style/MyDialogStyle"></activity>
         <activity
             android:name=".activity.WebviewActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.WebviewEditorActivity"
             android:theme="@style/AppThemeNoActionBar" />
 
         <!-- Required SDK核心功能-->

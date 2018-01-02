@@ -12,7 +12,8 @@ public class CONST {
     //    public static final String TL_API_TEST = "http://172.16.64.177:6061/tl-api-test/";
 //    public static final String TL_API_TEST = "http://172.16.64.160:8281/";
 //    public static final String TL_API_TEST = "http://172.16.64.177:6061/tl-api-test/";
-        public static final String TL_API_TEST = "http://118.31.187.217:6061/tl-api-test/";
+//        public static final String TL_API_TEST = "http://118.31.187.217:6061/tl-api-test/";
+    public static final String TL_API_TEST = "http://172.16.64.96:8281/";
     public static final String TL_API_DEV = "http://172.16.64.190:8281/";
     public static final String URL_BASE = "http://172.16.64.190:8281/";
     //    public static final String URL_BASE = "http://172.16.32.14:6061/tl-api/";
