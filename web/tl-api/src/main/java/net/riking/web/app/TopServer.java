@@ -34,6 +34,7 @@ import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.Topic;
 import net.riking.entity.model.UserFollowRel;
+import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.params.TopicParams;
 import net.riking.service.AppUserService;
 import net.riking.service.QAnswerService;
@@ -232,6 +233,20 @@ public class TopServer {
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 
+	}
+	
+	
+	
+	/**
+	 * 根据问题title找出话题列表
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "话题列表", notes = "POST")
+	@RequestMapping(value = "/getTopicByQuest", method = RequestMethod.POST)
+	public AppResp getTopicByQuest_(@RequestBody QAnswerParams Params) {
+		
+		return new AppResp(null, CodeDef.SUCCESS);
 	}
 
 }

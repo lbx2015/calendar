@@ -87,7 +87,7 @@ public class AppUserServer {
 	Config config;
 
 	@ApiOperation(value = "我的等级详情", notes = "POST")
-	@RequestMapping(value = "/myGrade", method = RequestMethod.POST)
+	@RequestMapping(value = "/myGradeHtml", method = RequestMethod.POST)
 	public AppResp myGrade_(@RequestBody UserParams userParams) {
 		String userId = userParams.getUserId();
 		AppUserDetail userDetail = appUserDetailRepo.findOne(userId);
@@ -95,12 +95,18 @@ public class AppUserServer {
 				+"&url="+config.getAppApiPath(), CodeDef.SUCCESS);
 	}
 	
-	
 	@ApiOperation(value = "等级分级制度", notes = "POST")
 	@RequestMapping(value = "/getGradeList", method = RequestMethod.POST)
 	public AppResp getGradeList_() {
 		List<AppUserGrade> list = appUserGradeRepo.findByIsDeleted(Const.IS_NOT_DELETE);
 		return new AppResp(list , CodeDef.SUCCESS);
+	}
+	
+	
+	@ApiOperation(value = "获取好友的好友", notes = "POST")
+	@RequestMapping(value = "/getFOAF", method = RequestMethod.POST)
+	public AppResp getFOAF_(@RequestBody UserParams userParams) {
+		return new AppResp(null, CodeDef.SUCCESS);
 	}
 	
 

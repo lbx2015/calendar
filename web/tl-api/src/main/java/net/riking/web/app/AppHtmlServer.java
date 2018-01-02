@@ -1,7 +1,6 @@
 package net.riking.web.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,8 +11,6 @@ import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.entity.AppResp;
-import net.riking.entity.model.AppUser;
-import net.riking.entity.model.Report;
 
 @RestController
 @RequestMapping(value = "/appHtml")
