@@ -10,13 +10,11 @@ import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class MyAnswersAdapter extends ZAdater<MyAnswersAdapter.MyViewHolder,QAnswerResult> {
+public class MyAnswersAdapter extends ZAdater<MyAnswersAdapter.MyViewHolder, QAnswerResult> {
     private Context context;
 
     public MyAnswersAdapter(Context context) {
@@ -29,6 +27,7 @@ public class MyAnswersAdapter extends ZAdater<MyAnswersAdapter.MyViewHolder,QAns
         holder.titleTV.setText(answer.title);
         holder.contentTv.setText(answer.content);
         holder.timeTv.setText(DateUtil.showTime(answer.createdTime));
+        ZR.setAnswerClickListener(holder.itemView, answer.qaId);
     }
 
     @Override

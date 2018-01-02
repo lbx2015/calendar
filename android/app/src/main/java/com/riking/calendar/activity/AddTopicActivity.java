@@ -132,6 +132,7 @@ public class AddTopicActivity extends AppCompatActivity {
             @Override
             public void click(View v) {
                 StringBuilder sb = new StringBuilder();
+
                 for (int i = 0; i < topics.size(); i++) {
                     String s = topics.get(i);
                     sb.append(s);
@@ -139,7 +140,12 @@ public class AddTopicActivity extends AppCompatActivity {
                         sb.append(",");
                     }
                 }
+
                 TQuestionParams params = new TQuestionParams();
+                //append "?" in case user not adding ?
+                if (!questionTitle.endsWith("?")) {
+                    questionTitle = questionTitle + "?";
+                }
                 params.title = questionTitle;
                 params.topicId = sb.toString();
                 APIClient.getEditHtmlUrl(params, new ZCallBack<ResponseModel<String>>() {

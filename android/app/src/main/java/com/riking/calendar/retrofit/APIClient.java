@@ -794,7 +794,7 @@ public class APIClient {
         apiInterface.saveRemind(model).enqueue(callBack);
     }
 
-    public static void myGrade( UserParams reminderModel, ZCallBack<ResponseModel<String>> c){
+    public static void myGrade(UserParams reminderModel, ZCallBack<ResponseModel<String>> c) {
         apiInterface.myGrade(reminderModel).enqueue(c);
     }
 }

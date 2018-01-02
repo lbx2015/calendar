@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.AnswerCommentsActivity;
 import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
@@ -219,24 +218,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
         });
 
         //go to question activity on click
-        h.questionTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, QuestionActivity.class);
-                i.putExtra(CONST.QUESTION_ID, r.tqId);
-                ZGoto.to(i);
-            }
-        });
+        ZR.setRequestClickListener(h.questionTitle, r.tqId);
 
         //go to answer activity on click
-        h.answerContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, AnswerActivity.class);
-                i.putExtra(CONST.ANSWER_ID, r.tqId);
-                ZGoto.to(i);
-            }
-        });
+        ZR.setAnswerClickListener(h.answerContent, r.qaId);
     }
 
 
