@@ -1,5 +1,10 @@
 package net.riking.web.filter;
 
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Enumeration;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -10,17 +15,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.mysql.jdbc.AbandonedConnectionCleanupThread;
+
 import net.riking.config.Config;
-import net.riking.config.Const;
 import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.core.workflow.WorkflowMgr;
 import net.riking.service.MQReceiveService;
 import net.riking.service.impl.SysDataServiceImpl;
 import net.riking.spring.SpringBeanUtil;
-import net.riking.task.MQSysInfoListener;
-import net.riking.task.MQSysMesListener;
-import net.riking.task.MQSysOptListener;
 import net.riking.util.RedisUtil;
 import net.riking.util.TimerManager;
 
@@ -95,6 +98,19 @@ public class StartupListener implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		SpringBeanUtil.getInstance().setWac(null);
 		logger.info("destroy startupListener context...");
+		
+		/*final Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()) {
+            try {
+                final Driver driver = drivers.nextElement();
+                DriverManager.deregisterDriver(driver);
+            } catch (final SQLException e) {
+                logger.warn("Unable to de-register driver", e);
+            }
+        }
+
+        AbandonedConnectionCleanupThread.shutdown();*/
+        
 	}
 
 }

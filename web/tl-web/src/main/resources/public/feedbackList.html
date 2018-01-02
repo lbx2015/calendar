@@ -84,11 +84,11 @@
 					TmplUtils.totalPages = data.data.totalPages;
 					TmplUtils.totalCount = data.data.totalElements;
 				}
-				data.hasCheckbox = true;
+				//data.hasCheckbox = true;
 				data.hasOperation = true;
 				data.cellCount = 6;
 				 //操作栏的宽度
-                data.operationWidth =15;
+                data.operationWidth =12;
 				data.tdBeforeFill = function(obj) {
 					if (obj['item']) {
 						if (obj.isOperColumn) {
