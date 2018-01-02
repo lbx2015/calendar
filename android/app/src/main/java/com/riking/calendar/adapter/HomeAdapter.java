@@ -71,7 +71,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, final int i) {
+    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, int i) {
         final TQuestionResult r = mList.get(i);
 
         if (getItemViewType(i) == REMMEND_TYPE) {
@@ -141,8 +141,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
                             APIClient.shieldQuestion(p, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
-                                    mList.remove(i);
-                                    notifyItemRemoved(i);
+                                    //remove the layout position
+                                    mList.remove(h.getLayoutPosition());
+                                    notifyItemRemoved(h.getLayoutPosition());
                                 }
                             });
                         }

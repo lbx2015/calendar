@@ -48,6 +48,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
@@ -796,5 +797,9 @@ public class APIClient {
 
     public static void myGrade(UserParams reminderModel, ZCallBack<ResponseModel<String>> c) {
         apiInterface.myGrade(reminderModel).enqueue(c);
+    }
+
+    public static void getOtherPersonInfo(UserParams params, ZCallBack<ResponseModel<OtherUserResp>> c) {
+        apiInterface.getOther(params).enqueue(c);
     }
 }

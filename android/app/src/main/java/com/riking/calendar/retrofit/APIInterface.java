@@ -43,6 +43,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
@@ -425,5 +426,14 @@ public interface APIInterface {
     Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
 
     @POST("user/myGrade")
-    Call<ResponseModel<String>> myGrade(@Body UserParams reminderModel);
+    Call<ResponseModel<String>> myGrade(@Body UserParams params);
+
+    /**
+     * get other user info information
+     *
+     * @param params
+     * @return
+     */
+    @POST("user/getOther")
+    Call<ResponseModel<OtherUserResp>> getOther(@Body UserParams params);
 }

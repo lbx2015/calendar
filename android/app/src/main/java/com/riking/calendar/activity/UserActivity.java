@@ -2,7 +2,6 @@ package com.riking.calendar.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -12,26 +11,23 @@ import android.widget.TextView;
 
 import com.hyphenate.chatuidemo.ui.BaseActivity;
 import com.riking.calendar.R;
-import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
-import com.riking.calendar.widget.dialog.CheckInDialog;
-import com.riking.calendar.widget.dialog.CheckInFailDialog;
-
-import java.util.Map;
+import com.riking.calendar.util.ZR;
 
 public class UserActivity extends BaseActivity {
     TextView userName;
     LinearLayout loginLinearLayout;
     TextView userComment;
     ImageView toUserInfoIm;
-    TextView checkInTv;
     ImageView myPhoto;
     RelativeLayout userInfoRelativeLayout;
     LinearLayout myRepliesLayout;
@@ -67,20 +63,47 @@ public class UserActivity extends BaseActivity {
         loginLinearLayout = findViewById(R.id.login_linear_layout);
         userComment = findViewById(R.id.user_comment);
         toUserInfoIm = findViewById(R.id.to_info);
-        checkInTv = findViewById(R.id.check_in_button);
         myPhoto = findViewById(R.id.user_icon);
         myFollowNumbTv = findViewById(R.id.my_follow_person_num);
         followingMeNumbTv = findViewById(R.id.following_me_num);
         myAnswerNumbTv = findViewById(R.id.my_answer_num_tv);
     }
 
-    private void initListener() {
+    private void setUserData(OtherUserResp u) {
+        myFollowNumbTv.setText(ZR.getNumberString(u.followNum));
+        followingMeNumbTv.setText(ZR.getNumberString(u.fansNum));
+        myAnswerNumbTv.setText(ZR.getNumberString(u.answerNum));
+        userName.setText(u.userName);
+        ZR.setUserName(userName, u.userName, u.grade, u.userId);
+        userComment.setText(u.descript);
+
+        userName.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                UserParams u = new UserParams();
+                APIClient.myGrade(u, new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        Intent i = new Intent(UserActivity.this, WebviewActivity.class);
+                        i.putExtra(CONST.WEB_URL, response._data);
+                        startActivity(i);
+                    }
+                });
+            }
+        });
+
+        //load the user image
+        ZR.setUserImage(myPhoto, currentUser.photoUrl);
+
+        //set click listener
+
         collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
                 ZGoto.to(MyCollectActivity.class);
             }
         });
+
         userInfoRelativeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
@@ -130,6 +153,23 @@ public class UserActivity extends BaseActivity {
             @Override
             public void click(View v) {
                 ZGoto.to(MyFollowActivity.class);
+            }
+        });
+    }
+
+    private void initListener() {
+        if (ZPreference.isLogin()) {
+            currentUser = ZPreference.getCurrentLoginUser();
+        }
+
+        UserParams params = new UserParams();
+        params.toUserId = getIntent().getStringExtra(CONST.USER_ID);
+        //get other user info
+        APIClient.getOtherPersonInfo(params, new ZCallBack<ResponseModel<OtherUserResp>>() {
+            @Override
+            public void callBack(ResponseModel<OtherUserResp> response) {
+                OtherUserResp u = response._data;
+                setUserData(u);
             }
         });
     }
