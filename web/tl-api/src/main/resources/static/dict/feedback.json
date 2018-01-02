@@ -27,15 +27,15 @@
 		},
 		{
 			"prop": "imgs",
-			"alias": "多个图片名称，以','逗号分隔",
-			"desc": "多个图片名称，以','逗号分隔",
+			"alias": "多个图片名称",
+			"desc": "多个图片名称",
 			"type": "string",
 			"group": "base"
 		},
 		{
 			"prop": "accept",
-			"alias": "是否采纳:0-未操作；1-未采纳；2-采纳",
-			"desc": "是否采纳:0-未操作；1-未采纳；2-采纳",
+			"alias": "是否采纳",
+			"desc": "是否采纳",
 			"type": "enum",
 			"dict_key": "T_FEEDBACK.ACCEPT",
 			"verify":"required",

@@ -1,9 +1,9 @@
 package net.riking.web.app;
 
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +23,7 @@ import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
+import net.riking.dao.repo.AppUserGradeRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
@@ -30,6 +31,7 @@ import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.SignIn;
 import net.riking.entity.model.UserOperationInfo;
 import net.riking.entity.params.UpdUserParams;
@@ -56,6 +58,9 @@ public class AppUserServer {
 
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
+	
+	@Autowired
+	AppUserGradeRepo appUserGradeRepo;
 
 	@Autowired
 	HttpServletRequest request;
@@ -82,10 +87,28 @@ public class AppUserServer {
 	Config config;
 
 	@ApiOperation(value = "我的等级详情", notes = "POST")
-	@RequestMapping(value = "/myGrade", method = RequestMethod.POST)
-	public AppResp myGrade_() {
-		return new AppResp(config.getAppHtmlPath() + Const.TL_MYGRADE_HTML5_PATH, CodeDef.SUCCESS);
+	@RequestMapping(value = "/myGradeHtml", method = RequestMethod.POST)
+	public AppResp myGrade_(@RequestBody UserParams userParams) {
+		String userId = userParams.getUserId();
+		AppUserDetail userDetail = appUserDetailRepo.findOne(userId);
+		return new AppResp(config.getAppHtmlPath() + Const.TL_USER_HTML5_PATH +"?exp="+ userDetail.getExperience()
+				+"&url="+config.getAppApiPath(), CodeDef.SUCCESS);
 	}
+	
+	@ApiOperation(value = "等级分级制度", notes = "POST")
+	@RequestMapping(value = "/getGradeList", method = RequestMethod.POST)
+	public AppResp getGradeList_() {
+		List<AppUserGrade> list = appUserGradeRepo.findByIsDeleted(Const.IS_NOT_DELETE);
+		return new AppResp(list , CodeDef.SUCCESS);
+	}
+	
+	
+	@ApiOperation(value = "获取好友的好友", notes = "POST")
+	@RequestMapping(value = "/getFOAF", method = RequestMethod.POST)
+	public AppResp getFOAF_(@RequestBody UserParams userParams) {
+		return new AppResp(null, CodeDef.SUCCESS);
+	}
+	
 
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
@@ -290,7 +313,7 @@ public class AppUserServer {
 		return new AppResp(userOperationInfo, CodeDef.SUCCESS);
 	}
 
-	private <T> T merge(T dbObj, T appObj) throws Exception {
+/*	private <T> T merge(T dbObj, T appObj) throws Exception {
 		Field[] fields = dbObj.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
@@ -302,5 +325,5 @@ public class AppUserServer {
 		}
 		return dbObj;
 	}
-
+*/
 }

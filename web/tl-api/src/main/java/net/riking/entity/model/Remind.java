@@ -80,11 +80,11 @@ public class Remind extends PageQuery {
 	private Integer currWeek;
 
 	@Comment("报送开始时间（yyyyMMddHHmm）")
-	@Column(name = "submit_start_time", length = 8)
+	@Column(name = "submit_start_time", length = 12)
 	private String submitStartTime;
 
 	@Comment("报送截止时间（yyyyMMddHHmm）")
-	@Column(name = "submit_end_time", length = 8)
+	@Column(name = "submit_end_time", length = 12)
 	private String submitEndTime;
 
 	// 同步标识app端数据状态
