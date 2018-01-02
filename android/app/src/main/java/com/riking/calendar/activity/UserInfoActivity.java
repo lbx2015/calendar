@@ -230,7 +230,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         if (newComments.length() > 0) {
 
                             UpdUserParams user = new UpdUserParams();
-                            user.description = newComments;
+                            user.descript = newComments;
 
                             APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
                                 @Override

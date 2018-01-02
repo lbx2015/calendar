@@ -802,4 +802,11 @@ public class APIClient {
     public static void getOtherPersonInfo(UserParams params, ZCallBack<ResponseModel<OtherUserResp>> c) {
         apiInterface.getOther(params).enqueue(c);
     }
+
+    /**
+     * policy
+     */
+    public static void getPolicyHtml(ZCallBack<ResponseModel<String>> c) {
+        apiInterface.policyHtml().enqueue(c);
+    }
 }

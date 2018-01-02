@@ -64,34 +64,6 @@
         app:icv_et_text_color="@color/color_222222"
         app:icv_et_width="48dp" />
 
-    <LinearLayout
-        android:id="@+id/bottom_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:text="登录即表示同意"
-            android:textColor="@color/color_d2d2d2"
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/user_contract"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:text="《用户服务协议》"
-            android:textColor="@color/color_29a1f7"
-            android:textSize="12dp" />
-    </LinearLayout>
-
     <TextView
         android:id="@+id/get_verification_code_button"
         android:layout_width="wrap_content"
@@ -103,5 +75,5 @@
         android:paddingTop="10dp"
         android:text="@string/get_verification_code"
         android:textColor="@color/gray_text_color"
-        android:textSize="14dp" />
+        android:textSize="14sp" />
 </LinearLayout>

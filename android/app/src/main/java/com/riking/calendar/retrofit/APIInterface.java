@@ -436,4 +436,7 @@ public interface APIInterface {
      */
     @POST("user/getOther")
     Call<ResponseModel<OtherUserResp>> getOther(@Body UserParams params);
+
+    @POST("appHtml/policyHtml")
+    Call<ResponseModel<String>> policyHtml();
 }

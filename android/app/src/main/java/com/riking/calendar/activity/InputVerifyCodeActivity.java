@@ -20,6 +20,7 @@ import com.necer.ncalendar.view.IdentifyingCodeView;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.resp.AppUserResp;
@@ -32,6 +33,7 @@ import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 
 import java.util.List;
 
@@ -168,7 +170,23 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
         getVerificationCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                final LoginParams user = new LoginParams();
+                user.phone = phoneNumber;
+                final ProgressDialog dialog = new ProgressDialog(InputVerifyCodeActivity.this);
+                dialog.setMessage("正在加载中");
+                dialog.show();
+                APIClient.getVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUser>>() {
+                    @Override
+                    public void callBack(ResponseModel<AppUser> u) {
+                        dialog.dismiss();
+                        if (failed) {
+                            ZToast.toast("获取失败");
+                        } else {
+                            ZToast.toast("发送成功");
+                            finish();
+                        }
+                    }
+                });
             }
         });
 
@@ -197,7 +215,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {
-            getVerificationCodeButton.setText("重新获取");
+            getVerificationCodeButton.setText("重新发送验证码");
             getVerificationCodeButton.setTextColor(getVerificationCodeButton.getResources().getColor(R.color.color_489dfff));
             getVerificationCodeButton.setEnabled(true);
             getVerificationCodeButton.setClickable(true);
