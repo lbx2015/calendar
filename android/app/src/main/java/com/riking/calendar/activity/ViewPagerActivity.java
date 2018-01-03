@@ -25,11 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMClientListener;
-import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chatuidemo.Constant;
-import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.chatuidemo.db.InviteMessgeDao;
 import com.hyphenate.chatuidemo.ui.ContactListFragment;
 import com.hyphenate.chatuidemo.ui.ConversationListFragment;
@@ -38,9 +35,8 @@ import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.HomeFragment;
-import com.riking.calendar.fragment.PlazaFragment;
+import com.riking.calendar.fragment.MyNewsFragment;
 import com.riking.calendar.fragment.UserInfoFragment;
 import com.riking.calendar.fragment.WorkFragment;
 import com.riking.calendar.jiguang.Logger;
@@ -51,8 +47,6 @@ import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.DownLoadApk;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.ZR;
-
-import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -66,8 +60,8 @@ public class ViewPagerActivity extends AppCompatActivity {
     private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //    private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new PlazaFragment(), new UserInfoFragment()};
-//    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new ConversationListFragment(), new UserInfoFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new MyNewsFragment(), new UserInfoFragment()};
+    //    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new ConversationListFragment(), new UserInfoFragment()};
     //    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new PlazaFragment(), new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
     //Tab 数目
     private final int COUNT = TAB_FRAGMENTS.length;
