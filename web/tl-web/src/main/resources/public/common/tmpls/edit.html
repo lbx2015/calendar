@@ -1,0 +1,441 @@
+<script type="text/tmpl">
+{{#
+var formClass = '';
+d.attrs = TmplUtils._getEditAttrs(d);
+if(d.attrs.length < 10){
+	formClass = "form-max-row1";
+}
+var rowItemNum = d.rowItemNum ? d.rowItemNum : Const.editRowItemNum;
+if(rowItemNum == 2){
+	formClass = "form-max-row1";
+}else if(rowItemNum == 3){
+	formClass = "";
+}
+}}
+<form name="edit" id="edit" action="" class="{{=formClass}}">
+<div class="layui-collapse" lay-filter="edit">
+{{#
+    var i=0;
+    layui.each(d.groups, function(index, group){
+     i++;
+ }}
+<div class="layui-colla-item" data-groupProp="{{=group.prop}}">
+<h2 class="layui-colla-title">{{=group.alias}}</h2>
+{{# if((i==1&&!d.showGroup )||(d.showGroup && d.showGroup.indexOf(group.prop) > -1)){ }}
+<div class="layui-colla-content layui-show">
+{{# }else{ }}
+<div class="layui-colla-content">
+{{# } }}
+<div name="edit" id="edit_{{=group.prop }}" action="">
+{{# if(d.data){ }}
+ <input type="hidden" name ="id" value="{{=d.data.id}}"/>
+{{# } }}
+ {{#
+
+    if(!d.data){
+        d.data = {};
+    }
+    var changedPros = Array();
+    if(d.data.changedLog && d.data.changedLog.changedPros){
+         changedPros = d.data.changedLog.changedPros.split(",");
+    }
+    var dataStr = JSON.stringify(d.data);
+    layui.each(d.attrs, function(index, attr){
+       if(attr.group == group.prop){
+       var fun =new Function("return "+dataStr+"."+attr.prop+";");
+       var propValue = "";
+       try{
+           propValue = fun();
+           if (null == propValue || undefined == propValue || propValue == "null" || propValue == "undefined") {
+                propValue = "";
+           }
+       }catch(e){
+       }
+ }}
+        <div class="layui-inline {{# if(attr.edit_block && attr.edit_block==1) { }} layui-inline-max {{# } }}" {{# if(attr.hidden && attr.hidden.indexOf('edit') >- 1) { }} style="display:none;" {{# } }}>
+           <label class="layui-form-label" data-desc="{{= Const.showDesc == undefined ? attr.desc : Const.showDesc ? attr.desc : "" }}" {{#if(changedPros.contains(attr.prop)){ }} style = "color:green;" {{# } }}>{{ attr.alias }}</label>
+{{#             if(attr.type == "date"){
+}}
+
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+                <input type="text"  name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getDate(propValue)}}" autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+          {{#  }else{ }}
+                 <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getDate(propValue)}}" autocomplete="off" placeholder="" class="layui-input _tip">
+          {{# } }}
+
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+            <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+ {{#      } else if(attr.type == "month"){
+}}
+
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+                <input type="text"  name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getMonth(propValue)}}" autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+          {{#  }else{ }}
+                 <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getMonth(propValue)}}" autocomplete="off" placeholder="" class="layui-input _tip">
+          {{# } }}
+
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+            <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+ {{#        } else  if(attr.type == "datetime"){
+}}
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+                <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-alias="{{= attr.alias }}" data-type="{{ attr.type }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getDatetime(propValue)}}" autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+          {{#  }else{ }}
+                <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-alias="{{= attr.alias }}" data-type="{{ attr.type }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getDatetime(propValue)}}" autocomplete="off" placeholder="" class="layui-input _tip">
+          {{# } }}
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+  {{#        } else  if(attr.type == "time"){
+}}
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+                <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-alias="{{= attr.alias }}" data-type="{{ attr.type }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getTime(propValue)}}" autocomplete="off" placeholder=""  class="layui-input _tip" disabled>
+          {{#  }else{ }}
+                <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-alias="{{= attr.alias }}" data-type="{{ attr.type }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.getTime(propValue)}}" autocomplete="off" placeholder="" class="layui-input _tip">
+          {{# } }}
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{#            }else if(attr.type == "enum"){
+}}
+{{#
+            var keyVals = [];
+            if(attr.dict_key){
+                keyVals = TmplUtils.__getEnumKeyVals(d.enums,attr.dict_key.split('.')[0],attr.dict_key.split('.')[1]);
+            }else{
+                keyVals = TmplUtils.__getEnumKeyVals(d.enums,d.table,attr.prop);
+            }
+}}
+{{# if(keyVals.length == 0&& !attr.enum_url){ }}
+<div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+                <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-alias="{{= attr.alias }}" data-type="{{ attr.type }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=propValue}}"  autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+          {{#  }else{ }}
+               <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-alias="{{= attr.alias }}" data-type="{{ attr.type }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=propValue}}"  autocomplete="off" placeholder="" class="layui-input _tip" >
+          {{# } }}
+
+           {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+     </div>
+{{# }else{ }}
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable== 2) || d.editable == 2){
+          }}
+               <select name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}"  data-enumurl="{{ attr.enum_url }}" disabled data-key="{{propValue}}" data-enumparam="{{attr.enum_param}}" {{# if(1==attr.enum_search){ }} lay-search {{# } }}>
+          {{#  }else{ }}
+               <select name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" data-enumurl="{{ attr.enum_url }}" data-key="{{propValue}}" data-enumparam="{{attr.enum_param}}" {{# if(1==attr.enum_search){ }} lay-search {{# } }}>
+          {{# } }}
+
+                <option value="--##--" >--请选择--</option>
+
+        {{#
+
+            layui.each(keyVals, function(index, keyVal){
+        }}
+               {{# if( keyVal.key==propValue){ }}
+               <option selected="true" value="{{ keyVal.key }}">{{= keyVal.val }}</option>
+               {{# }else{ }}
+               <option value="{{ keyVal.key }}">{{= keyVal.val }}</option>
+               {{# } }}
+        {{# }); }}
+            </select>
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{# } }}
+{{#  }else if(attr.type == "multipleEnum"){  }}
+        <div class="layui-input-inline">
+        {{#
+            var keys = [];
+            if(propValue){
+                keys = propValue.split(",");
+            }
+        }}
+        <div class="layui-textarea addGjbox" style="overflow:auto">
+            <ul name="{{=attr.prop}}">
+        {{# for(var k=0; k < keys.length; k++) { }}
+            <li>
+            {{#
+                  var tableName = "";
+                  var filed = "";
+                  if(attr.dict_key){
+                      tableName = attr.dict_key.split('.')[0];
+                      filed = attr.dict_key.split('.')[1];
+                  }else{
+                      tableName = d.table;
+                      filed = attr.prop;
+                  }
+             }}
+                 <input name="{{=attr.prop}}-|-{{k}}" readonly  data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" data-key="{{keys[k]}}" value="{{TmplUtils.__getEnumVal(d.enums,tableName,filed,keys[k])}}"/>
+                 {{#  if(!((attr.editable && attr.editable== 2) || d.editable == 2)){ }}
+                    <i class="layui-icon" title="删除" onclick="TmplUtils._removeMultipleEnum(this);">&#xe640;</i>
+                 {{# } }}
+            </li>
+        {{# } }}
+            </ul>
+        </div>
+        <div class="layui-form-item addGjinfo">
+          {{#  if((attr.editable && attr.editable== 2) || d.editable == 2){
+           }}
+                   <select name="{{=attr.prop}}_me" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}"  data-enumurl="{{ attr.enum_url }}" disabled data-key="{{propValue}}" data-enumparam="{{attr.enum_param}}" {{# if(1==attr.enum_search){ }} lay-search {{# } }}>
+              {{#  }else{ }}
+                   <select name="{{=attr.prop}}_me" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop }}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" data-enumurl="{{ attr.enum_url }}" data-key="{{propValue}}" data-enumparam="{{attr.enum_param}}" {{# if(1==attr.enum_search){ }} lay-search {{# } }}>
+              {{# } }}
+                    <option value="--##--">--请选择--</option>
+           {{#
+               var keyVals=[];
+               if(attr.dict_key){
+                    keyVals = TmplUtils.__getEnumKeyVals(d.enums,attr.dict_key.split('.')[0],attr.dict_key.split('.')[1]);
+               }else{
+                    keyVals = TmplUtils.__getEnumKeyVals(d.enums,d.table,attr.prop);
+               }
+                layui.each(keyVals, function(index, keyVal){
+            }}
+                   <option value="{{ keyVal.key }}">{{= keyVal.val }}</option>
+            {{# }); }}
+        </select>
+        <span class="addGjbtn" title="添加" onclick="TmplUtils._addMultipleEnum('{{attr.prop}}')">
+            <i class="layui-icon">&#xe608;</i>
+        </span>
+                {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+     </div></div>
+{{#            }else if(attr.type == "enumLink"){  }}
+           <div class="layui-input-inline">
+{{#
+            var enumUrls = attr.enum_urls.split(',');
+            var values = [];
+            if(propValue){
+                values = propValue.split(",");
+            }
+			if(enumUrls.length != 2){
+            for(var k=0;k< enumUrls.length;k++){ }}
+           {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+               <select name="{{=attr.prop}}-|-{{k}}"  data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop}}-|-{{k}}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" {{# if(1==attr.enum_search){ }} lay-search {{# } }} data-enumurl="{{ enumUrls[k]}}" disabled data-key="{{values[k]}}" data-enumparam="{{attr.enum_param}}">
+          {{#  }else{ }}
+               <select name="{{=attr.prop}}-|-{{k}}" data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" class="_tip" lay-filter="{{=attr.prop}}-|-{{k}}" data-desc="{{= attr.desc }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" {{# if(1==attr.enum_search){ }} lay-search {{# } }} data-enumurl="{{ enumUrls[k] }}" data-key="{{values[k]}}" data-enumparam="{{attr.enum_param}}">
+          {{# } }}
+           <option value="--##--">--请选择--</option>
+           </select>
+           {{#      }
+				}else{
+				for(var k=0;k< enumUrls.length;k++){
+			}}
+				<input name="{{=attr.prop}}-|-{{k}}" data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" data-url="{{ enumUrls[k] }}"/>
+				<ul></ul>
+			{{#
+				}
+				}
+            }}
+           {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{# }else if(attr.type == "multipleChoice"){
+        var editable = 0;
+        if((attr.editable && attr.editable == 2) || d.editable == 2){
+            editable = 2;
+        }else{
+            editable = 1;
+        }
+}}
+           <div class="layui-input-inline layui-inline-checkbox">
+             <span data-prop="{{=attr.prop}}" class=" _multipleChoice" data-choiceurl="{{attr.choice_url}}" data-choiceparam="{{attr.choice_param}}" data-keys="{{propValue}}" data-editable="{{editable}}" style="display:block;" ></span>
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+            </div>
+    </div>
+{{# }else if(attr.type == "multipleChoiceH"){
+        var editable = 0;
+        if((attr.editable && attr.editable == 2) || d.editable == 2){
+            editable = 2;
+        }else{
+            editable = 1;
+        }
+}}
+           <div class="layui-input-inline layui-inline-checkbox">
+             <span data-prop="{{=attr.prop}}" class=" _multipleChoiceH" data-choiceurl="{{attr.choice_url}}" data-choiceparam="{{attr.choice_param}}" data-keys="{{propValue}}" data-editable="{{editable}}" style="display:block;" ></span>
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+            </div>
+    </div>
+{{#  }else if(attr.type == "text"){ }}
+                <div class="layui-input-inline">
+                      {{#  if((attr.editable && attr.editable ==2) || d.editable ==2){ }}
+    						<textarea name="{{= attr.prop }}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" placeholder="" class="layui-textarea" disabled>{{=propValue}}</textarea>
+                      {{#  }else{ }}
+                            <textarea name="{{= attr.prop }}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" placeholder="" class="layui-textarea">{{=propValue}}</textarea>
+                      {{# } }}
+                    {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                        <span class="identifier">*</span>
+                    {{# } }}
+                </div>
+          </div>
+{{#  }else if(attr.type == "lazyEnum"){  }}
+           <div class="layui-input-inline">
+{{#
+            var enumUrls = attr.enum_urls.split(',');
+            var values = [];
+            if(propValue){
+                values = propValue.split(",");
+            }
+			for(var k=0;k< enumUrls.length;k++){
+			}}
+				<div class="layui-screening">
+					<input data-type="{{ attr.type }}" data-prop="{{=attr.prop}}" data-alias="{{= attr.alias }}" data-url="{{ enumUrls[k] }}" {{#  if((attr.editable && attr.editable ==2) || d.editable ==2){ }} disabled {{# } }} class="layui-input"/>
+					<input type="hidden" name="{{=attr.prop}}-|-{{k}}">
+					<ul></ul>
+				</div>
+			{{#
+				}
+            }}
+           {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{#  }else if(attr.type == "lazyString"){  }}
+           <div class="layui-input-inline">
+				<div class="layui-screening">
+					<input name="{{=attr.prop}}"  glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-url="{{= attr.enum_urls }}" value="{{=propValue}}"  class="layui-input"  {{#  if((attr.editable && attr.editable ==2) || d.editable ==2){ }} disabled {{# } }}/>
+					<ul></ul>
+				</div>
+           {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{# }else if(attr.type == "money"){ }}
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable ==2) || d.editable ==2){ }}
+                <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.numberToMoney(propValue,attr.digit)}}" onblur="$(this).val(Utils.numberToMoney($(this).val(),{{ attr.digit }}));" autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+          {{#  }else{ }}
+               <input type="text" name="{{=attr.prop}}" glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=Utils.numberToMoney(propValue,attr.digit)}}" onblur="$(this).val(Utils.numberToMoney($(this).val(),{{ attr.digit }}));" autocomplete="off" placeholder="" class="layui-input _tip" >
+          {{# } }}
+
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{# }else if(attr.type == "multipleString"){ }}
+        <div class="layui-input-inline">
+            {{# var values = [];
+                var valueFirst = "";
+                if(propValue){
+                    values = propValue.toString().split("-|-");
+                    if(values.length > 0){
+                        valueFirst = values[0];
+                    }
+                }
+            }}
+                {{#  if((attr.editable && attr.editable ==2) || d.editable == 2){ }}
+                        <input type="text" name="{{=attr.prop}}"  glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}"  data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=valueFirst}}"  autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+                {{#  }else{ }}
+                        <input type="text" name="{{=attr.prop}}-|-0"  glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}"  data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=valueFirst}}"  autocomplete="off" placeholder="" class="layui-input _tip" >
+                        <span class="multipleString" onclick="TmplUtils._addMultipleString(this,'{{=attr.prop}}');"><i class="layui-icon">&#xe654;</i></span>
+                {{# } }}
+                {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+            {{#    if(values.length >= 2){
+                for(var k=1; k<values.length ; k++){
+            }}
+                    <div class="layui-form-item multipleStringInfo">
+                         {{#  if((attr.editable && attr.editable ==2) || d.editable == 2){ }}
+                            <input type="text" name="{{=attr.prop}}-|-{{k}}"  glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}"  data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=values[k]}}"  autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+                        {{#  }else{ }}
+                            <input type="text" name="{{=attr.prop}}-|-{{k}}"  glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}"  data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=values[k]}}"  autocomplete="off" placeholder="" class="layui-input _tip" >
+                            <span class="multipleString" onclick="TmplUtils._removeMultipleString(this);"><i class="layui-icon">&#xe640</i></span>
+                        {{# } }}
+                    </div>
+            {{#  } } }}
+        </div>
+    </div>
+    {{# }else if(attr.type == "thrSelect"){ }}
+        <div class="layui-input-inline layui-input-ld">
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+          {{#  }else{ }}
+      				<select id="province" name="province" lay-ignore>
+						<option >请选择</option>
+					</select>
+					<label>省</label>
+					<select id="city" name="city" lay-ignore>
+						<option >请选择</option>
+					</select>
+					<label>市</label>
+					<select id="area" name="area" lay-ignore>
+						<option >请选择</option>
+					</select>
+					<label>区</label>
+            {{# } }}
+
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{# }else if(attr.type == "password"){ }}
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable == 2) || d.editable == 2){ }}
+                <input type="password" name="{{=attr.prop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=propValue}}" autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+          {{#  }else{ }}
+               <input type="password" name="{{=attr.prop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}" data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{=propValue}}" autocomplete="off" placeholder="" class="layui-input _tip" >
+          {{# } }}
+
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{# }else if(attr.type == "imgUrl"){ }}
+        <div class="layui-input-inline">
+			<img src="{{=propValue}}" alt="{{=propValue}}封面" />;
+        </div>
+    </div>
+{{# }else{ }}
+        <div class="layui-input-inline">
+          {{#  if((attr.editable && attr.editable ==2) || d.editable == 2){ }}
+                <input type="text" name="{{=attr.prop}}"  glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}"  data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{propValue}}"  autocomplete="off" placeholder="" class="layui-input _tip" disabled>
+          {{#  }else{ }}
+               <input type="text" name="{{=attr.prop}}"  glprop="{{=attr.glprop}}" data-type="{{ attr.type }}" data-alias="{{= attr.alias }}"  data-desc="{{= attr.desc }}"  data-verify="{{ attr.verify }}" data-len="{{attr.len}}" data-verifyfun="{{ attr.verify_fun }}" value="{{propValue}}"  autocomplete="off" placeholder="" class="layui-input _tip" >
+          {{# } }}
+
+            {{# if(attr.verify && attr.verify.indexOf("required") > -1){ }}
+                <span class="identifier">*</span>
+            {{# } }}
+        </div>
+    </div>
+{{#
+      }   }   });
+}}
+</div>
+</div>
+</div>
+{{# }); }}
+</div>
+</form>
+</script>

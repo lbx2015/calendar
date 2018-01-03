@@ -23,14 +23,6 @@
 			"group": "base",
 			"hidden": "table,edit,preview"
 		},
-				{
-			"prop": "id",
-			"alias": "pk",
-			"desc": "pk",
-			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
-		},
 		{
 			"prop": "title",
 			"alias": "标题",
@@ -46,7 +38,7 @@
 			"prop": "topicUrl",
 			"alias": "封面",
 			"desc": "封面",
-			"type": "string",
+			"type": "imgUrl",
 			"editable":"2",
 			"group": "base",
 			"edit_block":"1",

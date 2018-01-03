@@ -33,6 +33,16 @@ public class AppUserDetail extends BaseEntity {
 	public AppUserDetail() {
 		super();
 	}
+	
+	public AppUserDetail(String id, String userName, String photoUrl) {
+		super();
+		this.id = id;
+		this.userName = userName;
+		this.photoUrl = photoUrl;
+	}
+
+
+
 
 	@Id
 	@GeneratedValue(generator = "idGenerator")
@@ -47,7 +57,7 @@ public class AppUserDetail extends BaseEntity {
 	private String realName;
 	
 	@Comment("用户名称")
-	@Transient
+	@Column(name = "user_name", length = 32, nullable = false)
 	private String userName;
 
 	@Comment("用户公司")

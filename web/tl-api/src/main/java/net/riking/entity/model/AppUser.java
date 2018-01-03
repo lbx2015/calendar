@@ -46,7 +46,7 @@ public class AppUser extends net.riking.entity.BaseEntity {
 	@JsonProperty("appUserId")
 	private String id;
 
-	@Comment("用户名称")
+	@Comment("用户账号")
 	@Column(name = "user_name", length = 32, nullable = false)
 	private String userName;
 

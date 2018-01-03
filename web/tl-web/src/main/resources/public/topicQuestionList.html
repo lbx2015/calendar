@@ -101,6 +101,9 @@
 				data.operationWidth = 10;
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
+				    if(obj.prop=="createdTime"){
+						obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");
+				    }
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("

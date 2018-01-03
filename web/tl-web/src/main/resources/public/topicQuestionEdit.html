@@ -52,7 +52,7 @@
                     	data.editable = 2;
                     	$("#submit").hide();
                     };
-                    
+                    data.rowItemNum = 2;
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
                     loadRichText();
@@ -97,6 +97,16 @@
      	});
     }
     
+    function checkTopicCount(topicStr){
+		var regex = new RegExp(",", 'g');    
+        var result = topicStr.match(regex);
+        var count = !result ? 0 : result.length;
+        if(count>2){
+            return false;
+        }
+        return true;
+    }
+    
     //编辑保存
     function edit() {
         layui.use('layedit', function(){
@@ -104,6 +114,10 @@
      	  	$("#content").val(layedit.getContent(tQuestionContent));
      	});
         var reportList = Utils.formToObj("edit");
+        if(!checkTopicCount(reportList.topicId)){
+            TmplUtils.showMsgFail('相关话题个数不能超过3个');
+            return ;
+        }
         if(id){
 			reportList.topicQuestionId=id;
 		}

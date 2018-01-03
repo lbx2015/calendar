@@ -101,6 +101,9 @@
 				data.operationWidth = 10;
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
+				    if(obj.prop=="topicUrl"){
+						obj.html = '<img src="'+obj.html+'" alt="'+obj.item.title+'封面" />';
+				    }
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("

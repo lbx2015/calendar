@@ -76,7 +76,7 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 
 	@Override
 	public List<Topic> getTopicByTopicIds(Set<String> topicIds) {
-		List<Topic> list = topicRepo.findAll(topicIds);
+		List<Topic> list = topicRepo.findAllByIdsAndIsDelete(topicIds);
 		return list;
 	}
 

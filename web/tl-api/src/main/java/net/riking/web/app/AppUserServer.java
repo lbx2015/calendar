@@ -136,7 +136,11 @@ public class AppUserServer {
 				set2.add(userFollowRel.getToUserId());
 			}
 		}
-		return new AppResp(set2, CodeDef.SUCCESS);
+		List<AppUserDetail> foafs = appUserDetailRepo.findAllByIds(set2);
+		foafs.forEach(e->{
+			e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+		});
+		return new AppResp(foafs, CodeDef.SUCCESS);
 	}
 	
 

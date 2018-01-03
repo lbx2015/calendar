@@ -87,7 +87,7 @@ public class Config {
 	@Bean
 	public MultipartConfigElement multipartConfigElement() {
 		MultipartConfigFactory factory = new MultipartConfigFactory();
-		factory.setMaxFileSize(1024L * 1024L);
+		factory.setMaxFileSize(30 * 1024L * 1024L);
 		return factory.createMultipartConfig();
 	}
 }

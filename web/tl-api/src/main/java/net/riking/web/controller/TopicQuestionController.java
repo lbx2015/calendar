@@ -30,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
+import net.riking.core.entity.MultipleChoiceCustom;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserFollowRelRepo;
@@ -39,10 +40,12 @@ import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
+import net.riking.dao.repo.TopicRepo;
 import net.riking.entity.ApiResp;
 import net.riking.entity.Data;
 import net.riking.entity.VerifyParamModel;
 import net.riking.entity.model.QuestionAnswer;
+import net.riking.entity.model.Topic;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.service.AppUserService;
 import net.riking.util.FileUtils;
@@ -65,6 +68,9 @@ public class TopicQuestionController {
 
 	@Autowired
 	TopicRelRepo topicRelRepo;
+	
+	@Autowired
+	TopicRepo topicRepo;
 
 	@Autowired
 	QuestionAnswerRepo questionAnswerRepo;
@@ -278,5 +284,20 @@ public class TopicQuestionController {
 			return new Resp("操作成功!成功" + successCount + "条" + "失败" + failCount + "条", CodeDef.SUCCESS);
 		}
 
+	}
+	
+	@RequestMapping(value = "/getTopicList", method = RequestMethod.GET)
+	public Resp getTopicList(@RequestParam(value = "prop", required = false) String prop) throws Exception {
+		List<Topic> list = topicRepo.findAllByIsDelete();
+		MultipleChoiceCustom choice;
+		List<MultipleChoiceCustom> multipleChoiceCustoms = new ArrayList<MultipleChoiceCustom>();
+		for (Topic topic : list) {
+			choice = new MultipleChoiceCustom();
+			choice.setKey(topic.getId());
+			choice.setValue(topic.getTitle());
+			choice.setProp(prop);
+			multipleChoiceCustoms.add(choice);
+		}
+		return new Resp(multipleChoiceCustoms, CodeDef.SUCCESS);
 	}
 }

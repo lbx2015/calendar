@@ -81,7 +81,7 @@ public interface AppUserFollowRelRepo
 	Integer countByUser(String userId);
 	
 	
-	@Query(" from UserFollowRel where (userId = ?1 and followStatus != 0) or (toUserId = ?1 and followStatus= 2) ")
+	@Query(" from UserFollowRel where ( userId = ?1 and followStatus != 0 ) or ( toUserId = ?1 and followStatus= 2 ) ")
 	List<UserFollowRel> findByUserId(String userId);
 	
 	
