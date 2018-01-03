@@ -23,7 +23,7 @@ public interface AppUserDetailRepo
 	@Query("select integral from AppUserDetail where id = ?1 ")
 	Integer getIntegral(String userId);
 	
-	@Query("select new net.riking.entity.model.AppUserDetail(u.id, u.userName, u.photoUrl) from AppUserDetail u where u.id in ?1 ")
+	@Query("select new net.riking.entity.model.AppUserDetail(u.id, u.userName, u.descript, u.experience, u.photoUrl) from AppUserDetail u where u.id in ?1 ")
 	List<AppUserDetail> findAllByIds(Collection<String> ids);
 
 	@Transactional
