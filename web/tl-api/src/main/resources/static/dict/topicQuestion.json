@@ -35,7 +35,7 @@
 			"type": "string",
 			"edit_block": "1",
 			"group": "base",
-			"hidden": "table,preview"
+			"hidden": "table,edit,preview"
 		},
 		{
 			"prop": "content",
