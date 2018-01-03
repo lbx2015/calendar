@@ -139,6 +139,7 @@ public class AppUserServer {
 		List<AppUserDetail> foafs = appUserDetailRepo.findAllByIds(set2);
 		foafs.forEach(e->{
 			e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+			e.setGrade();
 		});
 		return new AppResp(foafs, CodeDef.SUCCESS);
 	}

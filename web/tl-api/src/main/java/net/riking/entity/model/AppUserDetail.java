@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.BaseEntity;
+import net.riking.util.RedisUtil;
 
 /**
  * 
@@ -33,23 +36,23 @@ public class AppUserDetail extends BaseEntity {
 	public AppUserDetail() {
 		super();
 	}
-	
-	public AppUserDetail(String id, String userName, String photoUrl) {
+
+	public AppUserDetail(String id, String userName, String descript,
+			Integer experience, String photoUrl) {
 		super();
 		this.id = id;
 		this.userName = userName;
+		this.descript = descript;
+		this.experience = experience;
 		this.photoUrl = photoUrl;
 	}
-
-
-
 
 	@Id
 	@GeneratedValue(generator = "idGenerator")
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
 	@Column(name = "id", length = 32)
 	@Comment("pk 同用户登录表t_app_user的id一致")
-	@JsonProperty("UserId")
+	@JsonProperty("userId")
 	private String id;
 
 	@Comment("真实姓名")
@@ -151,7 +154,18 @@ public class AppUserDetail extends BaseEntity {
 	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
-
+	
+	@SuppressWarnings("static-access")
+	public void setGrade() {
+		List<AppUserGrade> list = RedisUtil.getInstall().getList(AppUserGrade.class.getName().toUpperCase());
+		list.forEach(e->{
+			if(e.getMaxExp()>=this.getExperience() && e.getMinExp()<= this.getExperience()){
+				this.setGrade(e.getGrade());
+				return;
+			}
+		});
+	}
+	
 	public String getCompanyName() {
 		return companyName;
 	}

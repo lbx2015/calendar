@@ -16,7 +16,7 @@ public class Const {
 	
 	public static final Integer IS_NOT_DELETE = 1;
 	
-	public static final String EMPTY = "{}";
+	public static final String EMPTY = null;
 
 	public static final String MODEL_ATTRS_JSON_PATH = "/static/dict/";
 

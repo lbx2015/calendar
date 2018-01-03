@@ -74,7 +74,7 @@ public class questionKeyWordController {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
 		Set<String> set = new HashSet<String>();
 		set.add("COUNTRY");
-		List<Topic> list = topicRepo.findAll();
+		List<Topic> list = topicRepo.findAllByIsDelete();
 		for (Topic dict : list) {
 				EnumCustom enumCustom = new EnumCustom();
 				enumCustom.setKey(dict.getId());
