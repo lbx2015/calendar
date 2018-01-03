@@ -1,5 +1,7 @@
 package com.riking.calendar.adapter;
 
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +50,21 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
             ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
         }
 
+        if (i == 4) {
+            h.userName.setTextSize(17);
+            h.userName.setText("系统消息");
+            h.systemNewsTv.setText("亲爱的用户，欢迎来到App，我们为您准时推送。");
+            h.systemNewsTv.setVisibility(View.VISIBLE);
+            h.userImage.setImageDrawable(ZR.getDrawable(R.drawable.message_icon_systeminfor));
+        } else {
+            h.systemNewsTv.setVisibility(View.GONE);
+            h.userName.setMaxLines(2);
+            h.userName.setEllipsize(TextUtils.TruncateAt.END);
+            String s = "周云丽 回答了你的问题";
+            String content = "同业存单尽管属于同业投资，在会计上需要单独设计科目管理。";
+            h.userName.setText(Html.fromHtml("<html><body><font color=#666666>" + s + " </font> <font color=#333333>" + content + " </font> </body><html>"));
+        }
+        h.summary.setText("30分钟前");
      /*   AppUserResult appUser = mList.get(i);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
         ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);
@@ -77,7 +94,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
         public TextView userName;
         public CircleImageView userImage;
         public ImageView checkImage;
-
+        public TextView systemNewsTv;
         public boolean checked;
 
         public MyViewHolder(View itemView) {
@@ -86,6 +103,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
             userImage = itemView.findViewById(R.id.user_icon);
             userName = itemView.findViewById(R.id.user_name);
             summary = itemView.findViewById(R.id.summary);
+            systemNewsTv = itemView.findViewById(R.id.system_news_tv);
         }
     }
 }
