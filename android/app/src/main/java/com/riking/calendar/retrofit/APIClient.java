@@ -672,7 +672,7 @@ public class APIClient {
         apiInterface.getAnswerInfo(params).enqueue(c);
     }
 
-    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
         apiInterface.getMyFavoriteUsers(params).enqueue(c);
     }
 
@@ -738,13 +738,13 @@ public class APIClient {
         apiInterface.findCurrentTasks(param).enqueue(c);
     }
 
-    public static void getMyFollow(UserFollowParams params, ZCallBack<ResponseModel<List<Topic>>> c) {
+    public static void getMyFollow(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
         //get topics
         params.objType = 2;
         apiInterface.getMyFollowTopic(params).enqueue(c);
     }
 
-    public static void getMyFollowQuestion(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+    public static void getMyFollowQuestion(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<QuestResult>>> c) {
         params.objType = 1;
         apiInterface.getMyFollowQuestion(params).enqueue(c);
     }
@@ -771,7 +771,7 @@ public class APIClient {
         apiInterface.emailIdentify(params).enqueue(c);
     }
 
-    public static void getColleague(UserParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.getColleagues(params).enqueue(c);
     }
 
@@ -801,5 +801,16 @@ public class APIClient {
 
     public static void getOtherPersonInfo(UserParams params, ZCallBack<ResponseModel<OtherUserResp>> c) {
         apiInterface.getOther(params).enqueue(c);
+    }
+
+    /**
+     * policy
+     */
+    public static void getPolicyHtml(ZCallBack<ResponseModel<String>> c) {
+        apiInterface.policyHtml().enqueue(c);
+    }
+
+    public static void getTopicByQuestion(TQuestionParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
+        apiInterface.getTopicByQuestion(params).enqueue(c);
     }
 }

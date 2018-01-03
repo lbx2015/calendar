@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.TopicsAdapter;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
@@ -182,8 +183,6 @@ public class AddTopicActivity extends AppCompatActivity {
                 try {
                     String sourceString = r.source().readUtf8();
                     Gson s = new GsonBuilder().setDateFormat(CONST.YYYYMMDDHHMMSSSSS).create();
-                    ;
-
                     JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
                     String _data = jsonObject.get("_data").toString();
 
@@ -214,12 +213,28 @@ public class AddTopicActivity extends AppCompatActivity {
 
     }
 
+    private void getTopicByQuestion() {
+        swipeRefreshLayout.setRefreshing(true);
+        TQuestionParams params = new TQuestionParams();
+        params.title = questionTitle;
+        APIClient.getTopicByQuestion(params, new ZCallBackWithFail<ResponseModel<List<Topic>>>() {
+            @Override
+            public void callBack(ResponseModel<List<Topic>> response) {
+                swipeRefreshLayout.setRefreshing(false);
+                if (!failed) {
+                    mAdapter.setData(response._data);
+                }
+            }
+        });
+    }
+
     private void setRecyclerView() {
         //set layout manager for the recycler view.
         topicRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new TopicsAdapter(this);
         //set adapters
         topicRecyclerView.setAdapter(mAdapter);
+        getTopicByQuestion();
     }
 
     public void drawMyOrders() {

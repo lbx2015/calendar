@@ -97,18 +97,22 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             ZR.setUserName(userName, currentUser.userName, currentUser.grade, currentUser.userId);
             userComment.setText(currentUser.descript);
 
-            userName.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            userName.setOnClickListener(new OnClickListener() {
                 @Override
-                public void click(View v) {
-                    UserParams u = new UserParams();
-                    APIClient.myGrade(u, new ZCallBack<ResponseModel<String>>() {
-                        @Override
-                        public void callBack(ResponseModel<String> response) {
-                            Intent i = new Intent(getContext(), WebviewActivity.class);
-                            i.putExtra(CONST.WEB_URL, response._data);
-                            startActivity(i);
-                        }
-                    });
+                public void onClick(View v) {
+                    if (ZPreference.isLogin()) {
+                        UserParams u = new UserParams();
+                        APIClient.myGrade(u, new ZCallBack<ResponseModel<String>>() {
+                            @Override
+                            public void callBack(ResponseModel<String> response) {
+                                Intent i = new Intent(getContext(), WebviewActivity.class);
+                                i.putExtra(CONST.WEB_URL, response._data);
+                                startActivity(i);
+                            }
+                        });
+                    } else {
+                        ZGoto.toLoginActivity();
+                    }
                 }
             });
 

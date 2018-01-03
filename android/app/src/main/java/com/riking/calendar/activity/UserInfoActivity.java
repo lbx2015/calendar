@@ -230,7 +230,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                         if (newComments.length() > 0) {
 
                             UpdUserParams user = new UpdUserParams();
-                            user.description = newComments;
+                            user.descript = newComments;
 
                             APIClient.modifyUserInfo(user, new ZCallBack<ResponseModel<String>>() {
                                 @Override
@@ -267,6 +267,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
         Bitmap bitMap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
         if (bitMap != null) {
+            Logger.d("zzw", "bit map is not null");
+            ZR.setCircleUserImage(myPhoto, bitMap);
+        } else {
             Logger.d("zzw", "bitmap is null");
             return;
         }

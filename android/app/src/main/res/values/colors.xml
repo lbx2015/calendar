@@ -23,7 +23,7 @@
     <color name="color_divider_a5a5a5">#a5a5a5</color>
     <color name="translucent_color_background">#33333333</color>
     <color name="translucent_white">#88ffffff</color>
-    <color name="translucent_login_button_bg">#4c19c368</color>
+    <color name="translucent_login_button_bg">#cc489dff</color>
     <color name="background_color">#f5f5f5</color>
     <color name="color_e2e2e2">#e2e2e2</color>
     <color name="not_order_report_color">#b3b3b3</color>
@@ -36,6 +36,7 @@
     <!--title -->
     <color name="color_666666">#666666</color>
     <color name="color_f4f4f4">#f4f4f4</color>
+    <color name="color_80ffffff">#80ffffff</color>
     <color name="color_888888">#888888</color>
     <color name="color_818181">#818181</color>
     <color name="color_929292">#929292</color>

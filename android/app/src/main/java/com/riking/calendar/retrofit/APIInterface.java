@@ -140,10 +140,10 @@ public interface APIInterface {
     @POST("appUserReport/getUserRepor")
     Call<ResponseModel<ArrayList<QueryReportContainer>>> getUserReports(@Body AppUserReportCompleteRel body);
 
-    @POST("appAboutApp/reportHtml")
+    @POST("report/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
-    @POST("appAboutApp/aboutHtml")
+    @POST("appHtml/aboutHtml")
     Call<ResponseModel<String>> getAboutHtml(@Query("versionNumber") String versionNumber);
 
     @POST("appAboutApp/agreementHtml")
@@ -410,7 +410,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
 
     @POST("userContacts/colleague")
-    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
+    Call<ResponseModel<String>> getColleagues(@Body UserParams params);
 
     @POST("userContacts/contacts")
     Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
@@ -425,7 +425,7 @@ public interface APIInterface {
     @POST("report/remindSave")
     Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
 
-    @POST("user/myGrade")
+    @POST("user/myGradeHtml")
     Call<ResponseModel<String>> myGrade(@Body UserParams params);
 
     /**
@@ -436,4 +436,14 @@ public interface APIInterface {
      */
     @POST("user/getOther")
     Call<ResponseModel<OtherUserResp>> getOther(@Body UserParams params);
+
+    @POST("appHtml/policyHtml")
+    Call<ResponseModel<String>> policyHtml();
+
+    /**
+     * 根据问题title找出话题列表
+     * @return
+     */
+    @POST("topicQuestion/getTopicByQuest")
+    Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body  TQuestionParams params);
 }

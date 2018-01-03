@@ -17,9 +17,9 @@ import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
-import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -36,6 +36,7 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_replies);
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
     }
 
@@ -107,6 +109,7 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
         }
 
         final UserFollowParams params = new UserFollowParams();
+        params.userId = userId;
         //my answer number
         params.optType = 2;
         params.pindex = page;

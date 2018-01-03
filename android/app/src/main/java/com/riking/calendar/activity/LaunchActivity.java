@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chatuidemo.DemoHelper;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -29,7 +27,7 @@ public class LaunchActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             public void run() {
 
-                if (DemoHelper.getInstance().isLoggedIn()) {
+            /*    if (DemoHelper.getInstance().isLoggedIn()) {
                     // auto login mode, make sure all group and conversation is loaed before enter the main screen
                     long start = System.currentTimeMillis();
                     EMClient.getInstance().chatManager().loadAllConversations();
@@ -46,23 +44,23 @@ public class LaunchActivity extends AppCompatActivity {
                     //enter main screen
                     startActivity(new Intent(LaunchActivity.this, ViewPagerActivity.class));
                     finish();
-                } else {
-                    try {
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                    }
+                } else {*/
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                }
 
-                    if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
-                        Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
-                        startActivity(i);
-                    } else {
-                        Intent i = new Intent(LaunchActivity.this, ViewPagerActivity.class);
-                        startActivity(i);
-                    }
+                if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
+                    Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
+                    startActivity(i);
+                } else {
+                    Intent i = new Intent(LaunchActivity.this, ViewPagerActivity.class);
+                    startActivity(i);
+                }
 
 //                    startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
-                    finish();
-                }
+                finish();
+//                }
             }
         }).start();
 

@@ -22,8 +22,8 @@ import net.riking.config.CodeDef;
 import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
-import net.riking.dao.repo.SysDaysTempRepo;
-import net.riking.entity.model.SysDaysTemp;
+import net.riking.dao.repo.SysDaysRepo;
+import net.riking.entity.model.SysDays;
 import net.riking.service.SysDateService;
 import net.riking.util.ExcelToList;
 
@@ -38,7 +38,7 @@ import net.riking.util.ExcelToList;
 @RequestMapping(value = "/sysDays")
 public class SysDaysController {
 	@Autowired
-	SysDaysTempRepo sysDaysTempRepo;
+	SysDaysRepo sysDaysRepo;
 
 	@Autowired
 	SysDateService sysDateService;
@@ -46,7 +46,7 @@ public class SysDaysController {
 	@ApiOperation(value = "得到<单个>信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
-		SysDaysTemp sysDaysTemp = sysDaysTempRepo.findOne(id);
+		SysDays sysDaysTemp = sysDaysRepo.findOne(id);
 		if (null != sysDaysTemp) {
 			return new Resp(sysDaysTemp, CodeDef.SUCCESS);
 		} else {
@@ -56,20 +56,20 @@ public class SysDaysController {
 
 	@ApiOperation(value = "得到<批量>信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute SysDaysTemp sysDaysTemp) {
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute SysDays sysDays) {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		// Example<SysDaysTemp> example = Example.of(sysDaysTemp, ExampleMatcher.matchingAll());
 		// Page<SysDaysTemp> page = sysDaysTempRepo.findAll(example, pageable);
-		Page<SysDaysTemp> page = sysDateService.findAllToPage(sysDaysTemp, pageable);
+		Page<SysDays> page = sysDateService.findAllToPage(sysDays, pageable);
 		return new Resp(page);
 	}
 
 	@ApiOperation(value = "添加或者更新信息", notes = "POST")
 	@RequestMapping(value = "/addOrUpdate", method = RequestMethod.POST)
-	public Resp addOrUpdate_(@RequestBody SysDaysTemp sysDaysTemp) {
+	public Resp addOrUpdate_(@RequestBody SysDays sysDays) {
 		// 修改
-		sysDaysTempRepo.save(sysDaysTemp);
-		return new Resp(sysDaysTemp, CodeDef.SUCCESS);
+		sysDaysRepo.save(sysDays);
+		return new Resp(sysDays, CodeDef.SUCCESS);
 	}
 
 	@AuthPass
@@ -80,14 +80,14 @@ public class SysDaysController {
 		MultipartFile mFile = multipartRequest.getFile("fileName");
 		String fileName = mFile.getOriginalFilename();
 		String sysDays = fileName.substring(fileName.lastIndexOf(".") + 1);
-		List<SysDaysTemp> list = null;
+		List<SysDays> list = null;
 		try {
 			InputStream is = mFile.getInputStream();
 			String[] fields = { "dates", "weekday", "isWork", "isHoliday", "remark" };
 			if (sysDays.equals("xlsx")) {
-				list = ExcelToList.readXlsx(is, fields, SysDaysTemp.class);
+				list = ExcelToList.readXlsx(is, fields, SysDays.class);
 			} else {
-				list = ExcelToList.readXls(is, fields, SysDaysTemp.class);
+				list = ExcelToList.readXls(is, fields, SysDays.class);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,10 +95,10 @@ public class SysDaysController {
 		}
 
 		if (list != null && list.size() > 0) {
-			for (SysDaysTemp dict : list) {
-				dict.setEnabled("1");
+			for (SysDays dict : list) {
+				dict.setEnabled(new Integer(1));
 			}
-			List<SysDaysTemp> rs = sysDaysTempRepo.save(list);
+			List<SysDays> rs = sysDaysRepo.save(list);
 			if (rs.size() > 0) {
 				return new Resp(true, CodeDef.SUCCESS);
 			} else {

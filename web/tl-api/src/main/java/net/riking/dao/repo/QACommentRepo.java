@@ -81,4 +81,7 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 	@Query("select new net.riking.entity.model.QAComment(q.id,q.userId,q.questionAnswerId,q.content,q.createdBy,q.modifiedBy,q.createdTime,q.modifiedTime,q.isAduit,q.isDeleted,(select a.userName from AppUser a where a.id = q.userId)) from QAComment q where q.isDeleted = ?1 order by q.modifiedTime desc")
 	List<QAComment> findAllQAC(Integer isDeleted, Pageable pageable);
 
+	@Query("select count(*) from QAComment where userId = ?1 and questionAnswerId = ?2  and isDeleted = 1")
+	public Integer getQACommentByUserIdAndquestionAnswerId(String userId, String questionAnswerId);
+
 }

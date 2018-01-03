@@ -44,7 +44,7 @@ public class UpdUserParams extends BaseEntity {
 	private String address;
 
 	// 个性签名
-	private String description;
+	private String descript;
 
 	// 手机Deviceid
 	private String phoneDeviceid;
@@ -183,12 +183,12 @@ public class UpdUserParams extends BaseEntity {
 		this.address = address;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescript() {
+		return descript;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescript(String descript) {
+		this.descript = descript;
 	}
 
 	public String getPhoneDeviceid() {

@@ -26,7 +26,6 @@ import net.riking.dao.repo.SysDaysRepo;
 import net.riking.dao.repo.SysDaysTempRepo;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.SysDays;
-import net.riking.entity.model.SysDaysTemp;
 import net.riking.service.SysDateService;
 
 @Service("sysDateService")
@@ -182,20 +181,20 @@ public class SysDateServiceImpl implements SysDateService {
 	}
 
 	@Override
-	public Page<SysDaysTemp> findAllToPage(SysDaysTemp sysDaysTemp, PageRequest pageable) {
+	public Page<SysDays> findAllToPage(SysDays sysDays, PageRequest pageable) {
 		// TODO Auto-generated method stub
-		Specification<SysDaysTemp> bCondi = whereCondition(sysDaysTemp);
-		Page<SysDaysTemp> pageB = sysDaysTempRepo.findAll(bCondi, pageable);
+		Specification<SysDays> bCondi = whereCondition(sysDays);
+		Page<SysDays> pageB = sysDaysRepo.findAll(bCondi, pageable);
 		if (null != pageB) {
 			return pageB;
 		}
 		return null;
 	}
 
-	private Specification<SysDaysTemp> whereCondition(SysDaysTemp sysDays) {
-		return new Specification<SysDaysTemp>() {
+	private Specification<SysDays> whereCondition(SysDays sysDays) {
+		return new Specification<SysDays>() {
 			@Override
-			public Predicate toPredicate(Root<SysDaysTemp> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<SysDays> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<Predicate>();
 				// 默认查询条件
 				// predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
