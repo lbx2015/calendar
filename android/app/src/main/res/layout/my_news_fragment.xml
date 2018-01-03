@@ -87,17 +87,23 @@
             android:textColor="@color/color_666666"
             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="140dp"
-            android:background="@color/color_ff5252"
+        <FrameLayout
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:drawableLeft="@drawable/work_icon_delete"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:text="删除"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:background="@color/color_ff5252">
+
+            <TextView
+                android:id="@+id/delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/work_icon_delete"
+                android:drawablePadding="5dp"
+                android:text="删除"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </FrameLayout>
+
     </RelativeLayout>
 </FrameLayout>
