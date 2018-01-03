@@ -216,7 +216,7 @@ public class AddTopicActivity extends AppCompatActivity {
     private void getTopicByQuestion() {
         swipeRefreshLayout.setRefreshing(true);
         TQuestionParams params = new TQuestionParams();
-        params.title = searchCondition;
+        params.title = questionTitle;
         APIClient.getTopicByQuestion(params, new ZCallBackWithFail<ResponseModel<List<Topic>>>() {
             @Override
             public void callBack(ResponseModel<List<Topic>> response) {
