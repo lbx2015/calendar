@@ -32,9 +32,17 @@ public abstract class ZFragment<T extends RecyclerView.Adapter> extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (v != null) return v;
-        v = inflater.inflate(R.layout.z_fragment, container, false);
+        v = createView(inflater, container, savedInstanceState);
+        if (v == null) {
+            v = inflater.inflate(R.layout.z_fragment, container, false);
+        }
         init();
         return v;
+    }
+
+    //should override this method
+    public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return null;
     }
 
     public void init() {

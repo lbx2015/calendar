@@ -445,5 +445,5 @@ public interface APIInterface {
      * @return
      */
     @POST("topicQuestion/getTopicByQuest")
-    Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body  TQuestionParams params);
+    Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body TQuestionParams params);
 }
