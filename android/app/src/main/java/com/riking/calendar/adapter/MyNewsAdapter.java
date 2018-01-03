@@ -16,6 +16,7 @@ import com.riking.calendar.viewholder.base.ZViewHolder;
 //answer comment adapter
 public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserResult> {
     public boolean editMode;
+    public boolean selectAll;
 
     @Override
     public void onBindVH(final MyViewHolder h, int i) {
@@ -26,9 +27,11 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
                 public void onClick(View v) {
                     if (h.checked) {
                         h.checked = false;
-                        ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
+                        h.checkImage.setImageDrawable(ZR.getDrawable(R.drawable.mess_icon_editdelete_n));
+//                        ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
                     } else {
-                        ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_s);
+                        h.checkImage.setImageDrawable(ZR.getDrawable(R.drawable.mess_icon_editdelete_s));
+//                        ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_s);
                         h.checked = true;
                     }
                 }
@@ -37,8 +40,13 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
             h.checkImage.setVisibility(View.GONE);
         }
 
-        h.checked = false;
-        ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
+        if (selectAll) {
+            h.checked = true;
+            ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_s);
+        } else {
+            h.checked = false;
+            ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
+        }
 
      /*   AppUserResult appUser = mList.get(i);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);

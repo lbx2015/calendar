@@ -55,7 +55,49 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/bottom_edit_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></FrameLayout>
+        android:layout_height="49dp"
+        android:layout_gravity="bottom"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_alignParentTop="true"
+            android:background="@color/color_d2d2d2" />
+
+        <ImageView
+            android:id="@+id/select_all_image"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/mess_icon_editdelete_n" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/select_all_image"
+            android:text="全选"
+            android:textColor="@color/color_666666"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="140dp"
+            android:background="@color/color_ff5252"
+            android:layout_alignParentEnd="true"
+            android:drawableLeft="@drawable/work_icon_delete"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+    </RelativeLayout>
 </FrameLayout>
