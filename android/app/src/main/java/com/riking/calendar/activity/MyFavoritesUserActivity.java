@@ -15,7 +15,7 @@ import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.MyFollowersAdapter;
 import com.riking.calendar.listener.PullCallback;
-import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
@@ -119,23 +119,25 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment æ•°ç
         params.objType = 3;
         params.pindex = page;
         params.userId = userId;
-        APIClient.getMyFavoriateUsers(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
+        APIClient.getMyFavoriateUsers(params, new ZCallBackWithFail<ResponseModel<List<AppUserResult>>>() {
             @Override
             public void callBack(ResponseModel<List<AppUserResult>> response) {
                 mPullToLoadView.setComplete();
-
-                List<AppUserResult> list = response._data;
-                MyLog.d("list size: " + list.size());
-                if (list.size() < params.pcount) {
-                    isHasLoadedAll = true;
-                    if (list.size() == 0) {
-                        ZToast.toastEmpty();
-                        return;
-                    }
-                }
                 isLoading = false;
-                nextPage = page + 1;
-                mAdapter.setData(list);
+                if (!failed) {
+                    List<AppUserResult> list = response._data;
+                    MyLog.d("list size: " + list.size());
+                    if (list.size() < params.pcount) {
+                        isHasLoadedAll = true;
+                        if (list.size() == 0) {
+                            ZToast.toastEmpty();
+                            return;
+                        }
+                    }
+
+                    nextPage = page + 1;
+                    mAdapter.setData(list);
+                }
             }
         });
        /* new Handler().postDelayed(new Runnable() {

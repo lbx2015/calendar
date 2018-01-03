@@ -8,6 +8,7 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.util.Debug;
@@ -77,7 +78,7 @@ public class ExampleUnitTest {
     @Test
     public void testJsonList() throws IOException {
         Gson s = new Gson();
-        List<ReportResult> responseModel = s.fromJson("", List.class);
+        ResponseModel<List<AppUserResult>> responseModel = s.fromJson("{_data:'',code:200,codeDesc:'',runtime:0}", ResponseModel.class);
     }
 
 

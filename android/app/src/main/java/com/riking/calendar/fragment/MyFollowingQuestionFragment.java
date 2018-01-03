@@ -3,7 +3,7 @@ package com.riking.calendar.fragment;
 import com.riking.calendar.activity.MyFollowActivity;
 import com.riking.calendar.adapter.MyFollowingQuestionsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
-import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.QuestResult;
@@ -41,18 +41,20 @@ public class MyFollowingQuestionFragment extends ZFragment<MyFollowingQuestionsA
         UserFollowParams params = new UserFollowParams();
         params.pindex = page;
         params.userId = activity.userId;
-        APIClient.getMyFollowQuestion(params, new ZCallBack<ResponseModel<List<QuestResult>>>() {
+        APIClient.getMyFollowQuestion(params, new ZCallBackWithFail<ResponseModel<List<QuestResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QuestResult>> response) {
-                List<QuestResult> answers = response._data;
-                isLoading = false;
                 mPullToLoadView.setComplete();
-                if (answers.size() == 0) {
-                    ZToast.toast("没有更多数据了");
-                    return;
+                isLoading = false;
+                if (!failed) {
+                    List<QuestResult> answers = response._data;
+                    if (answers.size() == 0) {
+                        ZToast.toast("没有更多数据了");
+                        return;
+                    }
+                    mAdapter.setData(answers);
+                    nextPage = page + 1;
                 }
-                mAdapter.setData(answers);
-                nextPage = page + 1;
             }
         });
     }

@@ -22,7 +22,7 @@ import com.riking.calendar.util.CONST;
 
 public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFollowerPersonFragment(), new MyFollowTopicFragment(), new MyFollowingQuestionFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{MyFollowerPersonFragment.newInstance(this), MyFollowTopicFragment.newInstance(this), MyFollowingQuestionFragment.newInstance(this)};
     public String userId;
     TabLayout tabLayout;
     private ViewPager mViewPager;
