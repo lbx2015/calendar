@@ -439,4 +439,11 @@ public interface APIInterface {
 
     @POST("appHtml/policyHtml")
     Call<ResponseModel<String>> policyHtml();
+
+    /**
+     * 根据问题title找出话题列表
+     * @return
+     */
+    @POST("topicQuestion/getTopicByQuest")
+    Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body  TQuestionParams params);
 }

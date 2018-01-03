@@ -809,4 +809,8 @@ public class APIClient {
     public static void getPolicyHtml(ZCallBack<ResponseModel<String>> c) {
         apiInterface.policyHtml().enqueue(c);
     }
+
+    public static void getTopicByQuestion(TQuestionParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
+        apiInterface.getTopicByQuestion(params).enqueue(c);
+    }
 }
