@@ -2,6 +2,7 @@ package com.riking.calendar.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -21,7 +22,7 @@ import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 
-public class UserActivity extends BaseActivity {
+public class UserActivity extends AppCompatActivity {
     TextView userName;
     LinearLayout loginLinearLayout;
     TextView userComment;

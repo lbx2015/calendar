@@ -442,8 +442,12 @@ public interface APIInterface {
 
     /**
      * 根据问题title找出话题列表
+     *
      * @return
      */
     @POST("topicQuestion/getTopicByQuest")
     Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body TQuestionParams params);
+
+    @POST("user/getFOAF")
+    Call<ResponseModel<List<AppUserResult>>> getFOAF(@Body UserParams params);
 }

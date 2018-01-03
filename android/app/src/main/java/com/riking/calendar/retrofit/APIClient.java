@@ -813,4 +813,8 @@ public class APIClient {
     public static void getTopicByQuestion(TQuestionParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
         apiInterface.getTopicByQuestion(params).enqueue(c);
     }
+
+    public static void getFOAF(UserParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getFOAF(params).enqueue(c);
+    }
 }
