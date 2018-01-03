@@ -49,7 +49,7 @@ public class AppUserDetail extends BaseEntity {
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
 	@Column(name = "id", length = 32)
 	@Comment("pk 同用户登录表t_app_user的id一致")
-	@JsonProperty("appUserDetailId")
+	@JsonProperty("UserId")
 	private String id;
 
 	@Comment("真实姓名")
