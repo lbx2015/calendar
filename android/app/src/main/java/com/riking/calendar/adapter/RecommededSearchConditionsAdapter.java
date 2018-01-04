@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.riking.calendar.R;
 import com.riking.calendar.interfeet.PerformSearch;
+import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.OneTextViewHolder;
 
@@ -16,12 +17,11 @@ import java.util.List;
 
 public class RecommededSearchConditionsAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
 
-    public List<String> mList;
+    public List<HotSearch> mList;
     private PerformSearch searchListener;
 
-    public RecommededSearchConditionsAdapter(PerformSearch searchListener, List<String> strings) {
+    public RecommededSearchConditionsAdapter(PerformSearch searchListener) {
         this.searchListener = searchListener;
-        mList = strings;
     }
 
     @Override
@@ -33,12 +33,12 @@ public class RecommededSearchConditionsAdapter extends RecyclerView.Adapter<OneT
 
     @Override
     public void onBindViewHolder(final OneTextViewHolder h, final int i) {
-        final String m = mList.get(i);
-        h.textView.setText(m);
+        final HotSearch m = mList.get(i);
+        h.textView.setText(m.title);
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-//                searchListener.performSearchByLocalHistory(m);
+                searchListener.performSearchByLocalHistory(m.title);
             }
         });
 
@@ -57,7 +57,7 @@ public class RecommededSearchConditionsAdapter extends RecyclerView.Adapter<OneT
         }
 
         int size = getItemCount();
-        if (size / 2 == 0) {
+        if (size % 2 == 0) {
             if (i >= size - 2) {
                 h.horizontalDivider.setVisibility(View.GONE);
             }
@@ -70,13 +70,13 @@ public class RecommededSearchConditionsAdapter extends RecyclerView.Adapter<OneT
 
     @Override
     public int getItemCount() {
-        int size = mList.size();
+        int size = mList == null ? 0 : mList.size();
         //empty notice
         searchListener.localSearchConditionIsEmpty(size == 0);
         return size;
     }
 
-    public void setData(List<String> list) {
+    public void setData(List<HotSearch> list) {
         mList = list;
         notifyDataSetChanged();
     }

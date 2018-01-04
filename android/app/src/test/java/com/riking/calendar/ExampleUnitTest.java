@@ -77,6 +77,7 @@ public class ExampleUnitTest {
 
     @Test
     public void testJsonList() throws IOException {
+        System.out.print(6%2);
         Gson s = new Gson();
         ResponseModel<List<AppUserResult>> responseModel = s.fromJson("{_data:'',code:200,codeDesc:'',runtime:0}", ResponseModel.class);
     }

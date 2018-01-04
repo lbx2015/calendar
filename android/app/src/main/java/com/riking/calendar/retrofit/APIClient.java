@@ -44,6 +44,7 @@ import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
+import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
@@ -771,7 +772,7 @@ public class APIClient {
         apiInterface.emailIdentify(params).enqueue(c);
     }
 
-    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<  List<AppUserResult>>> c) {
+    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
         apiInterface.getColleagues(params).enqueue(c);
     }
 
@@ -816,5 +817,9 @@ public class APIClient {
 
     public static void getFOAF(UserParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
         apiInterface.getFOAF(params).enqueue(c);
+    }
+
+    public static void findHotSearchList(SearchParams params, ZCallBack<ResponseModel<List<HotSearch>>> c) {
+        apiInterface.findHotSearchList(params).enqueue(c);
     }
 }
