@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "T_APP_QUESTIONKEYWORD")
+@Table(name = "T_QUEST_KEYWORD")
 public class QuestionKeyWord implements Serializable {
 
 	private static final long serialVersionUID = 6201480562449024982L;
@@ -24,8 +24,8 @@ public class QuestionKeyWord implements Serializable {
 	private String keyWord;
 
 	/** 对应话题id */
-	@Column(name = "TOPIC_ID")
-	private String topicId;
+	@Column(name = "TOPIC_IDS")
+	private String topicIds;
 
 	public Long getId() {
 		return id;
@@ -43,12 +43,12 @@ public class QuestionKeyWord implements Serializable {
 		this.keyWord = keyWord;
 	}
 
-	public String getTopicId() {
-		return topicId;
+	public String getTopicIds() {
+		return topicIds;
 	}
 
-	public void setTopicId(String topicId) {
-		this.topicId = topicId;
+	public void setTopicIds(String topicIds) {
+		this.topicIds = topicIds;
 	}
 
 

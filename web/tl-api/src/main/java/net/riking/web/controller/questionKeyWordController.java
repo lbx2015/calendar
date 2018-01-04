@@ -1,9 +1,6 @@
 package net.riking.web.controller;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -19,12 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
-import net.riking.core.entity.EnumCustom;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.TopicRepo;
 import net.riking.entity.model.QuestionKeyWord;
-import net.riking.entity.model.Topic;
 import net.riking.service.QuestionKeyWordService;
 
 @RestController
@@ -67,22 +62,4 @@ public class questionKeyWordController {
 		return new Resp(CodeDef.SUCCESS);
 	}
 	
-	
-	@RequestMapping(value = "/getTopicDict", method = RequestMethod.GET)
-	public Resp getTopicDict(@RequestParam(value = "prop", required = false) String prop,
-			@RequestParam(value = "keyword", required = false) String keyword) {
-		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
-		Set<String> set = new HashSet<String>();
-		set.add("COUNTRY");
-		List<Topic> list = topicRepo.findAllByIsDelete();
-		for (Topic dict : list) {
-				EnumCustom enumCustom = new EnumCustom();
-				enumCustom.setKey(dict.getId());
-				enumCustom.setValue(dict.getTitle());
-				enumCustom.setProp(prop);
-				enumKeyValues.add(enumCustom);
-		}
-		return new Resp(enumKeyValues);
-	}
-
 }

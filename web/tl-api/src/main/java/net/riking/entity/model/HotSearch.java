@@ -47,6 +47,11 @@ public class HotSearch extends BaseEntity {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public HotSearch(String title) {
+		super();
+		this.title = title;
+	}
 
 	public HotSearch(String id, String title, Integer searchCount) {
 		super();

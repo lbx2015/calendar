@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_f2f2f2">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <FrameLayout
@@ -52,7 +52,53 @@
         <com.riking.calendar.view.PullToLoadViewWithoutFloatButton xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pullToLoadView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
+        <FrameLayout
+            android:id="@+id/not_login_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/message_icon_default_mess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/message_icon_default_mess" />
+
+                <TextView
+                    android:id="@+id/message_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/message_icon_default_mess"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="20dp"
+                    android:text="你还没有收到消息"
+                    android:textColor="@color/color_b3b3b3"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="44dp"
+                    android:layout_below="@id/message_tv"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/rounded_rectangle_not_login"
+                    android:gravity="center"
+                    android:text="立即登录"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+
+            </RelativeLayout>
+        </FrameLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -60,6 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:layout_gravity="bottom"
+        android:background="@color/white"
         android:visibility="gone">
 
         <View

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import com.riking.calendar.util.ZR;
  * Created by zw.zhang on 2017/12/14.
  */
 
-public class CheckInFailDialog extends Dialog {
+public class CheckInFailDialog extends AppCompatDialog {
     int experience;
 
     public CheckInFailDialog(@NonNull Context context) {

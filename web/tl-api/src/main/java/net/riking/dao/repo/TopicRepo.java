@@ -41,7 +41,7 @@ public interface TopicRepo extends JpaRepository<Topic, String>, JpaSpecificatio
 	@Query("select new net.riking.entity.model.TopicResult(t.id,t.title,t.content,(select topicId from TopicRel where userId = ?2 and t.id = topic_id and dataType = 0)) from Topic t where t.isAduit <> 2 and t.isDeleted = 1 and t.title like %?1%")
 	List<TopicResult> getTopicByParam(String params, String userId);
 	
-	@Query("from Topic where isDeleted = 1 and id in ?1")
+	@Query("select new net.riking.entity.model.Topic(t.id,t.title) from Topic t where t.isDeleted = 1 and t.id in ?1")
 	List<Topic> findAllByIdsAndIsDelete(Collection<String> ids);
 
 	/*********** WEB ************/

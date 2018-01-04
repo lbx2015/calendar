@@ -99,7 +99,7 @@ public class SearchListServer {
 	 */
 	@ApiOperation(value = "显示热门搜索列表", notes = "POST")
 	@RequestMapping(value = "/findHotSearchList", method = RequestMethod.POST)
-	public AppResp findHotSearchList(@RequestBody SearchParams searchParams) {
+	public AppResp findHotSearchList() {
 		// 取前六条数据
 		List<HotSearch> hotSearches = hotSearchRepo.findHotSearch(new PageRequest(0, 6));
 		return new AppResp(hotSearches, CodeDef.SUCCESS);

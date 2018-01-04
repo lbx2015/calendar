@@ -15,11 +15,9 @@ public class SubscribeReportParam {
 
 	// //上报日期
 	// private String submitDate;
-	// 单个订阅报表id
-	private String reportId;
 
-	// 订阅类型
-	private String subscribeType;
+	// 订阅类型 0-取消订阅 1-订阅
+	private Integer subscribeType;
 
 	public String getUserId() {
 		return userId;
@@ -29,20 +27,20 @@ public class SubscribeReportParam {
 		this.userId = userId;
 	}
 
+	public Integer getSubscribeType() {
+		return subscribeType;
+	}
+
+	public void setSubscribeType(Integer subscribeType) {
+		this.subscribeType = subscribeType;
+	}
+
 	public String getReportIds() {
 		return reportIds;
 	}
 
 	public void setReportIds(String reportIds) {
 		this.reportIds = reportIds;
-	}
-
-	public String getReportId() {
-		return reportId;
-	}
-
-	public void setReportId(String reportId) {
-		this.reportId = reportId;
 	}
 
 }

@@ -39,6 +39,7 @@ import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
+import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
@@ -410,7 +411,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
 
     @POST("userContacts/colleague")
-    Call<ResponseModel<String>> getColleagues(@Body UserParams params);
+    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
 
     @POST("userContacts/contacts")
     Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
@@ -450,4 +451,7 @@ public interface APIInterface {
 
     @POST("user/getFOAF")
     Call<ResponseModel<List<AppUserResult>>> getFOAF(@Body UserParams params);
+
+    @POST("searchList/findHotSearchList")
+    Call<ResponseModel<List<HotSearch>>> findHotSearchList(@Body SearchParams params);
 }
