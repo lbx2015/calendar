@@ -1,11 +1,9 @@
 package net.riking.web.app;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -31,24 +29,8 @@ public class BannerServer {
 	@RequestMapping(value = "/getBanners", method = RequestMethod.GET)	
 	public AppResp getBanners() {
 		PageRequest pageable = new PageRequest(0, 5, new Sort(Arrays.asList(new Order(Direction.valueOf("DESC"), "modifiedTime"))));
-		Banner banner = new Banner();
-		banner.setIsDeleted(1);//未删除
-		banner.setEnabled("1");//启用
-		banner.setIsAduit("1");//审核通过
-		Example<Banner> example = Example.of(banner, ExampleMatcher.matchingAll());
-		Page<Banner> page = bannerRepo.findAll(example, pageable);
-		page.getContent().forEach(e->{
-			e.setId(null);
-			e.setCreatedBy(null);
-			e.setCreatedTime(null);
-			e.setModifiedBy(null);
-			e.setModifiedTime(null);
-			e.setEnabled(null);
-			e.setCreatedTime(null);
-			e.setIsAduit(null);
-			e.setIsDeleted(null);
-		});
-		return new AppResp(page.getContent(), CodeDef.SUCCESS);
+		List<Banner> page = bannerRepo.findByPage(pageable);
+		return new AppResp(page, CodeDef.SUCCESS);
 	}
 	
 

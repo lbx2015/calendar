@@ -1,11 +1,13 @@
 package net.riking.service.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,15 +40,16 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 		if(!list.isEmpty()){
 			HashMap<String,Set<String>> map = new HashMap<>();
 			for (QuestionKeyWord questionKeyWord : list) {
-				if(map.containsKey(questionKeyWord.getKeyWord())){
-					map.get(questionKeyWord.getKeyWord()).add(questionKeyWord.getTopicId());
+				if(map.containsKey(questionKeyWord.getKeyWord()) && StringUtils.isNotBlank(questionKeyWord.getTopicIds())){
+					map.get(questionKeyWord.getKeyWord()).addAll(Arrays.asList(questionKeyWord.getTopicIds().split(",")));
 				}else{
 					Set<String> set = new HashSet<>();
-					set.add(questionKeyWord.getTopicId());
+					if(StringUtils.isNotBlank(questionKeyWord.getTopicIds())){
+						set.addAll(Arrays.asList(questionKeyWord.getTopicIds().split(",")));
+					}
 					map.put(questionKeyWord.getKeyWord(), set);
 				}
 			}
-			
 			RedisUtil.getInstall().setSet(Const.KEY_WORD, new HashSet<String>(map.keySet()));
 			for (String keyWord : map.keySet()) {
 				RedisUtil.getInstall().setSet(keyWord, map.get(keyWord));
@@ -82,41 +85,27 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 
 	@Override
 	public List<Topic> getTopicByQuestion(String questionTitle) {
-		return this.getTopicByTopicIds(this.getTopicIdByQuestion(questionTitle));
+		Set<String> topicIds = this.getTopicIdByQuestion(questionTitle);
+		if(topicIds.isEmpty()){
+			return null;
+		}
+		return this.getTopicByTopicIds(topicIds);
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void delKeyWord(List<Long> ids) {
 		List<QuestionKeyWord> list = questionKeyWordRepo.findAll(ids);
 		for (QuestionKeyWord keyWord : list) {
 			questionKeyWordRepo.delete(keyWord.getId());
-			Set<String> set = RedisUtil.getInstall().getSet(keyWord.getKeyWord());
-			set.remove(keyWord.getTopicId());
-			RedisUtil.getInstall().setSet(keyWord.getKeyWord(), set);
 		}
+		this.initKeyWord();
 	}
 
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public void addKeyWord(QuestionKeyWord keyWord) {
-		if(null==keyWord.getId()){//新增
-			questionKeyWordRepo.save(keyWord);
-			Set<String> set = RedisUtil.getInstall().getSet(keyWord.getKeyWord());
-			if(null == set){
-				set = new HashSet<>();
-				set.add(keyWord.getTopicId());
-				RedisUtil.getInstall().setSet(keyWord.getKeyWord(),set);
-			}else{
-				set.add(keyWord.getTopicId());
-				RedisUtil.getInstall().setSet(keyWord.getKeyWord(), set);
-			}
-		}else{//修改
-			questionKeyWordRepo.save(keyWord);
-			RedisUtil.getInstall().setSet(keyWord.getKeyWord(), questionKeyWordRepo.getTopicIdByKeyWord(keyWord.getKeyWord()));
-		}
-		
+		questionKeyWordRepo.save(keyWord);
+		this.initKeyWord();
 	}
 
 	@Override

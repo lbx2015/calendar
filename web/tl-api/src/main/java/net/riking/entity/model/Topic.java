@@ -96,7 +96,14 @@ public class Topic extends BaseAuditProp {
 		this.content = content;
 		this.topicUrl = topicUrl;
 	}
+	
+	public Topic(String id, String title) {
+		super();
+		this.id = id;
+		this.title = title;
+	}
 
+	
 	public String getTitle() {
 		return title;
 	}

@@ -59,9 +59,11 @@
 		},
 		{
 			"prop": "createdBy",
-			"alias": "创建人ID",
-			"desc": "创建人ID",
-			"type": "string",
+			"alias": "创建人",
+			"desc": "创建人",
+			"type": "enum",
+			"enum_url": "/tQuestion/getCreatedUser",
+			"enum_search": "1",
 			"group": "base",
 			"hidden": "edit,preview"
 		},

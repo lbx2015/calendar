@@ -54,6 +54,21 @@ public class Banner extends BaseProp {
 	@Comment("友情链接")
 	@Column(name = "relation_url", length = 100)
 	private String relationURL;
+	
+	
+	public Banner(String bannerURL, String relationURL) {
+		super();
+		this.bannerURL = bannerURL;
+		this.relationURL = relationURL;
+	}
+	
+	
+
+	public Banner() {
+		super();
+	}
+
+
 
 	public String getId() {
 		return id;

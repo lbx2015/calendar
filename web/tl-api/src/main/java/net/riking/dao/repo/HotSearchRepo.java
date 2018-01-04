@@ -17,6 +17,6 @@ public interface HotSearchRepo extends JpaRepository<HotSearch, String>, JpaSpec
 	 * @param pageable
 	 * @return
 	 */
-	@Query("from HotSearch order by searchCount desc")
+	@Query("select new net.riking.entity.model.HotSearch(title) from HotSearch order by searchCount desc")
 	List<HotSearch> findHotSearch(Pageable pageable);
 }

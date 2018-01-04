@@ -1,5 +1,5 @@
 {
-	"table": "T_APP_QUESTIONKEYWORD",
+	"table": "T_QUEST_KEYWORD",
 	"groups": [
 		{
 			"prop": "base",
@@ -11,17 +11,17 @@
 			"prop": "keyWord",
 			"alias": "关键字",
 			"group": "base",
+			"query": "1",
+			"query_order": "1",
 			"type": "string"
 		},
 		{
-			"prop": "topicId",
+			"prop": "topicIds",
 			"alias": "话题",
 			"group": "base",
-			"query": "1",
-			"query_order": "1",
-			"type": "enum",
-			"enum_url": "/questionKeyWord/getTopicDict",
-			"enum_search": "1"
+			"edit_block": "1",
+			"type": "multipleChoice",
+			"choice_url": "/tQuestion/getTopicList"
 		}
 	]
 }

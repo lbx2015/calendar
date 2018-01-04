@@ -30,9 +30,11 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
+import net.riking.core.entity.EnumCustom;
 import net.riking.core.entity.MultipleChoiceCustom;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
@@ -44,6 +46,7 @@ import net.riking.dao.repo.TopicRepo;
 import net.riking.entity.ApiResp;
 import net.riking.entity.Data;
 import net.riking.entity.VerifyParamModel;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.Topic;
 import net.riking.entity.model.TopicQuestion;
@@ -86,6 +89,9 @@ public class TopicQuestionController {
 
 	@Autowired
 	AppUserFollowRelRepo userFollowRelRepo;
+	
+	@Autowired
+	AppUserDetailRepo userDetailRepo;
 
 	@Autowired
 	QAInviteRepo qAInviteRepo;
@@ -299,5 +305,20 @@ public class TopicQuestionController {
 			multipleChoiceCustoms.add(choice);
 		}
 		return new Resp(multipleChoiceCustoms, CodeDef.SUCCESS);
+	}
+	
+	@RequestMapping(value = "/getCreatedUser", method = RequestMethod.GET)
+	public Resp getTopicDict(@RequestParam(value = "prop", required = false) String prop,
+			@RequestParam(value = "keyword", required = false) String keyword) {
+		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
+		List<AppUserDetail> list = userDetailRepo.findAll();
+		for (AppUserDetail dict : list) {
+				EnumCustom enumCustom = new EnumCustom();
+				enumCustom.setKey(dict.getId());
+				enumCustom.setValue(dict.getUserName());
+				enumCustom.setProp(prop);
+				enumKeyValues.add(enumCustom);
+		}
+		return new Resp(enumKeyValues);
 	}
 }

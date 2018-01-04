@@ -54,7 +54,6 @@
                     
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
-                    loadRichText();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -63,21 +62,13 @@
                 data.showGroup = "base,submit";
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
-                loadRichText();
             }
         });
     }
     
     //编辑保存
     function edit() {
-        layui.use('layedit', function(){
-     	  	var layedit = layui.layedit;
-     	  	$("#content").val(layedit.getContent(topicContent));
-     	});
         var reportList = Utils.formToObj("edit");
-        if(id){
-			reportList.topicId=id;
-		}
         var url = Const.apiUrl + "/questionKeyWord/save";
         View.post(url, reportList, function(resp) {
             TmplUtils.showMsgSuccess('编辑成功');
