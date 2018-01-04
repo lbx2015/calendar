@@ -377,7 +377,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
-                        if (currentUser.phone.equals(newValue)) {
+                        if (currentUser.phone != null && currentUser.phone.equals(newValue)) {
                             return;
                         }
                         UpdUserParams user = new UpdUserParams();
@@ -403,7 +403,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
-                        if (currentUser.email.equals(newValue)) {
+                        if (currentUser.email != null && currentUser.email.equals(newValue)) {
                             return;
                         }
 
@@ -441,7 +441,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
-                        if (currentUser.companyName.equals(newValue)) {
+                        if (currentUser.companyName != null && currentUser.companyName.equals(newValue)) {
                             return;
                         }
                         UpdUserParams user = new UpdUserParams();
@@ -559,13 +559,17 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                    positions = response._data;
-                    if (industries == null) {
-                        return;
+                    if (failed) {
+
+                    } else {
+                        positions = response._data;
+                        if (industries == null) {
+                            return;
+                        }
+                        //only one column industry selector
+                        positionPicker.setPicker(positions);
+                        positionPicker.show();
                     }
-                    //only one column industry selector
-                    positionPicker.setPicker(positions);
-                    positionPicker.show();
                 }
             });
         } else {
@@ -654,14 +658,18 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                    industries = response._data;
-                    if (industries == null) {
-                        return;
+                    if (failed) {
+
+                    } else {
+                        industries = response._data;
+                        if (industries == null) {
+                            return;
+                        }
+                        //only one column industry selector
+                        industryPicker.setPicker(industries);
+                        industryPicker.show();
+                        setDefaultIndustry(currentIndustryId);
                     }
-                    //only one column industry selector
-                    industryPicker.setPicker(industries);
-                    industryPicker.show();
-                    setDefaultIndustry(currentIndustryId);
                 }
             });
         } else {
@@ -857,7 +865,11 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                positions = response._data;
+                if (failed) {
+
+                } else {
+                    positions = response._data;
+                }
             }
         });
     }
@@ -866,7 +878,11 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                industries = response._data;
+                if (failed) {
+
+                } else {
+                    industries = response._data;
+                }
             }
         });
     }

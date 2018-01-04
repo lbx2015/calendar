@@ -14,7 +14,7 @@
         android:layout_marginLeft="15dp"
         android:src="@drawable/mess_icon_editdelete_n" />
 
-    <com.riking.calendar.view.CircleImageView
+    <ImageView
         android:id="@+id/user_icon"
         android:layout_width="36dp"
         android:layout_height="36dp"

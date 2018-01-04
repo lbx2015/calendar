@@ -771,7 +771,7 @@ public class APIClient {
         apiInterface.emailIdentify(params).enqueue(c);
     }
 
-    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<  List<AppUserResult>>> c) {
         apiInterface.getColleagues(params).enqueue(c);
     }
 

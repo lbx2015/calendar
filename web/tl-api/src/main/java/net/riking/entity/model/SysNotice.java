@@ -49,6 +49,10 @@ public class SysNotice extends BaseEntity {
 	@Column(name = "data_type", length = 2)
 	private Integer dataType;
 	
+	@Comment("来自某用户对象的信息，系统代表：SYS")
+	@Column(name = "from_user_id", length = 32)
+	private String fromUserId;
+	
 	@Comment("通知用户对象")
 	@Column(name = "notice_user_id", length = 32)
 	private String noticeUserId;
@@ -113,5 +117,11 @@ public class SysNotice extends BaseEntity {
 		this.noticeUserId = noticeUserId;
 	}
 
-	
+	public String getFromUserId() {
+		return fromUserId;
+	}
+
+	public void setFromUserId(String fromUserId) {
+		this.fromUserId = fromUserId;
+	}
 }

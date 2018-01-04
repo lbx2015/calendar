@@ -92,7 +92,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
     class MyViewHolder extends ZViewHolder {
         public TextView summary;
         public TextView userName;
-        public CircleImageView userImage;
+        public ImageView userImage;
         public ImageView checkImage;
         public TextView systemNewsTv;
         public boolean checked;

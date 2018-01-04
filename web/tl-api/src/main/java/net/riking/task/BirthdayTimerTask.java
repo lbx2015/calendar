@@ -3,14 +3,18 @@ package net.riking.task;
 import java.util.List;
 import java.util.TimerTask;
 
+import javax.transaction.Transactional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.riking.dao.AppUserDao;
+import net.riking.dao.ReportCompletedRelDao;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
+import net.riking.spring.SpringBeanUtil;
 import net.riking.util.DateUtils;
 import net.riking.util.JdpushUtil;
 
@@ -24,6 +28,7 @@ public class BirthdayTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		try {
+			appUserDao = (AppUserDao) SpringBeanUtil.getInstance().getBean("appUserDao");
 			String currentDate = DateUtils.getDate("MMdd");
 			List<AppUserDetail> list = appUserDao.findPhoneDeviceByBirthDay(currentDate);
 			if (list != null && list.size() > 0) {

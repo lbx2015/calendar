@@ -141,6 +141,9 @@ public class AppUserServer {
 			e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
 			e.setGrade();
 		});
+		foafs.forEach(e->{
+			e.setExperience(null);
+		});
 		return new AppResp(foafs, CodeDef.SUCCESS);
 	}
 	

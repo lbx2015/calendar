@@ -54,12 +54,12 @@ public class AppUserDetail extends BaseEntity {
 	@Comment("pk 同用户登录表t_app_user的id一致")
 	@JsonProperty("userId")
 	private String id;
-
+	
 	@Comment("真实姓名")
 	@Column(name = "real_name", length = 32)
 	private String realName;
 	
-	@Comment("用户名称")
+	@Comment("用户昵称")
 	@Column(name = "user_name", length = 32, nullable = false)
 	private String userName;
 

@@ -98,11 +98,12 @@
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
 				//表格显示列数
-				data.operationWidth = 10;
+				data.operationWidth = 13;
+				data.tdLeftWidth = [ 5, 5, 5, 5, 5];
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
 				    if(obj.prop=="topicUrl"){
-						obj.html = '<img src="'+obj.html+'" alt="'+obj.item.title+'封面" />';
+						obj.html = '<img src="'+Const.apiUrl +"/images/topic/photo/"+obj.html+'"style="width:100%;height: 100%;" alt="'+obj.item.title+'封面" />';
 				    }
 				    if(obj.prop=="createdTime"){
 						obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");
