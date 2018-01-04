@@ -130,8 +130,8 @@ public class AppReportServer {
 	 * @return
 	 */
 	@ApiOperation(value = "用户单个报表订阅", notes = "POST")
-	@RequestMapping(value = "/updateUserReportRelById", method = RequestMethod.POST)
-	public AppResp updateUserReportRelById_(@RequestBody Map<String, Object> params) {
+	@RequestMapping(value = "/modifySubscribeReportByOne", method = RequestMethod.POST)
+	public AppResp modifySubscribeReportByOne_(@RequestBody Map<String, Object> params) {
 		SubscribeReportParam relParam = Utils.map2Obj(params, SubscribeReportParam.class);
 		String[] arr = {};
 		if (StringUtils.isNotBlank(relParam.getReportIds())) {
