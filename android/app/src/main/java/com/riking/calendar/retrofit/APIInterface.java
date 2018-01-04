@@ -410,7 +410,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
 
     @POST("userContacts/colleague")
-    Call<ResponseModel<String>> getColleagues(@Body UserParams params);
+    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
 
     @POST("userContacts/contacts")
     Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.MyNewsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 
@@ -25,6 +26,7 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
     View bottomEditLayout;
     ImageView selectAllView;
     View deleteView;
+    View notLoginLayout;
 
     @Override
     public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
     }
 
     public void initViews() {
+        notLoginLayout = v.findViewById(R.id.not_login_layout);
         cancelTv = v.findViewById(R.id.cancel);
         doneTv = v.findViewById(R.id.editButton);
         bottomEditLayout = v.findViewById(R.id.bottom_edit_layout);
@@ -47,6 +50,7 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
     public void initEvents() {
         if (ZPreference.isLogin()) {
             mPullToLoadView.setVisibility(View.VISIBLE);
+            notLoginLayout.setVisibility(View.GONE);
             doneTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -86,6 +90,14 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
             });
         } else {
             mPullToLoadView.setVisibility(View.GONE);
+            notLoginLayout.setVisibility(View.VISIBLE);
+            mPullToLoadView.setVisibility(View.GONE);
+            mPullToLoadView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ZGoto.toLoginActivity();
+                }
+            });
         }
     }
 
