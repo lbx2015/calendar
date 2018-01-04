@@ -239,17 +239,17 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         });
 
         //set my replies click listener
-        myRepliesLayout.setOnClickListener(new OnClickListener() {
+        myRepliesLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
+            public void click(View v) {
                 ZGoto.to(MyRepliesActivity.class);
             }
         });
 
         // go to following me activity on click
-        followMeLayout.setOnClickListener(new OnClickListener() {
+        followMeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
+            public void click(View v) {
                 ZGoto.to(MyFollowersActivity.class);
             }
         });

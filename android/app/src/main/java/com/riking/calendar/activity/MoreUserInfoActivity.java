@@ -415,6 +415,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                     @Override
                     void updateSuccess(String newValue) {
                         currentUser.email = newValue;
+                        emailValidated.setVisibility(View.VISIBLE);
                         emailValidated.setClickable(true);
                         emailValidated.setEnabled(true);
                         emailValidated.setText("未验证");
