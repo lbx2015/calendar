@@ -31,7 +31,6 @@ public class ReportCompletedRelResult{
 		this.reportName = reportName;
 	}
 
-
 	public String getFrequencyType() {
 		return frequencyType;
 	}
