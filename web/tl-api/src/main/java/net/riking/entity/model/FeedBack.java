@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -38,7 +39,7 @@ public class FeedBack extends BaseProp {
 	private String id;
 
 	@Comment("反馈内容")
-	@Column(name = "content", length = 500)
+	@Column(name = "content")
 	private String content;
 
 	@Comment("多个图片名称，以','逗号分隔")
@@ -49,6 +50,10 @@ public class FeedBack extends BaseProp {
 	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "accept")
 	private Integer accept;
+
+	@Comment("反馈用户名")
+	@Transient
+	private String userName;;
 
 	public FeedBack(String content, String imgs, String createBy) {
 		super();
@@ -92,6 +97,14 @@ public class FeedBack extends BaseProp {
 
 	public void setAccept(Integer accept) {
 		this.accept = accept;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 }

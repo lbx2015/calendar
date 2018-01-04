@@ -10,7 +10,7 @@
 </head>
 <body class="iframeBody">
 	<div class="formbox layui-form add-formbox">
-		<div class="_tmpl" data-url="edit.html" data-attr="questionAnswerVO.json" data-bind="editOnBind" data-param=""></div>
+		<div class="_tmpl" data-url="edit.html" data-attr="newsComment.json" data-bind="editOnBind" data-param=""></div>
 		<div class="layui-btn-div" id="layui-btn-fixed">
 			<button class="layui-btn bgc1 layui-btn-small" lay-submit lay-filter="edit" id="submit">确定</button>
 			<button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
@@ -53,7 +53,7 @@
 					View.resetUi();
 				});
 				if (id) {
-					var url = Const.apiUrl + "/questionAnswer/get";
+					var url = Const.apiUrl + "/newsComment/get";
 					var _this = this;
 					View.get(url, "id=" + id,
 					function(resp) {
@@ -87,13 +87,13 @@
 		}
 		//编辑保存
 		function edit() {
-			var questionAnswer = Utils.formToObj("edit");
+			var newsComment = Utils.formToObj("edit");
 			if(id){
-				questionAnswer.id = id;
+				newsComment.id = id;
 			}
-			/*   questionAnswer.email = questionAnswer.email.split(",")[0] + "@" + questionAnswer.email.split(",")[1]; */
-			var url = Const.apiUrl + "/questionAnswer/addOrUpdate";
-			View.post(url, questionAnswer,
+			/*   newsComment.email = newsComment.email.split(",")[0] + "@" + newsComment.email.split(",")[1]; */
+			var url = Const.apiUrl + "/newsComment/addOrUpdate";
+			View.post(url, newsComment,
 			function(resp) {
 				TmplUtils.showMsgSuccess('编辑成功');
 				parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) + "&pcount=" + parent.TmplUtils.pageSize + parent.TmplUtils.searchParam);

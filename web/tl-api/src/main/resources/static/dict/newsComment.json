@@ -1,5 +1,5 @@
 {
-	"table": "t_qa_comment",
+	"table": "T_NEWS_COMMENT",
 	"groups": [
 		{
 			"prop": "base",
@@ -16,58 +16,79 @@
 			"hidden": "edit"
 		},
 		{
-			"prop": "id",
-			"alias": "pk",
-			"desc": "pk",
+			"prop": "title",
+			"alias": "资讯标题",
+			"desc": "资讯标题",
 			"type": "string",
+			"verify":"required",
 			"group": "base",
-			"hidden": "table,edit,preview"
-		},
-			{
-			"prop": "qACommentId",
-			"alias": "pk",
-			"desc": "pk",
-			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
+			"query": "1",      
+            "query_order": "1"
 		},
 		{
-			"prop": "userId",
-			"alias": "发表评论的用户id",
-			"desc": "发表评论的用户id",
-			"type": "string",
-			"group": "base",
-			"editable":"2",
-			"hidden": "table,edit,preview"
-		},
-		{
-			"prop": "userName",
+			"prop": "commentUserName",
 			"alias": "评论人",
 			"desc": "评论人",
 			"type": "string",
+			"verify":"required",
 			"group": "base",
-			"editable":"2"
+			"query": "1",      
+            "query_order": "2"
 		},
 		{
-			"prop": "questionAnswerId",
-			"alias": "针对问题的回答",
-			"desc": "针对问题的回答",
+			"prop": "coverUrls",
+			"alias": "封面URL",
+			"desc": "封面URL",
 			"type": "string",
-			"editable":"2",
+			"group": "base",
+			"hidden": "table,edit,preview"
+			
+		},
+		{
+			"prop": "seat",
+			"alias": "封面位置",
+			"desc": "封面位置",
+			"type": "enum",
+			"dict_key": "T_NEWS.SEAT",
+			"verify":"required",
 			"group": "base",
 			"hidden": "table,edit,preview"
 		},
-		
+		{
+			"prop": "issued",
+			"alias": "发布单位",
+			"desc": "发布单位",
+			"verify":"required",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "createdTime",
+			"alias": "评论时间",
+			"desc": "评论时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,preview"
+		},
+		{
+			"prop": "content",
+			"alias": "评论内容",
+			"desc": "评论内容",
+			"type": "text",
+			"edit_block": "2",
+			"group": "base",
+			"hidden": "table"
+		},
 		{
 			"prop": "isAduit",
-			"alias": "审核状态",
-			"desc": "审核状态",
+			"alias": "是否审核",
+			"desc": "是否审核",
 			"type": "enum",
 			"dict_key": "T_REPORT.ISADUIT",
 			"group": "base",
 			"hidden": "edit"
 		},
-		
 		{
 			"prop": "isAduitNum",
 			"alias": "回复审核数(未审核/不通过/已通过)",
@@ -84,21 +105,7 @@
 			"group": "base",
 			"hidden": "table,edit,preview"
 		},
-		{
-			"prop": "createdTime",
-			"alias": "评论时间",
-			"desc": "评论时间",
-			"type": "string",
-			"group": "base",
-			"hidden": "edit,preview"
-		},
-		{
-			"prop": "content",
-			"alias": "评论内容",
-			"desc": "评论内容",
-			"type": "string",
-			"group": "base"
-		},
+		
 		{
 			"prop": "modifiedBy",
 			"alias": "修改人ID",
@@ -117,8 +124,8 @@
 		},
 		{
 			"prop": "isDeleted",
-			"alias": "是否删除",
-			"desc": "是否删除",
+			"alias": "是否删除：1-未删除；0-删除",
+			"desc": "是否删除：1-未删除；0-删除",
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"

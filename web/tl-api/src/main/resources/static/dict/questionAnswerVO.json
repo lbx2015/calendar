@@ -1,5 +1,5 @@
 {
-	"table": "T_APP_USER",
+	"table": "T_APP_QUESTIONANSWER",
 	"groups": [
 		{
 			"prop": "base",
@@ -22,7 +22,9 @@
 			"desc": "问题标题",
 			"type": "string",
 			"group": "base",
-			"hidden": "edit,priview"
+			"hidden": "priview",
+			"query": "1",
+			"query_order": "1"
 		},
 		{
 			"prop": "appUser.userName",
@@ -30,7 +32,9 @@
 			"desc": "回答人",
 			"type": "string",
 			"group": "base",
-			"hidden": "edit,priview"
+			"hidden": "priview",
+			"query": "1",
+			"query_order": "1"
 		},
 		{
 			"prop": "replyTime",
@@ -45,15 +49,27 @@
 			"desc": "评论数",
 			"type": "string",
 			"group": "base",
-			"query": "1",
-			"verify":"required",
-			"query_order": "1"
+			"hidden": "priview,edit",
+			"verify":"required"
+			
+		},
+		{
+			"prop": "isAduit",
+			"alias": "审核状态",
+			"desc": "审核状态",
+			"type": "enum",
+			"dict_key": "T_QUESTION_ANSWER.ISADUIT",
+			"group": "base",
+			"hidden": "priview,edit",
+			"verify":"required"
+			
 		},
 		{
 			"prop": "isAduitNum",
 			"alias": "评论审核数(未审核/不通过/已通过)",
 			"desc": "评论审核数(未审核/不通过/已通过)",
 			"type": "string",
+			"hidden": "priview,edit",
 			"group": "base"
 		},
 		{
@@ -70,7 +86,7 @@
 			"desc": "回答内容",
 			"type": "string",
 			"group": "base",
-			"hidden": "edit,priview"
+			"hidden": "priview"
 		}
 	]
 }

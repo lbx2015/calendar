@@ -1,20 +1,35 @@
 package net.riking.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.config.Const;
 import net.riking.dao.QACommentDao;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.QACAgreeRelRepo;
+import net.riking.dao.repo.QACReplyRepo;
+import net.riking.dao.repo.QACommentRepo;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.NCAgreeRel;
 import net.riking.entity.model.QACAgreeRel;
+import net.riking.entity.model.QAComment;
 import net.riking.entity.model.QACommentResult;
 import net.riking.entity.params.CommentParams;
 import net.riking.service.QACommentService;
@@ -34,6 +49,15 @@ public class QACommentServiceImpl implements QACommentService {
 
 	@Autowired
 	QACAgreeRelRepo qACAgreeRelRepo;
+
+	@Autowired
+	QACommentRepo qACommentRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
+
+	@Autowired
+	QACReplyRepo qACReplyRepo;
 
 	@Override
 	public List<QACommentResult> findByUserId(String userId, Integer pageBegin, Integer pageCount) {
@@ -102,6 +126,68 @@ public class QACommentServiceImpl implements QACommentService {
 		}
 		return false;
 
+	}
+
+	@Override
+	public Page<QAComment> findAll(QAComment qaComment, PageRequest pageRequest) {
+		Specification<QAComment> bCondi = whereCondition(qaComment);
+		Page<QAComment> pageB = qACommentRepo.findAll(bCondi, pageRequest);
+		if (null != pageB) {
+			// 2.得到AppUser对象集合
+			List<QAComment> qaComments = pageB.getContent();
+			getVos(qaComments);
+			Page<QAComment> modulePage = new PageImpl<QAComment>(qaComments, pageRequest, pageB.getTotalElements());
+			return modulePage;
+		}
+		return null;
+	}
+
+	/**
+	 * 获取qacomment的信息
+	 * @param qaComments
+	 * @return
+	 */
+	private void getVos(List<QAComment> qaComments) {
+		// TODO Auto-generated method stub
+		for (QAComment qaComment : qaComments) {
+			String id = qaComment.getId();
+			// 获取用户信息
+			AppUser appUser = appUserRepo.findOne(qaComment.getUserId());
+			if (appUser == null) {
+				continue;
+			}
+			qaComment.setUserName(appUser.getUserName());
+			// 获取回复审核数
+			String isAduitNum = getIsAduitNum(id);
+			qaComment.setIsAduitNum(isAduitNum);
+		}
+	}
+
+	private String getIsAduitNum(String id) {
+		int num0 = qACReplyRepo.countGetByCommentId(id, new Integer(0));
+		int num1 = qACReplyRepo.countGetByCommentId(id, new Integer(1));
+		int num2 = qACReplyRepo.countGetByCommentId(id, new Integer(2));
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(num0 + " / ");
+		stringBuilder.append(num2 + " / ");
+		stringBuilder.append(num1);
+		return stringBuilder.toString();
+	}
+
+	private Specification<QAComment> whereCondition(QAComment qaComment) {
+		return new Specification<QAComment>() {
+			@Override
+			public Predicate toPredicate(Root<QAComment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				// 默认查询条件
+				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
+				// 获取回答人
+				if (qaComment.getQuestionAnswerId() != null) {
+					predicates.add(cb.equal(root.<String> get("questionAnswerId"), qaComment.getQuestionAnswerId()));
+				}
+				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+			}
+		};
 	}
 
 }

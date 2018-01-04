@@ -1,5 +1,5 @@
 {
-	"table": "t_qac_reply",
+	"table": "t_nc_reply",
 	"groups": [
 		{
 			"prop": "base",
@@ -49,7 +49,7 @@
 			"hidden": "table,edit,preview"
 		},
 		{
-			"prop": "fromUserName",
+			"prop": "userName",
 			"alias": "回复人",
 			"desc": "回复人",
 			"type": "string",
@@ -87,7 +87,8 @@
 			"alias": "回复内容",
 			"desc": "回复内容",
 			"type": "string",
-			"group": "base"
+			"group": "base",
+			"edit_block":"1"
 		},
 		{
 			"prop": "isAduit",
