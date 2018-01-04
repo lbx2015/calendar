@@ -82,4 +82,14 @@ public interface ReportService {
 	 */
 	boolean addReportTaskByUserSubscribe(String userId, String[] reportIds, String currentDate);
 
+	/**
+	 * 单个订阅报表
+	 * @param userId
+	 * @param reportId
+	 * @param currentDate
+	 * @param subscribeType
+	 */
+	boolean addReportTaskByUserSingleSubscribe(String userId, String[] reportIds, String currentDate,
+			Integer subscribeType);
+
 }

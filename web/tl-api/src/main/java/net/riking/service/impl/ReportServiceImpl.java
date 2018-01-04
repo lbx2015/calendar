@@ -61,9 +61,6 @@ public class ReportServiceImpl implements ReportService {
 	ReportCompletedRelRepo reportCompletedRelRepo;
 
 	@Autowired
-	ReportSubscribeRelRepo reportSubscribeRelRepo;
-
-	@Autowired
 	ReportSubmitCaliberRepo reportSubmitCaliberRepo;
 
 	@Autowired
@@ -74,6 +71,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	ReportSubmitCaliberRepo caliberRepo;
+
+	@Autowired
+	ReportSubscribeRelRepo reportSubscribeRelRepo;
 
 	@Override
 	public List<ReportFrequency> findAppUserReportById(String userId) {
@@ -265,7 +265,21 @@ public class ReportServiceImpl implements ReportService {
 				reportIdList.add(reportId);
 			}
 		}
+		// 处理新增核销任务
+		addReportCompletedRelTask(reportIdList, _year, _month, currentDate, userId);
+		return true;
+	}
 
+	/**
+	 * 处理新增核销任务
+	 * @param reportIdList
+	 * @param _year
+	 * @param _month
+	 * @param currentDate
+	 * @param userId
+	 */
+	private void addReportCompletedRelTask(List<String> reportIdList, String _year, String _month, String currentDate,
+			String userId) {
 		// 处理新增核销任务
 		for (String reportId : reportIdList) {
 			List<String> yearList = sysDaysRepo.findEnabledOnlyYear();
@@ -359,8 +373,6 @@ public class ReportServiceImpl implements ReportService {
 				}
 			}
 		}
-
-		return true;
 	}
 
 	/********** web **********/
@@ -459,6 +471,52 @@ public class ReportServiceImpl implements ReportService {
 				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
 			}
 		};
+	}
+
+	@Override
+	public boolean addReportTaskByUserSingleSubscribe(String userId, String[] reportIds, String currentDate,
+			Integer subscribeType) {
+		// TODO Auto-generated method stub
+		String _year = currentDate.substring(0, 4);
+		String _month = currentDate.substring(4, 6);
+		// String _day = currentDate.substring(6, 8);
+		if (reportIds == null) {
+			reportIds = new String[] {};
+		}
+		// 查找该用户剩余订阅的数据
+		List<String> currentReportIds = reportSubscribeRelRepo.findByUserId(userId);
+		// 删除在该次订阅的时间范围内用户核销相关数据
+		reportCompletedRelRepo.deleteSubscriptTask(userId, reportIds, currentDate);
+		if (subscribeType == Const.IS_SUBSCRIBE) {
+
+			List<String> reportIdList = new ArrayList<String>();
+			// 批量插入
+			for (String reportId : reportIds) {
+				boolean isRn = true;
+				for (String cutReportId : currentReportIds) {
+					if (reportId.equals(cutReportId)) {
+						// 订阅的报表已经在已订阅之内，不让其新增
+						isRn = false;
+					}
+				}
+				if (isRn) {
+					// 保存该次订阅的数据
+					ReportSubscribeRel rel = new ReportSubscribeRel();
+					rel.setReportId(reportId);
+					rel.setUserId(userId);
+					reportSubscribeRelRepo.save(rel);
+					reportIdList.add(reportId);
+				}
+			}
+			// 处理新增核销任务
+			addReportCompletedRelTask(reportIdList, _year, _month, currentDate, userId);
+			return true;
+		} else if (subscribeType == Const.IS_NOT_SUBSCRIBE) {
+			reportSubscribeRelRepo.deleteReportRelByUserIdAndReportId(userId, reportIds[0]);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
