@@ -11,4 +11,7 @@ import java.util.List;
 public class SubscribeReportParam extends BaseParams {
 	//reportIds which is separated by the comma symbol. wtf.
 	public String reportIds;
+
+	// 订阅类型 0-取消订阅 1-订阅
+	public int subscribeType;
 }

@@ -589,7 +589,7 @@ public class APIClient {
         apiInterface.saveSubscribeReport(reportResult).enqueue(z);
     }
 
-    public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {
+    public static void updateUserReportRelById(SubscribeReportParam reportRel, ZCallBack<ResponseModel<String>> c) {
         apiInterface.updateUserReportRelById(reportRel).enqueue(c);
     }
 
@@ -819,7 +819,7 @@ public class APIClient {
         apiInterface.getFOAF(params).enqueue(c);
     }
 
-    public static void findHotSearchList(SearchParams params, ZCallBack<ResponseModel<List<HotSearch>>> c) {
-        apiInterface.findHotSearchList(params).enqueue(c);
+    public static void findHotSearchList(ZCallBack<ResponseModel<List<HotSearch>>> c) {
+        apiInterface.findHotSearchList().enqueue(c);
     }
 }

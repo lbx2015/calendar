@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
-import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
@@ -51,6 +50,7 @@ import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
+import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
@@ -190,8 +190,11 @@ public interface APIInterface {
     @POST("report/modifySubscribeReport")
     Call<ResponseModel<String>> saveSubscribeReport(@Body SubscribeReportParam params);
 
-    @POST("reportSubcribeRel/updateUserReportRelById")
-    Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
+    @POST("report/modifySubscribeReportByOne")
+    Call<ResponseModel<String>> updateUserReportRelById(@Body SubscribeReportParam param);
+
+//    @POST("reportSubcribeRel/updateUserReportRelById")
+//    Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
 
     @POST("news/findNewsList")
     Call<ResponseModel<List<News>>> findNewsList(@Body NewsParams params);
@@ -453,5 +456,8 @@ public interface APIInterface {
     Call<ResponseModel<List<AppUserResult>>> getFOAF(@Body UserParams params);
 
     @POST("searchList/findHotSearchList")
-    Call<ResponseModel<List<HotSearch>>> findHotSearchList(@Body SearchParams params);
+    Call<ResponseModel<List<HotSearch>>> findHotSearchList();
+
+    @POST("report/findExpireTasks")
+    Call<ResponseModel<List<List<ReportCompletedRelResult>>>> findExpireTasks(@Body ReportCompletedRelParam param);
 }

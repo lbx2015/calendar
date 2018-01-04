@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.riking.calendar.interfeet.AdapterEmptyListener;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends RecyclerView.Adapter<VH> {
     public List<ItemBean> mList;
+    public AdapterEmptyListener emptyListener;
 
     {
         mList = new ArrayList<>();
@@ -74,6 +76,9 @@ public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends Recycler
 
     @Override
     public int getItemCount() {
+        if (emptyListener != null) {
+            emptyListener.onEmptyChanged(mList == null || mList.size() == 0);
+        }
         return mList.size();
     }
 }

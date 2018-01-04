@@ -31,8 +31,7 @@ public class HotAnswerOfTopicFragment extends ZFragment<HotAnswerOfTopicAdapter>
         return new HotAnswerOfTopicAdapter(activity);
     }
 
-    public void initEvents() {
-    }
+    public void initEvents() {    }
 
     public void initViews() {
     }
