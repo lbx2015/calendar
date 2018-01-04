@@ -7,14 +7,14 @@
 
     <ImageView
         android:id="@+id/check_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:src="@drawable/mess_icon_editdelete_n" />
 
-    <com.riking.calendar.view.CircleImageView
+    <ImageView
         android:id="@+id/user_icon"
         android:layout_width="36dp"
         android:layout_height="36dp"
@@ -29,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/user_icon"
         android:orientation="vertical">
@@ -41,15 +42,27 @@
             android:drawablePadding="5dp"
             android:text="周云丽"
             android:textColor="@color/color_333333"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/system_news_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="专注金融 专注服务"
+            android:textColor="@color/color_999999"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="专注金融 专注服务"
-            android:textColor="@color/color_999999"
-            android:textSize="12sp" />
+            android:textColor="@color/color_cccccc"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <View

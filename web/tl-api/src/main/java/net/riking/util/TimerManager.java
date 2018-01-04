@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import net.riking.dao.repo.SysNoticeRepo;
+import net.riking.spring.SpringBeanUtil;
 import net.riking.task.BirthdayTimerTask;
 import net.riking.task.DeleteTempTimerTask;
 import net.riking.task.RemindTask;
@@ -31,6 +33,9 @@ public class TimerManager {
 	public void init() {
 		logger.info("*************** TimerManager *********************");
 		Timer timer = new Timer();
+		birthdayTimerTask = new BirthdayTimerTask();
+		remindTask = new RemindTask();
+		deleteTempTimerTask = new DeleteTempTimerTask();
 		
 		/*** 定制每日10:00执行生日提醒方法 ***/
 		Calendar calendar = Calendar.getInstance();
@@ -47,12 +52,13 @@ public class TimerManager {
 		calendar2.set(Calendar.SECOND, 00);
 		timer.schedule(remindTask, calendar2.getTime(), PERIOD_DAY);
 
+		RemindTask remindTask2 = new RemindTask();
 		/*** 定制每日16:59再次提醒报表方法 ***/
 		Calendar calendar3 = Calendar.getInstance();
 		calendar3.set(Calendar.HOUR_OF_DAY, 16);
 		calendar3.set(Calendar.MINUTE, 59);
 		calendar3.set(Calendar.SECOND, 59);
-		timer.schedule(remindTask, calendar3.getTime(), PERIOD_DAY);
+		timer.schedule(remindTask2, calendar3.getTime(), PERIOD_DAY);
 		
 		// *** 定制每日00:00执行删除临时文件方法 ***//
 		Calendar calendar4 = Calendar.getInstance();

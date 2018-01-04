@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.riking.dao.ReportCompletedRelDao;
+import net.riking.dao.repo.SysNoticeRepo;
 import net.riking.entity.model.Jdpush;
 import net.riking.entity.resp.CurrentReportTaskResp;
+import net.riking.spring.SpringBeanUtil;
 import net.riking.util.DateUtils;
 import net.riking.util.JdpushUtil;
 
@@ -26,6 +28,7 @@ public class RemindTask extends TimerTask {
 
 	@Override
 	public void run() {
+		reportCompletedRelDao = (ReportCompletedRelDao) SpringBeanUtil.getInstance().getBean("reportCompletedRelDaoImpl");
 		String currentDate = DateUtils.getDate("yyyyMMdd");
 		List<CurrentReportTaskResp> taskList = reportCompletedRelDao.findUsersByCurrentDayTasks(currentDate);
 		

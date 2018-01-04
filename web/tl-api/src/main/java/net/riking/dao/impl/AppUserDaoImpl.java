@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -26,6 +27,7 @@ public class AppUserDaoImpl implements AppUserDao {
 	private EntityManager entityManager;
 
 	@Override
+	@Transactional
 	public List<AppUserDetail> findPhoneDeviceByBirthDay(String brithDay) {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);

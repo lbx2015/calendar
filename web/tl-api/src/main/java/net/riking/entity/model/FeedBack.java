@@ -38,7 +38,7 @@ public class FeedBack extends BaseProp {
 	private String id;
 
 	@Comment("反馈内容")
-	@Column(name = "content")
+	@Column(name = "content", length = 500)
 	private String content;
 
 	@Comment("多个图片名称，以','逗号分隔")

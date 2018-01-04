@@ -771,7 +771,7 @@ public class APIClient {
         apiInterface.emailIdentify(params).enqueue(c);
     }
 
-    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
+    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<  List<AppUserResult>>> c) {
         apiInterface.getColleagues(params).enqueue(c);
     }
 
@@ -812,5 +812,9 @@ public class APIClient {
 
     public static void getTopicByQuestion(TQuestionParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
         apiInterface.getTopicByQuestion(params).enqueue(c);
+    }
+
+    public static void getFOAF(UserParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getFOAF(params).enqueue(c);
     }
 }

@@ -410,7 +410,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
 
     @POST("userContacts/colleague")
-    Call<ResponseModel<String>> getColleagues(@Body UserParams params);
+    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
 
     @POST("userContacts/contacts")
     Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
@@ -442,8 +442,12 @@ public interface APIInterface {
 
     /**
      * 根据问题title找出话题列表
+     *
      * @return
      */
     @POST("topicQuestion/getTopicByQuest")
     Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body TQuestionParams params);
+
+    @POST("user/getFOAF")
+    Call<ResponseModel<List<AppUserResult>>> getFOAF(@Body UserParams params);
 }

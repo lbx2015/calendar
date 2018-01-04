@@ -293,7 +293,7 @@ public class MQSysOptListener implements MessageListener {
 				jdpush.setMsgTitle(msgTitle);
 				jdpush.setMsgContent(msgContent);
 				jdpush.setExtrasparam("");
-				jdpush.setRegisrationId(appUserDetail.getPhoneDeviceid());
+				jdpush.setRegisrationId(phoneDeviceid);
 				JdpushUtil.sendToRegistrationId(jdpush);
 			}
 			logger.info("get message " + txtMessage.getText());
