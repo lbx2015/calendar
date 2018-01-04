@@ -6,28 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.helper.ItemTouchHelperAdapter;
-import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.params.Todo;
-import com.riking.calendar.realm.model.Task;
-import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/12.
  */
 public class CompletedReportHistoryAdapter extends RecyclerView.Adapter<CompletedReportHistoryAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
-    private List<Task> tasks;
+    private List<ReportCompletedRelResult> tasks;
     private int size;
 
-    public CompletedReportHistoryAdapter(List<Task> r) {
+    public CompletedReportHistoryAdapter(List<ReportCompletedRelResult> r) {
         this.tasks = r;
         size = tasks.size();
     }
@@ -35,32 +29,18 @@ public class CompletedReportHistoryAdapter extends RecyclerView.Adapter<Complete
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.completed_task_row, parent, false);
+                .inflate(R.layout.completed_report_row, parent, false);
         return new MyViewHolder(tasks, itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        final Task r = tasks.get(position);
-        if (!r.isValid()) {
-            return;
-        }
+        final ReportCompletedRelResult r = tasks.get(position);
+
         holder.position = position;
-        holder.title.setText(r.content);
-        if (r.isImportant == 1) {
-        } else {
-            holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
-        }
+        holder.title.setText(r.reportName);
 
-        if (r.isComplete == 1) {
-            holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
-//            holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        } else {
-            holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.not_done));
-//            holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-        }
-
-        holder.task = r;
+        holder.report = r;
         holder.sml.setSwipeEnable(true);
     }
 
@@ -78,20 +58,21 @@ public class CompletedReportHistoryAdapter extends RecyclerView.Adapter<Complete
         public TextView title;
         public ImageView done;
         public ImageView important;
-        public Task task;
+        public ReportCompletedRelResult report;
 
         public TextView tv;
         public int position;
         SwipeHorizontalMenuLayout sml;
 
-        public MyViewHolder(final List<Task> tasks, View view) {
+        public MyViewHolder(final List<ReportCompletedRelResult> tasks, View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             done = (ImageView) view.findViewById(R.id.done);
             important = (ImageView) view.findViewById(R.id.image_star);
             tv = (TextView) view.findViewById(R.id.tv_text);
             sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
-            tv.setOnClickListener(new View.OnClickListener() {
+            sml.setSwipeEnable(false);
+           /* tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     sml.smoothCloseMenu();
@@ -114,7 +95,7 @@ public class CompletedReportHistoryAdapter extends RecyclerView.Adapter<Complete
                         }
                     });
                 }
-            });
+            });*/
         }
     }
 }

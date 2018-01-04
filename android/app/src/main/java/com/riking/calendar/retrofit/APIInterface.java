@@ -460,4 +460,7 @@ public interface APIInterface {
 
     @POST("report/findExpireTasks")
     Call<ResponseModel<List<List<ReportCompletedRelResult>>>> findExpireTasks(@Body ReportCompletedRelParam param);
+
+    @POST("report/findHisCompletedTasks")
+    Call<ResponseModel<List<List<ReportCompletedRelResult>>>> findHisCompletedTasks(@Body ReportCompletedRelParam param);
 }

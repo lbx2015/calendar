@@ -9,9 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
-import com.riking.calendar.interfeet.AdapterEmptyListener;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
@@ -48,9 +48,12 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
 
     public void setEvents() {
         mAdapter = getAdapter();
-        mAdapter.emptyListener = new AdapterEmptyListener() {
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onEmptyChanged(boolean isEmpty) {
+            public void onChanged() {
+                super.onChanged();
+                boolean isEmpty = mAdapter.mList == null || mAdapter.mList.size() == 0;
+                MyLog.d("is empty: " + isEmpty);
                 if (isEmpty) {
                     emptyLayout.setVisibility(View.VISIBLE);
                     mPullToLoadView.setVisibility(View.GONE);
@@ -59,7 +62,8 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
                     mPullToLoadView.setVisibility(View.VISIBLE);
                 }
             }
-        };
+        });
+
         mRecyclerView = mPullToLoadView.getRecyclerView();
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
@@ -124,7 +128,7 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
         initViews();
     }
 
-    public abstract void loadData(int page);
+    public abstract void loadData(final int page);
 
     public abstract void initViews();
 

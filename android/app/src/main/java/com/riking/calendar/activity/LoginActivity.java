@@ -23,7 +23,6 @@ import com.google.gson.JsonObject;
 import com.riking.calendar.R;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -101,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 user.phone = phoneDigits;
-                user.deviceId = uid;
+                user.phoneDeviceId = uid;
                 /*apiInterface.getVarificationCode(user).enqueue(new Callback<GetVerificationModel>() {
                     @Override
                     public void onResponse(Call<GetVerificationModel> call, Response<GetVerificationModel> response) {

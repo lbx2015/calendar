@@ -12,12 +12,14 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.base.ZActivity;
 import com.riking.calendar.adapter.CompletedReportHistoryAdapter;
 import com.riking.calendar.adapter.base.ZAdater;
-import com.riking.calendar.interfeet.AdapterEmptyListener;
-import com.riking.calendar.realm.model.Task;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.ReportCompletedRelParam;
+import com.riking.calendar.pojo.server.ReportCompletedRelResult;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -32,8 +34,28 @@ public class CompleteReportHistoryActivity extends ZActivity<CompleteReportHisto
     }
 
     @Override
-    public void loadData(int page) {
-        mPullToLoadView.setComplete();
+    public void loadData(final int page) {
+        ReportCompletedRelParam param = new ReportCompletedRelParam();
+        param.pindex = page;
+        APIClient.findHisCompletedTasks(param, new ZCallBackWithFail<ResponseModel<List<List<ReportCompletedRelResult>>>>() {
+            @Override
+            public void callBack(ResponseModel<List<List<ReportCompletedRelResult>>> response) {
+                mPullToLoadView.setComplete();
+                isLoading = false;
+                if (failed) {
+
+                } else {
+                    List<List<ReportCompletedRelResult>> result = response._data;
+                    if (result.size() == 0) {
+                        ZToast.toast("没有更多数据了");
+                        return;
+                    }
+                    mAdapter.setData(result);
+                    nextPage = page + 1;
+                }
+
+            }
+        });
     }
 
     @Override
@@ -48,17 +70,11 @@ public class CompleteReportHistoryActivity extends ZActivity<CompleteReportHisto
         onBackPressed();
     }
 
-    public class CompleteReportHistoryAdapter extends ZAdater<MyViewHolder,List<Task>> {
-        ArrayList<List<Task>> daysWithTasks;
-        ArrayList<String> titles;
+    public class CompleteReportHistoryAdapter extends ZAdater<MyViewHolder, List<ReportCompletedRelResult>> {
 
         public CompleteReportHistoryAdapter() {
         }
 
-        public CompleteReportHistoryAdapter(LinkedHashMap<String, List<Task>> tasks) {
-            this.daysWithTasks = new ArrayList<>(tasks.values());
-            titles = new ArrayList<>(tasks.keySet());
-        }
 
     /*    @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -79,10 +95,12 @@ public class CompleteReportHistoryActivity extends ZActivity<CompleteReportHisto
 
         @Override
         public void onBindVH(MyViewHolder holder, int position) {
-            Log.d("zzw", "position: " + position + " key " + titles.get(position));
-            holder.completedDate.setText("完成于" + titles.get(position));
+            List<ReportCompletedRelResult> item = mList.get(position);
+            String dateString = item.get(0).dateStr;
+            Log.d("zzw", "position: " + position + " key " + dateString);
+            holder.completedDate.setText("完成于" + dateString);
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.completedDate.getContext()));
-            holder.recyclerView.setAdapter(new CompletedReportHistoryAdapter(daysWithTasks.get(position)));
+            holder.recyclerView.setAdapter(new CompletedReportHistoryAdapter(item));
         }
 
         @Override

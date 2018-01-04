@@ -20,7 +20,6 @@ import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
-import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
@@ -56,6 +55,7 @@ import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
+import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
@@ -821,5 +821,13 @@ public class APIClient {
 
     public static void findHotSearchList(ZCallBack<ResponseModel<List<HotSearch>>> c) {
         apiInterface.findHotSearchList().enqueue(c);
+    }
+
+    public static void findExpireTasks(ReportCompletedRelParam param, ZCallBackWithFail<ResponseModel<List<List<ReportCompletedRelResult>>>> c) {
+        apiInterface.findExpireTasks(param).enqueue(c);
+    }
+
+    public static void findHisCompletedTasks(ReportCompletedRelParam param, ZCallBackWithFail<ResponseModel<List<List<ReportCompletedRelResult>>>> c) {
+        apiInterface.findHisCompletedTasks(param).enqueue(c);
     }
 }
