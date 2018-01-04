@@ -2,7 +2,6 @@ package net.riking.web.filter;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Enumeration;
 
 import javax.servlet.ServletContextEvent;
@@ -18,12 +17,16 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 import net.riking.config.Config;
+import net.riking.config.Const;
 import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.core.workflow.WorkflowMgr;
 import net.riking.service.MQReceiveService;
 import net.riking.service.impl.SysDataServiceImpl;
 import net.riking.spring.SpringBeanUtil;
+import net.riking.task.MQSysInfoListener;
+import net.riking.task.MQSysMesListener;
+import net.riking.task.MQSysOptListener;
 import net.riking.util.RedisUtil;
 import net.riking.util.TimerManager;
 
@@ -65,25 +68,15 @@ public class StartupListener implements ServletContextListener {
 		SpringBeanUtil.getInstance().setWac(wac);
 		logger.info("===== spring bean obejct load complete ======== ");
 
-		try {
-			initWorkflow(event);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
 		RedisUtil.redisConfig = redisConfig;
 		RedisUtil.getInstall();
 		dataDictService.init();
-		// jedisUtil.init();
 		sysDataServiceImpl.initData();
-		// timerManager.init();
-//		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
-//		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列
-//		mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
-		// jedisUtil.init();
-		sysDataServiceImpl.initData();
-//		timerManager.init();	
-	}
+		/*timerManager.init();
+		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
+		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列
+		mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
+*/	}
 
 	private void initWorkflow(ServletContextEvent event) throws InterruptedException {
 
@@ -99,18 +92,33 @@ public class StartupListener implements ServletContextListener {
 		SpringBeanUtil.getInstance().setWac(null);
 		logger.info("destroy startupListener context...");
 		
-		/*final Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()) {
-            try {
-                final Driver driver = drivers.nextElement();
-                DriverManager.deregisterDriver(driver);
-            } catch (final SQLException e) {
-                logger.warn("Unable to de-register driver", e);
-            }
-        }
-
-        AbandonedConnectionCleanupThread.shutdown();*/
+		shutDowncleanUpThreadAndDeregisterJDBCDriver();
         
+	}
+	
+	private void shutDowncleanUpThreadAndDeregisterJDBCDriver() {
+	    try {
+	        AbandonedConnectionCleanupThread.shutdown();
+	        logger.info("Shut-down of AbandonedConnectionCleanupThread successful");
+	    } catch (Throwable t) {
+	        logger.error("Exception occurred while shut-down of AbandonedConnectionCleanupThread", t);
+	    }
+
+	    // This manually deregisters JDBC driver, which prevents Tomcat 7 from
+	    // complaining about memory leaks
+	    Enumeration<Driver> drivers = DriverManager.getDrivers();
+	    while (drivers.hasMoreElements()) {
+	        Driver driver = drivers.nextElement();
+	        try {
+	            java.sql.DriverManager.deregisterDriver(driver);
+	            logger.info("JDBC driver de-registered successfully");
+	        } catch (Throwable t) {
+	            logger.error("Exception occured while deristering jdbc driver", t);
+	        }
+	    }
+	    try {
+	        Thread.sleep(2000L);
+	    } catch (Exception e) {}
 	}
 
 }

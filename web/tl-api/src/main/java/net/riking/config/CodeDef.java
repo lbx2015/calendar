@@ -94,6 +94,10 @@ public class CodeDef {
 
 		public static final String REPORT_EXPIRETASK_ERROR_DESC = "逾期报销不能核销";
 
+		//参数不能为空
+		public static final short PARAM_EMPTY_ERROR = -982;
+
+		public static final String PARAM_EMPTY_ERROR_DESC = "参数不能为空";
 	}
 
 }
