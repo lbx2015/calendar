@@ -37,6 +37,17 @@ public class BannerServer {
 		banner.setIsAduit("1");//审核通过
 		Example<Banner> example = Example.of(banner, ExampleMatcher.matchingAll());
 		Page<Banner> page = bannerRepo.findAll(example, pageable);
+		page.getContent().forEach(e->{
+			e.setId(null);
+			e.setCreatedBy(null);
+			e.setCreatedTime(null);
+			e.setModifiedBy(null);
+			e.setModifiedTime(null);
+			e.setEnabled(null);
+			e.setCreatedTime(null);
+			e.setIsAduit(null);
+			e.setIsDeleted(null);
+		});
 		return new AppResp(page.getContent(), CodeDef.SUCCESS);
 	}
 	
