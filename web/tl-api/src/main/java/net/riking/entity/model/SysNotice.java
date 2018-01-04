@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -49,6 +50,10 @@ public class SysNotice extends BaseEntity {
 	@Column(name = "data_type", length = 2)
 	private Integer dataType;
 	
+	@Comment("依据data_type存储对象id")
+	@Column(name = "obj_id", length = 32)
+	private String objId;
+	
 	@Comment("来自某用户对象的信息，系统代表：SYS")
 	@Column(name = "from_user_id", length = 32)
 	private String fromUserId;
@@ -56,7 +61,7 @@ public class SysNotice extends BaseEntity {
 	@Comment("通知用户对象")
 	@Column(name = "notice_user_id", length = 32)
 	private String noticeUserId;
-
+	
 	@Comment("创建时间")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
@@ -124,4 +129,13 @@ public class SysNotice extends BaseEntity {
 	public void setFromUserId(String fromUserId) {
 		this.fromUserId = fromUserId;
 	}
+
+	public String getObjId() {
+		return objId;
+	}
+
+	public void setObjId(String objId) {
+		this.objId = objId;
+	}
+
 }
