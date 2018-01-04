@@ -55,8 +55,7 @@
         android:id="@+id/tab_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/color_d2d2d2"
-        android:translationY="@dimen/tab_height" />
+        android:background="@color/color_d2d2d2" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

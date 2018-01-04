@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.RecommededSearchConditionsAdapter;
@@ -30,10 +31,14 @@ import com.riking.calendar.fragment.SearchReportsFragment;
 import com.riking.calendar.fragment.SearchTopicFragment;
 import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.interfeet.PerformSearch;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.realm.model.SearchConditions;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZDB;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -133,7 +138,11 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void localSearchConditionIsEmpty(boolean isEmpty) {
-                SearchActivity.this.localSearchConditionIsEmpty(isEmpty);
+                if (isEmpty) {
+                    recyclerView.setVisibility(View.GONE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
             }
         }, realmResults);
         //register realm change listener
@@ -150,24 +159,39 @@ public class SearchActivity extends AppCompatActivity {
     private void setRecommendedRecyclerView() {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recommendedRecyclerView.setLayoutManager(layoutManager);
-        List<String> list = new ArrayList<>();
+       /* List<String> list = new ArrayList<>();
         list.add("ldjfkl");
         list.add("ldjfkl");
         list.add("ldjfkl");
         list.add("ldjfkl");
-        list.add("ldjfkl");
-        RecommededSearchConditionsAdapter adapter = new RecommededSearchConditionsAdapter(new PerformSearch() {
+        list.add("ldjfkl");*/
+        final RecommededSearchConditionsAdapter adapter = new RecommededSearchConditionsAdapter(new PerformSearch() {
             @Override
             public void performSearchByLocalHistory(String searchCondition) {
-
+                SearchActivity.this.performSearchByLocalHistory(searchCondition);
             }
 
             @Override
             public void localSearchConditionIsEmpty(boolean isEmpty) {
-
+                if (isEmpty) {
+                    recommendedRecyclerView.setVisibility(View.GONE);
+                } else {
+                    recommendedRecyclerView.setVisibility(View.VISIBLE);
+                }
             }
-        }, list);
+        });
         recommendedRecyclerView.setAdapter(adapter);
+
+        SearchParams params = new SearchParams();
+        APIClient.findHotSearchList(params, new ZCallBack<ResponseModel<List<HotSearch>>>() {
+            @Override
+            public void callBack(ResponseModel<List<HotSearch>> response) {
+                recommendedRecyclerView.setVisibility(View.VISIBLE);
+                List<HotSearch> list = response._data;
+                MyLog.d("hotsearch list " + list.size());
+                adapter.setData(list);
+            }
+        });
     }
 
     private void initViews() {

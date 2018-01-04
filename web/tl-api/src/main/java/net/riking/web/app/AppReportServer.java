@@ -54,7 +54,7 @@ import net.riking.util.Utils;
 public class AppReportServer {
 	@Autowired
 	ReportService reportService;
-	
+
 	@Autowired
 	ReportRepo reportRepo;
 
@@ -75,25 +75,23 @@ public class AppReportServer {
 
 	@Autowired
 	RemindRepo remindRepo;
-	
+
 	@Autowired
 	Config config;
-	
-	
+
 	@ApiOperation(value = "跳转<报文详情>html5页面", notes = "POST")
-	@RequestMapping(value = "/reportHtml", method = RequestMethod.POST)	
+	@RequestMapping(value = "/reportHtml", method = RequestMethod.POST)
 	public AppResp reportApp(@RequestBody Report report) {
-		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH +"?id="+ report.getId() 
-																		+"&url="+config.getAppApiPath(),CodeDef.SUCCESS);
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + "?id=" + report.getId() + "&url="
+				+ config.getAppApiPath(), CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
 	@RequestMapping(value = "/getOne", method = RequestMethod.GET)
 	public AppResp getOne(@RequestParam("id") String id) {
 		Report reportList = reportRepo.findOne(id);
 		return new AppResp(reportList, CodeDef.SUCCESS);
 	}
-	
 
 	/**
 	 * 可根据报表名称查询相关报表
@@ -124,6 +122,33 @@ public class AppReportServer {
 	public AppResp findSubscribeReportList_(@RequestBody HashMap<String, String> params) {
 		List<ReportSubscribeRel> list = reportSubscribeRelRepo.findSubscribeReportList(params.get("userId"));
 		return new AppResp(list, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * userId,reportIds,subscribeType
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "用户单个报表订阅", notes = "POST")
+	@RequestMapping(value = "/modifySubscribeReportByOne", method = RequestMethod.POST)
+	public AppResp modifySubscribeReportByOne_(@RequestBody Map<String, Object> params) {
+		SubscribeReportParam relParam = Utils.map2Obj(params, SubscribeReportParam.class);
+		String[] arr = {};
+		if (StringUtils.isNotBlank(relParam.getReportIds())) {
+			arr = relParam.getReportIds().split(",");
+		}
+		if (arr.length != 1 || relParam.getSubscribeType() == null || relParam.getUserId() == null) {
+			return new AppResp(CodeDef.EMP.REPORT_SUBSCRIBE_ERROR, CodeDef.EMP.REPORT_SUBSCRIBE_ERROR_DESC);
+		}
+
+		String currentDate = DateUtils.getDate("yyyyMMdd");
+		boolean flag = reportService.addReportTaskByUserSingleSubscribe(relParam.getUserId(), arr, currentDate,
+				relParam.getSubscribeType());
+		if (flag) {
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+		} else {
+			return new AppResp(CodeDef.EMP.REPORT_SUBSCRIBE_ERROR, CodeDef.EMP.REPORT_SUBSCRIBE_ERROR_DESC);
+		}
 	}
 
 	@ApiOperation(value = "更新用户报表订阅", notes = "POST")
@@ -197,17 +222,18 @@ public class AppReportServer {
 
 		} else {// 完成
 			String currentDate = DateUtils.getDate("yyyyMMddHHmm");
-			
+
 			// 逾期任务核销，给予提示
 			if (Long.parseLong(currentDate) > Long.parseLong(relParams.getSubmitEndTime())) {
 				return new AppResp(CodeDef.EMP.REPORT_EXPIRETASK_ERROR, CodeDef.EMP.REPORT_EXPIRETASK_ERROR_DESC);
 			}
-			
+
 			// 未到核销时间，给予提示
 			if (Long.parseLong(currentDate) < Long.parseLong(relParams.getSubmitStartTime())) {
-				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR, CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR_DESC);
+				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR,
+						CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR_DESC);
 			}
-			
+
 			reportCompletedRelRepo.updateComplated(relParams.getUserId(), relParams.getReportId(),
 					relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), currentDate);
 			// 移除闹钟设置记录
@@ -245,19 +271,19 @@ public class AppReportServer {
 				String submitEndDateDay = data.getSubmitEndTime().substring(6, 8);
 				for (int i = 1; i <= Integer.parseInt(submitEndDateDay); i++) {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
-					if (!taskDateList.contains(_date)){
+					if (!taskDateList.contains(_date)) {
 						// 判断是否与国家节假日，延迟上报截止时间
 						_date = Utils.getWorkday(_date);
 						taskDateList.add(_date);
 					}
-						
+
 				}
 			} else {
 				// 非当月，则添加当月所有日期
 				int _daysOfMonth = DateUtils.getDaysByMonth(currentMonth);
 				for (int i = 1; i <= _daysOfMonth; i++) {
 					String _date = currentMonth + (i < 10 ? "0" + i : i);
-					if (!taskDateList.contains(_date)){
+					if (!taskDateList.contains(_date)) {
 						// 判断是否与国家节假日，延迟上报截止时间
 						_date = Utils.getWorkday(_date);
 						taskDateList.add(_date);

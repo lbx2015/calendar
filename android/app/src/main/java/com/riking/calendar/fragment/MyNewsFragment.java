@@ -92,7 +92,7 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
             mPullToLoadView.setVisibility(View.GONE);
             notLoginLayout.setVisibility(View.VISIBLE);
             mPullToLoadView.setVisibility(View.GONE);
-            mPullToLoadView.setOnClickListener(new View.OnClickListener() {
+            notLoginLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ZGoto.toLoginActivity();

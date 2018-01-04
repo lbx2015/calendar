@@ -111,6 +111,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                             }
                         });
                     } else {
+                        ZClickListenerWithLoginCheck.weakRef.clear();
                         ZGoto.toLoginActivity();
                     }
                 }
@@ -224,13 +225,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                             checkInTv.setEnabled(false);
                             CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
                             dialog.setExperience(maps == null ? 0 : maps.get("integral"));
-                            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-                            dialog.setContentView(layoutInflater.inflate(R.layout.dialog_check_in, null));
-                            dialog.zEnterImageView = dialog.findViewById(R.id.sign_in_success_img);
-                            dialog.zEnterImageView.text = "+" + (
-                                    maps == null ? 0 : maps.get("signIntegral"));
-                            dialog.show();
-                            dialog.zEnterImageView.text = "+" + maps.get("signIntegral");
+                            dialog.signIntegral = (maps == null ? 0 : maps.get("signIntegral"));
                             dialog.show();
                         }
                     }
@@ -239,17 +234,17 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         });
 
         //set my replies click listener
-        myRepliesLayout.setOnClickListener(new OnClickListener() {
+        myRepliesLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
+            public void click(View v) {
                 ZGoto.to(MyRepliesActivity.class);
             }
         });
 
         // go to following me activity on click
-        followMeLayout.setOnClickListener(new OnClickListener() {
+        followMeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
+            public void click(View v) {
                 ZGoto.to(MyFollowersActivity.class);
             }
         });

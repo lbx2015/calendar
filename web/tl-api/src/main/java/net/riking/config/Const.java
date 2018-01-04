@@ -9,13 +9,13 @@ import org.apache.activemq.ActiveMQConnection;
  *
  */
 public class Const {
-	
+
 	public static final String KEY_WORD = "KEYWORD";
-	
+
 	public static final Integer IS_DELETE = 0;
-	
+
 	public static final Integer IS_NOT_DELETE = 1;
-	
+
 	public static final String EMPTY = null;
 
 	public static final String MODEL_ATTRS_JSON_PATH = "/static/dict/";
@@ -55,8 +55,8 @@ public class Const {
 	public static final String TL_POLICY_HTML5_PATH = "/policy.html";
 
 	public static final String TL_REPORT_HTML5_PATH = "/report.html";
-	
-	public static final String TL_USER_HTML5_PATH ="/userGrade.html";
+
+	public static final String TL_USER_HTML5_PATH = "/userGrade.html";
 
 	public static final String TL_QUESTIONSHARE_HTML5_PATH = "/questionShare.html";
 
@@ -87,6 +87,15 @@ public class Const {
 	public static final int ADUIT_NOT_PASS = 2;
 
 	/** -------------------审核状态 end-------------------------- */
+
+	/** -------------------订阅状态 begin-------------------------- */
+	/* 取消订阅 */
+	public static final int IS_NOT_SUBSCRIBE = 0;
+
+	/* 订阅 */
+	public static final int IS_SUBSCRIBE = 1;
+
+	/** -------------------订阅状态 end-------------------------- */
 
 	/** -------------------mq队列 begin-------------------------- */
 	/* 系统通知队列 */
@@ -152,11 +161,13 @@ public class Const {
 	/** --------------------请求方向 end-------------------------- */
 
 	/* -------------------对象类型 begin-------------------------- */
-	/** 问题 */ 
+	/** 问题 */
 	public static final int OBJ_TYPE_1 = 1;
-	/** 话题 */ 
+
+	/** 话题 */
 	public static final int OBJ_TYPE_2 = 2;
-	/** 用户 */ 
+
+	/** 用户 */
 	public static final int OBJ_TYPE_3 = 3;
 
 	/* --------------------对象类型 end-------------------------- */
@@ -182,7 +193,8 @@ public class Const {
 	/** -------------------操作类型 begin-------------------------- */
 	/** 回答 */
 	public static final int OBJ_TYPE_ANSWER = 1;
-	/** 资讯 */ 
+
+	/** 资讯 */
 	public static final int OBJ_TYPE_NEWS = 2;
 
 	/** --------------------操作类型 end-------------------------- */
@@ -218,51 +230,69 @@ public class Const {
 	public static final int OPJ_TYPE_NEWS = 4;// 4-资讯
 
 	public static final int OPJ_TYPE_QUEST = 5;// 5-问题
+
 	/** --------------------搜索栏操作对象状态 end-------------------------- */
 
-
 	/* -------------------队列类型 begin-------------------------- */
-	public static final int MQ_SYS_INFO = 0;//阅读通知
+	public static final int MQ_SYS_INFO = 0;// 阅读通知
+
 	/** 邀请回答的邀请 */
 	public static final int MQ_OPT_ANSWERINVITE = 1;
+
 	/** 问题回答点赞或收藏 */
 	public static final int MQ_OPT_QA_AGREEOR_COLLECT = 2;
+
 	/** 资讯的收藏 */
 	public static final int MQ_OPT_NEW_COLLECT = 3;
+
 	/** 问题的屏蔽 */
 	public static final int MQ_OPT_SHIELD_QUEST = 4;
+
 	/** 问题，话题，用户的关注 */
 	public static final int MQ_OPT_FOLLOW = 5;
+
 	/** 评论点赞 */
 	public static final int MQ_OPT_COMMENT_AGREE = 6;
+
 	/** 通讯录的邀请 */
 	public static final int MQ_OPT_CONTACTS_INVITE = 7;
+
 	/** 问题回答的评论 */
 	public static final int MQ_OPT_QANSWER_COMMENT = 8;
+
 	/** 资讯的评论发布 */
 	public static final int MQ_OPT_NEWS_COMMENT = 9;
+
 	/** 评论的回复和回复的回复 */
 	public static final int MQ_OPT_COMMENT_REPLY = 10;
 
 	/* --------------------队列类型 end-------------------------- */
-	
+
 	/* -------------------消息通知类型 begin-------------------------- */
-	//系统信息
+	// 系统信息
 	public static final int NOTICE_SYS_INFO = 0;
+
 	/** 被邀请回答的邀请 */
 	public static final int NOTICE_OPT_ANSWERINVITE = 1;
+
 	/** 问题回答被点赞 */
 	public static final int NOTICE_OPT_QA_AGREEOR = 2;
+
 	/** 问题回答被收藏 */
 	public static final int NOTICE_OPT_QA_COLLECT = 3;
+
 	/** 问题被关注 */
 	public static final int NOTICE_OPT_QUESTION_FOLLOW = 4;
+
 	/** 被关注的用户 */
 	public static final int NOTICE_OPT_USER_FOLLOW = 5;
+
 	/** 评论被点赞 */
 	public static final int NOTICE_OPT_COMMENT_AGREE = 6;
+
 	/** 问题回答的被评论 */
 	public static final int NOTICE_OPT_QANSWER_COMMENT = 7;
+
 	/** 评论的回复和回复的被回复 */
 	public static final int NOTICE_OPT_COMMENT_REPLY = 8;
 
