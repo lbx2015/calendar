@@ -14,7 +14,7 @@
     <div class="formbox layui-form add-formbox">
         <div class="_tmpl" data-url="edit.html" data-attr="topic.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
-            <button class="layui-btn bgc1 layui-btn-small" lay-submit lay-filter="edit" id="submit">确定</button>
+            <button class="layui-btn bgc1 layui-btn-small" id="submit">确定</button>
             <button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
         </div>
     </div>
@@ -52,7 +52,7 @@
                     	data.editable = 2;
                     	$("#submit").hide();
                     };
-                    
+                    data.rowItemNum = 2;
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
                     loadRichText();
@@ -120,6 +120,7 @@
             TmplUtils.showMsgFail('编辑失败');
         });
     }
+    
 </script>
 
 </html>

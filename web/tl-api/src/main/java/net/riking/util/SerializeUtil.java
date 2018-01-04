@@ -29,7 +29,7 @@ public class SerializeUtil {
             byte[] bytes = baos.toByteArray();  
             return bytes;  
         } catch (Exception e) {  
-  
+        	e.printStackTrace();
         }  
         return null;  
     }  

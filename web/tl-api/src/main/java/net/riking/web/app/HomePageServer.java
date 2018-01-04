@@ -24,7 +24,7 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.QuestionAnswer;
@@ -82,7 +82,7 @@ public class HomePageServer {
 	AppUserService appUserService;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	/**
 	 *

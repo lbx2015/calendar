@@ -22,6 +22,7 @@ import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.core.workflow.WorkflowMgr;
 import net.riking.service.MQReceiveService;
+import net.riking.service.QuestionKeyWordService;
 import net.riking.service.impl.SysDataServiceImpl;
 import net.riking.spring.SpringBeanUtil;
 import net.riking.task.MQSysInfoListener;
@@ -42,6 +43,9 @@ public class StartupListener implements ServletContextListener {
 
 	@Autowired
 	DataDictService dataDictService;
+	
+	@Autowired
+	QuestionKeyWordService questionKeyWordService;
 
 	@Autowired
 	SysDataServiceImpl sysDataServiceImpl;
@@ -72,11 +76,10 @@ public class StartupListener implements ServletContextListener {
 		RedisUtil.getInstall();
 		dataDictService.init();
 		sysDataServiceImpl.initData();
-		/*timerManager.init();
-		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
-		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列
-		mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
-*/	}
+
+		questionKeyWordService.initKeyWord();
+	}
+		
 
 	private void initWorkflow(ServletContextEvent event) throws InterruptedException {
 

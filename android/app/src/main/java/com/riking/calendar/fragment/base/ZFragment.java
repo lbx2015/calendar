@@ -1,17 +1,14 @@
 package com.riking.calendar.fragment.base;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.necer.ncalendar.view.SimpleDividerItemDecoration;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.ZToast;
@@ -35,9 +32,17 @@ public abstract class ZFragment<T extends RecyclerView.Adapter> extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (v != null) return v;
-        v = inflater.inflate(R.layout.z_fragment, container, false);
+        v = createView(inflater, container, savedInstanceState);
+        if (v == null) {
+            v = inflater.inflate(R.layout.z_fragment, container, false);
+        }
         init();
         return v;
+    }
+
+    //should override this method
+    public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return null;
     }
 
     public void init() {

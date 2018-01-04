@@ -25,11 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMClientListener;
-import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chatuidemo.Constant;
-import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.chatuidemo.db.InviteMessgeDao;
 import com.hyphenate.chatuidemo.ui.ContactListFragment;
 import com.hyphenate.chatuidemo.ui.ConversationListFragment;
@@ -38,8 +35,8 @@ import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.FourthFragment;
 import com.riking.calendar.fragment.HomeFragment;
+import com.riking.calendar.fragment.MyNewsFragment;
 import com.riking.calendar.fragment.UserInfoFragment;
 import com.riking.calendar.fragment.WorkFragment;
 import com.riking.calendar.jiguang.Logger;
@@ -50,8 +47,6 @@ import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.DownLoadApk;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.ZR;
-
-import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -65,7 +60,8 @@ public class ViewPagerActivity extends AppCompatActivity {
     private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //    private final int[] TAB_IMGS = new int[]{R.drawable.home_tab_selector, R.drawable.first_tab_selector, R.drawable.second_tab_selector, R.drawable.third_tab_selector, R.drawable.fourth_tab_selector};
     //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new ConversationListFragment(), new UserInfoFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new MyNewsFragment(), new UserInfoFragment()};
+    //    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new WorkFragment(), new ConversationListFragment(), new UserInfoFragment()};
     //    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new HomeFragment(), new PlazaFragment(), new WorkFragment(), new ConversationListFragment(), new FourthFragment()};
     //Tab 数目
     private final int COUNT = TAB_FRAGMENTS.length;
@@ -86,7 +82,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             }
         }
     };
-    EMMessageListener messageListener = new EMMessageListener() {
+    /*EMMessageListener messageListener = new EMMessageListener() {
 
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
@@ -118,7 +114,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         @Override
         public void onMessageChanged(EMMessage message, Object change) {
         }
-    };
+    };*/
     // textview for unread event message
     private TextView unreadAddressLable;
     private Button[] mTabs;
@@ -175,13 +171,13 @@ public class ViewPagerActivity extends AppCompatActivity {
         return EMClient.getInstance().chatManager().getUnreadMsgsCount();
     }
 
-    @Override
+ /*   @Override
     protected void onResume() {
         super.onResume();
 
         if (!isConflict && !isCurrentAccountRemoved) {
             //not show the unread message count for the moment
-            updateUnreadLabel();
+//            updateUnreadLabel();
 //            updateUnreadAddressLable();
         }
 
@@ -191,7 +187,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         sdkHelper.pushActivity(this);
 
         EMClient.getInstance().chatManager().addMessageListener(messageListener);
-    }
+    }*/
 
     /**
      * update unread message count
@@ -414,7 +410,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             }
         }).create().show();
     }
-
+/*
     @Override
     protected void onStop() {
         EMClient.getInstance().chatManager().removeMessageListener(messageListener);
@@ -423,7 +419,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         sdkHelper.popActivity(this);
 
         super.onStop();
-    }
+    }*/
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 

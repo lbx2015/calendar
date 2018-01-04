@@ -30,7 +30,7 @@ import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -99,7 +99,7 @@ public class QAnswerServer {
 	AppUserService appUserService;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	Config config;

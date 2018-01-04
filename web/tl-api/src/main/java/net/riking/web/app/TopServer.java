@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
@@ -26,7 +27,6 @@ import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.QAnswerResult;
@@ -75,7 +75,7 @@ public class TopServer {
 	QACAgreeRelRepo qACAgreeRelRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	TopicRepo topicRepo;
@@ -88,7 +88,7 @@ public class TopServer {
 
 	@Autowired
 	QAnswerRelRepo qAnswerRelRepo;
-
+	
 	/**
 	 * 话题的详情[topicId,userId]
 	 * @param params

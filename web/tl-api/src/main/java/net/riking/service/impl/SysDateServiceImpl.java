@@ -1,17 +1,29 @@
 package net.riking.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import net.riking.dao.repo.SysDaysRepo;
+import net.riking.dao.repo.SysDaysTempRepo;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.SysDays;
 import net.riking.service.SysDateService;
@@ -21,6 +33,9 @@ public class SysDateServiceImpl implements SysDateService {
 
 	@Autowired
 	SysDaysRepo sysDaysRepo;
+
+	@Autowired
+	SysDaysTempRepo sysDaysTempRepo;
 
 	@Override
 	public String getDate() {
@@ -163,6 +178,34 @@ public class SysDateServiceImpl implements SysDateService {
 		}
 		return period;
 
+	}
+
+	@Override
+	public Page<SysDays> findAllToPage(SysDays sysDays, PageRequest pageable) {
+		// TODO Auto-generated method stub
+		Specification<SysDays> bCondi = whereCondition(sysDays);
+		Page<SysDays> pageB = sysDaysRepo.findAll(bCondi, pageable);
+		if (null != pageB) {
+			return pageB;
+		}
+		return null;
+	}
+
+	private Specification<SysDays> whereCondition(SysDays sysDays) {
+		return new Specification<SysDays>() {
+			@Override
+			public Predicate toPredicate(Root<SysDays> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				// 默认查询条件
+				// predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
+				if (null != sysDays) {
+					if (StringUtils.isNotBlank(sysDays.getDates())) {
+						predicates.add(cb.like(root.<String> get("dates"), "%" + sysDays.getDates() + "%"));
+					}
+				}
+				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+			}
+		};
 	}
 
 }

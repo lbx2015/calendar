@@ -34,6 +34,8 @@ import java.util.List;
  * Created by zw.zhang on 2017/7/12.
  */
 public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemAdapter.MyViewHolder, CurrentReportTaskResp> {
+    public CurrentReportTaskResp updateRemindReport;
+    public int updateRemindPosition;
     WorkFragment fragment;
 
     public NotDoneReportTaskItemAdapter(WorkFragment fragment, List<CurrentReportTaskResp> r) {
@@ -92,20 +94,36 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
             }
         });
 
-        holder.tv.setOnClickListener(new View.OnClickListener() {
+        holder.tv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
+            public void click(View v) {
+                updateRemindPosition = position;
+                updateRemindReport = r;
                 holder.sml.smoothCloseMenu();
-                ZGoto.to(EditReminderActivity.class);
-//                notifyItemRemoved(position);
-                //We should update the adapter after data set is changed. and we had not using RealmResult so for.
-                //so we need to update teh adapter manually
-                // reports.remove(task);
-//                Toast.makeText(title.getContext(), "deleted", Toast.LENGTH_LONG).show();
+                gotoEditRemindActivity(r);
+            }
+        });
+
+        holder.clockImage.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                updateRemindPosition = position;
+                updateRemindReport = r;
+                holder.sml.smoothCloseMenu();
+                gotoEditRemindActivity(r);
             }
         });
     }
 
+    private void gotoEditRemindActivity(CurrentReportTaskResp r) {
+        Intent i = new Intent(fragment.getContext(), EditReminderActivity.class);
+        i.putExtra("reminder_id", r.remindId);
+        i.putExtra("reminder_title", r.reportName);
+        i.putExtra("submitStartTime", r.submitStartTime);
+        i.putExtra("submitEndTime", r.submitEndTime);
+        i.putExtra("reportId", r.reportId);
+        fragment.startActivityForResult(i, CONST.REQUEST_CODE_ADD_REMINDER);
+    }
 
     @Override
     public MyViewHolder onCreateVH(ViewGroup parent, int viewType) {

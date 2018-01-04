@@ -43,6 +43,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
@@ -100,7 +101,6 @@ public interface APIInterface {
     @POST("api/users?")
     Call<UserList> doCreateUserWithField(@Field("queryParam") String name, @Field("job") String job);
 
-
     @POST("remindApp/save")
     Call<ResponseBody> createRemind(@Body ReminderModel reminder);
 
@@ -128,7 +128,6 @@ public interface APIInterface {
     @POST("appUserApp/addOrUpdate")
     Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
 
-
     @POST("common/getCommend")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
@@ -141,10 +140,10 @@ public interface APIInterface {
     @POST("appUserReport/getUserRepor")
     Call<ResponseModel<ArrayList<QueryReportContainer>>> getUserReports(@Body AppUserReportCompleteRel body);
 
-    @POST("appAboutApp/reportHtml")
+    @POST("report/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
-    @POST("appAboutApp/aboutHtml")
+    @POST("appHtml/aboutHtml")
     Call<ResponseModel<String>> getAboutHtml(@Query("versionNumber") String versionNumber);
 
     @POST("appAboutApp/agreementHtml")
@@ -411,7 +410,7 @@ public interface APIInterface {
     Call<ResponseModel<String>> emailIdentify(@Body UserParams params);
 
     @POST("userContacts/colleague")
-    Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
+    Call<ResponseModel<String>> getColleagues(@Body UserParams params);
 
     @POST("userContacts/contacts")
     Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
@@ -423,4 +422,32 @@ public interface APIInterface {
     @POST("report/complete")
     Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
 
+    @POST("report/remindSave")
+    Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
+
+    @POST("user/myGradeHtml")
+    Call<ResponseModel<String>> myGrade(@Body UserParams params);
+
+    /**
+     * get other user info information
+     *
+     * @param params
+     * @return
+     */
+    @POST("user/getOther")
+    Call<ResponseModel<OtherUserResp>> getOther(@Body UserParams params);
+
+    @POST("appHtml/policyHtml")
+    Call<ResponseModel<String>> policyHtml();
+
+    /**
+     * 根据问题title找出话题列表
+     *
+     * @return
+     */
+    @POST("topicQuestion/getTopicByQuest")
+    Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body TQuestionParams params);
+
+    @POST("user/getFOAF")
+    Call<ResponseModel<List<AppUserResult>>> getFOAF(@Body UserParams params);
 }

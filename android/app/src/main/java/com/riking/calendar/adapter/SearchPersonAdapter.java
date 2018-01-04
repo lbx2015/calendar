@@ -38,7 +38,7 @@ public class SearchPersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         h.userName.setText(user.userName);
         h.summary.setText(user.answerNum + "个回答，" + user.agreeNum + "赞");
         //set user name
-        ZR.setUserName(h.userName, user.userName, user.grade);
+        ZR.setUserName(h.userName, user.userName, user.grade,user.userId);
 
         ZR.setUserImage(h.userImage, user.photoUrl);
 

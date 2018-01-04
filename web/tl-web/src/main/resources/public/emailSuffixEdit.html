@@ -98,7 +98,8 @@
 		var emailSuffix = $("#edit_base input[name='emailSuffix']").val();
 		if(emailSuffix){
 			//判断当前版本编号首字母是否大写的V并且//V后的格式是否x.x.x的格式
-			var reg=/^(\d+)\.(\d+)$/g; //匹配邮箱地址的正则表达式    
+			//var reg=/^(\d+)\.(\d+)$/g; //匹配邮箱地址的正则表达式    
+			var reg=/^([A-Za-z0-9]+)\.([A-Za-z]+)$/g; //匹配邮箱地址的正则表达式    
 	        if(reg.test(emailSuffix)){
 	        	return true;
 	        }

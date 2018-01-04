@@ -1,15 +1,20 @@
 package com.riking.calendar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.QuestResult;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.ZGoto;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 
@@ -21,11 +26,12 @@ public class MyQuestionsAdapter extends ZAdater<MyQuestionsAdapter.MyViewHolder,
     }
 
     @Override
-    public void onBindVH(MyViewHolder holder, int position) {
+    public void onBindVH(final MyViewHolder holder, int position) {
         final QuestResult question = mList.get(position);
         holder.titleTV.setText(question.title);
         holder.contentTv.setVisibility(View.GONE);
         holder.timeTv.setText(DateUtil.showTime(question.createdTime));
+        ZR.setRequestClickListener(holder.itemView,question.questionId);
     }
 
     @Override

@@ -111,7 +111,7 @@ public class MyApplication extends Application {
         Realm.setDefaultConfiguration(realmConfiguration);
 
         //init hyphenate demo helper
-        DemoHelper.getInstance().init(this);
+//        DemoHelper.getInstance().init(this);
         new Thread(new Runnable() {
             @Override
             public void run() {

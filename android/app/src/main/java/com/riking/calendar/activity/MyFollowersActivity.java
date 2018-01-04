@@ -21,6 +21,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -32,22 +33,23 @@ import java.util.List;
  */
 
 public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
+    protected SwipeRefreshLayout swipeRefreshLayout;
     MyFollowersAdapter mAdapter;
     RecyclerView recyclerView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
-    protected SwipeRefreshLayout swipeRefreshLayout;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private TextView activityTitle;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_followers);
-
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
     }
 
@@ -134,6 +136,7 @@ public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
     private void getFanse(final int page) {
         final UserFollowParams params = new UserFollowParams();
         params.pindex = page;
+        params.userId = userId;
         APIClient.getMyFans(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
             @Override
             public void callBack(ResponseModel<List<AppUserResult>> response) {

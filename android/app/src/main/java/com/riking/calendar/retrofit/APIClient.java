@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
@@ -47,6 +48,7 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
@@ -69,6 +71,7 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
 import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.convert.DateTypeDeserializer;
 
@@ -175,7 +178,6 @@ public class APIClient {
         for (Task t : tasks) {
             models.add(new Todo(t));
         }
-
         apiInterface.synchronousTasks(models).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
@@ -237,6 +239,31 @@ public class APIClient {
                             } else {
                                 addAlarm4Task(task);
                             }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public static void addRemind(final ReminderModel r) {
+        MyLog.d(" remind model: " + r);
+        apiInterface.saveRemind(r).enqueue(new ZCallBackWithFail<ResponseModel<ReminderModel>>() {
+            @Override
+            public void callBack(ResponseModel<ReminderModel> response) throws Exception {
+                if (failed) {
+                    Toast.makeText(MyApplication.APP, "上传失败", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MyApplication.APP, "上传成功", Toast.LENGTH_LONG).show();
+                }
+                ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        Reminder reminder = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, r.id).findFirst();
+                        if (failed) {
+                            reminder.syncStatus = 1;
+                        } else {
+                            addAlarm(reminder, reminder.reminderTime);
                         }
                     }
                 });
@@ -432,7 +459,7 @@ public class APIClient {
 
                         //delete those which is from server
                         for (String id : remindIds) {
-                            Reminder r = realm.where(Reminder.class).equalTo("userId", id).findFirst();
+                            Reminder r = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, id).findFirst();
                             cancelAlarm(r.requestCode);
                             r.deleteFromRealm();
                         }
@@ -645,7 +672,7 @@ public class APIClient {
         apiInterface.getAnswerInfo(params).enqueue(c);
     }
 
-    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
         apiInterface.getMyFavoriteUsers(params).enqueue(c);
     }
 
@@ -711,13 +738,13 @@ public class APIClient {
         apiInterface.findCurrentTasks(param).enqueue(c);
     }
 
-    public static void getMyFollow(UserFollowParams params, ZCallBack<ResponseModel<List<Topic>>> c) {
+    public static void getMyFollow(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
         //get topics
         params.objType = 2;
         apiInterface.getMyFollowTopic(params).enqueue(c);
     }
 
-    public static void getMyFollowQuestion(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+    public static void getMyFollowQuestion(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<QuestResult>>> c) {
         params.objType = 1;
         apiInterface.getMyFollowQuestion(params).enqueue(c);
     }
@@ -744,7 +771,7 @@ public class APIClient {
         apiInterface.emailIdentify(params).enqueue(c);
     }
 
-    public static void getColleague(UserParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.getColleagues(params).enqueue(c);
     }
 
@@ -760,7 +787,34 @@ public class APIClient {
         apiInterface.completeReport(params).enqueue(c);
     }
 
-    public static void saveTodo( List<Todo> params, ZCallBackWithFail<ResponseModel<String>> c) {
+    public static void saveTodo(List<Todo> params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.synchronousTasks(params).enqueue(c);
+    }
+
+    public static void saveRemind(ReminderModel model, ZCallBack<ResponseModel<ReminderModel>> callBack) {
+        apiInterface.saveRemind(model).enqueue(callBack);
+    }
+
+    public static void myGrade(UserParams reminderModel, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.myGrade(reminderModel).enqueue(c);
+    }
+
+    public static void getOtherPersonInfo(UserParams params, ZCallBack<ResponseModel<OtherUserResp>> c) {
+        apiInterface.getOther(params).enqueue(c);
+    }
+
+    /**
+     * policy
+     */
+    public static void getPolicyHtml(ZCallBack<ResponseModel<String>> c) {
+        apiInterface.policyHtml().enqueue(c);
+    }
+
+    public static void getTopicByQuestion(TQuestionParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
+        apiInterface.getTopicByQuestion(params).enqueue(c);
+    }
+
+    public static void getFOAF(UserParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getFOAF(params).enqueue(c);
     }
 }

@@ -18,10 +18,11 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.MyColleagueFragment;
 import com.riking.calendar.fragment.MyContactsFragment;
+import com.riking.calendar.fragment.MyFOAFFragment;
 
 public class MyRelationActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyColleagueFragment(), new MyColleagueFragment(), new MyContactsFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyFOAFFragment(), new MyColleagueFragment(), new MyContactsFragment()};
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;

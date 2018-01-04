@@ -30,19 +30,22 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
+import net.riking.core.entity.MultipleChoiceCustom;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.TopicRepo;
 import net.riking.entity.ApiResp;
 import net.riking.entity.Data;
 import net.riking.entity.VerifyParamModel;
 import net.riking.entity.model.QuestionAnswer;
+import net.riking.entity.model.Topic;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.service.AppUserService;
 import net.riking.util.FileUtils;
@@ -65,6 +68,9 @@ public class TopicQuestionController {
 
 	@Autowired
 	TopicRelRepo topicRelRepo;
+	
+	@Autowired
+	TopicRepo topicRepo;
 
 	@Autowired
 	QuestionAnswerRepo questionAnswerRepo;
@@ -79,14 +85,14 @@ public class TopicQuestionController {
 	QAnswerRelRepo qAnswerRelRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	QAInviteRepo qAInviteRepo;
 
 	@Autowired
 	AppUserService appUserService;
-
+	
 	@AuthPass
 	@ApiOperation(value = "提问/回答上传图片到临时路径", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
@@ -279,5 +285,19 @@ public class TopicQuestionController {
 		}
 
 	}
-
+	
+	@RequestMapping(value = "/getTopicList", method = RequestMethod.GET)
+	public Resp getTopicList(@RequestParam(value = "prop", required = false) String prop) throws Exception {
+		List<Topic> list = topicRepo.findAllByIsDelete();
+		MultipleChoiceCustom choice;
+		List<MultipleChoiceCustom> multipleChoiceCustoms = new ArrayList<MultipleChoiceCustom>();
+		for (Topic topic : list) {
+			choice = new MultipleChoiceCustom();
+			choice.setKey(topic.getId());
+			choice.setValue(topic.getTitle());
+			choice.setProp(prop);
+			multipleChoiceCustoms.add(choice);
+		}
+		return new Resp(multipleChoiceCustoms, CodeDef.SUCCESS);
+	}
 }
