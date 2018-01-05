@@ -7,10 +7,6 @@ public class AppUserRecommend {
 //	@Id
 //	@Column(name = "report_id", length = 32)
 	public String reportId;
-	
-
 //	@Transient
 	public String reportName;
-
-
 }

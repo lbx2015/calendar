@@ -222,6 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(LoginActivity.this, WebviewActivity.class);
+                        i.putExtra(CONST.ACTIVITY_NAME,"LoginActivity");
                         i.putExtra(CONST.WEB_URL, response._data);
                         startActivity(i);
                     }

@@ -107,6 +107,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                             public void callBack(ResponseModel<String> response) {
                                 Intent i = new Intent(getContext(), WebviewActivity.class);
                                 i.putExtra(CONST.WEB_URL, response._data);
+                                i.putExtra(CONST.ACTIVITY_NAME,"UserInfoFragment");
                                 startActivity(i);
                             }
                         });

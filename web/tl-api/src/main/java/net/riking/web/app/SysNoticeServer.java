@@ -53,7 +53,7 @@ public class SysNoticeServer {
 	@RequestMapping(value = "/getMoreUserNotice", method = RequestMethod.POST)
 	public AppResp _getMoreUserNotice(@RequestBody Map<String, Object> params) {
 		SysNoticeParams sysNoticeParams = Utils.map2Obj(params, SysNoticeParams.class);
-		if(StringUtils.isBlank(sysNoticeParams.getUserId()))
+		if(null==sysNoticeParams || StringUtils.isBlank(sysNoticeParams.getUserId()))
 			return new AppResp(CodeDef.EMP.PARAM_EMPTY_ERROR, "userId " + CodeDef.EMP.PARAM_EMPTY_ERROR_DESC);
 		
 		List<SysNoticeResult> list = sysNoticeService.findUserNoticeResult(sysNoticeParams.getUserId(), sysNoticeParams.getReqTimeStamp());

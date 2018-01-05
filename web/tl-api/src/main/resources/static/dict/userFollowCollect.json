@@ -8,10 +8,20 @@
 	],
 	"attrs": [
 		{
+			"prop": "serialNum",
+			"alias": "序号",
+			"desc": "序号",
+			"type": "string",
+			"group": "base",
+			"hidden":"edit,preview"
+		},
+		{
 			"prop": "userName",
 			"alias": "关注人昵称/手机号",
 			"desc": "关注人昵称/手机号",
 			"type": "string",
+			"query": "1",
+			"query_order": "1",
 			"group": "base"
 		},
 		{
@@ -63,53 +73,11 @@
 			"group": "base"
 		},
 		{
-			"prop": "isAduit",
-			"alias": "是否审核",
-			"desc": "是否审核",
-			"type": "enum",
-			"dict_key": "T_REPORT.ISADUIT",
-			"group": "base",
-			"hidden": "edit"
-		},
-		{
-			"prop": "createdBy",
-			"alias": "创建人ID",
-			"desc": "创建人ID",
-			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
-		},
-		{
 			"prop": "createdTime",
-			"alias": "创建时间",
-			"desc": "创建时间",
+			"alias": "关注时间",
+			"desc": "关注时间",
 			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
-		},
-		{
-			"prop": "modifiedBy",
-			"alias": "修改人ID",
-			"desc": "修改人ID",
-			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
-		},
-		{
-			"prop": "modifiedTime",
-			"alias": "最后修改时间",
-			"desc": "最后修改时间",
-			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
-		},
-		{
-			"prop": "isDeleted",
-			"alias": "是否删除：1-未删除；0-删除",
-			"desc": "是否删除：1-未删除；0-删除",
-			"type": "string",
-			"group": "base",
-			"hidden": "table,edit,preview"
+			"group": "base"
 		}
 	]
 }
