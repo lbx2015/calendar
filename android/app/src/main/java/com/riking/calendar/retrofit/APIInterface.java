@@ -126,10 +126,7 @@ public interface APIInterface {
     @POST("common/getValidCode")
     Call<ResponseModel<AppUser>> getVarificationCode(@Body LoginParams user);
 
-    @POST("appUserApp/addOrUpdate")
-    Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
-
-    @POST("common/getCommend")
+    @POST("common/getRecommendReport")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
     /**
