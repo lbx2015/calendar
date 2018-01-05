@@ -35,7 +35,9 @@ import com.necer.ncalendar.calendar.NCalendar;
 import com.necer.ncalendar.listener.OnCalendarChangedListener;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.CompleteReportHistoryActivity;
 import com.riking.calendar.activity.OrderReportActivity;
+import com.riking.calendar.activity.OverdueReportActivity;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
 import com.riking.calendar.adapter.NotDoneReportTaskItemAdapter;
@@ -192,15 +194,21 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
+                                if (!ZPreference.isLogin()) {
+                                    ZGoto.toLoginActivity();
+                                    return true;
+                                }
                                 switch (item.getItemId()) {
                                     case R.id.order_reports: {
                                         ZGoto.toWithLoginCheck(OrderReportActivity.class);
                                         break;
                                     }
                                     case R.id.overdue_task: {
+                                        ZGoto.to(OverdueReportActivity.class);
                                         break;
                                     }
                                     case R.id.history_done: {
+                                        ZGoto.to(CompleteReportHistoryActivity.class);
                                         break;
                                     }
                                     case R.id.history_task: {

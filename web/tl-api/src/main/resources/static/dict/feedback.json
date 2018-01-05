@@ -16,6 +16,14 @@
 			"hidden": "table,edit,preview"
 		},
 		{
+			"prop": "userName",
+			"alias": "反馈用户",
+			"desc": "反馈用户",
+			"type": "string",
+			"verify":"required",
+			"group": "base"
+		},
+		{
 			"prop": "content",
 			"alias": "反馈内容",
 			"desc": "反馈内容",

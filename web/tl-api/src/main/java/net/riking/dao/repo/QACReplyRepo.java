@@ -36,6 +36,14 @@ public interface QACReplyRepo extends JpaRepository<QACReply, String>, JpaSpecif
 	List<QACReply> findByCommentId(String commentId, Integer isDeleted, Pageable pageable);
 
 	/**
+	 * 根据
+	 * @param commentId
+	 * @return
+	 */
+	@Query("from QACReply where commentId = ?1")
+	List<QACReply> getQaReplyByCommentId(String commentId);
+
+	/**
 	 * getMore统计数
 	 * 
 	 * @param newsId
@@ -43,4 +51,13 @@ public interface QACReplyRepo extends JpaRepository<QACReply, String>, JpaSpecif
 	 */
 	@Query("select count(*) from QACReply where isDeleted = 1")
 	int countGetMore(Integer isDeleted);
+
+	/**
+	 * getMore统计数
+	 * 
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select count(*) from QACReply where isDeleted = 1 and commentId=?1 and isAduit=?2")
+	int countGetByCommentId(String commentId, Integer isAduit);
 }

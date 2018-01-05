@@ -1,0 +1,143 @@
+{
+	"table": "t_nc_reply",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "serialNumber",
+			"alias": "序列",
+			"desc": "序列",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit"
+		},
+		{
+			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "replyId",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+			{
+			"prop": "commentId",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "fromUserId",
+			"alias": "操作人主键用户id",
+			"desc": "操作人主键用户id",
+			"type": "string",
+			"group": "base",
+			"editable":"2",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "userName",
+			"alias": "回复人",
+			"desc": "回复人",
+			"type": "string",
+			"group": "base",
+			"editable":"2"
+		},
+		{
+			"prop": "toUserId",
+			"alias": "被操作人主键用户id",
+			"desc": "被操作人主键用户id",
+			"type": "string",
+			"group": "base",
+			"editable":"2",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "toUserName",
+			"alias": "评论人",
+			"desc": "评论人",
+			"type": "string",
+			"group": "base",
+			"editable":"2"
+		},
+		{
+			"prop": "replyId",
+			"alias": "目标对象评论回复主键",
+			"desc": "目标对象评论回复主键",
+			"type": "string",
+			"group": "base",
+			"editable":"2",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "content",
+			"alias": "回复内容",
+			"desc": "回复内容",
+			"type": "string",
+			"group": "base",
+			"edit_block":"1"
+		},
+		{
+			"prop": "isAduit",
+			"alias": "是否审核",
+			"desc": "是否审核",
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"group": "base",
+			"hidden": "edit"
+		},
+		{
+			"prop": "createdBy",
+			"alias": "创建人ID",
+			"desc": "创建人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "createdTime",
+			"alias": "回复时间",
+			"desc": "回复时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,preview"
+		},
+		{
+			"prop": "modifiedBy",
+			"alias": "修改人ID",
+			"desc": "修改人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "modifiedTime",
+			"alias": "最后修改时间",
+			"desc": "最后修改时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "isDeleted",
+			"alias": "是否删除",
+			"desc": "是否删除",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		}
+	]
+}

@@ -23,7 +23,7 @@ import net.riking.entity.model.TopicQuestion;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("topicQuestionRepo")
 public interface TopicQuestionRepo
 		extends JpaRepository<TopicQuestion, String>, JpaSpecificationExecutor<TopicQuestion> {
 	/**

@@ -19,7 +19,7 @@ import net.riking.entity.model.QuestionAnswer;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("questionAnswerRepo")
 public interface QuestionAnswerRepo
 		extends JpaRepository<QuestionAnswer, String>, JpaSpecificationExecutor<QuestionAnswer> {
 	/**

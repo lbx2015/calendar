@@ -76,13 +76,12 @@ public class TaskHistoryActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
 
         mPrimaryRecyclerView.setAdapter(new TaskHistoryAdapter(daysWithTasks));
     }
 
-    public void onClickBack(View view) {
+    public void clickBack(View view) {
         onBackPressed();
     }
 

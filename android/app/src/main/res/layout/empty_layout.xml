@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="17dp"
-        android:text="@string/no_reminds"
+        android:text="没有数据。"
         android:textColor="@color/color_background_b6b6b6"
         android:textSize="12sp" />
 </com.riking.calendar.view.CustomLinearLayout>

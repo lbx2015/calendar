@@ -8,6 +8,14 @@
 	],
 	"attrs": [
 		{
+			"prop": "serialNumber",
+			"alias": "序列",
+			"desc": "序列",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit"
+		},
+		{
 			"prop": "id",
 			"alias": "pk",
 			"desc": "pk",
@@ -42,8 +50,8 @@
 		},
 		{
 			"prop": "fromUserName",
-			"alias": "操作人主键用户名",
-			"desc": "操作人主键用户名",
+			"alias": "回复人",
+			"desc": "回复人",
 			"type": "string",
 			"group": "base",
 			"editable":"2"
@@ -59,8 +67,8 @@
 		},
 		{
 			"prop": "toUserName",
-			"alias": "被操作人主键用户名",
-			"desc": "被操作人主键用户名",
+			"alias": "评论人",
+			"desc": "评论人",
 			"type": "string",
 			"group": "base",
 			"editable":"2"
@@ -79,8 +87,7 @@
 			"alias": "回复内容",
 			"desc": "回复内容",
 			"type": "string",
-			"group": "base",
-			"hidden":"table"
+			"group": "base"
 		},
 		{
 			"prop": "isAduit",
@@ -101,11 +108,11 @@
 		},
 		{
 			"prop": "createdTime",
-			"alias": "创建时间",
-			"desc": "创建时间",
+			"alias": "回复时间",
+			"desc": "回复时间",
 			"type": "string",
 			"group": "base",
-			"hidden": "table,edit,preview"
+			"hidden": "edit,preview"
 		},
 		{
 			"prop": "modifiedBy",

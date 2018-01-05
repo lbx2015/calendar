@@ -18,7 +18,7 @@ import net.riking.entity.model.NewsComment;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("newsCommentRepo")
 public interface NewsCommentRepo extends JpaRepository<NewsComment, String>, JpaSpecificationExecutor<NewsComment> {
 	/**
 	 * 统计资讯评论数
@@ -27,6 +27,14 @@ public interface NewsCommentRepo extends JpaRepository<NewsComment, String>, Jpa
 	 */
 	@Query("select count(*) from NewsComment where newsId = ?1 and isAduit <> 2 and isDeleted = 1")
 	Integer commentCount(String newsId);
+
+	/**
+	 * 统计资讯评论数
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select count(*) from NewsComment where newsId = ?1 and isAduit = ?2 and isDeleted = 1")
+	Integer commentCountByNewsIdAndIsAduit(String newsId, Integer isAduit);
 
 	/**
 	 * 资讯评论列表

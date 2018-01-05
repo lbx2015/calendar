@@ -1,5 +1,6 @@
 package net.riking.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,12 +28,14 @@ public class JdpushUtil {
 	public static int sendToRegistrationId(Jdpush jdpush) {
 		int result = 0;
 		try {
-			PushPayload pushPayload = JdpushUtil.buildPushObject_all_registrationId_alertWithTitle(jdpush);
-			System.out.println(pushPayload);
-			PushResult pushResult = jPushClient.sendPush(pushPayload);
-			System.out.println(pushResult);
-			if (pushResult.getResponseCode() == 200) {
-				result = 1;
+			if(StringUtils.isNotBlank(jdpush.getRegisrationId())){
+				PushPayload pushPayload = JdpushUtil.buildPushObject_all_registrationId_alertWithTitle(jdpush);
+				System.out.println(pushPayload);
+				PushResult pushResult = jPushClient.sendPush(pushPayload);
+				System.out.println(pushResult);
+				if (pushResult.getResponseCode() == 200) {
+					result = 1;
+				}
 			}
 		} catch (APIConnectionException e) {
 			e.printStackTrace();

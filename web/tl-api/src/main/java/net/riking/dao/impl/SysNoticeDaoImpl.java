@@ -53,7 +53,6 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				data.setTitle(rs.getString("title"));
 				data.setContent(rs.getString("content"));
 				data.setDataType(rs.getInt("dataType"));
-				data.setUserPhotoUrl(rs.getString("photoUrl"));
 				data.setIsRead(rs.getInt("isRead"));
 				data.setCreatedTime(rs.getString("createdTime"));
 				list.add(data);

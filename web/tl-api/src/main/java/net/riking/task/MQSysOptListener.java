@@ -4,6 +4,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -70,9 +71,9 @@ public class MQSysOptListener implements MessageListener {
 	
 	@Override
 	public void onMessage(Message message) {
-		sysNoticeRepo = (SysNoticeRepo) SpringBeanUtil.getInstance().getBean("SysNoticeRepo");
+		sysNoticeRepo = (SysNoticeRepo) SpringBeanUtil.getInstance().getBean("sysNoticeRepo");
 		//appUserRepo = (AppUserRepo) SpringBeanUtil.getInstance().getBean("AppUserRepo");
-		appUserDetailRepo = (AppUserDetailRepo) SpringBeanUtil.getInstance().getBean("AppUserDetailRepo");
+		appUserDetailRepo = (AppUserDetailRepo) SpringBeanUtil.getInstance().getBean("appUserDetailRepo");
 		TextMessage txtMessage = (TextMessage) message;
 		try {
 			JSONObject jsonobject = JSONObject.fromObject(txtMessage.getText());
@@ -95,12 +96,11 @@ public class MQSysOptListener implements MessageListener {
 			String notificationTitle = "";
 			String msgTitle = "";
 			String msgContent = "";
-			String phoneDeviceid = "";
 			
 			switch (optCommon.getMqOptType()) {
 				case Const.MQ_OPT_ANSWERINVITE://邀请回答的邀请 
 					qaInviteService = (QAInviteService) SpringBeanUtil.getInstance().getBean("qaInviteService");
-					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("TopicQuestionRepo");
+					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 					//appUser = appUserRepo.findOne(optCommon.getUserId());
 					appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 					topicQuestion = topicQuestionRepo.findOne(optCommon.getTqId());
@@ -121,16 +121,14 @@ public class MQSysOptListener implements MessageListener {
 					isSendJdPush = true;
 					notificationTitle = title;
 					msgContent = title + " "+ content;
-					phoneDeviceid = appUserDetail.getPhoneDeviceid();
 					break;
 				case Const.MQ_OPT_QA_AGREEOR_COLLECT://问题回答点赞或收藏 
-					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("QAnswerService");
-					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("QuestionAnswerRepo");
+					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
+					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("questionAnswerRepo");
 					
 					isRn = qAnswerService.qaAgreeCollect(optCommon);
 					if(isRn){
-						topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("TopicQuestionRepo");
-						appUser = appUserRepo.findOne(optCommon.getUserId());
+						topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 						appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 						questionAnswer = questionAnswerRepo.findOne(optCommon.getQuestAnswerId());
 						topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
@@ -138,9 +136,9 @@ public class MQSysOptListener implements MessageListener {
 						sysNotice = new SysNotice();
 						String optStr = optCommon.getOptType().intValue() == 1 ? " 赞了 " : " 收藏了";
 						dataType = optCommon.getOptType().intValue() == 1 ? Const.NOTICE_OPT_QA_AGREEOR : Const.NOTICE_OPT_QA_COLLECT;
-						title = appUser.getUserName() + optStr + "你的回答";
+						title = appUserDetail.getUserName() + optStr + "你的回答";
 						//content = appUser.getUserName() + optStr + "你的回答 " + questionAnswer.getTitle();
-						content = questionAnswer.getTitle();
+						content = topicQuestion.getTitle();
 						sysNotice.setTitle(title);
 						//问题回答id
 						sysNotice.setObjId(questionAnswer.getId());
@@ -152,8 +150,6 @@ public class MQSysOptListener implements MessageListener {
 						isSendJdPush = true;
 						notificationTitle = title;
 						msgContent = title + " " + content;
-						phoneDeviceid = appUserDetail.getPhoneDeviceid();
-						
 					}
 					break;
 				case Const.MQ_OPT_NEW_COLLECT://资讯的收藏
@@ -166,7 +162,7 @@ public class MQSysOptListener implements MessageListener {
 					break;
 				case Const.MQ_OPT_FOLLOW:// 问题，话题，用户的关注
 					tQuestionService = (TQuestionService) SpringBeanUtil.getInstance().getBean("tQuestionService");
-					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("TopicQuestionRepo");
+					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 					isRn = tQuestionService.follow(optCommon);
 					if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_2){
 						//关注话题不推送信息
@@ -183,6 +179,7 @@ public class MQSysOptListener implements MessageListener {
 							content = topicQuestion.getTitle();
 							//话题问题id
 							sysNotice.setObjId(topicQuestion.getId());
+							sysNotice.setNoticeUserId(optCommon.getToUserId());
 							dataType = Const.NOTICE_OPT_QUESTION_FOLLOW;
 							msgContent = title + " " + content;
 							
@@ -192,6 +189,7 @@ public class MQSysOptListener implements MessageListener {
 							content = appUserDetail.getUserName();
 							//话题问题id
 							sysNotice.setObjId(appUserDetail.getId());
+							sysNotice.setNoticeUserId(optCommon.getAttentObjId());
 							dataType = Const.NOTICE_OPT_USER_FOLLOW;
 							msgContent = title;
 						}else{
@@ -200,19 +198,16 @@ public class MQSysOptListener implements MessageListener {
 						
 						sysNotice.setTitle(title);
 						sysNotice.setContent(content);
-						sysNotice.setNoticeUserId(topicQuestion.getUserId());
 						sysNotice.setDataType(dataType);
 						sysNoticeRepo.save(sysNotice);
 						
 						isSendJdPush = true;
 						notificationTitle = title;
-						phoneDeviceid = appUserDetail.getPhoneDeviceid();
-						
 					}
 					break;
 				case Const.MQ_OPT_COMMENT_AGREE:// 评论点赞
-					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("QACommentRepo");
-					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("NewsCommentRepo");
+					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
+					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
 					isRn = qaCommentService.commentAgree(optCommon);
 					
 					if(isRn){
@@ -225,6 +220,7 @@ public class MQSysOptListener implements MessageListener {
 							content = qaComment.getContent();
 							//回答类评论id
 							sysNotice.setObjId(qaComment.getId());
+							sysNotice.setNoticeUserId(qaComment.getUserId());
 							msgContent = title + " " +content;
 							
 						}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_NEWS){//资讯类
@@ -234,19 +230,17 @@ public class MQSysOptListener implements MessageListener {
 							content = newsComment.getContent();
 							//资讯类评论id
 							sysNotice.setObjId(newsComment.getId());
+							sysNotice.setNoticeUserId(newsComment.getUserId());
 							msgContent = title + " " +content;
 						}
 						
 						sysNotice.setTitle(title);
 						sysNotice.setContent(content);
-						sysNotice.setNoticeUserId(qaComment.getUserId());
 						sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_AGREE);
 						sysNoticeRepo.save(sysNotice);
 						
 						isSendJdPush = true;
 						notificationTitle = title;
-						phoneDeviceid = appUserDetail.getPhoneDeviceid();
-						
 					}
 					break;
 				case Const.MQ_OPT_CONTACTS_INVITE:// 通讯录的邀请
@@ -257,10 +251,10 @@ public class MQSysOptListener implements MessageListener {
 					
 					break;
 				case Const.MQ_OPT_QANSWER_COMMENT:// 问题回答的评论
-					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("QAnswerService");
-					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("QuestionAnswerRepo");
+					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
+					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("questionAnswerRepo");
 					questionAnswer = questionAnswerRepo.findOne(optCommon.getQuestAnswerId());
-					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("TopicQuestionRepo");
+					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 					qAnswerService.qACommentPub(optCommon);
 					appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 					//topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
@@ -282,16 +276,15 @@ public class MQSysOptListener implements MessageListener {
 					isSendJdPush = true;
 					notificationTitle = title;
 					msgContent = title + " " + content;
-					phoneDeviceid = appUserDetail.getPhoneDeviceid();
 					
 					break;
 				case Const.MQ_OPT_NEWS_COMMENT:// 资讯评论发布
 					newsService = (NewsService) SpringBeanUtil.getInstance().getBean("newsService");
 					newsService.newsCommentPub(optCommon);
 				case Const.MQ_OPT_COMMENT_REPLY:// 评论的回复和回复的回复
-					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("QAnswerService");
-					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("QACommentRepo");
-					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("NewsCommentRepo");
+					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
+					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
+					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
 					qAnswerService.commentReply(optCommon);
 					appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 					sysNotice = new SysNotice();
@@ -323,13 +316,13 @@ public class MQSysOptListener implements MessageListener {
 					
 					isSendJdPush = true;
 					notificationTitle = title;
-					phoneDeviceid = appUserDetail.getPhoneDeviceid();
 					break;
 				default:
 					break;
 			}
 			
 			if(isSendJdPush){
+				
 				jdpush = new Jdpush();
 				msgTitle = notificationTitle;
 				jdpush = new Jdpush();
@@ -337,8 +330,13 @@ public class MQSysOptListener implements MessageListener {
 				jdpush.setMsgTitle(msgTitle);
 				jdpush.setMsgContent(msgContent);
 				jdpush.setExtrasparam("");
-				jdpush.setRegisrationId(phoneDeviceid);
-				JdpushUtil.sendToRegistrationId(jdpush);
+				if(sysNotice != null){
+					AppUserDetail noticeUserDetail = appUserDetailRepo.findOne(sysNotice.getNoticeUserId());
+					if(StringUtils.isNotBlank(noticeUserDetail.getPhoneDeviceId())){
+						jdpush.setRegisrationId(noticeUserDetail.getPhoneDeviceId());
+						JdpushUtil.sendToRegistrationId(jdpush);
+					}
+				}
 			}
 			logger.info("get message " + txtMessage.getText());
 		} catch (Exception e) {

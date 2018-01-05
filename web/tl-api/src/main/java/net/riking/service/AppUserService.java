@@ -31,6 +31,8 @@ public interface AppUserService {
 	public Integer transformExpToGrade(Integer experience);
 
 	public String getPhotoUrlPath(String photoPath);
+	
+	public void updatePhoneDeviceid(String userId, String phoneDeviceid);
 
 	// 用户关注的人
 	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount);

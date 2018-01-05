@@ -105,6 +105,8 @@
         <activity android:name=".activity.SearchReportActivity" />
         <activity android:name=".activity.CreateTaskActivity" />
         <activity android:name=".activity.MomentAddActivity" />
+        <activity android:name=".activity.CompleteReportHistoryActivity" />
+        <activity android:name=".activity.OverdueReportActivity" />
         <activity android:name=".activity.FeedBackActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"

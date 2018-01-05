@@ -18,10 +18,13 @@ import net.riking.dao.repo.IndustryRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.Jdpush;
 import net.riking.entity.params.LoginParams;
 import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
+import net.riking.util.DateUtils;
+import net.riking.util.JdpushUtil;
 import net.riking.util.SmsUtil;
 
 /**
@@ -126,6 +129,25 @@ public class LoginServer {
 			if (null == detail) {
 				detail = new AppUserDetail();
 			}
+			
+			
+			if(StringUtils.isNotBlank(loginParams.getPhoneDeviceId()) && !detail.getPhoneDeviceId().trim().equals(loginParams.getPhoneDeviceId().trim())){
+				if(StringUtils.isNotBlank(detail.getPhoneDeviceId())){
+					//换设备号登录，极光推送
+					Jdpush jdpush = new Jdpush();
+					jdpush = new Jdpush();
+					jdpush.setNotificationTitle("【悦历】设备登录异常");
+					jdpush.setMsgTitle("您的账号在其它设备登录");
+					jdpush.setMsgContent(DateUtils.getDate("yyyy-MM-dd HH:mm:ss") + " 您的账号在其它设备登录");
+					jdpush.setExtrasparam("");
+					jdpush.setRegisrationId(detail.getPhoneDeviceId().trim());
+					JdpushUtil.sendToRegistrationId(jdpush);
+				}
+				//更新设备号
+				appUserService.updatePhoneDeviceid(user.getId(), loginParams.getPhoneDeviceId().trim());
+				detail.setPhoneDeviceId(loginParams.getPhoneDeviceId().trim());
+			}
+			
 			user.setDetail(detail);
 			logger.info("用户登录成功：phone={}", user.getPhone());
 		} else {
@@ -136,7 +158,7 @@ public class LoginServer {
 			user.setOpenId(loginParams.getOpenId());
 
 			detail = new AppUserDetail();
-			detail.setPhoneDeviceid(loginParams.getPhoneDeviceId());
+			detail.setPhoneDeviceId(loginParams.getPhoneDeviceId());
 			detail.setPhoneType(loginParams.getClientType());
 			user = appUserService.register(user, detail);
 			
@@ -155,7 +177,7 @@ public class LoginServer {
 		userResp.setBirthday(user.getDetail().getBirthday());
 		userResp.setAddress(user.getDetail().getAddress());
 		userResp.setDescript(user.getDetail().getDescript());
-		userResp.setPhoneDeviceid(user.getDetail().getPhoneDeviceid());
+		userResp.setPhoneDeviceid(user.getDetail().getPhoneDeviceId());
 		userResp.setIntegral(user.getDetail().getIntegral());
 		userResp.setExperience(user.getDetail().getExperience());
 		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {

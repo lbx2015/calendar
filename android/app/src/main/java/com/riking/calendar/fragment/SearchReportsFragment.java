@@ -26,13 +26,11 @@ import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 import java.io.IOException;
@@ -142,11 +140,9 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
             SearchActivity searchActivity = (SearchActivity) ac;
             searchActivity.saveToRealm();
         }
-        AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
-        a.reportId = report.reportId;
-        a.reportName = report.title;
-        a.type = "1";
+        SubscribeReportParam a = new SubscribeReportParam();
+        a.reportIds = report.reportId;
+        a.subscribeType = 1;
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
@@ -161,11 +157,9 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
             SearchActivity searchActivity = (SearchActivity) ac;
             searchActivity.saveToRealm();
         }
-        AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
-        a.reportId = report.reportId;
-        a.reportName = report.title;
-        a.type = "0";
+        SubscribeReportParam a = new SubscribeReportParam();
+        a.reportIds = report.reportId;
+        a.subscribeType = 0;
 
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
@@ -228,7 +222,8 @@ public class SearchReportsFragment extends Fragment implements SubscribeReport<R
                     if (TextUtils.isEmpty(_data.trim())) {
                         return;
                     }
-                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {};
+                    TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
+                    };
 
                     ResponseModel<List<ReportResult>> responseModel = s.fromJson(sourceString, token.getType());
                     if (mPullToLoadView != null) {
