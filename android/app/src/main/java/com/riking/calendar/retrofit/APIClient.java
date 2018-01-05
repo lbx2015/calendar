@@ -833,7 +833,11 @@ public class APIClient {
         apiInterface.getBanners().enqueue(c);
     }
 
-    public static void getMoreUserNotice(HomeParams params, ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>> c) {
-        apiInterface.getMoreUserNotice(params).enqueue(c);
+    public static void getUserMessage(HomeParams params, ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>> c) {
+        apiInterface.getUserMessage(params).enqueue(c);
+    }
+
+    public static void getSystemMessage(HomeParams params, ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>> c) {
+        apiInterface.getSystemMessage(params).enqueue(c);
     }
 }

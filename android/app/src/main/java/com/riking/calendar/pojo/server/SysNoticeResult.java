@@ -1,5 +1,7 @@
 package com.riking.calendar.pojo.server;
 
+import java.util.Date;
+
 public class SysNoticeResult {
     //消息通知id
     public String noticeId;
@@ -20,7 +22,7 @@ public class SysNoticeResult {
     //翻页时间戳
 //	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
 //	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
-    public String reqTimeStamp;
+//    public String reqTimeStamp;
     //创建时间
-    public String createdTime;
+    public Date createdTime;
 }

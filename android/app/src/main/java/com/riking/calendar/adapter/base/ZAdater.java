@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.necer.ncalendar.utils.MyLog;
-import com.riking.calendar.interfeet.AdapterEmptyListener;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import java.util.List;
 
 public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends RecyclerView.Adapter<VH> {
     public List<ItemBean> mList;
+
     {
         mList = new ArrayList<>();
     }
@@ -29,10 +29,22 @@ public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends Recycler
     }
 
     public void setData(List<ItemBean> mList) {
+        if (mList == null) return;
         MyLog.d("set data size: " + mList.size());
 //        this.mList.clear();
         this.mList = mList;
         notifyDataSetChanged();
+    }
+
+    public void addAllAtStart(List<ItemBean> list) {
+        mList.addAll(0, list);
+        notifyItemRangeInserted(0, list.size());
+    }
+
+    public void addAllAtEnd(List<ItemBean> list) {
+        int size = mList.size();
+        mList.addAll(size, list);
+        notifyItemRangeInserted(size - 1, mList.size());
     }
 
     public void appendStart(ItemBean itemBean) {

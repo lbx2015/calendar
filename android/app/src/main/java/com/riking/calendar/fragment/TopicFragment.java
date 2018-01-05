@@ -149,8 +149,9 @@ public class TopicFragment extends Fragment {
                     mAdapter.mList.addAll(0, news);
                     mAdapter.notifyItemRangeInserted(0, news.size());
                 } else {
-                    mAdapter.mList.addAll((mAdapter.mList.size()), news);
-                    mAdapter.notifyItemRangeInserted(mAdapter.mList.size() - 1, news.size());
+                    int size = mAdapter.mList.size();
+                    mAdapter.mList.addAll(size, news);
+                    mAdapter.notifyItemRangeInserted(size - 1, news.size());
                 }
 
             }

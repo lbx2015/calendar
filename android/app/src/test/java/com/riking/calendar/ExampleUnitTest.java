@@ -12,6 +12,7 @@ import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.util.Debug;
+import com.riking.calendar.util.ZR;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -77,7 +78,7 @@ public class ExampleUnitTest {
 
     @Test
     public void testJsonList() throws IOException {
-        System.out.print(6%2);
+        System.out.print(6 % 2);
         Gson s = new Gson();
         ResponseModel<List<AppUserResult>> responseModel = s.fromJson("{_data:'',code:200,codeDesc:'',runtime:0}", ResponseModel.class);
     }
@@ -353,5 +354,10 @@ public class ExampleUnitTest {
         System.out.print(s.length());
         System.out.println(isChinese("你"));
         System.out.println(isChinese("a"));
+    }
+
+    @Test
+    public void testGetNumberString() {
+        System.out.println(ZR.getNumberString(380));
     }
 }

@@ -1,10 +1,10 @@
 package com.riking.calendar.pojo.synch;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 登录及注册参数
+ *
  * @author james.you
  * @version crateTime：2017年11月29日 下午3:16:14
  * @used TODO

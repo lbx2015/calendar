@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
-            android:onClick="clickBack"
+            android:onClick="onBackClick"
             android:src="@drawable/nav_icon_back" />
 
         <TextView

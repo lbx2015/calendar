@@ -10,18 +10,19 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
-import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.SysNoticeResult;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.view.CircleImageView;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 //answer comment adapter
-public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserResult> {
+public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNoticeResult> {
     public boolean editMode;
     public boolean selectAll;
 
     @Override
     public void onBindVH(final MyViewHolder h, int i) {
+        SysNoticeResult result = mList.get(i);
         if (editMode) {
             h.checkImage.setVisibility(View.VISIBLE);
             h.checkImage.setOnClickListener(new View.OnClickListener() {
@@ -50,21 +51,25 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
             ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
         }
 
-        if (i == 4) {
+        //system info
+        if (result.dataType == 0) {
             h.userName.setTextSize(17);
             h.userName.setText("系统消息");
-            h.systemNewsTv.setText("亲爱的用户，欢迎来到App，我们为您准时推送。");
+            h.systemNewsTv.setText(result.content);
             h.systemNewsTv.setVisibility(View.VISIBLE);
             h.userImage.setImageDrawable(ZR.getDrawable(R.drawable.message_icon_systeminfor));
         } else {
             h.systemNewsTv.setVisibility(View.GONE);
             h.userName.setMaxLines(2);
             h.userName.setEllipsize(TextUtils.TruncateAt.END);
-            String s = "周云丽 回答了你的问题";
-            String content = "同业存单尽管属于同业投资，在会计上需要单独设计科目管理。";
+            String s = result.title;
+            String content = "";
+            if (result.dataType == 4) {
+                content = result.content;
+            }
             h.userName.setText(Html.fromHtml("<html><body><font color=#666666>" + s + " </font> <font color=#333333>" + content + " </font> </body><html>"));
         }
-        h.summary.setText("30分钟前");
+        h.timeTv.setText(DateUtil.showTime(result.createdTime));
      /*   AppUserResult appUser = mList.get(i);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
         ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);
@@ -79,18 +84,8 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
         return new MyNewsAdapter.MyViewHolder(view);
     }
 
-    @Override
-    public int getItemCount() {
-        return 5;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
     class MyViewHolder extends ZViewHolder {
-        public TextView summary;
+        public TextView timeTv;
         public TextView userName;
         public ImageView userImage;
         public ImageView checkImage;
@@ -102,7 +97,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, AppUserRe
             checkImage = itemView.findViewById(R.id.check_image);
             userImage = itemView.findViewById(R.id.user_icon);
             userName = itemView.findViewById(R.id.user_name);
-            summary = itemView.findViewById(R.id.summary);
+            timeTv = itemView.findViewById(R.id.summary);
             systemNewsTv = itemView.findViewById(R.id.system_news_tv);
         }
     }

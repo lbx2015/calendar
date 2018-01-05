@@ -38,6 +38,8 @@ import com.riking.calendar.retrofit.APIClient;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by zw.zhang on 2017/7/14.
  */
@@ -83,6 +85,10 @@ public class ZR {
      */
     public static float convertPxToDp(Context context, float px) {
         return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    public static String getRegistrationId() {
+        return JPushInterface.getRegistrationID(MyApplication.APP);
     }
 
     public static String getDeviceId() {
@@ -395,14 +401,15 @@ public class ZR {
                 APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        int status = Integer.parseInt(response._data);
-                        user.isFollow = status;
                         if (user.isFollow == 0) {
-                            ZToast.toast("取消关注");
-                        } else {
+                            user.isFollow = 1;
                             ZToast.toast("关注成功");
+                        } else {
+                            user.isFollow = 0;
+                            ZToast.toast("取消关注");
+
                         }
-                        showPersonFollowStatus(followButton, followTv, status);
+                        showPersonFollowStatus(followButton, followTv, user.isFollow);
                     }
                 });
             }

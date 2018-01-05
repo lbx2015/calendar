@@ -466,6 +466,19 @@ public interface APIInterface {
     @GET("banner/getBanners")
     Call<ResponseModel<List<Banner>>> getBanners();
 
+    /**
+     *  "获取用户消息通知"
+     * @param params
+     * @return
+     */
     @POST("notice/getMoreUserNotice")
-    Call<ResponseModel<List<SysNoticeResult>>> getMoreUserNotice(@Body HomeParams params);
+    Call<ResponseModel<List<SysNoticeResult>>> getUserMessage(@Body HomeParams params);
+
+    /**
+     * "获取系统消息通知"
+     * @param params
+     * @return
+     */
+    @POST("notice/getMoreSysNotice")
+    Call<ResponseModel<List<SysNoticeResult>>> getSystemMessage(@Body HomeParams params);
 }

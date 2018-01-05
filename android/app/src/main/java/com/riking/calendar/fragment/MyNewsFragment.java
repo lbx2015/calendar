@@ -11,9 +11,18 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.MyNewsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.HomeParams;
+import com.riking.calendar.pojo.server.SysNoticeResult;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
+
+import java.util.List;
 
 /**
  * Created by zw.zhang on 2017/7/17.
@@ -27,6 +36,9 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
     ImageView selectAllView;
     View deleteView;
     View notLoginLayout;
+    String reqTimeStamp;
+    List<SysNoticeResult> userMessages;
+    List<SysNoticeResult> systemMessages;
 
     @Override
     public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -122,35 +134,55 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
     }
 
     public void loadData(final int page) {
-        mPullToLoadView.setComplete();
-/*
-        final UserParams params = new UserParams();
-        params.pindex = page;
-        APIClient.getColleague(params, new ZCallBackWithFail<ResponseModel<String>>() {
+        getSystemMessage(page);
+    }
+
+    private void getSystemMessage(final int page) {
+        if (page == 1) {
+            mAdapter.clear();
+            getSystemMessage();
+        }
+        getUserMessage(page);
+
+    }
+
+    private void getSystemMessage() {
+        HomeParams params = new HomeParams();
+        APIClient.getSystemMessage(params, new ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>>() {
             @Override
-            public void callBack(ResponseModel<String> response) {
-                mPullToLoadView.setComplete();
+            public void callBack(ResponseModel<List<SysNoticeResult>> response) {
+                if (failed) {
+
+                } else {
+                    systemMessages = response._data;
+                    mAdapter.addAllAtStart(systemMessages);
+                }
+            }
+        });
+    }
+
+    private void getUserMessage(final int page) {
+
+        HomeParams params = new HomeParams();
+        if (page > 1) {
+            params.reqTimeStamp = reqTimeStamp;
+        }
+        APIClient.getUserMessage(params, new ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>>() {
+            @Override
+            public void callBack(ResponseModel<List<SysNoticeResult>> response) throws Exception {
                 isLoading = false;
-                if (!failed) {
-                    Gson g = new Gson();
-                    TypeToken<List<AppUserResult>> token = new TypeToken<List<AppUserResult>>() {
-                    };
-                    List<AppUserResult> list = g.fromJson(response._data, token.getType());
+                mPullToLoadView.setComplete();
+                if (failed) {
 
-                    if (list != null && list.size() < params.pcount) {
-                        isHasLoadedAll = true;
-                        if (list.size() == 0) {
-                            ZToast.toastEmpty();
-                            return;
-                        }
-                    }
-
-                    if (list != null) {
+                } else {
+                    userMessages = response._data;
+                    if (userMessages.size() > 0) {
+                        reqTimeStamp = DateUtil.date2String(userMessages.get(userMessages.size() - 1).createdTime, CONST.YYYYMMDDHHMMSSSSS);
                         nextPage = page + 1;
-                        mAdapter.setData(list);
+                        mAdapter.addAllAtEnd(userMessages);
                     }
                 }
             }
-        });*/
+        });
     }
 }

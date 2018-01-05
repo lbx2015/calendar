@@ -84,7 +84,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
                     final LoginParams user = new LoginParams();
                     user.verifyCode = verifyCodes;
-                    user.phoneDeviceId = ZR.getDeviceId();
+                    user.phoneDeviceId = ZR.getRegistrationId();
                     user.phone = phoneNumber;
                     APIClient.checkVarificationCode(user, new ZCallBackWithFail<ResponseModel<AppUserResp>>() {
                         @Override

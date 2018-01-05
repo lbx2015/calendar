@@ -118,13 +118,6 @@ public class AddTopicActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    nextStep.setTextColor(ZR.getColor(R.color.color_489dfff));
-                    nextStep.setEnabled(true);
-                } else {
-                    nextStep.setTextColor(ZR.getColor(R.color.color_cccccc));
-                    nextStep.setEnabled(false);
-                }
                 search(s.toString());
             }
         });
@@ -135,10 +128,15 @@ public class AddTopicActivity extends AppCompatActivity {
                 StringBuilder sb = new StringBuilder();
 
                 for (int i = 0; i < topics.size(); i++) {
-                    String s = topics.get(i);
-                    sb.append(s);
-                    if (i < topics.size() - 1) {
-                        sb.append(",");
+                    for (Topic t : mAdapter.mList) {
+                        String s = topics.get(i);
+                        if (t.title.equals(s)) {
+                            sb.append(t.topicId);
+                            if (i < topics.size() - 1) {
+                                sb.append(",");
+                            }
+                            break;
+                        }
                     }
                 }
 
@@ -153,7 +151,7 @@ public class AddTopicActivity extends AppCompatActivity {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(AddTopicActivity.this, SubmitQuestionActivity.class);
-                        i.putExtra(CONST.WEB_URL, "http://172.16.64.195:8280/app/inquiry.html");
+                        i.putExtra(CONST.WEB_URL, response._data);
                         startActivity(i);
                     }
                 });
@@ -221,7 +219,7 @@ public class AddTopicActivity extends AppCompatActivity {
             @Override
             public void callBack(ResponseModel<List<Topic>> response) {
                 swipeRefreshLayout.setRefreshing(false);
-                if (!failed) {
+                if (!failed && response._data != null) {
                     mAdapter.setData(response._data);
                 }
             }
@@ -241,6 +239,8 @@ public class AddTopicActivity extends AppCompatActivity {
         //redraw the reports
         zReportFlowLayout.removeAllViews();
         if (topics.size() > 0) {
+            nextStep.setTextColor(ZR.getColor(R.color.color_489dfff));
+            nextStep.setEnabled(true);
             zReportFlowLayout.setVisibility(View.VISIBLE);
             for (int i = 0; i < topics.size(); i++) {
                 final String appUserReportRel = topics.get(i);
@@ -257,6 +257,8 @@ public class AddTopicActivity extends AppCompatActivity {
                         if (topics.size() == 0) {
                             //hide the title
                             zReportFlowLayout.setVisibility(View.GONE);
+                            nextStep.setTextColor(ZR.getColor(R.color.color_cccccc));
+                            nextStep.setEnabled(false);
                         }
                     }
                 });
@@ -265,6 +267,8 @@ public class AddTopicActivity extends AppCompatActivity {
         } else {
             //hide the title of the orders
             zReportFlowLayout.setVisibility(View.GONE);
+            nextStep.setTextColor(ZR.getColor(R.color.color_cccccc));
+            nextStep.setEnabled(false);
         }
     }
 
