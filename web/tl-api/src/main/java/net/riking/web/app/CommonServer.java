@@ -24,12 +24,12 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.AppVersionRepo;
 import net.riking.dao.repo.IndustryRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppVersion;
@@ -298,6 +298,10 @@ public class CommonServer {
 		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		// 实时返回关注用户状态，具体操作放在mq里面操作
 		switch (tQuestionParams.getObjType()) {
+			case Const.OBJ_TYPE_1:
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+			case Const.OBJ_TYPE_2:
+				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 			// 用户关注
 			case Const.OBJ_TYPE_3:
 				UserFollowRel userFollowRel = new UserFollowRel();
