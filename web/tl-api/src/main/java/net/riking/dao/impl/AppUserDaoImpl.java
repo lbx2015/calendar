@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import net.riking.dao.AppUserDao;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.UserFollowCollect;
 import net.riking.entity.resp.OtherUserResp;
 
 @Repository("appUserDao")
@@ -198,6 +199,68 @@ public class AppUserDaoImpl implements AppUserDao {
 			e.printStackTrace();
 		}
 		return otherUserResp;
+
+	}
+
+	@Override
+	public List<UserFollowCollect> findByFolColByUserId(String userId, Integer pindex, Integer pcount) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call findByFolColByUserId(?,?,?)";
+		PreparedStatement pstmt = null;
+		List<UserFollowCollect> list = new ArrayList<UserFollowCollect>();
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(userId))
+				userId = "";
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, pindex);
+			pstmt.setInt(3, pcount);
+			ResultSet rs = pstmt.executeQuery();
+			int i = 1;
+			while (rs.next()) {
+				UserFollowCollect userFollowCollect = new UserFollowCollect();
+				userFollowCollect.setSerialNum(i);
+				userFollowCollect.setUserName(rs.getString("userName") + "/" + rs.getString("phone"));
+				userFollowCollect.setUserId(rs.getString("userId"));
+				if (rs.getString("toUserName") != null && rs.getString("toUserPhone") != null) {
+					userFollowCollect.setToUserName(rs.getString("toUserName") + "/" + rs.getString("toUserPhone"));
+				}
+				userFollowCollect.setToUserId(rs.getString("toUserId"));
+				userFollowCollect.setTitle(rs.getString("title"));
+				userFollowCollect.setOptObject(rs.getInt("optObject"));
+				userFollowCollect.setOptType(rs.getInt("optType"));
+				userFollowCollect.setCreatedTime(rs.getTimestamp("createdTime"));
+				list.add(userFollowCollect);
+				i++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+
+	}
+
+	@Override
+	public Integer countByFolColByUserId(String userId) {
+		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
+		Connection connection = session.connection();
+		String sql = "call countFolColByUserId(?)";
+		PreparedStatement pstmt = null;
+		Integer count = null;
+		try {
+			pstmt = (PreparedStatement) connection.prepareCall(sql);
+			if (StringUtils.isBlank(userId))
+				userId = "";
+			pstmt.setString(1, userId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
 
 	}
 
