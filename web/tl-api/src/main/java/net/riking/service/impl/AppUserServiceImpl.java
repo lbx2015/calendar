@@ -159,7 +159,7 @@ public class AppUserServiceImpl implements AppUserService {
 		appUserDetailRepo.updatePhoto(userId, fileName);
 		return fileName;
 	}
-	
+
 	@Override
 	public void updatePhoneDeviceid(String userId, String phoneDeviceid) {
 		// TODO Auto-generated method stub
@@ -311,15 +311,16 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-	public List<UserFollowCollect> findByFolColByUserId(String userId, Integer pindex, Integer pcount) {
+	public List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex,
+			Integer pcount) {
 
-		return appUserDao.findByFolColByUserId(userId, pindex, pcount);
+		return appUserDao.findByFolColByUserId(userId, userName, pindex, pcount);
 	}
 
 	@Override
-	public Integer countByFolColByUserId(String userId) {
+	public Integer countByFolColByUserId(String userId, String userName) {
 
-		return appUserDao.countByFolColByUserId(userId);
+		return appUserDao.countByFolColByUserId(userId, userName);
 
 	}
 

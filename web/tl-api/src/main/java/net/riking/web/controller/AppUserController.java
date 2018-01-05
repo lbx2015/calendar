@@ -136,9 +136,9 @@ public class AppUserController {
 			userFollowCollect.setUserId("");
 		}
 		List<UserFollowCollect> userFollowCollects = appUserService.findByFolColByUserId(userFollowCollect.getUserId(),
-				query.getPindex(), query.getPcount());
+				userFollowCollect.getUserName(), query.getPindex(), query.getPcount());
 		Page<UserFollowCollect> modulePage = new PageImpl<UserFollowCollect>(userFollowCollects, pageable,
-				appUserService.countByFolColByUserId(userFollowCollect.getUserId()));
+				appUserService.countByFolColByUserId(userFollowCollect.getUserId(), userFollowCollect.getUserName()));
 		return new Resp(modulePage);
 	}
 	// TODO 暫時注釋

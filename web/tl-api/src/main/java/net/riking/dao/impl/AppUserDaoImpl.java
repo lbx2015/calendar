@@ -203,19 +203,25 @@ public class AppUserDaoImpl implements AppUserDao {
 	}
 
 	@Override
-	public List<UserFollowCollect> findByFolColByUserId(String userId, Integer pindex, Integer pcount) {
+	public List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex,
+			Integer pcount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call findByFolColByUserId(?,?,?)";
+		String sql = "call findByFolColByUserId(?,?,?,?)";
 		PreparedStatement pstmt = null;
 		List<UserFollowCollect> list = new ArrayList<UserFollowCollect>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
-			if (StringUtils.isBlank(userId))
+			if (StringUtils.isBlank(userId)) {
 				userId = "";
+			}
+			if (StringUtils.isBlank(userName)) {
+				userName = "";
+			}
 			pstmt.setString(1, userId);
-			pstmt.setInt(2, pindex);
-			pstmt.setInt(3, pcount);
+			pstmt.setString(2, userName);
+			pstmt.setInt(3, pindex);
+			pstmt.setInt(4, pcount);
 			ResultSet rs = pstmt.executeQuery();
 			int i = 1;
 			while (rs.next()) {
@@ -242,17 +248,22 @@ public class AppUserDaoImpl implements AppUserDao {
 	}
 
 	@Override
-	public Integer countByFolColByUserId(String userId) {
+	public Integer countByFolColByUserId(String userId, String userName) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call countFolColByUserId(?)";
+		String sql = "call countFolColByUserId(?,?)";
 		PreparedStatement pstmt = null;
 		Integer count = null;
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
-			if (StringUtils.isBlank(userId))
+			if (StringUtils.isBlank(userId)) {
 				userId = "";
+			}
+			if (StringUtils.isBlank(userName)) {
+				userName = "";
+			}
 			pstmt.setString(1, userId);
+			pstmt.setString(2, userName);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				count = rs.getInt("count");

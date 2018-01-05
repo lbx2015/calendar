@@ -20,6 +20,8 @@
 			"alias": "关注人昵称/手机号",
 			"desc": "关注人昵称/手机号",
 			"type": "string",
+			"query": "1",
+			"query_order": "1",
 			"group": "base"
 		},
 		{
