@@ -153,7 +153,7 @@ public class AddTopicActivity extends AppCompatActivity {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         Intent i = new Intent(AddTopicActivity.this, SubmitQuestionActivity.class);
-                        i.putExtra(CONST.WEB_URL, response._data);
+                        i.putExtra(CONST.WEB_URL, "http://172.16.64.195:8280/app/inquiry.html");
                         startActivity(i);
                     }
                 });

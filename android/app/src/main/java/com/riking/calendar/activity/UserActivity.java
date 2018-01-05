@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hyphenate.chatuidemo.ui.BaseActivity;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.retrofit.APIClient;
@@ -21,25 +21,24 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 
 public class UserActivity extends AppCompatActivity {
+    public TextView followTv;
+    public View followButton;
     TextView userName;
     LinearLayout loginLinearLayout;
     TextView userComment;
-    ImageView toUserInfoIm;
     ImageView myPhoto;
     LinearLayout myRepliesLayout;
     LinearLayout followMeLayout;
     LinearLayout myFollowLayout;
-
     TextView myFollowNumbTv;
     TextView followingMeNumbTv;
     TextView myAnswerNumbTv;
-
     View trendLayout;
     View followLayout;
     View collecLayout;
-
     //text view title
     TextView followPersonTv;
     TextView fansTv;
@@ -57,6 +56,8 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        followButton = findViewById(R.id.follow_button);
+        followTv = findViewById(R.id.follow_text);
         //follow persons
         followPersonTv = findViewById(R.id.follow_person_tv);
         fansTv = findViewById(R.id.fans_tv);
@@ -74,11 +75,21 @@ public class UserActivity extends AppCompatActivity {
         userName = findViewById(R.id.user_name);
         loginLinearLayout = findViewById(R.id.login_linear_layout);
         userComment = findViewById(R.id.user_comment);
-        toUserInfoIm = findViewById(R.id.to_info);
         myPhoto = findViewById(R.id.user_icon);
         myFollowNumbTv = findViewById(R.id.my_follow_person_num);
         followingMeNumbTv = findViewById(R.id.following_me_num);
         myAnswerNumbTv = findViewById(R.id.my_answer_num_tv);
+    }
+
+    private void showInvited(TextView followTv, int isFollow) {
+        if (isFollow == 0) {
+            followTv.setText("关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus_w, 0, 0, 0);
+            followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
+        } else {
+            followTv.setText("已关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
     }
 
     private void setUserData(final OtherUserResp u) {
@@ -99,20 +110,56 @@ public class UserActivity extends AppCompatActivity {
             trendTv.setText("我的动态");
             myFollowTv.setText("我的关注");
             myFavoriteTv.setText("我的收藏");
-        } else if (u.sex == 1) {
-            followPersonTv.setText("他关注的人");
-            fansTv.setText("他的粉丝");
-            answerTv.setText("他的回答");
-            trendTv.setText("他的动态");
-            myFollowTv.setText("他的关注");
-            myFavoriteTv.setText("他的收藏");
-        } else if ((u.sex == 0)) {
-            followPersonTv.setText("她关注的人");
-            fansTv.setText("她的粉丝");
-            answerTv.setText("她的回答");
-            trendTv.setText("她的动态");
-            myFollowTv.setText("她的关注");
-            myFavoriteTv.setText("她的收藏");
+            followButton.setVisibility(View.GONE);
+        } else {
+            followButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final TQuestionParams params = new TQuestionParams();
+                    params.attentObjId = u.userId;
+                    //follow person
+                    params.objType = 3;
+                    //followed
+                    if (u.isFollow == 1) {
+                        params.enabled = 0;
+                    } else {
+                        params.enabled = 1;
+                    }
+
+                    APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
+                        @Override
+                        public void callBack(ResponseModel<String> response) {
+                            u.isFollow = params.enabled;
+                            if (u.isFollow == 1) {
+                                ZToast.toast("关注成功");
+                            } else {
+                                ZToast.toast("取消关注");
+                            }
+                            showInvited(followTv, u.isFollow);
+                        }
+                    });
+                }
+            });
+
+            if (u.sex == 1) {
+                followButton.setVisibility(View.VISIBLE);
+                showInvited(followTv, u.isFollow);
+                followPersonTv.setText("他关注的人");
+                fansTv.setText("他的粉丝");
+                answerTv.setText("他的回答");
+                trendTv.setText("他的动态");
+                myFollowTv.setText("他的关注");
+                myFavoriteTv.setText("他的收藏");
+            } else if ((u.sex == 0)) {
+                followButton.setVisibility(View.VISIBLE);
+                showInvited(followTv, u.isFollow);
+                followPersonTv.setText("她关注的人");
+                fansTv.setText("她的粉丝");
+                answerTv.setText("她的回答");
+                trendTv.setText("她的动态");
+                myFollowTv.setText("她的关注");
+                myFavoriteTv.setText("她的收藏");
+            }
         }
 
         //set click listener

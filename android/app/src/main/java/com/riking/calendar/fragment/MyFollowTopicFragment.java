@@ -8,6 +8,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZToast;
 
 import java.util.List;
@@ -36,7 +37,9 @@ public class MyFollowTopicFragment extends ZFragment<SearchTopicAdapter> {
     public void loadData(final int page) {
         final UserFollowParams params = new UserFollowParams();
         params.pindex = page;
-        params.userId = activity.userId;
+        if (!StringUtil.isEmpty(activity.userId)) {
+            params.userId = activity.userId;
+        }
         APIClient.getMyFollow(params, new ZCallBackWithFail<ResponseModel<List<Topic>>>() {
             @Override
             public void callBack(ResponseModel<List<Topic>> response) {

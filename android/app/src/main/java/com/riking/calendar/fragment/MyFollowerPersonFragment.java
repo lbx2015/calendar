@@ -9,6 +9,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZToast;
 
 import java.util.List;
@@ -40,7 +41,9 @@ public class MyFollowerPersonFragment extends ZFragment<MyFollowersAdapter> {
     public void loadData(final int page) {
 
         final UserFollowParams params = new UserFollowParams();
-        params.userId = activity.userId;
+        if (!StringUtil.isEmpty(activity.userId)) {
+            params.userId = activity.userId;
+        }
         //person type
         params.objType = 3;
         params.pindex = page;

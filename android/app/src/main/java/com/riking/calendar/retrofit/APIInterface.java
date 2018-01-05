@@ -54,6 +54,7 @@ import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.pojo.server.SysNoticeResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -464,4 +465,7 @@ public interface APIInterface {
 
     @GET("banner/getBanners")
     Call<ResponseModel<List<Banner>>> getBanners();
+
+    @POST("notice/getMoreUserNotice")
+    Call<ResponseModel<List<SysNoticeResult>>> getMoreUserNotice(@Body HomeParams params);
 }

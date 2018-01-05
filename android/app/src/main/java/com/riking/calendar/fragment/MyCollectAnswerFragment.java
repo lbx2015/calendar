@@ -9,6 +9,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZToast;
 
 import java.util.List;
@@ -40,7 +41,9 @@ public class MyCollectAnswerFragment extends ZFragment<MyCollectAnswerAdapter> {
     public void loadData(final int page) {
 
         final UserFollowParams params = new UserFollowParams();
-        params.userId = activity.userId;
+        if (!StringUtil.isEmpty(activity.userId)) {
+            params.userId = activity.userId;
+        }
         params.pindex = page;
         APIClient.getMyCollectAnswer(params, new ZCallBack<ResponseModel<List<QAnswerResult>>>() {
             @Override

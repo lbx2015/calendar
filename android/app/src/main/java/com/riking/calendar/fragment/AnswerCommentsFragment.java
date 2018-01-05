@@ -9,6 +9,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZToast;
 
 import java.util.List;
@@ -44,7 +45,9 @@ public class AnswerCommentsFragment extends ZFragment<MyDynamicAnswerCommentList
     private void loadAnswerComments(final int page) {
         UserFollowParams params = new UserFollowParams();
         params.pindex = page;
-        params.userId = activity.userId;
+        if (!StringUtil.isEmpty(activity.userId)) {
+            params.userId = activity.userId;
+        }
         APIClient.getUserDynamicComments(params, new ZCallBack<ResponseModel<List<QACommentResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QACommentResult>> response) {

@@ -24,6 +24,7 @@ import com.riking.calendar.activity.MyRelationActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.MyStateActivity;
 import com.riking.calendar.activity.SettingActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.listener.ZCallBack;
