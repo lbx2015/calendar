@@ -12,9 +12,9 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.PositionSelectActivity;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.interfeet.SubscribeReport;
-import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -46,7 +46,7 @@ public class SearchReportsAdapter extends RecyclerView.Adapter<ReportOrderViewHo
     public void onBindViewHolder(final ReportOrderViewHolder h, int i) {
         final ReportResult r = mList.get(i);
         h.reportTitle.setText(r.title);
-        ZR.setReportName(h.code, r.code, r.frequency,r.reportBatch);
+        ZR.setReportName(h.code, r.code, r.frequency, r.reportBatch);
         if (r.isSubscribe == 0) {
             h.subscribed = false;
         } else {
@@ -94,11 +94,11 @@ public class SearchReportsAdapter extends RecyclerView.Adapter<ReportOrderViewHo
 //                i.putExtra(CONST.INDUSTRY_ID,r.reportId);
                 //go to position select page
 //                MyApplication.mCurrentActivity.startActivity(i);
-                AppUser result = new AppUser();
+                UpdUserParams result = new UpdUserParams();
 //                result.industryId = industry.reportId;
-                result.isGuide = "1";
+                result.isGuide = 1;
                 result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
-                APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
+                APIClient.modifyUserInfo(result, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
 

@@ -577,10 +577,6 @@ public class APIClient {
         apiInterface.getPositionByIndustry(industryMap).enqueue(c);
     }
 
-    public static void updateUserInfo(AppUser user, ZCallBackWithFail<ResponseModel<String>> callBackWithFail) {
-        apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
-    }
-
     public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportResult>>> c) {
         apiInterface.findSubscribeReportList(user).enqueue(c);
     }

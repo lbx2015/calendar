@@ -11,6 +11,7 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
+import net.riking.entity.model.UserFollowCollect;
 import net.riking.entity.resp.OtherUserResp;
 
 public interface AppUserService {
@@ -31,7 +32,7 @@ public interface AppUserService {
 	public Integer transformExpToGrade(Integer experience);
 
 	public String getPhotoUrlPath(String photoPath);
-	
+
 	public void updatePhoneDeviceid(String userId, String phoneDeviceid);
 
 	// 用户关注的人
@@ -52,5 +53,10 @@ public interface AppUserService {
 
 	void del(String id);
 
+	/** 用户关注收藏管理 */
+	List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex, Integer pcount);
+
+	/** 用户关注收藏管理分页计算总数 */
+	Integer countByFolColByUserId(String userId, String userName);
 	/******************** WEB END ***********/
 }
