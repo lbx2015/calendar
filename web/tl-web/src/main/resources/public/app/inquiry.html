@@ -10,33 +10,36 @@
     <link type="include" href="/common/depcss.html" />
 </head>
 <style>
-html,body{
-	    overflow: hidden;
-	    height:auto;
+html, body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
 }
 .layui-layedit{
 	position: relative;
 }
 .layui-layedit-tool{
-position: fixed;
-top:0;
-left:0;
+
 background:#fff;
     width: 100%;
 }
 .layui-layedit-iframe{
-	    overflow: auto;
+	overflow: auto;
     position: absolute;
     top: 43px;
     left: 0;
     width: 100%;
     bottom: 0;
+    -webkit-overflow-scrolling: touch;
 }
 .layui-layedit-iframe iframe{
 	
 }
 </style>
-<body style="height:auto">
+<body>
     <div id="content"></div>
 </body>
 <!-- <script type="text/javascript" src="{=ctx}/layui/layui.all.js"></script>
@@ -175,7 +178,6 @@ background:#fff;
         $("._box").find("input[name='file']").attr("accept", "image/*");
         $(window).resize(function() {
              $(".layui-layedit").css("height",$(window).height());
-             
         }).resize();
   
         

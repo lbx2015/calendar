@@ -2,12 +2,15 @@ package net.riking.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +76,6 @@ public class NewsCommentServiceImpl implements NewsCommentService {
 			// 2.得到AppUser对象集合
 			List<NewsComment> newsComments = pageB.getContent();
 			getVos(newsComments);
-			List<NewsComment> newsCommentList = new ArrayList<NewsComment>();
-			for (NewsComment newsComment2 : newsComments) {
-				if (newsComment.getTitle() != null && !newsComment.getTitle().equals("")) {
-					if (newsComment2.getTitle().equals(newsComment.getTitle())) {
-						newsCommentList.add(newsComment2);
-					}
-				}
-			}
 			Page<NewsComment> modulePage = new PageImpl<NewsComment>(newsComments, pageRequest,
 					pageB.getTotalElements());
 			return modulePage;
@@ -135,6 +130,31 @@ public class NewsCommentServiceImpl implements NewsCommentService {
 				List<Predicate> predicates = new ArrayList<Predicate>();
 				// 默认查询条件
 				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
+				if (!StringUtils.isBlank(newsComment.getCommentUserName())) {
+					In<String> in = cb.in(root.get("userId"));
+					Set<String> idSet = appUserRepo.getUserIdsByUserName(newsComment.getCommentUserName());
+					if (idSet.size() != 0) {
+						for (String id : idSet) {
+							in.value(id);
+						}
+					} else {
+						in.value("");
+					}
+					// 获取所有用户名叫的id
+					predicates.add(in);
+				}
+				if (!StringUtils.isBlank(newsComment.getTitle())) {
+					In<String> in = cb.in(root.get("newsId"));
+					Set<String> idSet = newsRepo.getNewsIdsByTitle(newsComment.getTitle());
+					if (idSet.size() != 0) {
+						for (String id : idSet) {
+							in.value(id);
+						}
+					} else {
+						in.value("");
+					}
+					predicates.add(in);
+				}
 				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
 			}
 		};
