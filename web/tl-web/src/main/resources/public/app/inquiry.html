@@ -9,8 +9,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link type="include" href="/common/depcss.html" />
 </head>
-
-<body class="iframeBody">
+<style>
+html,body{
+	    overflow: hidden;
+	    height:auto;
+}
+.layui-layedit{
+	position: relative;
+}
+.layui-layedit-tool{
+position: fixed;
+top:0;
+left:0;
+background:#fff;
+    width: 100%;
+}
+.layui-layedit-iframe{
+	    overflow: auto;
+    position: absolute;
+    top: 43px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+}
+.layui-layedit-iframe iframe{
+	
+}
+</style>
+<body style="height:auto">
     <div id="content"></div>
 </body>
 <!-- <script type="text/javascript" src="{=ctx}/layui/layui.all.js"></script>
@@ -89,7 +115,7 @@
                     , 'image' //插入图片
                     //,'help' //帮助
                 ],
-                height: $(window).height() * 0.75 >> 0
+               	height: "100%"
             });
         });
 
@@ -147,6 +173,12 @@
         });
 
         $("._box").find("input[name='file']").attr("accept", "image/*");
+        $(window).resize(function() {
+             $(".layui-layedit").css("height",$(window).height());
+             
+        }).resize();
+  
+        
     })
 </script>
 
