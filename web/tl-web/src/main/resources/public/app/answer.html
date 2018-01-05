@@ -14,19 +14,11 @@
 <div id = "content"></div>
 </body>
 <script type="text/javascript" src="{=ctx}/layui/layui.all.js"></script>
-<script type="text/javascript" src="{=ctx}/js/util/utils.js"></script>
-<script type="text/javascript" src="{=ctx}/js/core/json2.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/base.js"></script>
-<script type="text/javascript" src="{=ctx}/js/core/base64_utf8.js"></script>
-<script type="text/javascript" src="{=ctx}/js/util/tmplUtils.js"></script>
-<script type="text/javascript" src="{=ctx}/js/core/locale.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/view.js"></script>
-<script type="text/javascript" src="{=ctx}/js/core/workflow.js"></script>
-<script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
-<script type="text/javascript" src="{=ctx}/js/core/iefix.js"></script>
-<script type="text/javascript" src="{=ctx}/js/core/iframe.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/tmplUtils.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/resize.js"></script>
-<script type="text/javascript" src="{=ctx}/js/util/jquery.mCustomScrollbar.concat.min.js"></script>
+
 <script type="text/javascript">
 	var _SYS = Tool.parseJSON('{=current_system}' || "{}");
 	var Const = {
@@ -94,7 +86,7 @@ layui.use('layedit', function(){
 
 function answerPublish(){
 	$("#text").val(layedit.getContent(index));
-	var url = Const.apiUrl + '/tl-api-test' + '/tQuestion/answerSave';
+	var url = Const.apiUrl + '/tl-api-test' + '/topicQuestion/answerSave';
 	var param = new Object();
 	param.content = $('form')[0].content.value;
 	param.userId = userId;

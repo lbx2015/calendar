@@ -93,14 +93,16 @@ public class HomePageServer {
 	@ApiOperation(value = "显示首页数据", notes = "POST")
 	@RequestMapping(value = "/findHomePageData", method = RequestMethod.POST)
 	public AppResp findHomePageData(@RequestBody HomeParams homeParams) throws ParseException {
+		Date date = null;
 		if (homeParams == null) {
 			homeParams = new HomeParams();
 			homeParams.setReqTimeStamp(new Date());
 			homeParams.setDirect(Const.DIRECT_UP);
 		}
 		if (homeParams.getReqTimeStamp() == null || "".equals(homeParams.getReqTimeStamp())) {
-			homeParams.setReqTimeStamp(DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"),
-					"yyyyMMddHHmmssSSS"));
+			date = DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"),
+					"yyyyMMddHHmmssSSS");
+			homeParams.setReqTimeStamp(date);
 			homeParams.setDirect(Const.DIRECT_UP);
 		}
 		if (homeParams.getDirect() == null) {
@@ -127,13 +129,18 @@ public class HomePageServer {
 			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
 			case Const.DIRECT_UP:
 				// 查询查出前30条数据
-				tQuestionList = tQuestionService.findTopicHomeUp(homeParams.getUserId(), homeParams.getReqTimeStamp(),
-						tquestIds, 0, 30);
-				// 如果查不到数据返回未登录时候数据
-				if (tQuestionList.size() == 0) {
+				if(date.compareTo(homeParams.getReqTimeStamp())==0){//若是系统时间， 表示用户刚刚登陆，加载上一次登陆数据
 					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
 							30);
+				}else{
+					tQuestionList = tQuestionService.findTopicHomeUp(homeParams.getUserId(), homeParams.getReqTimeStamp(),
+							tquestIds, 0, 30);
 				}
+				// 如果查不到数据返回未登录时候数据
+//				if (tQuestionList.size() == 0) {
+//					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
+//							30);
+//				}
 				break;
 			// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
 			case Const.DIRECT_DOWN:
@@ -189,6 +196,10 @@ public class HomePageServer {
 				}
 			}
 		});
+		
+		if(tQuestionList.isEmpty()){
+			return new AppResp(tQuestionList, CodeDef.SUCCESS);
+		}
 		// 可能感兴趣的话题
 		// 除去用户已关注的话题
 		List<String> topIds = topicRelRepo.findByUser(homeParams.getUserId(), Const.OBJ_OPT_FOLLOW);

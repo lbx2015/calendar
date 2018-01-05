@@ -7,21 +7,17 @@ import javax.jms.TextMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NewsCommentRepo;
-import net.riking.dao.repo.NewsRelRepo;
 import net.riking.dao.repo.QACommentRepo;
-import net.riking.dao.repo.QAInviteRepo;
-import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SysNoticeRepo;
-import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
-import net.riking.dao.repo.TopicRelRepo;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
@@ -31,7 +27,6 @@ import net.riking.entity.model.QAComment;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.SysNotice;
 import net.riking.entity.model.TopicQuestion;
-import net.riking.entity.resp.CurrentReportTaskResp;
 import net.riking.service.ContactsInviteService;
 import net.riking.service.NewsService;
 import net.riking.service.QACommentService;
@@ -41,7 +36,6 @@ import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
 import net.riking.spring.SpringBeanUtil;
 import net.riking.util.JdpushUtil;
-import net.riking.util.SmsUtil;
 import net.sf.json.JSONObject;
 
 /**
@@ -54,26 +48,40 @@ import net.sf.json.JSONObject;
 public class MQSysOptListener implements MessageListener {
 	private static final Logger logger = LogManager.getLogger("mqSysOptListener");
 
+	@Autowired
 	private QAInviteService qaInviteService;
+	@Autowired
 	private QAnswerService qAnswerService;
+	@Autowired
 	private QuestionAnswerRepo questionAnswerRepo;
+	@Autowired
 	private NewsService newsService;
+	@Autowired
 	private TopicService topicService;
+	@Autowired
 	private QACommentService qaCommentService;
+	@Autowired
 	private QACommentRepo qaCommentRepo;
+	@Autowired
 	private NewsCommentRepo newsCommentRepo;
+	@Autowired
 	private TQuestionService tQuestionService;
+	@Autowired
 	private TopicQuestionRepo topicQuestionRepo;
+	@Autowired
 	private ContactsInviteService contactsInviteService;
+	@Autowired
 	private SysNoticeRepo sysNoticeRepo;
+	@Autowired
 	private AppUserRepo appUserRepo;
+	@Autowired
 	private AppUserDetailRepo appUserDetailRepo;
 	
 	@Override
 	public void onMessage(Message message) {
-		sysNoticeRepo = (SysNoticeRepo) SpringBeanUtil.getInstance().getBean("sysNoticeRepo");
+//		sysNoticeRepo = (SysNoticeRepo) SpringBeanUtil.getInstance().getBean("sysNoticeRepo");
 		//appUserRepo = (AppUserRepo) SpringBeanUtil.getInstance().getBean("AppUserRepo");
-		appUserDetailRepo = (AppUserDetailRepo) SpringBeanUtil.getInstance().getBean("appUserDetailRepo");
+//		appUserDetailRepo = (AppUserDetailRepo) SpringBeanUtil.getInstance().getBean("appUserDetailRepo");
 		TextMessage txtMessage = (TextMessage) message;
 		try {
 			JSONObject jsonobject = JSONObject.fromObject(txtMessage.getText());
@@ -99,8 +107,8 @@ public class MQSysOptListener implements MessageListener {
 			
 			switch (optCommon.getMqOptType()) {
 				case Const.MQ_OPT_ANSWERINVITE://邀请回答的邀请 
-					qaInviteService = (QAInviteService) SpringBeanUtil.getInstance().getBean("qaInviteService");
-					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
+//					qaInviteService = (QAInviteService) SpringBeanUtil.getInstance().getBean("qaInviteService");
+//					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 					//appUser = appUserRepo.findOne(optCommon.getUserId());
 					appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 					topicQuestion = topicQuestionRepo.findOne(optCommon.getTqId());
@@ -123,12 +131,12 @@ public class MQSysOptListener implements MessageListener {
 					msgContent = title + " "+ content;
 					break;
 				case Const.MQ_OPT_QA_AGREEOR_COLLECT://问题回答点赞或收藏 
-					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
-					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("questionAnswerRepo");
+//					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
+//					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("questionAnswerRepo");
 					
 					isRn = qAnswerService.qaAgreeCollect(optCommon);
 					if(isRn){
-						topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
+//						topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 						appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 						questionAnswer = questionAnswerRepo.findOne(optCommon.getQuestAnswerId());
 						topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
@@ -153,16 +161,16 @@ public class MQSysOptListener implements MessageListener {
 					}
 					break;
 				case Const.MQ_OPT_NEW_COLLECT://资讯的收藏
-					newsService = (NewsService) SpringBeanUtil.getInstance().getBean("newsService");
+//					newsService = (NewsService) SpringBeanUtil.getInstance().getBean("newsService");
 					newsService.newsCollect(optCommon);
 					break;
 				case Const.MQ_OPT_SHIELD_QUEST://问题的屏蔽
-					topicService = (TopicService) SpringBeanUtil.getInstance().getBean("topicService");
+//					topicService = (TopicService) SpringBeanUtil.getInstance().getBean("topicService");
 					topicService.shield(optCommon);
 					break;
 				case Const.MQ_OPT_FOLLOW:// 问题，话题，用户的关注
-					tQuestionService = (TQuestionService) SpringBeanUtil.getInstance().getBean("tQuestionService");
-					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
+//					tQuestionService = (TQuestionService) SpringBeanUtil.getInstance().getBean("tQuestionService");
+//					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 					isRn = tQuestionService.follow(optCommon);
 					if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_2){
 						//关注话题不推送信息
@@ -206,8 +214,8 @@ public class MQSysOptListener implements MessageListener {
 					}
 					break;
 				case Const.MQ_OPT_COMMENT_AGREE:// 评论点赞
-					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
-					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
+//					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
+//					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
 					isRn = qaCommentService.commentAgree(optCommon);
 					
 					if(isRn){
@@ -244,17 +252,17 @@ public class MQSysOptListener implements MessageListener {
 					}
 					break;
 				case Const.MQ_OPT_CONTACTS_INVITE:// 通讯录的邀请
-					contactsInviteService = (ContactsInviteService) SpringBeanUtil.getInstance().getBean("contactsInviteService");
+//					contactsInviteService = (ContactsInviteService) SpringBeanUtil.getInstance().getBean("contactsInviteService");
 					contactsInviteService.contactsInvite(optCommon);
 					//需要发短信
 //					SmsUtil smsUtil = new SmsUtil();
 					
 					break;
 				case Const.MQ_OPT_QANSWER_COMMENT:// 问题回答的评论
-					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
-					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("questionAnswerRepo");
+//					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
+//					questionAnswerRepo = (QuestionAnswerRepo) SpringBeanUtil.getInstance().getBean("questionAnswerRepo");
 					questionAnswer = questionAnswerRepo.findOne(optCommon.getQuestAnswerId());
-					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
+//					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 					qAnswerService.qACommentPub(optCommon);
 					appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 					//topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
@@ -279,12 +287,12 @@ public class MQSysOptListener implements MessageListener {
 					
 					break;
 				case Const.MQ_OPT_NEWS_COMMENT:// 资讯评论发布
-					newsService = (NewsService) SpringBeanUtil.getInstance().getBean("newsService");
+//					newsService = (NewsService) SpringBeanUtil.getInstance().getBean("newsService");
 					newsService.newsCommentPub(optCommon);
 				case Const.MQ_OPT_COMMENT_REPLY:// 评论的回复和回复的回复
-					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
-					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
-					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
+//					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
+//					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
+//					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
 					qAnswerService.commentReply(optCommon);
 					appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
 					sysNotice = new SysNotice();

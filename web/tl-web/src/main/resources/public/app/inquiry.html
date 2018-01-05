@@ -43,11 +43,11 @@ background:#fff;
     <div id="content"></div>
 </body>
 <!-- <script type="text/javascript" src="{=ctx}/layui/layui.all.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/tmplUtils.js"></script>
 <script type="text/javascript" src="{=ctx}/js/util/utils.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/json2.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/base.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/base64_utf8.js"></script>
-<script type="text/javascript" src="{=ctx}/js/util/tmplUtils.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/locale.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/view.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/workflow.js"></script>
@@ -60,7 +60,9 @@ background:#fff;
 <script type="text/javascript" src="{=ctx}/layui/layui.all.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/base.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/view.js"></script>
+<script type="text/javascript" src="{=ctx}/js/util/tmplUtils.js"></script>
 <script type="text/javascript" src="{=ctx}/js/core/resize.js"></script>
+
 <script type="text/javascript">
     var _SYS = Tool.parseJSON('{=current_system}' || "{}");
     var Const = {
@@ -127,7 +129,7 @@ background:#fff;
 
     function questionPublish() {
         $("#text").val(layedit.getContent(index));
-        var url = Const.apiUrl + '/tQuestion/questionSave';
+        var url = Const.apiUrl + '/topicQuestion/questionSave';
         var param = new Object();
         param.content = $('form')[0].content.value;
         param.userId = userId;

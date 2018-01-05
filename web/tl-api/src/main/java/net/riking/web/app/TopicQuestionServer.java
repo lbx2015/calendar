@@ -1,6 +1,8 @@
 package net.riking.web.app;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
+import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
@@ -35,6 +39,7 @@ import net.riking.entity.model.TopicQuestion;
 import net.riking.entity.params.TQuestionParams;
 import net.riking.service.AppUserService;
 import net.riking.service.QuestionKeyWordService;
+import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
 import net.riking.util.Utils;
 import net.sf.json.JSONObject;
@@ -213,5 +218,65 @@ public class TopicQuestionServer {
 	public AppResp getTopicByQuest_(@RequestBody TQuestionParams Params) {
 		List<Topic> list = questionKeyWordService.getTopicByQuestion(Params.getTitle());
 		return new AppResp(list, CodeDef.SUCCESS);
+	}
+	
+	@RequestMapping(value = "/questionSave", method = RequestMethod.GET)
+	public Resp questionSave_(@RequestParam HashMap<String, Object> params) {
+		TopicQuestion topicQuestion = Utils.map2Obj(params, TopicQuestion.class);
+		try {
+			topicQuestion.setTitle(URLDecoder.decode(topicQuestion.getTitle(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			return new Resp(CodeDef.ERROR);
+		}
+		String[] fileNames = topicQuestion.getContent().split("alt=");
+		for (int i = 1; i < fileNames.length; i++) {
+			String fileName = fileNames[i].split(">")[0].replace("\"", "");
+			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_QUESTION_PHOTO_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				return new Resp(CodeDef.ERROR);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+		}
+		topicQuestion.setCreatedBy(topicQuestion.getUserId());
+		topicQuestion.setModifiedBy(topicQuestion.getUserId());
+		topicQuestion.setIsAduit(0);
+		topicQuestion.setContent(topicQuestion.getContent().replace("temp", "question"));
+		topicQuestionRepo.save(topicQuestion);
+
+		return new Resp(topicQuestion, CodeDef.SUCCESS);
+	}
+	
+	
+	@RequestMapping(value = "/answerSave", method = RequestMethod.GET)
+	public Resp answerSave_(@RequestParam HashMap<String, Object> params) {
+		QuestionAnswer questionAnswer = Utils.map2Obj(params, QuestionAnswer.class);
+		String[] fileNames = questionAnswer.getContent().split("alt=");
+		for (int i = 1; i < fileNames.length; i++) {
+			String fileName = fileNames[i].split(">")[0].replace("\"", "");
+			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_ANSWER_PHOTO_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				return new Resp(CodeDef.ERROR);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+		}
+		questionAnswer.setCreatedBy(questionAnswer.getUserId());
+		questionAnswer.setModifiedBy(questionAnswer.getUserId());
+		questionAnswer.setIsAduit(0);
+		questionAnswer.setCoverUrl(questionAnswer.getContent().split("alt=")[1].split(">")[0].replace("\"", ""));
+		questionAnswer.setContent(questionAnswer.getContent().replace("temp", "answer"));
+		questionAnswerRepo.save(questionAnswer);
+		return new Resp(questionAnswer, CodeDef.SUCCESS);
 	}
 }

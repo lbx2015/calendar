@@ -131,8 +131,8 @@ public class LoginServer {
 			}
 			
 			
-			if(StringUtils.isNotBlank(loginParams.getPhoneDeviceId()) && !detail.getPhoneDeviceId().trim().equals(loginParams.getPhoneDeviceId().trim())){
-				if(StringUtils.isNotBlank(detail.getPhoneDeviceId())){
+			if(StringUtils.isNotBlank(loginParams.getPhoneDeviceId())){
+				if(StringUtils.isNotBlank(detail.getPhoneDeviceId())  && !detail.getPhoneDeviceId().trim().equals(loginParams.getPhoneDeviceId().trim())){
 					//换设备号登录，极光推送
 					Jdpush jdpush = new Jdpush();
 					jdpush = new Jdpush();

@@ -30,9 +30,9 @@ public class JdpushUtil {
 		try {
 			if(StringUtils.isNotBlank(jdpush.getRegisrationId())){
 				PushPayload pushPayload = JdpushUtil.buildPushObject_all_registrationId_alertWithTitle(jdpush);
-				System.out.println(pushPayload);
+				System.err.println(pushPayload);
 				PushResult pushResult = jPushClient.sendPush(pushPayload);
-				System.out.println(pushResult);
+				System.err.println(pushResult);
 				if (pushResult.getResponseCode() == 200) {
 					result = 1;
 				}
