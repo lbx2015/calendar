@@ -1,12 +1,7 @@
 package net.riking.web.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +20,7 @@ import net.riking.dao.repo.NewsRepo;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
+import net.riking.service.NewsCommentService;
 import net.riking.service.NewsService;
 
 @RestController
@@ -45,6 +41,9 @@ public class NewsCommentController {
 
 	@Autowired
 	NCReplyRepo ncReplyRepo;
+
+	@Autowired
+	NewsCommentService newsCommentService;
 
 	@ApiOperation(value = "得到单个信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -73,27 +72,29 @@ public class NewsCommentController {
 			newsComment.setIsDeleted(1);
 		}
 		int i = query.getPindex() * query.getPcount();
-		Example<NewsComment> example = Example.of(newsComment, ExampleMatcher.matchingAll());
-		Page<NewsComment> page = newsCommentRepo.findAll(example, pageable);
-		List<NewsComment> list = page.getContent();
-		for (NewsComment newsComment2 : list) {
-			// news1.setNid(news1.getId());
-			i++;
-			newsComment2.setSerialNumber(new Integer(i));
-			// 设置咨询标题
-			News news = newsRepo.findOne(newsComment2.getNewsId());
-			if (news != null) {
-				newsComment2.setTitle(news.getTitle());
-			}
-			AppUser appUser = appUserRepo.findOne(newsComment2.getUserId());
-			if (appUser != null) {
-				newsComment2.setCommentUserName(appUser.getUserName());
-			}
-			// 设置回复审核数
-			String isAduitNum = getIsAduitNum(newsComment2.getId());
-			newsComment2.setIsAduitNum(isAduitNum);
-		}
-		Page<NewsComment> modulePage = new PageImpl<NewsComment>(list, pageable, page.getTotalElements());
+		// Example<NewsComment> example = Example.of(newsComment, ExampleMatcher.matchingAll());
+		// Page<NewsComment> page = newsCommentRepo.findAll(example, pageable);
+		// List<NewsComment> list = page.getContent();
+		// for (NewsComment newsComment2 : list) {
+		// // news1.setNid(news1.getId());
+		// i++;
+		// newsComment2.setSerialNumber(new Integer(i));
+		// // 设置咨询标题
+		// News news = newsRepo.findOne(newsComment2.getNewsId());
+		// if (news != null) {
+		// newsComment2.setTitle(news.getTitle());
+		// }
+		// AppUser appUser = appUserRepo.findOne(newsComment2.getUserId());
+		// if (appUser != null) {
+		// newsComment2.setCommentUserName(appUser.getUserName());
+		// }
+		// // 设置回复审核数
+		// String isAduitNum = getIsAduitNum(newsComment2.getId());
+		// newsComment2.setIsAduitNum(isAduitNum);
+		// }
+		// Page<NewsComment> modulePage = new PageImpl<NewsComment>(list, pageable,
+		// page.getTotalElements());
+		Page<NewsComment> modulePage = newsCommentService.findAll(newsComment, pageable);
 		return new Resp(modulePage, CodeDef.SUCCESS);
 	}
 

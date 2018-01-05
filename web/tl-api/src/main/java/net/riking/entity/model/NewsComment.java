@@ -113,6 +113,16 @@ public class NewsComment extends BaseAuditProp {
 		}
 	}
 
+	public NewsComment(String id, String userId, String newsId, String content, String commentUserName, String title) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.newsId = newsId;
+		this.content = content;
+		this.commentUserName = commentUserName;
+		this.title = title;
+	}
+
 	public NewsComment() {
 		super();
 		// TODO Auto-generated constructor stub
