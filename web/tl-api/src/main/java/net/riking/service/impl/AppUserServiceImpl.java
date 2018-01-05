@@ -38,6 +38,7 @@ import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
+import net.riking.entity.model.UserFollowCollect;
 import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
@@ -265,6 +266,9 @@ public class AppUserServiceImpl implements AppUserService {
 				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
 
 				if (null != appUserVO.getAppUser()) {
+					if (StringUtils.isNotBlank(appUserVO.getAppUser().getId())) {
+						predicates.add(cb.equal(root.<String> get("id"), appUserVO.getAppUser().getId()));
+					}
 					if (StringUtils.isNotBlank(appUserVO.getAppUser().getUserName())) {
 						predicates.add(cb.like(root.<String> get("userName"),
 								"%" + appUserVO.getAppUser().getUserName() + "%"));
@@ -298,6 +302,19 @@ public class AppUserServiceImpl implements AppUserService {
 		AppUser appUser = appUserRepo.findOne(id);
 		appUser.setIsDeleted(0);
 		appUserRepo.save(appUser);
+	}
+
+	@Override
+	public List<UserFollowCollect> findByFolColByUserId(String userId, Integer pindex, Integer pcount) {
+
+		return appUserDao.findByFolColByUserId(userId, pindex, pcount);
+	}
+
+	@Override
+	public Integer countByFolColByUserId(String userId) {
+
+		return appUserDao.countByFolColByUserId(userId);
+
 	}
 
 	/******************** WEB END ***********/

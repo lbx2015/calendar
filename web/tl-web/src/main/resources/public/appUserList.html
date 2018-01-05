@@ -66,7 +66,7 @@
 <script>
 	var item;
 	var tbTmpl;
-
+	var userId = View.getQStr("userId");
 	function forbbit(id) {
 
 	}
@@ -76,7 +76,12 @@
 		tbTmpl = tmpl;
 
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/appUser/getMore";
+			var url ;
+			if(userId != null || userId != undefined){
+				url = Const.apiUrl + "/appUser/getMore?userId="+userId;
+			}else{
+				url = Const.apiUrl + "/appUser/getMore?userId=";
+			}
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
