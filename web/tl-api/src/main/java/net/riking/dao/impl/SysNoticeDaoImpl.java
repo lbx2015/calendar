@@ -32,10 +32,10 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 	public List<SysNoticeResult> findSysNoticeResult(String userId) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "SELECT a.id noticeId, a.title, a.content, a.data_type dataType, "; 
+		String sql = "SELECT a.id noticeId, a.title, a.content, a.data_type dataType, ";
 		sql += "CASE WHEN EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id AND t.user_id = ? ) THEN 1 END AS isRead, ";
 		sql += "a.created_time createdTime FROM t_sys_notice a WHERE a.data_type=0 and ";
-		sql += "EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id and t.is_deleted = 1 AND t.user_id = ? ) "; 
+		sql += "EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id and t.is_deleted = 1 AND t.user_id = ? ) ";
 		sql += "order by a.created_time desc ";
 		PreparedStatement pstmt = null;
 		List<SysNoticeResult> list = new ArrayList<SysNoticeResult>();
@@ -54,21 +54,21 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				data.setContent(rs.getString("content"));
 				data.setDataType(rs.getInt("dataType"));
 				data.setIsRead(rs.getInt("isRead"));
-				data.setCreatedTime(rs.getString("createdTime"));
+				data.setCreatedTime(rs.getDate("createdTime"));
 				list.add(data);
 			}
 			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error(e);
-		}finally {
+		} finally {
 			try {
-				if(pstmt != null || !pstmt.isClosed()){
+				if (pstmt != null || !pstmt.isClosed()) {
 					pstmt.close();
 					pstmt = null;
 				}
-				
-				if(connection != null || !connection.isClosed()){
+
+				if (connection != null || !connection.isClosed()) {
 					connection.close();
 					connection = null;
 				}
@@ -77,12 +77,12 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				e.printStackTrace();
 				logger.error(e);
 			}
-				
+
 		}
 		return list;
 
 	}
-	
+
 	@Override
 	public List<SysNoticeResult> findUserNoticeResult(String userId, Date reqTimeStamp) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
@@ -93,7 +93,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 		sql += "CASE WHEN EXISTS (SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id AND t.user_id = a.notice_user_id) THEN 1 ELSE 0 END AS isRead, ";
 		sql += "a.created_time createdTime FROM t_sys_notice a ";
 		sql += "WHERE a.data_type<>0 and a.notice_user_id = ? ";
-		if(reqTimeStamp != null){
+		if (reqTimeStamp != null) {
 			Timestamp timestamp = new Timestamp(reqTimeStamp.getTime());
 			sql += "and '" + timestamp + "' > a.created_time ";
 		}
@@ -117,7 +117,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				data.setUserPhotoUrl(rs.getString("userPhotoUrl"));
 				data.setObjId(rs.getString("objId"));
 				data.setIsRead(rs.getInt("isRead"));
-				data.setCreatedTime(rs.getString("createdTime"));
+				data.setCreatedTime(rs.getDate("createdTime"));
 				data.setReqTimeStamp(rs.getTimestamp("createdTime"));
 				list.add(data);
 			}
@@ -125,14 +125,14 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error(e);
-		}finally {
+		} finally {
 			try {
-				if(pstmt != null || !pstmt.isClosed()){
+				if (pstmt != null || !pstmt.isClosed()) {
 					pstmt.close();
 					pstmt = null;
 				}
-				
-				if(connection != null || !connection.isClosed()){
+
+				if (connection != null || !connection.isClosed()) {
 					connection.close();
 					connection = null;
 				}
@@ -141,7 +141,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				e.printStackTrace();
 				logger.error(e);
 			}
-				
+
 		}
 		return list;
 
