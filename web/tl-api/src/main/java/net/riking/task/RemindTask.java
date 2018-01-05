@@ -3,6 +3,7 @@ package net.riking.task;
 import java.util.List;
 import java.util.TimerTask;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,8 +40,10 @@ public class RemindTask extends TimerTask {
 			jdpush.setMsgContent("您有相关的报表未核销哦。");
 			jdpush.setExtrasparam("");
 			for (CurrentReportTaskResp data : taskList) {
-				jdpush.setRegisrationId(data.getPhoneDeviceId());
-				JdpushUtil.sendToRegistrationId(jdpush);
+				if(StringUtils.isNotBlank(data.getPhoneDeviceId())){
+					jdpush.setRegisrationId(data.getPhoneDeviceId());
+					JdpushUtil.sendToRegistrationId(jdpush);
+				}
 			}
 		}
 	}

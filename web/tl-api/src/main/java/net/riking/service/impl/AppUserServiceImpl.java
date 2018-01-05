@@ -158,6 +158,12 @@ public class AppUserServiceImpl implements AppUserService {
 		appUserDetailRepo.updatePhoto(userId, fileName);
 		return fileName;
 	}
+	
+	@Override
+	public void updatePhoneDeviceid(String userId, String phoneDeviceid) {
+		// TODO Auto-generated method stub
+		appUserDetailRepo.updatePhoneDeviceid(userId, phoneDeviceid);
+	}
 
 	/**
 	 * 经验值计算等级

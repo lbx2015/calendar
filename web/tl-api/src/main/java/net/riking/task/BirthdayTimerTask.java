@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,10 @@ public class BirthdayTimerTask extends TimerTask {
 					jdpush.setMsgTitle(data.getUserName() + "先生/女士：祝您生日快乐");
 					jdpush.setMsgContent("亲爱的朋友，今天是你的生日，我为你放飞了一群祝福，为你洒下了一地幸福，祝你生日快乐，生活幸福，笑容天天，美梦实现。");
 					jdpush.setExtrasparam("");
-					
-					jdpush.setRegisrationId(data.getPhoneDeviceid());
-					JdpushUtil.sendToRegistrationId(jdpush);
+					if(StringUtils.isNotBlank(data.getPhoneDeviceId())){
+						jdpush.setRegisrationId(data.getPhoneDeviceId());
+						JdpushUtil.sendToRegistrationId(jdpush);
+					}
 				}
 			}
 		} catch (Exception e) {

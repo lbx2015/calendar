@@ -18,7 +18,7 @@ import net.riking.entity.model.NewsComment;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("newsCommentRepo")
 public interface NewsCommentRepo extends JpaRepository<NewsComment, String>, JpaSpecificationExecutor<NewsComment> {
 	/**
 	 * 统计资讯评论数

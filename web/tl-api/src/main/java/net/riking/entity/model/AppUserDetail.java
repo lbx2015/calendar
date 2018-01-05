@@ -83,9 +83,9 @@ public class AppUserDetail extends BaseEntity {
 	@Column(name = "descript", length = 500)
 	private String descript;
 
-	@Comment("手机Deviceid")
+	@Comment("手机DeviceId")
 	@Column(name = "phone_device_id", length = 32)
-	private String phoneDeviceid;
+	private String phoneDeviceId;
 
 	@Comment("手机类型 1-IOS;2-Android;3-其它")
 	@Column(name = "phone_type", length = 1)
@@ -206,12 +206,12 @@ public class AppUserDetail extends BaseEntity {
 		this.descript = descript;
 	}
 
-	public String getPhoneDeviceid() {
-		return phoneDeviceid;
+	public String getPhoneDeviceId() {
+		return phoneDeviceId;
 	}
 
-	public void setPhoneDeviceid(String phoneDeviceid) {
-		this.phoneDeviceid = phoneDeviceid;
+	public void setPhoneDeviceId(String phoneDeviceId) {
+		this.phoneDeviceId = phoneDeviceId;
 	}
 
 	public Integer getPhoneType() {

@@ -256,8 +256,8 @@ public class AppUserServer {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
 		String seqNum = userParams.getPhoneDeviceid();
-		if (appUserDetail != null && !seqNum.equals(appUserDetail.getPhoneDeviceid())) {
-			appUserDetail.setPhoneDeviceid(seqNum);
+		if (appUserDetail != null && !seqNum.equals(appUserDetail.getPhoneDeviceId())) {
+			appUserDetail.setPhoneDeviceId(seqNum);
 			appUserDetail.setPhoneType(userParams.getPhoneType());
 			appUserDetailRepo.save(appUserDetail);
 			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);

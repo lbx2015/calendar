@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.SysNotice;
 
-@Repository
+@Repository("sysNoticeRepo")
 public interface SysNoticeRepo extends JpaRepository<SysNotice, String>, JpaSpecificationExecutor<SysNotice> {
 	
 	/**

@@ -55,11 +55,8 @@ public class StartupListener implements ServletContextListener {
 
 	@Autowired
 	MQReceiveService mQReceiveService;
-	 @Autowired
-	 TimerManager timerManager;
-
-	// @Autowired
-	// JedisUtil jedisUtil;
+	@Autowired
+	TimerManager timerManager;
 
 	/**
 	 * {@inheritDoc}
@@ -79,16 +76,16 @@ public class StartupListener implements ServletContextListener {
 
 		questionKeyWordService.initKeyWord();
 		
-		// timerManager.init();
-//		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
-//		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列
-//		mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
+		timerManager.init();
+		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
+		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列
+		mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
 	}
 		
 
-	private void initWorkflow(ServletContextEvent event) throws InterruptedException {
+	/*private void initWorkflow(ServletContextEvent event) throws InterruptedException {
 
-	}
+	}*/
 
 	/**
 	 * Shutdown servlet context (currently a no-op method).

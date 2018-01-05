@@ -23,7 +23,7 @@ import net.riking.entity.model.QACommentResult;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("qaCommentRepo")
 public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpecificationExecutor<QAComment> {
 
 	/**

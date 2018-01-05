@@ -26,7 +26,7 @@ import net.riking.entity.params.QAnswerParams;
 import net.riking.service.QAnswerService;
 import net.riking.util.Utils;
 
-@Service("QAnswerService")
+@Service("qAnswerService")
 @Transactional
 public class QAnswerServiceImpl implements QAnswerService {
 	private static final Logger logger = LogManager.getLogger(QAnswerService.class);

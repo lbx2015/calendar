@@ -1,12 +1,14 @@
 package net.riking.entity.params;
 
+import net.riking.core.entity.BaseEntity;
+
 /**
  * 订阅报表参数
  * @author james.you
  * @version crateTime：2017年11月7日 下午4:01:44
  * @used TODO
  */
-public class SubscribeReportParam {
+public class SubscribeReportParam extends BaseEntity{
 
 	private String userId;
 

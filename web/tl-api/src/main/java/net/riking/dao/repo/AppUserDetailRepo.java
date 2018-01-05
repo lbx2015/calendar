@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.AppUserDetail;
 
-@Repository
+@Repository("appUserDetailRepo")
 public interface AppUserDetailRepo
 		extends JpaRepository<AppUserDetail, String>, JpaSpecificationExecutor<AppUserDetail> {
 
@@ -35,4 +35,9 @@ public interface AppUserDetailRepo
 	@Modifying
 	@Query("update AppUserDetail set photoUrl = ?2 where id = ?1")
 	int updatePhoto(String userId, String photo);
+	
+	@Transactional
+	@Modifying
+	@Query("update AppUserDetail set phoneDeviceId = ?2 where id = ?1")
+	int updatePhoneDeviceid(String userId, String phoneDeviceid);
 }

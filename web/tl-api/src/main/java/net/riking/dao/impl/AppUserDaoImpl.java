@@ -45,7 +45,7 @@ public class AppUserDaoImpl implements AppUserDao {
 			while (rs.next()) {
 				AppUserDetail data = new AppUserDetail();
 				data.setUserName(rs.getString("userName"));
-				data.setPhoneDeviceid(rs.getString("phoneDeviceId"));
+				data.setPhoneDeviceId(rs.getString("phoneDeviceId"));
 				list.add(data);
 			}
 		} catch (SQLException e) {
