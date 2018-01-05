@@ -37,6 +37,7 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.Banner;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
@@ -460,4 +461,7 @@ public interface APIInterface {
 
     @POST("report/findHisCompletedTasks")
     Call<ResponseModel<List<List<ReportCompletedRelResult>>>> findHisCompletedTasks(@Body ReportCompletedRelParam param);
+
+    @GET("banner/getBanners")
+    Call<ResponseModel<List<Banner>>> getBanners();
 }

@@ -42,6 +42,7 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.Banner;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
@@ -553,8 +554,8 @@ public class APIClient {
 
     public static void checkUpdate(final CheckCallBack updateCallback) {
         JsonObject j = new JsonObject();
-        j.addProperty("versionNumber", BuildConfig.VERSION_NAME);
-        j.addProperty("type", "2");//1 is iphone 2 is android
+        j.addProperty("versionNo", BuildConfig.VERSION_NAME);
+        j.addProperty("clientType", "2");//1 is iphone 2 is android
         apiInterface.getAppVersion(j).enqueue(new ZCallBack<ResponseModel<AppVersionResult>>() {
             @Override
             public void callBack(ResponseModel<AppVersionResult> response) {
@@ -825,5 +826,9 @@ public class APIClient {
 
     public static void findHisCompletedTasks(ReportCompletedRelParam param, ZCallBackWithFail<ResponseModel<List<List<ReportCompletedRelResult>>>> c) {
         apiInterface.findHisCompletedTasks(param).enqueue(c);
+    }
+
+    public static void getBanners(ZCallBackWithFail<ResponseModel<List<Banner>>> c) {
+        apiInterface.getBanners().enqueue(c);
     }
 }

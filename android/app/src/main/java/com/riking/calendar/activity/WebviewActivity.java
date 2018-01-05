@@ -40,6 +40,10 @@ public class WebviewActivity extends AppCompatActivity {
         if (activityName.equals("SettingActivity")) {
             //set activity title
             activityTitle.setText("关于我们");
+        } else if (activityName.equals("LoginActivity")) {
+            activityTitle.setText("隐私政策");
+        } else if (activityName.equals("UserInfoFragment")) {
+            activityTitle.setText("我的等级");
         } else {
             activityTitle.setVisibility(View.GONE);
         }

@@ -1,5 +1,6 @@
 package com.riking.calendar.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -14,18 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RaiseQuestionActivity;
 import com.riking.calendar.activity.SearchActivity;
+import com.riking.calendar.activity.WebviewActivity;
+import com.riking.calendar.listener.ZCallBackWithFail;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ss.com.bannerslider.banners.Banner;
-import ss.com.bannerslider.banners.DrawableBanner;
+import ss.com.bannerslider.banners.RemoteBanner;
 import ss.com.bannerslider.events.OnBannerClickListener;
 import ss.com.bannerslider.views.BannerSlider;
 
@@ -40,6 +45,7 @@ public class HomeFragment extends Fragment {
     CollapsingToolbarLayout collapsingToolbarLayout;
     AppBarLayout appBarLayout;
     LinearLayout search;
+    List<com.riking.calendar.pojo.server.Banner> banners;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
     private BannerSlider bannerSlider;
@@ -52,24 +58,39 @@ public class HomeFragment extends Fragment {
         bannerSlider.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onClick(int position) {
-                Toast.makeText(getContext(), "Banner with position " + String.valueOf(position) + " clicked!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getContext(), WebviewActivity.class);
+                i.putExtra(CONST.WEB_URL, banners.get(position).relationURL);
+                startActivity(i);
             }
         });
     }
 
     private void addBanners() {
-        List<Banner> remoteBanners = new ArrayList<>();
+        final List<Banner> remoteBanners = new ArrayList<>();
+        APIClient.getBanners(new ZCallBackWithFail<ResponseModel<List<com.riking.calendar.pojo.server.Banner>>>() {
+            @Override
+            public void callBack(ResponseModel<List<com.riking.calendar.pojo.server.Banner>> response) throws Exception {
+                if (failed) {
+
+                } else {
+                    banners = response._data;
+                    for (com.riking.calendar.pojo.server.Banner banner : banners) {
+                        remoteBanners.add(new RemoteBanner(banner.bannerURL));
+                    }
+
+                    bannerSlider.setBanners(remoteBanners);
+                }
+            }
+        });
         //Add banners using image urls
    /*     remoteBanners.add(new RemoteBanner(
                 "https://assets.materialup.com/uploads/dcc07ea4-845a-463b-b5f0-4696574da5ed/preview.jpg"
         ));*/
-        remoteBanners.add(new DrawableBanner(R.drawable.banner));
+      /*  remoteBanners.add(new DrawableBanner(R.drawable.banner));
         remoteBanners.add(new DrawableBanner(R.drawable.profile3));
         remoteBanners.add(new DrawableBanner(R.drawable.profilegoat));
         remoteBanners.add(new DrawableBanner(R.drawable.banner));
-        remoteBanners.add(new DrawableBanner(R.drawable.profile));
-        bannerSlider.setBanners(remoteBanners);
-
+        remoteBanners.add(new DrawableBanner(R.drawable.profile));*/
     }
 
     @Override
@@ -103,7 +124,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void onClickSearchButton(final View v) {
-        ZGoto.to( SearchActivity.class);
+        ZGoto.to(SearchActivity.class);
     }
 
 
