@@ -39,7 +39,7 @@
 <script>
 	$(function() {
 		$("#add-data").click(function() {
-			var url = "appUserEdit.html";
+			var url = "questionAnswerEdit.html";
 			var title = "添加数据";
 			View.openDialog(url, title);
 		});
@@ -74,7 +74,7 @@
 	function tbOnBind(attrs, param) {
 		tmpl = this;
 		tbTmpl = tmpl;
-
+		
 		var _bind = function(callback) {
 			var url = Const.apiUrl + "/questionAnswer/getMore";
 			var _this = this;
@@ -108,12 +108,12 @@
 									+ obj.item.id
 									+ "\""
 									+ ");'>删除</button>";
-							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='answerIsAduit("
+							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-mini' onclick='answerIsAduit("
 								+ "\""
 								+ obj.item.id
 								+ "\""
 								+ ");'>回答审核</button>";
-							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='commentIsAduit("
+							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-mini' onclick='commentIsAduit("
 								+ "\""
 								+ obj.item.id
 								+ "\""
@@ -123,19 +123,33 @@
 						}
 					}
 					if(obj.item){
-						if(obj.prop == 'appUserDetail.photoUrl'){
-							var photoName = obj.html;
-							if(photoName==""){
-								photoName = "USA.png";
-							}
-							var start  = "<div  align='center' style='width: 28px;height: 28px;border-radius: 50%; overflow:hidden;'>";
-							var end = "</div>"
-							var url = obj.item.prefixPhotoURL+ photoName;
-							obj.html = "";
-							obj.html +=start;
-							obj.html += "<img src='"+url+"' style='width: 28px;height: 28px;'/>";
-							obj.html +=end;
-							
+						if(obj.prop == 'isAduitNum'){
+							//获取原来的值
+							var value = obj.html;
+							var num = value.split("/");
+							var cssStringStart = "<font color='red'>";
+							var cssStringend = "</font>";
+							var newValue =cssStringStart+num[0];
+							newValue+=cssStringend;
+							newValue+="/ "+num[1];
+							newValue+="/ "+num[2];
+							obj.html="";
+							obj.html+=newValue;
+						}
+					}
+					if(obj.item){
+						if(obj.prop == 'isAduitNumByReply'){
+							//获取原来的值
+							var value = obj.html;
+							var num = value.split("/");
+							var cssStringStart = "<font color='red'>";
+							var cssStringend = "</font>";
+							var newValue =cssStringStart+num[0];
+							newValue+=cssStringend;
+							newValue+="/ "+num[1];
+							newValue+="/ "+num[2];
+							obj.html="";
+							obj.html+=newValue;
 						}
 					}
 					return obj.html;
@@ -173,7 +187,7 @@
 			return;
 		}
 		tmpl.bind(function(callback) {
-			var url = Const.apiUrl + "/appUser/get";
+			var url = Const.apiUrl + "/questionAnswer/get";
 			var data = {};
 			//是否可编辑
 			//data.canEdit = true;
@@ -207,13 +221,14 @@
 	}
 	//弹出添加iframe
 	function edit(id) {
-		var url = "QuestionAnswerEdit.html?id=" + id;
+		var flag = "edit";
+		var url = "QuestionAnswerEdit.html?id=" + id + "&flag=" + flag;
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
 	//弹出添加iframe
 	function view(id) {
-		var flag = "view"
+		var flag = "view";
 		var url = "QuestionAnswerEdit.html?id=" + id + "&flag=" + flag;
 		var title = "数据处理";
 		View.openDialog(url, title);
@@ -226,7 +241,7 @@
 	}
 	function enable(id) {
 		TmplUtils.showConfirm('您确定启用该用户吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appUser/enable";
+			var url = Const.apiUrl + "/questionAnswer/enable";
 			View.get(url, "id=" + id, function(resp) {
 				TmplUtils.showMsgSuccess('启用成功');
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -249,7 +264,7 @@
 
 	function unEnable(id) {
 		TmplUtils.showConfirm('您确定禁用该用户吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appUser/unEnable";
+			var url = Const.apiUrl + "/questionAnswer/unEnable";
 			View.get(url, "id=" + id, function(resp) {
 				TmplUtils.showMsgSuccess('禁用成功');
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -266,7 +281,7 @@
 	//保存
 	function save() {
 
-		var url = Const.apiUrl + "/appUser/addOrUpdate";
+		var url = Const.apiUrl + "/questionAnswer/addOrUpdate";
 		var employee = Utils.formToObj("preview");
 		View.post(url, employee, function(resp) {
 			TmplUtils.showMsgSuccess('编辑成功');
@@ -293,7 +308,7 @@
 			return;
 		}
 		TmplUtils.showConfirm('您确定删除这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appUser/delMore"
+			var url = Const.apiUrl + "/questionAnswer/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -312,7 +327,7 @@
 		var ids = [];
 		ids.push(id);
 		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appUser/delMore"
+			var url = Const.apiUrl + "/questionAnswer/delMore"
 			View.post(url, ids, function(resp) {
 				TmplUtils.showMsgSuccess("删除成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -328,7 +343,7 @@
 
 	function passwordReset(id) {
 		TmplUtils.showConfirm('您确定重置该用户密码吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/appUser/passwordReset";
+			var url = Const.apiUrl + "/questionAnswer/passwordReset";
 			View.get(url, "id=" + id, function(resp) {
 				TmplUtils.showMsgSuccess('重置成功');
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
@@ -341,6 +356,43 @@
 		}, function() {
 
 		});
+	}
+	
+		
+	function answerIsAduit(id) {
+		TmplUtils.showConfirm('该回答是否通过审核？', '通过', '不通过', function() {
+			var isAduit = 1;
+			var url = Const.apiUrl + "/questionAnswer/answerIsAduit";
+			View.get(url, "id=" + id+"&isAduit="+isAduit, function(resp) {
+				TmplUtils.showMsgSuccess('审核通过');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		}, function() {
+			var isAduit = 2;
+			var url = Const.apiUrl + "/questionAnswer/answerIsAduit";
+			View.get(url, "id=" + id+"&isAduit="+isAduit, function(resp) {
+				TmplUtils.showMsgFail('审核不通过');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		});
+	}
+	
+	//评论审核
+	function commentIsAduit(id){
+		var flag = "view";
+		var url = "questionAnswerCheckEdit.html?commentId=" + id + "&flag=" + flag+ "&id=" + id;
+		var title = "数据处理";
+		View.openDialog(url, title);
 	}
 </script>
 

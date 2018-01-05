@@ -19,10 +19,10 @@ public class LoginParams implements Serializable {
 	//输入的验证码
 	public String verifyCode;
 	//类型：1-手机号,2-微信号
-	public Integer type=1;
+	public int type=1;
 	//客户端类型：1-IOS；2-Android
-	public Integer clientType=2;
+	public int clientType=2;
 	//手机端deviceId
-	public String deviceId;
+	public String phoneDeviceId;
 	
 }

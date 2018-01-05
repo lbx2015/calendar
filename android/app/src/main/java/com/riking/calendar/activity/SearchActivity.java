@@ -33,7 +33,6 @@ import com.riking.calendar.interfeet.PerformInputSearch;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.retrofit.APIClient;
@@ -182,8 +181,7 @@ public class SearchActivity extends AppCompatActivity {
         });
         recommendedRecyclerView.setAdapter(adapter);
 
-        SearchParams params = new SearchParams();
-        APIClient.findHotSearchList(params, new ZCallBack<ResponseModel<List<HotSearch>>>() {
+        APIClient.findHotSearchList(new ZCallBack<ResponseModel<List<HotSearch>>>() {
             @Override
             public void callBack(ResponseModel<List<HotSearch>> response) {
                 recommendedRecyclerView.setVisibility(View.VISIBLE);

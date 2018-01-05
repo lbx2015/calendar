@@ -29,6 +29,14 @@ public interface NewsCommentRepo extends JpaRepository<NewsComment, String>, Jpa
 	Integer commentCount(String newsId);
 
 	/**
+	 * 统计资讯评论数
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select count(*) from NewsComment where newsId = ?1 and isAduit = ?2 and isDeleted = 1")
+	Integer commentCountByNewsIdAndIsAduit(String newsId, Integer isAduit);
+
+	/**
 	 * 资讯评论列表
 	 * @param newsId
 	 * @param pageable

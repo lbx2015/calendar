@@ -37,7 +37,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
     @Override
     public ReportOrderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.report_item, viewGroup, false);
+                R.layout.report_order_item, viewGroup, false);
         return new ReportOrderViewHolder(view);
     }
 

@@ -54,6 +54,10 @@ public class NewsComment extends BaseAuditProp {
 	@Column(name = "content", nullable = false)
 	private String content;
 
+	// 回复审核数
+	@Transient
+	private String isAduitNum;
+
 	// 用户名称
 	@Transient
 	private String userName;
@@ -77,6 +81,14 @@ public class NewsComment extends BaseAuditProp {
 	@Transient
 	@Comment("是否已点赞 0-未点赞，1-已点赞")
 	private Integer isAgree;
+
+	// 评论人
+	@Transient
+	private String commentUserName;
+
+	// 咨询标题
+	@Transient
+	private String title;
 
 	// 评论的回复list
 	@Transient
@@ -192,6 +204,30 @@ public class NewsComment extends BaseAuditProp {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getCommentUserName() {
+		return commentUserName;
+	}
+
+	public void setCommentUserName(String commentUserName) {
+		this.commentUserName = commentUserName;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getIsAduitNum() {
+		return isAduitNum;
+	}
+
+	public void setIsAduitNum(String isAduitNum) {
+		this.isAduitNum = isAduitNum;
 	}
 
 }

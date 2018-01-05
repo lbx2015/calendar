@@ -27,17 +27,7 @@
 		$(document).ready(function() {
 			$("#submit").click(function() {
 				if (TmplUtils.check('edit')) {
-					var phone = $("#edit_base input[name='appUser.phone']").val();
-					var email = $("#edit_base input[name='appUser.email']").val();
-					if(email && email!=""){
-						if(!isEmail(email)){
-							TmplUtils.showMsgFail('邮箱格式不正确');
-							return false;
-						}
-					} 
-					if(checkPhone(phone)){
-						edit();
-					}
+					edit();
 				}
 			});
 		});
@@ -54,6 +44,11 @@
 						$("#submit").hide();
 						$("div.layui-colla-item:eq(0) :input").attr("disabled", true);
 						$("div.layui-colla-item:eq(1) :input").attr("disabled", true);
+					}
+					if(flag == "edit"){
+						$("#edit_base input[name='topicQuestion.title']").attr("disabled",true);
+						$("#edit_base input[name='appUser.userName']").attr("disabled",true);
+						$("#edit_base input[name='replyTime']").attr("disabled",true);
 					}
 					View.resetUi();
 				});
@@ -92,13 +87,13 @@
 		}
 		//编辑保存
 		function edit() {
-			var appUser = Utils.formToObj("edit");
+			var questionAnswer = Utils.formToObj("edit");
 			if(id){
-				appUser.id = id;
+				questionAnswer.id = id;
 			}
-			/*   appUser.email = appUser.email.split(",")[0] + "@" + appUser.email.split(",")[1]; */
-			var url = Const.apiUrl + "/appUser/addOrUpdate";
-			View.post(url, appUser,
+			/*   questionAnswer.email = questionAnswer.email.split(",")[0] + "@" + questionAnswer.email.split(",")[1]; */
+			var url = Const.apiUrl + "/questionAnswer/addOrUpdate";
+			View.post(url, questionAnswer,
 			function(resp) {
 				TmplUtils.showMsgSuccess('编辑成功');
 				parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) + "&pcount=" + parent.TmplUtils.pageSize + parent.TmplUtils.searchParam);

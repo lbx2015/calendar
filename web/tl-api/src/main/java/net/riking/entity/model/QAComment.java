@@ -79,6 +79,10 @@ public class QAComment extends BaseAuditProp {
 	@Transient
 	private Integer grade;
 
+	// 回复审核数(未审核/不通过/已通过)
+	@Transient
+	private String isAduitNum;
+
 	@Transient
 	@Comment("是否已点赞 0-未点赞，1-已点赞")
 	private Integer isAgree;
@@ -227,6 +231,14 @@ public class QAComment extends BaseAuditProp {
 
 	public void setAgreeNumber(Integer agreeNumber) {
 		this.agreeNumber = agreeNumber;
+	}
+
+	public String getIsAduitNum() {
+		return isAduitNum;
+	}
+
+	public void setIsAduitNum(String isAduitNum) {
+		this.isAduitNum = isAduitNum;
 	}
 
 }

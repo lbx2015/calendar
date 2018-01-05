@@ -2,6 +2,7 @@ package net.riking.web.app;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,8 +174,30 @@ public class AppReportServer {
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
 		List<ReportCompletedRelResult> list = reportService.findExpireReportByPage(relParams.getUserId(), page);
-
-		return new AppResp(list, CodeDef.SUCCESS);
+		Map<String, List<ReportCompletedRelResult>> map = new HashMap<>();
+		list.forEach(e->{
+			if(map.containsKey(e.getDateStr())){
+				map.get(e.getDateStr()).add(e);
+			}else{
+				List<ReportCompletedRelResult> _list = new ArrayList<>();
+				_list.add(e);
+				map.put(e.getDateStr(), _list);
+			}
+		});
+		List<List<ReportCompletedRelResult>> list2 = new ArrayList<>();
+		if(!map.isEmpty()){
+			for (String dateStr : map.keySet()) {
+				list2.add(map.get(dateStr));
+			}
+		}
+		list2.sort(new Comparator<List<ReportCompletedRelResult>>() {
+			@Override
+			public int compare(List<ReportCompletedRelResult> o1,
+					List<ReportCompletedRelResult> o2) {
+				return  o1.get(0).getDateStr().compareTo(o2.get(0).getDateStr());
+			}
+		});
+		return new AppResp(list2, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "查询历史核销报表", notes = "POST")
@@ -185,7 +208,30 @@ public class AppReportServer {
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
 		List<ReportCompletedRelResult> list = reportService.findHisCompletedReportByPage(relParams.getUserId(), page);
-		return new AppResp(list, CodeDef.SUCCESS);
+		Map<String, List<ReportCompletedRelResult>> map = new HashMap<>();
+		list.forEach(e->{
+			if(map.containsKey(e.getDateStr())){
+				map.get(e.getDateStr()).add(e);
+			}else{
+				List<ReportCompletedRelResult> _list = new ArrayList<>();
+				_list.add(e);
+				map.put(e.getDateStr(), _list);
+			}
+		});
+		List<List<ReportCompletedRelResult>> list2 = new ArrayList<>();
+		if(!map.isEmpty()){
+			for (String dateStr : map.keySet()) {
+				list2.add(map.get(dateStr));
+			}
+		}
+		list2.sort(new Comparator<List<ReportCompletedRelResult>>() {
+			@Override
+			public int compare(List<ReportCompletedRelResult> o1,
+					List<ReportCompletedRelResult> o2) {
+				return  o1.get(0).getDateStr().compareTo(o2.get(0).getDateStr());
+			}
+		});
+		return new AppResp(list2, CodeDef.SUCCESS);
 	}
 
 	/**

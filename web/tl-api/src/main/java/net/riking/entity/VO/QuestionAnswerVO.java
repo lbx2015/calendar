@@ -2,6 +2,9 @@ package net.riking.entity.VO;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import net.riking.entity.CustomJsonDateTimeDeserializer;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.TopicQuestion;
 
@@ -24,6 +27,7 @@ public class QuestionAnswerVO {
 	private AppUser appUser;
 
 	// 回答时间
+	@JsonDeserialize(using = CustomJsonDateTimeDeserializer.class)
 	private Date replyTime;
 
 	// 评论数
@@ -37,6 +41,9 @@ public class QuestionAnswerVO {
 
 	// 回答内容
 	private String content;
+
+	// 设置审核状态
+	private Integer isAduit;
 
 	public TopicQuestion getTopicQuestion() {
 		return topicQuestion;
@@ -100,6 +107,14 @@ public class QuestionAnswerVO {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Integer getIsAduit() {
+		return isAduit;
+	}
+
+	public void setIsAduit(Integer isAduit) {
+		this.isAduit = isAduit;
 	}
 
 }

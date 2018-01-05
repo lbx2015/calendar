@@ -15,14 +15,14 @@
 					<i class="layui-icon">&#xe608;</i>
 					添加
 				</button> -->
-				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+				<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
 					<i class="layui-icon">&#xe640;</i>
 					批量删除
 				</button>
 				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
 					<i class="layui-icon">&#xe6b2;</i>
 					批量审核
-				</button>
+				</button> -->
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html" data-attr="qaComment.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
@@ -73,15 +73,19 @@
 	var item;
 	var tbTmpl;
 	var dataResp;
+	var commentId = View.getQStr('commentId');
 	function forbbit(id) {
 
 	}
 	function tbOnBind(attrs, param) {
 		tmpl = this;
 		tbTmpl = tmpl;
-
 		var _bind = function(callback) {
 			var url = Const.apiUrl + "/qaCommentController/getMore";
+			if(commentId && commentId!=null){
+				url = Const.apiUrl + "/qaCommentController/getMore?questionAnswerId="+commentId
+			}
+			
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
@@ -103,30 +107,18 @@
 				data.tdBeforeFill = function(obj) {
 					if (obj['item']) {
 						if (obj.isOperColumn) {
-							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
-									+ "\""
-									+ obj.item.id
-									+ "\""
-									+ ");'>查看</button>";
-							if (obj.item.isAduit == 0 || obj.item.isAduit == 2) { 
-							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
-									+ "\""
-									+ obj.item.id
-									+ "\""
-									+ ");'>修改</button>";
-							}
-							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
-									+ "\""
-									+ obj.item.id
-									+ "\""
-									+ ");'>删除</button>";
 							if (obj.item.isAduit == 0) { 
-								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
+								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='checkIsAduit("
 										+ "\""
-										+ obj.item.id
+										+ obj.item.qACommentId
 										+ "\""
 										+ ");'>审核</button>";
 							}
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='checkReplyIsAudit("
+								+ "\""
+								+ obj.item.qACommentId
+								+ "\""
+								+ ");'>回复审核</button>";
 						}
 					}
 					return obj.html;
@@ -398,9 +390,40 @@
 
 		});
 	}
-	function addMore() {
-		var url = "qaCommentAddMore.html";
-		var title = "批量添加";
+	//审核评论
+	function checkIsAduit(id){
+		TmplUtils.showConfirm('该评论是否通过审核？', '通过', '不通过', function() {
+			var isAduit = 1;
+			var url = Const.apiUrl + "/qaCommentController/answerIsAduit";
+			View.get(url, "id=" + id+"&isAduit="+isAduit, function(resp) {
+				TmplUtils.showMsgSuccess('审核通过');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		}, function() {
+			var isAduit = 2;
+			var url = Const.apiUrl + "/qaCommentController/answerIsAduit";
+			View.get(url, "id=" + id+"&isAduit="+isAduit, function(resp) {
+				TmplUtils.showMsgFail('审核不通过');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		});
+	}
+	
+	//获取评论回复的list
+	function checkReplyIsAudit(id){
+		var flag = "view";
+		var url = "qaCommentCheckEdit.html?replyId=" + id + "&flag=" + flag+ "&id=" + id ;
+		var title = "数据处理";
 		View.openDialog(url, title);
 	}
 </script>

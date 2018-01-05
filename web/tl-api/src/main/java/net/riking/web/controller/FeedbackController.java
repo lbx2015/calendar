@@ -1,5 +1,6 @@
 package net.riking.web.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.FeedBackRepo;
+import net.riking.entity.model.AppUser;
 import net.riking.entity.model.FeedBack;
 
 /**
@@ -33,6 +36,9 @@ import net.riking.entity.model.FeedBack;
 public class FeedbackController {
 	@Autowired
 	FeedBackRepo feedBackRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
 
 	@ApiOperation(value = "得到<单个>反馈信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -51,6 +57,16 @@ public class FeedbackController {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		Example<FeedBack> example = Example.of(feedback, ExampleMatcher.matchingAll());
 		Page<FeedBack> page = feedBackRepo.findAll(example, pageable);
+		List<FeedBack> feedBacks = page.getContent();
+		for (FeedBack feedBack2 : feedBacks) {
+			String userId = feedBack2.getCreatedBy();
+			if (userId != null) {
+				AppUser appUser = appUserRepo.findOne(userId);
+				if (appUser != null) {
+					feedBack2.setUserName(appUser.getUserName());
+				}
+			}
+		}
 		return new Resp(page);
 	}
 

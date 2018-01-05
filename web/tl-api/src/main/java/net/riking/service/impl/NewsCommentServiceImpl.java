@@ -1,0 +1,143 @@
+package net.riking.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import net.riking.dao.QACommentDao;
+import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.NCAgreeRelRepo;
+import net.riking.dao.repo.NCReplyRepo;
+import net.riking.dao.repo.NewsCommentRepo;
+import net.riking.dao.repo.NewsRepo;
+import net.riking.dao.repo.QACAgreeRelRepo;
+import net.riking.dao.repo.QACReplyRepo;
+import net.riking.dao.repo.QACommentRepo;
+import net.riking.entity.model.AppUser;
+import net.riking.entity.model.News;
+import net.riking.entity.model.NewsComment;
+import net.riking.service.NewsCommentService;
+import net.riking.service.TQuestionService;
+
+@Service("newsCommentService")
+@Transactional
+public class NewsCommentServiceImpl implements NewsCommentService {
+	private static final Logger logger = LogManager.getLogger(TQuestionService.class);
+
+	@Autowired
+	QACommentDao qaCommentDao;
+
+	@Autowired
+	NCAgreeRelRepo nCAgreeRelRepo;
+
+	@Autowired
+	QACAgreeRelRepo qACAgreeRelRepo;
+
+	@Autowired
+	QACommentRepo qACommentRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
+
+	@Autowired
+	QACReplyRepo qACReplyRepo;
+
+	@Autowired
+	NewsCommentRepo newsCommentRepo;
+
+	@Autowired
+	NewsRepo newsRepo;
+
+	@Autowired
+	NCReplyRepo ncReplyRepo;
+
+	@Override
+	public Page<NewsComment> findAll(NewsComment newsComment, PageRequest pageRequest) {
+		Specification<NewsComment> bCondi = whereCondition(newsComment);
+		Page<NewsComment> pageB = newsCommentRepo.findAll(bCondi, pageRequest);
+		if (null != pageB) {
+			// 2.得到AppUser对象集合
+			List<NewsComment> newsComments = pageB.getContent();
+			getVos(newsComments);
+			List<NewsComment> newsCommentList = new ArrayList<NewsComment>();
+			for (NewsComment newsComment2 : newsComments) {
+				if (newsComment.getTitle() != null && !newsComment.getTitle().equals("")) {
+					if (newsComment2.getTitle().equals(newsComment.getTitle())) {
+						newsCommentList.add(newsComment2);
+					}
+				}
+			}
+			Page<NewsComment> modulePage = new PageImpl<NewsComment>(newsComments, pageRequest,
+					pageB.getTotalElements());
+			return modulePage;
+		}
+		return null;
+	}
+
+	/**
+	 * 获取qacomment的信息
+	 * @param qaComments
+	 * @return
+	 */
+	private void getVos(List<NewsComment> newsComments) {
+		// TODO Auto-generated method stub
+		for (NewsComment newsComment : newsComments) {
+			String id = newsComment.getId();
+			// 设置咨询标题
+			News news = newsRepo.findOne(newsComment.getNewsId());
+			if (news != null) {
+				newsComment.setTitle(news.getTitle());
+			}
+			AppUser appUser = appUserRepo.findOne(newsComment.getUserId());
+			if (appUser != null) {
+				newsComment.setCommentUserName(appUser.getUserName());
+			}
+			// 设置回复审核数
+			String isAduitNum = getIsAduitNum(newsComment.getId());
+			newsComment.setIsAduitNum(isAduitNum);
+		}
+	}
+
+	/**
+	 * 获取回复评论审核数
+	 * @return
+	 */
+	private String getIsAduitNum(String commentId) {
+		// 获取未审核
+		Integer num0 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(0));
+		Integer num1 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(1));
+		Integer num2 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(2));
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(num0 + " / ");
+		stringBuilder.append(num2 + " / ");
+		stringBuilder.append(num1);
+		return stringBuilder.toString();
+	}
+
+	private Specification<NewsComment> whereCondition(NewsComment newsComment) {
+		return new Specification<NewsComment>() {
+			@Override
+			public Predicate toPredicate(Root<NewsComment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				// 默认查询条件
+				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
+				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+			}
+		};
+	}
+
+}

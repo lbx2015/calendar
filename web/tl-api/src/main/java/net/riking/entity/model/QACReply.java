@@ -78,12 +78,11 @@ public class QACReply extends BaseAuditProp {
 
 	// 发表回复的名称
 	@Transient
-	@JsonIgnore
 	private String fromUserName;
 
 	// 被评论人名称
 	@Transient
-	@JsonIgnore
+	// @JsonIgnore
 	private String toUserName;
 
 	public QACReply() {

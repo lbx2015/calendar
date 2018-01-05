@@ -17,7 +17,8 @@ public class ZPreference {
     public static SharedPreferences pref = MyApplication.APP.getSharedPreferences(CONST.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
 
     public static String getUserId() {
-        return ZPreference.pref.getString(CONST.USER_ID, "");
+        return  "15a77e10e2f44ea28da7a94e2e5320c2";
+//        return ZPreference.pref.getString(CONST.USER_ID, "");
     }
 
     public static boolean isLogin() {
