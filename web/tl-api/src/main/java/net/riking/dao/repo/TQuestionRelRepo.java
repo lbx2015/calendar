@@ -50,6 +50,10 @@ public interface TQuestionRelRepo extends JpaRepository<TQuestionRel, String>, J
 	@Query("select tqId from TQuestionRel where userId = ?1 and dataType = ?2")
 	List<String> findByUser(String userId, Integer dataType);
 
+	
+	@Query("from TQuestionRel where userId = ?1 and tqId =?2")
+	TQuestionRel findByUIdAndTqId(String userId, String tqId);
+	
 	/**
 	 * 根据userId,newsId找出唯一记录
 	 * @param userId,newsId

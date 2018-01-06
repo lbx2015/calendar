@@ -21,6 +21,7 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -50,7 +51,15 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
         Intent i = getIntent();
         userId = i.getStringExtra(CONST.USER_ID);
         init();
-        activityTitle.setText("我关注的人");
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我关注的人");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("他关注的人");
+            } else {
+                activityTitle.setText("她关注的人");
+            }
+        }
     }
 
     private void init() {

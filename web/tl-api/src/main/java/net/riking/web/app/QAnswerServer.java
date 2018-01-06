@@ -204,14 +204,14 @@ public class QAnswerServer {
 			qaComment.setPhotoUrl(appUserDetail.getPhotoUrl());
 		}
 		qaComment.setIsAgree(0);// 0-未点赞
-		if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
-			List<String> qacIds = qACAgreeRelRepo.findByUser(qAnswerParams.getUserId(), 1);// 点赞
-			for (String qacId : qacIds) {
-				if (qaComment.getId().equals(qacId)) {
-					qaComment.setIsAgree(1);// 1-已点赞
-				}
-			}
-		}
+//		if (StringUtils.isNotBlank(qAnswerParams.getUserId())) {
+//			List<String> qacIds = qACAgreeRelRepo.findByUser(qAnswerParams.getUserId(), 1);// 点赞
+//			for (String qacId : qacIds) {
+//				if (qaComment.getId().equals(qacId)) {
+//					qaComment.setIsAgree(1);// 1-已点赞
+//				}
+//			}
+//		}
 		if (null != qaComment.getPhotoUrl()) {
 			qaComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaComment.getPhotoUrl());
 		}
@@ -219,6 +219,7 @@ public class QAnswerServer {
 		if (null != qaComment.getExperience()) {
 			qaComment.setGrade(appUserService.transformExpToGrade(qaComment.getExperience()));
 		}
+		qaComment = qACommentRepo.save(qaComment);
 		return new AppResp(qaComment, CodeDef.SUCCESS);
 	}
 

@@ -54,7 +54,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				data.setContent(rs.getString("content"));
 				data.setDataType(rs.getInt("dataType"));
 				data.setIsRead(rs.getInt("isRead"));
-				data.setCreatedTime(rs.getDate("createdTime"));
+				data.setCreatedTime(rs.getTimestamp("createdTime"));
 				list.add(data);
 			}
 			pstmt.close();
@@ -117,8 +117,8 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				data.setUserPhotoUrl(rs.getString("userPhotoUrl"));
 				data.setObjId(rs.getString("objId"));
 				data.setIsRead(rs.getInt("isRead"));
-				data.setCreatedTime(rs.getDate("createdTime"));
-				data.setReqTimeStamp(rs.getTimestamp("createdTime"));
+				data.setCreatedTime(rs.getTimestamp("createdTime"));
+				//data.setReqTimeStamp(rs.getTimestamp("createdTime"));
 				list.add(data);
 			}
 			pstmt.close();

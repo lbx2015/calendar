@@ -24,7 +24,6 @@ import com.riking.calendar.activity.MyRelationActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.MyStateActivity;
 import com.riking.calendar.activity.SettingActivity;
-import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.listener.ZCallBack;
@@ -108,7 +107,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                             public void callBack(ResponseModel<String> response) {
                                 Intent i = new Intent(getContext(), WebviewActivity.class);
                                 i.putExtra(CONST.WEB_URL, response._data);
-                                i.putExtra(CONST.ACTIVITY_NAME,"UserInfoFragment");
+                                i.putExtra(CONST.ACTIVITY_NAME, "UserInfoFragment");
                                 startActivity(i);
                             }
                         });
@@ -186,13 +185,17 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         contactLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyRelationActivity.class);
+                Intent i = new Intent(getContext(), MyRelationActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
         collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyCollectActivity.class);
+                Intent i = new Intent(getContext(), MyCollectActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
         setLayout.setOnClickListener(this);
@@ -239,7 +242,9 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         myRepliesLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyRepliesActivity.class);
+                Intent i = new Intent(getContext(), MyRepliesActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
 
@@ -247,7 +252,9 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         followMeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyFollowersActivity.class);
+                Intent i = new Intent(getContext(), MyFollowersActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
 
@@ -270,14 +277,18 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         trendLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyStateActivity.class);
+                Intent i = new Intent(getContext(), MyStateActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
 
         followLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyFollowActivity.class);
+                Intent i = new Intent(getContext(), MyFollowActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
     }

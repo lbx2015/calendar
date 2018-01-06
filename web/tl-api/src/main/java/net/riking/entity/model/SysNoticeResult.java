@@ -33,10 +33,10 @@ public class SysNoticeResult extends BaseEntity {
 	// 是否已读：0-未读; 1-已读
 	private Integer isRead;
 
-	// 翻页时间戳
-	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
-	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
-	private Date reqTimeStamp;
+//	// 翻页时间戳
+//	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
+//	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
+//	private Date reqTimeStamp;
 
 	// 创建时间
 	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
@@ -107,13 +107,13 @@ public class SysNoticeResult extends BaseEntity {
 		this.createdTime = createdTime;
 	}
 
-	public Date getReqTimeStamp() {
-		return reqTimeStamp;
-	}
-
-	public void setReqTimeStamp(Date reqTimeStamp) {
-		this.reqTimeStamp = reqTimeStamp;
-	}
+//	public Date getReqTimeStamp() {
+//		return reqTimeStamp;
+//	}
+//
+//	public void setReqTimeStamp(Date reqTimeStamp) {
+//		this.reqTimeStamp = reqTimeStamp;
+//	}
 
 	public String getObjId() {
 		return objId;

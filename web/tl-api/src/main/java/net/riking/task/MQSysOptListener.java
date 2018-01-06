@@ -91,8 +91,8 @@ public class MQSysOptListener implements MessageListener {
 			QAComment qaComment = null;
 			NewsComment newsComment = null;
 			QuestionAnswer questionAnswer = null;
-			String title = null;
-			String content = null;
+			String title = "";
+			String content = "";
 			AppUser appUser = null;
 			AppUserDetail appUserDetail = null;
 			boolean isRn = false;
@@ -100,10 +100,6 @@ public class MQSysOptListener implements MessageListener {
 			Jdpush jdpush = null;
 			//是否发送极光
 			boolean isSendJdPush = false;
-			
-			String notificationTitle = "";
-			String msgTitle = "";
-			String msgContent = "";
 			
 			switch (optCommon.getMqOptType()) {
 				case Const.MQ_OPT_ANSWERINVITE://邀请回答的邀请 
@@ -127,8 +123,6 @@ public class MQSysOptListener implements MessageListener {
 					sysNoticeRepo.save(sysNotice);
 					
 					isSendJdPush = true;
-					notificationTitle = title;
-					msgContent = title + " "+ content;
 					break;
 				case Const.MQ_OPT_QA_AGREEOR_COLLECT://问题回答点赞或收藏 
 //					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
@@ -156,8 +150,6 @@ public class MQSysOptListener implements MessageListener {
 						sysNoticeRepo.save(sysNotice);
 						
 						isSendJdPush = true;
-						notificationTitle = title;
-						msgContent = title + " " + content;
 					}
 					break;
 				case Const.MQ_OPT_NEW_COLLECT://资讯的收藏
@@ -187,9 +179,8 @@ public class MQSysOptListener implements MessageListener {
 							content = topicQuestion.getTitle();
 							//话题问题id
 							sysNotice.setObjId(topicQuestion.getId());
-							sysNotice.setNoticeUserId(optCommon.getToUserId());
+							sysNotice.setNoticeUserId(topicQuestion.getUserId());
 							dataType = Const.NOTICE_OPT_QUESTION_FOLLOW;
-							msgContent = title + " " + content;
 							
 						}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_3){//用户
 							title = appUserDetail.getUserName() + " 关注了你";
@@ -199,7 +190,6 @@ public class MQSysOptListener implements MessageListener {
 							sysNotice.setObjId(appUserDetail.getId());
 							sysNotice.setNoticeUserId(optCommon.getAttentObjId());
 							dataType = Const.NOTICE_OPT_USER_FOLLOW;
-							msgContent = title;
 						}else{
 							return;
 						}
@@ -210,7 +200,6 @@ public class MQSysOptListener implements MessageListener {
 						sysNoticeRepo.save(sysNotice);
 						
 						isSendJdPush = true;
-						notificationTitle = title;
 					}
 					break;
 				case Const.MQ_OPT_COMMENT_AGREE:// 评论点赞
@@ -229,7 +218,6 @@ public class MQSysOptListener implements MessageListener {
 							//回答类评论id
 							sysNotice.setObjId(qaComment.getId());
 							sysNotice.setNoticeUserId(qaComment.getUserId());
-							msgContent = title + " " +content;
 							
 						}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_NEWS){//资讯类
 							newsComment = newsCommentRepo.findOne(optCommon.getCommentId());
@@ -239,7 +227,6 @@ public class MQSysOptListener implements MessageListener {
 							//资讯类评论id
 							sysNotice.setObjId(newsComment.getId());
 							sysNotice.setNoticeUserId(newsComment.getUserId());
-							msgContent = title + " " +content;
 						}
 						
 						sysNotice.setTitle(title);
@@ -248,7 +235,6 @@ public class MQSysOptListener implements MessageListener {
 						sysNoticeRepo.save(sysNotice);
 						
 						isSendJdPush = true;
-						notificationTitle = title;
 					}
 					break;
 				case Const.MQ_OPT_CONTACTS_INVITE:// 通讯录的邀请
@@ -265,7 +251,7 @@ public class MQSysOptListener implements MessageListener {
 //					topicQuestionRepo = (TopicQuestionRepo) SpringBeanUtil.getInstance().getBean("topicQuestionRepo");
 					qAnswerService.qACommentPub(optCommon);
 					appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
-					//topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
+					topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
 					
 					sysNotice = new SysNotice();
 					
@@ -282,8 +268,6 @@ public class MQSysOptListener implements MessageListener {
 					sysNoticeRepo.save(sysNotice);
 					
 					isSendJdPush = true;
-					notificationTitle = title;
-					msgContent = title + " " + content;
 					
 					break;
 				case Const.MQ_OPT_NEWS_COMMENT:// 资讯评论发布
@@ -304,7 +288,6 @@ public class MQSysOptListener implements MessageListener {
 						content = optCommon.getContent();
 						//回答类评论id
 						sysNotice.setObjId(qaComment.getId());
-						msgContent = title + " " + content;
 					}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_NEWS){//资讯类
 						newsComment = newsCommentRepo.findOne(optCommon.getCommentId());
 						title = appUserDetail.getUserName() + " 回复了你的资讯评论回复";
@@ -312,7 +295,6 @@ public class MQSysOptListener implements MessageListener {
 						content = optCommon.getContent();
 						//资讯类评论id
 						sysNotice.setObjId(newsComment.getId());
-						msgContent = title + " " + content;
 					}
 					
 					
@@ -323,7 +305,6 @@ public class MQSysOptListener implements MessageListener {
 					sysNoticeRepo.save(sysNotice);
 					
 					isSendJdPush = true;
-					notificationTitle = title;
 					break;
 				default:
 					break;
@@ -332,11 +313,10 @@ public class MQSysOptListener implements MessageListener {
 			if(isSendJdPush){
 				
 				jdpush = new Jdpush();
-				msgTitle = notificationTitle;
 				jdpush = new Jdpush();
-				jdpush.setNotificationTitle(notificationTitle);
-				jdpush.setMsgTitle(msgTitle);
-				jdpush.setMsgContent(msgContent);
+				jdpush.setNotificationTitle(title);
+				jdpush.setMsgTitle(title);
+				jdpush.setMsgContent(content);
 				jdpush.setExtrasparam("");
 				if(sysNotice != null){
 					AppUserDetail noticeUserDetail = appUserDetailRepo.findOne(sysNotice.getNoticeUserId());
