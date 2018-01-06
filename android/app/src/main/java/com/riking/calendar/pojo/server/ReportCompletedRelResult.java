@@ -6,7 +6,7 @@ package com.riking.calendar.pojo.server;
 public class ReportCompletedRelResult {
     public String reportCode;// 报表code
     public String reportName;// 报表名称
-    public String frequencyType;// 频度类型
+    public String frequency;// 频度类型
     public String dateStr;// 日期
 
 }

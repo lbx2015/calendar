@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.SystemNoticeActivity;
 import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.SysNoticeResult;
@@ -63,6 +64,12 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
             h.systemNewsTv.setText(result.content);
             h.systemNewsTv.setVisibility(View.VISIBLE);
             h.userImage.setImageDrawable(ZR.getDrawable(R.drawable.message_icon_systeminfor));
+            h.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ZGoto.to(SystemNoticeActivity.class);
+                }
+            });
         } else {
             h.systemNewsTv.setVisibility(View.GONE);
             h.title.setMaxLines(2);
@@ -83,11 +90,17 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
                     }
                 });
             } else if (result.dataType == 6 || result.dataType == 7 || result.dataType == 8) {
-                ZGoto.goToAnswerComments(result.objId);
+                h.title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ZGoto.goToAnswerComments(result.objId);
+                    }
+                });
             }
         }
 
         h.timeTv.setText(DateUtil.showTime(result.createdTime));
+
      /*   AppUserResult appUser = mList.get(i);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
         ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);

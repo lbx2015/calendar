@@ -182,8 +182,9 @@ public class AnswerCommentsActivity extends AppCompatActivity {
                         replyComment = null;
 
                     } else if (replyReply != null) {
+                        params.commentId = replyReply.commentId;
                         params.toUserId = replyReply.fromUser.userId;
-                        params.commentId = replyReply.replyId;
+                        params.replyId = replyReply.replyId;
                         //reset to null
                         replyReply = null;
                     }
