@@ -263,6 +263,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             @Override
             public void click(View v) {
                 Intent i = new Intent(getContext(), MyFavoritesUserActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
                 ZGoto.to(i);
             }
         });

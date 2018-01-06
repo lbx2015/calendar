@@ -11,6 +11,8 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.Debug;
 import com.riking.calendar.util.ZR;
 
@@ -359,5 +361,14 @@ public class ExampleUnitTest {
     @Test
     public void testGetNumberString() {
         System.out.println(ZR.getNumberString(380));
+    }
+
+    @Test
+    public void testShowTime() throws ParseException {
+        String time = "20180106144342000";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CONST.YYYYMMDDHHMMSSSSS);
+        Date date = simpleDateFormat.parse(time);
+        String s = DateUtil.showTime(date);
+        System.out.println(s);
     }
 }

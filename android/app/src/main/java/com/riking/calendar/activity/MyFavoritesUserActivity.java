@@ -143,7 +143,6 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment æ•°ç
                             return;
                         }
                     }
-
                     nextPage = page + 1;
                     mAdapter.setData(list);
                 }

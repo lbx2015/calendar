@@ -3,6 +3,7 @@ package com.riking.calendar.util;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.riking.calendar.activity.AnswerCommentsActivity;
 import com.riking.calendar.activity.LoginNavigateActivity;
 import com.riking.calendar.app.MyApplication;
 
@@ -11,6 +12,14 @@ import com.riking.calendar.app.MyApplication;
  */
 
 public class ZGoto {
+
+    public static void goToAnswerComments(String questionAnswerId) {
+        Intent i = new Intent(MyApplication.mCurrentActivity, AnswerCommentsActivity.class);
+        i.putExtra(CONST.ANSWER_ID, questionAnswerId);
+//        i.putExtra(CONST.ANSWER_COMMENT_NUM, answer.commentNum);
+        ZGoto.to(i);
+    }
+
     public static void toLoginActivity() {
         Intent i = new Intent(MyApplication.mCurrentActivity, LoginNavigateActivity.class);
         MyApplication.mCurrentActivity.startActivity(i);
@@ -18,6 +27,7 @@ public class ZGoto {
 
     /**
      * not check login status
+     *
      * @param i
      */
     public static void to(Intent i) {

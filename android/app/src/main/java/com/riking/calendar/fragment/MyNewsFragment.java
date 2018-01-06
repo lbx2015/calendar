@@ -158,7 +158,10 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
 
                 } else {
                     systemMessages = response._data;
-                    mAdapter.addAllAtStart(systemMessages);
+
+                    if (!systemMessages.isEmpty()) {
+                        mAdapter.appendStart(systemMessages.get(0));
+                    }
                 }
             }
         });
