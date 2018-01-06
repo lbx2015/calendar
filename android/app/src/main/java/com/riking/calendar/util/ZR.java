@@ -139,6 +139,19 @@ public class ZR {
         Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
     }
 
+    public static void setCircleUserImage(final ImageView v, final String imageUrl, final String userId) {
+        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
+        //go to user activity on click
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
     public static void setCircleUserImage(ImageView v, Bitmap bitmap) {
         Glide.with(v.getContext()).load(bitmap).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
     }

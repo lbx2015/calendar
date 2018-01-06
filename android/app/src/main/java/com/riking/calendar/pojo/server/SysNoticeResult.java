@@ -1,8 +1,11 @@
 package com.riking.calendar.pojo.server;
 
+import com.google.gson.Gson;
+
 import java.util.Date;
 
 public class SysNoticeResult {
+    public String userId;
     //消息通知id
     public String noticeId;
     //消息通知标题
@@ -15,7 +18,7 @@ public class SysNoticeResult {
     public String objId;
     //消息内容
     public String content;
-    //数据类型0-系统信息；1-被邀请回答的邀请；2-问题回答被点赞或收藏；3-问题被关注；4-被关注的用户；5-评论被点赞；6-问题回答的被评论；7-评论的回复和回复的被回复
+    // 数据类型0-系统信息；1-被邀请回答的邀请；2-问题回答被点赞或收藏；3-问题被关注；4-被关注的用户；5-评论被点赞；6-问题回答的被评论；7-评论的回复和回复的被回复
     public int dataType = -1;
     //是否已读：0-未读; 1-已读
     public Integer isRead;
@@ -25,4 +28,9 @@ public class SysNoticeResult {
 //    public String reqTimeStamp;
     //创建时间
     public Date createdTime;
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }
