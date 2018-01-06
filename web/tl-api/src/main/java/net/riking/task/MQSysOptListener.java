@@ -93,6 +93,7 @@ public class MQSysOptListener implements MessageListener {
 			QuestionAnswer questionAnswer = null;
 			String title = "";
 			String content = "";
+			String toUserId = "";
 			AppUser appUser = null;
 			AppUserDetail appUserDetail = null;
 			boolean isRn = false;
@@ -195,7 +196,9 @@ public class MQSysOptListener implements MessageListener {
 						}
 						
 						sysNotice.setTitle(title);
-						sysNotice.setContent(content);
+						if(optCommon.getObjType().intValue() != Const.OBJ_TYPE_3){//关注人不推送content信息
+							sysNotice.setContent(content);
+						}
 						sysNotice.setDataType(dataType);
 						sysNoticeRepo.save(sysNotice);
 						
@@ -283,16 +286,18 @@ public class MQSysOptListener implements MessageListener {
 					
 					if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_ANSWER){//回答类
 						qaComment = qaCommentRepo.findOne(optCommon.getCommentId());//获取评论内容
-						title = appUserDetail.getUserName() + " 回复了你的回答评论回复";
+						title = appUserDetail.getUserName() + " 回复了你";
 						//content = appUserDetail.getUserName() + " 回复了你的回答评论回复 " + optCommon.getContent();
 						content = optCommon.getContent();
+						toUserId =StringUtils.isBlank(optCommon.getToUserId())?qaComment.getUserId():optCommon.getToUserId();
 						//回答类评论id
 						sysNotice.setObjId(qaComment.getId());
 					}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_NEWS){//资讯类
 						newsComment = newsCommentRepo.findOne(optCommon.getCommentId());
-						title = appUserDetail.getUserName() + " 回复了你的资讯评论回复";
+						title = appUserDetail.getUserName() + " 回复了你";
 						//content = appUserDetail.getUserName() + " 回复了你的资讯评论回复 " + optCommon.getContent();
 						content = optCommon.getContent();
+						toUserId =StringUtils.isBlank(optCommon.getToUserId())?newsComment.getUserId():optCommon.getToUserId();
 						//资讯类评论id
 						sysNotice.setObjId(newsComment.getId());
 					}
@@ -300,7 +305,7 @@ public class MQSysOptListener implements MessageListener {
 					
 					sysNotice.setTitle(title);
 					sysNotice.setContent(content);
-					sysNotice.setNoticeUserId(optCommon.getToUserId());
+					sysNotice.setNoticeUserId(toUserId);
 					sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_REPLY);
 					sysNoticeRepo.save(sysNotice);
 					
@@ -312,7 +317,6 @@ public class MQSysOptListener implements MessageListener {
 			
 			if(isSendJdPush){
 				
-				jdpush = new Jdpush();
 				jdpush = new Jdpush();
 				jdpush.setNotificationTitle(title);
 				jdpush.setMsgTitle(title);

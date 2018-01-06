@@ -1,5 +1,7 @@
 package net.riking.entity.resp;
 
+import net.riking.core.annos.Comment;
+
 /**
  * 报表核销结果集
  * @author james.you
@@ -11,9 +13,12 @@ public class ReportCompletedRelResult{
 	
 	private String reportName;// 报表名称
 
-	private String frequencyType;// 频度类型
+	private String frequency;// 频度
 	
 	private String dateStr;// 日期
+	
+	@Comment("报表批次")
+	private String reportBatch;
 
 	public String getReportCode() {
 		return reportCode;
@@ -31,12 +36,12 @@ public class ReportCompletedRelResult{
 		this.reportName = reportName;
 	}
 
-	public String getFrequencyType() {
-		return frequencyType;
+	public String getFrequency() {
+		return frequency;
 	}
 
-	public void setFrequencyType(String frequencyType) {
-		this.frequencyType = frequencyType;
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
 	}
 
 	public String getDateStr() {
@@ -45,6 +50,14 @@ public class ReportCompletedRelResult{
 
 	public void setDateStr(String dateStr) {
 		this.dateStr = dateStr;
+	}
+
+	public String getReportBatch() {
+		return reportBatch;
+	}
+
+	public void setReportBatch(String reportBatch) {
+		this.reportBatch = reportBatch;
 	}
 
 }
