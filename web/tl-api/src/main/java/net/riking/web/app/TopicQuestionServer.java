@@ -99,7 +99,7 @@ public class TopicQuestionServer {
 
 	@ApiOperation(value = "提问", notes = "POST")
 	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
-	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
+	public AppResp inquiry(@RequestBody Map<String, Object> params) {
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
 		String title = "";
 		try {
@@ -115,7 +115,7 @@ public class TopicQuestionServer {
 				+ tQuestionParams.getUserId() + "&title=" + title + "&topicId=" + tQuestionParams.getTopicId(),
 				CodeDef.SUCCESS);
 	}
-
+	
 	/**
 	 * 问题的详情[userId,tqId]
 	 * @param params
@@ -252,7 +252,16 @@ public class TopicQuestionServer {
 		return new Resp(topicQuestion, CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "回答h5页面跳转", notes = "POST")
+	@RequestMapping(value = "/answerHtml", method = RequestMethod.POST)
+	public AppResp qAnswer(@RequestBody Map<String, Object> params) {
+		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+		return new AppResp(config.getAppHtmlPath() + Const.TL_QUESTION_ANSWER_HTML5_PATH + "?userId="
+				+ tQuestionParams.getUserId() + "&questionId=" + tQuestionParams.getTqId(),
+				CodeDef.SUCCESS);
+	}
 	
+	@ApiOperation(value = "回答保存", notes = "GET")
 	@RequestMapping(value = "/answerSave", method = RequestMethod.GET)
 	public Resp answerSave_(@RequestParam HashMap<String, Object> params) {
 		QuestionAnswer questionAnswer = Utils.map2Obj(params, QuestionAnswer.class);
@@ -271,6 +280,25 @@ public class TopicQuestionServer {
 			}
 			FileUtils.deleteFile(oldPhotoUrl);
 		}
+//		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
+//		Matcher matcher = pattern.matcher(questionAnswer.getContent());
+//        while(matcher.find()){
+//        	String fileName = matcher.group();
+//        	if(StringUtils.isBlank(questionAnswer.getCoverUrl())){
+//        		questionAnswer.setCoverUrl(fileName);
+//        	}
+//        	String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+//					+ Const.TL_ANSWER_PHOTO_PATH + fileName;
+//			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+//					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+//			try {
+//				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+//			} catch (Exception e) {
+//				logger.error("文件复制异常" + e);
+//				return new Resp(CodeDef.ERROR);
+//			}
+//			FileUtils.deleteFile(oldPhotoUrl);
+//        }
 		questionAnswer.setCreatedBy(questionAnswer.getUserId());
 		questionAnswer.setModifiedBy(questionAnswer.getUserId());
 		questionAnswer.setIsAduit(0);

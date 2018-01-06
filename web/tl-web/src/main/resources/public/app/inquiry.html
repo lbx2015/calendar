@@ -128,10 +128,9 @@ background:#fff;
 
 
     function questionPublish() {
-        $("#text").val(layedit.getContent(index));
         var url = Const.apiUrl + '/topicQuestion/questionSave';
         var param = new Object();
-        param.content = $('form')[0].content.value;
+        param.content = layedit.getContent(index);
         param.userId = userId;
         param.topicId = topicId;
         param.title = title;
@@ -154,7 +153,6 @@ background:#fff;
 
     $(function() {
         $(document).unbind("click");
-        var form = layui.form;
         tmpl = new View.Tmpl({
             "container": $("#content"),
             "tmpl": $("#tmpl").html()

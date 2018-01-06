@@ -61,6 +61,8 @@ public class Const {
 	public static final String TL_QUESTIONSHARE_HTML5_PATH = "/questionShare.html";
 
 	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/inquiry.html";
+	
+	public static final String TL_QUESTION_ANSWER_HTML5_PATH = "/answer.html";
 
 	/* 验证码有效时间 */
 	public static final String VALID_ = "VALID_";

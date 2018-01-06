@@ -8,8 +8,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link type="include" href="/common/depcss.html" />
+    
 </head>
+<style>
+html, body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+.layui-layedit{
+	position: relative;
+}
+.layui-layedit-tool{
 
+background:#fff;
+    width: 100%;
+}
+.layui-layedit-iframe{
+	overflow: auto;
+    position: absolute;
+    top: 43px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    -webkit-overflow-scrolling: touch;
+}
+.layui-layedit-iframe iframe{
+	
+}
+</style>
 <body class="iframeBody">
 <div id = "content"></div>
 </body>
@@ -22,29 +52,11 @@
 <script type="text/javascript">
 	var _SYS = Tool.parseJSON('{=current_system}' || "{}");
 	var Const = {
-		urlConvert : "{=urlConvert}" == "true",
-		sys : _SYS,
-		apiUrl : _SYS.apiAccessUrl,
-		webPath : "{=web_path}",
-		ctx : "{=ctx}",
-		security : "{=security}" == "true",
-		ADEnable : "{=ADEnable}" == "true",
-		ssoLoginUrl : "{=sso_login_url}",
-		ssoLogoutUrl : "{=sso_logout_url}" == "" ? "{=sso_login_url}"
-				: "{=sso_logout_url}",
-		ssoApiUrl : "{=sso_api_url}",
-		buttonFormat : 1
-	//操作栏按钮格式，1表示图片按钮，2表示文字按钮
+		apiUrl : _SYS.apiAccessUrl
 	}
-	if (typeof isAuthIgnore == "undefined") {
-		isAuthIgnore = false;
-	}
-	var token = Tool.getCookie("_TOKEN");
 </script>
 <script type="text/tmpl" id="tmpl">
 <form action="" method="get" class="formbox layui-form parameterSet">
-<input type="hidden" id="text" name="content">
-<button type="button" class="layui-btn" id="save" lay-submit="" lay-filter="save" onclick="answerPublish()">保存</button>
 <textarea id="richText" ></textarea>
 </form>
 </script>
@@ -59,7 +71,7 @@ layui.use('layedit', function(){
 	layedit= layui.layedit;
    	layedit.set({
    	      			uploadImage: {
-   	     				url: Const.apiUrl + '/tl-api-test' +'/tQuestion/upLoad'
+   	     				url: Const.apiUrl +'/tQuestion/upLoad'
    	      				,type: 'post'
    	    			}	
    	  				,tool: ['strong' //加粗
@@ -85,22 +97,17 @@ layui.use('layedit', function(){
 
 
 function answerPublish(){
-	$("#text").val(layedit.getContent(index));
-	var url = Const.apiUrl + '/tl-api-test' + '/topicQuestion/answerSave';
+	var url = Const.apiUrl + '/topicQuestion/answerSave';
 	var param = new Object();
-	param.content = $('form')[0].content.value;
+	param.content = layedit.getContent(index);
 	param.userId = userId;
-	param.topicId = topicId;
-	param.title = title;
+	param.questionId = questionId;
 	if(param.content == undefined || param.content == ''){
 		TmplUtils.showMsgFail('请输入内容');
 	}
 	View.get(url,param,function(resp){
 		TmplUtils.showMsgSuccess('保存成功!');
 		tmpl.refresh();
-		/* //调用Java的back()方法
-	    var result =window.android.back();
-	    document.getElementById("p").innerHTML=result; */
 		return resp;
 	},function(){
 		TmplUtils.showMsgFail('保存失败!');
@@ -110,9 +117,7 @@ function answerPublish(){
 }
 
 $(function (){
-	/*  $(document).unbind("click"); */
-		var form = layui.form;
-	 
+	$(document).unbind("click");
 	tmpl = new View.Tmpl({
 		"container" : $("#content"),
 		"tmpl" : $("#tmpl").html()
@@ -124,7 +129,11 @@ $(function (){
 			index =layedit.build('richText'); //建立编辑器
 		});
 	});
-
+	
+    $("._box").find("input[name='file']").attr("accept", "image/*");
+    $(window).resize(function() {
+         $(".layui-layedit").css("height",$(window).height());
+    }).resize();
 })
 
 </script>

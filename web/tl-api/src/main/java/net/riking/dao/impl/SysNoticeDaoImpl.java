@@ -35,7 +35,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 		String sql = "SELECT a.id noticeId, a.title, a.content, a.data_type dataType, ";
 		sql += "CASE WHEN EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id AND t.user_id = ? ) THEN 1 END AS isRead, ";
 		sql += "a.created_time createdTime FROM t_sys_notice a WHERE a.data_type=0 and ";
-		sql += "EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id and t.is_deleted = 1 AND t.user_id = ? ) ";
+		sql += "NOT EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id and t.is_deleted = 0 AND t.user_id = ? ) ";
 		sql += "order by a.created_time desc ";
 		PreparedStatement pstmt = null;
 		List<SysNoticeResult> list = new ArrayList<SysNoticeResult>();
