@@ -129,7 +129,7 @@ public class HomePageServer {
 			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
 			case Const.DIRECT_UP:
 				// 查询查出前30条数据
-				if(date.compareTo(homeParams.getReqTimeStamp())==0){//若是系统时间， 表示用户刚刚登陆，加载上一次登陆数据
+				if(date != null && date.compareTo(homeParams.getReqTimeStamp())==0){//若是系统时间， 表示用户刚刚登陆，加载上一次登陆数据
 					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
 							30);
 				}else{
