@@ -24,6 +24,7 @@ import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 
 import java.util.ArrayList;
@@ -58,9 +59,11 @@ public class HomeFragment extends Fragment {
         bannerSlider.setOnBannerClickListener(new OnBannerClickListener() {
             @Override
             public void onClick(int position) {
-                Intent i = new Intent(getContext(), WebviewActivity.class);
-                i.putExtra(CONST.WEB_URL, banners.get(position).relationURL);
-                startActivity(i);
+                if (!StringUtil.isEmpty(banners.get(position).relationURL)) {
+                    Intent i = new Intent(getContext(), WebviewActivity.class);
+                    i.putExtra(CONST.WEB_URL, banners.get(position).relationURL);
+                    startActivity(i);
+                }
             }
         });
     }
