@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.base.ZActivity;
 import com.riking.calendar.adapter.CompletedReportHistoryAdapter;
@@ -18,7 +17,6 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.List;
@@ -47,20 +45,25 @@ public class OverdueReportActivity extends ZActivity<OverdueReportActivity.Compl
 
                 } else {
                     List<List<ReportCompletedRelResult>> result = response._data;
-                    if (result.size() == 0) {
+                    setData2Adapter(page,result);
+                  /*  if (result.size() == 0) {
                         ZToast.toast("没有更多数据了");
+                        emptyLayout.setVisibility(View.VISIBLE);
+                        mPullToLoadView.setVisibility(View.GONE);
                         return;
                     }
+                    emptyLayout.setVisibility(View.GONE);
+                    mPullToLoadView.setVisibility(View.VISIBLE);
                     MyLog.d("result size " + result.size());
                     mAdapter.setData(result);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mPullToLoadView.getRecyclerView().invalidate();
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
-                    nextPage = page + 1;
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mPullToLoadView.getRecyclerView().invalidate();
+//                            mAdapter.notifyDataSetChanged();
+//                        }
+//                    });
+                    nextPage = page + 1;*/
                 }
 
             }

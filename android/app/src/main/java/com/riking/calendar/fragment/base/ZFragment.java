@@ -10,16 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riking.calendar.R;
+import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+
+import java.util.List;
 
 /**
  * with pagination function
  * Created by zw.zhang on 2017/12/22.
  */
 
-public abstract class ZFragment<T extends RecyclerView.Adapter> extends Fragment {
+public abstract class ZFragment<T extends ZAdater> extends Fragment {
     public PullToLoadViewWithoutFloatButton mPullToLoadView;
     public boolean isLoading = false;
     public boolean isHasLoadedAll = false;
@@ -53,6 +56,23 @@ public abstract class ZFragment<T extends RecyclerView.Adapter> extends Fragment
     public void getViews() {
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) v.findViewById(R.id.pullToLoadView);
         initViews();
+    }
+
+    public void setData2Adapter(int currentPage, List<?> list) {
+        isLoading = false;
+        mPullToLoadView.setComplete();
+        if (list.size() == 0) {
+            ZToast.toast("没有更多数据了");
+            return;
+        }
+
+        //first page
+        if (currentPage == 1) {
+            mAdapter.setData(list);
+        } else {
+            mAdapter.addAllAtEnd(list);
+        }
+        nextPage = currentPage + 1;
     }
 
     public abstract T getAdapter();

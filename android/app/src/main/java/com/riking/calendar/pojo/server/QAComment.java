@@ -39,19 +39,19 @@ public class QAComment extends BaseAuditProp {
 
     // 点赞数
 //    @Transient
-    public Integer agreeNumber;
+    public int agreeNumber;
 
     // 经验值
 //    @Transient
-    public Integer experience;
+    public int experience;
 
     // 等级
 //    @Transient
-    public Integer grade;
+    public int grade;
 
 //    @Transient
 //    @Comment("是否已点赞 0-未点赞，1-已点赞")
-    public Integer isAgree;
+    public int isAgree;
 
     // 问题回答评论的回复list
 //	@Transient

@@ -16,6 +16,8 @@ import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
+import java.util.List;
+
 /**
  * Created by zw.zhang on 2018/1/4.
  * with pagination function
@@ -96,6 +98,28 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
 
         mPullToLoadView.initLoad();
         initEvents();
+    }
+
+    public void setData2Adapter(int currentPage, List<?> list) {
+        isLoading = false;
+        mPullToLoadView.setComplete();
+        if (list.size() == 0) {
+            ZToast.toast("没有更多数据了");
+            emptyLayout.setVisibility(View.VISIBLE);
+            mPullToLoadView.setVisibility(View.GONE);
+            return;
+        }
+
+        emptyLayout.setVisibility(View.GONE);
+        mPullToLoadView.setVisibility(View.VISIBLE);
+
+        //first page
+        if (currentPage == 1) {
+            mAdapter.setData(list);
+        } else {
+            mAdapter.addAllAtEnd(list);
+        }
+        nextPage = currentPage + 1;
     }
 
     private void load(final int page) {

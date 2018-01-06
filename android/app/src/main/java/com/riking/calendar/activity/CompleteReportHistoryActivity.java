@@ -17,7 +17,6 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.retrofit.APIClient;
-import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.List;
@@ -46,12 +45,17 @@ public class CompleteReportHistoryActivity extends ZActivity<CompleteReportHisto
 
                 } else {
                     List<List<ReportCompletedRelResult>> result = response._data;
-                    if (result.size() == 0) {
-                        ZToast.toast("没有更多数据了");
-                        return;
-                    }
-                    mAdapter.setData(result);
-                    nextPage = page + 1;
+                    setData2Adapter(page, result);
+//                    if (result.size() == 0) {
+//                        ZToast.toast("没有更多数据了");
+//                        emptyLayout.setVisibility(View.VISIBLE);
+//                        mPullToLoadView.setVisibility(View.GONE);
+//                        return;
+//                    }
+//                    emptyLayout.setVisibility(View.GONE);
+//                    mPullToLoadView.setVisibility(View.VISIBLE);
+//                    mAdapter.setData(result);
+//                    nextPage = page + 1;
                 }
 
             }
