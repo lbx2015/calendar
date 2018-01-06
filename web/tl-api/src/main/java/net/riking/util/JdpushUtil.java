@@ -161,7 +161,7 @@ public class JdpushUtil {
 						// 指定当前推送的android通知
 						.addPlatformNotification(AndroidNotification.newBuilder()
 
-								.setAlert(jdpush.getNotificationTitle()).setTitle(jdpush.getNotificationTitle())
+								.setAlert(jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length())).setTitle(jdpush.getNotificationTitle())
 								// 此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
 								.addExtra("androidNotification extras key", jdpush.getExtrasparam())
 
@@ -169,7 +169,7 @@ public class JdpushUtil {
 						// 指定当前推送的iOS通知
 						.addPlatformNotification(IosNotification.newBuilder()
 								// 传一个IosAlert对象，指定apns title、title、subtitle等
-								.setAlert(jdpush.getNotificationTitle())
+								.setAlert(jdpush.getMsgTitle()+"\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()))
 								// 直接传alert
 								// 此项是指定此推送的badge自动加1
 								.incrBadge(1)

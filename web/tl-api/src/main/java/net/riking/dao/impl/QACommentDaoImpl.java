@@ -51,7 +51,7 @@ public class QACommentDaoImpl implements QACommentDao {
 				qaCommentResult.setUserId(rs.getString("userId"));
 				qaCommentResult.setQuestionAnswerId(rs.getString("qaId"));
 				qaCommentResult.setContent(rs.getString("content"));
-				qaCommentResult.setQuestionAnswerId(rs.getString("questionId"));
+				qaCommentResult.setTqId(rs.getString("questionId"));
 				qaCommentResult.setTqTitle(rs.getString("title"));
 				qaCommentResult.setQaContent(rs.getString("qaContent"));
 				qaCommentResult.setUserName(rs.getString("userName"));

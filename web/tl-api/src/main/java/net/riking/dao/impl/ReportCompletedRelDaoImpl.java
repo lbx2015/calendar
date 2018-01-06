@@ -31,8 +31,8 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		Connection connection = session.connection();
 		String sql = "SELECT ";
 		sql += "b.code reportCode, b.title reportName, SUBSTR(a.submit_end_time, 1, 8) dateStr, ";
-		sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t ";
-		sql += "where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequencyType ";
+		sql += "(select t.VALU from t_base_modelpropdict t ";
+		sql += "where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequency, b.report_batch reportBatch ";
 		sql += "FROM t_report_completed_rel a INNER join t_report b on a.report_id=b.id ";
 		sql += "LEFT JOIN t_report_submit_caliber c on a.report_id=c.report_id ";
 		sql += "WHERE a.user_id = ? AND a.is_completed = 0 and b.is_aduit =1 and b.is_deleted=1 ";
@@ -51,7 +51,8 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 				ReportCompletedRelResult rel = new ReportCompletedRelResult();
 				rel.setReportCode(rs.getString("reportCode"));
 				rel.setReportName(rs.getString("reportName"));
-				rel.setFrequencyType(rs.getString("frequencyType"));
+				rel.setFrequency(rs.getString("frequency"));
+				rel.setReportBatch(rs.getString("reportBatch"));
 				rel.setDateStr(rs.getString("dateStr"));
 				list.add(rel);
 			}
@@ -68,7 +69,7 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		Connection connection = session.connection();
 		String sql = "SELECT ";
 		sql += "b.code reportCode, b.title reportName, SUBSTR(a.completed_date, 1, 8) dateStr, ";
-		sql += "(select CONCAT(t.VALU, IFNULL(b.report_batch,'')) from t_base_modelpropdict t where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequencyType ";
+		sql += "(select t.VALU from t_base_modelpropdict t where t.TABLENAME='T_REPORT' and t.FIELD='FREQUENTLY' and t.KE=c.frequency) frequency, b.report_batch reportBatch ";
 		sql += "FROM t_report_completed_rel a INNER join t_report b on a.report_id=b.id ";
 		sql += "LEFT JOIN t_report_submit_caliber c on a.report_id=c.report_id ";
 		sql += "WHERE a.user_id = ? AND a.is_completed = 1 and b.is_aduit =1 and b.is_deleted=1 ";
@@ -87,7 +88,8 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 				ReportCompletedRelResult rel = new ReportCompletedRelResult();
 				rel.setReportCode(rs.getString("reportCode"));
 				rel.setReportName(rs.getString("reportName"));
-				rel.setFrequencyType(rs.getString("frequencyType"));
+				rel.setFrequency(rs.getString("frequency"));
+				rel.setReportBatch(rs.getString("reportBatch"));
 				rel.setDateStr(rs.getString("dateStr"));
 				list.add(rel);
 			}
