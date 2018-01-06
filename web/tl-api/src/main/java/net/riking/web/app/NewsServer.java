@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
@@ -42,7 +45,6 @@ import net.riking.service.AppUserService;
 import net.riking.service.NewsService;
 import net.riking.util.DateUtils;
 import net.riking.util.MQProduceUtil;
-import net.sf.json.JSONObject;
 
 /**
  * 
@@ -263,9 +265,16 @@ public class NewsServer {
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());
 
 		newsParams.setMqOptType(Const.MQ_OPT_NEWS_COMMENT);
-		JSONObject jsonArray = JSONObject.fromObject(newsParams);
-		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
-
+//		JSONObject jsonArray = JSONObject.fromObject(newsParams);
+//		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String mapJakcson = mapper.writeValueAsString(newsParams);
+			MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, mapJakcson);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());
 		newsCommentInfo.setContent(newsParams.getContent());
@@ -317,8 +326,15 @@ public class NewsServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		newsParams.setMqOptType(Const.MQ_OPT_NEW_COLLECT);
-		JSONObject jsonArray = JSONObject.fromObject(newsParams);
-		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+//		JSONObject jsonArray = JSONObject.fromObject(newsParams);
+//		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String mapJakcson = mapper.writeValueAsString(newsParams);
+			MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, mapJakcson);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
