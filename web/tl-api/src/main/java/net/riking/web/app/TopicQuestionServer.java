@@ -256,7 +256,7 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/answerHtml", method = RequestMethod.POST)
 	public AppResp qAnswer(@RequestBody Map<String, Object> params) {
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
-		return new AppResp(config.getAppHtmlPath() + Const.TL_QUESTION_ANSWER_HTML5_PATH + "?userId="
+		return new AppResp(config.getAppHtmlPath() /*+ Const.TL_QUESTION_ANSWER_HTML5_PATH*/ + "?userId="
 				+ tQuestionParams.getUserId() + "&questionId=" + tQuestionParams.getTqId(),
 				CodeDef.SUCCESS);
 	}

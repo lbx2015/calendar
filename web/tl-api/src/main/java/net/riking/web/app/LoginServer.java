@@ -1,5 +1,8 @@
 package net.riking.web.app;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,18 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.core.entity.model.ModelPropDict;
 import net.riking.dao.repo.IndustryRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
+import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.params.LoginParams;
 import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.DateUtils;
 import net.riking.util.JdpushUtil;
+import net.riking.util.MQProduceUtil;
 import net.riking.util.SmsUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 用户登录注册接口
@@ -136,9 +143,11 @@ public class LoginServer {
 					//换设备号登录，极光推送
 					Jdpush jdpush = new Jdpush();
 					jdpush = new Jdpush();
-					jdpush.setNotificationTitle("【悦历】设备登录异常");
-					jdpush.setMsgTitle("您的账号在其它设备登录");
-					jdpush.setMsgContent(DateUtils.getDate("yyyy-MM-dd HH:mm:ss") + " 您的账号在其它设备登录");
+					jdpush.setNotificationTitle(Const.SYS_NAME_FLAG + "账号异地登录");
+					jdpush.setMsgTitle("");
+					//你的帐号于2018-01-06 14:30在iPhone/Android/其它设备上通过验证码登录。
+					String msgContent = "你的帐号于" + DateUtils.getDate("yyyy-MM-dd HH:mm") + "在" + loginParams.getClientTypeName() + "设备上通过验证码登录。";
+					jdpush.setMsgContent(msgContent);
 					jdpush.setExtrasparam("");
 					jdpush.setRegisrationId(detail.getPhoneDeviceId().trim());
 					JdpushUtil.sendToRegistrationId(jdpush);
@@ -163,6 +172,17 @@ public class LoginServer {
 			user = appUserService.register(user, detail);
 			
 			logger.info("用户注册成功：phone={}", user.getPhone());
+			
+			//加入系统消息通知队列
+			ModelPropDict dict = sysDataService.getDict(Const.SYS_NOTICE_T_SYS_NOTICE, Const.SYS_NOTICE_USER_REGISTER, String.valueOf(Const.NOTICE_SYS_INFO));
+			if(dict != null){
+				MQOptCommon common = new MQOptCommon();
+				common.setMqOptType(0);
+				common.setAttentObjId(user.getId());
+				common.setContent(dict.getValu());
+				JSONObject jsonArray = JSONObject.fromObject(common);
+				MQProduceUtil.sendTextMessage(Const.SYS_INFO_QUEUE, jsonArray.toString());
+			}
 		}
 
 		AppUserResp userResp = new AppUserResp();

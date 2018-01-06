@@ -9,6 +9,8 @@ import org.apache.activemq.ActiveMQConnection;
  *
  */
 public class Const {
+	
+	public static final String SYS_NAME_FLAG = "【悦历】";
 
 	public static final String KEY_WORD = "KEYWORD";
 
@@ -77,7 +79,7 @@ public class Const {
 
 	// 系统日历
 	public static final String SYS_DAY = "SYS_DAY_";
-
+	
 	/** -------------------审核状态 begin-------------------------- */
 	/* 未审核 */
 	public static final int ADUIT_NO = 0;
@@ -236,7 +238,8 @@ public class Const {
 	/** --------------------搜索栏操作对象状态 end-------------------------- */
 
 	/* -------------------队列类型 begin-------------------------- */
-	public static final int MQ_SYS_INFO = 0;// 阅读通知
+	/* 系统通知 */
+	public static final int MQ_SYS_INFO = 0;
 
 	/** 邀请回答的邀请 */
 	public static final int MQ_OPT_ANSWERINVITE = 1;
@@ -299,4 +302,15 @@ public class Const {
 	public static final int NOTICE_OPT_COMMENT_REPLY = 8;
 
 	/* --------------------消息通知类型 end-------------------------- */
+	
+	//系统类的通知
+	public static final String SYS_NOTICE_FROME_SYS = "SYS";
+	public static final String SYS_NOTICE_TO_USER = "ALL";
+	
+	/* -------------------系统通知字典标识 begin-------------------------- */
+	public static final String SYS_NOTICE_T_SYS_NOTICE = "T_SYS_NOTICE";
+	//用户注册通知
+	public static final String SYS_NOTICE_USER_REGISTER = "USER_REGISTER_NOTICE";
+	
+	/* -------------------系统通知字典标识 end-------------------------- */
 }

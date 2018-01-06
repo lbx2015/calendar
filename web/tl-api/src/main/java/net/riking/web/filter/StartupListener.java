@@ -60,7 +60,11 @@ public class StartupListener implements ServletContextListener {
 	
 	@Autowired
 	MQSysOptListener mqSysOptListener;
-
+	@Autowired
+	MQSysInfoListener mqSysInfoListener;
+	@Autowired
+	MQSysMesListener mqSysMesListener;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -80,9 +84,8 @@ public class StartupListener implements ServletContextListener {
 		questionKeyWordService.initKeyWord();
 		
 		timerManager.init();
-		mQReceiveService.init(Const.SYS_INFO_QUEUE, new MQSysInfoListener());// 初始化mq接收信息系统通知队列
-		mQReceiveService.init(Const.SYS_MES_QUEUE, new MQSysMesListener());// 初始化mq接收信息系统消息队列
-		//mQReceiveService.init(Const.SYS_OPT_QUEUE, new MQSysOptListener());// 初始化mq接收信息系统操作队列
+		mQReceiveService.init(Const.SYS_INFO_QUEUE, mqSysInfoListener);// 初始化mq接收信息系统通知队列
+		mQReceiveService.init(Const.SYS_MES_QUEUE, mqSysMesListener);// 初始化mq接收信息系统消息队列
 		mQReceiveService.init(Const.SYS_OPT_QUEUE, mqSysOptListener);// 初始化mq接收信息系统操作队列
 	}
 		
