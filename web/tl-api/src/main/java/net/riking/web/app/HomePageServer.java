@@ -148,10 +148,10 @@ public class HomePageServer {
 				tQuestionList = tQuestionService.findTopicHomeDown(homeParams.getUserId(), homeParams.getReqTimeStamp(),
 						tquestIds, 0, 30);
 				// 如果查不到数据返回未登录时候数据
-				if (tQuestionList.size() == 0) {
+				/*if (tQuestionList.size() == 0) {
 					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
 							30);
-				}
+				}*/
 				break;
 			default:
 				logger.error("请求方向参数异常：direct:" + homeParams.getDirect());
