@@ -21,6 +21,9 @@ public class SysNoticeResult extends BaseEntity {
 	// 用户头像
 	private String userPhotoUrl;
 
+	// 用户id
+	private String userId;
+
 	// 根据依据dataType存储对象id
 	private String objId;
 
@@ -33,10 +36,10 @@ public class SysNoticeResult extends BaseEntity {
 	// 是否已读：0-未读; 1-已读
 	private Integer isRead;
 
-//	// 翻页时间戳
-//	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
-//	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
-//	private Date reqTimeStamp;
+	// // 翻页时间戳
+	// @DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
+	// @JsonFormat(pattern = "yyyyMMddHHmmssSSS")
+	// private Date reqTimeStamp;
 
 	// 创建时间
 	@DateTimeFormat(pattern = "yyyyMMddHHmmssSSS")
@@ -107,13 +110,13 @@ public class SysNoticeResult extends BaseEntity {
 		this.createdTime = createdTime;
 	}
 
-//	public Date getReqTimeStamp() {
-//		return reqTimeStamp;
-//	}
-//
-//	public void setReqTimeStamp(Date reqTimeStamp) {
-//		this.reqTimeStamp = reqTimeStamp;
-//	}
+	// public Date getReqTimeStamp() {
+	// return reqTimeStamp;
+	// }
+	//
+	// public void setReqTimeStamp(Date reqTimeStamp) {
+	// this.reqTimeStamp = reqTimeStamp;
+	// }
 
 	public String getObjId() {
 		return objId;
@@ -121,6 +124,14 @@ public class SysNoticeResult extends BaseEntity {
 
 	public void setObjId(String objId) {
 		this.objId = objId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

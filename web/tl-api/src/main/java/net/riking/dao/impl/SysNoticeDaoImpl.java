@@ -89,6 +89,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 		Connection connection = session.connection();
 		String sql = "SELECT a.id noticeId, a.title, a.content, a.data_type dataType, ";
 		sql += "(SELECT t.user_name FROM t_appuser_detail t WHERE t.id = a.from_user_id ) fromUserName, ";
+		sql += "(SELECT t.id FROM t_appuser_detail t WHERE t.id = a.from_user_id ) userId, ";
 		sql += "(SELECT t.photo_url FROM t_appuser_detail t WHERE t.id = a.from_user_id ) userPhotoUrl, a.obj_id objId, ";
 		sql += "CASE WHEN EXISTS (SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id AND t.user_id = a.notice_user_id) THEN 1 ELSE 0 END AS isRead, ";
 		sql += "a.created_time createdTime FROM t_sys_notice a ";
@@ -118,7 +119,8 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				data.setObjId(rs.getString("objId"));
 				data.setIsRead(rs.getInt("isRead"));
 				data.setCreatedTime(rs.getTimestamp("createdTime"));
-				//data.setReqTimeStamp(rs.getTimestamp("createdTime"));
+				data.setUserId(rs.getString("userId"));
+				// data.setReqTimeStamp(rs.getTimestamp("createdTime"));
 				list.add(data);
 			}
 			pstmt.close();
