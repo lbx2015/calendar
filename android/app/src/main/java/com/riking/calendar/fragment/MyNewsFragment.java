@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.MyNewsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
@@ -134,12 +135,14 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
     }
 
     public void loadData(final int page) {
+        MyLog.d("news load data page: " + page);
         getSystemMessage(page);
     }
 
     private void getSystemMessage(final int page) {
         if (page == 1) {
             mAdapter.clear();
+            mRecyclerView.clearDisappearingChildren();
             getSystemMessage();
         }
         getUserMessage(page);
@@ -162,7 +165,6 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
     }
 
     private void getUserMessage(final int page) {
-
         HomeParams params = new HomeParams();
         if (page > 1) {
             params.reqTimeStamp = reqTimeStamp;

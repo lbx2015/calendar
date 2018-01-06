@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
@@ -20,6 +21,7 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -37,6 +39,7 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
     private boolean isHasLoadedAll = false;
     private int nextPage;
     private String userId;
+    private TextView activityTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +49,15 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
         Intent i = getIntent();
         userId = i.getStringExtra(CONST.USER_ID);
         init();
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我的回答");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("她的回答");
+            } else {
+                activityTitle.setText("他的回答");
+            }
+        }
     }
 
     private void init() {
@@ -54,6 +66,7 @@ public class MyRepliesActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        activityTitle = findViewById(R.id.activity_title);
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) findViewById(R.id.pullToLoadView);
     }
 

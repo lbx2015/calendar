@@ -48,14 +48,15 @@ public class MyAnswersFragment extends ZFragment<MyAnswersAdapter> {
             @Override
             public void callBack(ResponseModel<List<QAnswerResult>> response) {
                 List<QAnswerResult> answers = response._data;
-                isLoading = false;
-                mPullToLoadView.setComplete();
-                if (answers.size() == 0) {
-                    ZToast.toast("没有更多数据了");
-                    return;
-                }
-                mAdapter.setData(answers);
-                nextPage = page + 1;
+//                isLoading = false;
+//                mPullToLoadView.setComplete();
+//                if (answers.size() == 0) {
+//                    ZToast.toast("没有更多数据了");
+//                    return;
+//                }
+                setData2Adapter(page,answers);
+//                mAdapter.setData(answers);
+//                nextPage = page + 1;
             }
         });
     }

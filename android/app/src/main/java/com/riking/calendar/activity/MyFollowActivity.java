@@ -19,6 +19,7 @@ import com.riking.calendar.fragment.MyFollowTopicFragment;
 import com.riking.calendar.fragment.MyFollowerPersonFragment;
 import com.riking.calendar.fragment.MyFollowingQuestionFragment;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 
 public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
@@ -35,10 +36,18 @@ public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_state);
         activityTitle = findViewById(R.id.activity_title);
-        activityTitle.setText("我的关注");
         Intent i = getIntent();
         userId = i.getStringExtra(CONST.USER_ID);
         init();
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我的关注");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("她的关注");
+            } else {
+                activityTitle.setText("他的关注");
+            }
+        }
     }
 
     private void init() {

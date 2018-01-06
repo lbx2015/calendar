@@ -22,6 +22,7 @@ import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -51,6 +52,15 @@ public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
         Intent i = getIntent();
         userId = i.getStringExtra(CONST.USER_ID);
         init();
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我的粉丝");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("她的粉丝");
+            } else {
+                activityTitle.setText("他的粉丝");
+            }
+        }
     }
 
     private void init() {

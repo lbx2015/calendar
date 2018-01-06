@@ -29,7 +29,7 @@ public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends Recycler
     }
 
     public void setData(List<ItemBean> mList) {
-        if (mList == null) return;
+        if (mList == null || mList.isEmpty()) return;
         MyLog.d("set data size: " + mList.size());
 //        this.mList.clear();
         this.mList = mList;
@@ -38,13 +38,15 @@ public abstract class ZAdater<VH extends ZViewHolder, ItemBean> extends Recycler
 
     public void addAllAtStart(List<ItemBean> list) {
         mList.addAll(0, list);
-        notifyItemRangeInserted(0, list.size());
+        notifyDataSetChanged();
+//        notifyItemRangeInserted(0, list.size());
     }
 
     public void addAllAtEnd(List<ItemBean> list) {
         int size = mList.size();
         mList.addAll(size, list);
-        notifyItemRangeInserted(size - 1, mList.size());
+        notifyDataSetChanged();
+//        notifyItemRangeInserted(size - 1, mList.size());
     }
 
     public void appendStart(ItemBean itemBean) {

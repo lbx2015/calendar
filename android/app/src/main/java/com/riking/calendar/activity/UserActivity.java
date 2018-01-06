@@ -168,6 +168,7 @@ public class UserActivity extends AppCompatActivity {
             public void click(View v) {
                 Intent i = new Intent(UserActivity.this, MyCollectActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
+                i.putExtra(CONST.USER_SEX, u.sex);
                 ZGoto.to(i);
             }
         });
@@ -178,6 +179,7 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(UserActivity.this, MyRepliesActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
+                i.putExtra(CONST.USER_SEX, u.sex);
                 ZGoto.to(i);
             }
         });
@@ -188,6 +190,7 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(UserActivity.this, MyFollowersActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
+                i.putExtra(CONST.USER_SEX, u.sex);
                 ZGoto.to(i);
             }
         });
@@ -198,6 +201,7 @@ public class UserActivity extends AppCompatActivity {
             public void click(View v) {
                 Intent i = new Intent(UserActivity.this, MyFavoritesUserActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
+                i.putExtra(CONST.USER_SEX, u.sex);
                 ZGoto.to(i);
             }
         });
@@ -208,6 +212,7 @@ public class UserActivity extends AppCompatActivity {
             public void click(View v) {
                 Intent i = new Intent(UserActivity.this, MyStateActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
+                i.putExtra(CONST.USER_SEX, u.sex);
                 ZGoto.to(i);
             }
         });
@@ -217,6 +222,7 @@ public class UserActivity extends AppCompatActivity {
             public void click(View v) {
                 Intent i = new Intent(UserActivity.this, MyFollowActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
+                i.putExtra(CONST.USER_SEX, u.sex);
                 ZGoto.to(i);
             }
         });

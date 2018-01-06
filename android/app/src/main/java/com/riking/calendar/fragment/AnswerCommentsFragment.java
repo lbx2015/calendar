@@ -21,7 +21,7 @@ import java.util.List;
 public class AnswerCommentsFragment extends ZFragment<MyDynamicAnswerCommentListAdapter> {
     @Override
     public MyDynamicAnswerCommentListAdapter getAdapter() {
-        return new MyDynamicAnswerCommentListAdapter(getContext());
+        return new MyDynamicAnswerCommentListAdapter();
     }
 
     MyStateActivity activity;
@@ -52,14 +52,15 @@ public class AnswerCommentsFragment extends ZFragment<MyDynamicAnswerCommentList
             @Override
             public void callBack(ResponseModel<List<QACommentResult>> response) {
                 List<QACommentResult> comments = response._data;
-                isLoading = false;
+                setData2Adapter(page,comments);
+               /* isLoading = false;
                 mPullToLoadView.setComplete();
                 if (comments.size() == 0) {
                     ZToast.toast("没有更多数据了");
                     return;
                 }
                 mAdapter.addAll(comments);
-                nextPage = page + 1;
+                nextPage = page + 1;*/
             }
         });
     }

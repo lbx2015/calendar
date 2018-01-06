@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.view.CircleImageView;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * Created by xiangzhihong on 2016/3/2 on 15:49.
  */
-public class HotAnswerOfTopicViewHolder extends RecyclerView.ViewHolder {
+public class HotAnswerOfTopicViewHolder extends ZViewHolder {
 
     @BindView(R.id.answer_image)
     public ImageView answerImage;
