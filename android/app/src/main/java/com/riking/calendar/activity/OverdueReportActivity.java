@@ -79,10 +79,6 @@ public class OverdueReportActivity extends ZActivity<OverdueReportActivity.Compl
         activityTitle.setText("逾期任务");
     }
 
-    public void clickBack(View view) {
-        onBackPressed();
-    }
-
     public class CompleteReportHistoryAdapter extends ZAdater<MyViewHolder, List<ReportCompletedRelResult>> {
 
     /*    @Override

@@ -70,10 +70,6 @@ public class CompleteReportHistoryActivity extends ZActivity<CompleteReportHisto
     public void initEvents() {
     }
 
-    public void clickBack(View view) {
-        onBackPressed();
-    }
-
     public class CompleteReportHistoryAdapter extends ZAdater<MyViewHolder, List<ReportCompletedRelResult>> {
 
         public CompleteReportHistoryAdapter() {

@@ -127,6 +127,7 @@
         <activity android:name=".activity.MyRepliesActivity"></activity>
         <activity android:name=".activity.MyFollowersActivity"></activity>
         <activity android:name=".activity.MyFavoritesUserActivity"></activity>
+        <activity android:name=".activity.SystemNoticeActivity"></activity>
         <activity android:name=".activity.MyStateActivity"></activity>
         <activity android:name=".activity.UserActivity"></activity>
         <activity android:name=".activity.MyFollowActivity"></activity>
