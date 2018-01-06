@@ -191,7 +191,6 @@ public class DateUtil {
             long seconds = result / 86400000;
             r = seconds + "天前";
         } else {// 日期格式
-            format = "yyyy-MM-dd HH:mm";
             SimpleDateFormat df = new SimpleDateFormat(format);
             r = df.format(ctime).toString();
         }

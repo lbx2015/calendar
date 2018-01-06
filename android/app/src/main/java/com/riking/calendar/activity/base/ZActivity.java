@@ -100,10 +100,15 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
         initEvents();
     }
 
+    //without pagination function
+    public void setData2Adapter(List<?> list) {
+        setData2Adapter(1, list);
+    }
+
     public void setData2Adapter(int currentPage, List<?> list) {
         isLoading = false;
         mPullToLoadView.setComplete();
-        if (list.size() == 0) {
+        if (list != null && list.size() == 0) {
             ZToast.toast("没有更多数据了");
             emptyLayout.setVisibility(View.VISIBLE);
             mPullToLoadView.setVisibility(View.GONE);
@@ -162,5 +167,9 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
     //override this method if u need change the layout
     public void setLayout() {
         setContentView(R.layout.activity_base);
+    }
+
+    public void clickBack(final View view) {
+        onBackPressed();
     }
 }

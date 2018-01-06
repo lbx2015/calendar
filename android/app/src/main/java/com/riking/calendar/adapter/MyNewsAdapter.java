@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.content.Intent;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,10 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.SystemNoticeActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.SysNoticeResult;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
@@ -22,7 +28,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
 
     @Override
     public void onBindVH(final MyViewHolder h, int i) {
-        SysNoticeResult result = mList.get(i);
+        final SysNoticeResult result = mList.get(i);
         if (editMode) {
             h.checkImage.setVisibility(View.VISIBLE);
             h.checkImage.setOnClickListener(new View.OnClickListener() {
@@ -50,26 +56,51 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
             h.checked = false;
             ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
         }
-
+        MyLog.d("result : " + result.toString());
         //system info
         if (result.dataType == 0) {
-            h.userName.setTextSize(17);
-            h.userName.setText("系统消息");
+            h.title.setTextSize(17);
+            h.title.setText("系统消息");
             h.systemNewsTv.setText(result.content);
             h.systemNewsTv.setVisibility(View.VISIBLE);
             h.userImage.setImageDrawable(ZR.getDrawable(R.drawable.message_icon_systeminfor));
+            h.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ZGoto.to(SystemNoticeActivity.class);
+                }
+            });
         } else {
             h.systemNewsTv.setVisibility(View.GONE);
-            h.userName.setMaxLines(2);
-            h.userName.setEllipsize(TextUtils.TruncateAt.END);
-            String s = result.title;
-            String content = "";
-            if (result.dataType == 4) {
-                content = result.content;
+            h.title.setMaxLines(2);
+            h.title.setEllipsize(TextUtils.TruncateAt.END);
+            h.title.setText(Html.fromHtml("<html><body><font color=#666666>" + result.title + " </font> <font color=#333333>" + (result.dataType == 5 ? "" : result.content) + " </font> </body><html>"));
+            ZR.setCircleUserImage(h.userImage, result.userPhotoUrl, result.userId);
+            if (result.dataType == 2 || result.dataType == 3) {
+                ZR.setAnswerClickListener(h.title, result.objId);
+            } else if (result.dataType == 1 || result.dataType == 4) {
+                ZR.setRequestClickListener(h.title, result.objId);
+            } else if (result.dataType == 5) {
+                h.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), UserActivity.class);
+                        i.putExtra(CONST.USER_ID, result.objId);
+                        ZGoto.to(i);
+                    }
+                });
+            } else if (result.dataType == 6 || result.dataType == 7 || result.dataType == 8) {
+                h.title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ZGoto.goToAnswerComments(result.objId);
+                    }
+                });
             }
-            h.userName.setText(Html.fromHtml("<html><body><font color=#666666>" + s + " </font> <font color=#333333>" + content + " </font> </body><html>"));
         }
+
         h.timeTv.setText(DateUtil.showTime(result.createdTime));
+
      /*   AppUserResult appUser = mList.get(i);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
         ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);
@@ -86,7 +117,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
 
     class MyViewHolder extends ZViewHolder {
         public TextView timeTv;
-        public TextView userName;
+        public TextView title;
         public ImageView userImage;
         public ImageView checkImage;
         public TextView systemNewsTv;
@@ -96,7 +127,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
             super(itemView);
             checkImage = itemView.findViewById(R.id.check_image);
             userImage = itemView.findViewById(R.id.user_icon);
-            userName = itemView.findViewById(R.id.user_name);
+            title = itemView.findViewById(R.id.user_name);
             timeTv = itemView.findViewById(R.id.summary);
             systemNewsTv = itemView.findViewById(R.id.system_news_tv);
         }
