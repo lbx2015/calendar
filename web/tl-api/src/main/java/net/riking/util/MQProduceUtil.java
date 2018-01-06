@@ -62,7 +62,7 @@ public class MQProduceUtil {
 	 * @throws Exception
 	 */
 	public static void sendTextMessage(String queueName, String msg) {
-
+		
 		MQProduceUtil.init(queueName);
 		try {
 			// 发送消息

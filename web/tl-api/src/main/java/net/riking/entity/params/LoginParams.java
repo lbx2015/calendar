@@ -28,6 +28,20 @@ public class LoginParams extends BaseEntity {
 
 	// 手机端设备Id
 	private String phoneDeviceId;
+	
+	public String getClientTypeName(){
+		if(clientType != null){
+			switch (clientType.intValue()) {
+			case 1:
+				return "iPhone";
+			case 2:
+				return "Android";
+			default:
+				return "其它";
+			}
+		}
+		return "";
+	}
 
 	public String getPhone() {
 		return phone;
