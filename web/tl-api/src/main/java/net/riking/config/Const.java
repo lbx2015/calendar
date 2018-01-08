@@ -76,6 +76,11 @@ public class Const {
 	// 系统日历
 	public static final String SYS_DAY = "SYS_DAY_";
 
+	/** -------------------统计数 begin-------------------------- */
+	/* 报表类型统计数 */
+	public static final String COUNT_BY_REPORT_TYPE = "COUNTBYREPORTTYPE";
+
+	/** -------------------统计数 end-------------------------- */
 	/** -------------------审核状态 begin-------------------------- */
 	/* 未审核 */
 	public static final int ADUIT_NO = 0;

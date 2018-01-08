@@ -27,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
-import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.utils.UuidUtils;
 import net.riking.dao.AppUserDao;
 import net.riking.dao.repo.AppUserDetailRepo;
@@ -151,8 +150,7 @@ public class AppUserServiceImpl implements AppUserService {
 		String oleFilePath = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH
 				+ oldFileName;
 		// 删除服务器上文件
-		ModelPropDict dict = sysDataService.getDict("T_ROOT_URL", "PHOTO_URL", "DEFAULT_URL");
-		if (!dict.getValu().equals(oldFileName) && !mFile.getOriginalFilename().equals(oldFileName)) {
+		if (!mFile.getOriginalFilename().equals(oldFileName)) {
 			FileUtils.deleteFile(oleFilePath);
 		}
 		// 数据库保存路径s
