@@ -67,6 +67,9 @@ public interface ReportRepo extends JpaRepository<Report, String>, JpaSpecificat
 	@Modifying
 	@Query(" update Report set enabled=?2 where id =?1 ")
 	int updEnable(String id, int enabled);
+
+	@Query("select count(*) from ReportSubscribeRel rs,Report r where r.id = rs.reportId and r.reportType = ?1")
+	Integer countSubscribeNumByReportType(String reportType);
 	/******** WEB END ************/
 
 }
