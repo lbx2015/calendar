@@ -270,6 +270,9 @@ public class Const {
 
 	/** 评论的回复和回复的回复 */
 	public static final int MQ_OPT_COMMENT_REPLY = 10;
+	
+	/** 问题回答 */
+	public static final int MQ_OPT_QUESTION_ANWSER = 11;
 
 	/* --------------------队列类型 end-------------------------- */
 

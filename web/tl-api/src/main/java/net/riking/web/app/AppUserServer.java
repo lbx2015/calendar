@@ -269,7 +269,7 @@ public class AppUserServer {
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
 	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("userId") String userId) {
-		String url = request.getRequestURL().toString();
+		//String url = request.getRequestURL().toString();
 		String fileName = null;
 		try {
 			fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);

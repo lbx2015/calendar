@@ -68,6 +68,7 @@ public abstract class ZCallBackWithFailAndProgressDialog<T extends ResponseModel
             mProgressDialog.dismiss();
         }
     }
+
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         isBackQuickly = true;
@@ -95,6 +96,7 @@ public abstract class ZCallBackWithFailAndProgressDialog<T extends ResponseModel
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         if (NetStateReceiver.isNetAvailable) {
             Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
         } else {

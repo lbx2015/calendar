@@ -89,7 +89,7 @@ layui.use('layedit', function(){
 					  ,'image' //插入图片
 					  //,'help' //帮助
 				]
-   	  				,height: 250
+   	  				,height: "100%"
    	  			});
    	});
   
@@ -126,7 +126,17 @@ $(function (){
 		var _t = this;
 		_t.bind(function(callback){
 			callback.call(_t,{});
-			index =layedit.build('richText'); //建立编辑器
+			index = layedit.build('richText', {
+	                    tool: ['strong' //加粗
+	                        , 'italic' //斜体
+	                        , 'underline' //下划线
+	                        , '|' //分割线
+	                        , 'left' //左对齐
+	                        , 'center' //居中对齐
+	                        , 'right' //右对齐
+	                        , 'image' //插入图片
+	                    ]
+	                }); //建立编辑器
 		});
 	});
 	

@@ -48,7 +48,7 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
 //        }
         holder.position = position;
         holder.title.setText(r.reportCode);
-        ZR.setReportName(holder.title, r.reportCode, r.frequency, r.reportBatch);
+        ZR.setReportName(holder.title, r.reportCode, r.frequency, r.reportBatch,r.reportId);
         holder.descriptTv.setText(r.reportName);
 
         //not enable the swipe function for done report
@@ -62,7 +62,7 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
         }
 
         ZR.setImage(holder.buttonImage, R.drawable.work_icon_checkbox_s);
-        holder.title.setOnClickListener(new View.OnClickListener() {
+       /* holder.title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -82,7 +82,7 @@ public class ReportTaskItemAdapter extends ZAdater<ReportTaskItemAdapter.MyViewH
                     }
                 });
             }
-        });
+        });*/
         //set complete complete click listener
         holder.buttonImage.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
