@@ -533,6 +533,18 @@ public class ZR {
         });
     }
 
+    public static void hide(View v) {
+        if (v != null) {
+            v.setVisibility(View.GONE);
+        }
+    }
+
+    public static void show(View v) {
+        if (v != null) {
+            v.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void getDensity(Activity activity) {
         float density = activity.getResources().getDisplayMetrics().density;
         if (density > 4.0f) {

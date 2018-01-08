@@ -43,25 +43,35 @@ public class NewsAdapter extends ZAdater<NewsAdapter.MyViewHolder, News> {
         holder.newsPublishTime.setText(DateUtil.showTime(news.createdTime, CONST.yyyy_mm_dd_hh_mm));
         String[] imageUrls = news.coverUrls.split(";");
         if (!StringUtil.isEmpty(imageUrls[0])) {
+            holder.newsImage1.setVisibility(View.VISIBLE);
             ZR.setImage(holder.newsImage1, imageUrls[0]);
+        } else {
+            holder.newsImage1.setVisibility(View.GONE);
         }
+
         switch (getItemViewType(position)) {
             case 0: {
-                holder.newsTitle.setText("间接持有同业存单该如何填报？");
+                holder.newsTitle.setText(news.title);
                 if (!StringUtil.isEmpty(imageUrls[1])) {
+                    holder.newsImage2.setVisibility(View.VISIBLE);
                     ZR.setImage(holder.newsImage1, imageUrls[1]);
+                } else {
+                    holder.newsImage2.setVisibility(View.GONE);
                 }
                 if (!StringUtil.isEmpty(imageUrls[2])) {
+                    holder.newsImage3.setVisibility(View.VISIBLE);
                     ZR.setImage(holder.newsImage1, imageUrls[2]);
+                } else {
+                    holder.newsImage3.setVisibility(View.GONE);
                 }
                 break;
             }
             case 1: {
-                holder.newsTitle.setText("什么是证券投资基金？");
+                holder.newsTitle.setText(news.title);
                 break;
             }
             case 2: {
-                holder.newsTitle.setText("证券投资基金原来是这么一回事，对投资理财的影响超过你的想象？");
+                holder.newsTitle.setText(news.title);
                 break;
             }
         }

@@ -17,6 +17,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.ReportCompletedRelParam;
 import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.List;
@@ -42,10 +43,29 @@ public class OverdueReportActivity extends ZActivity<OverdueReportActivity.Compl
                 mPullToLoadView.setComplete();
                 isLoading = false;
                 if (failed) {
-
+                    if (page == 1) {
+                        emptyLayout.setVisibility(View.VISIBLE);
+                        mPullToLoadView.setVisibility(View.GONE);
+                    }
                 } else {
                     List<List<ReportCompletedRelResult>> result = response._data;
-                    setData2Adapter(page,result);
+                    int size = mAdapter.mList.size();
+                    if (size > 0) {
+                        List<ReportCompletedRelResult> mList = mAdapter.mList.get(size - 1);
+                        if (mList.get(0).dateStr.equals(result.get(0).get(0).dateStr)) {
+                            emptyLayout.setVisibility(View.GONE);
+                            mPullToLoadView.setVisibility(View.VISIBLE);
+                            mList.addAll(mList.size(), result.get(0));
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            setData2Adapter(page, result);
+                        }
+                    } else {
+                        ZToast.toast("没有更多数据了");
+                        emptyLayout.setVisibility(View.VISIBLE);
+                        mPullToLoadView.setVisibility(View.GONE);
+                    }
+
                   /*  if (result.size() == 0) {
                         ZToast.toast("没有更多数据了");
                         emptyLayout.setVisibility(View.VISIBLE);

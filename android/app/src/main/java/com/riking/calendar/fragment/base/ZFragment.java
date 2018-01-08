@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -30,6 +32,7 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
     public RecyclerView mRecyclerView;
     public T mAdapter;
     public View v;
+    public View emptyLayout;
 
     @Nullable
     @Override
@@ -54,6 +57,7 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
     }
 
     public void getViews() {
+        emptyLayout = v.findViewById(R.id.empty);
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) v.findViewById(R.id.pullToLoadView);
         initViews();
     }
@@ -63,8 +67,13 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
         mPullToLoadView.setComplete();
         if (list.size() == 0) {
             ZToast.toast("没有更多数据了");
+            emptyLayout.setVisibility(View.VISIBLE);
+            mPullToLoadView.setVisibility(View.GONE);
             return;
         }
+
+        emptyLayout.setVisibility(View.GONE);
+        mPullToLoadView.setVisibility(View.VISIBLE);
 
         //first page
         if (currentPage == 1) {
@@ -79,6 +88,22 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
 
     public void setEvents() {
         mAdapter = getAdapter();
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                boolean isEmpty = mAdapter.mList == null || mAdapter.mList.size() == 0;
+                MyLog.d("is empty: " + isEmpty);
+                if (isEmpty) {
+                    ZR.show(emptyLayout);
+                    ZR.hide(mPullToLoadView);
+                } else {
+                    ZR.hide(emptyLayout);
+                    ZR.show(mPullToLoadView);
+                }
+            }
+        });
+
         mRecyclerView = mPullToLoadView.getRecyclerView();
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
