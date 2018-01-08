@@ -254,6 +254,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent i = new Intent(h.secondTextIcon.getContext(), WriteAnswerActivity.class);
                 i.putExtra(CONST.ANSWER_ID, r.qaId);
+                i.putExtra(CONST.QUESTION_TITLE,r.tqTitle);
                 ZGoto.to(i);
             }
         });

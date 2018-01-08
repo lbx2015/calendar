@@ -51,7 +51,7 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
     public void onBindViewHolder(final AnswerCommentListAdapter.MyViewHolder h, int i) {
         final QAComment c = mList.get(i);
 
-        ZR.setUserName(h.authorName, c.userName, c.grade,c.userId);
+        ZR.setUserName(h.authorName, c.userName, c.grade, c.userId);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
@@ -139,6 +139,20 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
             recyclerView.setVisibility(View.VISIBLE);
             h.replyListAdapter.add(replies);
             recyclerView.setAdapter(h.replyListAdapter);
+
+            h.replyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    if (h.replyListAdapter != null) {
+                        if (h.replyListAdapter.getItemCount() == 0) {
+                            recyclerView.setVisibility(View.GONE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            });
         }
     }
 
