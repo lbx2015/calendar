@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.QuestionActivity;
@@ -440,6 +441,7 @@ public class ZR {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         String followStatus = response._data;
+                        MyLog.d("follow Status: " + followStatus);
                         if (StringUtil.isEmpty(response._data)) {
                             followStatus = "0";
                         }

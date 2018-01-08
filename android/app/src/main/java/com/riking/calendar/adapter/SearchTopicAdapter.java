@@ -1,13 +1,17 @@
 package com.riking.calendar.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.Topic;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.SearchTopicViewHolder;
 
@@ -16,8 +20,16 @@ public class SearchTopicAdapter extends ZAdater<SearchTopicViewHolder, Topic> {
 
     @Override
     public void onBindVH(final SearchTopicViewHolder h, int i) {
-        Topic topicResult = mList.get(i);
+        final Topic topicResult = mList.get(i);
         h.title.setText(topicResult.title);
+       h.title.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent i = new Intent(h.title.getContext(), TopicActivity.class);
+               i.putExtra(CONST.TOPIC_ID, topicResult.topicId);
+               ZGoto.to(i);
+           }
+       });
         h.summary.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
 
         ZR.setImage(h.topicImage, topicResult.topicUrl);
