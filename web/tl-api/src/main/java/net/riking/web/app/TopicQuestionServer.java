@@ -5,6 +5,8 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,6 +38,7 @@ import net.riking.entity.model.QAInvite;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.Topic;
 import net.riking.entity.model.TopicQuestion;
+import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.params.TQuestionParams;
 import net.riking.service.AppUserService;
 import net.riking.service.QuestionKeyWordService;
@@ -256,7 +259,7 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/answerHtml", method = RequestMethod.POST)
 	public AppResp qAnswer(@RequestBody Map<String, Object> params) {
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
-		return new AppResp(config.getAppHtmlPath() /*+ Const.TL_QUESTION_ANSWER_HTML5_PATH*/ + "?userId="
+		return new AppResp(config.getAppHtmlPath() + Const.TL_QUESTION_ANSWER_HTML5_PATH + "?userId="
 				+ tQuestionParams.getUserId() + "&questionId=" + tQuestionParams.getTqId(),
 				CodeDef.SUCCESS);
 	}
@@ -265,29 +268,10 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/answerSave", method = RequestMethod.GET)
 	public Resp answerSave_(@RequestParam HashMap<String, Object> params) {
 		QuestionAnswer questionAnswer = Utils.map2Obj(params, QuestionAnswer.class);
-		String[] fileNames = questionAnswer.getContent().split("alt=");
-		for (int i = 1; i < fileNames.length; i++) {
-			String fileName = fileNames[i].split(">")[0].replace("\"", "");
-			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_ANSWER_PHOTO_PATH + fileName;
-			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TEMP_PHOTO_PATH + fileName;
-			try {
-				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
-			} catch (Exception e) {
-				logger.error("文件复制异常" + e);
-				return new Resp(CodeDef.ERROR);
-			}
-			FileUtils.deleteFile(oldPhotoUrl);
-		}
-//		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
-//		Matcher matcher = pattern.matcher(questionAnswer.getContent());
-//        while(matcher.find()){
-//        	String fileName = matcher.group();
-//        	if(StringUtils.isBlank(questionAnswer.getCoverUrl())){
-//        		questionAnswer.setCoverUrl(fileName);
-//        	}
-//        	String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+//		String[] fileNames = questionAnswer.getContent().split("alt=");
+//		for (int i = 1; i < fileNames.length; i++) {
+//			String fileName = fileNames[i].split(">")[0].replace("\"", "");
+//			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
 //					+ Const.TL_ANSWER_PHOTO_PATH + fileName;
 //			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
 //					+ Const.TL_TEMP_PHOTO_PATH + fileName;
@@ -298,13 +282,41 @@ public class TopicQuestionServer {
 //				return new Resp(CodeDef.ERROR);
 //			}
 //			FileUtils.deleteFile(oldPhotoUrl);
-//        }
+//		}
+		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
+		Matcher matcher = pattern.matcher(questionAnswer.getContent());
+        while(matcher.find()){
+        	String fileName = matcher.group();
+        	if(StringUtils.isBlank(questionAnswer.getCoverUrl())){
+        		questionAnswer.setCoverUrl(fileName);
+        	}
+        	String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_ANSWER_PHOTO_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				return new Resp(CodeDef.ERROR);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+        }
 		questionAnswer.setCreatedBy(questionAnswer.getUserId());
 		questionAnswer.setModifiedBy(questionAnswer.getUserId());
 		questionAnswer.setIsAduit(0);
-		questionAnswer.setCoverUrl(questionAnswer.getContent().split("alt=")[1].split(">")[0].replace("\"", ""));
+//		questionAnswer.setCoverUrl(questionAnswer.getContent().split("alt=")[1].split(">")[0].replace("\"", ""));
 		questionAnswer.setContent(questionAnswer.getContent().replace("temp", "answer"));
-		questionAnswerRepo.save(questionAnswer);
+		questionAnswer = questionAnswerRepo.save(questionAnswer);
+		
+		//发送推送信息
+		QAnswerParams qAnswerParams = new QAnswerParams();
+		qAnswerParams.setMqOptType(Const.MQ_OPT_QUESTION_ANWSER);
+		qAnswerParams.setQuestAnswerId(questionAnswer.getId());
+		qAnswerParams.setUserId(questionAnswer.getUserId());
+		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		
 		return new Resp(questionAnswer, CodeDef.SUCCESS);
 	}
 }

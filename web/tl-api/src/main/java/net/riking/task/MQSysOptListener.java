@@ -311,6 +311,19 @@ public class MQSysOptListener implements MessageListener {
 					
 					isSendJdPush = true;
 					break;
+				case Const.MQ_OPT_QUESTION_ANWSER :
+					questionAnswer = questionAnswerRepo.findOne(optCommon.getQuestAnswerId());
+					topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
+					appUserDetail = appUserDetailRepo.findOne(questionAnswer.getUserId());
+					title = appUserDetail.getUserName() + " 回答了你的问题";
+					content = topicQuestion.getTitle();
+					sysNotice = new SysNotice();
+					sysNotice.setTitle(title);
+					sysNotice.setContent(content);
+					sysNotice.setNoticeUserId(topicQuestion.getUserId());
+					sysNotice.setObjId(questionAnswer.getId());
+					isSendJdPush = true;
+					break;
 				default:
 					break;
 			}

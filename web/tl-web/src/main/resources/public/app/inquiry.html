@@ -128,7 +128,7 @@ background:#fff;
 
 
     function questionPublish() {
-        var url = Const.apiUrl + '/topicQuestion/questionSave';
+        var url = "http://172.16.64.96:8281" + '/topicQuestion/questionSave';
         var param = new Object();
         param.content = layedit.getContent(index);
         param.userId = userId;
