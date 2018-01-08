@@ -2,8 +2,7 @@
     android:id="@+id/empty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:visibility="gone">
+    android:orientation="vertical">
 
     <com.riking.calendar.view.ZCenterImageView
         android:layout_width="wrap_content"

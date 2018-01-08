@@ -52,7 +52,7 @@ public class NotDoneReportTaskItemAdapter extends ZAdater<NotDoneReportTaskItemA
 //        }
         holder.position = position;
         holder.title.setText(r.reportCode);
-        ZR.setReportName(holder.title, r.reportCode, r.frequency, r.reportBatch);
+        ZR.setReportName(holder.title, r.reportCode, r.frequency, r.reportBatch,r.reportId);
         holder.descriptTv.setText(r.reportName);
 
         //not enable the swipe function when user is not logged.
