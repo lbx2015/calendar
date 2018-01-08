@@ -48,10 +48,10 @@ public class TopicController {
 
 	@Autowired
 	HttpServletRequest request;
-	
+
 	@Autowired
 	QuestionKeyWordService questionKeyWordService;
-	
+
 	@Autowired
 	TopicQuestionRepo topicQuestionRepo;
 
@@ -71,18 +71,19 @@ public class TopicController {
 			topic.setIsDeleted(1);
 		}
 		// 截取资源访问路径
-		//String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
+		// String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
 		Example<Topic> example = Example.of(topic, ExampleMatcher.matchingAll());
 		Page<Topic> page = topicRepo.findAll(example, pageable);
 		List<Topic> list = page.getContent();
-		//List<Topic> listNew = new ArrayList<Topic>();
+		// List<Topic> listNew = new ArrayList<Topic>();
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).settId(list.get(i).getId());
 			list.get(i).setSerialNum(i + 1);
-			//list.get(i).setTopicUrl(appUserService.getPhotoUrlPath(Const.TL_TOPIC_PHOTO_PATH)+ list.get(i).getTopicUrl());
-			//listNew.add(list.get(i));
+			// list.get(i).setTopicUrl(appUserService.getPhotoUrlPath(Const.TL_TOPIC_PHOTO_PATH)+
+			// list.get(i).getTopicUrl());
+			// listNew.add(list.get(i));
 		}
-		//Page<Topic> modulePage = new PageImpl<Topic>(listNew, pageable, page.getTotalElements());
+		// Page<Topic> modulePage = new PageImpl<Topic>(listNew, pageable, page.getTotalElements());
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 
@@ -96,13 +97,16 @@ public class TopicController {
 		if (topic.getIsAduit() == 2) {
 			topic.setIsAduit(0);
 		}
-		//topic.setTopicUrl(topic.getContent().split("alt=")[1].split(">")[0].replace("\"", ""));
+		// topic.setTopicUrl(topic.getContent().split("alt=")[1].split(">")[0].replace("\"", ""));
 		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
 		Matcher matcher = pattern.matcher(topic.getContent());
-        while(matcher.find()){
-        	topic.setTopicUrl(matcher.group());
-        	break;
-        }
+		while (matcher.find()) {
+			topic.setTopicUrl(matcher.group());
+			break;
+		}
+		if (StringUtils.isBlank(topic.getTopicUrl())) {
+			return new Resp(null, CodeDef.ERROR);
+		}
 		topicService.moveFile(topic);
 		Topic save = topicRepo.save(topic);
 		return new Resp(save, CodeDef.SUCCESS);
@@ -170,7 +174,7 @@ public class TopicController {
 		}
 		// 如果数据只有一条且失败返回失败
 		if (datas.size() == 1 && failCount == 1) {
-			return new Resp("审批失败",CodeDef.ERROR);
+			return new Resp("审批失败", CodeDef.ERROR);
 		} else if (datas.size() == 1 && successCount == 1) {
 			return new Resp("审批成功", CodeDef.SUCCESS);
 		} else {
