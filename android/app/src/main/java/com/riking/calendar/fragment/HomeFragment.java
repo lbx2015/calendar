@@ -26,6 +26,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
+import com.riking.calendar.util.ZR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,11 @@ public class HomeFragment extends Fragment {
                 } else {
                     banners = response._data;
                     for (com.riking.calendar.pojo.server.Banner banner : banners) {
-                        remoteBanners.add(new RemoteBanner(banner.bannerURL));
+                        if (!StringUtil.isEmpty(banner.bannerURL)) {
+                            RemoteBanner remoteBanner = new RemoteBanner(banner.bannerURL);
+                            remoteBanner.setPlaceHolder(ZR.getDrawable(R.drawable.banner));
+                            remoteBanners.add(remoteBanner);
+                        }
                     }
 
                     bannerSlider.setBanners(remoteBanners);
