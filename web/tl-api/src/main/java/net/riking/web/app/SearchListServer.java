@@ -181,6 +181,7 @@ public class SearchListServer {
 			// TODO 话题的关注数 后面从redis里面取
 			Integer followNum = topicRelRepo.followCount(topicResult.getId(), 0);
 			topicResult.setFollowNum(followNum);
+			topicResult.setTopicUrl(appUserService.getPhotoUrlPath("/topic")+topicResult.getTopicUrl());
 			// 不显示状态
 			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 				topicResult.setIsFollow(null);

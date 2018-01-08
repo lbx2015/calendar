@@ -56,6 +56,9 @@ public interface AppUserFollowRelRepo
 	@Query(" from UserFollowRel where userId = ?1 and toUserId = ?2")
 	UserFollowRel getByUIdAndToId(String userId, String toUserId);
 
+	
+	@Query(" from UserFollowRel where (userId = ?1 and toUserId = ?2) or  (userId = ?2 and toUserId = ?1)")
+	UserFollowRel getByUIdOrToId(String userId, String toUserId);
 	/**
 	 * 查询用户关注的id
 	 * @param newsId

@@ -351,7 +351,7 @@ public class AppReportServer {
 			try {
 				remind2 = MergeUtil.merge(remind2, remind);
 			} catch (Exception e) {
-				return new AppResp(CodeDef.ERROR);
+				return new AppResp(null, CodeDef.ERROR);
 			}
 			remind = remindRepo.save(remind2);
 		}
