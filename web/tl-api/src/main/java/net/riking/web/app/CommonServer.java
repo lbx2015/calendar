@@ -305,6 +305,7 @@ public class CommonServer {
 			// 用户关注
 			case Const.OBJ_TYPE_3:
 				UserFollowRel userFollowRel = new UserFollowRel();
+				userFollowRel.setFollowStatus(0);//未关注
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
 					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：2-互相关注
 //					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
