@@ -54,6 +54,7 @@ import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.pojo.server.SysNoticeParams;
 import com.riking.calendar.pojo.server.SysNoticeResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
@@ -467,7 +468,8 @@ public interface APIInterface {
     Call<ResponseModel<List<Banner>>> getBanners();
 
     /**
-     *  "获取用户消息通知"
+     * "获取用户消息通知"
+     *
      * @param params
      * @return
      */
@@ -481,4 +483,7 @@ public interface APIInterface {
      */
     @POST("notice/getMoreSysNotice")
     Call<ResponseModel<List<SysNoticeResult>>> getSystemMessage(@Body HomeParams params);
+
+    @POST("notice/delMore")
+    Call<ResponseModel<String>> deleteMessages(@Body SysNoticeParams params);
 }

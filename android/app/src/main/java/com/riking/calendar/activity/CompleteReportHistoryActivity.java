@@ -42,7 +42,10 @@ public class CompleteReportHistoryActivity extends ZActivity<CompleteReportHisto
                 mPullToLoadView.setComplete();
                 isLoading = false;
                 if (failed) {
-
+                    if (page == 1) {
+                        emptyLayout.setVisibility(View.VISIBLE);
+                        mPullToLoadView.setVisibility(View.GONE);
+                    }
                 } else {
                     List<List<ReportCompletedRelResult>> result = response._data;
                     setData2Adapter(page, result);

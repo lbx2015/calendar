@@ -75,7 +75,12 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
             @Override
             public void callBack(ResponseModel<News> response) {
                 news = response._data;
-                webView.loadUrl(news.content);
+
+                if (news.content.startsWith("http")) {
+                    webView.loadUrl(news.content);
+                } else {
+                    webView.loadData(news.content, "text/html; charset=utf-8", "UTF-8");
+                }
                 commentNumberTv.setText(ZR.getNumberString(news.commentNumber));
                 if (news.isCollect == 0) {
                     favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_n));
@@ -93,6 +98,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
         bottomBar = findViewById(R.id.bottom_bar);
         webView = findViewById(R.id.web_view);
         WebSettings settings = webView.getSettings();
+        settings.setDefaultTextEncodingName("utf-8");
         settings.setJavaScriptEnabled(true);
         enableWVCache();
         if (!isNetworkAvailable()) { // loading offline
@@ -176,7 +182,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     public void clickComments(final View view) {
         Intent i = new Intent(this, CommentsActivity.class);
         i.putExtra(CONST.NEWS_ID, newsId);
-        i.putExtra(CONST.COMMENT_NUM,news.commentNumber);
+        i.putExtra(CONST.COMMENT_NUM, news.commentNumber);
         ZGoto.to(i);
     }
 

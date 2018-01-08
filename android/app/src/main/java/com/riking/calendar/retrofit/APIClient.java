@@ -59,6 +59,7 @@ import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.pojo.server.SysNoticeParams;
 import com.riking.calendar.pojo.server.SysNoticeResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
@@ -839,5 +840,9 @@ public class APIClient {
 
     public static void getSystemMessage(HomeParams params, ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>> c) {
         apiInterface.getSystemMessage(params).enqueue(c);
+    }
+
+    public static void deleteMessages(SysNoticeParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.deleteMessages(params).enqueue(c);
     }
 }

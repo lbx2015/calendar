@@ -21,10 +21,15 @@ import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
+import java.util.HashSet;
+import java.util.Set;
+
 //answer comment adapter
 public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNoticeResult> {
     public boolean editMode;
     public boolean selectAll;
+    public Set<String> deleteIds = new HashSet<>();
+    public int deleteSystemNotice;
 
     @Override
     public void onBindVH(final MyViewHolder h, int i) {
@@ -35,10 +40,18 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
                 @Override
                 public void onClick(View v) {
                     if (h.checked) {
+                        if (result.dataType == 0) {
+                            deleteSystemNotice = 0;
+                        }
+                        deleteIds.remove(result.noticeId);
                         h.checked = false;
                         h.checkImage.setImageDrawable(ZR.getDrawable(R.drawable.mess_icon_editdelete_n));
 //                        ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
                     } else {
+                        if (result.dataType == 0) {
+                            deleteSystemNotice = 1;
+                        }
+                        deleteIds.add(result.noticeId);
                         h.checkImage.setImageDrawable(ZR.getDrawable(R.drawable.mess_icon_editdelete_s));
 //                        ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_s);
                         h.checked = true;
@@ -50,9 +63,13 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
         }
 
         if (selectAll) {
+            if (result.dataType != 0) {
+                deleteIds.add(result.noticeId);
+            }
             h.checked = true;
             ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_s);
         } else {
+            deleteIds.remove(result.noticeId);
             h.checked = false;
             ZR.setImage(h.checkImage, R.drawable.mess_icon_editdelete_n);
         }

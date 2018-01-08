@@ -12,9 +12,11 @@ import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.MyNewsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.HomeParams;
+import com.riking.calendar.pojo.server.SysNoticeParams;
 import com.riking.calendar.pojo.server.SysNoticeResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -22,6 +24,7 @@ import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 
 import java.util.List;
 
@@ -79,7 +82,7 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
 
                 @Override
                 public void onClick(View v) {
-                    exitEditMode();
+                    exitEditModeOnly();
                 }
             });
             deleteView.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +117,17 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
         }
     }
 
+    private void exitEditModeOnly() {
+        isEditState = false;
+        cancelTv.setVisibility(View.GONE);
+        bottomEditLayout.setVisibility(View.GONE);
+        doneTv.setText("编辑");
+
+        mAdapter.editMode = false;
+        mAdapter.notifyDataSetChanged();
+        SysNoticeParams params = new SysNoticeParams();
+    }
+
     private void exitEditMode() {
         isEditState = false;
         cancelTv.setVisibility(View.GONE);
@@ -122,6 +136,14 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
 
         mAdapter.editMode = false;
         mAdapter.notifyDataSetChanged();
+        SysNoticeParams params = new SysNoticeParams();
+
+        APIClient.deleteMessages(params, new ZCallBack<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) {
+                ZToast.toast("删除成功");
+            }
+        });
     }
 
     private void enterEditMode() {
