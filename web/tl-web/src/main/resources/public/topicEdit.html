@@ -119,7 +119,7 @@
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             parent.layer.close(index);
         }, function(code) {
-            TmplUtils.showMsgFail('编辑失败');
+            TmplUtils.showMsgFail('编辑失败，请确定是否上传了图片');
         });
     }
     

@@ -199,13 +199,16 @@ public class AnswerCommentsActivity extends AppCompatActivity {
 
                             } else {
                                 writeComment.setText("");
-                                MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
-                                replyListAdapter.mList.add(0, response._data);
-                                MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
-                                replyListAdapter.notifyItemInserted(0);
-//                                replyListAdapter.notifyDataSetChanged();
+                                if (replyListAdapter.mList == null || replyListAdapter.mList.isEmpty()) {
+                                    loadData(1);
+                                } else {
+                                    MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
+                                    replyListAdapter.mList.add(0, response._data);
+                                    MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
+                                    replyListAdapter.notifyItemInserted(0);
 //                                replyRecyclerView.scrollToPosition(0);
-                                Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     });
@@ -222,6 +225,7 @@ public class AnswerCommentsActivity extends AppCompatActivity {
                             mAdapter.mList.add(0, response._data);
                             mAdapter.notifyItemInserted(0);
                             recyclerView.scrollToPosition(0);
+                            activityTitle.setText("评论" + mAdapter.getItemCount());
                             Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                         }
                     });

@@ -845,4 +845,8 @@ public class APIClient {
     public static void deleteMessages(SysNoticeParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.deleteMessages(params).enqueue(c);
     }
+
+    public static void getAnswerEditHtml(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.getAnswerEditHtml(params).enqueue(c);
+    }
 }

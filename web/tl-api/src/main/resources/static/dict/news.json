@@ -46,7 +46,7 @@
 			"alias": "资讯内容",
 			"desc": "资讯内容",
 			"type": "text",
-			"edit_block": "2",
+			"edit_block": "1",
 			"group": "base",
 			"hidden": "table"
 		},

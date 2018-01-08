@@ -10,6 +10,7 @@ import com.riking.calendar.R;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.util.NetStateReceiver;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,10 +27,15 @@ public abstract class ZCallBackWithFailAndProgressDialog<T extends ResponseModel
     public boolean failed;
     private ProgressDialog mProgressDialog;
 
+    private boolean isBackQuickly;
+
     public ZCallBackWithFailAndProgressDialog() {
-        new android.os.Handler(Looper.getMainLooper()).post(new Runnable() {
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (isBackQuickly) {
+                    return;
+                }
                 //dismiss the dialog first
                 if (mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
@@ -41,7 +47,7 @@ public abstract class ZCallBackWithFailAndProgressDialog<T extends ResponseModel
                 mProgressDialog.setCanceledOnTouchOutside(false);
                 mProgressDialog.show();
             }
-        });
+        }, 1000);
     }
 
     public ZCallBackWithFailAndProgressDialog(Context t) {
@@ -53,12 +59,19 @@ public abstract class ZCallBackWithFailAndProgressDialog<T extends ResponseModel
 
     public abstract void callBack(T response) throws Exception;
 
-    @Override
-    public void onResponse(Call<T> call, Response<T> response) {
+    private void closeProgressDialog() {
+        if (mProgressDialog == null) {
+            return;
+        }
         Activity activity = mProgressDialog.getOwnerActivity();
         if (activity != null && !activity.isFinishing()) {
             mProgressDialog.dismiss();
         }
+    }
+    @Override
+    public void onResponse(Call<T> call, Response<T> response) {
+        isBackQuickly = true;
+        closeProgressDialog();
         Logger.d("zzw", "request ok + " + call.request().toString());
         if (response == null || response.body() == null || response.body().code != 200) {
             failed = true;
@@ -74,18 +87,18 @@ public abstract class ZCallBackWithFailAndProgressDialog<T extends ResponseModel
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        Activity activity = mProgressDialog.getOwnerActivity();
-        if (activity != null && !activity.isFinishing()) {
-            mProgressDialog.dismiss();
-        }
-
+        isBackQuickly = true;
+        closeProgressDialog();
         failed = true;
         try {
             callBack(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Logger.d("zzw", "request fail + " + call.request().toString() + t.getMessage());
-        Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT).show();
+        if (NetStateReceiver.isNetAvailable) {
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_network), Toast.LENGTH_SHORT).show();
+        }
     }
 }

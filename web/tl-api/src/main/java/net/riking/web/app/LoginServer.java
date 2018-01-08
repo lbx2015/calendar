@@ -174,7 +174,7 @@ public class LoginServer {
 			logger.info("用户注册成功：phone={}", user.getPhone());
 			
 			//加入系统消息通知队列
-			ModelPropDict dict = sysDataService.getDict(Const.SYS_NOTICE_T_SYS_NOTICE, Const.SYS_NOTICE_USER_REGISTER, String.valueOf(Const.NOTICE_SYS_INFO));
+			ModelPropDict dict = sysDataService.getDict(Const.SYS_NOTICE_T_SYS_NOTICE, Const.SYS_NOTICE_USER_REGISTER, Const.SYS_NOTICE_USER_REGISTER);
 			if(dict != null){
 				MQOptCommon common = new MQOptCommon();
 				common.setMqOptType(0);

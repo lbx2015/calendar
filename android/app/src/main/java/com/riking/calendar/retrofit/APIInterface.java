@@ -478,6 +478,7 @@ public interface APIInterface {
 
     /**
      * "获取系统消息通知"
+     *
      * @param params
      * @return
      */
@@ -486,4 +487,7 @@ public interface APIInterface {
 
     @POST("notice/delMore")
     Call<ResponseModel<String>> deleteMessages(@Body SysNoticeParams params);
+
+    @POST("topicQuestion/answerHtml")
+    Call<ResponseModel<String>> getAnswerEditHtml(@Body TQuestionParams params);
 }
