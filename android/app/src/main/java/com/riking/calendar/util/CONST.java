@@ -10,10 +10,10 @@ public class CONST {
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
     public static final byte NOT_REPEAT_FLAG_WEEK = 0;
     //    public static final String TL_API_TEST = "http://172.16.64.177:6061/tl-api-test/";
-//    public static final String TL_API_TEST = "http://172.16.64.96:8281/";
+    public static final String TL_API_TEST = "http://172.16.64.96:8281/";
 //    public static final String TL_API_TEST = "http://172.16.64.199:8281/";
-    //    public static final String TL_API_TEST = "http://172.16.64.177:6061/tl-api-test/";
-    public static final String TL_API_TEST = "http://118.31.187.217:6061/tl-api-test/";
+//        public static final String TL_API_TEST = "http://172.16.64.177:6061/tl-api-test/";
+//    public static final String TL_API_TEST = "http://118.31.187.217:6061/tl-api-test/";
 //        public static final String TL_API_TEST = "http://172.16.64.96:8281/";
     public static final String TL_API_DEV = "http://172.16.64.190:8281/";
     public static final String URL_BASE = "http://172.16.64.190:8281/";
@@ -81,6 +81,7 @@ public class CONST {
     public static final int UPDATE_USER_INFO_REQUES = 1111;
     public static final int VERIFY_EMAIL = 1112;
     public static final String ACTIVITY_NAME = "ACTIVITY_NAME";
+    public static final String QUESTION_TITLE = "QUESTION_TITLE";
 
     //滚动事件
     public enum ScrollDirection {

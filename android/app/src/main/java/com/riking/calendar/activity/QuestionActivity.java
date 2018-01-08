@@ -193,6 +193,7 @@ public class QuestionActivity extends AppCompatActivity {
     public void clickLetMeAnswer(final View view) {
         Intent i = new Intent(this, WriteAnswerActivity.class);
         i.putExtra(CONST.QUESTION_ID, question.topicQuestionId);
+        i.putExtra(CONST.QUESTION_TITLE, question.title);
         ZGoto.to(i);
     }
 }
