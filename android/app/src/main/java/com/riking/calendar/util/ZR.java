@@ -23,11 +23,14 @@ import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.UserActivity;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
+import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.UserParams;
@@ -196,7 +199,29 @@ public class ZR {
         userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
     }
 
-    public static void setReportName(TextView reportNameTv, String name, int frequency, String reportBatch) {
+    public static void setReportName(final TextView reportNameTv, String name, int frequency, String reportBatch,final String reportId) {
+        reportNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Logger.d("zzw", "report userId: " + reportId);
+                QueryReport report = new QueryReport();
+                report.id = reportId;
+                APIClient.apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        String reportUrl = response._data;
+                        Logger.d("zzw", "report Url : " + reportUrl);
+                        if (reportUrl != null) {
+                            Intent i = new Intent(reportNameTv.getContext(), WebviewActivity.class);
+                            i.putExtra(CONST.WEB_URL, reportUrl);
+                            reportNameTv.getContext().startActivity(i);
+                        }
+                    }
+                });
+            }
+        });
+
         reportNameTv.setText(name);
         @DrawableRes int drawable = 0;
         if (StringUtil.isEmpty(reportBatch)) {

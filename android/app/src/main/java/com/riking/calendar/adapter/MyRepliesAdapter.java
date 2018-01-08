@@ -1,32 +1,18 @@
 package com.riking.calendar.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.QAnswerResult;
+import com.riking.calendar.util.DateUtil;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
-
-//answer comment adapter
-public class MyRepliesAdapter extends RecyclerView.Adapter<MyRepliesAdapter.MyViewHolder> {
-    public List<QAnswerResult> mList;
-
-    {
-        mList = new ArrayList<>();
-    }
-
-    @Override
-    public MyRepliesAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.my_repliest_item, viewGroup, false);
-        return new MyRepliesAdapter.MyViewHolder(view);
-    }
-
+//answer  adapter
+public class MyRepliesAdapter extends ZAdater<MyRepliesAdapter.MyViewHolder, QAnswerResult> {
     @Override
     public void onBindViewHolder(final MyRepliesAdapter.MyViewHolder h, int i) {
         //hide the divider
@@ -91,33 +77,30 @@ public class MyRepliesAdapter extends RecyclerView.Adapter<MyRepliesAdapter.MyVi
     }
 
     @Override
-    public int getItemCount() {
-        return mList.size();
+    public MyViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.my_repliest_item, viewGroup, false);
+        return new MyRepliesAdapter.MyViewHolder(view);
     }
 
-    public void addAll(List<QAnswerResult> mList) {
-        this.mList.clear();
-        this.mList = mList;
-        notifyDataSetChanged();
+    @Override
+    public void onBindVH(MyViewHolder h, int i) {
+        QAnswerResult result = mList.get(i);
+        h.questionTitleTv.setText(result.title);
+        h.answerContetnTv.setText(result.content);
+        h.replyTimeTv.setText(DateUtil.showTime(result.createdTime));
     }
 
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends ZViewHolder {
         public TextView questionTitleTv;
         public TextView answerContetnTv;
         public TextView replyTimeTv;
-        public View divider;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             questionTitleTv = itemView.findViewById(R.id.question_title);
             answerContetnTv = itemView.findViewById(R.id.answer_content);
             replyTimeTv = itemView.findViewById(R.id.reply_time);
-            divider = itemView.findViewById(R.id.divider);
         }
     }
 }

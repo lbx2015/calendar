@@ -267,8 +267,14 @@ public class APIClient {
                         if (failed) {
                             reminder.syncStatus = 1;
                         } else {
-                            addAlarm(reminder, reminder.reminderTime);
+//                            addAlarm(reminder, reminder.reminderTime);
                         }
+                    }
+                }, new Realm.Transaction.OnSuccess() {
+                    @Override
+                    public void onSuccess() {
+                        Reminder reminder = ZDB.Instance.getRealm().where(Reminder.class).equalTo(Reminder.REMINDER_ID, r.id).findFirst();
+                        addAlarm(reminder, reminder.reminderTime);
                     }
                 });
             }
@@ -680,7 +686,7 @@ public class APIClient {
         apiInterface.myFans(params).enqueue(c);
     }
 
-    public static void getMyAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+    public static void getMyAnswers(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<QAnswerResult>>> c) {
         apiInterface.getMyAnswers(params).enqueue(c);
     }
 
