@@ -11,12 +11,14 @@
 </head>
 
 <body class="iframeBody">
+<div class="scrollbar">
     <div class="formbox layui-form add-formbox">
         <div class="_tmpl" data-url="edit.html" data-attr="topic.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
             <button class="layui-btn bgc1 layui-btn-small" id="submit">确定</button>
             <button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
         </div>
+    </div>
     </div>
 </body>
 <link type="include" href="/common/depjs.html" />
@@ -92,7 +94,7 @@
 							  ,'face' //表情
 							  ,'image' //插入图片
 							  //,'help' //帮助
-								],height: 250});
+								],height: 500});
      	 topicContent = layedit.build('content'); //建立编辑器
      	});
     }
