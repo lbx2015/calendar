@@ -97,7 +97,7 @@ layui.use('layedit', function(){
 
 
 function answerPublish(){
-	var url = "http://172.16.64.96:8281" + '/topicQuestion/answerSave';
+	var url = Const.apiUrl + '/topicQuestion/answerSave';
 	var param = new Object();
 	param.content = layedit.getContent(index);
 	param.userId = userId;
@@ -126,17 +126,17 @@ $(function (){
 		var _t = this;
 		_t.bind(function(callback){
 			callback.call(_t,{});
-            index = layedit.build('richText', {
-                tool: ['strong' //加粗
-                    , 'italic' //斜体
-                    , 'underline' //下划线
-                    , '|' //分割线
-                    , 'left' //左对齐
-                    , 'center' //居中对齐
-                    , 'right' //右对齐
-                    , 'image' //插入图片
-                ]
-            });
+			index = layedit.build('richText', {
+	                    tool: ['strong' //加粗
+	                        , 'italic' //斜体
+	                        , 'underline' //下划线
+	                        , '|' //分割线
+	                        , 'left' //左对齐
+	                        , 'center' //居中对齐
+	                        , 'right' //右对齐
+	                        , 'image' //插入图片
+	                    ]
+	                }); //建立编辑器
 		});
 	});
 	
