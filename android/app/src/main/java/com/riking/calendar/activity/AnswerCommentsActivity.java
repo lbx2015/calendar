@@ -162,23 +162,29 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
                     if (replyComment != null) {
                         params.toUserId = replyComment.userId;
                         params.commentId = replyComment.qACommentId;
-                        //reset to null
-                        replyComment = null;
+
                         if (ZPreference.getUserId().equals(replyComment.userId)) {
                             ZToast.toast("自己不能回复自己");
+                            //reset to null
+                            replyComment = null;
                             return;
                         }
+                        //reset to null
+                        replyComment = null;
 
                     } else if (replyReply != null) {
                         params.commentId = replyReply.commentId;
                         params.toUserId = replyReply.fromUser.userId;
                         params.replyId = replyReply.replyId;
-                        //reset to null
-                        replyReply = null;
+
                         if (ZPreference.getUserId().equals(replyReply.fromUser.userId)) {
                             ZToast.toast("自己不能回复自己");
+                            //reset to null
+                            replyComment = null;
                             return;
                         }
+                        //reset to null
+                        replyReply = null;
                     }
 
                     MyLog.d("commentReply:" + params.toString());

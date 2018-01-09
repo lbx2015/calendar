@@ -120,6 +120,9 @@ public class ZR {
     }
 
     public static String getNumberString(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
         String[] suffix = new String[]{"", "k", "m", "b", "t"};
         int MAX_LENGTH = 4;
         String r = new DecimalFormat("##0E0").format(number);

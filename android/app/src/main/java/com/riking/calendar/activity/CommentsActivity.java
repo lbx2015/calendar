@@ -159,23 +159,27 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
                     params.objType = 2;
                     if (replyComment != null) {
                         params.commentId = replyComment.newsCommentId;
-                        //reset to null
-                        replyComment = null;
+
                         if (ZPreference.getUserId().equals(replyComment.userId)) {
                             ZToast.toast("自己不能回复自己");
+                            //reset to null
+                            replyComment = null;
                             return;
                         }
+                        //reset to null
+                        replyComment = null;
 
                     } else if (replyReply != null) {
                         params.toUserId = replyReply.fromUser.userId;
                         params.commentId = replyReply.commentId;
                         params.replyId = replyReply.replyId;
-                        //reset to null
-                        replyReply = null;
+
                         if (ZPreference.getUserId().equals(replyReply.fromUser.userId)) {
                             ZToast.toast("自己不能回复自己");
+                            replyReply = null;
                             return;
                         }
+                        replyReply = null;
 
                     }
 
@@ -188,7 +192,7 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
                             if (failed) {
 
                             } else {
-                                if(response._data == null){
+                                if (response._data == null) {
                                     return;
                                 }
                                 writeComment.setText("");

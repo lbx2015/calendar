@@ -360,6 +360,8 @@ public class ExampleUnitTest {
 
     @Test
     public void testGetNumberString() {
+        System.out.println(ZR.getNumberString(18));
+        System.out.println(ZR.getNumberString(1888));
         System.out.println(ZR.getNumberString(380));
     }
 
