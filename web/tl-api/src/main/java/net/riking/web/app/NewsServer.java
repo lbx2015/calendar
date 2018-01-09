@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +43,7 @@ import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
 import net.riking.service.NewsService;
 import net.riking.util.DateUtils;
+import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
 
 /**
@@ -156,7 +156,8 @@ public class NewsServer {
 
 			// 截取资源访问路径
 			if (null != newsInfo.getPhotoUrl()) {
-				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
+//				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
+				newsInfo.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_NEWS_PHOTO_PATH, this.getClass()) + newsInfo.getPhotoUrl());
 			}
 			// 等级
 			if (null != newsInfo.getExperience()) {
@@ -195,7 +196,8 @@ public class NewsServer {
 		newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
 		// 截取资源访问路径
 		if (null != newsInfo.getPhotoUrl()) {
-			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
+//			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
+			newsInfo.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_NEWS_PHOTO_PATH, this.getClass()) + newsInfo.getPhotoUrl());
 		}
 		// 等级
 		if (null != newsInfo.getExperience()) {
@@ -219,8 +221,10 @@ public class NewsServer {
 		// 评论列表
 		for (NewsComment newsCommentInfoNew : newsCommentInfoList) {
 			if (null != newsCommentInfoNew.getPhotoUrl()) {
+//				newsCommentInfoNew.setPhotoUrl(
+//						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfoNew.getPhotoUrl());
 				newsCommentInfoNew.setPhotoUrl(
-						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfoNew.getPhotoUrl());
+						FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + newsCommentInfoNew.getPhotoUrl());
 			}
 			// 等级
 			if (null != newsCommentInfoNew.getExperience()) {
@@ -298,8 +302,10 @@ public class NewsServer {
 			}
 		}
 		if (null != newsCommentInfo.getPhotoUrl()) {
+//			newsCommentInfo
+//					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfo.getPhotoUrl());
 			newsCommentInfo
-					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfo.getPhotoUrl());
+			.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + newsCommentInfo.getPhotoUrl());
 		}
 		// 等级
 		if (null != newsCommentInfo.getExperience()) {

@@ -27,6 +27,7 @@ import net.riking.entity.model.FeedBack;
 import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
+import net.riking.util.FileUtils;
 
 /**
  * app用户信息操作
@@ -80,9 +81,10 @@ public class AppUserFeedBackServer {
 			@RequestParam("content") String content) {
 		String fileName = "";
 		List<String> fileNames = new ArrayList<String>();
+		String folderPath = FileUtils.getAbsolutePathByProject(Const.TL_FEED_BACK_PHOTO_PATH);
 		try {
 			for (MultipartFile mFile : mFiles) {
-				String photoName = appUserService.savePhotoFile(mFile, Const.TL_FEED_BACK_PHOTO_PATH);
+				String photoName = FileUtils.saveMultipartFile(mFile, folderPath);
 				fileNames.add(photoName);
 			}
 		} catch (RuntimeException e) {

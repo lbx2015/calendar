@@ -30,6 +30,7 @@ import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
+import net.riking.util.FileUtils;
 
 /**
  * 我的关注接口
@@ -195,8 +196,10 @@ public class AppUserFollowServer {
 	private List<AppUserResult> appendUrlGrade(String userId, List<AppUserResult> userResults) {
 		for (AppUserResult appUserResult : userResults) {
 			if (null != appUserResult.getPhotoUrl()) {
+//				appUserResult
+//						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 				appUserResult
-						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
+				.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + appUserResult.getPhotoUrl());
 			}
 			// 等级
 			if (null != appUserResult.getExperience()) {

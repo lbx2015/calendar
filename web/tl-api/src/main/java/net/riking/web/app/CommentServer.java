@@ -137,6 +137,9 @@ public class CommentServer {
 						qACReply.setToUser(toUser);
 					}
 				}
+				if(StringUtils.isBlank(commentParams.getReplyId())){
+					qACReply.setToUserId(null);
+				}
 				return new AppResp(qACReply, CodeDef.SUCCESS);
 			// 资讯类
 			case Const.OBJ_TYPE_NEWS:
@@ -163,6 +166,9 @@ public class CommentServer {
 						toUser.setUserName(apptoUser.getUserName());
 						ncReply.setToUser(toUser);
 					}
+				}
+				if(StringUtils.isBlank(commentParams.getReplyId())){
+					ncReply.setToUserId(null);
 				}
 				return new AppResp(ncReply, CodeDef.SUCCESS);
 			default:

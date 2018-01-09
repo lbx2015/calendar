@@ -1,8 +1,5 @@
 package net.riking.web.app;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +26,7 @@ import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.DateUtils;
+import net.riking.util.FileUtils;
 import net.riking.util.JdpushUtil;
 import net.riking.util.MQProduceUtil;
 import net.riking.util.SmsUtil;
@@ -203,8 +201,10 @@ public class LoginServer {
 		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {
 			// 截取资源访问路径
 			if (null != user.getDetail().getPhotoUrl()) {
+//				userResp.setPhotoUrl(
+//						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + user.getDetail().getPhotoUrl());
 				userResp.setPhotoUrl(
-						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + user.getDetail().getPhotoUrl());
+						FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + user.getDetail().getPhotoUrl());
 			}
 		} else {
 			userResp.setPhotoUrl("");

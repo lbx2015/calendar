@@ -30,6 +30,7 @@ import net.riking.entity.params.UserParams;
 import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
+import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
 import net.sf.json.JSONObject;
 
@@ -102,8 +103,11 @@ public class AppUserContactsServer {
 					new PageRequest(userParams.getPindex(), userParams.getPcount()));
 			for (AppUserResult appUserResult : appUserResults) {
 				if (null != appUserResult.getPhotoUrl()) {
+//					appUserResult.setPhotoUrl(
+//							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 					appUserResult.setPhotoUrl(
-							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
+							FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + appUserResult.getPhotoUrl());
+					
 				}
 				// 等级
 				if (null != appUserResult.getExperience()) {

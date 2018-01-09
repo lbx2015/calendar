@@ -1,9 +1,5 @@
 package net.riking.service.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +7,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.utils.UuidUtils;
@@ -44,7 +38,6 @@ import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
 import net.riking.util.FileUtils;
-import net.riking.util.StringUtil;
 
 @Service("appUserSerice")
 @Transactional
@@ -60,8 +53,8 @@ public class AppUserServiceImpl implements AppUserService {
 	@Autowired
 	SysDataService sysDataService;
 
-	@Autowired
-	HttpServletRequest request;
+//	@Autowired
+//	HttpServletRequest request;
 
 	@Autowired
 	AppUserDao appUserDao;
@@ -106,7 +99,7 @@ public class AppUserServiceImpl implements AppUserService {
 		return appUserDetailRepo.findOne(id);
 	}
 
-	@Override
+	/*@Override
 	public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException {
 		// String suffix =
 		// mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
@@ -141,7 +134,7 @@ public class AppUserServiceImpl implements AppUserService {
 			}
 		}
 		return fileName;
-	}
+	}*/
 
 	@Override
 	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName) {
@@ -198,14 +191,14 @@ public class AppUserServiceImpl implements AppUserService {
 	 * 
 	 * @see net.riking.service.AppUserService#getPhotoUrlPath()
 	 */
-	@Override
-	public String getPhotoUrlPath(String photoPath) {
-		// 截取资源访问路径
-		String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
-		String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
-		projectPath = projectPath + "/" + projectName + photoPath;
-		return projectPath;
-	}
+//	@Override
+//	public String getPhotoUrlPath(String photoPath) {
+//		// 截取资源访问路径
+//		String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
+//		String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
+//		projectPath = projectPath + "/" + projectName + photoPath;
+//		return projectPath;
+//	}
 
 	@Override
 	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {

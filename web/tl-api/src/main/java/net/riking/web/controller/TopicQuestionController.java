@@ -99,7 +99,7 @@ public class TopicQuestionController {
 	@Autowired
 	AppUserService appUserService;
 	
-	@AuthPass
+/*	@AuthPass
 	@ApiOperation(value = "提问/回答上传图片到临时路径", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
 	public ApiResp upLoad(@RequestParam("file") MultipartFile mFile) {
@@ -118,7 +118,7 @@ public class TopicQuestionController {
 		Data data = new Data(appUserService.getPhotoUrlPath(Const.TL_TEMP_PHOTO_PATH) + fileName, fileName);
 		return new ApiResp(data, (short) 0);
 
-	}
+	}*/
 
 	@RequestMapping(value = "/questionSave", method = RequestMethod.GET)
 	public Resp questionSave_(@RequestParam HashMap<String, Object> params) {

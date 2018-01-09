@@ -136,8 +136,10 @@ public class TopicQuestionServer {
 		topicQuestion.setAnswerNum(answerNum);
 		topicQuestion.setQuestionAnswers(findAnswerList(tQuestionParams));
 		if (null != topicQuestion.getPhotoUrl()) {
+//			topicQuestion
+//					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topicQuestion.getPhotoUrl());
 			topicQuestion
-					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topicQuestion.getPhotoUrl());
+			.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_QUESTION_PHOTO_PATH, this.getClass()) + topicQuestion.getPhotoUrl());
 		}
 		// 等级
 		if (null != topicQuestion.getExperience()) {
@@ -193,8 +195,10 @@ public class TopicQuestionServer {
 				tQuestionParams.getUserId());
 		for (QuestionAnswer questionAnswer : questionAnswerList) {
 			if (null != questionAnswer.getPhotoUrl()) {
+//				questionAnswer.setPhotoUrl(
+//						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
 				questionAnswer.setPhotoUrl(
-						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
+						FileUtils.getPhotoUrl(Const.TL_ANSWER_PHOTO_PATH, this.getClass()) + questionAnswer.getPhotoUrl());
 			}
 			// 等级
 			if (null != questionAnswer.getExperience()) {

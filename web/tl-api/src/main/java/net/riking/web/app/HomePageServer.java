@@ -37,6 +37,7 @@ import net.riking.service.QAnswerService;
 import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
 import net.riking.util.DateUtils;
+import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
 import net.sf.json.JSONObject;
 
@@ -165,8 +166,10 @@ public class HomePageServer {
 					// TODO
 					tQuestionResult.setFromImgUrl(tQuestionResult.getFromImgUrl());
 				} else {
+//					tQuestionResult.setFromImgUrl(
+//							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getFromImgUrl());
 					tQuestionResult.setFromImgUrl(
-							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getFromImgUrl());
+							FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + tQuestionResult.getFromImgUrl());
 				}
 			}
 			// 等级
@@ -262,7 +265,8 @@ public class HomePageServer {
 			}
 			// 截取资源访问路径
 			if (null != userResult.getPhotoUrl()) {
-				userResult.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + userResult.getPhotoUrl());
+//				userResult.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + userResult.getPhotoUrl());
+				userResult.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + userResult.getPhotoUrl());
 			}
 			for (UserFollowRel userFollowRel : userFollowRels) {
 				if (userFollowRel.getFollowStatus() == 1 && userFollowRel.getToUserId().equals(userResult.getId())) {

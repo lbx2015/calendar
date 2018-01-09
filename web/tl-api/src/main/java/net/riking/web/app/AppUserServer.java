@@ -44,6 +44,7 @@ import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
 import net.riking.util.DateUtils;
+import net.riking.util.FileUtils;
 import net.riking.util.Utils;
 
 /**
@@ -138,7 +139,8 @@ public class AppUserServer {
 		}
 		List<AppUserDetail> foafs = appUserDetailRepo.findAllByIds(set2);
 		foafs.forEach(e->{
-			e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+			//e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+			e.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
 			e.setGrade();
 		});
 		foafs.forEach(e->{
@@ -161,7 +163,8 @@ public class AppUserServer {
 		// appUserResp从appUserDetail取值
 		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUserDetail, appUserResp);
 		if (null != appUserResp.getPhotoUrl()) {
-			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
+//			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
+			appUserResp.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
 		}
 		// 等级
 		if (null != appUserResp.getExperience()) {
@@ -189,8 +192,8 @@ public class AppUserServer {
 		otherUserResp.setAnswerNum(answerNum);
 		otherUserResp.setFansNum(fansNum);
 		if (null != otherUserResp.getPhotoUrl()) {
-			otherUserResp
-					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
+//			otherUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
+			otherUserResp.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
 		}
 		// 等级
 		if (null != otherUserResp.getExperience()) {
@@ -271,8 +274,10 @@ public class AppUserServer {
 	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("userId") String userId) {
 		//String url = request.getRequestURL().toString();
 		String fileName = null;
+		String folderPath = FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH);
 		try {
-			fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
+//			fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
+			fileName = FileUtils.saveMultipartFile(mFile, folderPath);
 			fileName = appUserService.updUserPhotoUrl(mFile, userId, fileName);
 		} catch (RuntimeException e) {
 			// TODO: handle exception
@@ -280,7 +285,8 @@ public class AppUserServer {
 				return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
 			}
 		}
-		return new AppResp(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + fileName, CodeDef.SUCCESS);
+		String photoUrl = FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH + fileName, this.getClass());
+		return new AppResp(photoUrl, CodeDef.SUCCESS);
 	}
 
 	/**

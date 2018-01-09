@@ -42,6 +42,7 @@ import net.riking.service.QAnswerService;
 import net.riking.service.SysDataService;
 import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
+import net.riking.util.FileUtils;
 
 /**
  * 我的动态接口
@@ -164,8 +165,10 @@ public class AppUserDynamicServer {
 					qaCommentResult.setAgreeNumber(agreeNumber);
 					// 截取资源访问路径
 					if (null != qaCommentResult.getPhotoUrl()) {
+//						qaCommentResult.setPhotoUrl(
+//								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaCommentResult.getPhotoUrl());
 						qaCommentResult.setPhotoUrl(
-								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaCommentResult.getPhotoUrl());
+								FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + qaCommentResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != qaCommentResult.getExperience()) {
@@ -252,8 +255,10 @@ public class AppUserDynamicServer {
 				}
 				for (QAnswerResult qAnswerResult : qAnswerResults) {
 					if (null != qAnswerResult.getPhotoUrl()) {
+//						qAnswerResult.setPhotoUrl(
+//								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAnswerResult.getPhotoUrl());
 						qAnswerResult.setPhotoUrl(
-								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAnswerResult.getPhotoUrl());
+								FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + qAnswerResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != qAnswerResult.getExperience()) {
@@ -297,8 +302,11 @@ public class AppUserDynamicServer {
 					newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
 					// 截取资源访问路径
 					if (null != newsInfo.getPhotoUrl()) {
+//						newsInfo.setPhotoUrl(
+//								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
 						newsInfo.setPhotoUrl(
-								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
+								FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + newsInfo.getPhotoUrl());
+						
 					}
 					// 等级
 					if (null != newsInfo.getExperience()) {

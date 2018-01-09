@@ -18,7 +18,6 @@ import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
 import net.riking.entity.model.NewsRel;
 import net.riking.entity.params.NewsParams;
-import net.riking.service.AppUserService;
 import net.riking.service.NewsService;
 import net.riking.service.TQuestionService;
 import net.riking.util.FileUtils;
@@ -32,8 +31,8 @@ public class NewsServiceImpl implements NewsService {
 	@Autowired
 	NewsDao newsDao;
 
-	@Autowired
-	AppUserService appUserService;
+//	@Autowired
+//	AppUserService appUserService;
 
 	@Autowired
 	NewsRelRepo newsRelRepo;
@@ -51,7 +50,8 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	public String concatCoverUrls(String coverUrls) {
-		String coverUrl = appUserService.getPhotoUrlPath(Const.TL_NEWS_PHOTO_PATH);
+		//String coverUrl = appUserService.getPhotoUrlPath(Const.TL_NEWS_PHOTO_PATH);
+		String coverUrl = FileUtils.getAbsolutePathByProject(Const.TL_NEWS_PHOTO_PATH);
 		if (null != coverUrls) {
 			String[] strings = coverUrls.split(",");
 			if (null != strings) {

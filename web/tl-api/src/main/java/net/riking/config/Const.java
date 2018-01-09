@@ -29,28 +29,36 @@ public class Const {
 	public static final String TASK_FLASH_BACK_GROUP = "TASK_FLASH_BACK_GROUP";
 
 	public static final String EXPORT_REPORT_GROUP = "EXPORT_REPORT_GROUP";
-
+	
+	/**
+	 * 图片路径
+	 */
+	
+	public static final String TL_STATIC_PATH = "/static/";
+	
+	public static final String TL_FLAG_PATH = "/images/flag/";
+	
 	public static final String TL_STATIC_FLAG_PATH = "/static/images/flag/";
 
-	public static final String TL_STATIC_PATH = "/static";
+	public static final String TL_PHOTO_PATH = "/images/user/";
 
-	public static final String TL_PHOTO_PATH = "/images/user/photo/";
+	public static final String TL_FEED_BACK_PHOTO_PATH = "/images/feedBack/";
 
-	public static final String TL_FEED_BACK_PHOTO_PATH = "/images/feedBack/photo/";
+	public static final String TL_NEWS_PHOTO_PATH = "/images/news/conver";
+	
+	public static final String TL_TOPIC_PHOTO_PATH = "/images/topic/";
 
-	public static final String TL_NEWS_PHOTO_PATH = "/images/news/photo/";
+	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/";
 
-	public static final String TL_TOPIC_PHOTO_PATH = "/images/topic/photo/";
+	public static final String TL_QUESTION_PHOTO_PATH = "/images/question/";
 
-	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/photo/";
+	public static final String TL_ANSWER_PHOTO_PATH = "/images/answer/";
 
-	public static final String TL_QUESTION_PHOTO_PATH = "/images/question/photo/";
+	public static final String TL_REPORT_PHOTO_PATH = "/images/report/";
 
-	public static final String TL_ANSWER_PHOTO_PATH = "/images/answer/photo/";
-
-	public static final String TL_REPORT_PHOTO_PATH = "/images/report/photo/";
-
-	public static final String TL_FLAG_PATH = "/images/flag/";
+	
+	
+	
 
 	public static final String TL_ABOUT_HTML5_PATH = "/about.html";
 

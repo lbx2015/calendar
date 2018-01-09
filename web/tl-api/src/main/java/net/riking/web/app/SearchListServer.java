@@ -38,6 +38,7 @@ import net.riking.entity.model.TopicResult;
 import net.riking.entity.params.SearchParams;
 import net.riking.service.AppUserService;
 import net.riking.service.ReportService;
+import net.riking.util.FileUtils;
 
 /**
  * 搜索接口
@@ -181,7 +182,8 @@ public class SearchListServer {
 			// TODO 话题的关注数 后面从redis里面取
 			Integer followNum = topicRelRepo.followCount(topicResult.getId(), 0);
 			topicResult.setFollowNum(followNum);
-			topicResult.setTopicUrl(appUserService.getPhotoUrlPath("/topic")+topicResult.getTopicUrl());
+//			topicResult.setTopicUrl(appUserService.getPhotoUrlPath("/topic")+topicResult.getTopicUrl());
+			topicResult.setTopicUrl(FileUtils.getPhotoUrl("/topic/", this.getClass()) +topicResult.getTopicUrl());
 			// 不显示状态
 			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 				topicResult.setIsFollow(null);
@@ -205,8 +207,10 @@ public class SearchListServer {
 		for (int i = 0; i < appUserResults.size(); i++) {
 			AppUserResult appUserResult = appUserResults.get(i);
 			if (null != appUserResult.getPhotoUrl()) {
+//				appUserResult
+//						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 				appUserResult
-						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
+				.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + appUserResult.getPhotoUrl());
 			}
 			// 等级
 			if (null != appUserResult.getExperience()) {

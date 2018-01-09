@@ -25,13 +25,13 @@ public interface AppUserService {
 
 	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName);
 
-	public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException;
+	//public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException;
 
 	public List<AppUserResult> findUserMightKnow(String userId, String userIds, int begin, int end);
 
 	public Integer transformExpToGrade(Integer experience);
 
-	public String getPhotoUrlPath(String photoPath);
+	//public String getPhotoUrlPath(String photoPath);
 
 	public void updatePhoneDeviceid(String userId, String phoneDeviceid);
 

@@ -1,7 +1,6 @@
 package net.riking.web.app;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +19,7 @@ import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.NCReplyRepo;
@@ -30,7 +30,6 @@ import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
-import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -43,8 +42,8 @@ import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
+import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
-import net.riking.util.Utils;
 import net.sf.json.JSONObject;
 
 /**
@@ -104,13 +103,13 @@ public class QAnswerServer {
 	@Autowired
 	Config config;
 
-	@ApiOperation(value = "回答", notes = "POST")
-	@RequestMapping(value = "/answer", method = RequestMethod.POST)
-	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
-		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
-		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_INQUIRY_HTML5_PATH + "?userId="
-				+ qAnswerParams.getUserId() + "&questionId=" + qAnswerParams.getQuestionId(), CodeDef.SUCCESS);
-	}
+//	@ApiOperation(value = "回答", notes = "POST")
+//	@RequestMapping(value = "/answer", method = RequestMethod.POST)
+//	public AppResp aboutApp(@RequestBody Map<String, Object> params) {
+//		QAnswerParams qAnswerParams = Utils.map2Obj(params, QAnswerParams.class);
+//		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_INQUIRY_HTML5_PATH + "?userId="
+//				+ qAnswerParams.getUserId() + "&questionId=" + qAnswerParams.getQuestionId(), CodeDef.SUCCESS);
+//	}
 
 	/**
 	 * 问题回答详情
@@ -155,8 +154,10 @@ public class QAnswerServer {
 				}
 			}
 			if (null != questionAnswer.getPhotoUrl()) {
+//				questionAnswer.setPhotoUrl(
+//						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
 				questionAnswer.setPhotoUrl(
-						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questionAnswer.getPhotoUrl());
+						FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + questionAnswer.getPhotoUrl());
 			}
 			// 等级
 			if (null != questionAnswer.getExperience()) {
@@ -213,7 +214,8 @@ public class QAnswerServer {
 //			}
 //		}
 		if (null != qaComment.getPhotoUrl()) {
-			qaComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaComment.getPhotoUrl());
+//			qaComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaComment.getPhotoUrl());
+			qaComment.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + qaComment.getPhotoUrl());
 		}
 		// 等级
 		if (null != qaComment.getExperience()) {
@@ -251,7 +253,8 @@ public class QAnswerServer {
 				qAnswerParams.getUserId(), new PageRequest(0, 30));
 		for (QAComment qAComment : questionAnswerList) {
 			if (null != qAComment.getPhotoUrl()) {
-				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAComment.getPhotoUrl());
+//				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAComment.getPhotoUrl());
+				qAComment.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + qAComment.getPhotoUrl());
 			}
 			// 等级
 			if (null != qAComment.getExperience()) {
