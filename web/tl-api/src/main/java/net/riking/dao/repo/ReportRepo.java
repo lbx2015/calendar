@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.Report;
+import net.riking.entity.model.ReportCodeCount;
 import net.riking.entity.model.ReportSubscribeRel;
 
 /**
@@ -70,6 +71,9 @@ public interface ReportRepo extends JpaRepository<Report, String>, JpaSpecificat
 
 	@Query("select count(*) from ReportSubscribeRel rs,Report r where r.id = rs.reportId and r.reportType = ?1")
 	Integer countSubscribeNumByReportType(String reportType);
+
+	@Query("select new net.riking.entity.model.ReportCodeCount(r.code,count(*)) from ReportSubscribeRel rs,Report r where r.id = rs.reportId and r.reportType = ?1 group by code")
+	List<ReportCodeCount> countSubscribeNumByReportCode(String reportType);
 	/******** WEB END ************/
 
 }

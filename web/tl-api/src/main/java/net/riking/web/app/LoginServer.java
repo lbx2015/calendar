@@ -16,11 +16,13 @@ import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.dao.repo.IndustryRepo;
+import net.riking.dao.repo.UserLogRstHisRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
 import net.riking.entity.model.MQOptCommon;
+import net.riking.entity.model.UserLogRstHis;
 import net.riking.entity.params.LoginParams;
 import net.riking.entity.resp.AppUserResp;
 import net.riking.service.AppUserService;
@@ -59,6 +61,8 @@ public class LoginServer {
 	@Autowired
 	IndustryRepo industryRepo;
 
+	@Autowired
+	UserLogRstHisRepo userLogRstHisRepo;
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
 	 * 
@@ -134,28 +138,34 @@ public class LoginServer {
 			if (null == detail) {
 				detail = new AppUserDetail();
 			}
-			
-			
-			if(StringUtils.isNotBlank(loginParams.getPhoneDeviceId())){
-				if(StringUtils.isNotBlank(detail.getPhoneDeviceId())  && !detail.getPhoneDeviceId().trim().equals(loginParams.getPhoneDeviceId().trim())){
-					//换设备号登录，极光推送
+
+			if (StringUtils.isNotBlank(loginParams.getPhoneDeviceId())) {
+				if (StringUtils.isNotBlank(detail.getPhoneDeviceId())
+						&& !detail.getPhoneDeviceId().trim().equals(loginParams.getPhoneDeviceId().trim())) {
+					// 换设备号登录，极光推送
 					Jdpush jdpush = new Jdpush();
 					jdpush = new Jdpush();
 					jdpush.setNotificationTitle(Const.SYS_NAME_FLAG + "账号异地登录");
 					jdpush.setMsgTitle("");
-					//你的帐号于2018-01-06 14:30在iPhone/Android/其它设备上通过验证码登录。
-					String msgContent = "你的帐号于" + DateUtils.getDate("yyyy-MM-dd HH:mm") + "在" + loginParams.getClientTypeName() + "设备上通过验证码登录。";
+					// 你的帐号于2018-01-06 14:30在iPhone/Android/其它设备上通过验证码登录。
+					String msgContent = "你的帐号于" + DateUtils.getDate("yyyy-MM-dd HH:mm") + "在"
+							+ loginParams.getClientTypeName() + "设备上通过验证码登录。";
 					jdpush.setMsgContent(msgContent);
 					jdpush.setExtrasparam("");
 					jdpush.setRegisrationId(detail.getPhoneDeviceId().trim());
 					JdpushUtil.sendToRegistrationId(jdpush);
 				}
-				//更新设备号
+				// 更新设备号
 				appUserService.updatePhoneDeviceid(user.getId(), loginParams.getPhoneDeviceId().trim());
 				detail.setPhoneDeviceId(loginParams.getPhoneDeviceId().trim());
 			}
-			
+
 			user.setDetail(detail);
+			/* 用户登录历史 */
+			UserLogRstHis userLogRstHis = new UserLogRstHis();
+			userLogRstHis.setUserId(user.getId());
+			userLogRstHis.setDataType(Const.USER_OPT_LOGIN);
+			userLogRstHisRepo.save(userLogRstHis);
 			logger.info("用户登录成功：phone={}", user.getPhone());
 		} else {
 			// 注册步骤
@@ -168,12 +178,13 @@ public class LoginServer {
 			detail.setPhoneDeviceId(loginParams.getPhoneDeviceId());
 			detail.setPhoneType(loginParams.getClientType());
 			user = appUserService.register(user, detail);
-			
+
 			logger.info("用户注册成功：phone={}", user.getPhone());
-			
-			//加入系统消息通知队列
-			ModelPropDict dict = sysDataService.getDict(Const.SYS_NOTICE_T_SYS_NOTICE, Const.SYS_NOTICE_USER_REGISTER, Const.SYS_NOTICE_USER_REGISTER);
-			if(dict != null){
+
+			// 加入系统消息通知队列
+			ModelPropDict dict = sysDataService.getDict(Const.SYS_NOTICE_T_SYS_NOTICE, Const.SYS_NOTICE_USER_REGISTER,
+					Const.SYS_NOTICE_USER_REGISTER);
+			if (dict != null) {
 				MQOptCommon common = new MQOptCommon();
 				common.setMqOptType(0);
 				common.setAttentObjId(user.getId());

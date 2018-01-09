@@ -191,6 +191,11 @@ public class Const {
 	/* --------------------对象类型 end-------------------------- */
 
 	/** -------------------操作类型 begin-------------------------- */
+	/* 登录 */
+	public static final int USER_OPT_LOGIN = 1;
+
+	/* 注册 */
+	public static final int USER_OPT_REGIST = 2;
 
 	public static final int OBJ_OPT_FOLLOW = 0;// 关注
 
@@ -333,4 +338,15 @@ public class Const {
 	public static final String SYS_NOTICE_USER_REGISTER = "USER_REGISTER_NOTICE";
 
 	/* -------------------系统通知字典标识 end-------------------------- */
+
+	/* -------------------web 后台图像界面统计频度 begin-------------------------- */
+
+	public static final int SYS_MONTH = 0;
+
+	public static final int SYS_SEASON = 1;
+
+	public static final int SYS_HALF_YEAR = 2;
+
+	public static final int SYS_YEAR = 3;
+	/* -------------------web 后台图像界面统计频度 end-------------------------- */
 }
