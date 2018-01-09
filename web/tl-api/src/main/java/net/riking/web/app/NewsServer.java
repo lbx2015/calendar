@@ -311,6 +311,7 @@ public class NewsServer {
 		if (null != newsCommentInfo.getExperience()) {
 			newsCommentInfo.setGrade(appUserService.transformExpToGrade(newsCommentInfo.getExperience()));
 		}
+//		newsCommentRepo.save(newsCommentInfo);
 		return new AppResp(newsCommentInfo, CodeDef.SUCCESS);
 	}
 

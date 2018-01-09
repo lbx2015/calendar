@@ -137,6 +137,7 @@ public class CommentServer {
 						qACReply.setToUser(toUser);
 					}
 				}
+//				qACReplyRepo.save(qACReply);
 				return new AppResp(qACReply, CodeDef.SUCCESS);
 			// 资讯类
 			case Const.OBJ_TYPE_NEWS:
@@ -164,6 +165,7 @@ public class CommentServer {
 						ncReply.setToUser(toUser);
 					}
 				}
+//				nCReplyRepo.save(ncReply);
 				return new AppResp(ncReply, CodeDef.SUCCESS);
 			default:
 				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
