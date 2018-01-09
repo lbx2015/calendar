@@ -120,7 +120,7 @@ public class CommentServer {
 				qACReply.setCommentId(commentParams.getCommentId());
 				qACReply.setContent(commentParams.getContent());
 				qACReply.setReplyId(commentParams.getReplyId());
-				qACReply.setToUserId(commentParams.getToUserId());
+				//qACReply.setToUserId(commentParams.getToUserId());
 				qACReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
@@ -128,7 +128,7 @@ public class CommentServer {
 					fromUser.setUserName(appUser.getUserName());
 					qACReply.setFromUser(fromUser);
 				}
-				if (null != commentParams.getToUserId()) {
+				if (StringUtils.isNotBlank(commentParams.getReplyId()) && StringUtils.isNotBlank(commentParams.getToUserId())) {
 					AppUser apptoUser = appUserRepo.findOne(commentParams.getToUserId());
 					if (null != apptoUser) {
 						ToUser toUser = new ToUser();
@@ -136,9 +136,6 @@ public class CommentServer {
 						toUser.setUserName(apptoUser.getUserName());
 						qACReply.setToUser(toUser);
 					}
-				}
-				if(StringUtils.isBlank(commentParams.getReplyId())){
-					qACReply.setToUserId(null);
 				}
 				return new AppResp(qACReply, CodeDef.SUCCESS);
 			// 资讯类
@@ -150,7 +147,7 @@ public class CommentServer {
 				ncReply.setCommentId(commentParams.getCommentId());
 				ncReply.setContent(commentParams.getContent());
 				ncReply.setReplyId(commentParams.getReplyId());
-				ncReply.setToUserId(commentParams.getToUserId());
+				//ncReply.setToUserId(commentParams.getToUserId());
 				ncReply.setIsAduit(0);// 是否审核： 0-未审核，1-已审核,2-不通过
 				if (null != appUser) {
 					FromUser fromUser = new FromUser();
@@ -158,7 +155,7 @@ public class CommentServer {
 					fromUser.setUserName(appUser.getUserName());
 					ncReply.setFromUser(fromUser);
 				}
-				if (null != commentParams.getToUserId()) {
+				if (StringUtils.isNotBlank(commentParams.getReplyId()) && StringUtils.isNotBlank(commentParams.getToUserId())) {
 					AppUser apptoUser = appUserRepo.findOne(commentParams.getToUserId());
 					if (null != apptoUser) {
 						ToUser toUser = new ToUser();
@@ -166,9 +163,6 @@ public class CommentServer {
 						toUser.setUserName(apptoUser.getUserName());
 						ncReply.setToUser(toUser);
 					}
-				}
-				if(StringUtils.isBlank(commentParams.getReplyId())){
-					ncReply.setToUserId(null);
 				}
 				return new AppResp(ncReply, CodeDef.SUCCESS);
 			default:

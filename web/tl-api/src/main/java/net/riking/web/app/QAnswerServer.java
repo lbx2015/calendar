@@ -221,7 +221,7 @@ public class QAnswerServer {
 		if (null != qaComment.getExperience()) {
 			qaComment.setGrade(appUserService.transformExpToGrade(qaComment.getExperience()));
 		}
-		qaComment = qACommentRepo.save(qaComment);
+//		qaComment = qACommentRepo.save(qaComment);
 		return new AppResp(qaComment, CodeDef.SUCCESS);
 	}
 
@@ -266,7 +266,7 @@ public class QAnswerServer {
 				fromUser.setUserId(qacReply.getFromUserId());
 				fromUser.setUserName(qacReply.getFromUserName());
 				qacReply.setFromUser(fromUser);
-				if (null != qacReply.getToUserId()) {
+				if (StringUtils.isNotBlank(qacReply.getToUserId()) && StringUtils.isNotBlank(qacReply.getReplyId())) {
 					ToUser toUser = new ToUser();
 					toUser.setUserId(qacReply.getToUserId());
 					toUser.setUserName(qacReply.getToUserName());

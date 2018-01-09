@@ -265,7 +265,6 @@ public class FileUtils extends org.apache.commons.lang3.time.DateUtils {
 	/**
 	 * 获取到  项目名级别  的 url地址 格式为：http://ip:port/project
 	 * @used TODO
-	 * @param request
 	 * @param clazz
 	 * @return 
 	 */
