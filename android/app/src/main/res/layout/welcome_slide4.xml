@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="216dp"
@@ -17,7 +18,7 @@
             android:layout_above="@+id/page_text"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="49dp"
-            android:src="@drawable/lead_welcome4" />
+            android:src="@drawable/bootpage4" />
 
         <TextView
             android:id="@+id/page_text"

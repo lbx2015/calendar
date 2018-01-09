@@ -196,13 +196,13 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
                                     return;
                                 }
                                 writeComment.setText("");
-                                if (replyListAdapter.mList.size() > 0) {
+                                if (replyListAdapter.mList == null || replyListAdapter.mList.isEmpty()) {
+                                    mPullToLoadView.initLoad();
+                                } else {
                                     MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
                                     replyListAdapter.mList.add(0, response._data);
                                     MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
                                     replyListAdapter.notifyItemInserted(0);
-                                } else {
-                                    loadData(1);
                                 }
 //                                replyListAdapter.notifyDataSetChanged();
 //                                replyRecyclerView.scrollToPosition(0);
@@ -224,6 +224,8 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
                             if (failed) {
 
                             } else {
+                                emptyLayout.setVisibility(View.GONE);
+                                mPullToLoadView.setVisibility(View.VISIBLE);
                                 writeComment.setText("");
                                 mAdapter.mList.add(0, response._data);
                                 mAdapter.notifyItemInserted(0);
