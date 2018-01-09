@@ -31,8 +31,8 @@ public class NewsServiceImpl implements NewsService {
 	@Autowired
 	NewsDao newsDao;
 
-//	@Autowired
-//	AppUserService appUserService;
+	// @Autowired
+	// AppUserService appUserService;
 
 	@Autowired
 	NewsRelRepo newsRelRepo;
@@ -50,8 +50,8 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	public String concatCoverUrls(String coverUrls) {
-		//String coverUrl = appUserService.getPhotoUrlPath(Const.TL_NEWS_PHOTO_PATH);
-		String coverUrl = FileUtils.getAbsolutePathByProject(Const.TL_NEWS_PHOTO_PATH);
+		// String coverUrl = appUserService.getPhotoUrlPath(Const.TL_NEWS_PHOTO_PATH);
+		String coverUrl = FileUtils.getAbsolutePathByProject(Const.TL_NEWS_CONTENT_PATH);
 		if (null != coverUrls) {
 			String[] strings = coverUrls.split(",");
 			if (null != strings) {
@@ -118,7 +118,12 @@ public class NewsServiceImpl implements NewsService {
 		if (contentFileNames.length != 0 && contentFileNames != null) {
 			copyFile(contentFileNames);
 		}
-		news.setContent(news.getContent().replace("temp", "news"));
+		// 临时文件的图片转移路径
+		String[] coverFileNames = news.getContent().split("alt=");
+		if (coverFileNames.length != 0 && coverFileNames != null) {
+			copyFile2CoverUrl(coverFileNames);
+		}
+		news.setContent(news.getContent().replace("temp", "news/content/"));
 		newsRepo.save(news);
 	}
 
@@ -126,7 +131,24 @@ public class NewsServiceImpl implements NewsService {
 		for (int i = 1; i < fileNames.length; i++) {
 			String fileName = fileNames[i].split(">")[0].replace("\"", "");
 			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_NEWS_PHOTO_PATH + fileName;
+					+ Const.TL_NEWS_CONTENT_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				throw new RuntimeException("文件复制异常" + e);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+		}
+	}
+
+	private void copyFile2CoverUrl(String[] fileNames) {
+		for (int i = 0; i < fileNames.length; i++) {
+			String fileName = fileNames[i];
+			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_NEWS_COVER_PATH + fileName;
 			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
 					+ Const.TL_TEMP_PHOTO_PATH + fileName;
 			try {

@@ -28,14 +28,6 @@
 			"hidden": "edit,priview"
 		},
 		{
-			"prop": "appUserDetail.photoUrl",
-			"alias": "用户头像",
-			"desc": "用户头像",
-			"type": "string",
-			"group": "detail",
-			"hidden": "priview"
-		},
-		{
 			"prop": "appUserDetail.realName",
 			"alias": "真实姓名",
 			"desc": "真实姓名",
@@ -43,9 +35,17 @@
 			"group": "detail"
 		},
 		{
+			"prop": "appUserDetail.photoUrl",
+			"alias": "头像",
+			"desc": "头像",
+			"type": "string",
+			"group": "detail",
+			"hidden": "priview"
+		},
+		{
 			"prop": "appUserDetail.userName",
-			"alias": "用户名称",
-			"desc": "用户名称",
+			"alias": "名称",
+			"desc": "名称",
 			"type": "string",
 			"group": "detail",
 			"query": "1",
@@ -81,8 +81,8 @@
 		},
 		{
 			"prop": "appUser.email",
-			"alias": "用户邮箱",
-			"desc": "用户邮箱",
+			"alias": "邮箱",
+			"desc": "邮箱",
 			"type": "string",
 			"query": "1",
 			"query_order": "2",
@@ -91,10 +91,19 @@
 		
 		{
 			"prop": "appUserDetail.birthday",
-			"alias": "用户生日",
-			"desc": "用户生日",
+			"alias": "出生日期",
+			"desc": "出生日期",
 			"type": "string",
 			"group": "detail"
+		},
+		{
+			"prop": "appUserDetail.sex",
+			"alias": "性别",
+			"desc": "性别",
+			"type": "enum",
+			"dict_key": "T_APP_USER.SEX",
+			"group": "detail",
+			"hidden": "table"
 		},
 		{
 			"prop": "appUser.password",
@@ -161,15 +170,6 @@
 			"hidden": "table",
 			"edit_block": "1"
 		},
-		{
-			"prop": "appUserDetail.sex",
-			"alias": "用户性别",
-			"desc": "用户性别",
-			"type": "enum",
-			"dict_key": "T_APP_USER.SEX",
-			"group": "detail",
-			"hidden": "table"
-		},
 		
 		{
 			"prop": "appUserDetail.companyName",
@@ -204,8 +204,8 @@
 		
 		{
 			"prop": "appUserDetail.phoneDeviceId",
-			"alias": "手机Deviceid",
-			"desc": "手机Deviceid",
+			"alias": "手机设备号",
+			"desc": "手机设备号",
 			"type": "string",
 			"group": "detail",
 			"hidden": "table,preview"

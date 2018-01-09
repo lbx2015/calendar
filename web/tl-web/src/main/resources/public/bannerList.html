@@ -121,6 +121,14 @@
 							}
 						}
 					}
+					if(obj.item){
+						if(obj.prop=="bannerURL"){
+							var htmlInfo = Const.apiUrl+"/images/banner/"+obj.html;
+							var imgHtml = "<img src='"+htmlInfo+"' style='width:40px; height:40px;' alt='"+obj.html+"'/>";
+							obj.html="";
+							obj.html+=imgHtml;
+						}
+					}
 					return obj.html;
 				}
 				callback.call(_this, data);

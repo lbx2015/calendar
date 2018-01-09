@@ -10,7 +10,7 @@
 </head>
 <body class="iframeBody">
 	<div class="formbox layui-form add-formbox">
-		<div class="_tmpl" data-url="edit.html" data-attr="appUserVO.json" data-bind="editOnBind" data-param=""></div>
+		<div class="_tmpl" data-url="edit.html" data-attr="appUserVOByEdit.json" data-bind="editOnBind" data-param=""></div>
 		<div class="layui-btn-div" id="layui-btn-fixed">
 			<button class="layui-btn bgc1 layui-btn-small" lay-submit lay-filter="edit" id="submit">确定</button>
 			<button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
@@ -55,6 +55,16 @@
 						$("div.layui-colla-item:eq(0) :input").attr("disabled", true);
 						$("div.layui-colla-item:eq(1) :input").attr("disabled", true);
 					}
+					var imgVal = $(".layui-input-inline input[name='appUserDetail.photoUrl']").val();
+					var imgUrl = Const.apiUrl+"/images/user/"+imgVal;
+					var img = "<img src='"+imgUrl+"' alt='"+imgVal+"'/>";
+					var photoElement = $(".layui-input-inline input[name='appUserDetail.photoUrl']").parent();
+					//保存头像名称
+					var saveImg = "<input type='hidden' name='appUserDetail.photoUrl' value='"+imgVal+"'/>";
+					photoElement.html(img+saveImg);
+					//设置签名的高度
+					$(".layui-input-inline input[name='appUserDetail.descript']").css('height','50px');
+					
 					View.resetUi();
 				});
 				if (id) {
@@ -70,10 +80,12 @@
 						data.showGroup = "base,detail";
 						callback.call(_this, data);
 						TmplUtils.editOnLoad();
+						 
 						var enumInput = $("input[data-type='lazyEnum']");
 						for (var i = 0; i < enumInput.length; i++) {
 							lazyEnumEach(enumInput[i], data);
 						}
+						
 					},
 					function() {
 						TmplUtils.showMsgFail('信息获取失败');

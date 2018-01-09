@@ -8,9 +8,17 @@
 	],
 	"attrs": [
 		{
+			"prop": "id",
+			"alias": "id",
+			"desc": "id",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,priview,table"
+		},
+		{
 			"prop": "title",
-			"alias": "横幅标题",
-			"desc": "横幅标题",
+			"alias": "标题",
+			"desc": "标题",
 			"type": "string",
 			"group": "base",
 			"query": "1",
@@ -20,7 +28,7 @@
 			"prop": "bannerURL",
 			"alias": "横幅url",
 			"desc": "横幅url",
-			"type": "string",
+			"type": "imgUrl",
 			"group": "base",
 			"verify":"required"
 		},

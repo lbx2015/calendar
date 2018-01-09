@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserDetailRepo;
@@ -25,6 +26,7 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.UserFollowCollect;
 import net.riking.service.AppUserService;
+import net.riking.util.FileUtils;
 
 /**
  * web端app用户操作
@@ -78,8 +80,9 @@ public class AppUserController {
 		int i = query.getPindex() * query.getPcount();
 		for (AppUserVO appUserVO2 : appUserVOs) {
 			i++;
-			// appUserVO2.setPrefixPhotoURL(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH));
-			appUserVO2.setPrefixPhotoURL("http://localhost:8281/images/user/photo/");
+			// 获取前缀
+			appUserVO2.setPrefixPhotoURL(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()));
+			// appUserVO2.setPrefixPhotoURL("http://localhost:8281/images/user/photo/");
 			appUserVO2.getAppUser().setSerialNumber(new Integer(i));
 		}
 		return new Resp(page);

@@ -94,9 +94,7 @@ public class TopicController {
 			topic.setIsDeleted(1);
 			topic.setIsAduit(0);
 		}
-		if (topic.getIsAduit() == 2) {
-			topic.setIsAduit(0);
-		}
+		topic.setIsAduit(0);
 		// topic.setTopicUrl(topic.getContent().split("alt=")[1].split(">")[0].replace("\"", ""));
 		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
 		Matcher matcher = pattern.matcher(topic.getContent());

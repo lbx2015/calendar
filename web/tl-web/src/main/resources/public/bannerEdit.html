@@ -17,7 +17,7 @@
 		<div class="layui-btn-div">
 			<a class="layui-btn bgc1 layui-btn-small" lay-submit
 				lay-filter="edit"
-				href="javascript:edit();">保存</a>
+				href="javascript:edit();" id="submit">保存</a>
 			<!-- 	<a class="layui-btn bgc1 layui-btn-small" lay-submit
 				lay-filter="commit"
 				href="javascript:commit();">保存并提交</a> -->
@@ -37,12 +37,8 @@
 	function editOnBind(attrs, param) {
 		tmpl = this;
 		tmpl.onFinish(function(data) {
-			if(!id){
-				$("#edit_base select[name='isAduit']").val('0').attr("disabled",true);
-			}else{
-				$("#edit_base select[name='isAduit']").attr("disabled",true);
-				$("#edit_base select[name='enabled']").attr("disabled",true);
-			}
+			var imgUrl = $(".layui-input-inline img").attr("src").replace("topic","banner").replace("photo/","");
+			$(".layui-input-inline img").attr("src",imgUrl);
 			
 			View.resetUi();
 		});
@@ -65,6 +61,7 @@
                     }
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
+                    loadImage();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -73,6 +70,7 @@
                 data.showGroup = "head,base";
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
+                loadImage();
             }
         });
     }
@@ -138,6 +136,44 @@
         parent.View.fireEvent("TB_DATA_CHANGE", {
             "window" : window.name
         });
+    }
+    
+    //上传图片
+    function loadImage(){
+    	$(".layui-input-inline img").attr("id","bannerURL");
+    	var htmlInfo = $(".layui-input-inline img").parent().html().replace(/;/ig,"");
+    	//加上上传按钮
+    	htmlInfo+="<button type='button'  id='loadImg' > 上传图片 </button>";
+    	//加上存储input图片地址
+    	htmlInfo+="<input type='hidden' name='bannerURL'/>";
+    	$(".layui-input-inline img").parent().html(htmlInfo);
+    	//使用layui自带的组件进行上传
+    	layui.use('upload', function(){
+    		  var upload = layui.upload;
+    		  //执行实例
+    		  var uploadInst = upload.render({
+    		    elem: '#loadImg' //绑定元素
+    		    ,url: Const.apiUrl + '/commonController/upLoad' //上传接口
+    		    ,done: function(res){
+    		      //上传完毕回调
+    		      //设置图片信息
+    		      $(".layui-input-inline img").attr("src",res.data.src);
+    		      $(".layui-input-inline img").attr("alt",res.data.title);
+    		      //设置图片名称
+    		      $("input[type='hidden']").val(res.data.title);
+    		      $(".layui-input-inline img").show();
+    		    }
+    		    ,error: function(){
+    		      //请求异常回调
+    		    	TmplUtils.showMsgFail("上传图片失败");
+    		    }
+    		  });
+    		 if(!id){
+    			 if($("input[type='hidden']").val()==""){
+    				 $(".layui-input-inline img").hide();
+    			 }
+    		 }
+    		});
     }
 </script>
 </html>

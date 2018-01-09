@@ -11,5 +11,7 @@ public interface BannerService {
 
 	Page<Banner> findAllToPage(Banner banner, PageRequest pageable);
 
+	public void moveFile(Banner banner);
+
 	/******************** WEB END ***********/
 }

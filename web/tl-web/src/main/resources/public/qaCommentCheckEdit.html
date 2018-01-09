@@ -62,19 +62,13 @@
 			tmpl.bind(function(callback) {
 				tmpl.onFinish(function(data) {
 					if (flag == "view") {
-						$("#submit").hide();
 						$("div.layui-colla-item:eq(0) :input").attr("disabled", true);
 						$("div.layui-colla-item:eq(1) :input").attr("disabled", true);
-					}
-					if(flag == "edit"){
-						$("#edit_base input[name='topicQuestion.title']").attr("disabled",true);
-						$("#edit_base input[name='appUser.userName']").attr("disabled",true);
-						$("#edit_base input[name='replyTime']").attr("disabled",true);
 					}
 					View.resetUi();
 				});
 				if (id) {
-					var url = Const.apiUrl + "/newsComment/get";
+					var url = Const.apiUrl + "/qaCommentController/get";
 					var _this = this;
 					View.get(url, "id=" + id,
 					function(resp) {
@@ -104,25 +98,6 @@
 						lazyEnumEach(enumInput[i], data);
 					}
 				}
-			});
-		}
-		//编辑保存
-		function edit() {
-			var newsComment = Utils.formToObj("edit");
-			if(id){
-				newsComment.id = id;
-			}
-			/*   newsComment.email = newsComment.email.split(",")[0] + "@" + newsComment.email.split(",")[1]; */
-			var url = Const.apiUrl + "/newsComment/addOrUpdate";
-			View.post(url, newsComment,
-			function(resp) {
-				TmplUtils.showMsgSuccess('编辑成功');
-				parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) + "&pcount=" + parent.TmplUtils.pageSize + parent.TmplUtils.searchParam);
-				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				parent.layer.close(index);
-			},
-			function(code) {
-				TmplUtils.showMsgFail('编辑失败');
 			});
 		}
 
@@ -307,6 +282,21 @@
 										+ "\""
 										+ ");'>审核</button>";
 							}
+						}
+					}
+					if(obj.item){
+						if(obj.prop == 'createdTime'){
+							//获取原来的值
+							var value = obj.html;
+							var year = value.substring(0,4);
+							var month = value.substring(4,6);
+							var days = value.substring(6,8);
+							var hour = value.substring(8,10);
+							var minute = value.substring(10,12);
+							var second = value.substring(12,14);
+							var newValue = year+"-"+month+"-"+days+" "+hour+":"+minute+":"+second;
+							obj.html="";
+							obj.html+=newValue;
 						}
 					}
 					return obj.html;

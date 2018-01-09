@@ -56,6 +56,8 @@
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
                     loadRichText();
+                  	//加载封面图片
+                    loadCoverImage();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -65,6 +67,8 @@
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
                 loadRichText();
+                //加载封面图片
+                loadCoverImage();
             }
         });
     }
@@ -95,6 +99,49 @@
 								],height: 250});
      	 topicContent = layedit.build('content'); //建立编辑器
      	});
+    }
+    //加载图片
+    function loadCoverImage(){
+    	//保存封面地址
+    	var coverUrl = $(".layui-input-inline input[name='coverUrls']").val();
+    	var parent = $(".layui-input-inline input[name='coverUrls']").parent();
+    	parent.html("");
+    	var htmlInfo="<img style='width:10%'/> ";
+    	//加上上传按钮
+    	htmlInfo+="<button type='button'  id='loadImg' > 上传图片 </button>";
+    	//加上存储input图片地址
+    	htmlInfo+="<input type='hidden' name='coverUrls' value='"+coverUrl+"'/>";
+    	parent.html(htmlInfo);
+    	//使用layui自带的组件进行上传
+    	layui.use('upload', function(){
+    		  var upload = layui.upload;
+    		  //执行实例
+    		  var uploadInst = upload.render({
+    		    elem: '#loadImg' //绑定元素
+    		    ,url: Const.apiUrl + '/commonController/upLoad' //上传接口
+    		    ,done: function(res){
+    		      //上传完毕回调
+    		      //设置图片信息
+    		      $(".layui-input-inline img").attr("src",res.data.src);
+    		      $(".layui-input-inline img").attr("alt",res.data.title);
+    		      //设置图片名称
+    		      $("input[type='hidden']").val(res.data.title);
+    		      $(".layui-input-inline img").show();
+    		    }
+    		    ,error: function(){
+    		      //请求异常回调
+    		    	TmplUtils.showMsgFail("上传图片失败");
+    		    }
+    		  });
+    		 if(!id){
+    			 if($("input[type='hidden']").val()==""){
+    				 $(".layui-input-inline img").hide();
+    			 }
+    		 }else{
+    			 $(".layui-input-inline img").attr("src",Const.apiUrl+"/images/news/cover/"+coverUrl);
+    			 $(".layui-input-inline img").attr("alt",coverUrl);
+    		 }
+    		});
     }
     
     //编辑保存

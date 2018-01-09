@@ -73,7 +73,7 @@ public class NewsController {
 			news.setIsAduit(0);
 		}
 		newsService.moveFile(news);
-
+		newsRepo.save(news);
 		return new Resp(CodeDef.SUCCESS);
 	}
 

@@ -2,6 +2,7 @@ package net.riking.web.controller;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -21,6 +22,7 @@ import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.BannerRepo;
 import net.riking.entity.model.Banner;
+import net.riking.service.BannerService;
 
 /**
  * web端横幅操作
@@ -34,6 +36,9 @@ import net.riking.entity.model.Banner;
 public class BannerController {
 	@Autowired
 	BannerRepo bannerRepo;
+
+	@Autowired
+	BannerService bannerService;
 
 	@ApiOperation(value = "得到<单个>信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -61,6 +66,17 @@ public class BannerController {
 	public Resp addOrUpdate_(@RequestBody Banner banner) {
 		// 修改
 		banner.setIsAduit("0");
+		Banner banner2 = bannerRepo.findOne(banner.getId());
+		if (banner2 != null) {
+			if (!StringUtils.isBlank(banner.getBannerURL())) {
+				// 判断是否有更换图片
+				bannerService.moveFile(banner);
+			} else {
+				banner.setBannerURL(banner2.getBannerURL());
+			}
+		} else {
+			bannerService.moveFile(banner);
+		}
 		bannerRepo.save(banner);
 		return new Resp(banner, CodeDef.SUCCESS);
 	}

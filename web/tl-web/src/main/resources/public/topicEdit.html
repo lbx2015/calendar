@@ -38,6 +38,15 @@
 	var topicContent;
     function editOnBind(attrs, param) {
         tmpl = this;
+        tmpl.onFinish(function(data) {
+			if(!id){
+				alert(1);
+				//新增的时候将图片隐藏起来
+				$(".layui-input-inline img").hide();
+			}
+			
+			View.resetUi();
+		});
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {

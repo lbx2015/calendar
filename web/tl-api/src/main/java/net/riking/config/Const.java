@@ -9,7 +9,7 @@ import org.apache.activemq.ActiveMQConnection;
  *
  */
 public class Const {
-	
+
 	public static final String SYS_NAME_FLAG = "【悦历】";
 
 	public static final String KEY_WORD = "KEYWORD";
@@ -29,23 +29,27 @@ public class Const {
 	public static final String TASK_FLASH_BACK_GROUP = "TASK_FLASH_BACK_GROUP";
 
 	public static final String EXPORT_REPORT_GROUP = "EXPORT_REPORT_GROUP";
-	
+
 	/**
 	 * 图片路径
 	 */
-	
+
 	public static final String TL_STATIC_PATH = "/static/";
-	
+
 	public static final String TL_FLAG_PATH = "/images/flag/";
-	
+
 	public static final String TL_STATIC_FLAG_PATH = "/static/images/flag/";
 
 	public static final String TL_PHOTO_PATH = "/images/user/";
 
 	public static final String TL_FEED_BACK_PHOTO_PATH = "/images/feedBack/";
 
-	public static final String TL_NEWS_PHOTO_PATH = "/images/news/conver";
-	
+	public static final String TL_NEWS_CONTENT_PATH = "/images/news/content/";
+
+	public static final String TL_NEWS_COVER_PATH = "/images/news/cover/";
+
+	public static final String TL_BANNER_PHOTO_PATH = "/images/banner/";
+
 	public static final String TL_TOPIC_PHOTO_PATH = "/images/topic/";
 
 	public static final String TL_TEMP_PHOTO_PATH = "/images/temp/";
@@ -55,10 +59,6 @@ public class Const {
 	public static final String TL_ANSWER_PHOTO_PATH = "/images/answer/";
 
 	public static final String TL_REPORT_PHOTO_PATH = "/images/report/";
-
-	
-	
-	
 
 	public static final String TL_ABOUT_HTML5_PATH = "/about.html";
 
@@ -71,7 +71,7 @@ public class Const {
 	public static final String TL_QUESTIONSHARE_HTML5_PATH = "/questionShare.html";
 
 	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/inquiry.html";
-	
+
 	public static final String TL_QUESTION_ANSWER_HTML5_PATH = "/answer.html";
 
 	/* 验证码有效时间 */
@@ -87,7 +87,7 @@ public class Const {
 
 	// 系统日历
 	public static final String SYS_DAY = "SYS_DAY_";
-	
+
 	/** -------------------统计数 begin-------------------------- */
 	/* 报表类型统计数 */
 	public static final String COUNT_BY_REPORT_TYPE = "COUNTBYREPORTTYPE";
@@ -141,6 +141,7 @@ public class Const {
 	public static final int LOGIN_REGIST_TYPE_PHONE = 1;// 手机号
 
 	public static final int LOGIN_REGIST_TYPE_WECHAT = 2;// 微信号
+
 	/** --------------------登录方式 end-------------------------- */
 
 	/** -------------------数据是否有效 1有效，0无效 begin-------------------------- */
@@ -235,6 +236,7 @@ public class Const {
 	public static final int OPT_TYPE_INVITE_STATUS = 2;// 显示邀请状态
 
 	public static final int OPT_TYPE_SUBSCRIBE_STATUS = 3;// 显示订阅状态
+
 	/** --------------------操作类型状态 end-------------------------- */
 
 	/** -------------------搜索栏操作对象状态 begin-------------------------- */
@@ -283,7 +285,7 @@ public class Const {
 
 	/** 评论的回复和回复的回复 */
 	public static final int MQ_OPT_COMMENT_REPLY = 10;
-	
+
 	/** 问题回答 */
 	public static final int MQ_OPT_QUESTION_ANWSER = 11;
 
@@ -318,15 +320,17 @@ public class Const {
 	public static final int NOTICE_OPT_COMMENT_REPLY = 8;
 
 	/* --------------------消息通知类型 end-------------------------- */
-	
-	//系统类的通知
+
+	// 系统类的通知
 	public static final String SYS_NOTICE_FROME_SYS = "SYS";
+
 	public static final String SYS_NOTICE_TO_USER = "ALL";
-	
+
 	/* -------------------系统通知字典标识 begin-------------------------- */
 	public static final String SYS_NOTICE_T_SYS_NOTICE = "T_SYS_NOTICE";
-	//用户注册通知
+
+	// 用户注册通知
 	public static final String SYS_NOTICE_USER_REGISTER = "USER_REGISTER_NOTICE";
-	
+
 	/* -------------------系统通知字典标识 end-------------------------- */
 }

@@ -9,8 +9,8 @@
 	"attrs": [
 		{
 			"prop": "dates",
-			"alias": "日期",
-			"desc": "日期",
+			"alias": "日期(yyyyMMdd)",
+			"desc": "日期(yyyyMMdd)",
 			"type": "string",
 			"query": "1",
 			"query_order": "1",
@@ -21,7 +21,8 @@
 			"prop": "weekday",
 			"alias": "星期(1-7)",
 			"desc": "星期(1-7)",
-			"type": "string",
+			"type": "enum",
+			"dict_key": "T_SYS_DAYS.WEEKDAY",
 			"verify":"required",
 			"group": "base"
 		},

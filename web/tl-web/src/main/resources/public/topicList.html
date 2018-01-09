@@ -115,18 +115,19 @@
 									+ obj.item.id
 									+ "\""
 									+ ");'>查看</button>";
-							if (obj.item.isAduit == 0 || obj.item.isAduit == 2) { 
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
-									+ "\""
-									+ obj.item.id
-									+ "\""
-									+ ");'>修改</button>";
-							}
+								+ "\""
+								+ obj.item.id
+								+ "\""
+								+ ");'>修改</button>";
+							if (obj.item.isAduit == 0 || obj.item.isAduit == 2) { 
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
-									+ "\""
-									+ obj.item.id
-									+ "\""
-									+ ");'>删除</button>";
+								+ "\""
+								+ obj.item.id
+								+ "\""
+								+ ");'>删除</button>";
+							}
+							
 							if (obj.item.isAduit == 0) { 
 								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
 										+ "\""

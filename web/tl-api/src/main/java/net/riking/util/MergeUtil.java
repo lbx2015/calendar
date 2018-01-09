@@ -10,14 +10,16 @@ import java.lang.reflect.Field;
  */
 public class MergeUtil {
 
-	public static <T> T merge(T dbObj,T appObj) throws Exception{
+	public static <T> T merge(T dbObj, T appObj) throws Exception {
 		Field[] fields = dbObj.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
 			field.setAccessible(true);
 			Object val = field.get(appObj);
-			if(val!=null){
-				field.set(dbObj, val);
+			if (!java.lang.reflect.Modifier.isFinal(fields[i].getModifiers())) {
+				if (val != null) {
+					field.set(dbObj, val);
+				}
 			}
 		}
 		return dbObj;

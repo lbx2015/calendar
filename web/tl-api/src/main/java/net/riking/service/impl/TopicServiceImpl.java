@@ -118,7 +118,6 @@ public class TopicServiceImpl implements TopicService {
 			copyFile(contentFileNames);
 		}
 		topic.setContent(topic.getContent().replace("temp", "topic"));
-		topicRepo.save(topic);
 	}
 
 	private void copyFile(String[] fileNames) {

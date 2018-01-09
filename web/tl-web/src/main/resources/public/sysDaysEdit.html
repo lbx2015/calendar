@@ -35,6 +35,12 @@
 	
 	function editOnBind(attrs, param) {
 		tmpl = this;
+		
+		tmpl.onFinish(function(data) {
+			$(".layui-input-inline input[name='dates']").attr('disabled',true);
+			$(".layui-input-inline select[name='weekday']").attr('disabled',true);
+			View.resetUi();
+		});
 		tmpl.bind(function(callback) {
             var _this = this;
             if (id) {

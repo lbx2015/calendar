@@ -156,8 +156,10 @@ public class NewsServer {
 
 			// 截取资源访问路径
 			if (null != newsInfo.getPhotoUrl()) {
-//				newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
-				newsInfo.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_NEWS_PHOTO_PATH, this.getClass()) + newsInfo.getPhotoUrl());
+				// newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
+				// newsInfo.getPhotoUrl());
+				newsInfo.setPhotoUrl(
+						FileUtils.getPhotoUrl(Const.TL_NEWS_COVER_PATH, this.getClass()) + newsInfo.getPhotoUrl());
 			}
 			// 等级
 			if (null != newsInfo.getExperience()) {
@@ -196,8 +198,10 @@ public class NewsServer {
 		newsInfo.setCoverUrls(newsService.concatCoverUrls(newsInfo.getCoverUrls()));
 		// 截取资源访问路径
 		if (null != newsInfo.getPhotoUrl()) {
-//			newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsInfo.getPhotoUrl());
-			newsInfo.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_NEWS_PHOTO_PATH, this.getClass()) + newsInfo.getPhotoUrl());
+			// newsInfo.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
+			// newsInfo.getPhotoUrl());
+			newsInfo.setPhotoUrl(
+					FileUtils.getPhotoUrl(Const.TL_NEWS_COVER_PATH, this.getClass()) + newsInfo.getPhotoUrl());
 		}
 		// 等级
 		if (null != newsInfo.getExperience()) {
@@ -221,8 +225,9 @@ public class NewsServer {
 		// 评论列表
 		for (NewsComment newsCommentInfoNew : newsCommentInfoList) {
 			if (null != newsCommentInfoNew.getPhotoUrl()) {
-//				newsCommentInfoNew.setPhotoUrl(
-//						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfoNew.getPhotoUrl());
+				// newsCommentInfoNew.setPhotoUrl(
+				// appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
+				// newsCommentInfoNew.getPhotoUrl());
 				newsCommentInfoNew.setPhotoUrl(
 						FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + newsCommentInfoNew.getPhotoUrl());
 			}
@@ -269,9 +274,9 @@ public class NewsServer {
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());
 
 		newsParams.setMqOptType(Const.MQ_OPT_NEWS_COMMENT);
-//		JSONObject jsonArray = JSONObject.fromObject(newsParams);
-//		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
-		
+		// JSONObject jsonArray = JSONObject.fromObject(newsParams);
+		// MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			String mapJakcson = mapper.writeValueAsString(newsParams);
@@ -302,16 +307,17 @@ public class NewsServer {
 			}
 		}
 		if (null != newsCommentInfo.getPhotoUrl()) {
-//			newsCommentInfo
-//					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + newsCommentInfo.getPhotoUrl());
-			newsCommentInfo
-			.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + newsCommentInfo.getPhotoUrl());
+			// newsCommentInfo
+			// .setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
+			// newsCommentInfo.getPhotoUrl());
+			newsCommentInfo.setPhotoUrl(
+					FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + newsCommentInfo.getPhotoUrl());
 		}
 		// 等级
 		if (null != newsCommentInfo.getExperience()) {
 			newsCommentInfo.setGrade(appUserService.transformExpToGrade(newsCommentInfo.getExperience()));
 		}
-//		newsCommentRepo.save(newsCommentInfo);
+		// newsCommentRepo.save(newsCommentInfo);
 		return new AppResp(newsCommentInfo, CodeDef.SUCCESS);
 	}
 
@@ -333,8 +339,8 @@ public class NewsServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		newsParams.setMqOptType(Const.MQ_OPT_NEW_COLLECT);
-//		JSONObject jsonArray = JSONObject.fromObject(newsParams);
-//		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		// JSONObject jsonArray = JSONObject.fromObject(newsParams);
+		// MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			String mapJakcson = mapper.writeValueAsString(newsParams);
