@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.QuestionActivity;
@@ -199,7 +200,7 @@ public class ZR {
         userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
     }
 
-    public static void setReportName(final TextView reportNameTv, String name, int frequency, String reportBatch,final String reportId) {
+    public static void setReportName(final TextView reportNameTv, String name, int frequency, String reportBatch, final String reportId) {
         reportNameTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -439,14 +440,19 @@ public class ZR {
                 APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
+                        String followStatus = response._data;
+                        MyLog.d("follow Status: " + followStatus);
+                        if (StringUtil.isEmpty(response._data)) {
+                            followStatus = "0";
+                        }
+
                         if (user.isFollow == 0) {
-                            user.isFollow = 1;
                             ZToast.toast("关注成功");
                         } else {
-                            user.isFollow = 0;
                             ZToast.toast("取消关注");
 
                         }
+                        user.isFollow = Integer.valueOf(followStatus);
                         showPersonFollowStatus(followButton, followTv, user.isFollow);
                     }
                 });

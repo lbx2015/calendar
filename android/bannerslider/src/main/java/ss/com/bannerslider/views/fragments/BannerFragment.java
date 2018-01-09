@@ -4,11 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,6 +25,14 @@ public class BannerFragment extends Fragment {
 
     public BannerFragment() {
 
+    }
+
+    public static BannerFragment newInstance(Banner banner) {
+        Bundle args = new Bundle();
+        args.putParcelable("banner", banner);
+        BannerFragment fragment = new BannerFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -51,7 +56,11 @@ public class BannerFragment extends Fragment {
             } else {
                 final RemoteBanner remoteBanner = (RemoteBanner) banner;
                 if (remoteBanner.getErrorDrawable() == null && remoteBanner.getPlaceHolder() == null) {
-                    Picasso.with(getActivity()).load(remoteBanner.getUrl()).into(imageView);
+                    String s = remoteBanner.getUrl();
+                    if (s == null && s.trim().equals("")) {
+                    } else {
+                        Picasso.with(getActivity()).load(s).into(imageView);
+                    }
                 } else {
                     if (remoteBanner.getPlaceHolder() != null && remoteBanner.getErrorDrawable() != null) {
                         Picasso.with(getActivity()).load(remoteBanner.getUrl()).placeholder(remoteBanner.getPlaceHolder()).error(remoteBanner.getErrorDrawable()).into(imageView);
@@ -62,6 +71,7 @@ public class BannerFragment extends Fragment {
                     }
                 }
             }
+
             imageView.setOnTouchListener(banner.getOnTouchListener());
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,13 +87,5 @@ public class BannerFragment extends Fragment {
         } else {
             throw new RuntimeException("banner cannot be null");
         }
-    }
-
-    public static BannerFragment newInstance(Banner banner) {
-        Bundle args = new Bundle();
-        args.putParcelable("banner", banner);
-        BannerFragment fragment = new BannerFragment();
-        fragment.setArguments(args);
-        return fragment;
     }
 }

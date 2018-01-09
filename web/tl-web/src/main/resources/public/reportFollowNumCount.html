@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>数据分析统计</title>
+<link type="include" href="/common/depcss.html" />
+</head>
+<body class="iframeBody">
+<div class="scrollbar"> 
+	<div class="content">
+		<div class="clear"></div>
+		<div id='whole' class="viewBox">
+			
+		</div>
+	</div>
+</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="{=ctx}/echarts/world.js"></script>
+<script>
+    $(function () {
+    	$("#whole").append("<div id='tu1' class='FL panel'></div>");
+    	tu1Bind();
+    }); 
+</script>
+<script type="text/javascript">
+    var start;
+    var end;
+	function tu1Bind() {
+		var url = Const.apiUrl + "/dataCount/reportTypeFollowCount";
+		View.get(url,reportType, function(resp) {
+			reportFollowCount(resp);
+        }, function() {
+            TmplUtils.showMsgFail('信息获取失败');
+        });
+	}
+	//报表关注数统计：饼状图
+	function reportFollowCount(resp) {
+		// 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('tu1'));
+        // 指定图表的配置项和数据
+        var option = {
+      		title: {
+               text: reportType+'关注数统计',
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : {c}个 ({d}%)"
+            },
+            /* legend: {
+                orient: 'vertical',
+                x: 'left',
+                y: 'top',
+                left: 'left',
+                data: ['情况1', '情况2', '情况3']
+            }, */
+            calculable: false,
+            series: [
+            	{
+                //name: '账户总数',
+                type: 'pie',
+                label:{
+  	               	normal:{
+  	               		show:false,
+  	               		position : 'outside'
+  	               	},
+  	               	emphasis:{
+  	               		show :false
+  	               	}
+                }, 
+                data: encapsulatedData(resp)
+            	}
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+	}
+	  function encapsulatedData(resp){
+    	var arr = [];
+    	for(var i=0; i<resp.length;i++){
+    		console.log(resp[i])
+    		arr.push({
+    			 name : resp[i].key,
+    			 value : resp[i].value                       
+    			 }); 
+    	}
+    	return arr;
+    }
+	
+</script>
+</html>
