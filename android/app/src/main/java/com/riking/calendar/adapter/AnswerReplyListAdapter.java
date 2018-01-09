@@ -54,7 +54,6 @@ public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyList
         String replyText = "回复";
         String content = reply.content == null ? "" : reply.content;
 
-
         //set spannable string
         SpannableString toSpan = null;
         if (!TextUtils.isEmpty(to)) {

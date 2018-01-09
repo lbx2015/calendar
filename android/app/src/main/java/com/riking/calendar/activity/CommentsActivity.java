@@ -2,16 +2,11 @@ package com.riking.calendar.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -23,9 +18,9 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.base.ZActivity;
 import com.riking.calendar.adapter.CommentListAdapter;
 import com.riking.calendar.adapter.ReplyListAdapter;
-import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -37,6 +32,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.KeyboardEditText;
 
 import java.util.List;
@@ -46,9 +42,7 @@ import java.util.List;
  * news comments page
  */
 
-public class CommentsActivity extends AppCompatActivity { //Fragment 数组
-    CommentListAdapter mAdapter;
-    RecyclerView recyclerView;
+public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment 数组
     TextView publicButton;
     KeyboardEditText writeComment;
     ImageView answerIcon;
@@ -60,36 +54,31 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
     String commentContent;
     ReplyListAdapter replyListAdapter;
     RecyclerView replyRecyclerView;
-    private boolean isLoading = false;
-    private boolean isHasLoadedAll = false;
-    private int nextPage;
     private String newsId;
     private TextView activityTitle;
     private int commentsNum;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("zzw", this + "on create");
-        super.onCreate(savedInstanceState);
+    public void setLayout() {
         setContentView(R.layout.activity_comments);
-        Intent i = getIntent();
-        newsId = i.getStringExtra(CONST.NEWS_ID);
-        commentsNum = i.getIntExtra(CONST.COMMENT_NUM, 0);
-        init();
-        activityTitle.setText("评论" + ZR.getNumberString(commentsNum));
     }
 
-    private void init() {
-        initViews();
-        initEvents();
+    @Override
+    public CommentListAdapter getAdapter() {
+        return new CommentListAdapter(this);
     }
 
-    private void initViews() {
+    public void initViews() {
         activityTitle = findViewById(R.id.activity_title);
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);
-        recyclerView = findViewById(R.id.recycler_view);
+
+        //set title
+        Intent i = getIntent();
+        newsId = i.getStringExtra(CONST.NEWS_ID);
+        commentsNum = i.getIntExtra(CONST.COMMENT_NUM, 0);
+        activityTitle.setText("评论" + ZR.getNumberString(commentsNum));
     }
 
     public void setListenerToRootView() {
@@ -118,7 +107,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         });
     }
 
-    private void initEvents() {
+    public void initEvents() {
         setListenerToRootView();
         setPublicClickListener();
         writeComment.setOnKeyboardListener(new KeyboardEditText.KeyboardListener() {
@@ -157,12 +146,6 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                 }
             }
         });
-        LinearLayoutManager manager = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(manager);
-        mAdapter = new CommentListAdapter(this);
-        recyclerView.setAdapter(mAdapter);
-        loadData(1);
     }
 
     private void setPublicClickListener() {
@@ -178,12 +161,22 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                         params.commentId = replyComment.newsCommentId;
                         //reset to null
                         replyComment = null;
+                        if (ZPreference.getUserId().equals(replyComment.userId)) {
+                            ZToast.toast("自己不能回复自己");
+                            return;
+                        }
 
                     } else if (replyReply != null) {
                         params.toUserId = replyReply.fromUser.userId;
                         params.commentId = replyReply.commentId;
+                        params.replyId = replyReply.replyId;
                         //reset to null
                         replyReply = null;
+                        if (ZPreference.getUserId().equals(replyReply.fromUser.userId)) {
+                            ZToast.toast("自己不能回复自己");
+                            return;
+                        }
+
                     }
 
                     MyLog.d("commentReply:" + params.toString());
@@ -195,6 +188,9 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                             if (failed) {
 
                             } else {
+                                if(response._data == null){
+                                    return;
+                                }
                                 writeComment.setText("");
                                 if (replyListAdapter.mList.size() > 0) {
                                     MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
@@ -215,6 +211,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                 else {
                     NewsParams p = new NewsParams();
                     p.newsId = newsId;
+                    p.objType = 2;
                     p.content = commentContent;
                     p.userId = ZPreference.pref.getString(CONST.USER_ID, "");
                     APIClient.newsCommentPub(p, new ZCallBackWithFail<ResponseModel<NewsComment>>() {
@@ -226,7 +223,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
                                 writeComment.setText("");
                                 mAdapter.mList.add(0, response._data);
                                 mAdapter.notifyItemInserted(0);
-                                recyclerView.scrollToPosition(0);
+                                mRecyclerView.scrollToPosition(0);
                                 Toast.makeText(CommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -236,8 +233,7 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         });
     }
 
-    private void loadData(final int page) {
-        isLoading = true;
+    public void loadData(final int page) {
         loadNews(page);
        /* new Handler().postDelayed(new Runnable() {
             @Override
@@ -262,19 +258,21 @@ public class CommentsActivity extends AppCompatActivity { //Fragment 数组
         NewsParams p = new NewsParams();
         p.newsId = newsId;
 
-        APIClient.findNewsCommentList(p, new ZCallBack<ResponseModel<List<NewsComment>>>() {
+        APIClient.findNewsCommentList(p, new ZCallBackWithFail<ResponseModel<List<NewsComment>>>() {
             @Override
             public void callBack(ResponseModel<List<NewsComment>> response) {
-                List<NewsComment> comments = response._data;
-                isLoading = false;
-                if (comments.size() == 0) {
-                    Toast.makeText(CommentsActivity.this, "没有更多数据了",
-                            Toast.LENGTH_SHORT).show();
-                    isHasLoadedAll = true;
-                    return;
+                if (failed) {
+                    mPullToLoadView.setComplete();
+                    isLoading = false;
+
+                } else {
+                    List<NewsComment> comments = response._data;
+                    if (comments != null) {
+                        activityTitle.setText("评论" + comments.size());
+                    }
+
+                    setData2Adapter(comments);
                 }
-                mAdapter.addAll(comments);
-                nextPage = page + 1;
             }
         });
     }

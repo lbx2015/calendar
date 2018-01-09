@@ -315,9 +315,9 @@ public class ViewPagerActivity extends AppCompatActivity {
             public void onSuccess(AppVersionResult updateInfo) {
                 Logger.d("zzw", "on Success");
                 //返回0当前为最新版本，返回1有版本更新，返回2需要强制更新
-                if (updateInfo.type.equals("2")) {
+                if (updateInfo.enforce == 1) {
                     forceUpdate(updateInfo);
-                } else if (updateInfo.type.equals("1")) {
+                } else if (updateInfo.enforce == 0) {
                     normalUpdate(updateInfo);
                 }
             }
@@ -392,12 +392,12 @@ public class ViewPagerActivity extends AppCompatActivity {
     public void forceUpdate(final AppVersionResult updateInfo) {
         mDialog = new AlertDialog.Builder(this);
         mDialog.setTitle(BuildConfig.APPLICATION_ID + "又更新咯！");
-        mDialog.setMessage(updateInfo.msg);
+        mDialog.setMessage(updateInfo.remark);
         mDialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Logger.d("zzw", "on click download");
-                AppInnerDownLoder.downLoadApk(ViewPagerActivity.this, updateInfo.apkUrl, updateInfo.msg);
+                AppInnerDownLoder.downLoadApk(ViewPagerActivity.this, updateInfo.url, updateInfo.remark);
             }
         }).setCancelable(false).create().show();
     }
@@ -405,11 +405,11 @@ public class ViewPagerActivity extends AppCompatActivity {
     public void normalUpdate(final AppVersionResult updateInfo) {
         mDialog = new AlertDialog.Builder(this);
         mDialog.setTitle(BuildConfig.APPLICATION_ID + "又更新咯！");
-        mDialog.setMessage(updateInfo.msg);
+        mDialog.setMessage(updateInfo.remark);
         mDialog.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DownLoadApk.download(ViewPagerActivity.this, updateInfo.apkUrl, updateInfo.msg);
+                DownLoadApk.download(ViewPagerActivity.this, updateInfo.url, updateInfo.remark);
             }
         }).setCancelable(true).setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override

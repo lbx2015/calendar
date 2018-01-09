@@ -2,6 +2,7 @@ package com.riking.calendar.activity.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.util.ZToast;
-import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ import java.util.List;
  * with pagination function
  */
 
-public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
-    public PullToLoadViewWithoutFloatButton mPullToLoadView;
+public abstract class ZBaseActivity<T extends ZAdater> extends AppCompatActivity {
+    public SwipeRefreshLayout swipeRefreshLayout;
     public boolean isLoading = false;
     public boolean isHasLoadedAll = false;
     public int nextPage;
@@ -31,21 +32,6 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
     public TextView activityTitle;
     public T mAdapter;
     public View emptyLayout;
-    RecyclerView.AdapterDataObserver dataObserver = new RecyclerView.AdapterDataObserver() {
-        @Override
-        public void onChanged() {
-            if (mAdapter != null && emptyLayout != null) {
-                if (mAdapter.getItemCount() == 0) {
-                    emptyLayout.setVisibility(View.VISIBLE);
-                    mPullToLoadView.setVisibility(View.GONE);
-                } else {
-                    emptyLayout.setVisibility(View.GONE);
-                    mPullToLoadView.setVisibility(View.VISIBLE);
-                    mPullToLoadView.invalidate();
-                }
-            }
-        }
-    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,39 +50,37 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
 
     public void setEvents() {
         mAdapter = getAdapter();
-        mRecyclerView = mPullToLoadView.getRecyclerView();
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                boolean isEmpty = mAdapter.mList == null || mAdapter.mList.size() == 0;
+                MyLog.d("is empty: " + isEmpty);
+                if (isEmpty) {
+                    emptyLayout.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.GONE);
+                } else {
+                    emptyLayout.setVisibility(View.GONE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         LinearLayoutManager manager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
 
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.registerAdapterDataObserver(dataObserver);
-        dataObserver.onChanged();
-        mPullToLoadView.isLoadMoreEnabled(true);
-        mPullToLoadView.setPullCallback(new PullCallback() {
-            @Override
-            public void onLoadMore() {
-                load(nextPage);
-            }
-
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 isHasLoadedAll = false;
                 load(1);
             }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-
-            @Override
-            public boolean hasLoadedAllItems() {
-                return isHasLoadedAll;
-            }
         });
 
-        mPullToLoadView.initLoad();
+
+        load(1);
         initEvents();
     }
 
@@ -107,16 +91,16 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
 
     public void setData2Adapter(int currentPage, List<?> list) {
         isLoading = false;
-        mPullToLoadView.setComplete();
+        swipeRefreshLayout.setRefreshing(false);
         if (list != null && list.size() == 0) {
             ZToast.toast("没有更多数据了");
             emptyLayout.setVisibility(View.VISIBLE);
-            mPullToLoadView.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.GONE);
             return;
         }
 
         emptyLayout.setVisibility(View.GONE);
-        mPullToLoadView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
 
         //first page
         if (currentPage == 1) {
@@ -134,8 +118,8 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
             return;
         }
 
-        if (mPullToLoadView != null) {
-            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(true);
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
@@ -153,7 +137,8 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
     public void getViews() {
         emptyLayout = findViewById(R.id.empty);
         activityTitle = findViewById(R.id.activity_title);
-        mPullToLoadView = (PullToLoadViewWithoutFloatButton) findViewById(R.id.pullToLoadView);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        swipeRefreshLayout = findViewById(R.id.swipe_layout);
         initViews();
     }
 

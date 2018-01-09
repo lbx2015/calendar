@@ -41,7 +41,7 @@ public class NewsComment extends BaseAuditProp {
 
     // 点赞数
 //	@Transient
-    public Integer agreeNumber;
+    public int agreeNumber;
 
     // 用户头像Url
 //	@Transient
@@ -49,11 +49,11 @@ public class NewsComment extends BaseAuditProp {
 
     // 用户经验值
 //	@Transient
-    public Integer experience;
+    public int experience;
 
     // 等级
 //    @Transient
-    public Integer grade;
+    public int grade;
 
     // 评论的回复list
 //	@Transient

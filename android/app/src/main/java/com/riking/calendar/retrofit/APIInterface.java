@@ -173,7 +173,7 @@ public interface APIInterface {
     @POST("synchronous/synchronousTodos")
     Call<ResponseModel<String>> synchronousTasks(@Body List<Todo> tasks);
 
-    @POST("common/getappVersion")
+    @POST("common/getAppVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
 
     @POST("common/findIndustry")

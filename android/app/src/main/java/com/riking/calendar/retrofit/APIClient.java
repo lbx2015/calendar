@@ -567,7 +567,9 @@ public class APIClient {
         apiInterface.getAppVersion(j).enqueue(new ZCallBack<ResponseModel<AppVersionResult>>() {
             @Override
             public void callBack(ResponseModel<AppVersionResult> response) {
-                updateCallback.onSuccess(response._data);
+                if (response._data != null) {
+                    updateCallback.onSuccess(response._data);
+                }
             }
         });
     }
@@ -606,7 +608,7 @@ public class APIClient {
         apiInterface.getNewsDetail(params).enqueue(c);
     }
 
-    public static void findNewsCommentList(NewsParams params, ZCallBack<ResponseModel<List<NewsComment>>> c) {
+    public static void findNewsCommentList(NewsParams params, ZCallBackWithFail<ResponseModel<List<NewsComment>>> c) {
         apiInterface.findNewsCommentList(params).enqueue(c);
     }
 
@@ -642,7 +644,7 @@ public class APIClient {
         apiInterface.qAnswerAgree(params).enqueue(c);
     }
 
-    public static void qACommentList(QAnswerParams params, ZCallBack<ResponseModel<List<QAComment>>> c) {
+    public static void qACommentList(QAnswerParams params, ZCallBackWithFail<ResponseModel<List<QAComment>>> c) {
         apiInterface.qACommentList(params).enqueue(c);
     }
 

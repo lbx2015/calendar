@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.CommentsActivity;
+import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -23,31 +24,22 @@ import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //news comment adapter
-public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.MyViewHolder> {
-    public List<NewsComment> mList;
+public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder, NewsComment> {
     private CommentsActivity a;
 
     public CommentListAdapter(CommentsActivity context) {
         this.a = context;
-        mList = new ArrayList<>();
     }
 
     @Override
-    public CommentListAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.comment_list_item, viewGroup, false);
-        return new CommentListAdapter.MyViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final CommentListAdapter.MyViewHolder h, int i) {
+    public void onBindVH(final MyViewHolder h, int i) {
         final NewsComment c = mList.get(i);
-        ZR.setUserName(h.authorName, c.userName, c.grade,c.userId);
+        ZR.setUserName(h.authorName, c.userName, c.grade, c.userId);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
@@ -107,6 +99,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 ((CommentsActivity) a).clickWriteComment(c, h.replyListAdapter, h.recyclerView);
             }
         });
+
+    }
+
+    @Override
+    public MyViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.comment_list_item, viewGroup, false);
+        return new CommentListAdapter.MyViewHolder(view);
     }
 
     private void setRecyclerView(final RecyclerView recyclerView, final CommentListAdapter.MyViewHolder h, final int position) {
@@ -124,23 +124,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    public void addAll(List<NewsComment> mList) {
-        this.mList.clear();
-        this.mList = mList;
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends ZViewHolder {
         public CircleImageView authorImage;
         public ReplyListAdapter replyListAdapter;
         public RecyclerView recyclerView;
