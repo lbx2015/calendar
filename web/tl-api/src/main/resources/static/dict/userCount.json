@@ -1,0 +1,30 @@
+{
+	"table": "T_APPUSER",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "搜索时间",
+			"alias": "搜索时间",
+			"desc": "搜索时间",
+			"query": "1",
+			"query_order": "1",
+			"type": "date",
+			"group": "base"
+		},
+		{
+			"prop": "频度",
+			"alias": "频度",
+			"desc": "频度",
+			"query": "1",
+			"query_order": "2",
+			"type": "enum",
+			"dict_key": "T_APP_USER.FREQUENCY",
+			"group": "base"
+		}
+	]
+}

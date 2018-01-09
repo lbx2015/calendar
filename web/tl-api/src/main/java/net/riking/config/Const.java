@@ -9,7 +9,7 @@ import org.apache.activemq.ActiveMQConnection;
  *
  */
 public class Const {
-	
+
 	public static final String SYS_NAME_FLAG = "【悦历】";
 
 	public static final String KEY_WORD = "KEYWORD";
@@ -63,7 +63,7 @@ public class Const {
 	public static final String TL_QUESTIONSHARE_HTML5_PATH = "/questionShare.html";
 
 	public static final String TL_REPORT_INQUIRY_HTML5_PATH = "/inquiry.html";
-	
+
 	public static final String TL_QUESTION_ANSWER_HTML5_PATH = "/answer.html";
 
 	/* 验证码有效时间 */
@@ -79,7 +79,7 @@ public class Const {
 
 	// 系统日历
 	public static final String SYS_DAY = "SYS_DAY_";
-	
+
 	/** -------------------统计数 begin-------------------------- */
 	/* 报表类型统计数 */
 	public static final String COUNT_BY_REPORT_TYPE = "COUNTBYREPORTTYPE";
@@ -182,6 +182,11 @@ public class Const {
 	/* --------------------对象类型 end-------------------------- */
 
 	/** -------------------操作类型 begin-------------------------- */
+	/* 登录 */
+	public static final int USER_OPT_LOGIN = 1;
+
+	/* 注册 */
+	public static final int USER_OPT_REGIST = 2;
 
 	public static final int OBJ_OPT_FOLLOW = 0;// 关注
 
@@ -275,7 +280,7 @@ public class Const {
 
 	/** 评论的回复和回复的回复 */
 	public static final int MQ_OPT_COMMENT_REPLY = 10;
-	
+
 	/** 问题回答 */
 	public static final int MQ_OPT_QUESTION_ANWSER = 11;
 
@@ -310,15 +315,28 @@ public class Const {
 	public static final int NOTICE_OPT_COMMENT_REPLY = 8;
 
 	/* --------------------消息通知类型 end-------------------------- */
-	
-	//系统类的通知
+
+	// 系统类的通知
 	public static final String SYS_NOTICE_FROME_SYS = "SYS";
+
 	public static final String SYS_NOTICE_TO_USER = "ALL";
-	
+
 	/* -------------------系统通知字典标识 begin-------------------------- */
 	public static final String SYS_NOTICE_T_SYS_NOTICE = "T_SYS_NOTICE";
-	//用户注册通知
+
+	// 用户注册通知
 	public static final String SYS_NOTICE_USER_REGISTER = "USER_REGISTER_NOTICE";
-	
+
 	/* -------------------系统通知字典标识 end-------------------------- */
+
+	/* -------------------web 后台图像界面统计频度 begin-------------------------- */
+
+	public static final int SYS_MONTH = 0;
+
+	public static final int SYS_SEASON = 1;
+
+	public static final int SYS_HALF_YEAR = 2;
+
+	public static final int SYS_YEAR = 3;
+	/* -------------------web 后台图像界面统计频度 end-------------------------- */
 }

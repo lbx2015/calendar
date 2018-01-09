@@ -20,25 +20,37 @@
 <script type="text/javascript" src="{=ctx}/echarts/world.js"></script>
 <script>
     $(function () {
-    	$("#whole").append("<div id='tu1' class='FL panel'></div>");
-    	tu1Bind();
+    	var url = Const.apiUrl + "/dataCount/reportTypeFollowCount";
+		View.post(url,null, function(resp) {
+			/* for(var obj in resp){ */
+			for(var i = 0;i<resp.length;i++){
+				var divId = "tu"+i;
+				if(i%2 ==0){
+				$("#whole").append("<div id='"+divId+"' class='FR panel'></div>");
+				}else{
+					$("#whole").append("<div id='"+divId+"' class='FL panel'></div>");
+				}
+			reportFollowCount(resp[i],divId);
+			}
+        }, function() {
+            TmplUtils.showMsgFail('信息获取失败');
+        });
+    	
     }); 
 </script>
 <script type="text/javascript">
     var start;
     var end;
-	function tu1Bind() {
-		var url = Const.apiUrl + "/dataCount/reportTypeFollowCount";
-		View.get(url,reportType, function(resp) {
-			reportFollowCount(resp);
-        }, function() {
-            TmplUtils.showMsgFail('信息获取失败');
-        });
-	}
 	//报表关注数统计：饼状图
-	function reportFollowCount(resp) {
+	function reportFollowCount(resp,divId) {
+		var reportType;
+		var arr;
+			for(var obj in resp){
+				reportType = obj;
+				arr = resp[obj];
+			}
 		// 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('tu1'));
+        var myChart = echarts.init(document.getElementById(divId));
         // 指定图表的配置项和数据
         var option = {
       		title: {
@@ -61,15 +73,16 @@
                 //name: '账户总数',
                 type: 'pie',
                 label:{
-  	               	normal:{
-  	               		show:false,
-  	               		position : 'outside'
+                	normal:{
+  	               		show:true,
+  	               		position : 'outside',
+  	               		formatter: '{b}\n{d}%'
   	               	},
   	               	emphasis:{
   	               		show :false
   	               	}
                 }, 
-                data: encapsulatedData(resp)
+                data: encapsulatedData(arr)
             	}
             ]
         };
@@ -77,13 +90,12 @@
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
 	}
-	  function encapsulatedData(resp){
-    	var arr = [];
-    	for(var i=0; i<resp.length;i++){
-    		console.log(resp[i])
-    		arr.push({
-    			 name : resp[i].key,
-    			 value : resp[i].value                       
+	  function encapsulatedData(list){
+		  var arr = [];
+    	 for(var i=0; i<list.length;i++){
+    		 arr.push({
+    			 name : list[i].code,
+    			 value : list[i].count                       
     			 }); 
     	}
     	return arr;
