@@ -33,7 +33,7 @@ public class ReminderService extends Service {
         // TODO Auto-generated method stub
         super.onCreate();
         Log.d("zzw", "Service got created");
-        Toast.makeText(this, "ServiceClass.onCreate()", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "ServiceClass.onCreate()", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ReminderService extends Service {
         // TODO Auto-generated method stub
         super.onStart(intent, startId);
         reminderTitle = intent.getExtras().getString(CONST.REMINDER_TITLE);
-        Toast.makeText(this, reminderTitle + " ServiceClass.onStart()", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, reminderTitle + " ServiceClass.onStart()", Toast.LENGTH_LONG).show();
         Log.d("zzw", reminderTitle + "Service got started");
     }
 

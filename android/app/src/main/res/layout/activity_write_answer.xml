@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f8f8f8"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -47,11 +48,10 @@
         android:id="@+id/question_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/color_f8f8f8"
+        android:lineSpacingMultiplier="1.2"
         android:paddingBottom="15dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:text="本行与他行共同去投资的联合投资计划怎么填报？"
         android:textColor="@color/color_999999"
         android:textSize="18sp" />
 
