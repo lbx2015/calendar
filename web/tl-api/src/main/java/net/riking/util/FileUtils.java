@@ -241,7 +241,7 @@ public class FileUtils extends org.apache.commons.lang3.time.DateUtils {
 	public static String getAbsolutePathByProject(String subFolderPath){
 		String classesPath = null;
 		try {
-			classesPath = new String(Class.forName("net.riking.util.FileUtils").getClass().getResource("/").getPath().getBytes("iso-8859-1"), "UTF-8");
+			classesPath = new String(FileUtils.class.getResource("/").getPath().getBytes("iso-8859-1"), "UTF-8");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
