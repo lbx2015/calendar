@@ -25,6 +25,7 @@ import net.riking.core.utils.UuidUtils;
 import net.riking.dao.AppUserDao;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.UserLogRstHisRepo;
 import net.riking.entity.VO.AppUserVO;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
@@ -32,6 +33,7 @@ import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
 import net.riking.entity.model.UserFollowCollect;
+import net.riking.entity.model.UserLogRstHis;
 import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
@@ -57,6 +59,9 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	AppUserDao appUserDao;
+
+	@Autowired
+	UserLogRstHisRepo userLogRstHisRepo;
 
 	public AppUser findByPhone(String phone) {
 		return appUserRepo.findByPhone(phone);
@@ -89,8 +94,14 @@ public class AppUserServiceImpl implements AppUserService {
 		detail.setIsGuide(0);
 		user.setDetail(detail);
 
+		/* 用户注册历史 */
+		UserLogRstHis userLogRstHis = new UserLogRstHis();
+		userLogRstHis.setUserId(uuid);
+		userLogRstHis.setDataType(Const.USER_OPT_REGIST);
+
 		appUserRepo.save(user);
 		appUserDetailRepo.save(detail);
+		userLogRstHisRepo.save(userLogRstHis);
 		return user;
 	}
 

@@ -119,7 +119,7 @@ public class NewsServiceImpl implements NewsService {
 			copyFile(contentFileNames);
 		}
 		// 临时文件的图片转移路径
-		String[] coverFileNames = news.getContent().split("alt=");
+		String[] coverFileNames = new String[] { news.getCoverUrls() };
 		if (coverFileNames.length != 0 && coverFileNames != null) {
 			copyFile2CoverUrl(coverFileNames);
 		}
