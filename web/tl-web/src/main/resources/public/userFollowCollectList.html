@@ -24,7 +24,7 @@
 						批量审核
 					</button> --> 
 				</div>
-				<div class="_tmpl" data-url="filterCriteria.html" data-attr="userFollowCollect.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+				<div class="_tmpl" data-url="filterCriteria.html" data-attr="userFollowCollectByFilter.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
@@ -95,15 +95,17 @@
 				 //操作栏的宽度
                 data.operationWidth =12;
 				data.tdBeforeFill = function(obj) {
-					if(obj.prop=="userName"){
-						obj.html = "<a href='appUserList.html?userId="+obj.item.userId+"' >"+obj.item.userName+"</a>";
-				    }
-					if(obj.prop=="toUserName"){
-					if(obj.item.toUserName ==null || obj.item.toUserName == undefined){
-						obj.item.toUserName = '';
+					if(obj.item){
+						if(obj.prop=="userName"){
+							obj.html = "<span onclick='showMsg("+"\""+obj.item.userId+"\""+")' style='cursor:pointer'>"+obj.item.userName+"</span>";
+					    }
+						if(obj.prop=="toUserName"){
+							if(obj.item.toUserName ==null || obj.item.toUserName == undefined){
+								obj.item.toUserName = '';
+							}
+							obj.html = "<span onclick='showMsg("+"\""+obj.item.toUserId+"\""+")' style='cursor:pointer'>"+obj.item.toUserName+"</span>";
+					    }
 					}
-						obj.html = "<a href='appUserList.html?userId="+obj.item.toUserId+"' >"+obj.item.toUserName+"</a>";
-				    }
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
@@ -290,5 +292,12 @@
 
 		});
 	}
+	//显示跳转新建tab的页面
+	function showMsg(id){
+		url ="/appUserList.html?userId="+id;
+		TmplUtils.openInNewTab(url,"用户管理"); 
+	}
+	
+	
 </script>
 </html>

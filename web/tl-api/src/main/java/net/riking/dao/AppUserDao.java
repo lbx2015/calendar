@@ -27,13 +27,13 @@ public interface AppUserDao {
 
 	public OtherUserResp getOtherMes(String toUserId, String userId);
 
-	List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex, Integer pcount);
+	List<UserFollowCollect> findByFolColByUserId(UserFollowCollect userFollowCollect, Integer pindex, Integer pcount);
 
 	/**
 	 * 计算用户关注收藏管理总数
 	 * @param userId
 	 * @return
 	 */
-	Integer countByFolColByUserId(String userId, String userName);
+	Integer countByFolColByUserId(UserFollowCollect userFollowCollect);
 
 }
