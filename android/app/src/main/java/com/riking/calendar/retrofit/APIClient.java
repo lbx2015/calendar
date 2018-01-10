@@ -689,6 +689,8 @@ public class APIClient {
     }
 
     public static void getMyAnswers(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<QAnswerResult>>> c) {
+        //my answer number
+        params.optType = 2;
         apiInterface.getMyAnswers(params).enqueue(c);
     }
 

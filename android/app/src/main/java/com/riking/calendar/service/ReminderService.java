@@ -7,14 +7,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
+import android.media.RingtoneManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
-
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ViewPagerActivity;
@@ -78,7 +77,8 @@ public class ReminderService extends Service {
                 Notification notify = new NotificationCompat.Builder(getApplication())
                         .setSmallIcon(R.mipmap.launcher_icon)
                         .setTicker(reminderTitle)
-                        .setContentTitle(reminderTitle)
+                        .setContentTitle("Riking")
+                        .setContentText(reminderTitle)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(reminderTitle))
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
@@ -93,8 +93,8 @@ public class ReminderService extends Service {
 
                         // Setting a category for notification.
                         .setCategory(NotificationCompat.CATEGORY_ALARM)
-//                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setSound(Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.nice_ringtone_2017))
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+//                        .setSound(Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.nice_ringtone_2017))
                         .build();
                 /**
                  * 手机处于锁屏状态时， LED灯就会不停地闪烁， 提醒用户去查看手机,下面是绿色的灯光一 闪一闪的效果
