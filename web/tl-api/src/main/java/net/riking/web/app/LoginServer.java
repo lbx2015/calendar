@@ -42,6 +42,7 @@ import net.sf.json.JSONObject;
  * @used TODO
  */
 @RestController
+@RequestMapping(value = "/user")
 public class LoginServer {
 
 	private static final Logger logger = LogManager.getLogger("LoginServer");
@@ -70,7 +71,7 @@ public class LoginServer {
 	 */
 
 	@ApiOperation(value = "用户登录及注册", notes = "POST")
-	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public AppResp login_(@RequestBody LoginParams loginParams) {
 
 		AppUser user = null;
