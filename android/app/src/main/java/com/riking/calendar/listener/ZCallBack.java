@@ -77,7 +77,7 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
         } else if ((response.body().code == CodeDef.EMP.DATA_NOT_FOUND)) {
             Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.data_not_found) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else if (response.body().code != CodeDef.SUCCESS) {
-            Toast.makeText(MyApplication.APP, MyApplication.APP.getString(R.string.error_server) + response.body().codeDesc, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.APP, response.body().codeDesc, Toast.LENGTH_SHORT).show();
         } else {
             callBack(response.body());
         }
