@@ -17,6 +17,7 @@ import com.riking.calendar.activity.AnswerCommentsActivity;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.activity.WriteAnswerActivity;
+import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -32,46 +33,23 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter {
+public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
 
     public static final int REMMEND_TYPE = 2;
-    public List<TQuestionResult> mList;
     private Context context;
 
     public HomeAdapter(Context context) {
         this.context = context;
-        mList = new ArrayList<>();
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view;
-        if (viewType == REMMEND_TYPE) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                    R.layout.topic_suggestion_item, viewGroup, false);
-            return new RecommendedViewHolder(view);
-        } else {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                    R.layout.home_item, viewGroup, false);
-            return new HomeViewHolder(view);
-        }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (mList.get(position).pushType == 6 || mList.get(position).pushType == 7) {
-            return REMMEND_TYPE;
-        }
-        return super.getItemViewType(position);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, int i) {
+    public void onBindVH(ZViewHolder cellHolder, int i) {
         final TQuestionResult r = mList.get(i);
 
         if (getItemViewType(i) == REMMEND_TYPE) {
@@ -181,6 +159,29 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 }
             });
         }
+
+    }
+
+    @Override
+    public ZViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
+        View view;
+        if (viewType == REMMEND_TYPE) {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                    R.layout.topic_suggestion_item, viewGroup, false);
+            return new RecommendedViewHolder(view);
+        } else {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                    R.layout.home_item, viewGroup, false);
+            return new HomeViewHolder(view);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mList.get(position).pushType == 6 || mList.get(position).pushType == 7) {
+            return REMMEND_TYPE;
+        }
+        return super.getItemViewType(position);
     }
 
     private void setAnswerData(final HomeViewHolder h, final TQuestionResult r) {
@@ -353,20 +354,5 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 });
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    public void add(TQuestionResult s) {
-        mList.add(s);
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
     }
 }

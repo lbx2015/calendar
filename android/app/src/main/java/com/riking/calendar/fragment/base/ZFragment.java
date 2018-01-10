@@ -62,7 +62,7 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
         initViews();
     }
 
-    public void setData2Adapter(int currentPage, List<?> list) {
+    private void updateEmpty(int currentPage, List<?> list) {
         isLoading = false;
         mPullToLoadView.setComplete();
         if (list.size() == 0) {
@@ -74,14 +74,26 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
 
         emptyLayout.setVisibility(View.GONE);
         mPullToLoadView.setVisibility(View.VISIBLE);
+        nextPage = currentPage + 1;
+    }
 
+    public void appendData2Adapter(int currentPage, List<?> list) {
+        updateEmpty(currentPage, list);
+        if (currentPage == 1) {
+            mAdapter.addAllAtStart(list);
+        } else {
+            mAdapter.addAllAtEnd(list);
+        }
+    }
+
+    public void setData2Adapter(int currentPage, List<?> list) {
+        updateEmpty(currentPage, list);
         //first page
         if (currentPage == 1) {
             mAdapter.setData(list);
         } else {
             mAdapter.addAllAtEnd(list);
         }
-        nextPage = currentPage + 1;
     }
 
     public abstract T getAdapter();
