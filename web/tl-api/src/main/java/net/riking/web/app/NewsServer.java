@@ -42,6 +42,7 @@ import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
 import net.riking.service.NewsService;
+import net.riking.service.ShieldKeyWordService;
 import net.riking.util.DateUtils;
 import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
@@ -89,6 +90,9 @@ public class NewsServer {
 
 	@Autowired
 	NewsService newsService;
+	
+	@Autowired
+	ShieldKeyWordService shieldKeyWordService;
 
 	/**
 	 * 获取资讯列表
@@ -269,6 +273,10 @@ public class NewsServer {
 	@ApiOperation(value = "资讯评论发布", notes = "POST")
 	@RequestMapping(value = "/newsCommentPub", method = RequestMethod.POST)
 	public AppResp newsCommentPub(@RequestBody NewsParams newsParams) {
+		if(!shieldKeyWordService.checkKeyWord(newsParams.getContent())){
+			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+		}
+		
 		NewsComment newsCommentInfo = new NewsComment();
 		AppUser appUser = appUserRepo.findOne(newsParams.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());
@@ -298,14 +306,14 @@ public class NewsServer {
 			newsCommentInfo.setExperience(appUserDetail.getExperience());
 		}
 		newsCommentInfo.setIsAgree(0);// 0-未点赞
-		if (StringUtils.isNotBlank(newsParams.getUserId())) {
-			List<String> ncIds = nCAgreeRelRepo.findByUserId(newsParams.getUserId(), 1);// 点赞
-			for (String ncId : ncIds) {
-				if (newsCommentInfo.getId().equals(ncId)) {
-					newsCommentInfo.setIsAgree(1);// 1-已点赞
-				}
-			}
-		}
+//		if (StringUtils.isNotBlank(newsParams.getUserId())) {
+//			List<String> ncIds = nCAgreeRelRepo.findByUserId(newsParams.getUserId(), 1);// 点赞
+//			for (String ncId : ncIds) {
+//				if (newsCommentInfo.getId().equals(ncId)) {
+//					newsCommentInfo.setIsAgree(1);// 1-已点赞
+//				}
+//			}
+//		}
 		if (null != newsCommentInfo.getPhotoUrl()) {
 			// newsCommentInfo
 			// .setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
@@ -317,7 +325,6 @@ public class NewsServer {
 		if (null != newsCommentInfo.getExperience()) {
 			newsCommentInfo.setGrade(appUserService.transformExpToGrade(newsCommentInfo.getExperience()));
 		}
-		// newsCommentRepo.save(newsCommentInfo);
 		return new AppResp(newsCommentInfo, CodeDef.SUCCESS);
 	}
 

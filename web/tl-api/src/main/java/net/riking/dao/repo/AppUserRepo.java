@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;

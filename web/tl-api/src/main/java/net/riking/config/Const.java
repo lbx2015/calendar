@@ -12,7 +12,9 @@ public class Const {
 
 	public static final String SYS_NAME_FLAG = "【悦历】";
 
-	public static final String KEY_WORD = "KEYWORD";
+	public static final String QUESTION_KEY_WORD = "QUESTIONKEYWORD";
+	
+	public static final String SHIELD_KEY_WORD = "SHIELDKEYWORD";
 
 	public static final Integer IS_DELETE = 0;
 

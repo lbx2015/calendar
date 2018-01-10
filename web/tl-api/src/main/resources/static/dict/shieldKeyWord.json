@@ -1,0 +1,19 @@
+{
+	"table": "T_QUEST_KEYWORD",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "keyWord",
+			"alias": "关键字",
+			"group": "base",
+			"query": "1",
+			"query_order": "1",
+			"type": "string"
+		}
+	]
+}

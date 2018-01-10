@@ -1,8 +1,8 @@
 package com.riking.calendar.activity;
 
-import android.os.Handler;
 import android.view.View;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.activity.base.ZActivity;
 import com.riking.calendar.adapter.MyRepliesAdapter;
 import com.riking.calendar.listener.ZCallBackWithFail;
@@ -50,23 +50,11 @@ public class MyRepliesActivity extends ZActivity<MyRepliesAdapter> { //Fragment 
         if (page > 1 && isHasLoadedAll) {
             return;
         }
-        if (mPullToLoadView != null) {
-            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mPullToLoadView != null) {
-                        mPullToLoadView.setComplete();
-                    }
-                }
-            }, 5000);
-        }
 
         final UserFollowParams params = new UserFollowParams();
         params.userId = userId;
-        //my answer number
-        params.optType = 2;
         params.pindex = page;
+        MyLog.d("load my replies");
         APIClient.getMyAnswers(params, new ZCallBackWithFail<ResponseModel<List<QAnswerResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QAnswerResult>> response) {

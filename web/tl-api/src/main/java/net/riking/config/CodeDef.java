@@ -102,6 +102,14 @@ public class CodeDef {
 		public static final short REPORT_SUBSCRIBE_ERROR = -981;
 
 		public static final String REPORT_SUBSCRIBE_ERROR_DESC = "报表订阅失败";
+		
+		// 含有敏感字
+		public static final short REPORT_SHIELD_ERROR = -980;
+
+		public static final String REPORT_SHIELD_ERROR_DESC = "内容含有敏感词";
+		
+		
+		
 	}
 
 }

@@ -47,7 +47,7 @@ public class Topic extends BaseAuditProp {
 	@Column(name = "content", nullable = false)
 	private String content;
 
-	@Comment("话题url")
+	@Comment("话题封面url")
 	@Lob
 	@Column(name = "topic_url", nullable = false)
 	private String topicUrl;
