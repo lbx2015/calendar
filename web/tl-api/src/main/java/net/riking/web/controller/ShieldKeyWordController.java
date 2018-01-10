@@ -18,47 +18,44 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
-import net.riking.dao.repo.TopicRepo;
-import net.riking.entity.model.QuestionKeyWord;
-import net.riking.service.QuestionKeyWordService;
+import net.riking.entity.model.ShieldKeyWord;
+import net.riking.service.ShieldKeyWordService;
 
 @RestController
-@RequestMapping(value = "/questionKeyWord")
-public class questionKeyWordController {
-	@Autowired
-	TopicRepo topicRepo;
+@RequestMapping(value = "/shieldKeyWord")
+public class ShieldKeyWordController {
 	
 	@Autowired
-	QuestionKeyWordService questionKeyWordService;
+	ShieldKeyWordService shieldKeyWordService;
 	
 	@ApiOperation(value = "得到单个信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") Long id) {
-		QuestionKeyWord keyWord = questionKeyWordService.getRepo().findOne(id);
+		ShieldKeyWord keyWord = shieldKeyWordService.getRepo().findOne(id);
 		return new Resp(keyWord, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "得到信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute QuestionKeyWord keyWord) {
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute ShieldKeyWord keyWord) {
 		query.setSort("id_desc");
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		Example<QuestionKeyWord> example = Example.of(keyWord, ExampleMatcher.matchingAll());
-		Page<QuestionKeyWord> page = questionKeyWordService.getRepo().findAll(example, pageable);
+		Example<ShieldKeyWord> example = Example.of(keyWord, ExampleMatcher.matchingAll());
+		Page<ShieldKeyWord> page = shieldKeyWordService.getRepo().findAll(example, pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "添加或者更新信息", notes = "POST")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public Resp save_(@RequestBody QuestionKeyWord keyWord) {
-		questionKeyWordService.addKeyWord(keyWord);
+	public Resp save_(@RequestBody ShieldKeyWord keyWord) {
+		shieldKeyWordService.addKeyWord(keyWord);
 		return new Resp(CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "删除信息", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore(@RequestBody List<Long> ids) {
-		questionKeyWordService.delKeyWord(ids);
+		shieldKeyWordService.delKeyWord(ids);
 		return new Resp(CodeDef.SUCCESS);
 	}
 	

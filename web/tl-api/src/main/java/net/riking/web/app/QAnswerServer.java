@@ -42,6 +42,7 @@ import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
 import net.riking.service.AppUserService;
+import net.riking.service.ShieldKeyWordService;
 import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
 import net.sf.json.JSONObject;
@@ -99,6 +100,9 @@ public class QAnswerServer {
 
 	@Autowired
 	AppUserFollowRelRepo userFollowRelRepo;
+	
+	@Autowired
+	ShieldKeyWordService shieldKeyWordService;
 
 	@Autowired
 	Config config;
@@ -183,6 +187,9 @@ public class QAnswerServer {
 		}
 		if (StringUtils.isBlank(qAnswerParams.getContent())) {
 			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+		}
+		if(!shieldKeyWordService.checkKeyWord(qAnswerParams.getContent())){
+			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
 		}
 		qAnswerParams.setMqOptType(Const.MQ_OPT_QANSWER_COMMENT);
 		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);

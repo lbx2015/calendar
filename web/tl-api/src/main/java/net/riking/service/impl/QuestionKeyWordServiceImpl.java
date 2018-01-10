@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import net.riking.util.RedisUtil;
  * @used TODO
  */
 @Service("questionKeyWordService")
+@Transactional
 public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 	
 	@Autowired
@@ -50,7 +53,7 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 					map.put(questionKeyWord.getKeyWord(), set);
 				}
 			}
-			RedisUtil.getInstall().setSet(Const.KEY_WORD, new HashSet<String>(map.keySet()));
+			RedisUtil.getInstall().setSet(Const.QUESTION_KEY_WORD, new HashSet<String>(map.keySet()));
 			for (String keyWord : map.keySet()) {
 				RedisUtil.getInstall().setSet(keyWord, map.get(keyWord));
 			}
@@ -60,7 +63,7 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 	@SuppressWarnings("static-access")
 	@Override
 	public Set<String> getTopicIdByQuestion(String questionTitle) {
-		Set<String> set = RedisUtil.getInstall().getSet(Const.KEY_WORD);
+		Set<String> set = RedisUtil.getInstall().getSet(Const.QUESTION_KEY_WORD);
 		Set<String> set2 = new HashSet<>();
 		if(null!=set && set.size()>0){
 			for (String keyWord : set) {
@@ -94,11 +97,14 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 
 	@Override
 	public void delKeyWord(List<Long> ids) {
-		List<QuestionKeyWord> list = questionKeyWordRepo.findAll(ids);
-		for (QuestionKeyWord keyWord : list) {
-			questionKeyWordRepo.delete(keyWord.getId());
+//		List<QuestionKeyWord> list = questionKeyWordRepo.findAll(ids);
+//		for (QuestionKeyWord keyWord : list) {
+//			questionKeyWordRepo.delete(keyWord.getId());
+//		}
+		if(!ids.isEmpty()){
+			ids.forEach(e->{questionKeyWordRepo.delete(e);});
+			this.initKeyWord();
 		}
-		this.initKeyWord();
 	}
 
 	

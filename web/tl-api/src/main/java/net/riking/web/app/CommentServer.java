@@ -27,6 +27,7 @@ import net.riking.entity.model.QACReply;
 import net.riking.entity.params.CommentParams;
 import net.riking.entity.resp.FromUser;
 import net.riking.entity.resp.ToUser;
+import net.riking.service.ShieldKeyWordService;
 import net.riking.util.MQProduceUtil;
 import net.sf.json.JSONObject;
 
@@ -67,6 +68,9 @@ public class CommentServer {
 
 	@Autowired
 	AppUserRepo appUserRepo;
+	
+	@Autowired
+	ShieldKeyWordService shieldKeyWordService;
 
 	/**
 	 * 评论点赞
@@ -105,7 +109,9 @@ public class CommentServer {
 	@ApiOperation(value = "评论的回复和回复的回复", notes = "POST")
 	@RequestMapping(value = "/commentReply", method = RequestMethod.POST)
 	public AppResp commentReply_(@RequestBody CommentParams commentParams) {
-
+		if(!shieldKeyWordService.checkKeyWord(commentParams.getContent())){
+			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+		}
 		AppUser appUser = appUserRepo.findOne(commentParams.getUserId());
 		commentParams.setMqOptType(Const.MQ_OPT_COMMENT_REPLY);
 		JSONObject jsonArray = JSONObject.fromObject(commentParams);

@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Config;
 import net.riking.config.Const;
-import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAInviteRepo;
@@ -42,6 +41,7 @@ import net.riking.entity.params.QAnswerParams;
 import net.riking.entity.params.TQuestionParams;
 import net.riking.service.AppUserService;
 import net.riking.service.QuestionKeyWordService;
+import net.riking.service.ShieldKeyWordService;
 import net.riking.util.FileUtils;
 import net.riking.util.MQProduceUtil;
 import net.riking.util.Utils;
@@ -93,6 +93,9 @@ public class TopicQuestionServer {
 	
 	@Autowired
 	QuestionKeyWordService questionKeyWordService;
+	
+	@Autowired
+	ShieldKeyWordService shieldKeyWordService;
 
 	@ApiOperation(value = "问题详情分享", notes = "POST")
 	@RequestMapping(value = "/questionShare", method = RequestMethod.POST)
@@ -104,6 +107,9 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
 	public AppResp inquiry(@RequestBody Map<String, Object> params) {
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
+		if(!shieldKeyWordService.checkKeyWord(tQuestionParams.getTitle())){
+			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+		}
 		String title = "";
 		try {
 		    if (!tQuestionParams.getTitle().endsWith("?")) {
@@ -227,13 +233,17 @@ public class TopicQuestionServer {
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
 	
+	@ApiOperation(value = "话题保存", notes = "GET")
 	@RequestMapping(value = "/questionSave", method = RequestMethod.GET)
-	public Resp questionSave_(@RequestParam HashMap<String, Object> params) {
+	public AppResp questionSave_(@RequestParam HashMap<String, Object> params) {
 		TopicQuestion topicQuestion = Utils.map2Obj(params, TopicQuestion.class);
 		try {
 			topicQuestion.setTitle(URLDecoder.decode(topicQuestion.getTitle(), "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			return new Resp(CodeDef.ERROR);
+			return new AppResp(null, CodeDef.ERROR);
+		}
+		if(!shieldKeyWordService.checkKeyWord(topicQuestion.getContent())){
+			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
 		}
 		String[] fileNames = topicQuestion.getContent().split("alt=");
 		for (int i = 1; i < fileNames.length; i++) {
@@ -246,7 +256,7 @@ public class TopicQuestionServer {
 				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
 			} catch (Exception e) {
 				logger.error("文件复制异常" + e);
-				return new Resp(CodeDef.ERROR);
+				return new AppResp(null, CodeDef.ERROR);
 			}
 			FileUtils.deleteFile(oldPhotoUrl);
 		}
@@ -256,7 +266,7 @@ public class TopicQuestionServer {
 		topicQuestion.setContent(topicQuestion.getContent().replace("temp", "question"));
 		topicQuestionRepo.save(topicQuestion);
 
-		return new Resp(topicQuestion, CodeDef.SUCCESS);
+		return new AppResp(topicQuestion, CodeDef.SUCCESS);
 	}
 	
 	@ApiOperation(value = "回答h5页面跳转", notes = "POST")
@@ -270,7 +280,7 @@ public class TopicQuestionServer {
 	
 	@ApiOperation(value = "回答保存", notes = "GET")
 	@RequestMapping(value = "/answerSave", method = RequestMethod.GET)
-	public Resp answerSave_(@RequestParam HashMap<String, Object> params) {
+	public AppResp answerSave_(@RequestParam HashMap<String, Object> params) {
 		QuestionAnswer questionAnswer = Utils.map2Obj(params, QuestionAnswer.class);
 //		String[] fileNames = questionAnswer.getContent().split("alt=");
 //		for (int i = 1; i < fileNames.length; i++) {
@@ -287,6 +297,9 @@ public class TopicQuestionServer {
 //			}
 //			FileUtils.deleteFile(oldPhotoUrl);
 //		}
+		if(!shieldKeyWordService.checkKeyWord(questionAnswer.getContent())){
+			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+		}
 		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
 		Matcher matcher = pattern.matcher(questionAnswer.getContent());
         while(matcher.find()){
@@ -302,7 +315,7 @@ public class TopicQuestionServer {
 				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
 			} catch (Exception e) {
 				logger.error("文件复制异常" + e);
-				return new Resp(CodeDef.ERROR);
+				return new AppResp(CodeDef.ERROR);
 			}
 			FileUtils.deleteFile(oldPhotoUrl);
         }
@@ -321,6 +334,6 @@ public class TopicQuestionServer {
 		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
 		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 		
-		return new Resp(questionAnswer, CodeDef.SUCCESS);
+		return new AppResp(questionAnswer, CodeDef.SUCCESS);
 	}
 }

@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>屏蔽词</title>
+<link type="include" href="/common/depcss.html" />
+</head>
+
+<body class="iframeBody">
+<div class="scrollbar">
+	<div class="content">
+		<div class="layui-elem-field actionBar">
+			<div class="layui-btn-group absolute">
+				<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
+					<i class="layui-icon">&#xe608;</i>
+					添加
+				</button>
+				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+					<i class="layui-icon">&#xe640;</i>
+					批量删除
+				</button>
+			</div>
+			<div class="_tmpl" data-url="filterCriteria.html" data-attr="shieldKeyWord.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="tableBar">
+			<div class="tableContent layui-form">
+				<div class="_tmpl" data-url="table.html" id="table" data-attr="shieldKeyWord.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+			</div>
+		</div>
+		<div style="clear: both"></div>
+		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+	</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+	$(function() {
+		$("#add-data").click(function() {
+			var url = "shieldKeyWordEdit.html";
+			var title = "添加数据";
+			View.openDialog(url, title);
+		});
+
+		var form = layui.form;
+		//监听提交，设置为不刷新页面
+		form.on('submit', function(data) {
+			return false;
+		});
+	});
+</script>
+<script>
+	var form = layui.form, layer = layui.layer;
+	//全选
+	form.on('checkbox(allChoose)', function(data) {
+		var child = $(data.elem).parents('table').find(
+				'tbody input[type="checkbox"]');
+		child.each(function(index, item) {
+			item.checked = data.elem.checked;
+		});
+		form.render('checkbox');
+	});
+</script>
+<script>
+	
+</script>
+<script>
+	var item;
+	var tbTmpl;
+	var dataResp;
+	function tbOnBind(attrs, param) {
+		tmpl = this;
+		tbTmpl = tmpl;
+
+		var _bind = function(callback) {
+			var url = Const.apiUrl + "/shieldKeyWord/getMore";
+			var _this = this;
+			var _succ = function(resp) {
+				var data = {};
+				if (resp) {
+					data.data = resp;
+					dataResp = resp;
+					TmplUtils.totalPages = data.data.totalPages;
+					TmplUtils.totalCount = data.data.totalElements;
+				}
+				//是否需要全选checkbox
+				data.hasCheckbox = true;
+				//是否有操作列
+				data.hasOperation = true;
+				//操作按钮
+				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
+				//表格显示列数
+				data.operationWidth = 10;
+				data.tdLeftWidth = [ 5, 5];
+				//如果要修改表格内容 ，无需修改的忽略此项
+				data.tdBeforeFill = function(obj) {
+					if (obj['item']) {
+						if (obj.isOperColumn) {
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
+									+ "\""
+									+ obj.item.id
+									+ "\""
+									+ ");'>查看</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
+									+ "\""
+									+ obj.item.id
+									+ "\""
+									+ ");'>修改</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
+									+ "\""
+									+ obj.item.id
+									+ "\""
+									+ ");'>删除</button>";
+						}
+					}
+					return obj.html;
+				}
+				callback.call(_this, data);
+				if (TmplUtils.pageTmpl.refresh) {
+					TmplUtils.pageTmpl.refresh();
+				}
+
+			};
+			View.get(url, param, _succ, function(code) {
+				TmplUtils.showMsgFail('查询出错');
+			});
+		}
+
+		tmpl.bind(_bind);
+	}
+
+	//查询条件绑定
+	function filterCriteriaOnBind(attrs, param) {
+		tmpl = this;
+		var _this = this;
+		tmpl.bind(function(callback) {
+			var data = {};
+			data.searchClick = "search";
+			callback.call(_this, data);
+			TmplUtils.filterCriteriaOnLoad();
+		});
+	}
+	//查询
+	function search() {
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tbTmpl.refresh("pindex=0" + "&pcount=" + TmplUtils.pageSize
+				+ TmplUtils.searchParam);
+		TmplUtils.currPage = 1;
+		TmplUtils.closePreview();
+	}
+
+	//弹出添加iframe
+	function edit(id) {
+		var url = "shieldKeyWordEdit.html?id=" + id;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
+	//弹出添加iframe
+	function view(id) {
+		var flag = "view";
+		var url = "shieldKeyWordEdit.html?id=" + id + "&flag=" + flag;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
+	function reportSubmitCaliber(id) {
+		var url = "reportSubmitCaliberList.html?id=" + id;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
+	//删除
+	function del() {
+		//获取选择的id
+		var arrChk = $("input[name='tdCheckbox']");
+		var ids = [];
+		$(arrChk).each(function() {
+			if ($(this).next('div').hasClass("layui-form-checked")) {
+				ids.push($(this).data("id"));
+			}
+		});
+		if (ids.length < 1) {
+			TmplUtils.showMsgFail("请至少选择一项数据");
+			return;
+		}
+		TmplUtils.showConfirm('您确定删除这些数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/shieldKeyWord/delMore"
+			View.post(url, ids, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function() {
+
+		});
+	}
+
+	//删除
+	function dele(id) {
+		var ids = [];
+		ids.push(id);
+		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/shieldKeyWord/delMore"
+			View.post(url, ids, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function() {
+
+		});
+	}
+</script>
+</html>

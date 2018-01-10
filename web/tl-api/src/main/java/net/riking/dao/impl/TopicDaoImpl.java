@@ -41,7 +41,7 @@ public class TopicDaoImpl implements TopicDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TopicResult topicResult = new TopicResult();
-				topicResult.setId("id");
+				topicResult.setId(rs.getString("id"));
 				topicResult.setTopicUrl(rs.getString("topicUrl"));
 				topicResult.setTitle(rs.getString("title"));
 				list.add(topicResult);
