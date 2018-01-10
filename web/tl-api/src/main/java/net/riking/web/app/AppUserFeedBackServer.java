@@ -21,12 +21,13 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.FeedBackRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.FeedBack;
 import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
+import net.riking.util.FileUtils;
 
 /**
  * app用户信息操作
@@ -59,7 +60,7 @@ public class AppUserFeedBackServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	SignInService signInService;
@@ -80,9 +81,10 @@ public class AppUserFeedBackServer {
 			@RequestParam("content") String content) {
 		String fileName = "";
 		List<String> fileNames = new ArrayList<String>();
+		String folderPath = FileUtils.getAbsolutePathByProject(Const.TL_FEED_BACK_PHOTO_PATH);
 		try {
 			for (MultipartFile mFile : mFiles) {
-				String photoName = appUserService.savePhotoFile(mFile, Const.TL_FEED_BACK_PHOTO_PATH);
+				String photoName = FileUtils.saveMultipartFile(mFile, folderPath);
 				fileNames.add(photoName);
 			}
 		} catch (RuntimeException e) {

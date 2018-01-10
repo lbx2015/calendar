@@ -77,6 +77,9 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 	@Query("update AppUser set enabled = '0' where id = ?1")
 	int unEnable(String id);
 
+	@Query("select id from AppUser where isDeleted='1' and userName=?1")
+	Set<String> getUserIdsByUserName(String userName);
+
 	/******** WEB END ************/
 
 	// @Transactional

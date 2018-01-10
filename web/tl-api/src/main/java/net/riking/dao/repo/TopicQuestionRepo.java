@@ -23,7 +23,7 @@ import net.riking.entity.model.TopicQuestion;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("topicQuestionRepo")
 public interface TopicQuestionRepo
 		extends JpaRepository<TopicQuestion, String>, JpaSpecificationExecutor<TopicQuestion> {
 	/**
@@ -62,8 +62,7 @@ public interface TopicQuestionRepo
 	 */
 	@Query("select new net.riking.entity.model.QuestResult(tq.id,tq.title,tq.createdTime) FROM TopicQuestion tq  where  tq.isAduit <> 2 and tq.isDeleted = 1 and tq.userId = ?1 order by tq.createdTime DESC")
 	List<QuestResult> findByUserId(String userId, Pageable pageable);
-	
-	
+
 	/*********** WEB ************/
 	@Transactional
 	@Modifying
@@ -74,4 +73,9 @@ public interface TopicQuestionRepo
 	@Modifying
 	@Query(" update TopicQuestion set isAduit=1 where id in ?1 ")
 	int verifyById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update TopicQuestion set isAduit=2 where id in ?1 ")
+	int verifyNotPassById(Set<String> ids);
 }

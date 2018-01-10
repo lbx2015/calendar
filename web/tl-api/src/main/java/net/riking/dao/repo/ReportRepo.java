@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.Report;
+import net.riking.entity.model.ReportCodeCount;
 import net.riking.entity.model.ReportSubscribeRel;
 
 /**
@@ -57,6 +58,22 @@ public interface ReportRepo extends JpaRepository<Report, String>, JpaSpecificat
 	@Modifying
 	@Query(" update Report set isAduit=1 where id in ?1 ")
 	int verifyById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update Report set isAduit=2 where id in ?1 ")
+	int verifyNotPassById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update Report set enabled=?2 where id =?1 ")
+	int updEnable(String id, int enabled);
+
+	@Query("select count(*) from ReportSubscribeRel rs,Report r where r.id = rs.reportId and r.reportType = ?1")
+	Integer countSubscribeNumByReportType(String reportType);
+
+	@Query("select new net.riking.entity.model.ReportCodeCount(r.code,count(*)) from ReportSubscribeRel rs,Report r where r.id = rs.reportId and r.reportType = ?1 group by code")
+	List<ReportCodeCount> countSubscribeNumByReportCode(String reportType);
 	/******** WEB END ************/
 
 }

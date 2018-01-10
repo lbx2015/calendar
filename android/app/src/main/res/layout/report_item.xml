@@ -3,9 +3,7 @@
     android:id="@+id/item_view"
     android:layout_width="match_parent"
     android:layout_height="59dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/report_name"
@@ -13,6 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginTop="10dp"
+        android:drawablePadding="3dp"
+        android:ellipsize="end"
+        android:maxLength="12"
         android:text="TextView"
         android:textColor="@color/color_222222"
         android:textSize="17sp" />

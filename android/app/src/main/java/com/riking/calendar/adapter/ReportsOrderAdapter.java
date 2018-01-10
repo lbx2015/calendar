@@ -9,16 +9,15 @@ import android.view.ViewGroup;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.PositionSelectActivity;
-import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.interfeet.SubscribeReport;
-import com.riking.calendar.listener.ZCallBackWithFail;
-import com.riking.calendar.pojo.AppUser;
+import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
     @Override
     public ReportOrderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.report_item, viewGroup, false);
+                R.layout.report_order_item, viewGroup, false);
         return new ReportOrderViewHolder(view);
     }
 
@@ -46,9 +45,8 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
     public void onBindViewHolder(final ReportOrderViewHolder h, int i) {
         final ReportResult r = mList.get(i);
         h.reportTitle.setText(r.title);
-        h.reportName.setText(r.code);
-        h.reportName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_formlabel_icon_month, 0);
-        h.reportName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
+        ZR.setReportName(h.code, r.code, r.frequency, r.reportBatch,r.reportId);
+
         if (r.isSubscribe == 0) {
             h.subscribed = false;
         } else {
@@ -96,22 +94,23 @@ public class ReportsOrderAdapter extends RecyclerView.Adapter<ReportOrderViewHol
                 }
             }
         });
-        MyLog.d("reportName: " + h.reportName);
-        h.itemView.setOnClickListener(new View.OnClickListener() {
+        MyLog.d("reportName: " + h.code);
+        h.reportTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MyApplication.mCurrentActivity, PositionSelectActivity.class);
-//                i.putExtra(CONST.INDUSTRY_ID,r.reportId);
-                //go to position select page
-//                MyApplication.mCurrentActivity.startActivity(i);
-                AppUser result = new AppUser();
-//                result.industryId = industry.reportId;
-                result.isGuide = "1";
-                result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
-                APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
+                Logger.d("zzw", "report userId: " + r.reportId);
+                QueryReport report = new QueryReport();
+                report.id = r.reportId;
+                APIClient.apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-
+                        String reportUrl = response._data;
+                        Logger.d("zzw", "report Url : " + reportUrl);
+                        if (reportUrl != null) {
+                            Intent i = new Intent(h.reportTitle.getContext(), WebviewActivity.class);
+                            i.putExtra(CONST.WEB_URL, reportUrl);
+                            h.reportTitle.getContext().startActivity(i);
+                        }
                     }
                 });
             }

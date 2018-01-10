@@ -15,9 +15,11 @@ import android.view.WindowManager;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.PositionAdapter;
 import com.riking.calendar.listener.PullCallback;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -65,10 +67,10 @@ public class PositionSelectActivity extends AppCompatActivity {
     }
 
     public void onClickNextStep(View view) {
-        AppUser result = new AppUser();
-        result.isGuide = "1";
+        UpdUserParams result = new UpdUserParams();
+        result.isGuide = 1;
         result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
-        APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
+        APIClient.modifyUserInfo(result, new ZCallBack<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
 

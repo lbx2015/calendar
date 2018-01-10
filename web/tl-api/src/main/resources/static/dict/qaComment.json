@@ -8,33 +8,73 @@
 	],
 	"attrs": [
 		{
+			"prop": "serialNumber",
+			"alias": "序列",
+			"desc": "序列",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit"
+		},
+		{
+			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+			{
+			"prop": "qACommentId",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
 			"prop": "userId",
 			"alias": "发表评论的用户id",
 			"desc": "发表评论的用户id",
 			"type": "string",
-			"group": "base"
+			"group": "base",
+			"editable":"2",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "userName",
+			"alias": "评论人",
+			"desc": "评论人",
+			"type": "string",
+			"group": "base",
+			"editable":"2"
 		},
 		{
 			"prop": "questionAnswerId",
 			"alias": "针对问题的回答",
 			"desc": "针对问题的回答",
 			"type": "string",
-			"group": "base"
-		},
-		{
-			"prop": "content",
-			"alias": "评论内容",
-			"desc": "评论内容",
-			"type": "string",
+			"editable":"2",
 			"group": "base",
-			"hidden":"table"
+			"hidden": "table,edit,preview"
 		},
+		
 		{
 			"prop": "isAduit",
-			"alias": "是否审核",
-			"desc": "是否审核",
+			"alias": "审核状态",
+			"desc": "审核状态",
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"group": "base",
+			"hidden": "edit"
+		},
+		
+		{
+			"prop": "isAduitNum",
+			"alias": "回复审核数(未审核/不通过/已通过)",
+			"desc": "回复审核数(未审核/不通过/已通过)",
 			"type": "string",
-			"group": "base"
+			"group": "base",
+			"hidden": "edit,preview"
 		},
 		{
 			"prop": "createdBy",
@@ -46,11 +86,18 @@
 		},
 		{
 			"prop": "createdTime",
-			"alias": "创建时间",
-			"desc": "创建时间",
+			"alias": "评论时间",
+			"desc": "评论时间",
 			"type": "string",
 			"group": "base",
-			"hidden": "table,edit,preview"
+			"hidden": "edit,preview"
+		},
+		{
+			"prop": "content",
+			"alias": "评论内容",
+			"desc": "评论内容",
+			"type": "string",
+			"group": "base"
 		},
 		{
 			"prop": "modifiedBy",
@@ -69,7 +116,7 @@
 			"hidden": "table,edit,preview"
 		},
 		{
-			"prop": "is_deleted",
+			"prop": "isDeleted",
 			"alias": "是否删除",
 			"desc": "是否删除",
 			"type": "string",

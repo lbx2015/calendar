@@ -28,11 +28,10 @@ public class HotAnswerOfTopicFragment extends ZFragment<HotAnswerOfTopicAdapter>
 
     @Override
     public HotAnswerOfTopicAdapter getAdapter() {
-        return new HotAnswerOfTopicAdapter(activity);
+        return new HotAnswerOfTopicAdapter();
     }
 
-    public void initEvents() {
-    }
+    public void initEvents() {    }
 
     public void initViews() {
     }

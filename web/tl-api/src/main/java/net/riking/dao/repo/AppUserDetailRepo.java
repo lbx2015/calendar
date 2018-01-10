@@ -1,6 +1,7 @@
 package net.riking.dao.repo;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.entity.model.AppUserDetail;
 
-@Repository
+@Repository("appUserDetailRepo")
 public interface AppUserDetailRepo
 		extends JpaRepository<AppUserDetail, String>, JpaSpecificationExecutor<AppUserDetail> {
 
@@ -21,9 +22,9 @@ public interface AppUserDetailRepo
 
 	@Query("select integral from AppUserDetail where id = ?1 ")
 	Integer getIntegral(String userId);
-
-	@Query("select a.phoneDeviceid from AppUserDetail a where  substring(a.birthday, 5, 4) =?1 ")
-	Set<String> findByDate(String date);
+	
+	@Query("select new net.riking.entity.model.AppUserDetail(u.id, u.userName, u.descript, u.experience, u.photoUrl) from AppUserDetail u where u.id in ?1 ")
+	List<AppUserDetail> findAllByIds(Collection<String> ids);
 
 	@Transactional
 	@Modifying
@@ -34,4 +35,9 @@ public interface AppUserDetailRepo
 	@Modifying
 	@Query("update AppUserDetail set photoUrl = ?2 where id = ?1")
 	int updatePhoto(String userId, String photo);
+	
+	@Transactional
+	@Modifying
+	@Query("update AppUserDetail set phoneDeviceId = ?2 where id = ?1")
+	int updatePhoneDeviceid(String userId, String phoneDeviceid);
 }

@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference;
  */
 
 public abstract class ZClickListenerWithLoginCheck implements View.OnClickListener {
-    static WeakReference<ZClickListenerWithLoginCheck> weakRef;
+    public static WeakReference<ZClickListenerWithLoginCheck> weakRef;
     View v;
 
     @Override

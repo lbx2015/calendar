@@ -2,16 +2,11 @@ package com.riking.calendar.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -23,6 +18,7 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.base.ZActivity;
 import com.riking.calendar.adapter.AnswerCommentListAdapter;
 import com.riking.calendar.adapter.AnswerReplyListAdapter;
 import com.riking.calendar.listener.ZCallBack;
@@ -35,6 +31,7 @@ import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.KeyboardEditText;
@@ -46,9 +43,7 @@ import java.util.List;
  * answer comments page
  */
 
-public class AnswerCommentsActivity extends AppCompatActivity {
-    AnswerCommentListAdapter mAdapter;
-    RecyclerView recyclerView;
+public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> {
     TextView publicButton;
     KeyboardEditText writeComment;
     ImageView answerIcon;
@@ -60,36 +55,32 @@ public class AnswerCommentsActivity extends AppCompatActivity {
     String commentContent;
     AnswerReplyListAdapter replyListAdapter;
     RecyclerView replyRecyclerView;
-    private boolean isLoading = false;
-    private boolean isHasLoadedAll = false;
-    private int nextPage;
     private String answerId;
     private int answerCommentsNum;
     private TextView activityTitle;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("zzw", this + "on create");
-        super.onCreate(savedInstanceState);
+    //override this method if u need change the layout
+    public void setLayout() {
         setContentView(R.layout.activity_comments);
+    }
+
+    @Override
+    public AnswerCommentListAdapter getAdapter() {
+        return new AnswerCommentListAdapter(this);
+    }
+
+    public void initViews() {
+        //set data
         Intent i = getIntent();
         answerId = i.getStringExtra(CONST.ANSWER_ID);
         answerCommentsNum = i.getIntExtra(CONST.ANSWER_COMMENT_NUM, 0);
-        init();
-        activityTitle.setText("评论" + answerCommentsNum);
-    }
 
-    private void init() {
-        initViews();
-        initEvents();
-    }
-
-    private void initViews() {
         activityTitle = findViewById(R.id.activity_title);
+        activityTitle.setText("评论" + answerCommentsNum);
+
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);
-        recyclerView = findViewById(R.id.recycler_view);
     }
 
     public void setListenerToRootView() {
@@ -118,7 +109,7 @@ public class AnswerCommentsActivity extends AppCompatActivity {
         });
     }
 
-    private void initEvents() {
+    public void initEvents() {
         setListenerToRootView();
         setPublicClickListener();
         writeComment.setOnKeyboardListener(new KeyboardEditText.KeyboardListener() {
@@ -157,19 +148,12 @@ public class AnswerCommentsActivity extends AppCompatActivity {
                 }
             }
         });
-        LinearLayoutManager manager = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(manager);
-        mAdapter = new AnswerCommentListAdapter(this);
-        recyclerView.setAdapter(mAdapter);
-        loadData(1);
     }
 
     private void setPublicClickListener() {
         publicButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-
                 if (replyComment != null || replyReply != null) {
                     CommentParams params = new CommentParams();
                     params.content = commentContent;
@@ -178,12 +162,27 @@ public class AnswerCommentsActivity extends AppCompatActivity {
                     if (replyComment != null) {
                         params.toUserId = replyComment.userId;
                         params.commentId = replyComment.qACommentId;
+
+                        if (ZPreference.getUserId().equals(replyComment.userId)) {
+                            ZToast.toast("自己不能回复自己");
+                            //reset to null
+                            replyComment = null;
+                            return;
+                        }
                         //reset to null
                         replyComment = null;
 
                     } else if (replyReply != null) {
+                        params.commentId = replyReply.commentId;
                         params.toUserId = replyReply.fromUser.userId;
-                        params.commentId = replyReply.replyId;
+                        params.replyId = replyReply.replyId;
+
+                        if (ZPreference.getUserId().equals(replyReply.fromUser.userId)) {
+                            ZToast.toast("自己不能回复自己");
+                            //reset to null
+                            replyComment = null;
+                            return;
+                        }
                         //reset to null
                         replyReply = null;
                     }
@@ -197,13 +196,19 @@ public class AnswerCommentsActivity extends AppCompatActivity {
                             if (failed) {
 
                             } else {
+                                if (response._data == null) {
+                                    return;
+                                }
                                 writeComment.setText("");
-                                MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
-                                replyListAdapter.mList.add(0, response._data);
-                                MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
-                                replyListAdapter.notifyItemInserted(0);
-//                                replyListAdapter.notifyDataSetChanged();
+                                if (replyListAdapter.mList == null || replyListAdapter.mList.isEmpty()) {
+                                    loadData(1);
+                                } else {
+                                    MyLog.d("reply list adapter mlist size before : " + replyListAdapter.mList.size());
+                                    replyListAdapter.mList.add(0, response._data);
+                                    MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
+                                    replyListAdapter.notifyItemInserted(0);
 //                                replyRecyclerView.scrollToPosition(0);
+                                }
                                 Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -214,13 +219,17 @@ public class AnswerCommentsActivity extends AppCompatActivity {
                     QAnswerParams p = new QAnswerParams();
                     p.questAnswerId = answerId;
                     p.content = commentContent;
+                    p.optType = 1;
                     APIClient.qACommentPub(p, new ZCallBack<ResponseModel<QAComment>>() {
                         @Override
                         public void callBack(ResponseModel<QAComment> response) {
+                            emptyLayout.setVisibility(View.GONE);
+                            mPullToLoadView.setVisibility(View.VISIBLE);
                             writeComment.setText("");
                             mAdapter.mList.add(0, response._data);
                             mAdapter.notifyItemInserted(0);
-                            recyclerView.scrollToPosition(0);
+                            mRecyclerView.scrollToPosition(0);
+                            activityTitle.setText("评论" + mAdapter.getItemCount());
                             Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -229,8 +238,7 @@ public class AnswerCommentsActivity extends AppCompatActivity {
         });
     }
 
-    private void loadData(final int page) {
-        isLoading = true;
+    public void loadData(final int page) {
         loadAnswerComments(page);
        /* new Handler().postDelayed(new Runnable() {
             @Override
@@ -254,18 +262,28 @@ public class AnswerCommentsActivity extends AppCompatActivity {
     private void loadAnswerComments(final int page) {
         QAnswerParams params = new QAnswerParams();
         params.questAnswerId = answerId;
-        APIClient.qACommentList(params, new ZCallBack<ResponseModel<List<QAComment>>>() {
+        APIClient.qACommentList(params, new ZCallBackWithFail<ResponseModel<List<QAComment>>>() {
             @Override
             public void callBack(ResponseModel<List<QAComment>> response) {
-                List<QAComment> comments = response._data;
-                isLoading = false;
-                if (comments.size() == 0) {
-                    ZToast.toast("没有更多数据了");
-                    return;
+                if (failed) {
+                    mPullToLoadView.setComplete();
+                    isLoading = false;
+
+                } else {
+                    List<QAComment> comments = response._data;
+//                isLoading = false;
+//                if (comments.size() == 0) {
+//                    ZToast.toast("没有更多数据了");
+//                    return;
+//                }
+                    if (comments != null) {
+                        activityTitle.setText("评论" + comments.size());
+                    }
+//                mAdapter.addAll(comments);
+//                nextPage = page + 1;
+
+                    setData2Adapter(comments);
                 }
-                activityTitle.setText("评论" + comments.size());
-                mAdapter.addAll(comments);
-                nextPage = page + 1;
             }
         });
     }

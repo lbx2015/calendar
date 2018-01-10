@@ -24,13 +24,11 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
 import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicRelRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.QuestionAnswer;
-import net.riking.entity.model.TQuestionRel;
 import net.riking.entity.model.TQuestionResult;
-import net.riking.entity.model.TopicRel;
 import net.riking.entity.model.TopicResult;
 import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.HomeParams;
@@ -39,6 +37,9 @@ import net.riking.service.QAnswerService;
 import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
 import net.riking.util.DateUtils;
+import net.riking.util.FileUtils;
+import net.riking.util.MQProduceUtil;
+import net.sf.json.JSONObject;
 
 /**
  * 首页接口
@@ -82,7 +83,7 @@ public class HomePageServer {
 	AppUserService appUserService;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	/**
 	 *
@@ -93,14 +94,16 @@ public class HomePageServer {
 	@ApiOperation(value = "显示首页数据", notes = "POST")
 	@RequestMapping(value = "/findHomePageData", method = RequestMethod.POST)
 	public AppResp findHomePageData(@RequestBody HomeParams homeParams) throws ParseException {
+		Date date = null;
 		if (homeParams == null) {
 			homeParams = new HomeParams();
 			homeParams.setReqTimeStamp(new Date());
 			homeParams.setDirect(Const.DIRECT_UP);
 		}
 		if (homeParams.getReqTimeStamp() == null || "".equals(homeParams.getReqTimeStamp())) {
-			homeParams.setReqTimeStamp(DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"),
-					"yyyyMMddHHmmssSSS"));
+			date = DateUtils.StringFormatMS(DateUtils.DateFormatMS(new Date(), "yyyyMMddHHmmssSSS"),
+					"yyyyMMddHHmmssSSS");
+			homeParams.setReqTimeStamp(date);
 			homeParams.setDirect(Const.DIRECT_UP);
 		}
 		if (homeParams.getDirect() == null) {
@@ -127,13 +130,18 @@ public class HomePageServer {
 			// 如果操作方向是向上：根据时间戳是上一页最后一条数据时间返回下一页数据
 			case Const.DIRECT_UP:
 				// 查询查出前30条数据
-				tQuestionList = tQuestionService.findTopicHomeUp(homeParams.getUserId(), homeParams.getReqTimeStamp(),
-						tquestIds, 0, 30);
-				// 如果查不到数据返回未登录时候数据
-				if (tQuestionList.size() == 0) {
+				if(date != null && date.compareTo(homeParams.getReqTimeStamp())==0){//若是系统时间， 表示用户刚刚登陆，加载上一次登陆数据
 					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
 							30);
+				}else{
+					tQuestionList = tQuestionService.findTopicHomeUp(homeParams.getUserId(), homeParams.getReqTimeStamp(),
+							tquestIds, 0, 30);
 				}
+				// 如果查不到数据返回未登录时候数据
+//				if (tQuestionList.size() == 0) {
+//					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
+//							30);
+//				}
 				break;
 			// 如果操作方向是向上：根据时间戳是第一页第一条数据时间刷新第一页的数据）
 			case Const.DIRECT_DOWN:
@@ -141,10 +149,10 @@ public class HomePageServer {
 				tQuestionList = tQuestionService.findTopicHomeDown(homeParams.getUserId(), homeParams.getReqTimeStamp(),
 						tquestIds, 0, 30);
 				// 如果查不到数据返回未登录时候数据
-				if (tQuestionList.size() == 0) {
+				/*if (tQuestionList.size() == 0) {
 					tQuestionList = tQuestionService.findTopicHomeUp("", homeParams.getReqTimeStamp(), tquestIds, 0,
 							30);
-				}
+				}*/
 				break;
 			default:
 				logger.error("请求方向参数异常：direct:" + homeParams.getDirect());
@@ -158,8 +166,10 @@ public class HomePageServer {
 					// TODO
 					tQuestionResult.setFromImgUrl(tQuestionResult.getFromImgUrl());
 				} else {
+//					tQuestionResult.setFromImgUrl(
+//							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getFromImgUrl());
 					tQuestionResult.setFromImgUrl(
-							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getFromImgUrl());
+							FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + tQuestionResult.getFromImgUrl());
 				}
 			}
 			// 等级
@@ -189,6 +199,10 @@ public class HomePageServer {
 				}
 			}
 		});
+		
+		if(tQuestionList.isEmpty()){
+			return new AppResp(tQuestionList, CodeDef.SUCCESS);
+		}
 		// 可能感兴趣的话题
 		// 除去用户已关注的话题
 		List<String> topIds = topicRelRepo.findByUser(homeParams.getUserId(), Const.OBJ_OPT_FOLLOW);
@@ -251,7 +265,8 @@ public class HomePageServer {
 			}
 			// 截取资源访问路径
 			if (null != userResult.getPhotoUrl()) {
-				userResult.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + userResult.getPhotoUrl());
+//				userResult.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + userResult.getPhotoUrl());
+				userResult.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + userResult.getPhotoUrl());
 			}
 			for (UserFollowRel userFollowRel : userFollowRels) {
 				if (userFollowRel.getFollowStatus() == 1 && userFollowRel.getToUserId().equals(userResult.getId())) {
@@ -286,54 +301,10 @@ public class HomePageServer {
 	@RequestMapping(value = "/shield", method = RequestMethod.POST)
 	public AppResp shield_(@RequestBody HomeParams homeParams) {
 
-		switch (homeParams.getObjType()) {
-			// 问题
-			case Const.OBJ_TYPE_1:
-				if (Const.EFFECTIVE == homeParams.getEnabled()) {
-					TQuestionRel rels = tQuestionRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
-					if (null == rels) {
-						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-						TQuestionRel tQuestionRel = new TQuestionRel();
-						tQuestionRel.setUserId(homeParams.getUserId());
-						tQuestionRel.setTqId(homeParams.getObjId());
-						tQuestionRel.setDataType(3);// 0-关注 3-屏蔽
-						tQuestionRelRepo.save(tQuestionRel);
-					}
-				} else if (Const.INVALID == homeParams.getEnabled()) {
-					// 如果传过来是取消屏蔽，把之前一条记录物理删除
-					tQuestionRelRepo.deleteByUIdAndTqId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			// 话题
-			case Const.OBJ_TYPE_2:
-				if (Const.EFFECTIVE == homeParams.getEnabled()) {
-					// TODO 确认是否有话题屏蔽
-					TopicRel rels = topicRelRepo.findByOne(homeParams.getUserId(), homeParams.getObjId(), 3);// 3-屏蔽
-					if (null == rels) {
-						// 如果传过来的参数是屏蔽，保存新的一条屏蔽记录
-						TopicRel topicRel = new TopicRel();
-						topicRel.setUserId(homeParams.getUserId());
-						topicRel.setTopicId(homeParams.getObjId());
-						topicRel.setDataType(3);// 0-关注；3-屏蔽
-						topicRelRepo.save(topicRel);
-					}
-				} else if (Const.INVALID == homeParams.getEnabled()) {
-					// 如果传过来是取消屏蔽，把之前一条记录物理删除
-					topicRelRepo.deleteByUIdAndTopId(homeParams.getUserId(), homeParams.getObjId(), 3);// 0-关注3-屏蔽
-				} else {
-					logger.error("参数异常：enabled=" + homeParams.getEnabled());
-					return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-				}
-				break;
-			default:
-				logger.error("对象类型异常，objType=" + homeParams.getObjType());
-				return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
-		}
-
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		homeParams.setMqOptType(Const.MQ_OPT_SHIELD_QUEST);
+		JSONObject jsonArray = JSONObject.fromObject(homeParams);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 	}
 
 	// 加点赞，关注，收藏状态

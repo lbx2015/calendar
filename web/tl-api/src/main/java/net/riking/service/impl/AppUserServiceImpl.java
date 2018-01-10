@@ -1,9 +1,5 @@
 package net.riking.service.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +7,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -25,25 +20,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.riking.config.CodeDef;
 import net.riking.config.Const;
-import net.riking.core.entity.model.ModelPropDict;
 import net.riking.core.utils.UuidUtils;
 import net.riking.dao.AppUserDao;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.UserLogRstHisRepo;
 import net.riking.entity.VO.AppUserVO;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
+import net.riking.entity.model.UserFollowCollect;
+import net.riking.entity.model.UserLogRstHis;
 import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
 import net.riking.util.EncryptionUtil;
 import net.riking.util.FileUtils;
-import net.riking.util.StringUtil;
 
 @Service("appUserSerice")
 @Transactional
@@ -59,11 +54,14 @@ public class AppUserServiceImpl implements AppUserService {
 	@Autowired
 	SysDataService sysDataService;
 
-	@Autowired
-	HttpServletRequest request;
+//	@Autowired
+//	HttpServletRequest request;
 
 	@Autowired
 	AppUserDao appUserDao;
+
+	@Autowired
+	UserLogRstHisRepo userLogRstHisRepo;
 
 	public AppUser findByPhone(String phone) {
 		return appUserRepo.findByPhone(phone);
@@ -96,8 +94,14 @@ public class AppUserServiceImpl implements AppUserService {
 		detail.setIsGuide(0);
 		user.setDetail(detail);
 
+		/* 用户注册历史 */
+		UserLogRstHis userLogRstHis = new UserLogRstHis();
+		userLogRstHis.setUserId(uuid);
+		userLogRstHis.setDataType(Const.USER_OPT_REGIST);
+
 		appUserRepo.save(user);
 		appUserDetailRepo.save(detail);
+		userLogRstHisRepo.save(userLogRstHis);
 		return user;
 	}
 
@@ -105,16 +109,17 @@ public class AppUserServiceImpl implements AppUserService {
 		return appUserDetailRepo.findOne(id);
 	}
 
-	@Override
+	/*@Override
 	public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException {
 		// String suffix =
 		// mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
-		String fileName = UuidUtils.random() + mFile.getOriginalFilename();
+		String fileName = UuidUtils.random() + "." + mFile.getOriginalFilename().split("\\.")[1];
 		InputStream is = null;
 		FileOutputStream fos = null;
 		try {
 			is = mFile.getInputStream();
-			String path = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + url;
+			String spath = new String(this.getClass().getResource("/").getPath().getBytes("iso-8859-1"), "UTF-8");
+			String path = spath + Const.TL_STATIC_PATH + url;
 			File dir = new File(path);
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -139,7 +144,7 @@ public class AppUserServiceImpl implements AppUserService {
 			}
 		}
 		return fileName;
-	}
+	}*/
 
 	@Override
 	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName) {
@@ -149,13 +154,18 @@ public class AppUserServiceImpl implements AppUserService {
 		String oleFilePath = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH + Const.TL_PHOTO_PATH
 				+ oldFileName;
 		// 删除服务器上文件
-		ModelPropDict dict = sysDataService.getDict("T_ROOT_URL", "PHOTO_URL", "DEFAULT_URL");
-		if (!dict.getValu().equals(oldFileName) && !mFile.getOriginalFilename().equals(oldFileName)) {
+		if (!mFile.getOriginalFilename().equals(oldFileName)) {
 			FileUtils.deleteFile(oleFilePath);
 		}
 		// 数据库保存路径s
 		appUserDetailRepo.updatePhoto(userId, fileName);
 		return fileName;
+	}
+
+	@Override
+	public void updatePhoneDeviceid(String userId, String phoneDeviceid) {
+		// TODO Auto-generated method stub
+		appUserDetailRepo.updatePhoneDeviceid(userId, phoneDeviceid);
 	}
 
 	/**
@@ -190,14 +200,14 @@ public class AppUserServiceImpl implements AppUserService {
 	 * 
 	 * @see net.riking.service.AppUserService#getPhotoUrlPath()
 	 */
-	@Override
-	public String getPhotoUrlPath(String photoPath) {
-		// 截取资源访问路径
-		String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
-		String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
-		projectPath = projectPath + "/" + projectName + photoPath;
-		return projectPath;
-	}
+//	@Override
+//	public String getPhotoUrlPath(String photoPath) {
+//		// 截取资源访问路径
+//		String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
+//		String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
+//		projectPath = projectPath + "/" + projectName + photoPath;
+//		return projectPath;
+//	}
 
 	@Override
 	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {
@@ -264,6 +274,9 @@ public class AppUserServiceImpl implements AppUserService {
 				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
 
 				if (null != appUserVO.getAppUser()) {
+					if (StringUtils.isNotBlank(appUserVO.getAppUser().getId())) {
+						predicates.add(cb.equal(root.<String> get("id"), appUserVO.getAppUser().getId()));
+					}
 					if (StringUtils.isNotBlank(appUserVO.getAppUser().getUserName())) {
 						predicates.add(cb.like(root.<String> get("userName"),
 								"%" + appUserVO.getAppUser().getUserName() + "%"));
@@ -297,6 +310,20 @@ public class AppUserServiceImpl implements AppUserService {
 		AppUser appUser = appUserRepo.findOne(id);
 		appUser.setIsDeleted(0);
 		appUserRepo.save(appUser);
+	}
+
+	@Override
+	public List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex,
+			Integer pcount) {
+
+		return appUserDao.findByFolColByUserId(userId, userName, pindex, pcount);
+	}
+
+	@Override
+	public Integer countByFolColByUserId(String userId, String userName) {
+
+		return appUserDao.countByFolColByUserId(userId, userName);
+
 	}
 
 	/******************** WEB END ***********/

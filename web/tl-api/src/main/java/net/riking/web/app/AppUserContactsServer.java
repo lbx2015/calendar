@@ -1,6 +1,5 @@
 package net.riking.web.app;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +22,17 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.ContactsInviteRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserResult;
-import net.riking.entity.model.ContactsInvite;
 import net.riking.entity.params.UserParams;
 import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
+import net.riking.util.FileUtils;
+import net.riking.util.MQProduceUtil;
+import net.sf.json.JSONObject;
 
 /**
  * app用户人脉
@@ -64,7 +65,7 @@ public class AppUserContactsServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	SignInService signInService;
@@ -95,15 +96,18 @@ public class AppUserContactsServer {
 		}
 		AppUser appUser = appUserRepo.findOne(userParams.getUserId());
 		if (appUser.getEmail() == null) {
-			return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		} else {
 			List<AppUserResult> appUserResults = appUserRepo.findAllByEmail(
 					("@" + appUser.getEmail().split("@")[1]).trim(), userParams.getUserId(),
 					new PageRequest(userParams.getPindex(), userParams.getPcount()));
 			for (AppUserResult appUserResult : appUserResults) {
 				if (null != appUserResult.getPhotoUrl()) {
+//					appUserResult.setPhotoUrl(
+//							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 					appUserResult.setPhotoUrl(
-							appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
+							FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + appUserResult.getPhotoUrl());
+					
 				}
 				// 等级
 				if (null != appUserResult.getExperience()) {
@@ -128,23 +132,24 @@ public class AppUserContactsServer {
 		if (StringUtils.isBlank(userParams.getUserId())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
-		List<String> phones = userParams.getPhones();
-
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
+		// List<String> phones = userParams.getPhones();
+		//
+		// List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		//
+		// List<String> contactsPhones = contactsInviteRepo.findByUserId(userParams.getUserId());
+		// for (String phone : phones) {
+		// Map<String, Object> map = new HashMap<String, Object>();
+		// map.put("phone", phone);
+		// map.put("invite", 0);// 0-未邀请
+		// for (String contactsPhone : contactsPhones) {
+		// if (phone.equals(contactsPhone)) {
+		// map.put("invite", 1);// 1-已邀请
+		// }
+		// }
+		// list.add(map);
+		// }
 		List<String> contactsPhones = contactsInviteRepo.findByUserId(userParams.getUserId());
-		for (String phone : phones) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("phone", phone);
-			map.put("invite", 0);// 0-未邀请
-			for (String contactsPhone : contactsPhones) {
-				if (phone.equals(contactsPhone)) {
-					map.put("invite", 1);// 1-已邀请
-				}
-			}
-			list.add(map);
-		}
-		return new AppResp(list, CodeDef.SUCCESS);
+		return new AppResp(contactsPhones, CodeDef.SUCCESS);
 
 	}
 
@@ -162,15 +167,15 @@ public class AppUserContactsServer {
 		if (StringUtils.isBlank(userParams.getUserId()) || StringUtils.isBlank(userParams.getPhone())) {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
+		userParams.setMqOptType(Const.MQ_OPT_CONTACTS_INVITE);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mqOptType", Const.MQ_OPT_CONTACTS_INVITE);
+		map.put("userId", userParams.getUserId());
+		map.put("phone", userParams.getPhone());
+		JSONObject jsonArray = JSONObject.fromObject(map);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 
-		ContactsInvite contactsInvite = contactsInviteRepo.findByOne(userParams.getUserId(), userParams.getPhone());
-		if (contactsInvite == null) {
-			contactsInvite = new ContactsInvite();
-			contactsInvite.setPhone(userParams.getPhone());
-			contactsInvite.setUserId(userParams.getUserId());
-			contactsInviteRepo.save(contactsInvite);
-		}
-		return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+		return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 
 	}
 }

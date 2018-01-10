@@ -30,7 +30,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="17dp"
-            android:src="@drawable/confirm" />
+            android:src="@drawable/work_rm_icon_dh" />
 
         <View
             android:layout_width="match_parent"

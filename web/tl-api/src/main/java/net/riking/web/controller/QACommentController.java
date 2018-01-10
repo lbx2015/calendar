@@ -1,11 +1,10 @@
 package net.riking.web.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,33 +18,65 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
+import net.riking.dao.repo.QuestionAnswerRepo;
+import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.entity.model.QAComment;
+import net.riking.service.QACommentService;
 
 @RestController
-@RequestMapping(value = "/qaComment")
+@RequestMapping(value = "/qaCommentController")
 public class QACommentController {
 
 	@Autowired
-	QACommentRepo qaRepo;
+	QACommentRepo qaCommentRepo;
+
+	@Autowired
+	QuestionAnswerRepo questionAnswerRepo;
+
+	@Autowired
+	TopicQuestionRepo topicQuestionRepo;
+
+	@Autowired
+	AppUserRepo appUserRepo;
+
+	@Autowired
+	QACReplyRepo qacReplyRepo;
+
+	@Autowired
+	QACommentService qaCommentService;
 
 	@ApiOperation(value = "得到单个信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
-		QAComment news = qaRepo.findOne(id);
-		return new Resp(news, CodeDef.SUCCESS);
+		QAComment qaComment = qaCommentRepo.findOne(id);
+		qaComment.setUserName(appUserRepo.findOne(qaComment.getUserId()).getUserName());
+		return new Resp(qaComment, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "得到信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute QAComment news) {
-		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
-		if (null == news.getIsDeleted()) {
-			news.setIsDeleted(1);
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute QAComment qaComment) {
+
+		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount());
+		if (null == qaComment.getIsDeleted()) {
+			qaComment.setIsDeleted(1);
 		}
-		Example<QAComment> example = Example.of(news, ExampleMatcher.matchingAll());
-		Page<QAComment> page = qaRepo.findAll(example, pageable);
-		return new Resp(page, CodeDef.SUCCESS);
+		Page<QAComment> modulePage = qaCommentService.findAll(qaComment, pageable);
+		int i = query.getPindex() * query.getPcount();
+		List<QAComment> list = modulePage.getContent();
+		for (QAComment qaComment2 : list) {
+			i++;
+			qaComment2.setSerialNumber(new Integer(i));
+		}
+		// Long totalElements = (long) qaCommentRepo.countGetMore(qaComment.getIsDeleted());
+		// List<QAComment> qaComments = qaCommentRepo.findAllQAC(qaComment.getIsDeleted(),
+		// pageable);// 未删除数据
+		// Page<QAComment> modulePage = new PageImpl<QAComment>(qaComments, pageable,
+		// totalElements);
+		return new Resp(modulePage, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "添加或者更新信息", notes = "POST")
@@ -55,7 +86,10 @@ public class QACommentController {
 			news.setIsDeleted(1);
 			news.setIsAduit(0);
 		}
-		QAComment save = qaRepo.save(news);
+		if (news.getIsAduit() == 2) {
+			news.setIsAduit(0);
+		}
+		QAComment save = qaCommentRepo.save(news);
 		return new Resp(save, CodeDef.SUCCESS);
 	}
 
@@ -64,7 +98,7 @@ public class QACommentController {
 	public Resp delMore_(@RequestBody Set<String> ids) {
 		int rs = 0;
 		if (ids.size() > 0) {
-			rs = qaRepo.deleteById(ids);
+			rs = qaCommentRepo.deleteById(ids);
 		}
 		if (rs > 0) {
 			return new Resp().setCode(CodeDef.SUCCESS);
@@ -73,17 +107,13 @@ public class QACommentController {
 		}
 	}
 
-	@ApiOperation(value = "批量审核", notes = "POST")
-	@RequestMapping(value = "/verifyMore", method = RequestMethod.POST)
-	public Resp verifyMore_(@RequestBody Set<String> ids) {
-		int rs = 0;
-		if (ids.size() > 0) {
-			rs = qaRepo.verifyById(ids);
-		}
-		if (rs > 0) {
-			return new Resp().setCode(CodeDef.SUCCESS);
-		} else {
-			return new Resp().setCode(CodeDef.ERROR);
-		}
+	@ApiOperation(value = "审核回答信息", notes = "GET")
+	@RequestMapping(value = "/answerIsAduit", method = RequestMethod.GET)
+	public Resp enable_(@RequestParam String id, @RequestParam String isAduit) {
+		QAComment qaComment = qaCommentRepo.findOne(id);
+		qaComment.setIsAduit(new Integer(isAduit));
+		qaCommentRepo.save(qaComment);
+		return new Resp(qaComment, CodeDef.SUCCESS);
 	}
+
 }

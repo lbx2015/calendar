@@ -17,10 +17,13 @@ import android.widget.TextView;
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.MyCollectAnswerFragment;
 import com.riking.calendar.fragment.MyCollectNewsFragment;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 
 public class MyCollectActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyCollectAnswerFragment(), new MyCollectNewsFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{MyCollectAnswerFragment.newInstance(this), MyCollectNewsFragment.newInstance(this)};
+    public String userId;
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
@@ -32,9 +35,19 @@ public class MyCollectActivity extends AppCompatActivity { //Fragment 数组
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_state);
         activityTitle = findViewById(R.id.activity_title);
-        activityTitle.setText("我的收藏");
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我的收藏");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("她的收藏");
+            } else {
+                activityTitle.setText("他的收藏");
+            }
+        }
+
     }
 
     private void init() {

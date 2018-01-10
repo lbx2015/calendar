@@ -14,7 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginLeft="19dp"
+            android:layout_marginLeft="15dp"
+            android:onClick="onBackClick"
             android:src="@drawable/nav_icon_back" />
 
         <TextView
@@ -25,6 +26,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
     </FrameLayout>
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="@dimen/divider_height"

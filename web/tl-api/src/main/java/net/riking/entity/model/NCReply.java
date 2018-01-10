@@ -78,11 +78,11 @@ public class NCReply extends BaseAuditProp {
 	ToUser toUser;
 
 	@Transient
-	@JsonIgnore
+	// @JsonIgnore
 	private String userName;
 
 	@Transient
-	@JsonIgnore
+	// @JsonIgnore
 	private String toUserName;
 
 	public NCReply() {

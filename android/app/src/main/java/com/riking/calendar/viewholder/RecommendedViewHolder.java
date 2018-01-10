@@ -5,12 +5,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 
 /**
  * Created by zw.zhang on 2017/10/11.
  */
 
-public class RecommendedViewHolder extends RecyclerView.ViewHolder {
+public class RecommendedViewHolder extends ZViewHolder {
     public RecyclerView recyclerView;
     public TextView titleTV;
 

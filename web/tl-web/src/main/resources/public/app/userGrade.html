@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的等级</title>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+</head>
+
+<body>
+    <section class="out-wrap mygrade">
+<!--         <div class="header-main">
+            <section class="header">
+                <div class="child return f34">
+                    <a href="#"><i></i></a>
+                </div>
+                <div class="child date">
+                    <em class="f34">我的等级</em>
+                </div>
+            </section>
+        </div> -->
+        <section class="content">
+            <section class="grade-strip">
+                <div class="grade-strip-plan">
+                    <div class="progress-head">
+                        <p class="p-integral" id="exp">
+                            3455
+                        </p>
+                        <p class="p-frade" id="grade">
+                            - V3级 -
+                        </p>
+                    </div>
+                    <div class="progress-wrapper">
+                        <ul class="rk-grade-box display-box"></ul>
+                    </div>
+                </div>
+            </section>
+            <section class="briefIntro sectionTit">
+                <h3><i class="line"></i> 什么是个人等级？
+                </h3>
+                <p>
+                    同业存单尽管属于同业投资，在会计上需要单独设立科目进行管理核算，在统计上单独设立存单发行及投资统计指标进行反映。
+                </p>
+            </section>
+            <section class="briefIntro sectionTit">
+                <h3><i class="line"></i> 不同个人等级享受的权益？
+                </h3>
+                <p>
+                    根据投资范围不同，集合资产管理业务可分为限定性集合计划和非限定性集合计划。限定性集合资产管理计划资产应当主要用于投资国债、国家重点建设债券、债券型证券投资基金。
+                </p>
+            </section>
+            <section class="briefIntro sectionTit">
+                <h3><i class="line"></i> 如何升级？
+                </h3>
+                <p>
+                    在证券交易所上市的企业债券、其他信用度高且流动性强的固定收益类金融产品，投资于业绩优良、成长性高、流动性强的股票等权益类证券以及股票型证券投资基金的资产不得超过该计划资产净值的20%，并应当遵循分散投资风险的原则。
+                </p>
+            </section>
+        </section>
+        </section>
+</body>
+
+<script type="text/javascript" src="{=ctx}/js/core/base.js"></script>
+<script type="text/javascript" src="{=ctx}/js/core/view.js"></script>
+<script>
+	var url = View.getQStr('url');
+    var exp = parseInt(View.getQStr('exp'));
+	exp = isNaN(exp) ? 0 : exp;
+    $(function() {
+        $.ajax({
+            url: url+"/user/getGradeList",
+     	   type: "post",
+     	   success: function(resp){
+     	       var gradeList = resp._data;
+     	  	   GradeUIRender(exp, gradeList);
+     	   },
+     	   error:function() {
+                TmplUtils.showMsgFail('信息获取失败');
+            }
+        });
+    });
+    
+    function GradeUIRender(exp, gradeList) {
+		function gradeAscSort(a,b){
+		 	return a.grade - b.grade;
+		}
+		gradeList.sort(gradeAscSort);
+		$("#exp").html(exp);
+        var garde, data, html;
+        for (var i = 0; i < gradeList.length; i++) {
+            garde = gradeList[i];
+            if(exp>=garde.minExp && exp<=garde.maxExp){
+        	 	$("#grade").html("- V{0}级 -".format(garde.grade));
+            }
+            data = { level:"V"+garde.grade
+        	    ,score:garde.minExp
+        	    ,light: exp>=garde.minExp?"light":""
+        		,width: exp>garde.maxExp?"100":100*(exp-garde.minExp)/(garde.maxExp-garde.minExp)
+        	}
+            html = '<li class="vip-node"><i class="vip-node-img {light}"></i><p class="rank-value {light}">'
+		        	+'<span class="f30">{level}</span> <span class="f22">{score}</span></p></li>'
+		        	+'<li class="flex"> <p class="itembar"> <span class="middle" style ="width:{width}%;"></span></p></li>';
+            $("ul").append(html.format(data));
+        }
+    }
+ </script>
+</html>

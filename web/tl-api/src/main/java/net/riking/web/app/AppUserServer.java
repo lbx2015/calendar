@@ -1,9 +1,10 @@
 package net.riking.web.app;
 
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +24,17 @@ import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
 import net.riking.dao.repo.AppUserDetailRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
+import net.riking.dao.repo.AppUserGradeRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.SignIn;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.model.UserOperationInfo;
 import net.riking.entity.params.UpdUserParams;
 import net.riking.entity.params.UserParams;
@@ -40,6 +44,8 @@ import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
 import net.riking.util.DateUtils;
+import net.riking.util.FileUtils;
+import net.riking.util.Utils;
 
 /**
  * app用户信息操作
@@ -52,9 +58,15 @@ import net.riking.util.DateUtils;
 public class AppUserServer {
 	@Autowired
 	AppUserRepo appUserRepo;
+	
+	@Autowired
+	AppUserFollowRelRepo appUserFollowRelRepo;
 
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
+	
+	@Autowired
+	AppUserGradeRepo appUserGradeRepo;
 
 	@Autowired
 	HttpServletRequest request;
@@ -72,7 +84,7 @@ public class AppUserServer {
 	QuestionAnswerRepo questionAnswerRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	SignInService signInService;
@@ -81,10 +93,62 @@ public class AppUserServer {
 	Config config;
 
 	@ApiOperation(value = "我的等级详情", notes = "POST")
-	@RequestMapping(value = "/myGrade", method = RequestMethod.POST)
-	public AppResp myGrade_() {
-		return new AppResp(config.getAppHtmlPath() + Const.TL_MYGRADE_HTML5_PATH, CodeDef.SUCCESS);
+	@RequestMapping(value = "/myGradeHtml", method = RequestMethod.POST)
+	public AppResp myGrade_(@RequestBody UserParams userParams) {
+		String userId = userParams.getUserId();
+		AppUserDetail userDetail = appUserDetailRepo.findOne(userId);
+		return new AppResp(config.getAppHtmlPath() + Const.TL_USER_HTML5_PATH +"?exp="+ userDetail.getExperience()
+				+"&url="+config.getAppApiPath(), CodeDef.SUCCESS);
 	}
+	
+	@ApiOperation(value = "等级分级制度", notes = "POST")
+	@RequestMapping(value = "/getGradeList", method = RequestMethod.POST)
+	public AppResp getGradeList_() {
+		List<AppUserGrade> list = appUserGradeRepo.findByIsDeleted(Const.IS_NOT_DELETE);
+		return new AppResp(list , CodeDef.SUCCESS);
+	}
+	
+	
+	@ApiOperation(value = "获取好友的好友", notes = "POST")
+	@RequestMapping(value = "/getFOAF", method = RequestMethod.POST)
+	public AppResp getFOAF_(@RequestBody UserParams userParams) {
+		HashSet<String> set = new HashSet<>();
+		List<UserFollowRel> list = appUserFollowRelRepo.findByUserId(userParams.getUserId());
+		UserFollowRel userFollowRel = null;
+		for (int i = 0; i < list.size(); i++) {
+			userFollowRel = list.get(i);
+			if(userFollowRel.getUserId().equals(userParams.getUserId())){
+				set.add(userFollowRel.getToUserId());
+			}else{
+				set.add(userFollowRel.getUserId());
+			}
+		}
+		if(set.isEmpty()){
+			return new AppResp(null, CodeDef.SUCCESS);
+		}
+		HashSet<String> set2 = new HashSet<>();
+		List<UserFollowRel> list2 = appUserFollowRelRepo.findUserIdByUserIds(set);
+		for (int i = 0; i < list2.size(); i++) {
+			userFollowRel = list2.get(i);
+			if(!set.contains(userFollowRel.getUserId()) && !userFollowRel.getUserId().equals(userParams.getUserId())){
+				set2.add(userFollowRel.getUserId());
+			}
+			if(!set.contains(userFollowRel.getToUserId()) && !userFollowRel.getToUserId().equals(userParams.getUserId())){
+				set2.add(userFollowRel.getToUserId());
+			}
+		}
+		List<AppUserDetail> foafs = appUserDetailRepo.findAllByIds(set2);
+		foafs.forEach(e->{
+			//e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+			e.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+			e.setGrade();
+		});
+		foafs.forEach(e->{
+			e.setExperience(null);
+		});
+		return new AppResp(foafs, CodeDef.SUCCESS);
+	}
+	
 
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
@@ -94,12 +158,13 @@ public class AppUserServer {
 		AppUserResp appUserResp = new AppUserResp();
 		appUserResp.setUserId(appUser.getId());
 		// appUserResp从appUser取值
-		appUserResp = (AppUserResp) fromObjToObjValue(appUser, appUserResp);
+		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUser, appUserResp);
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
 		// appUserResp从appUserDetail取值
-		appUserResp = (AppUserResp) fromObjToObjValue(appUserDetail, appUserResp);
+		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUserDetail, appUserResp);
 		if (null != appUserResp.getPhotoUrl()) {
-			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
+//			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
+			appUserResp.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
 		}
 		// 等级
 		if (null != appUserResp.getExperience()) {
@@ -127,8 +192,8 @@ public class AppUserServer {
 		otherUserResp.setAnswerNum(answerNum);
 		otherUserResp.setFansNum(fansNum);
 		if (null != otherUserResp.getPhotoUrl()) {
-			otherUserResp
-					.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
+//			otherUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
+			otherUserResp.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
 		}
 		// 等级
 		if (null != otherUserResp.getExperience()) {
@@ -153,7 +218,7 @@ public class AppUserServer {
 			userParams.setIsIdentified(0);// 邮箱未认证
 		}
 		if (null != userParams) {
-			appUser = (AppUser) fromObjToObjValue(userParams, appUser);
+			appUser = (AppUser) Utils.fromObjToObjValue(userParams, appUser);
 		}
 		try {
 			appUserRepo.save(appUser);
@@ -172,7 +237,7 @@ public class AppUserServer {
 		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
-				appUserDetail = (AppUserDetail) fromObjToObjValue(userParams, appUserDetail);
+				appUserDetail = (AppUserDetail) Utils.fromObjToObjValue(userParams, appUserDetail);
 				appUserDetail.setPositionId(positionId);
 			}
 			try {
@@ -194,8 +259,8 @@ public class AppUserServer {
 			return new AppResp(CodeDef.EMP.DATA_NOT_FOUND, CodeDef.EMP.DATA_NOT_FOUND_DESC);
 		}
 		String seqNum = userParams.getPhoneDeviceid();
-		if (appUserDetail != null && !seqNum.equals(appUserDetail.getPhoneDeviceid())) {
-			appUserDetail.setPhoneDeviceid(seqNum);
+		if (appUserDetail != null && !seqNum.equals(appUserDetail.getPhoneDeviceId())) {
+			appUserDetail.setPhoneDeviceId(seqNum);
 			appUserDetail.setPhoneType(userParams.getPhoneType());
 			appUserDetailRepo.save(appUserDetail);
 			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
@@ -207,10 +272,12 @@ public class AppUserServer {
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
 	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("userId") String userId) {
-		String url = request.getRequestURL().toString();
+		//String url = request.getRequestURL().toString();
 		String fileName = null;
+		String folderPath = FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH);
 		try {
-			fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
+//			fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
+			fileName = FileUtils.saveMultipartFile(mFile, folderPath);
 			fileName = appUserService.updUserPhotoUrl(mFile, userId, fileName);
 		} catch (RuntimeException e) {
 			// TODO: handle exception
@@ -218,7 +285,8 @@ public class AppUserServer {
 				return new AppResp(CodeDef.EMP.GENERAL_ERR, CodeDef.EMP.GENERAL_ERR_DESC);
 			}
 		}
-		return new AppResp(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + fileName, CodeDef.SUCCESS);
+		String photoUrl = FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH + fileName, this.getClass());
+		return new AppResp(photoUrl, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -289,33 +357,7 @@ public class AppUserServer {
 		return new AppResp(userOperationInfo, CodeDef.SUCCESS);
 	}
 
-	/**
-	 * fromObj的值赋在toObj上
-	 * @param fromObj
-	 * @param toObj
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 */
-	private Object fromObjToObjValue(Object fromObj, Object toObj)
-			throws IllegalArgumentException, IllegalAccessException {
-		Field[] fromObjfields = fromObj.getClass().getDeclaredFields();
-		for (Field fromObjfield : fromObjfields) {
-			fromObjfield.setAccessible(true);
-			Field[] toObjfields = toObj.getClass().getDeclaredFields();
-			for (Field toObjfield : toObjfields) {
-				toObjfield.setAccessible(true);
-				if (fromObjfield.getName().equals(toObjfield.getName())) {
-					if (null != fromObjfield.get(fromObj)) {
-						toObjfield.set(toObj, fromObjfield.get(fromObj));
-					}
-				}
-			}
-		}
-		return toObj;
-	}
-
-	private <T> T merge(T dbObj, T appObj) throws Exception {
+/*	private <T> T merge(T dbObj, T appObj) throws Exception {
 		Field[] fields = dbObj.getClass().getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
@@ -327,5 +369,5 @@ public class AppUserServer {
 		}
 		return dbObj;
 	}
-
+*/
 }

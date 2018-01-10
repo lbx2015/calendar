@@ -15,11 +15,13 @@ import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.MyFollowersAdapter;
 import com.riking.calendar.listener.PullCallback;
-import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 
@@ -33,6 +35,7 @@ import java.util.List;
 public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数组
     MyFollowersAdapter mAdapter;
     RecyclerView recyclerView;
+    String userId;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -46,8 +49,17 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
         setContentView(R.layout.activity_my_followers);
 
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
-        activityTitle.setText("我关注的人");
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我关注的人");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("他关注的人");
+            } else {
+                activityTitle.setText("她关注的人");
+            }
+        }
     }
 
     private void init() {
@@ -115,23 +127,25 @@ public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数�
         //person type
         params.objType = 3;
         params.pindex = page;
-        APIClient.getMyFavoriateUsers(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
+        params.userId = userId;
+        APIClient.getMyFavoriateUsers(params, new ZCallBackWithFail<ResponseModel<List<AppUserResult>>>() {
             @Override
             public void callBack(ResponseModel<List<AppUserResult>> response) {
                 mPullToLoadView.setComplete();
-
-                List<AppUserResult> list = response._data;
-                MyLog.d("list size: " + list.size());
-                if (list.size() < params.pcount) {
-                    isHasLoadedAll = true;
-                    if (list.size() == 0) {
-                        ZToast.toastEmpty();
-                        return;
-                    }
-                }
                 isLoading = false;
-                nextPage = page + 1;
-                mAdapter.setData(list);
+                if (!failed) {
+                    List<AppUserResult> list = response._data;
+                    MyLog.d("list size: " + list.size());
+                    if (list.size() < params.pcount) {
+                        isHasLoadedAll = true;
+                        if (list.size() == 0) {
+                            ZToast.toastEmpty();
+                            return;
+                        }
+                    }
+                    nextPage = page + 1;
+                    mAdapter.setData(list);
+                }
             }
         });
        /* new Handler().postDelayed(new Runnable() {

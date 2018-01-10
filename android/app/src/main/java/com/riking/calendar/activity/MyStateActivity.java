@@ -12,15 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.fragment.AnswerCommentsFragment;
 import com.riking.calendar.fragment.MyAnswersFragment;
 import com.riking.calendar.fragment.MyDynamicQuestionFragment;
-import com.riking.calendar.fragment.SearchNewsFragment;
-import com.riking.calendar.fragment.SearchPersonFragment;
-import com.riking.calendar.fragment.SearchReportsFragment;
-import com.riking.calendar.fragment.SearchTopicFragment;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 
 /**
  * Created by zw.zhang on 2017/7/24.
@@ -29,10 +28,12 @@ import com.riking.calendar.fragment.SearchTopicFragment;
 
 public class MyStateActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new AnswerCommentsFragment(), new MyAnswersFragment(), new MyDynamicQuestionFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{AnswerCommentsFragment.newInstance(this), MyAnswersFragment.newInstance(this), MyDynamicQuestionFragment.newInstance(this)};
+    public String userId;
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
+    private TextView activityTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +42,18 @@ public class MyStateActivity extends AppCompatActivity { //Fragment 数组
         setContentView(R.layout.activity_my_state);
 
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
+
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我的动态");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("她的动态");
+            } else {
+                activityTitle.setText("他的动态");
+            }
+        }
     }
 
     private void init() {
@@ -50,6 +62,7 @@ public class MyStateActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
+        activityTitle = findViewById(R.id.activity_title);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         tabLayout = (TabLayout) findViewById(R.id.top_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);

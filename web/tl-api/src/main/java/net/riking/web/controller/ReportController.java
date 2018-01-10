@@ -1,5 +1,7 @@
 package net.riking.web.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
+import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.ReportRepo;
 import net.riking.dao.repo.ReportSubmitCaliberRepo;
+import net.riking.entity.VerifyParamModel;
 import net.riking.entity.VO.ReportVO;
 import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportSubmitCaliber;
@@ -52,6 +57,7 @@ public class ReportController {
 	// 增，改使用RequestMethod.POST，不能重复请求
 	// 为降低难度与兼容性， DELETE,PUT等操作不用。
 
+	@AuthPass
 	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
@@ -60,7 +66,7 @@ public class ReportController {
 			ReportVO reportVO = new ReportVO();
 			reportVO.setId(id);
 			reportVO.setReport(reportList);
-			ReportSubmitCaliber reportSubmitCaliber = caliberRepo.findOne(id);
+			ReportSubmitCaliber reportSubmitCaliber = caliberRepo.findByReportId(reportList.getId());
 			if (null != reportSubmitCaliber) {
 				reportVO.setReportSubmitCaliber(reportSubmitCaliber);
 			}
@@ -69,10 +75,11 @@ public class ReportController {
 			return new Resp(null, CodeDef.ERROR);
 		}
 	}
-
+	
 	@ApiOperation(value = "得到<全部>报表信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute ReportVO reportVO) {
+		query.setSort("modifiedTime_desc");
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		Page<ReportVO> page = reportService.findAll(reportVO, pageable);
 		return new Resp(page, CodeDef.SUCCESS);
@@ -111,6 +118,7 @@ public class ReportController {
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Resp save_(@RequestBody ReportVO reportVO) {
 		reportService.saveOrUpdate(reportVO);
+
 		return new Resp(CodeDef.SUCCESS);
 	}
 
@@ -167,15 +175,78 @@ public class ReportController {
 
 	@ApiOperation(value = "批量审核", notes = "POST")
 	@RequestMapping(value = "/verifyMore", method = RequestMethod.POST)
-	public Resp verifyMore_(@RequestBody Set<String> ids) {
+	public Resp verifyMore_(@RequestBody VerifyParamModel verifyParamModel) {
+		if (verifyParamModel.getIds() == null || verifyParamModel.getIds().size() < 1) {
+			return new Resp("参数有误", CodeDef.ERROR);
+		}
 		int rs = 0;
-		if (ids.size() > 0) {
-			rs = reportRepo.verifyById(ids);
+		List<Report> datas = reportRepo.findAll(verifyParamModel.getIds());
+		// successCount表示删除成功的条数
+		Integer successCount = 0;
+		// failCount表示删除失败的条数
+		Integer failCount = 0;
+		for (Report report : datas) {
+			// 已提交才可以进行审批
+			if (Const.ADUIT_NO == report.getIsAduit()) {
+				switch (verifyParamModel.getEvent()) {
+					case "VERIFY_NOT_PASS":
+						// 如果审批不通过
+						if (verifyParamModel.getIds().size() > 0) {
+							rs = reportRepo.verifyNotPassById(verifyParamModel.getIds());
+						}
+						if (rs > 0) {
+							successCount += 1;
+						} else {
+							failCount += 1;
+						}
+						break;
+					// 如果审批通过
+					case "VERIFY_PASS":
+						if (verifyParamModel.getIds().size() > 0) {
+							rs = reportRepo.verifyById(verifyParamModel.getIds());
+						}
+						if (rs > 0) {
+							successCount += 1;
+						} else {
+							failCount += 1;
+						}
+						break;
+					default:
+						failCount += 1;
+						break;
+				}
+			} else {
+				failCount += 1;
+			}
+		}
+		// 如果数据只有一条且失败返回失败
+		if (datas.size() == 1 && failCount == 1) {
+			return new Resp("审批失败", CodeDef.ERROR);
+		} else if (datas.size() == 1 && successCount == 1) {
+			return new Resp("审批成功", CodeDef.SUCCESS);
+		} else {
+			return new Resp("操作成功!成功" + successCount + "条" + "失败" + failCount + "条", CodeDef.SUCCESS);
+		}
+
+	}
+
+	@ApiOperation(value = "启用禁用", notes = "POST")
+	@RequestMapping(value = "/enable", method = RequestMethod.POST)
+	public Resp enable_(@RequestBody HashMap<String, String> map) {
+		String id = map.get("id");
+		String type = map.get("type");
+		int rs = 0;
+		// 启用
+		if (Integer.parseInt(type) == 1) {
+			rs = reportRepo.updEnable(id, 1);//
+		} else {
+			// 禁用
+			rs = reportRepo.updEnable(id, 0);
 		}
 		if (rs > 0) {
-			return new Resp().setCode(CodeDef.SUCCESS);
+			return new Resp(CodeDef.SUCCESS);
 		} else {
-			return new Resp().setCode(CodeDef.ERROR);
+			return new Resp(CodeDef.ERROR);
 		}
 	}
 

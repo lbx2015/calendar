@@ -8,13 +8,20 @@ import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.QueryReportContainer;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.Debug;
+import com.riking.calendar.util.ZR;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +41,49 @@ import static org.junit.Assert.assertEquals;
  */
 public class ExampleUnitTest {
     String repeatWeekReminds;
+
+    /**
+     * 判断该字符串是否为中文
+     *
+     * @param string
+     * @return
+     */
+    public static boolean isChinese(String string) {
+        int n = 0;
+        for (int i = 0; i < string.length(); i++) {
+            n = (int) string.charAt(i);
+            if (!(19968 <= n && n < 40869)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Test
+    public void testJson() throws IOException {
+        String[] cmd = new String[]{"cmd", "/c", "chcp"};
+        Process process = Runtime.getRuntime().exec(cmd);
+        BufferedReader stdInput =
+                new BufferedReader(new InputStreamReader(process.getInputStream(), "gbk"));
+        String ss, result = "";
+        while ((ss = stdInput.readLine()) != null) {
+            if (!ss.isEmpty()) {
+                result += ss + "\n";
+            }
+        }
+        System.out.println(result);
+        Gson s = new Gson();
+        TypeToken<ResponseModel<List<ReportResult>>> token = new TypeToken<ResponseModel<List<ReportResult>>>() {
+        };
+        ResponseModel<List<ReportResult>> responseModel = s.fromJson("", token.getType());
+    }
+
+    @Test
+    public void testJsonList() throws IOException {
+        System.out.print(6 % 2);
+        Gson s = new Gson();
+        ResponseModel<List<AppUserResult>> responseModel = s.fromJson("{_data:'',code:200,codeDesc:'',runtime:0}", ResponseModel.class);
+    }
 
 
     @Test
@@ -101,7 +151,7 @@ public class ExampleUnitTest {
         System.out.println(user.userId);
         System.out.println(new Gson().toJson(j));
         System.out.println(new Gson().toJson(a));
-        ArrayList<String>  arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList();
         arrayList.add("dd");
         arrayList.add("dd");
         arrayList.add("dd");
@@ -308,20 +358,19 @@ public class ExampleUnitTest {
         System.out.println(isChinese("a"));
     }
 
-    /**
-     * 判断该字符串是否为中文
-     *
-     * @param string
-     * @return
-     */
-    public static boolean isChinese(String string) {
-        int n = 0;
-        for (int i = 0; i < string.length(); i++) {
-            n = (int) string.charAt(i);
-            if (!(19968 <= n && n < 40869)) {
-                return false;
-            }
-        }
-        return true;
+    @Test
+    public void testGetNumberString() {
+        System.out.println(ZR.getNumberString(18));
+        System.out.println(ZR.getNumberString(1888));
+        System.out.println(ZR.getNumberString(380));
+    }
+
+    @Test
+    public void testShowTime() throws ParseException {
+        String time = "20180106144342000";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CONST.YYYYMMDDHHMMSSSSS);
+        Date date = simpleDateFormat.parse(time);
+        String s = DateUtil.showTime(date);
+        System.out.println(s);
     }
 }

@@ -35,6 +35,15 @@
     var flag= View.getQStr('flag');
     function editOnBind(attrs, param) {
         tmpl = this;
+        tmpl.onFinish(function(data) {
+			if(!id){
+				$("#edit_base input[name='versionNo']").val('V');
+			}
+			if(flag =="edit"){
+				$("#edit_base input[name='versionNo']").attr("disabled",true);
+			}
+			View.resetUi();
+		});
         tmpl.bind(function(callback) {
             var _this = this;
             if (id) {
@@ -54,7 +63,6 @@
                     
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
-                    loadRichText();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -63,29 +71,59 @@
                 data.showGroup = "base,submit";
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
-                loadRichText();
             }
         });
     }
     
     //编辑保存
     function edit() {
-        var reportList = Utils.formToObj("edit");
-        if(id){
-			reportList.topicQuestionId=id;
+    	if (TmplUtils.check('edit')) {
+			if(!checkVersion()){
+				return false;
+			}
+			var reportList = Utils.formToObj("edit");
+			reportList.opt = flag;
+	        if(id){
+				reportList.topicQuestionId=id;
+			}
+	        var url = Const.apiUrl + "/webVersion/save";
+	        View.post(url, reportList, function(resp) {
+	            TmplUtils.showMsgSuccess('编辑成功');
+	            parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
+	        	    + "&pcount=" + parent.TmplUtils.pageSize 
+	                + parent.TmplUtils.searchParam);
+	            
+	            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            parent.layer.close(index);
+	        }, function(code,data) {
+	        	if(data.data == "-1"){
+					TmplUtils.showMsgFail("该版本号已经存在");
+				}else{
+					TmplUtils.showMsgFail(data.data);
+				}
+	        });
+         }
+    }
+    
+  //校验版本号
+    function checkVersion() {
+    	//获取版本编号
+		var versionNo = $("#edit_base input[name='versionNo']").val();
+		if(versionNo){
+			var s = versionNo.substring(0,1);
+			//判断当前版本编号首字母是否大写的V并且//V后的格式是否x.x.x的格式
+			if(s=="V"){
+				var reg=/^[V](\d+)\.(\d+)\.(\d+)$/g; //匹配IP地址的正则表达式    
+		        if(reg.test(versionNo)){
+		        	return true;
+		        }
+			}else{
+				TmplUtils.showMsgFail("版本号首字必须是V");
+				return false;
+			}
 		}
-        var url = Const.apiUrl + "/webVersion/save";
-        View.post(url, reportList, function(resp) {
-            TmplUtils.showMsgSuccess('编辑成功');
-            parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) 
-        	    + "&pcount=" + parent.TmplUtils.pageSize 
-                + parent.TmplUtils.searchParam);
-            
-            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            parent.layer.close(index);
-        }, function(code) {
-            TmplUtils.showMsgFail('编辑失败');
-        });
+		TmplUtils.showMsgFail("对不起，输入版本格式不正确!");
+		return false;
     }
 </script>
 

@@ -23,7 +23,7 @@ import net.riking.entity.model.QACommentResult;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("qaCommentRepo")
 public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpecificationExecutor<QAComment> {
 
 	/**
@@ -63,5 +63,32 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 	@Modifying
 	@Query(" update QAComment set isAduit=1 where id in ?1 ")
 	int verifyById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update QAComment set isAduit=2 where id in ?1 ")
+	int verifyNotPassById(Set<String> ids);
+
+	/**
+	 * getMore统计数
+	 * 
+	 * @param newsId
+	 * @return
+	 */
+	@Query("select count(*) from QAComment where isDeleted = ?1")
+	int countGetMore(Integer isDeleted);
+
+	@Query("select new net.riking.entity.model.QAComment(q.id,q.userId,q.questionAnswerId,q.content,q.createdBy,q.modifiedBy,q.createdTime,q.modifiedTime,q.isAduit,q.isDeleted,(select a.userName from AppUser a where a.id = q.userId)) from QAComment q where q.isDeleted = ?1 order by q.modifiedTime desc")
+	List<QAComment> findAllQAC(Integer isDeleted, Pageable pageable);
+
+	@Query("select count(*) from QAComment where questionAnswerId = ?1  and isDeleted = 1")
+	public Integer getQACommentByQuestionAnswerId(String questionAnswerId);
+
+	@Query("select count(*) from QAComment where questionAnswerId = ?1 and isAduit = ?2  and isDeleted = 1")
+	public Integer getQACommentNumByQuestionAnswerIdAndIsAduit(String questionAnswerId, Integer isAduit);
+
+	@Query("from QAComment where questionAnswerId = ?1 and isDeleted = 1")
+	public List<QAComment> getAllByQuestionAnswerId(String questionAnswerId);
+	/*********** WEB ************/
 
 }

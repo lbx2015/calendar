@@ -18,7 +18,7 @@ public class ReportOrderViewHolder extends RecyclerView.ViewHolder {
     public TextView reportTitle;
 
     @BindView(R.id.report_name)
-    public TextView reportName;
+    public TextView code;
 
     @BindView(R.id.order)
     public TextView orderButton;

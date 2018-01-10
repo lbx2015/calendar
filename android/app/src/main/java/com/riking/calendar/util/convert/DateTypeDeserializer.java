@@ -18,8 +18,8 @@ import java.util.Locale;
 
 public class DateTypeDeserializer implements JsonDeserializer<Date> {
     private static final String[] DATE_FORMATS = new String[]{
-            "yyyyMMddHHmmssS",
             "yyyyMMddHHmmssSSS",
+            "yyyyMMddHHmmssS",
             "yyyy-MM-dd'T'HH:mm:ssZ",
             "yyyy-MM-dd'T'HH:mm:ss",
             "yyyy-MM-dd",

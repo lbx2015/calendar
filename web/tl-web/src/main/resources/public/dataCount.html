@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>数据分析统计</title>
+<link type="include" href="/common/depcss.html" />
+</head>
+<body class="iframeBody">
+<div class="scrollbar"> 
+	<div class="content">
+		<div class='FR'>
+				<div class="_tmpl FR" data-url="filterCriteria.html" data-attr="userCount.json"  data-bind="filterCriteriaOnBind" data-param=""></div>
+		</div>
+		<div class="clear"></div>
+		 <div class="viewBox">
+			<div id="tu1" class="FL panel"></div>
+			<div id="tu11" style="display:none" class="FL panel"></div>
+			<div id="tu2" class="FR panel"></div>
+			<div id="tu3" class="FL panel"></div>
+			<div id="tu31" style="display:none" class="FL panel"></div>
+		</div> 
+	</div>
+</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script type="text/javascript" src="{=ctx}/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="{=ctx}/echarts/world.js"></script>
+<script>
+    $(function () {
+    	tu1Bind('');
+    	tu2Bind();
+    	tu3Bind('');
+    });
+</script>
+<script type="text/javascript">
+    var start;
+    var end;
+	function tu1Bind(searchParam) {
+		var url = Const.apiUrl + "/dataCount/userActiveNumCount";
+		var date = '';
+		var frequency = '';
+		 if(searchParam == '' || searchParam == undefined){
+			 frequency = '0';
+		}else{
+			frequency =(searchParam.split('=')[2] ==undefined || searchParam.split('=')[2] =='')?'0':searchParam.split('=')[2];
+			date =searchParam.split('=')[1].split('&')[0];
+		} 
+		params = {
+				"frequency":frequency,
+				"date":date
+		}
+		View.post(url,params, function(resp) {
+			userActivityCount(resp);
+		   }, function() {
+		       TmplUtils.showMsgFail('信息获取失败');
+		   });
+	}
+	//用户活跃数统计
+	function userActivityCount(resp) {
+		// 基于准备好的dom，初始化echarts实例
+         var myChartBarGraph = echarts.init(document.getElementById('tu1')); 
+          var myChartBroLine = echarts.init(document.getElementById('tu11'));  
+
+         var optionBarGraph = loadBarGraph(resp,'用户活跃数'); 
+         var optionBroLine = loadBarBroLine(resp,'用户活跃数'); 
+        // 指定图表的配置项和数据
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChartBarGraph.setOption(optionBarGraph);
+        myChartBarGraph.on("click", eConsoleActivityCountBarGraph); 
+        myChartBroLine.setOption(optionBroLine);
+        myChartBroLine.on("click", eConsoleActivityCountBroLine); 
+	}
+	function eConsoleActivityCountBarGraph(params){
+		$("#tu1").hide()
+		$("#tu11").show()
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		console.log(TmplUtils.searchParam)
+		tu1Bind(TmplUtils.searchParam);
+	}
+	function eConsoleActivityCountBroLine(params){
+		$("#tu11").hide()
+		$("#tu1").show()
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tu1Bind(TmplUtils.searchParam);
+	}
+	  function userDateArr(resp){
+	    	var arr = [];
+	    	for(obj in resp){
+	    		arr.push({
+	    			  value:obj
+	    		}); 
+	    	}
+	    	return arr;
+	    }
+	  function userCountArr(resp){
+	    	var arr = [];
+	    	for(obj in resp){
+	    		arr.push({
+	    			  value:resp[obj]
+	    		}); 
+	    	}
+	    	return arr;
+	    }
+	function tu2Bind() {
+		var url = Const.apiUrl + "/dataCount/reportFollowCount";
+		View.post(url,null, function(resp) {
+			reportFollowCount(resp);
+        }, function() {
+            TmplUtils.showMsgFail('信息获取失败');
+        });
+	}
+	//报表关注数统计：饼状图
+	function reportFollowCount(resp) {
+		// 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('tu2'));
+        // 指定图表的配置项和数据
+        var option = {
+      		title: {
+               text: '报表关注数统计',
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : {c}个 ({d}%)"
+            },
+             /* legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['asdf','cbrc']
+            },  */
+            calculable: false,
+            series: [
+            	{
+                //name: '账户总数',
+                type: 'pie',
+                label:{
+  	               	normal:{
+  	               		show:true,
+  	               		position : 'outside',
+  	               		formatter: '{b}\n{d}%'
+  	               	},
+  	               	emphasis:{
+  	               		show :false
+  	               	}
+                }, 
+                data: encapsulatedData(resp)
+            	}
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        	myChart.on("click", eConsoleReportFollowCount);
+	}
+    function eConsoleReportFollowCount(param) {
+		var url = "reportFollowNumCount.html?key=" + param.name;
+		var title = param.name+"关注数统计";
+		View.openDialog(url, title);
+  	}
+	  function encapsulatedData(resp){
+    	var arr = [];
+    	for(var i=0; i<resp.length;i++){
+    		arr.push({
+    			 name : resp[i].key,
+    			 value : resp[i].value                       
+    			 }); 
+    	}
+    	return arr;
+    }
+	//图三用户注册数统计
+	function tu3Bind(searchParam) {
+		var url = Const.apiUrl + "/dataCount/userRegistNumCount";
+		var date = '';
+		var frequency = '';
+		 if(searchParam == '' || searchParam == undefined){
+			 frequency = '0';
+		}else{
+			frequency =(searchParam.split('=')[2] ==undefined || searchParam.split('=')[2] =='')?'0':searchParam.split('=')[2];
+			date =searchParam.split('=')[1].split('&')[0];
+		} 
+		params = {
+				"frequency":frequency,
+				"date":date
+		}
+		View.post(url,params, function(resp) {
+			userRegistCount(resp);
+        }, function() {
+            TmplUtils.showMsgFail('信息获取失败');
+        });
+	}
+	function userRegistCount(resp) {
+		// 基于准备好的dom，初始化echarts实例
+        var myChartBroLine = echarts.init(document.getElementById('tu3'));
+        var myChartBarGraph = echarts.init(document.getElementById('tu31')); 
+        // 用户注册数统计
+         var optionBroLine = loadBarBroLine(resp,'用户注册数'); 
+        var optionBarGraph = loadBarGraph(resp,'用户注册数'); 
+        // 指定图表的配置项和数据
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChartBroLine.setOption(optionBroLine);
+        myChartBroLine.on("click", eConsoleUserRegistCountBroLine);
+        myChartBarGraph.setOption(optionBarGraph);
+        myChartBarGraph.on("click", eConsoleUserRegistCountBarGraph); 
+	}
+	function eConsoleUserRegistCountBroLine(params){
+		$("#tu3").hide()
+		$("#tu31").show()
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tu3Bind(TmplUtils.searchParam);
+	}
+	function eConsoleUserRegistCountBarGraph(params){
+		$("#tu31").hide()
+		$("#tu3").show()
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tu3Bind(TmplUtils.searchParam);
+	}
+	function loadBarGraph(resp,title){
+        var option = {
+                title: {
+                    text: title+'统计',
+                 },
+                tooltip: {},
+                xAxis: {
+                    data: userDateArr(resp)
+                },
+                yAxis: {},
+                series: [{
+                    name: title,
+                    type: 'bar',
+                    data: userCountArr(resp)
+                }]
+            };
+        return option;
+	}
+ 	function loadBarBroLine(resp,title){
+        var option = {
+         		title: {
+                     text: title+'统计',
+                },
+                tooltip: {},
+               	legend: {
+                    data:[title]
+                }, 
+                xAxis: {
+                	 type: 'category',
+                     boundaryGap: false,
+                    data: userDateArr(resp)
+                },
+                yAxis: {},
+                series: [
+                {
+                    name: title,
+                    type: 'line',
+                    data: userCountArr(resp)
+                }
+                ]
+            };
+        return option;
+	}
+	//查询条件绑定
+    function filterCriteriaOnBind(attrs,param){
+        tmpl = this;
+        var _this = this;
+        tmpl.bind(function (callback) {
+            var data={};
+            data.searchClick = "search";
+            callback.call(_this, data);
+            TmplUtils.filterCriteriaOnLoad();
+        });
+        $(".layui-input-inline").width(100);
+		$("#branch").css("display", "block");
+    }
+	//查询
+	function search() {
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tu1Bind(TmplUtils.searchParam)
+		tu3Bind(TmplUtils.searchParam)
+		TmplUtils.currPage = 1;
+		TmplUtils.closePreview();
+	}
+</script>
+</html>

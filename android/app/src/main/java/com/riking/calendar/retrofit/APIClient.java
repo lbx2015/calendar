@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.gson.AnnotationExclusionStrategy;
@@ -19,7 +20,6 @@ import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZRequestCallBack;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
-import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.ReminderModel;
 import com.riking.calendar.pojo.TaskModel;
@@ -35,25 +35,32 @@ import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.Banner;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
+import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
+import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.pojo.server.SysNoticeParams;
+import com.riking.calendar.pojo.server.SysNoticeResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -68,6 +75,7 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.GsonStringConverterFactory;
 import com.riking.calendar.util.StringUtil;
+import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.convert.DateTypeDeserializer;
 
@@ -141,7 +149,7 @@ public class APIClient {
         for (Reminder r : reminders) {
             reminderModels.add(new ReminderModel(r));
         }
-        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBack<ResponseModel<String>>() {
+        APIClient.apiInterface.synchronousReminds(reminderModels).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 if (callBack != null) {
@@ -168,14 +176,13 @@ public class APIClient {
         final Realm realm = Realm.getDefaultInstance();
         //upload pending tasks
         final RealmResults<Task> tasks = realm.where(Task.class).equalTo("syncStatus", 1).findAll();
-        final List<TaskModel> models = new ArrayList<>();
+        final List<Todo> models = new ArrayList<>();
 
         Logger.d("zzw", "found padding tasks size " + tasks.size());
         for (Task t : tasks) {
-            models.add(new TaskModel(t));
+            models.add(new Todo(t));
         }
-
-        apiInterface.synchronousTasks(models).enqueue(new ZCallBack<ResponseModel<String>>() {
+        apiInterface.synchronousTasks(models).enqueue(new ZCallBackWithoutProgress<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 realm.executeTransaction(new Realm.Transaction() {
@@ -207,10 +214,10 @@ public class APIClient {
         if (!task.isValid()) {
             return;
         }
-        final ArrayList<TaskModel> tasks = new ArrayList<>(1);
-        TaskModel t = new TaskModel(task);
+        final ArrayList<Todo> tasks = new ArrayList<>(1);
+        Todo t = new Todo(task);
         if (operationType == CONST.DELETE) {
-            t.deleteState = 1;
+            t.deleteFlag = 1;
         }
 
         tasks.add(t);
@@ -223,7 +230,7 @@ public class APIClient {
                     public void execute(Realm realm) {
                         if (operationType == CONST.DELETE) {
                             if (failed) {
-                                Logger.d("zzw", "set delete State 1 of " + task.title);
+                                Logger.d("zzw", "set delete State 1 of " + task.content);
                                 task.deleteState = 1;
                                 task.syncStatus = 1;
                             } else {
@@ -237,6 +244,37 @@ public class APIClient {
                                 addAlarm4Task(task);
                             }
                         }
+                    }
+                });
+            }
+        });
+    }
+
+    public static void addRemind(final ReminderModel r) {
+        MyLog.d(" remind model: " + r);
+        apiInterface.saveRemind(r).enqueue(new ZCallBackWithFail<ResponseModel<ReminderModel>>() {
+            @Override
+            public void callBack(ResponseModel<ReminderModel> response) throws Exception {
+                if (failed) {
+                    Toast.makeText(MyApplication.APP, "上传失败", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MyApplication.APP, "上传成功", Toast.LENGTH_LONG).show();
+                }
+                ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        Reminder reminder = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, r.id).findFirst();
+                        if (failed) {
+                            reminder.syncStatus = 1;
+                        } else {
+//                            addAlarm(reminder, reminder.reminderTime);
+                        }
+                    }
+                }, new Realm.Transaction.OnSuccess() {
+                    @Override
+                    public void onSuccess() {
+                        Reminder reminder = ZDB.Instance.getRealm().where(Reminder.class).equalTo(Reminder.REMINDER_ID, r.id).findFirst();
+                        addAlarm(reminder, reminder.reminderTime);
                     }
                 });
             }
@@ -314,7 +352,7 @@ public class APIClient {
             SimpleDateFormat sdf = new SimpleDateFormat(CONST.yyyyMMddHHmm);
             AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(MyApplication.APP, ReminderService.class);
-            intent.putExtra(CONST.REMINDER_TITLE, task.title);
+            intent.putExtra(CONST.REMINDER_TITLE, task.content);
             PendingIntent pendingIntent = PendingIntent.getService(MyApplication.APP, task.requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             try {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, sdf.parse(task.strDate).getTime(), pendingIntent);
@@ -413,14 +451,14 @@ public class APIClient {
                             remindIds.add(r.id);
                         }
                         for (Task t : synchedTasks) {
-                            taskIds.add(t.todo_Id);
+                            taskIds.add(t.todoId);
                         }
 
                         List<ReminderModel> reminders = response._data.remind;
                         List<TaskModel> tasks = response._data.todo;
                         if (reminders != null) {
                             for (ReminderModel m : reminders) {
-                                int requestCode = realm.where(Reminder.class).equalTo("userId", m.id).findFirst().requestCode;
+                                int requestCode = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, m.id).findFirst().requestCode;
                                 Reminder r = new Reminder(m);
                                 remindIds.remove(r.id);
                                 r.requestCode = requestCode;
@@ -431,7 +469,7 @@ public class APIClient {
 
                         //delete those which is from server
                         for (String id : remindIds) {
-                            Reminder r = realm.where(Reminder.class).equalTo("userId", id).findFirst();
+                            Reminder r = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, id).findFirst();
                             cancelAlarm(r.requestCode);
                             r.deleteFromRealm();
                         }
@@ -439,18 +477,18 @@ public class APIClient {
                         if (tasks != null) {
                             for (TaskModel m : tasks) {
                                 Task t = new Task(m);
-                                int requestCode = realm.where(Task.class).equalTo("todo_Id", t.todo_Id).findFirst().requestCode;
+                                int requestCode = realm.where(Task.class).equalTo(Task.TODO_ID, t.todoId).findFirst().requestCode;
                                 t.requestCode = requestCode;
-                                taskIds.remove(t.todo_Id);
+                                taskIds.remove(t.todoId);
                                 realm.copyToRealmOrUpdate(t);
                                 addAlarm4Task(t);
                             }
                         }
 
                         //delete those which is from server
-                        for (String id : taskIds) {
-                            realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst().deleteFromRealm();
-                        }
+//                        for (String id : taskIds) {
+//                            realm.where(Task.class).equalTo(Task.TODO_ID, id).findFirst().deleteFromRealm();
+//                        }
                     }
                 });
             }
@@ -524,12 +562,14 @@ public class APIClient {
 
     public static void checkUpdate(final CheckCallBack updateCallback) {
         JsonObject j = new JsonObject();
-        j.addProperty("versionNumber", BuildConfig.VERSION_NAME);
-        j.addProperty("type", "2");//1 is iphone 2 is android
+        j.addProperty("versionNo", BuildConfig.VERSION_NAME);
+        j.addProperty("clientType", "2");//1 is iphone 2 is android
         apiInterface.getAppVersion(j).enqueue(new ZCallBack<ResponseModel<AppVersionResult>>() {
             @Override
             public void callBack(ResponseModel<AppVersionResult> response) {
-                updateCallback.onSuccess(response._data);
+                if (response._data != null) {
+                    updateCallback.onSuccess(response._data);
+                }
             }
         });
     }
@@ -548,10 +588,6 @@ public class APIClient {
         apiInterface.getPositionByIndustry(industryMap).enqueue(c);
     }
 
-    public static void updateUserInfo(AppUser user, ZCallBackWithFail<ResponseModel<String>> callBackWithFail) {
-        apiInterface.updateUserInfo(user).enqueue(callBackWithFail);
-    }
-
     public static void findUserReportList(AppUser user, ZCallBackWithFail<ResponseModel<List<ReportResult>>> c) {
         apiInterface.findSubscribeReportList(user).enqueue(c);
     }
@@ -560,7 +596,7 @@ public class APIClient {
         apiInterface.saveSubscribeReport(reportResult).enqueue(z);
     }
 
-    public static void updateUserReportRelById(AppUserReportRel reportRel, ZCallBack<ResponseModel<String>> c) {
+    public static void updateUserReportRelById(SubscribeReportParam reportRel, ZCallBack<ResponseModel<String>> c) {
         apiInterface.updateUserReportRelById(reportRel).enqueue(c);
     }
 
@@ -572,7 +608,7 @@ public class APIClient {
         apiInterface.getNewsDetail(params).enqueue(c);
     }
 
-    public static void findNewsCommentList(NewsParams params, ZCallBack<ResponseModel<List<NewsComment>>> c) {
+    public static void findNewsCommentList(NewsParams params, ZCallBackWithFail<ResponseModel<List<NewsComment>>> c) {
         apiInterface.findNewsCommentList(params).enqueue(c);
     }
 
@@ -608,7 +644,7 @@ public class APIClient {
         apiInterface.qAnswerAgree(params).enqueue(c);
     }
 
-    public static void qACommentList(QAnswerParams params, ZCallBack<ResponseModel<List<QAComment>>> c) {
+    public static void qACommentList(QAnswerParams params, ZCallBackWithFail<ResponseModel<List<QAComment>>> c) {
         apiInterface.qACommentList(params).enqueue(c);
     }
 
@@ -644,7 +680,7 @@ public class APIClient {
         apiInterface.getAnswerInfo(params).enqueue(c);
     }
 
-    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+    public static void getMyFavoriateUsers(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
         apiInterface.getMyFavoriteUsers(params).enqueue(c);
     }
 
@@ -652,7 +688,7 @@ public class APIClient {
         apiInterface.myFans(params).enqueue(c);
     }
 
-    public static void getMyAnswers(UserFollowParams params, ZCallBack<ResponseModel<List<QAnswerResult>>> c) {
+    public static void getMyAnswers(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<QAnswerResult>>> c) {
         apiInterface.getMyAnswers(params).enqueue(c);
     }
 
@@ -710,13 +746,13 @@ public class APIClient {
         apiInterface.findCurrentTasks(param).enqueue(c);
     }
 
-    public static void getMyFollow(UserFollowParams params, ZCallBack<ResponseModel<List<Topic>>> c) {
+    public static void getMyFollow(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
         //get topics
         params.objType = 2;
         apiInterface.getMyFollowTopic(params).enqueue(c);
     }
 
-    public static void getMyFollowQuestion(UserFollowParams params, ZCallBack<ResponseModel<List<QuestResult>>> c) {
+    public static void getMyFollowQuestion(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<QuestResult>>> c) {
         params.objType = 1;
         apiInterface.getMyFollowQuestion(params).enqueue(c);
     }
@@ -743,7 +779,7 @@ public class APIClient {
         apiInterface.emailIdentify(params).enqueue(c);
     }
 
-    public static void getColleague(UserParams params, ZCallBack<ResponseModel<List<AppUserResult>>> c) {
+    public static void getColleague(UserParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
         apiInterface.getColleagues(params).enqueue(c);
     }
 
@@ -753,5 +789,72 @@ public class APIClient {
 
     public static void inviteContact(UserParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.contactsInvite(params).enqueue(c);
+    }
+
+    public static void completeReport(RCompletedRelParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.completeReport(params).enqueue(c);
+    }
+
+    public static void saveTodo(List<Todo> params, ZCallBackWithFail<ResponseModel<String>> c) {
+        apiInterface.synchronousTasks(params).enqueue(c);
+    }
+
+    public static void saveRemind(ReminderModel model, ZCallBack<ResponseModel<ReminderModel>> callBack) {
+        apiInterface.saveRemind(model).enqueue(callBack);
+    }
+
+    public static void myGrade(UserParams reminderModel, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.myGrade(reminderModel).enqueue(c);
+    }
+
+    public static void getOtherPersonInfo(UserParams params, ZCallBack<ResponseModel<OtherUserResp>> c) {
+        apiInterface.getOther(params).enqueue(c);
+    }
+
+    /**
+     * policy
+     */
+    public static void getPolicyHtml(ZCallBack<ResponseModel<String>> c) {
+        apiInterface.policyHtml().enqueue(c);
+    }
+
+    public static void getTopicByQuestion(TQuestionParams params, ZCallBackWithFail<ResponseModel<List<Topic>>> c) {
+        apiInterface.getTopicByQuestion(params).enqueue(c);
+    }
+
+    public static void getFOAF(UserParams params, ZCallBackWithFail<ResponseModel<List<AppUserResult>>> c) {
+        apiInterface.getFOAF(params).enqueue(c);
+    }
+
+    public static void findHotSearchList(ZCallBack<ResponseModel<List<HotSearch>>> c) {
+        apiInterface.findHotSearchList().enqueue(c);
+    }
+
+    public static void findExpireTasks(ReportCompletedRelParam param, ZCallBackWithFail<ResponseModel<List<List<ReportCompletedRelResult>>>> c) {
+        apiInterface.findExpireTasks(param).enqueue(c);
+    }
+
+    public static void findHisCompletedTasks(ReportCompletedRelParam param, ZCallBackWithFail<ResponseModel<List<List<ReportCompletedRelResult>>>> c) {
+        apiInterface.findHisCompletedTasks(param).enqueue(c);
+    }
+
+    public static void getBanners(ZCallBackWithFail<ResponseModel<List<Banner>>> c) {
+        apiInterface.getBanners().enqueue(c);
+    }
+
+    public static void getUserMessage(HomeParams params, ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>> c) {
+        apiInterface.getUserMessage(params).enqueue(c);
+    }
+
+    public static void getSystemMessage(HomeParams params, ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>> c) {
+        apiInterface.getSystemMessage(params).enqueue(c);
+    }
+
+    public static void deleteMessages(SysNoticeParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.deleteMessages(params).enqueue(c);
+    }
+
+    public static void getAnswerEditHtml(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
+        apiInterface.getAnswerEditHtml(params).enqueue(c);
     }
 }

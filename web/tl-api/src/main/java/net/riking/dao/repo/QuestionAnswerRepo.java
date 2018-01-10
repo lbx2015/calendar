@@ -19,7 +19,7 @@ import net.riking.entity.model.QuestionAnswer;
  * @see
  * @since 1.0
  */
-@Repository
+@Repository("questionAnswerRepo")
 public interface QuestionAnswerRepo
 		extends JpaRepository<QuestionAnswer, String>, JpaSpecificationExecutor<QuestionAnswer> {
 	/**
@@ -53,6 +53,14 @@ public interface QuestionAnswerRepo
 	 */
 	@Query("select count(*) from QuestionAnswer where userId = ?1 and isAduit <> 2 and isDeleted = 1")
 	Integer answerCountByUserId(String userId);
+
+	/**
+	 * 统计用户回答问题的回答数
+	 * @param newsCommentId
+	 * @return
+	 */
+	@Query("select count(*) from QuestionAnswer where userId = ?1 and isAduit = ?2 and isDeleted = 1")
+	Integer answerCountByUserIdAndIsAudit(String userId, String isAduit);
 
 	/**
 	 * 用户的回答

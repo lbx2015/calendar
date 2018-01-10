@@ -7,6 +7,8 @@
         android:minSdkVersion="21"
         android:targetSdkVersion="26" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
     <!-- Required -->
     <permission
         android:name="com.riking.calendar.permission.JPUSH_MESSAGE"
@@ -103,6 +105,8 @@
         <activity android:name=".activity.SearchReportActivity" />
         <activity android:name=".activity.CreateTaskActivity" />
         <activity android:name=".activity.MomentAddActivity" />
+        <activity android:name=".activity.CompleteReportHistoryActivity" />
+        <activity android:name=".activity.OverdueReportActivity" />
         <activity android:name=".activity.FeedBackActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"
@@ -123,7 +127,9 @@
         <activity android:name=".activity.MyRepliesActivity"></activity>
         <activity android:name=".activity.MyFollowersActivity"></activity>
         <activity android:name=".activity.MyFavoritesUserActivity"></activity>
+        <activity android:name=".activity.SystemNoticeActivity"></activity>
         <activity android:name=".activity.MyStateActivity"></activity>
+        <activity android:name=".activity.UserActivity"></activity>
         <activity android:name=".activity.MyFollowActivity"></activity>
         <activity android:name=".activity.MyCollectActivity"></activity>
         <activity android:name=".activity.MyRelationActivity"></activity>
@@ -138,6 +144,7 @@
         <activity android:name=".activity.AnswerCommentsActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RaiseQuestionActivity" />
+        <activity android:name=".activity.SubmitQuestionActivity" />
         <activity
             android:name=".activity.AddRemindActivity"
             android:theme="@style/AppThemeNoActionBar" />
@@ -220,6 +227,9 @@
             android:theme="@style/MyDialogStyle"></activity>
         <activity
             android:name=".activity.WebviewActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".activity.WebviewEditorActivity"
             android:theme="@style/AppThemeNoActionBar" />
 
         <!-- Required SDK核心功能-->

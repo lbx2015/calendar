@@ -15,7 +15,7 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.SearchTopicViewHolder;
 
 
-public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,Topic> {
+public class TopicsAdapter extends ZAdater<SearchTopicViewHolder, Topic> {
     private Context context;
 
     public TopicsAdapter(Context context) {
@@ -31,7 +31,7 @@ public class TopicsAdapter extends ZAdater<SearchTopicViewHolder,Topic> {
 
     @Override
     public void onBindVH(final SearchTopicViewHolder h, int i) {
-        Topic r = mList.get(i);
+        final Topic r = mList.get(i);
         h.title.setText(r.title);
         h.followButton.setVisibility(View.GONE);
         h.summary.setText(ZR.getNumberString(r.followNum) + "人关注");

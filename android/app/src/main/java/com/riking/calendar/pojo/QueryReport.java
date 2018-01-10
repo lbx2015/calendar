@@ -1,6 +1,7 @@
 package com.riking.calendar.pojo;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import io.realm.annotations.PrimaryKey;
 
@@ -8,6 +9,7 @@ import io.realm.annotations.PrimaryKey;
 //@Table(name = "t_app_user")
 public class QueryReport {
     @PrimaryKey
+    @SerializedName(value = "reportId", alternate = "id")
     public String id;
     public String reportName;
     public String reportCode;

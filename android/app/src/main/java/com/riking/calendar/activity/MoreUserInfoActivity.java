@@ -249,7 +249,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
 
                 .setTitleText("城市选择")
                 .setDividerColor(getResources().getColor(R.color.color_background_b6b6b6))
-                .setTextColorCenter(getResources().getColor(R.color.color_323232)) //设置选中项文字颜色
+                .setTextColorCenter(getResources().getColor(R.color.color_222222)) //设置选中项文字颜色
                 .setContentTextSize(16)
                 .setLineSpacingMultiplier(2f)
                 .setCyclic(true, false, false)
@@ -377,7 +377,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(3, currentUser.phone, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
-                        if (currentUser.phone.equals(newValue)) {
+                        if (currentUser.phone != null && currentUser.phone.equals(newValue)) {
                             return;
                         }
                         UpdUserParams user = new UpdUserParams();
@@ -403,7 +403,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(1, currentUser.email, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
-                        if (currentUser.email.equals(newValue)) {
+                        if (currentUser.email != null && currentUser.email.equals(newValue)) {
                             return;
                         }
 
@@ -415,6 +415,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                     @Override
                     void updateSuccess(String newValue) {
                         currentUser.email = newValue;
+                        emailValidated.setVisibility(View.VISIBLE);
                         emailValidated.setClickable(true);
                         emailValidated.setEnabled(true);
                         emailValidated.setText("未验证");
@@ -441,7 +442,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
                 changeCompanyDialog(0, currentUser.companyName, new UpdateUserInfoCallBack() {
                     @Override
                     public void newValue(final String newValue) {
-                        if (currentUser.companyName.equals(newValue)) {
+                        if (currentUser.companyName != null && currentUser.companyName.equals(newValue)) {
                             return;
                         }
                         UpdUserParams user = new UpdUserParams();
@@ -559,13 +560,17 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                    positions = response._data;
-                    if (industries == null) {
-                        return;
+                    if (failed) {
+
+                    } else {
+                        positions = response._data;
+                        if (industries == null) {
+                            return;
+                        }
+                        //only one column industry selector
+                        positionPicker.setPicker(positions);
+                        positionPicker.show();
                     }
-                    //only one column industry selector
-                    positionPicker.setPicker(positions);
-                    positionPicker.show();
                 }
             });
         } else {
@@ -654,14 +659,18 @@ public class MoreUserInfoActivity extends AppCompatActivity {
             APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
                 @Override
                 public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                    industries = response._data;
-                    if (industries == null) {
-                        return;
+                    if (failed) {
+
+                    } else {
+                        industries = response._data;
+                        if (industries == null) {
+                            return;
+                        }
+                        //only one column industry selector
+                        industryPicker.setPicker(industries);
+                        industryPicker.show();
+                        setDefaultIndustry(currentIndustryId);
                     }
-                    //only one column industry selector
-                    industryPicker.setPicker(industries);
-                    industryPicker.show();
-                    setDefaultIndustry(currentIndustryId);
                 }
             });
         } else {
@@ -857,7 +866,11 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         APIClient.getPositions(hashMap, new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                positions = response._data;
+                if (failed) {
+
+                } else {
+                    positions = response._data;
+                }
             }
         });
     }
@@ -866,7 +879,11 @@ public class MoreUserInfoActivity extends AppCompatActivity {
         APIClient.getIndustries(new ZCallBackWithFail<ResponseModel<ArrayList<Industry>>>() {
             @Override
             public void callBack(ResponseModel<ArrayList<Industry>> response) throws Exception {
-                industries = response._data;
+                if (failed) {
+
+                } else {
+                    industries = response._data;
+                }
             }
         });
     }

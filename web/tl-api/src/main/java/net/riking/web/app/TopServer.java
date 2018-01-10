@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
@@ -26,7 +27,6 @@ import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.QAnswerResult;
@@ -38,6 +38,7 @@ import net.riking.entity.params.TopicParams;
 import net.riking.service.AppUserService;
 import net.riking.service.QAnswerService;
 import net.riking.service.TQuestionService;
+import net.riking.util.FileUtils;
 
 /**
  * 话题接口
@@ -75,7 +76,7 @@ public class TopServer {
 	QACAgreeRelRepo qACAgreeRelRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	TopicRepo topicRepo;
@@ -88,7 +89,7 @@ public class TopServer {
 
 	@Autowired
 	QAnswerRelRepo qAnswerRelRepo;
-
+	
 	/**
 	 * 话题的详情[topicId,userId]
 	 * @param params
@@ -110,7 +111,8 @@ public class TopServer {
 			}
 		}
 		if (null != topic.getPhotoUrl()) {
-			topic.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topic.getPhotoUrl());
+//			topic.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + topic.getPhotoUrl());
+			topic.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_TOPIC_PHOTO_PATH, this.getClass()) + topic.getPhotoUrl());
 		}
 		// 等级
 		if (null != topic.getExperience()) {
@@ -148,8 +150,10 @@ public class TopServer {
 						topicParams.getUserId(), pageBegin, pageCount);
 				for (QAnswerResult tQuestionResult : tQuestionResults) {
 					if (null != tQuestionResult.getPhotoUrl()) {
+//						tQuestionResult.setPhotoUrl(
+//								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getPhotoUrl());
 						tQuestionResult.setPhotoUrl(
-								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + tQuestionResult.getPhotoUrl());
+								FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + tQuestionResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != tQuestionResult.getExperience()) {
@@ -181,8 +185,10 @@ public class TopServer {
 						new PageRequest(pageBegin, pageCount));
 				for (QuestResult questResult : questResults) {
 					if (null != questResult.getPhotoUrl()) {
+//						questResult.setPhotoUrl(
+//								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questResult.getPhotoUrl());
 						questResult.setPhotoUrl(
-								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + questResult.getPhotoUrl());
+								FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + questResult.getPhotoUrl());
 					}
 					// 等级
 					if (null != questResult.getExperience()) {
@@ -205,8 +211,10 @@ public class TopServer {
 						pageBegin, pageCount);
 				for (QAExcellentResp qaExcellentResp : excellentResps) {
 					if (null != qaExcellentResp.getPhotoUrl()) {
+//						qaExcellentResp.setPhotoUrl(
+//								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaExcellentResp.getPhotoUrl());
 						qaExcellentResp.setPhotoUrl(
-								appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qaExcellentResp.getPhotoUrl());
+								FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + qaExcellentResp.getPhotoUrl());
 					}
 					// 等级
 					if (null != qaExcellentResp.getExperience()) {

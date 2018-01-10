@@ -30,13 +30,23 @@ public class WebviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         activityTitle = findViewById(R.id.title);
-        //set activity title
-        activityTitle.setText("关于我们");
+
         //set web view
         WebView webview = (WebView) findViewById(R.id.web_view);
 
         Bundle bundle = getIntent().getExtras();
         webview.loadUrl(bundle.getString(CONST.WEB_URL, null));
+        String activityName = bundle.getString(CONST.ACTIVITY_NAME, "");
+        if (activityName.equals("SettingActivity")) {
+            //set activity title
+            activityTitle.setText("关于我们");
+        } else if (activityName.equals("LoginActivity")) {
+            activityTitle.setText("隐私政策");
+        } else if (activityName.equals("UserInfoFragment")) {
+            activityTitle.setText("我的等级");
+        } else {
+            activityTitle.setVisibility(View.GONE);
+        }
 
         WebSettings settings = webview.getSettings();
         webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

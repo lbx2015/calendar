@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riking.calendar.R;
+import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -20,32 +21,26 @@ import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //answer comment adapter
-public class MyDynamicAnswerCommentListAdapter extends RecyclerView.Adapter<MyDynamicAnswerCommentListAdapter.MyViewHolder> {
-    public List<QACommentResult> mList;
-    private Context a;
-
-    public MyDynamicAnswerCommentListAdapter(Context context) {
-        this.a = context;
-        mList = new ArrayList<>();
-    }
+public class MyDynamicAnswerCommentListAdapter extends ZAdater<MyDynamicAnswerCommentListAdapter.MyViewHolder, QACommentResult> {
 
     @Override
-    public MyDynamicAnswerCommentListAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public MyViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.my_dynamic_comment_list_item, viewGroup, false);
         return new MyDynamicAnswerCommentListAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyDynamicAnswerCommentListAdapter.MyViewHolder h, int i) {
+    public void onBindVH(final MyDynamicAnswerCommentListAdapter.MyViewHolder h, int i) {
         final QACommentResult c = mList.get(i);
 
-        ZR.setUserName(h.authorName, c.userName, c.grade);
+        ZR.setUserName(h.authorName, c.userName, c.grade, c.userId);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
@@ -108,22 +103,14 @@ public class MyDynamicAnswerCommentListAdapter extends RecyclerView.Adapter<MyDy
         ZR.setUserImage(h.authorImage, c.photoUrl);
     }
 
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
+/*
     public void addAll(List<QACommentResult> mList) {
         this.mList = mList;
         notifyDataSetChanged();
     }
+*/
 
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends ZViewHolder {
         public CircleImageView authorImage;
         public AnswerReplyListAdapter replyListAdapter;
         public RecyclerView recyclerView;

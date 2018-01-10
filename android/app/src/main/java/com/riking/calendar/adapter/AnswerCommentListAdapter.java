@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerCommentsActivity;
+import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -26,32 +27,25 @@ import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //answer comment adapter
-public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerCommentListAdapter.MyViewHolder> {
-    public List<QAComment> mList;
+public class AnswerCommentListAdapter extends ZAdater<AnswerCommentListAdapter.MyViewHolder, QAComment> {
     private Context a;
 
     public AnswerCommentListAdapter(Context context) {
+        super();
         this.a = context;
-        mList = new ArrayList<>();
     }
 
     @Override
-    public AnswerCommentListAdapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.comment_list_item, viewGroup, false);
-        return new AnswerCommentListAdapter.MyViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final AnswerCommentListAdapter.MyViewHolder h, int i) {
+    public void onBindVH(final MyViewHolder h, final int i) {
         final QAComment c = mList.get(i);
 
-        ZR.setUserName(h.authorName, c.userName, c.grade);
+        ZR.setUserName(h.authorName, c.userName, c.grade, c.userId);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
@@ -123,6 +117,14 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
                 }
             });
         }
+
+    }
+
+    @Override
+    public MyViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.comment_list_item, viewGroup, false);
+        return new AnswerCommentListAdapter.MyViewHolder(view);
     }
 
     private void setRecyclerView(final RecyclerView recyclerView, final AnswerCommentListAdapter.MyViewHolder h, final int position) {
@@ -139,26 +141,40 @@ public class AnswerCommentListAdapter extends RecyclerView.Adapter<AnswerComment
             recyclerView.setVisibility(View.VISIBLE);
             h.replyListAdapter.add(replies);
             recyclerView.setAdapter(h.replyListAdapter);
+
+            h.replyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    if (h.replyListAdapter != null) {
+                        if (h.replyListAdapter.getItemCount() == 0) {
+                            recyclerView.setVisibility(View.GONE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            });
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
+//    @Override
+//    public int getItemCount() {
+//        return mList.size();
+//    }
 
-    public void addAll(List<QAComment> mList) {
-        this.mList.clear();
-        this.mList = mList;
-        notifyDataSetChanged();
-    }
+//    public void addAll(List<QAComment> mList) {
+//        this.mList.clear();
+//        this.mList = mList;
+//        notifyDataSetChanged();
+//    }
 
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
-    }
+//    public void clear() {
+//        mList.clear();
+//        notifyDataSetChanged();
+//    }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends ZViewHolder {
         public CircleImageView authorImage;
         public AnswerReplyListAdapter replyListAdapter;
         public RecyclerView recyclerView;

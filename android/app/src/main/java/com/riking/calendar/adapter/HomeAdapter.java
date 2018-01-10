@@ -13,11 +13,11 @@ import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
-import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.AnswerCommentsActivity;
-import com.riking.calendar.activity.QuestionActivity;
 import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.activity.WriteAnswerActivity;
+import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -33,46 +33,23 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
+import com.riking.calendar.viewholder.base.ZViewHolder;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter {
+public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
 
     public static final int REMMEND_TYPE = 2;
-    public List<TQuestionResult> mList;
     private Context context;
 
     public HomeAdapter(Context context) {
         this.context = context;
-        mList = new ArrayList<>();
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view;
-        if (viewType == REMMEND_TYPE) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                    R.layout.topic_suggestion_item, viewGroup, false);
-            return new RecommendedViewHolder(view);
-        } else {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                    R.layout.home_item, viewGroup, false);
-            return new HomeViewHolder(view);
-        }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (mList.get(position).pushType == 6 || mList.get(position).pushType == 7) {
-            return REMMEND_TYPE;
-        }
-        return super.getItemViewType(position);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder cellHolder, final int i) {
+    public void onBindVH(ZViewHolder cellHolder, int i) {
         final TQuestionResult r = mList.get(i);
 
         if (getItemViewType(i) == REMMEND_TYPE) {
@@ -138,11 +115,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
                             shareBottomDialog.dismiss();
                             HomeParams p = new HomeParams();
                             p.enabled = 0;//屏蔽
+                            p.objId = r.qaId;
                             APIClient.shieldQuestion(p, new ZCallBack<ResponseModel<String>>() {
                                 @Override
                                 public void callBack(ResponseModel<String> response) {
-                                    mList.remove(i);
-                                    notifyItemRemoved(i);
+                                    //remove the layout position
+                                    mList.remove(h.getLayoutPosition());
+                                    notifyItemRemoved(h.getLayoutPosition());
                                 }
                             });
                         }
@@ -180,6 +159,29 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 }
             });
         }
+
+    }
+
+    @Override
+    public ZViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
+        View view;
+        if (viewType == REMMEND_TYPE) {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                    R.layout.topic_suggestion_item, viewGroup, false);
+            return new RecommendedViewHolder(view);
+        } else {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                    R.layout.home_item, viewGroup, false);
+            return new HomeViewHolder(view);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mList.get(position).pushType == 6 || mList.get(position).pushType == 7) {
+            return REMMEND_TYPE;
+        }
+        return super.getItemViewType(position);
     }
 
     private void setAnswerData(final HomeViewHolder h, final TQuestionResult r) {
@@ -213,29 +215,19 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     Intent i = new Intent(context, TopicActivity.class);
                     i.putExtra(CONST.TOPIC_ID, r.topicId);
                     ZGoto.to(i);
+                } else if ((r.pushType == 2 || r.pushType == 3 || r.pushType == 4 || r.pushType == 5)) {
+                    Intent i = new Intent(h.itemCator.getContext(), UserActivity.class);
+                    i.putExtra(CONST.USER_ID, r.userId);
+                    ZGoto.to(i);
                 }
             }
         });
 
         //go to question activity on click
-        h.questionTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, QuestionActivity.class);
-                i.putExtra(CONST.QUESTION_ID, r.tqId);
-                ZGoto.to(i);
-            }
-        });
+        ZR.setRequestClickListener(h.questionTitle, r.tqId);
 
         //go to answer activity on click
-        h.answerContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, AnswerActivity.class);
-                i.putExtra(CONST.ANSWER_ID, r.tqId);
-                ZGoto.to(i);
-            }
-        });
+        ZR.setAnswerClickListener(h.answerContent, r.qaId);
     }
 
 
@@ -263,6 +255,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent i = new Intent(h.secondTextIcon.getContext(), WriteAnswerActivity.class);
                 i.putExtra(CONST.ANSWER_ID, r.qaId);
+                i.putExtra(CONST.QUESTION_TITLE,r.tqTitle);
                 ZGoto.to(i);
             }
         });
@@ -361,20 +354,5 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 });
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    public void add(TQuestionResult s) {
-        mList.add(s);
-        notifyDataSetChanged();
-    }
-
-    public void clear() {
-        mList.clear();
-        notifyDataSetChanged();
     }
 }

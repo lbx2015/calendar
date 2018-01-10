@@ -76,6 +76,15 @@ public class Topic extends BaseAuditProp {
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
 
+	/* ***************web******************** */
+	@JsonProperty("id")
+	@Transient
+	private String tId;
+
+	// 序号
+	@Transient
+	private Integer serialNum;
+
 	public Topic(String id, Date createdTime, Date modifiedTime, Integer isAduit, String title, String content,
 			String topicUrl) {
 		super();
@@ -87,7 +96,14 @@ public class Topic extends BaseAuditProp {
 		this.content = content;
 		this.topicUrl = topicUrl;
 	}
+	
+	public Topic(String id, String title) {
+		super();
+		this.id = id;
+		this.title = title;
+	}
 
+	
 	public String getTitle() {
 		return title;
 	}
@@ -102,6 +118,22 @@ public class Topic extends BaseAuditProp {
 
 	public void setExperience(Integer experience) {
 		this.experience = experience;
+	}
+
+	public Integer getSerialNum() {
+		return serialNum;
+	}
+
+	public void setSerialNum(Integer serialNum) {
+		this.serialNum = serialNum;
+	}
+
+	public String gettId() {
+		return tId;
+	}
+
+	public void settId(String tId) {
+		this.tId = tId;
 	}
 
 	public Integer getGrade() {

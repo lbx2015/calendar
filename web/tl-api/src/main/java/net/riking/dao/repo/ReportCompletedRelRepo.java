@@ -17,8 +17,8 @@ import net.riking.entity.model.ReportCompletedRel;
 public interface ReportCompletedRelRepo extends JpaRepository<ReportCompletedRel, String>,
 		JpaSpecificationExecutor<ReportCompletedRel>, PagingAndSortingRepository<ReportCompletedRel, String> {
 
-	@Query("select r.reportId from ReportCompletedRel r where r.userId = ?1 and r.completedDate = ?2")
-	List<String> findNowReport(String userId, String completedDate);
+//	@Query("select r.reportId from ReportCompletedRel r where r.userId = ?1 and r.completedDate = ?2")
+//	List<String> findNowReport(String userId, String completedDate);
 	
 	/***
 	 * 获取用户当月之后所有任务

@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.AppUserRecommend;
 import com.riking.calendar.pojo.AppUserReportCompleteRel;
-import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.AppVersionResult;
 import com.riking.calendar.pojo.CtryHdayCrcy;
 import com.riking.calendar.pojo.CtryHdayCryCondition;
@@ -31,25 +30,32 @@ import com.riking.calendar.pojo.params.ReportParams;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.pojo.params.Todo;
 import com.riking.calendar.pojo.params.TopicParams;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.Banner;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
+import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.pojo.server.QAComment;
 import com.riking.calendar.pojo.server.QACommentResult;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.pojo.server.QuestionAnswer;
+import com.riking.calendar.pojo.server.ReportCompletedRelResult;
 import com.riking.calendar.pojo.server.ReportListResult;
 import com.riking.calendar.pojo.server.ReportResult;
+import com.riking.calendar.pojo.server.SysNoticeParams;
+import com.riking.calendar.pojo.server.SysNoticeResult;
 import com.riking.calendar.pojo.server.TQuestionResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.pojo.server.TopicQuestion;
@@ -99,7 +105,6 @@ public interface APIInterface {
     @POST("api/users?")
     Call<UserList> doCreateUserWithField(@Field("queryParam") String name, @Field("job") String job);
 
-
     @POST("remindApp/save")
     Call<ResponseBody> createRemind(@Body ReminderModel reminder);
 
@@ -124,11 +129,7 @@ public interface APIInterface {
     @POST("common/getValidCode")
     Call<ResponseModel<AppUser>> getVarificationCode(@Body LoginParams user);
 
-    @POST("appUserApp/addOrUpdate")
-    Call<ResponseModel<String>> updateUserInfo(@Body AppUser user);
-
-
-    @POST("common/getCommend")
+    @POST("common/getRecommendReport")
     Call<ResponseModel<ArrayList<AppUserRecommend>>> getPositionByIndustry();
 
     /**
@@ -140,10 +141,10 @@ public interface APIInterface {
     @POST("appUserReport/getUserRepor")
     Call<ResponseModel<ArrayList<QueryReportContainer>>> getUserReports(@Body AppUserReportCompleteRel body);
 
-    @POST("appAboutApp/reportHtml")
+    @POST("report/reportHtml")
     Call<ResponseModel<String>> getReportDetail(@Body QueryReport report);
 
-    @POST("appAboutApp/aboutHtml")
+    @POST("appHtml/aboutHtml")
     Call<ResponseModel<String>> getAboutHtml(@Query("versionNumber") String versionNumber);
 
     @POST("appAboutApp/agreementHtml")
@@ -170,9 +171,9 @@ public interface APIInterface {
     Call<ResponseModel<String>> synchronousReminds(@Body List<ReminderModel> reminderModels);
 
     @POST("synchronous/synchronousTodos")
-    Call<ResponseModel<String>> synchronousTasks(@Body List<TaskModel> tasks);
+    Call<ResponseModel<String>> synchronousTasks(@Body List<Todo> tasks);
 
-    @POST("common/getappVersion")
+    @POST("common/getAppVersion")
     Call<ResponseModel<AppVersionResult>> getAppVersion(@Body JsonObject currentVersionId);
 
     @POST("common/findIndustry")
@@ -189,8 +190,11 @@ public interface APIInterface {
     @POST("report/modifySubscribeReport")
     Call<ResponseModel<String>> saveSubscribeReport(@Body SubscribeReportParam params);
 
-    @POST("/appUserReport/updateUserReportRelById")
-    Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
+    @POST("report/modifySubscribeReportByOne")
+    Call<ResponseModel<String>> updateUserReportRelById(@Body SubscribeReportParam param);
+
+//    @POST("reportSubcribeRel/updateUserReportRelById")
+//    Call<ResponseModel<String>> updateUserReportRelById(@Body AppUserReportRel reportRel);
 
     @POST("news/findNewsList")
     Call<ResponseModel<List<News>>> findNewsList(@Body NewsParams params);
@@ -417,4 +421,73 @@ public interface APIInterface {
 
     @POST("userContacts/contactsInvite")
     Call<ResponseModel<String>> contactsInvite(@Body UserParams params);
+
+    //完成报表/也可以取消完成
+    @POST("report/complete")
+    Call<ResponseModel<String>> completeReport(@Body RCompletedRelParams params);
+
+    @POST("report/remindSave")
+    Call<ResponseModel<ReminderModel>> saveRemind(@Body ReminderModel reminderModel);
+
+    @POST("user/myGradeHtml")
+    Call<ResponseModel<String>> myGrade(@Body UserParams params);
+
+    /**
+     * get other user info information
+     *
+     * @param params
+     * @return
+     */
+    @POST("user/getOther")
+    Call<ResponseModel<OtherUserResp>> getOther(@Body UserParams params);
+
+    @POST("appHtml/policyHtml")
+    Call<ResponseModel<String>> policyHtml();
+
+    /**
+     * 根据问题title找出话题列表
+     *
+     * @return
+     */
+    @POST("topicQuestion/getTopicByQuest")
+    Call<ResponseModel<List<Topic>>> getTopicByQuestion(@Body TQuestionParams params);
+
+    @POST("user/getFOAF")
+    Call<ResponseModel<List<AppUserResult>>> getFOAF(@Body UserParams params);
+
+    @POST("searchList/findHotSearchList")
+    Call<ResponseModel<List<HotSearch>>> findHotSearchList();
+
+    @POST("report/findExpireTasks")
+    Call<ResponseModel<List<List<ReportCompletedRelResult>>>> findExpireTasks(@Body ReportCompletedRelParam param);
+
+    @POST("report/findHisCompletedTasks")
+    Call<ResponseModel<List<List<ReportCompletedRelResult>>>> findHisCompletedTasks(@Body ReportCompletedRelParam param);
+
+    @GET("banner/getBanners")
+    Call<ResponseModel<List<Banner>>> getBanners();
+
+    /**
+     * "获取用户消息通知"
+     *
+     * @param params
+     * @return
+     */
+    @POST("notice/getMoreUserNotice")
+    Call<ResponseModel<List<SysNoticeResult>>> getUserMessage(@Body HomeParams params);
+
+    /**
+     * "获取系统消息通知"
+     *
+     * @param params
+     * @return
+     */
+    @POST("notice/getMoreSysNotice")
+    Call<ResponseModel<List<SysNoticeResult>>> getSystemMessage(@Body HomeParams params);
+
+    @POST("notice/delMore")
+    Call<ResponseModel<String>> deleteMessages(@Body SysNoticeParams params);
+
+    @POST("topicQuestion/answerHtml")
+    Call<ResponseModel<String>> getAnswerEditHtml(@Body TQuestionParams params);
 }

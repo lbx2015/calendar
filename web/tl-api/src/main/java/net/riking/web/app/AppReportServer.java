@@ -2,6 +2,7 @@ package net.riking.web.app;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,17 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.core.entity.PageQuery;
 import net.riking.dao.repo.RemindRepo;
 import net.riking.dao.repo.ReportCompletedRelRepo;
+import net.riking.dao.repo.ReportRepo;
 import net.riking.dao.repo.ReportSubscribeRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Remind;
+import net.riking.entity.model.Report;
 import net.riking.entity.model.ReportCompletedRel;
 import net.riking.entity.model.ReportListResult;
 import net.riking.entity.model.ReportSubscribeRel;
@@ -52,6 +57,9 @@ public class AppReportServer {
 	ReportService reportService;
 
 	@Autowired
+	ReportRepo reportRepo;
+
+	@Autowired
 	ReportSubscribeRelRepo reportSubscribeRelRepo;
 
 	@Autowired
@@ -68,6 +76,23 @@ public class AppReportServer {
 
 	@Autowired
 	RemindRepo remindRepo;
+
+	@Autowired
+	Config config;
+
+	@ApiOperation(value = "跳转<报文详情>html5页面", notes = "POST")
+	@RequestMapping(value = "/reportHtml", method = RequestMethod.POST)
+	public AppResp reportApp(@RequestBody Report report) {
+		return new AppResp(config.getAppHtmlPath() + Const.TL_REPORT_HTML5_PATH + "?id=" + report.getId() + "&url="
+				+ config.getAppApiPath(), CodeDef.SUCCESS);
+	}
+
+	@ApiOperation(value = "得到<单个>报表信息", notes = "GET")
+	@RequestMapping(value = "/getOne", method = RequestMethod.GET)
+	public AppResp getOne(@RequestParam("id") String id) {
+		Report reportList = reportRepo.findOne(id);
+		return new AppResp(reportList, CodeDef.SUCCESS);
+	}
 
 	/**
 	 * 可根据报表名称查询相关报表
@@ -100,6 +125,33 @@ public class AppReportServer {
 		return new AppResp(list, CodeDef.SUCCESS);
 	}
 
+	/**
+	 * userId,reportIds,subscribeType
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "用户单个报表订阅", notes = "POST")
+	@RequestMapping(value = "/modifySubscribeReportByOne", method = RequestMethod.POST)
+	public AppResp modifySubscribeReportByOne_(@RequestBody Map<String, Object> params) {
+		SubscribeReportParam relParam = Utils.map2Obj(params, SubscribeReportParam.class);
+		String[] arr = {};
+		if (StringUtils.isNotBlank(relParam.getReportIds())) {
+			arr = relParam.getReportIds().split(",");
+		}
+		if (arr.length != 1 || relParam.getSubscribeType() == null || relParam.getUserId() == null) {
+			return new AppResp(CodeDef.EMP.REPORT_SUBSCRIBE_ERROR, CodeDef.EMP.REPORT_SUBSCRIBE_ERROR_DESC);
+		}
+
+		String currentDate = DateUtils.getDate("yyyyMMdd");
+		boolean flag = reportService.addReportTaskByUserSingleSubscribe(relParam.getUserId(), arr, currentDate,
+				relParam.getSubscribeType());
+		if (flag) {
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+		} else {
+			return new AppResp(CodeDef.EMP.REPORT_SUBSCRIBE_ERROR, CodeDef.EMP.REPORT_SUBSCRIBE_ERROR_DESC);
+		}
+	}
+
 	@ApiOperation(value = "更新用户报表订阅", notes = "POST")
 	@RequestMapping(value = "/modifySubscribeReport", method = RequestMethod.POST)
 	public AppResp modifySubscribeReport_(@RequestBody Map<String, Object> params) {
@@ -122,8 +174,30 @@ public class AppReportServer {
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
 		List<ReportCompletedRelResult> list = reportService.findExpireReportByPage(relParams.getUserId(), page);
-
-		return new AppResp(list, CodeDef.SUCCESS);
+		Map<String, List<ReportCompletedRelResult>> map = new HashMap<>();
+		list.forEach(e->{
+			if(map.containsKey(e.getDateStr())){
+				map.get(e.getDateStr()).add(e);
+			}else{
+				List<ReportCompletedRelResult> _list = new ArrayList<>();
+				_list.add(e);
+				map.put(e.getDateStr(), _list);
+			}
+		});
+		List<List<ReportCompletedRelResult>> list2 = new ArrayList<>();
+		if(!map.isEmpty()){
+			for (String dateStr : map.keySet()) {
+				list2.add(map.get(dateStr));
+			}
+		}
+		list2.sort(new Comparator<List<ReportCompletedRelResult>>() {
+			@Override
+			public int compare(List<ReportCompletedRelResult> o1,
+					List<ReportCompletedRelResult> o2) {
+				return  o1.get(0).getDateStr().compareTo(o2.get(0).getDateStr());
+			}
+		});
+		return new AppResp(list2, CodeDef.SUCCESS);
 	}
 
 	@ApiOperation(value = "查询历史核销报表", notes = "POST")
@@ -134,7 +208,30 @@ public class AppReportServer {
 		page.setPcount(Const.APP_PAGENO_30);
 		page.setPindex(relParams.getPindex());
 		List<ReportCompletedRelResult> list = reportService.findHisCompletedReportByPage(relParams.getUserId(), page);
-		return new AppResp(list, CodeDef.SUCCESS);
+		Map<String, List<ReportCompletedRelResult>> map = new HashMap<>();
+		list.forEach(e->{
+			if(map.containsKey(e.getDateStr())){
+				map.get(e.getDateStr()).add(e);
+			}else{
+				List<ReportCompletedRelResult> _list = new ArrayList<>();
+				_list.add(e);
+				map.put(e.getDateStr(), _list);
+			}
+		});
+		List<List<ReportCompletedRelResult>> list2 = new ArrayList<>();
+		if(!map.isEmpty()){
+			for (String dateStr : map.keySet()) {
+				list2.add(map.get(dateStr));
+			}
+		}
+		list2.sort(new Comparator<List<ReportCompletedRelResult>>() {
+			@Override
+			public int compare(List<ReportCompletedRelResult> o1,
+					List<ReportCompletedRelResult> o2) {
+				return  o1.get(0).getDateStr().compareTo(o2.get(0).getDateStr());
+			}
+		});
+		return new AppResp(list2, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -171,17 +268,18 @@ public class AppReportServer {
 
 		} else {// 完成
 			String currentDate = DateUtils.getDate("yyyyMMddHHmm");
-			
+
 			// 逾期任务核销，给予提示
 			if (Long.parseLong(currentDate) > Long.parseLong(relParams.getSubmitEndTime())) {
 				return new AppResp(CodeDef.EMP.REPORT_EXPIRETASK_ERROR, CodeDef.EMP.REPORT_EXPIRETASK_ERROR_DESC);
 			}
-			
+
 			// 未到核销时间，给予提示
 			if (Long.parseLong(currentDate) < Long.parseLong(relParams.getSubmitStartTime())) {
-				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR, CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR_DESC);
+				return new AppResp(CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR,
+						CodeDef.EMP.REPORT_NOTTO_COMPLETEDATE_ERROR_DESC);
 			}
-			
+
 			reportCompletedRelRepo.updateComplated(relParams.getUserId(), relParams.getReportId(),
 					relParams.getSubmitStartTime(), relParams.getSubmitEndTime(), currentDate);
 			// 移除闹钟设置记录
@@ -219,19 +317,19 @@ public class AppReportServer {
 				String submitEndDateDay = data.getSubmitEndTime().substring(6, 8);
 				for (int i = 1; i <= Integer.parseInt(submitEndDateDay); i++) {
 					String _date = submitEndDate + (i < 10 ? "0" + i : i);
-					if (!taskDateList.contains(_date)){
+					if (!taskDateList.contains(_date)) {
 						// 判断是否与国家节假日，延迟上报截止时间
 						_date = Utils.getWorkday(_date);
 						taskDateList.add(_date);
 					}
-						
+
 				}
 			} else {
 				// 非当月，则添加当月所有日期
 				int _daysOfMonth = DateUtils.getDaysByMonth(currentMonth);
 				for (int i = 1; i <= _daysOfMonth; i++) {
 					String _date = currentMonth + (i < 10 ? "0" + i : i);
-					if (!taskDateList.contains(_date)){
+					if (!taskDateList.contains(_date)) {
 						// 判断是否与国家节假日，延迟上报截止时间
 						_date = Utils.getWorkday(_date);
 						taskDateList.add(_date);
@@ -253,14 +351,14 @@ public class AppReportServer {
 			try {
 				remind2 = MergeUtil.merge(remind2, remind);
 			} catch (Exception e) {
-				return new AppResp(CodeDef.ERROR);
+				return new AppResp(null, CodeDef.ERROR);
 			}
 			remind = remindRepo.save(remind2);
 		}
 		return new AppResp(remind, CodeDef.SUCCESS);
 	}
 
-	@ApiOperation(value = "批量删除提醒信息", notes = "POST")
+	@ApiOperation(value = "单条删除提醒信息", notes = "POST")
 	@RequestMapping(value = "/remindDel", method = RequestMethod.POST)
 	public AppResp delMore(@RequestBody Remind remind) {
 		remindRepo.delete(remind.getRemindId());

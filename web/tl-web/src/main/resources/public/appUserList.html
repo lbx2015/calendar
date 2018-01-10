@@ -5,9 +5,11 @@
 <meta charset="utf-8">
 <title>app用户list页面</title>
 <link type="include" href="/common/depcss.html" />
+
 </head>
 
 <body class="iframeBody">
+<div class="scrollbar">
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
@@ -30,6 +32,7 @@
 		</div>
 		<div style="clear: both"></div>
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+	</div>
 	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
@@ -63,7 +66,7 @@
 <script>
 	var item;
 	var tbTmpl;
-
+	var userId = View.getQStr("userId");
 	function forbbit(id) {
 
 	}
@@ -73,7 +76,12 @@
 		tbTmpl = tmpl;
 
 		var _bind = function(callback) {
-			var url = Const.apiUrl + "/appUser/getMore";
+			var url ;
+			if(userId != null || userId != undefined){
+				url = Const.apiUrl + "/appUser/getMore?userId="+userId;
+			}else{
+				url = Const.apiUrl + "/appUser/getMore?userId=";
+			}
 			var _this = this;
 			var _succ = function(resp) {
 				var data = {};
@@ -82,13 +90,11 @@
 					TmplUtils.totalPages = data.data.totalPages;
 					TmplUtils.totalCount = data.data.totalElements;
 				}
-				//是否需要全选checkbox
 				data.hasCheckbox = true;
-				//是否有操作列
 				data.hasOperation = true;
-				data.cellCount = 20;
-				 data.operationWidth =10;
-				//如果要修改表格内容 ，无需修改的忽略此项
+				data.cellCount = 10;
+				 //操作栏的宽度
+                data.operationWidth =12;
 				data.tdBeforeFill = function(obj) {
 					if (obj['item']) {
 						if (obj.isOperColumn) {
@@ -123,16 +129,30 @@
 										+ ");'>禁用</button>";
 							}
 						}
-						return obj.html;
 					}
+					if(obj.item){
+						if(obj.prop == 'appUserDetail.photoUrl'){
+							var photoName = obj.html;
+							if(photoName==""){
+								photoName = "USA.png";
+							}
+							var start  = "<div  align='center' style='width: 28px;height: 28px;border-radius: 50%; overflow:hidden;'>";
+							var end = "</div>"
+							var url = obj.item.prefixPhotoURL+ photoName;
+							obj.html = "";
+							obj.html +=start;
+							obj.html += "<img src='"+url+"' style='width: 28px;height: 28px;' alt='"+photoName+"'/>";
+							obj.html +=end;
+							
+						}
+					}
+					return obj.html;
 				}
-				//操作栏的宽度
-				/*   data.operationWidth = 10; */
 				callback.call(_this, data);
 				if (TmplUtils.pageTmpl.refresh) {
 					TmplUtils.pageTmpl.refresh();
 				}
-				TmplUtils.tableOnLoad();
+
 			};
 			View.get(url, param, _succ, function(code) {
 				TmplUtils.showMsgFail('查询出错');
@@ -141,6 +161,7 @@
 
 		tmpl.bind(_bind);
 	}
+
 
 	//表格单元格点击事件
 	function bindPro(item) {

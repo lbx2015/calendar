@@ -32,11 +32,27 @@
         android:layout_height="@dimen/divider_height"
         android:background="@color/color_d2d2d2" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <com.riking.calendar.view.PullToLoadViewWithoutFloatButton xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pullToLoadView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="gone" />
+    <!-- <android.support.v4.widget.SwipeRefreshLayout
+         android:id="@+id/swipe_layout"
+         android:layout_weight="1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content">
+
+         <android.support.v7.widget.RecyclerView
+             android:id="@+id/recycler_view"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+            ></android.support.v7.widget.RecyclerView>
+     </android.support.v4.widget.SwipeRefreshLayout>-->
+
+    <include
+        layout="@layout/empty_layout" />
 
     <View
         android:layout_width="match_parent"

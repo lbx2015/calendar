@@ -27,7 +27,7 @@ import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
-import net.riking.dao.repo.UserFollowRelRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.HotSearch;
@@ -38,6 +38,7 @@ import net.riking.entity.model.TopicResult;
 import net.riking.entity.params.SearchParams;
 import net.riking.service.AppUserService;
 import net.riking.service.ReportService;
+import net.riking.util.FileUtils;
 
 /**
  * 搜索接口
@@ -72,7 +73,7 @@ public class SearchListServer {
 	AppUserRepo appUserRepo;
 
 	@Autowired
-	UserFollowRelRepo userFollowRelRepo;
+	AppUserFollowRelRepo userFollowRelRepo;
 
 	@Autowired
 	QuestionAnswerRepo questionAnswerRepo;
@@ -99,7 +100,7 @@ public class SearchListServer {
 	 */
 	@ApiOperation(value = "显示热门搜索列表", notes = "POST")
 	@RequestMapping(value = "/findHotSearchList", method = RequestMethod.POST)
-	public AppResp findHotSearchList(@RequestBody SearchParams searchParams) {
+	public AppResp findHotSearchList() {
 		// 取前六条数据
 		List<HotSearch> hotSearches = hotSearchRepo.findHotSearch(new PageRequest(0, 6));
 		return new AppResp(hotSearches, CodeDef.SUCCESS);
@@ -119,7 +120,7 @@ public class SearchListServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		if (StringUtils.isBlank(searchParams.getKeyWord())) {
-			return new AppResp(Const.EMPTY,CodeDef.SUCCESS);
+			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
 		if (StringUtils.isBlank(searchParams.getUserId())) {
 			searchParams.setUserId("");
@@ -174,13 +175,15 @@ public class SearchListServer {
 	 * @return
 	 */
 	private List<TopicResult> findTopicByKeyWord(SearchParams searchParams) {
-		List<TopicResult> topicResults = topicRepo.getTopicByParam(searchParams.getKeyWord());
+		List<TopicResult> topicResults = topicRepo.getTopicByParam(searchParams.getKeyWord(), searchParams.getUserId());
 
 		for (int i = 0; i < topicResults.size(); i++) {
 			TopicResult topicResult = topicResults.get(i);
 			// TODO 话题的关注数 后面从redis里面取
 			Integer followNum = topicRelRepo.followCount(topicResult.getId(), 0);
 			topicResult.setFollowNum(followNum);
+//			topicResult.setTopicUrl(appUserService.getPhotoUrlPath("/topic")+topicResult.getTopicUrl());
+			topicResult.setTopicUrl(FileUtils.getPhotoUrl("/topic/", this.getClass()) +topicResult.getTopicUrl());
 			// 不显示状态
 			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
 				topicResult.setIsFollow(null);
@@ -204,8 +207,10 @@ public class SearchListServer {
 		for (int i = 0; i < appUserResults.size(); i++) {
 			AppUserResult appUserResult = appUserResults.get(i);
 			if (null != appUserResult.getPhotoUrl()) {
+//				appUserResult
+//						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
 				appUserResult
-						.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResult.getPhotoUrl());
+				.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + appUserResult.getPhotoUrl());
 			}
 			// 等级
 			if (null != appUserResult.getExperience()) {

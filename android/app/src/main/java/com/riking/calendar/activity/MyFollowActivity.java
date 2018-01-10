@@ -15,13 +15,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.MyColleagueFragment;
-import com.riking.calendar.fragment.MyContactsFragment;
 import com.riking.calendar.fragment.MyFollowTopicFragment;
+import com.riking.calendar.fragment.MyFollowerPersonFragment;
+import com.riking.calendar.fragment.MyFollowingQuestionFragment;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZPreference;
 
 public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MyColleagueFragment(), new MyFollowTopicFragment(), new MyContactsFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{MyFollowerPersonFragment.newInstance(this), MyFollowTopicFragment.newInstance(this), MyFollowingQuestionFragment.newInstance(this)};
+    public String userId;
     TabLayout tabLayout;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
@@ -33,9 +36,18 @@ public class MyFollowActivity extends AppCompatActivity { //Fragment 数组
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_state);
         activityTitle = findViewById(R.id.activity_title);
-        activityTitle.setText("我的关注");
         Intent i = getIntent();
+        userId = i.getStringExtra(CONST.USER_ID);
         init();
+        if (ZPreference.getUserId().equals(userId)) {
+            activityTitle.setText("我的关注");
+        } else {
+            if (i.getIntExtra(CONST.USER_SEX, 0) == 0) {
+                activityTitle.setText("她的关注");
+            } else {
+                activityTitle.setText("他的关注");
+            }
+        }
     }
 
     private void init() {

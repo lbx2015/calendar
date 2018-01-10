@@ -18,7 +18,7 @@
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="19dp"
             android:onClick="onClickBack"
-            android:src="@drawable/back_icon" />
+            android:src="@drawable/nav_icon_back" />
 
         <TextView
             android:id="@+id/title"

@@ -1,9 +1,11 @@
 package net.riking.web.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserDetailRepo;
@@ -21,7 +24,9 @@ import net.riking.dao.repo.AppUserRepo;
 import net.riking.entity.VO.AppUserVO;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
+import net.riking.entity.model.UserFollowCollect;
 import net.riking.service.AppUserService;
+import net.riking.util.FileUtils;
 
 /**
  * web端app用户操作
@@ -61,9 +66,25 @@ public class AppUserController {
 
 	@ApiOperation(value = "得到<批量>用户信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
-	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute AppUserVO appUserVO) {
+	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute AppUserVO appUserVO,
+			@RequestParam("userId") String userId) {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
+		AppUser appUser = appUserVO.getAppUser();
+		if (appUser == null) {
+			appUser = new AppUser();
+		}
+		appUser.setId(userId);
+		appUserVO.setAppUser(appUser);
 		Page<AppUserVO> page = appUserService.findAll(appUserVO, pageable);
+		List<AppUserVO> appUserVOs = page.getContent();
+		int i = query.getPindex() * query.getPcount();
+		for (AppUserVO appUserVO2 : appUserVOs) {
+			i++;
+			// 获取前缀
+			appUserVO2.setPrefixPhotoURL(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()));
+			// appUserVO2.setPrefixPhotoURL("http://localhost:8281/images/user/photo/");
+			appUserVO2.getAppUser().setSerialNumber(new Integer(i));
+		}
 		return new Resp(page);
 	}
 
@@ -110,6 +131,19 @@ public class AppUserController {
 		}
 	}
 
+	@ApiOperation(value = "用户关注收藏管理", notes = "GET")
+	@RequestMapping(value = "/findFolCol", method = RequestMethod.GET)
+	public Resp findFolCol_(@ModelAttribute PageQuery query, @ModelAttribute UserFollowCollect userFollowCollect) {
+		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount());
+		if (userFollowCollect.getUserId() == null) {
+			userFollowCollect.setUserId("");
+		}
+		List<UserFollowCollect> userFollowCollects = appUserService.findByFolColByUserId(userFollowCollect.getUserId(),
+				userFollowCollect.getUserName(), query.getPindex(), query.getPcount());
+		Page<UserFollowCollect> modulePage = new PageImpl<UserFollowCollect>(userFollowCollects, pageable,
+				appUserService.countByFolColByUserId(userFollowCollect.getUserId(), userFollowCollect.getUserName()));
+		return new Resp(modulePage);
+	}
 	// TODO 暫時注釋
 	// @AuthPass
 	// @ApiOperation(value = "上传头像", notes = "POST")

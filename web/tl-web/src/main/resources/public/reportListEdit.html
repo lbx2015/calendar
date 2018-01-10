@@ -11,12 +11,14 @@
 </head>
 
 <body class="iframeBody">
+<div class="scrollbar">
     <div class="formbox layui-form add-formbox">
         <div class="_tmpl" data-url="edit.html" data-attr="report.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
             <button class="layui-btn bgc1 layui-btn-small" lay-submit lay-filter="edit" id="submit">确定</button>
             <button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
         </div>
+    </div>
     </div>
 </body>
 <link type="include" href="/common/depjs.html" />
@@ -46,6 +48,10 @@
                     var data = {};
                     if (resp) {
                         data.data = resp;
+                        data.data.report.id = data.data.report.reportId;
+                        if(data.data.reportSubmitCaliber != undefined){
+                        data.data.reportSubmitCaliber.id = data.data.reportSubmitCaliber.reportSubmitCaliberId;
+                        }
                     }
                     //默认展开分组 ，不配置默认展开第一个分组
                     data.showGroup = "base,submit";
@@ -75,7 +81,12 @@
          $("textarea[name='report.fillinNote']").attr('id','fillinNote');
          layui.use('layedit', function(){
      	  var layedit = layui.layedit;
-     	  layedit.set({tool: ['strong' //加粗
+     	  layedit.set({
+     		 uploadImage: {
+     				url: Const.apiUrl + '/commonController/upLoad'
+      				,type: 'post'
+    			}	
+     		  ,tool: ['strong' //加粗
 							  ,'italic' //斜体
 							  ,'underline' //下划线
 							  ,'del' //删除线

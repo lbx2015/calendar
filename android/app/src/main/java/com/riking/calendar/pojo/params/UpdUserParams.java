@@ -40,7 +40,7 @@ public class UpdUserParams extends BaseParams {
     public String address;
 
     // 个性签名
-    public String description;
+    public String descript;
 
     // 手机Deviceid
     public String phoneDeviceid;

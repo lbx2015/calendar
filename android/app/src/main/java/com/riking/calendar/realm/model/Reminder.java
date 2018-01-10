@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -14,6 +15,8 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Reminder extends RealmObject {
+    @Ignore
+    public static String REMINDER_ID = "id";
     @PrimaryKey
     public String id = UUID.randomUUID().toString();
     public String userId;
@@ -42,6 +45,17 @@ public class Reminder extends RealmObject {
     public byte syncStatus;//同步的状态0:同步,1待同步
     //used to set alarm, the request code should not same.
     public int requestCode;
+
+    //    @Comment("报送开始时间（yyyyMMddHHmm）")
+//    @Column(name = "submit_start_time", length = 8)
+    public String submitStartTime;
+
+    //    @Comment("报送截止时间（yyyyMMddHHmm）")
+//    @Column(name = "submit_end_time", length = 8)
+    public String submitEndTime;
+    //    @Comment("报表id")
+//    @Column(name = "report_id", length = 32)
+    public String reportId;
 
     public Reminder() {
     }

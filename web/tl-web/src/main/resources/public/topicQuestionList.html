@@ -2,11 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>话题</title>
+<title>demo</title>
 <link type="include" href="/common/depcss.html" />
 </head>
 
 <body class="iframeBody">
+<div class="scrollbar">
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
@@ -14,14 +15,14 @@
 					<i class="layui-icon">&#xe608;</i>
 					添加
 				</button>
-				<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
 					<i class="layui-icon">&#xe640;</i>
 					批量删除
 				</button>
 				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
 					<i class="layui-icon">&#xe6b2;</i>
 					批量审核
-				</button> -->
+				</button>
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html" data-attr="topicQuestion.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
@@ -34,6 +35,7 @@
 		</div>
 		<div style="clear: both"></div>
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+	</div>
 	</div>
 </body>
 <link type="include" href="/common/depjs.html" />
@@ -70,6 +72,7 @@
 <script>
 	var item;
 	var tbTmpl;
+	var dataResp;
 	function forbbit(id) {
 
 	}
@@ -84,6 +87,7 @@
 				var data = {};
 				if (resp) {
 					data.data = resp;
+					dataResp = data.data;
 					TmplUtils.totalPages = data.data.totalPages;
 					TmplUtils.totalCount = data.data.totalElements;
 				}
@@ -94,39 +98,51 @@
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
 				//表格显示列数
-				data.operationWidth = 10;
+				data.operationWidth = 13;
+				data.tdLeftWidth = [ 5, 5, 5, 5, 5];
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
-					//obj = {item,prop,html,row,col};
-					//item 当前行数据 第一行无item
-					//prop 当前单元格属性
-					//html 当前单元格html内容
-					//row 当前行数 从1开始
-					//col 当前列数 从1开始
+				    if(obj.prop=="createdTime"){
+						obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");
+				    }
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
 									+ "\""
-									+ obj.item.topicQuestionId
+									+ obj.item.id
 									+ "\""
 									+ ");'>查看</button>";
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
 									+ "\""
-									+ obj.item.topicQuestionId
+									+ obj.item.id
 									+ "\""
 									+ ");'>修改</button>";
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='dele("
 									+ "\""
-									+ obj.item.topicQuestionId
+									+ obj.item.id
 									+ "\""
 									+ ");'>删除</button>";
-							if (obj.item.isAduit == 0) {
+							if (obj.item.isAduit == 0) { 
 								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
 										+ "\""
-										+ obj.item.topicQuestionId
-										+ "\"" + ");'>审核</button>";
+										+ obj.item.id
+										+ "\""
+										+ ");'>审核</button>";
 							}
-							return obj.html;
+							if (obj.item.isAduit == 1 && obj.item.enabled == 0) { 
+								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='enable("
+										+ "\""
+										+ obj.item.id
+										+ "\""
+										+ ",1);'>启用</button>";
+							}
+							if (obj.item.isAduit == 1 && obj.item.enabled == 1) { 
+								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='enable("
+										+ "\""
+										+ obj.item.id
+										+ "\""
+										+ ",2);'>禁用</button>";
+							}
 						}
 					}
 					return obj.html;
@@ -209,6 +225,7 @@
 		var title = "数据处理";
 		View.openDialog(url, title);
 	}
+
 	//保存
 	function save() {
 		var url = Const.apiUrl + "/tQuestion/save";
@@ -270,7 +287,7 @@
 
 		});
 	}
-
+	
 	//审核
 	function verifyMore() {
 		//获取选择的id
@@ -285,34 +302,109 @@
 			TmplUtils.showMsgFail("请至少选择一项数据");
 			return;
 		}
-		TmplUtils.showConfirm('您确定审核这些数据吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/tQuestion/verifyMore"
-			View.post(url, ids, function(resp) {
-				TmplUtils.showMsgSuccess("审核成功");
-				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
-						+ "&pcount=" + TmplUtils.pageSize
-						+ TmplUtils.searchParam);
-			}, function() {
-				TmplUtils.showMsgFail('审核失败');
-			});
-		}, function() {
-
+		var url = Const.apiUrl + "/tQuestion/verifyMore"
+		layer.open({
+			type: 1,
+			title:'您确定审核这些数据吗？',
+			btn: ['通过','不通过','取消'],
+			yes: function(index, layero){
+				//通过
+				var verifyParamModel = {
+						'ids':ids,
+						'event':'VERIFY_PASS',
+				}
+				View.post(url,verifyParamModel,function(resp){
+					TmplUtils.showMsgSuccess(resp);
+					tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+							+ "&pcount=" + TmplUtils.pageSize
+							+ TmplUtils.searchParam);
+					layer.close(index);
+				},function(code,resp){
+					TmplUtils.showMsgFail('审批失败');
+					layer.close(index);
+				});
+			},
+			btn2: function(index, layero){
+				//不通过
+				var verifyParamModel = {
+						'ids':ids,
+						'event':'VERIFY_NOT_PASS',
+				}
+				View.post(url,verifyParamModel,function(resp){
+					TmplUtils.showMsgSuccess(resp);
+					tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+							+ "&pcount=" + TmplUtils.pageSize
+							+ TmplUtils.searchParam);
+					layer.close(index);
+				},function(code,resp){
+					TmplUtils.showMsgFail('审批失败');
+					layer.close(index);
+				});				
+			}
 		});
 	}
-
 	//单个审核
 	function verify(id) {
+		//获取选择的id
+		var arrChk = $("input[name='tdCheckbox']");
 		var ids = [];
 		ids.push(id);
-		TmplUtils.showConfirm('您确定审核该条记录吗？', '确定', '取消', function() {
-			var url = Const.apiUrl + "/tQuestion/verifyMore"
-			View.post(url, ids, function(resp) {
-				TmplUtils.showMsgSuccess("审核成功");
+		var url = Const.apiUrl + "/tQuestion/verifyMore"
+		layer.open({
+			type: 1,
+			title:'您确定审核这些数据吗？',
+			btn: ['通过','不通过','取消'],
+			yes: function(index, layero){
+				//通过
+				var verifyParamModel = {
+						'ids':ids,
+						'event':'VERIFY_PASS',
+				}
+				View.post(url,verifyParamModel,function(resp){
+					TmplUtils.showMsgSuccess(resp);
+					tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+							+ "&pcount=" + TmplUtils.pageSize
+							+ TmplUtils.searchParam);
+					layer.close(index);
+				},function(code,resp){
+					TmplUtils.showMsgFail(resp);
+					layer.close(index);
+				});
+			},
+			btn2: function(index, layero){
+				//不通过
+				var verifyParamModel = {
+						'ids':ids,
+						'event':'VERIFY_NOT_PASS',
+				}
+				View.post(url,verifyParamModel,function(resp){
+					TmplUtils.showMsgSuccess(resp);
+					tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+							+ "&pcount=" + TmplUtils.pageSize
+							+ TmplUtils.searchParam);
+					layer.close(index);
+				},function(code,resp){
+					TmplUtils.showMsgFail(resp);
+					layer.close(index);
+				});				
+			}
+		});
+	}
+	//启用禁用
+	function enable(id,param) {
+		var url = Const.apiUrl + "/tQuestion/enable"
+		var map = {
+				'id':id,
+				'type':param,
+		}
+		TmplUtils.showConfirm('您确定操作该条记录吗？', '确定', '取消', function() {
+			View.post(url, map, function(resp) {
+				TmplUtils.showMsgSuccess("操作成功");
 				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
 						+ "&pcount=" + TmplUtils.pageSize
 						+ TmplUtils.searchParam);
 			}, function() {
-				TmplUtils.showMsgFail('审核失败');
+				TmplUtils.showMsgFail('操作失败');
 			});
 		}, function() {
 

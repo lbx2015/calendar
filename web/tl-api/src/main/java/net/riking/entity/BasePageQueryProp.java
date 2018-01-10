@@ -51,6 +51,11 @@ public class BasePageQueryProp extends PageQuery {
 	@Column(name = "is_aduit", nullable = false, precision = 1)
 	private Integer isAduit;
 
+	@Comment("是否启用：0-禁用；1-启用")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "enabled", length = 1)
+	private Integer enabled;
+
 	@Comment("是否删除： 0-删除，1-未删除")
 	@org.hibernate.annotations.ColumnDefault("1")
 	@Column(name = "is_deleted", insertable = false, nullable = false, precision = 1)
@@ -78,6 +83,14 @@ public class BasePageQueryProp extends PageQuery {
 
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
 
 	public Date getModifiedTime() {

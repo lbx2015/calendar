@@ -14,6 +14,7 @@
 			"type": "string",
 			"group": "base",
 			"query": "1",
+			"verify":"required",
 			"query_order": "1"
 		},
 		{
@@ -31,6 +32,7 @@
 			"desc": "版本说明",
 			"group": "base",
 			"type": "text",
+			"edit_block": "1",
 			"hidden":"table"
 		},
 		{
@@ -72,6 +74,13 @@
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "opt",
+			"alias": "操作类型",
+			"group":"base",
+			"type": "string",
+			"hidden":"table,edit,preview"
 		}
 	]
 }

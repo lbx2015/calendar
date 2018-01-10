@@ -1,0 +1,540 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>app用户修改添加页面</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link type="include" href="/common/depcss.html" />
+</head>
+<body class="iframeBody">
+	<div class="scrollbar">
+		<div class="content">
+				<div class="formbox layui-form add-formbox">
+					<div class="_tmpl" data-url="edit.html" data-attr="qaComment.json" data-bind="editOnBind" data-param=""></div>
+					<!-- <div class="layui-btn-div" id="layui-btn-fixed">
+						<button class="layui-btn bgc1 layui-btn-small" lay-submit lay-filter="edit" id="submit">确定</button>
+						<button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
+					</div> -->
+				</div>
+				<div class ="layui-collapse add-formbox">
+				<div class ="layui-colla-item">
+				<h2 class="layui-colla-title">
+				评论信息
+				<i calss="layui-icon layui-colla-icon"></i>
+				</h2>
+				<div class="layui-colla-content layui-show">
+				<div class="tableBar"> 
+					<div class="tableContent layui-form">
+						<div class="_tmpl" data-url="table.html" id="table" data-attr="qaCReply.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+					</div>
+				</div>
+				<div style="clear: both"></div>
+				<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+				</div>
+				</div>
+				</div>
+		</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+		String.prototype.endWith = function(endStr) {
+			var d = this.length - endStr.length;
+			return (d >= 0 && this.lastIndexOf(endStr) == d)
+		}
+
+		$(document).ready(function() {
+			$("#submit").click(function() {
+				if (TmplUtils.check('edit')) {
+					edit();
+				}
+			});
+		});
+
+		//var id = window.location.hash.replace("#", "");
+		var id = View.getQStr('id');
+		var flag = View.getQStr('flag');
+
+		function editOnBind(attrs, param) {
+			tmpl = this;
+			tmpl.bind(function(callback) {
+				tmpl.onFinish(function(data) {
+					if (flag == "view") {
+						$("div.layui-colla-item:eq(0) :input").attr("disabled", true);
+						$("div.layui-colla-item:eq(1) :input").attr("disabled", true);
+					}
+					View.resetUi();
+				});
+				if (id) {
+					var url = Const.apiUrl + "/qaCommentController/get";
+					var _this = this;
+					View.get(url, "id=" + id,
+					function(resp) {
+						var data = {};
+						if (resp) {
+							data.data = resp;
+						}
+						//默认展开分组 ，不配置默认展开第一个分组
+						data.showGroup = "base,detail";
+						callback.call(_this, data);
+						TmplUtils.editOnLoad();
+						var enumInput = $("input[data-type='lazyEnum']");
+						for (var i = 0; i < enumInput.length; i++) {
+							lazyEnumEach(enumInput[i], data);
+						}
+					},
+					function() {
+						TmplUtils.showMsgFail('信息获取失败');
+					});
+				} else {
+					var data = {};
+					data.showGroup = "base";
+					callback.call(_this, data);
+					TmplUtils.editOnLoad();
+					var enumInput = $("input[data-type='lazyEnum']");
+					for (var i = 0; i < enumInput.length; i++) {
+						lazyEnumEach(enumInput[i], data);
+					}
+				}
+			});
+		}
+
+		function lazyEnumEach(self, data) {
+			var _this = self;
+			var $ul = $(_this).next().next();
+			var _hidden = $(self).next();
+			var _name = $(self).next().attr("name");
+
+			if (_name.endWith("0")) {
+				var name = _name.substring(0, _name.indexOf("-"));
+				var _key = data.data[name];
+				if (_key) {
+					var keys = _key.split(",");
+
+					var param = {
+						"table": "T_APP_USER",
+						"field": "SF",
+						"key": keys[0]
+					};
+					View.get(Const.apiUrl + "/modelPropDict/get", param,
+					function(data) {
+						$(_this).val(data.valu);
+						$(_hidden).val(data.ke);
+					});
+					if (keys[0] && keys[1]) {
+						var param = {
+							"table": "T_APP_USER",
+							"field": keys[0],
+							"key": keys[1]
+						};
+						View.get(Const.apiUrl + "/modelPropDict/get", param,
+						function(data) {
+							if (data.ke && data.valu) {
+								$($(_this).parent().next().find("input")[0]).val(data.valu);
+								$($(_this).parent().next().find("input")[1]).val(data.ke);
+							}
+						});
+					}
+				}
+			}
+
+			$ul.hide();
+			$(_this).bind("focus",
+			function() {
+				if (_this.oninput === null) {
+					$(_this).bind("input", inputChange);
+				} else if (_this.onpropertychange === null) {
+					$(_this).bind("propertychange", inputChange);
+				}
+			});
+		}
+
+		document.onclick = function() {
+			var uls = $("input[data-type='lazyEnum']").next().next();
+			$(uls).each(function() {
+				if (!$(this).is(":hidden")) {
+					$(this).prev().val("");
+					$(this).prev().prev().val("");
+					$(this).empty();
+					$(this).hide();
+				}
+			});
+		}
+
+		function inputChange(event) {
+			var _this = event.currentTarget;
+			var _hidden = $(_this).next();
+			var $ul = $(_this).next().next();
+
+			var url = $(_this).attr("data-url");
+			var _nameNum = _hidden.attr("name").match(/\-\|\-(\S*)/)[1];
+
+			_hidden.val("");
+			if (_nameNum == 0) {
+				$($(_this).parent().next().find("input")[0]).val("");
+				$($(_this).parent().next().find("input")[1]).val("");
+			} else {
+				var key = $($(_this).parent().prev().find("input")[1]).val();
+				if (key != "") {
+					url += "?key=" + key;
+				} else {
+					return;
+				}
+			}
+			if ($(_this).val() == '') {
+				$ul.hide();
+				return;
+			}
+
+			View.get(Const.apiUrl + url, {
+				"keyword": $(this).val()
+			},
+			function(data) {
+				if (data.length > 0) {
+					$ul.empty();
+					$(data).each(function() {
+						var $li = $("<li key='{0}'>{1}</li>".format(this.key, this.value));
+
+						$li.click(function(e) {
+							if (_this.onpropertychange === null) {
+								$(_this).unbind("propertychange");
+							}
+							e = e == undefined ? window.event: e;
+							var curTarget = e.currentTarget == undefined ? e.srcElement: e.currentTarget;
+							var key = $(curTarget).attr("key");
+							$(_this).next().val(key);
+							$(_this).val($(curTarget).text());
+							$ul.empty();
+							$ul.hide();
+						}).mousemove(function(e) {
+							$(e.currentTarget).css("background", "#08c");
+						}).mouseout(function(e) {
+							$(e.currentTarget).css("background", "none");
+						});
+						$ul.append($li);
+					});
+					$ul.show();
+				} else {
+					$ul.empty();
+					$ul.hide();
+				}
+			});
+		}
+		//校验电话号码
+		function checkPhone(phone){ 
+		    if(!(/^1[34578]\d{9}$/.test(phone))){ 
+		    	TmplUtils.showMsgFail('手机号码有误，请重填');
+		        return false; 
+		    } 
+		    return true;
+		}
+		//校验邮箱
+		function isEmail(str){ 
+			var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+			return reg.test(str); 
+		} 
+	</script>
+	<script>
+	var item;
+	var tbTmpl;
+	var dataResp;
+	var replyId = View.getQStr('replyId');
+	function forbbit(id) {
+
+	}
+	function tbOnBind(attrs, param) {
+		tmpl = this;
+		tbTmpl = tmpl;
+
+		var _bind = function(callback) {
+			
+			var url = Const.apiUrl + "/qaCReply/getMore";
+			if(replyId && replyId!=null){
+				url = Const.apiUrl + "/qaCReply/getMore?commentId="+replyId;
+			}
+			var _this = this;
+			var _succ = function(resp) {
+				var data = {};
+				if (resp) {
+					data.data = resp;
+					dataResp = resp;
+					TmplUtils.totalPages = data.data.totalPages;
+					TmplUtils.totalCount = data.data.totalElements;
+				}
+				//是否需要全选checkbox
+				//data.hasCheckbox = true;
+				//是否有操作列
+				data.hasOperation = true;
+				//操作按钮
+				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
+				//表格显示列数
+				data.operationWidth = 10;
+				//如果要修改表格内容 ，无需修改的忽略此项
+				data.tdBeforeFill = function(obj) {
+					if (obj['item']) {
+						if (obj.isOperColumn) {
+							if (obj.item.isAduit == 0) { 
+								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
+										+ "\""
+										+ obj.item.replyId
+										+ "\""
+										+ ");'>审核</button>";
+							}
+						}
+					}
+					if(obj.item){
+						if(obj.prop == 'createdTime'){
+							//获取原来的值
+							var value = obj.html;
+							var year = value.substring(0,4);
+							var month = value.substring(4,6);
+							var days = value.substring(6,8);
+							var hour = value.substring(8,10);
+							var minute = value.substring(10,12);
+							var second = value.substring(12,14);
+							var newValue = year+"-"+month+"-"+days+" "+hour+":"+minute+":"+second;
+							obj.html="";
+							obj.html+=newValue;
+						}
+					}
+					return obj.html;
+				}
+				callback.call(_this, data);
+				if (TmplUtils.pageTmpl.refresh) {
+					TmplUtils.pageTmpl.refresh();
+				}
+
+			};
+			View.get(url, param, _succ, function(code) {
+				TmplUtils.showMsgFail('查询出错');
+			});
+		}
+
+		tmpl.bind(_bind);
+	}
+
+	//表格单元格点击事件
+	function bindPro(item) {
+		if (!TmplUtils.isEditing) {
+			this.item = item;
+			previewTmpl.refresh();
+		}
+	}
+
+	//预览绑定
+	var previewTmpl;
+	function previewOnBind(attrs, param) {
+		tmpl = this;
+		previewTmpl = tmpl;
+		if (!item) {
+			return;
+		}
+		tmpl.bind(function(callback) {
+			var url = Const.apiUrl + "/qaCReply/get";
+			var data = {};
+			//是否可编辑
+			//data.canEdit = true;
+			data.data = item;
+			//绑定点击事件
+			data.checkClick = "check";
+			data.saveClick = "save";
+			callback.call(this, data);
+			TmplUtils.previewOnLoad();
+		});
+	}
+
+	//查询条件绑定
+	function filterCriteriaOnBind(attrs, param) {
+		tmpl = this;
+		var _this = this;
+		tmpl.bind(function(callback) {
+			var data = {};
+			data.searchClick = "search";
+			callback.call(_this, data);
+			TmplUtils.filterCriteriaOnLoad();
+		});
+	}
+	//查询
+	function search() {
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tbTmpl.refresh("pindex=0" + "&pcount=" + TmplUtils.pageSize
+				+ TmplUtils.searchParam);
+		TmplUtils.currPage = 1;
+		TmplUtils.closePreview();
+	}
+
+	//弹出添加iframe
+	function edit(id) {
+		var url = "newsEdit.html?id=" + id;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
+	//弹出添加iframe
+	function view(id) {
+		var flag = "view";
+		var url = "newsEdit.html?id=" + id + "&flag=" + flag;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
+	function reportSubmitCaliber(id) {
+		var url = "reportSubmitCaliberList.html?id=" + id;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
+	//保存
+	function save() {
+		var url = Const.apiUrl + "/qaCReply/save";
+		var employee = Utils.formToObj("preview");
+		View.post(url, employee, function(resp) {
+			TmplUtils.showMsgSuccess('编辑成功');
+			tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount="
+					+ TmplUtils.pageSize + TmplUtils.searchParam);
+			TmplUtils.closePreview();
+		}, function() {
+			TmplUtils.showMsgFail('编辑失败');
+		})
+	}
+
+	//删除
+	function del() {
+		//获取选择的id
+		var arrChk = $("input[name='tdCheckbox']");
+		var ids = [];
+		$(arrChk).each(function() {
+			if ($(this).next('div').hasClass("layui-form-checked")) {
+				ids.push($(this).data("id"));
+			}
+		});
+		if (ids.length < 1) {
+			TmplUtils.showMsgFail("请至少选择一项数据");
+			return;
+		}
+		TmplUtils.showConfirm('您确定删除这些数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/qaCReply/delMore"
+			View.post(url, ids, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function() {
+
+		});
+	}
+
+	//删除
+	function dele(id) {
+		var ids = [];
+		ids.push(id);
+		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/qaCReply/delMore"
+			View.post(url, ids, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function() {
+
+		});
+	}
+	
+	//审核
+	function verifyMore() {
+		//获取选择的id
+		var arrChk = $("input[name='tdCheckbox']");
+		var ids = [];
+		$(arrChk).each(function() {
+			if ($(this).next('div').hasClass("layui-form-checked")) {
+				ids.push($(this).data("id"));
+			}
+		});
+		if (ids.length < 1) {
+			TmplUtils.showMsgFail("请至少选择一项数据");
+			return;
+		}
+		var url = Const.apiUrl + "/qaCReply/verifyMore"
+		layer.open({
+			type: 1,
+			title:'您确定审核这些数据吗？',
+			btn: ['通过','不通过','取消'],
+			yes: function(index, layero){
+				//通过
+				var verifyParamModel = {
+						'ids':ids,
+						'event':'VERIFY_PASS',
+				}
+				View.post(url,verifyParamModel,function(resp){
+					TmplUtils.showMsgSuccess(resp);
+					tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+							+ "&pcount=" + TmplUtils.pageSize
+							+ TmplUtils.searchParam);
+					layer.close(index);
+				},function(code,resp){
+					TmplUtils.showMsgFail('审批失败');
+					layer.close(index);
+				});
+			},
+			btn2: function(index, layero){
+				//不通过
+				var verifyParamModel = {
+						'ids':ids,
+						'event':'VERIFY_NOT_PASS',
+				}
+				View.post(url,verifyParamModel,function(resp){
+					TmplUtils.showMsgSuccess(resp);
+					tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+							+ "&pcount=" + TmplUtils.pageSize
+							+ TmplUtils.searchParam);
+					layer.close(index);
+				},function(code,resp){
+					TmplUtils.showMsgFail('审批失败');
+					layer.close(index);
+				});				
+			}
+		});
+	}
+	//单个审核
+	function verify(id) {
+		TmplUtils.showConfirm('该回复是否通过审核？', '通过', '不通过', function() {
+			var isAduit = 1;
+			var url = Const.apiUrl + "/qaCReply/answerIsAduit";
+			View.get(url, "id=" + id+"&isAduit="+isAduit, function(resp) {
+				TmplUtils.showMsgSuccess('审核通过');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		}, function() {
+			var isAduit = 2;
+			var url = Const.apiUrl + "/qaCReply/answerIsAduit";
+			View.get(url, "id=" + id+"&isAduit="+isAduit, function(resp) {
+				TmplUtils.showMsgFail('审核不通过');
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+				TmplUtils.closePreview();
+			}, function(code) {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		});
+	}
+	function addMore() {
+		var url = "newsAddMore.html";
+		var title = "批量添加";
+		View.openDialog(url, title);
+	}
+</script>
+</html>

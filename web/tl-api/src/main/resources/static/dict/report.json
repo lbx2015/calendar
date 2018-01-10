@@ -15,6 +15,8 @@
 			"prop": "report.title",
 			"alias": "报表名称",
 			"type": "string",
+			"verify":"required,maxLen",
+			"len": "32",
 			"group": "base"
 		},
 		{
@@ -23,6 +25,8 @@
 			"type": "string",
 			"query":"1",
 			"query_order":"1",
+			"verify":"required,maxLen",
+			"len": "32",
 			"group": "base"
 		},
 		{
@@ -32,6 +36,7 @@
 			"type": "enum",
 			"query":"1",
 			"query_order":"2",
+			"verify":"required",
 			"dict_key": "T_REPORT.REPORT_TYPE"
 		},
 		{
@@ -41,6 +46,7 @@
 			"type": "enum",
 			"query":"1",
 			"query_order":"3",
+			"verify":"required",
 			"dict_key": "T_REPORT.REPORT_KIND"
 		},
 		{
@@ -48,6 +54,7 @@
 			"alias": "报表所属模块",
 			"group": "base",
 			"type": "enum",
+			"verify":"required",
 			"dict_key": "T_REPORT.MODULE_TYPE"
 		},
 		{
@@ -55,29 +62,16 @@
 			"alias": "报表批次",
 			"group": "base",
 			"type": "enum",
+			"verify":"required",
 			"dict_key": "T_REPORT.REPORT_BATCH"
-		},
-		{
-			"prop": "report.summary",
-			"group": "base",
-			"alias": "报表简介",
-			"type": "text",
-			"edit_block": "2",
-			"hidden": "table,preview"
-		},
-		{
-			"prop": "report.fillinNote",
-			"alias": "报表说明",
-			"group": "base",
-			"type": "text",
-			"edit_block": "2",
-			"hidden": "table,preview"
 		},
 		{
 			"prop": "report.versionNo",
 			"alias": "报表版本号",
 			"group": "base",
 			"type": "string",
+			"verify":"required,maxLen",
+			"len": "16",
 			"hidden": "table"
 		},
 		{
@@ -85,6 +79,8 @@
 			"alias": "报表模板名称",
 			"group": "base",
 			"type": "string",
+			"verify":"maxLen",
+			"len": "128",
 			"hidden": "table"
 		},
 		{
@@ -92,7 +88,25 @@
 			"alias": "报表模板下载地址",
 			"group": "base",
 			"type": "string",
+			"verify":"maxLen",
+			"len": "128",
 			"hidden": "table"
+		},
+		{
+			"prop": "report.summary",
+			"group": "base",
+			"alias": "报表简介",
+			"type": "text",
+			"edit_block": "1",
+			"hidden": "table,preview"
+		},
+		{
+			"prop": "report.fillinNote",
+			"alias": "报表说明",
+			"group": "base",
+			"type": "text",
+			"edit_block": "1",
+			"hidden": "table,preview"
 		},
 		{
 			"prop": "report.isAduit",
@@ -107,8 +121,10 @@
 			"prop": "report.isDeleted",
 			"alias": "是否删除",
 			"group": "base",
-			"type": "string",
-			"hidden": "table,edit,preview"
+			"type": "enum",
+			"dict_key": "T_REPORT.ISDELETED",
+			"editable": "2",
+			"hidden": "edit"
 		},
 		{
 			"prop": "reportSubmitCaliber.caliberType",
@@ -146,6 +162,8 @@
 			"alias": "报送截止时间点0000-2359点",
 			"group": "submit",
 			"type": "string",
+			"verify":"maxLen",
+			"len": "4",
 			"hidden": "table"
 		},
 		{
@@ -155,6 +173,76 @@
 			"type": "enum",
 			"dict_key":"T_REPORT.ISWORKDAY",
 			"hidden": "table"
+		},
+		{
+			"prop": "report.id",
+			"alias": "当前操作人",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "report.reportId",
+			"alias": "当前操作人",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "report.createdBy",
+			"alias": "创建人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "report.modifiedBy",
+			"alias": "修改人ID",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "report.modifiedTime",
+			"alias": "修改时间",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "report.isAduit",
+			"alias": "是否审核： 0-未审核，1-已审核",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "report.enabled",
+			"alias": "是否审核： 0-未审核，1-已审核",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "report.isDeleted",
+			"alias": "是否删除： 0-删除，1-未删除",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "reportSubmitCaliber.id",
+			"alias": "当前操作人",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
+		},
+		{
+			"prop": "reportSubmitCaliber.reportSubmitCaliberId",
+			"alias": "当前操作人",
+			"type": "string",
+			"group": "base",
+			"hidden": "edit,table,preview"
 		}
 	]
 }

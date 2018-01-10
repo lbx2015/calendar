@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.BaseEntity;
+import net.riking.util.RedisUtil;
 
 /**
  * 
@@ -34,17 +37,31 @@ public class AppUserDetail extends BaseEntity {
 		super();
 	}
 
+	public AppUserDetail(String id, String userName, String descript,
+			Integer experience, String photoUrl) {
+		super();
+		this.id = id;
+		this.userName = userName;
+		this.descript = descript;
+		this.experience = experience;
+		this.photoUrl = photoUrl;
+	}
+
 	@Id
 	@GeneratedValue(generator = "idGenerator")
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
 	@Column(name = "id", length = 32)
 	@Comment("pk 同用户登录表t_app_user的id一致")
-	@JsonProperty("appUserDetailId")
+	@JsonProperty("userId")
 	private String id;
-
+	
 	@Comment("真实姓名")
 	@Column(name = "real_name", length = 32)
 	private String realName;
+	
+	@Comment("用户昵称")
+	@Column(name = "user_name", length = 32, nullable = false)
+	private String userName;
 
 	@Comment("用户公司")
 	@Column(name = "company_name", length = 32)
@@ -66,9 +83,9 @@ public class AppUserDetail extends BaseEntity {
 	@Column(name = "descript", length = 500)
 	private String descript;
 
-	@Comment("手机Deviceid")
+	@Comment("手机DeviceId")
 	@Column(name = "phone_device_id", length = 32)
-	private String phoneDeviceid;
+	private String phoneDeviceId;
 
 	@Comment("手机类型 1-IOS;2-Android;3-其它")
 	@Column(name = "phone_type", length = 1)
@@ -137,7 +154,18 @@ public class AppUserDetail extends BaseEntity {
 	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
-
+	
+	@SuppressWarnings("static-access")
+	public void setGrade() {
+		List<AppUserGrade> list = RedisUtil.getInstall().getList(AppUserGrade.class.getName().toUpperCase());
+		list.forEach(e->{
+			if(e.getMaxExp()>=this.getExperience() && e.getMinExp()<= this.getExperience()){
+				this.setGrade(e.getGrade());
+				return;
+			}
+		});
+	}
+	
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -178,12 +206,12 @@ public class AppUserDetail extends BaseEntity {
 		this.descript = descript;
 	}
 
-	public String getPhoneDeviceid() {
-		return phoneDeviceid;
+	public String getPhoneDeviceId() {
+		return phoneDeviceId;
 	}
 
-	public void setPhoneDeviceid(String phoneDeviceid) {
-		this.phoneDeviceid = phoneDeviceid;
+	public void setPhoneDeviceId(String phoneDeviceId) {
+		this.phoneDeviceId = phoneDeviceId;
 	}
 
 	public Integer getPhoneType() {
@@ -283,4 +311,12 @@ public class AppUserDetail extends BaseEntity {
 		return true;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 }

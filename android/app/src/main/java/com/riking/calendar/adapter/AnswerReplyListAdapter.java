@@ -31,7 +31,7 @@ public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyList
     public List<NCReply> mList;
     Context a;
     String from;
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
     public AnswerReplyListAdapter(Context c, RecyclerView recyclerView) {
         a = c;
@@ -53,7 +53,6 @@ public class AnswerReplyListAdapter extends RecyclerView.Adapter<AnswerReplyList
         String to = reply.toUser == null ? "" : reply.toUser.userName;
         String replyText = "回复";
         String content = reply.content == null ? "" : reply.content;
-
 
         //set spannable string
         SpannableString toSpan = null;

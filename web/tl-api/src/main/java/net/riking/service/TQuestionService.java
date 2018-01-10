@@ -3,6 +3,7 @@ package net.riking.service;
 import java.util.Date;
 import java.util.List;
 
+import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestResult;
@@ -53,5 +54,18 @@ public interface TQuestionService {
 	 * @return
 	 */
 	public List<QuestResult> userFollowQuest(String userId, int start, int pageCount);
+
+	/***
+	 * 问题，话题，用户的关注操作
+	 * 返回：true-关注；false-取消关注
+	 * @author james.you
+	 * @version crateTime：2017年12月27日 下午5:01:33
+	 * @used TODO
+	 * @param optCommon
+	 * @return true-关注；false-取消关注
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	public boolean follow(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException;
 
 }

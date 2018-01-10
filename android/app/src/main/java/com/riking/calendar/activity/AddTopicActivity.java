@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.TopicsAdapter;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
@@ -117,13 +118,6 @@ public class AddTopicActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    nextStep.setTextColor(ZR.getColor(R.color.color_489dfff));
-                    nextStep.setEnabled(true);
-                } else {
-                    nextStep.setTextColor(ZR.getColor(R.color.color_cccccc));
-                    nextStep.setEnabled(false);
-                }
                 search(s.toString());
             }
         });
@@ -132,20 +126,31 @@ public class AddTopicActivity extends AppCompatActivity {
             @Override
             public void click(View v) {
                 StringBuilder sb = new StringBuilder();
+
                 for (int i = 0; i < topics.size(); i++) {
-                    String s = topics.get(i);
-                    sb.append("s");
-                    if (i < topics.size() - 1) {
-                        sb.append(",");
+                    for (Topic t : mAdapter.mList) {
+                        String s = topics.get(i);
+                        if (t.title.equals(s)) {
+                            sb.append(t.topicId);
+                            if (i < topics.size() - 1) {
+                                sb.append(",");
+                            }
+                            break;
+                        }
                     }
                 }
+
                 TQuestionParams params = new TQuestionParams();
+                //append "?" in case user not adding ?
+                if (!questionTitle.endsWith("?")) {
+                    questionTitle = questionTitle + "?";
+                }
                 params.title = questionTitle;
                 params.topicId = sb.toString();
                 APIClient.getEditHtmlUrl(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        Intent i = new Intent(AddTopicActivity.this, WebviewActivity.class);
+                        Intent i = new Intent(AddTopicActivity.this, SubmitQuestionActivity.class);
                         i.putExtra(CONST.WEB_URL, response._data);
                         startActivity(i);
                     }
@@ -176,8 +181,6 @@ public class AddTopicActivity extends AppCompatActivity {
                 try {
                     String sourceString = r.source().readUtf8();
                     Gson s = new GsonBuilder().setDateFormat(CONST.YYYYMMDDHHMMSSSSS).create();
-                    ;
-
                     JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
                     String _data = jsonObject.get("_data").toString();
 
@@ -208,18 +211,36 @@ public class AddTopicActivity extends AppCompatActivity {
 
     }
 
+    private void getTopicByQuestion() {
+        swipeRefreshLayout.setRefreshing(true);
+        TQuestionParams params = new TQuestionParams();
+        params.title = questionTitle;
+        APIClient.getTopicByQuestion(params, new ZCallBackWithFail<ResponseModel<List<Topic>>>() {
+            @Override
+            public void callBack(ResponseModel<List<Topic>> response) {
+                swipeRefreshLayout.setRefreshing(false);
+                if (!failed && response._data != null) {
+                    mAdapter.setData(response._data);
+                }
+            }
+        });
+    }
+
     private void setRecyclerView() {
         //set layout manager for the recycler view.
         topicRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new TopicsAdapter(this);
         //set adapters
         topicRecyclerView.setAdapter(mAdapter);
+        getTopicByQuestion();
     }
 
     public void drawMyOrders() {
         //redraw the reports
         zReportFlowLayout.removeAllViews();
         if (topics.size() > 0) {
+            nextStep.setTextColor(ZR.getColor(R.color.color_489dfff));
+            nextStep.setEnabled(true);
             zReportFlowLayout.setVisibility(View.VISIBLE);
             for (int i = 0; i < topics.size(); i++) {
                 final String appUserReportRel = topics.get(i);
@@ -236,6 +257,8 @@ public class AddTopicActivity extends AppCompatActivity {
                         if (topics.size() == 0) {
                             //hide the title
                             zReportFlowLayout.setVisibility(View.GONE);
+                            nextStep.setTextColor(ZR.getColor(R.color.color_cccccc));
+                            nextStep.setEnabled(false);
                         }
                     }
                 });
@@ -244,6 +267,8 @@ public class AddTopicActivity extends AppCompatActivity {
         } else {
             //hide the title of the orders
             zReportFlowLayout.setVisibility(View.GONE);
+            nextStep.setTextColor(ZR.getColor(R.color.color_cccccc));
+            nextStep.setEnabled(false);
         }
     }
 

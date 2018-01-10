@@ -12,19 +12,32 @@
 			"alias": "资讯标题",
 			"desc": "资讯标题",
 			"type": "string",
-			"group": "base"
-		},
-		{
-			"prop": "seat",
-			"alias": "封面位置",
-			"desc": "封面位置",
-			"type": "string",
+			"verify":"required",
 			"group": "base"
 		},
 		{
 			"prop": "coverUrls",
 			"alias": "封面URL",
 			"desc": "封面URL",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,preview"
+			
+		},
+		{
+			"prop": "seat",
+			"alias": "封面位置",
+			"desc": "封面位置",
+			"type": "enum",
+			"dict_key": "T_NEWS.SEAT",
+			"verify":"required",
+			"group": "base"
+		},
+		{
+			"prop": "issued",
+			"alias": "发布单位",
+			"desc": "发布单位",
+			"verify":"required",
 			"type": "string",
 			"group": "base"
 		},
@@ -33,32 +46,18 @@
 			"alias": "资讯内容",
 			"desc": "资讯内容",
 			"type": "text",
-			"edit_block": "2",
+			"edit_block": "1",
 			"group": "base",
 			"hidden": "table"
 		},
 		{
-			"prop": "issued",
-			"alias": "发布单位",
-			"desc": "发布单位",
-			"type": "string",
-			"group": "base"
-		},
-		{
 			"prop": "isAduit",
-			"alias": "是否审核：0-未审核；1-已审核；2-不通过",
-			"desc": "是否审核：0-未审核；1-已审核；2-不通过",
+			"alias": "是否审核",
+			"desc": "是否审核",
 			"type": "enum",
 			"dict_key": "T_REPORT.ISADUIT",
-			"group": "base"
-		},
-		{
-			"prop": "enabled",
-			"alias": "用户状态0-禁用；1-启用",
-			"desc": "用户状态0-禁用；1-启用",
-			"type": "string",
 			"group": "base",
-			"hidden": "table,edit,preview"
+			"hidden": "edit"
 		},
 		{
 			"prop": "createdBy",

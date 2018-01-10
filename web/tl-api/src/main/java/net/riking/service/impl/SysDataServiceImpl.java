@@ -22,7 +22,6 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.SysDays;
-import net.riking.service.ReportService;
 import net.riking.service.SysDataService;
 import net.riking.util.RedisUtil;
 
@@ -38,9 +37,6 @@ public class SysDataServiceImpl implements SysDataService {
 
 	@Autowired
 	ModelPropdictRepo modelPropdictRepo;
-
-	@Autowired
-	ReportService reportService;
 
 	@Autowired
 	AppUserRepo appUserRepo;

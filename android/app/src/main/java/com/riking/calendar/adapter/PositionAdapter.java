@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ReportsSelectActivity;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.AppUser;
 import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -51,10 +53,10 @@ public class PositionAdapter extends RecyclerView.Adapter<OneTextViewHolder> {
                 Intent it = new Intent(MyApplication.mCurrentActivity, ReportsSelectActivity.class);
                 MyApplication.mCurrentActivity.startActivity(it);
 
-                AppUser result = new AppUser();
+                UpdUserParams result = new UpdUserParams();
                 result.positionId = mList.get(i).industryId;
                 result.userId = (ZPreference.pref.getString(CONST.USER_ID, ""));
-                APIClient.updateUserInfo(result, new ZCallBackWithFail<ResponseModel<String>>() {
+                APIClient.modifyUserInfo(result, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
 

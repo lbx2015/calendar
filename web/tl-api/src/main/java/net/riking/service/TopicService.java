@@ -2,6 +2,8 @@ package net.riking.service;
 
 import java.util.List;
 
+import net.riking.entity.model.MQOptCommon;
+import net.riking.entity.model.Topic;
 import net.riking.entity.model.TopicResult;
 
 public interface TopicService {
@@ -23,4 +25,9 @@ public interface TopicService {
 	 * @return
 	 */
 	public List<TopicResult> userFollowTopic(String userId, int begin, int pageCount);
+
+	public void shield(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException;
+
+	/* ****************web**************** */
+	public void moveFile(Topic topic);
 }

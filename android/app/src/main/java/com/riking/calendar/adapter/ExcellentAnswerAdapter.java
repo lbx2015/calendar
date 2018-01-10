@@ -47,7 +47,7 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
             h.divider.setVisibility(View.GONE);
         }
 
-         ZR.setUserName(h.userName,user.userName,user.grade);
+         ZR.setUserName(h.userName,user.userName,user.grade,user.userId);
 
         ZR.setUserImage(h.userImage, user.photoUrl);
 

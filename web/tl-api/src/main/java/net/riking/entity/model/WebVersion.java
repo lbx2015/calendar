@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -53,6 +54,10 @@ public class WebVersion extends BaseProp {
 	@Column(name = "remark", length = 255)
 	private String remark;
 
+	@Comment("操作类型：modify-修改;add-新增")
+	@Transient
+	private String opt;
+
 	public String getId() {
 		return id;
 	}
@@ -92,5 +97,11 @@ public class WebVersion extends BaseProp {
 	// // 删除状态 0删除 1显示
 	// @Column(name = "delete_state", length = 2)
 	// private String deleteState;
+	public String getOpt() {
+		return opt;
+	}
 
+	public void setOpt(String opt) {
+		this.opt = opt;
+	}
 }

@@ -1,13 +1,15 @@
 package com.riking.calendar.fragment;
 
 import com.necer.ncalendar.utils.MyLog;
+import com.riking.calendar.activity.MyFollowActivity;
 import com.riking.calendar.adapter.MyFollowersAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
-import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZToast;
 
 import java.util.List;
@@ -17,6 +19,13 @@ import java.util.List;
  */
 
 public class MyFollowerPersonFragment extends ZFragment<MyFollowersAdapter> {
+    MyFollowActivity activity;
+
+    public static MyFollowerPersonFragment newInstance(MyFollowActivity activity) {
+        MyFollowerPersonFragment f = new MyFollowerPersonFragment();
+        f.activity = activity;
+        return f;
+    }
 
     @Override
     public MyFollowersAdapter getAdapter() {
@@ -32,26 +41,31 @@ public class MyFollowerPersonFragment extends ZFragment<MyFollowersAdapter> {
     public void loadData(final int page) {
 
         final UserFollowParams params = new UserFollowParams();
+        if (!StringUtil.isEmpty(activity.userId)) {
+            params.userId = activity.userId;
+        }
         //person type
         params.objType = 3;
         params.pindex = page;
-        APIClient.getMyFavoriateUsers(params, new ZCallBack<ResponseModel<List<AppUserResult>>>() {
+        APIClient.getMyFavoriateUsers(params, new ZCallBackWithFail<ResponseModel<List<AppUserResult>>>() {
             @Override
             public void callBack(ResponseModel<List<AppUserResult>> response) {
                 mPullToLoadView.setComplete();
-
-                List<AppUserResult> list = response._data;
-                MyLog.d("list size: " + list.size());
-                if (list.size() < params.pcount) {
-                    isHasLoadedAll = true;
-                    if (list.size() == 0) {
-                        ZToast.toastEmpty();
-                        return;
-                    }
-                }
                 isLoading = false;
-                nextPage = page + 1;
-                mAdapter.setData(list);
+                if (!failed) {
+
+                    List<AppUserResult> list = response._data;
+                    MyLog.d("list size: " + list.size());
+                    if (list.size() < params.pcount) {
+                        isHasLoadedAll = true;
+                        if (list.size() == 0) {
+                            ZToast.toastEmpty();
+                            return;
+                        }
+                    }
+                    nextPage = page + 1;
+                    mAdapter.setData(list);
+                }
             }
         });
     }

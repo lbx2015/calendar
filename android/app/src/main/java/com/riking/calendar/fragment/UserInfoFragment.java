@@ -94,7 +94,29 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             loginState = 1;
             currentUser = ZPreference.getCurrentLoginUser();
             userName.setText(currentUser.userName);
+            ZR.setUserName(userName, currentUser.userName, currentUser.grade, currentUser.userId);
             userComment.setText(currentUser.descript);
+
+            userName.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ZPreference.isLogin()) {
+                        UserParams u = new UserParams();
+                        APIClient.myGrade(u, new ZCallBack<ResponseModel<String>>() {
+                            @Override
+                            public void callBack(ResponseModel<String> response) {
+                                Intent i = new Intent(getContext(), WebviewActivity.class);
+                                i.putExtra(CONST.WEB_URL, response._data);
+                                i.putExtra(CONST.ACTIVITY_NAME, "UserInfoFragment");
+                                startActivity(i);
+                            }
+                        });
+                    } else {
+                        ZClickListenerWithLoginCheck.weakRef.clear();
+                        ZGoto.toLoginActivity();
+                    }
+                }
+            });
 
             //load the user image
             ZR.setUserImage(myPhoto, currentUser.photoUrl);
@@ -163,13 +185,17 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         contactLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyRelationActivity.class);
+                Intent i = new Intent(getContext(), MyRelationActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
         collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyCollectActivity.class);
+                Intent i = new Intent(getContext(), MyCollectActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
         setLayout.setOnClickListener(this);
@@ -204,13 +230,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
                             checkInTv.setEnabled(false);
                             CheckInDialog dialog = new CheckInDialog(checkInTv.getContext());
                             dialog.setExperience(maps == null ? 0 : maps.get("integral"));
-                            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-                            dialog.setContentView(layoutInflater.inflate(R.layout.dialog_check_in, null));
-                            dialog.zEnterImageView = dialog.findViewById(R.id.sign_in_success_img);
-                            dialog.zEnterImageView.text = "+" + (
-                                    maps == null ? 0 : maps.get("signIntegral"));
-                            dialog.show();
-                            dialog.zEnterImageView.text = "+" + maps.get("signIntegral");
+                            dialog.signIntegral = (maps == null ? 0 : maps.get("signIntegral"));
                             dialog.show();
                         }
                     }
@@ -219,18 +239,22 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         });
 
         //set my replies click listener
-        myRepliesLayout.setOnClickListener(new OnClickListener() {
+        myRepliesLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
-                ZGoto.to(MyRepliesActivity.class);
+            public void click(View v) {
+                Intent i = new Intent(getContext(), MyRepliesActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
 
         // go to following me activity on click
-        followMeLayout.setOnClickListener(new OnClickListener() {
+        followMeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
-            public void onClick(View v) {
-                ZGoto.to(MyFollowersActivity.class);
+            public void click(View v) {
+                Intent i = new Intent(getContext(), MyFollowersActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
 
@@ -239,6 +263,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             @Override
             public void click(View v) {
                 Intent i = new Intent(getContext(), MyFavoritesUserActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
                 ZGoto.to(i);
             }
         });
@@ -253,14 +278,18 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         trendLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyStateActivity.class);
+                Intent i = new Intent(getContext(), MyStateActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
 
         followLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                ZGoto.to(MyFollowActivity.class);
+                Intent i = new Intent(getContext(), MyFollowActivity.class);
+                i.putExtra(CONST.USER_ID, currentUser.userId);
+                ZGoto.to(i);
             }
         });
     }

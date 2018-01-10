@@ -22,9 +22,9 @@ import com.riking.calendar.adapter.ReportsOrderAdapter;
 import com.riking.calendar.interfeet.PerformSearch;
 import com.riking.calendar.interfeet.SubscribeReport;
 import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.pojo.AppUserReportRel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
+import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.pojo.server.ReportResult;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.retrofit.APIClient;
@@ -91,6 +91,15 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         initEvents();
     }
 
+    public void clickClearSearchConditions(View v) {
+        ZDB.Instance.getRealm().executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(SearchConditions.class).findAll().deleteAllFromRealm();
+            }
+        });
+    }
+
     public void clickCancel(View view) {
         onBackPressed();
     }
@@ -147,6 +156,8 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
                     return;
                 }
 
+                localSearchTitle.setVisibility(View.GONE);
+
                 try {
                     String sourceString = r.source().readUtf8();
                     Gson s = new Gson();
@@ -201,11 +212,9 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         }
 
         subscribedReportsChanged = true;
-        AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
-        a.reportId = report.reportId;
-        a.reportName = report.title;
-        a.type = "1";
+        SubscribeReportParam a = new SubscribeReportParam();
+        a.reportIds = report.reportId;
+        a.subscribeType = 1;
         orderReports.add(report);
         APIClient.updateUserReportRelById(a, new ZCallBack<ResponseModel<String>>() {
             @Override
@@ -222,11 +231,9 @@ public class SearchReportActivity extends AppCompatActivity implements Subscribe
         }
 
         subscribedReportsChanged = true;
-        AppUserReportRel a = new AppUserReportRel();
-        a.appUserId = ZPreference.pref.getString(CONST.USER_ID, "");
-        a.reportId = report.reportId;
-        a.reportName = report.title;
-        a.type = "0";
+        SubscribeReportParam a = new SubscribeReportParam();
+        a.reportIds = report.reportId;
+        a.subscribeType = 0;
 
         disOrderReports.add(report);
 

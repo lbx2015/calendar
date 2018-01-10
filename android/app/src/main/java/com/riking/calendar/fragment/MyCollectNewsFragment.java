@@ -1,6 +1,7 @@
 package com.riking.calendar.fragment;
 
 import com.necer.ncalendar.utils.MyLog;
+import com.riking.calendar.activity.MyCollectActivity;
 import com.riking.calendar.adapter.NewsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
 import com.riking.calendar.listener.ZCallBack;
@@ -8,6 +9,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
 import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZToast;
 
 import java.util.List;
@@ -17,6 +19,13 @@ import java.util.List;
  */
 
 public class MyCollectNewsFragment extends ZFragment<NewsAdapter> {
+    MyCollectActivity activity;
+
+    public static MyCollectNewsFragment newInstance(MyCollectActivity activity) {
+        MyCollectNewsFragment f = new MyCollectNewsFragment();
+        f.activity = activity;
+        return f;
+    }
 
     @Override
     public NewsAdapter getAdapter() {
@@ -30,8 +39,10 @@ public class MyCollectNewsFragment extends ZFragment<NewsAdapter> {
     }
 
     public void loadData(final int page) {
-
         final UserFollowParams params = new UserFollowParams();
+        if (!StringUtil.isEmpty(activity.userId)) {
+            params.userId = activity.userId;
+        }
         params.pindex = page;
         APIClient.getMyCollectNews(params, new ZCallBack<ResponseModel<List<News>>>() {
             @Override

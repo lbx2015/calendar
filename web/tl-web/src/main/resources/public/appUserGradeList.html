@@ -1,0 +1,265 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>横幅信息</title>
+<link type="include" href="/common/depcss.html" />
+</head>
+
+<body class="iframeBody">
+	<div class="scrollbar">
+		<div class="content">
+			<div class="layui-elem-field actionBar">
+				<div class="layui-btn-group absolute">
+					<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
+						<i class="layui-icon">&#xe608;</i>
+						添加
+					</button>
+					<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
+						<i class="layui-icon">&#xe640;</i>
+						批量删除
+					</button>
+					<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
+						<i class="layui-icon">&#xe6b2;</i>
+						批量审核
+					</button> --> 
+				</div>
+				<div class="_tmpl" data-url="filterCriteria.html" data-attr="appUserGrade.json" data-bind="filterCriteriaOnBind" data-param=""></div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div class="tableBar">
+				<div class="tableContent layui-form">
+					<div class="_tmpl" data-url="table.html" id="table" data-attr="appUserGrade.json" data-bind="tbOnBind" data-param="pindex=0&pcount=15"></div>
+				</div>
+			</div>
+			<div style="clear: both"></div>
+			<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
+		</div>
+	</div>
+</body>
+<link type="include" href="/common/depjs.html" />
+<script>
+	$(function() {
+		$("#add-data").click(function() {
+			var url = "appUserGradeEdit.html?flag=add";
+			var title = "添加数据";
+			View.openDialog(url, title);
+		});
+
+		var form = layui.form;
+		//监听提交，设置为不刷新页面
+		form.on('submit', function(data) {
+			return false;
+		});
+	});
+</script>
+<script>
+	var form = layui.form, layer = layui.layer;
+	//全选
+	form.on('checkbox(allChoose)', function(data) {
+		var child = $(data.elem).parents('table').find(
+				'tbody input[type="checkbox"]');
+		child.each(function(index, item) {
+			item.checked = data.elem.checked;
+		});
+		form.render('checkbox');
+	});
+</script>
+<script>
+	
+</script>
+<script>
+	var item;
+	var tbTmpl;
+	function forbbit(id) {
+
+	}
+	function tbOnBind(attrs, param) {
+		tmpl = this;
+		tbTmpl = tmpl;
+
+		var _bind = function(callback) {
+			var url = Const.apiUrl + "/appUserGrade/getMore";
+			var _this = this;
+			var _succ = function(resp) {
+				var data = {};
+				if (resp) {
+					data.data = resp;
+					TmplUtils.totalPages = data.data.totalPages;
+					TmplUtils.totalCount = data.data.totalElements;
+				}
+				//data.hasCheckbox = true;
+				data.hasOperation = true;
+				data.cellCount = 6;
+				 //操作栏的宽度
+                data.operationWidth =15;
+				data.tdBeforeFill = function(obj) {
+					if (obj['item']) {
+						if (obj.isOperColumn) {
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
+									+ "\""
+									+ obj.item.grade
+									+ "\""
+									+ ");'>查看</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini' onclick='edit("
+									+ "\""
+									+ obj.item.grade
+									+ "\""
+									+ ");'>修改</button>";
+							obj.html += "<button class='layui-btn layui-btn-mini layui-btn-danger' onclick='dele("
+									+ "\""
+									+ obj.item.grade
+									+ "\""
+									+ ");'>删除</button>";
+							/* if (obj.item.isAduit == 0) {
+								obj.html += "<button class='layui-btn layui-btn-mini layui-btn' onclick='verify("
+										+ "\""
+										+ obj.item.grade
+										+ "\""
+										+ ");'>审核</button>";
+							} */
+						}
+					}
+					return obj.html;
+				}
+				callback.call(_this, data);
+				if (TmplUtils.pageTmpl.refresh) {
+					TmplUtils.pageTmpl.refresh();
+				}
+
+			};
+			View.get(url, param, _succ, function(code) {
+				TmplUtils.showMsgFail('查询出错');
+			});
+		}
+
+		tmpl.bind(_bind);
+	}
+
+	//表格单元格点击事件
+	function bindPro(item) {
+		if (!TmplUtils.isEditing) {
+			this.item = item;
+			previewTmpl.refresh();
+		}
+	}
+
+	//预览绑定
+	var previewTmpl;
+	function previewOnBind(attrs, param) {
+		tmpl = this;
+		previewTmpl = tmpl;
+		if (!item) {
+			return;
+		}
+		tmpl.bind(function(callback) {
+			var url = Const.apiUrl + "/appUserGrade/get";
+			var data = {};
+			//是否可编辑
+			//data.canEdit = true;
+			data.data = item;
+			//绑定点击事件
+			data.checkClick = "check";
+			data.saveClick = "save";
+			callback.call(this, data);
+			TmplUtils.previewOnLoad();
+		});
+	}
+
+	//查询条件绑定
+	function filterCriteriaOnBind(attrs, param) {
+		tmpl = this;
+		var _this = this;
+		tmpl.bind(function(callback) {
+			var data = {};
+			data.searchClick = "search";
+			callback.call(_this, data);
+			TmplUtils.filterCriteriaOnLoad();
+		});
+	}
+	//查询
+	function search() {
+		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
+		tbTmpl.refresh("pindex=0" + "&pcount=" + TmplUtils.pageSize
+				+ TmplUtils.searchParam);
+		TmplUtils.currPage = 1;
+		TmplUtils.closePreview();
+	}
+
+	//弹出添加iframe
+	function edit(id) {
+		var url = "appUserGradeEdit.html?id=" + id+"&flag=edit";
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+
+	//弹出添加iframe
+	function view(id) {
+		var flag = "view";
+		var url = "appUserGradeEdit.html?id=" + id + "&flag=" + flag;
+		var title = "数据处理";
+		View.openDialog(url, title);
+	}
+	//保存
+	function save() {
+		var url = Const.apiUrl + "/appUserGrade/save";
+		var employee = Utils.formToObj("preview");
+		View.post(url, employee, function(resp) {
+			TmplUtils.showMsgSuccess('编辑成功');
+			tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1) + "&pcount="
+					+ TmplUtils.pageSize + TmplUtils.searchParam);
+			TmplUtils.closePreview();
+		}, function() {
+			TmplUtils.showMsgFail('编辑失败');
+		})
+	}
+
+
+	//删除
+	function dele(id) {
+		TmplUtils.showConfirm('您确定删除该数据吗？', '确定', '取消', function() {
+			var url = Const.apiUrl + "/appUserGrade/del"
+			View.post(url, id, function(resp) {
+				TmplUtils.showMsgSuccess("删除成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('删除失败');
+			});
+		}, function() {
+
+		});
+	}
+
+	//单个审核
+	function verify(id) {
+		var params = {};
+		params.id = id;
+		TmplUtils.showConfirm('审核该条横幅吗？', '通过', '未通过', function() {
+			params.isAduit = '1';
+			var url = Const.apiUrl + "/appUserGrade/verify"
+			View.post(url, params, function(resp) {
+				TmplUtils.showMsgSuccess("审核成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		}, function() {
+			params.isAduit = '2';
+			var url = Const.apiUrl + "/appUserGrade/verify"
+			View.post(url, params, function(resp) {
+				TmplUtils.showMsgSuccess("审核成功");
+				tbTmpl.refresh("pindex=" + (TmplUtils.currPage - 1)
+						+ "&pcount=" + TmplUtils.pageSize
+						+ TmplUtils.searchParam);
+			}, function() {
+				TmplUtils.showMsgFail('审核失败');
+			});
+		});
+	}
+</script>
+</html>

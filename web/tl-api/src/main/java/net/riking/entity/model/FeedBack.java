@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -50,12 +51,20 @@ public class FeedBack extends BaseProp {
 	@Column(name = "accept")
 	private Integer accept;
 
+	@Comment("反馈用户名")
+	@Transient
+	private String userName;;
+
 	public FeedBack(String content, String imgs, String createBy) {
 		super();
 		this.content = content;
 		this.imgs = imgs;
 		this.setCreatedBy(createBy);
 		this.setModifiedBy(createBy);
+	}
+
+	public FeedBack() {
+		super();
 	}
 
 	public String getId() {
@@ -88,6 +97,14 @@ public class FeedBack extends BaseProp {
 
 	public void setAccept(Integer accept) {
 		this.accept = accept;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 }

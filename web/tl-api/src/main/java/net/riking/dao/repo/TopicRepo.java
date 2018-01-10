@@ -1,5 +1,6 @@
 package net.riking.dao.repo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -37,10 +38,17 @@ public interface TopicRepo extends JpaRepository<Topic, String>, JpaSpecificatio
 	 * @param topicId
 	 * @return
 	 */
-	@Query("select new net.riking.entity.model.TopicResult(t.id,t.title,t.content,(select topicId from TopicRel where userId = ?1 and t.id = topic_id and dataType = 0)) from Topic t where t.isAduit <> 2 and t.isDeleted = 1 and t.title like %?1%")
-	List<TopicResult> getTopicByParam(String params);
+	@Query("select new net.riking.entity.model.TopicResult(t.id,t.title,t.topicUrl,(select topicId from TopicRel where userId = ?2 and t.id = topic_id and dataType = 0)) from Topic t where t.isAduit <> 2 and t.isDeleted = 1 and t.title like %?1%")
+	List<TopicResult> getTopicByParam(String params, String userId);
+	
+	@Query("select new net.riking.entity.model.Topic(t.id,t.title) from Topic t where t.isDeleted = 1 and t.id in ?1")
+	List<Topic> findAllByIdsAndIsDelete(Collection<String> ids);
 
 	/*********** WEB ************/
+	
+	@Query("from Topic where isDeleted = 1")
+	List<Topic> findAllByIsDelete();
+	
 	@Transactional
 	@Modifying
 	@Query(" update Topic set isDeleted=0 where id in ?1 ")
@@ -50,4 +58,9 @@ public interface TopicRepo extends JpaRepository<Topic, String>, JpaSpecificatio
 	@Modifying
 	@Query(" update Topic set isAduit=1 where id in ?1 ")
 	int verifyById(Set<String> ids);
+
+	@Transactional
+	@Modifying
+	@Query(" update Topic set isAduit=2 where id in ?1 ")
+	int verifyNotPassById(Set<String> ids);
 }

@@ -12,16 +12,37 @@
 			"alias": "标题",
 			"desc": "标题",
 			"type": "string",
+			"edit_block": "1",
 			"group": "base",
 			"query": "1",
+			"verify":"required",
 			"query_order": "1"
+		},
+		{
+			"prop": "topicId",
+			"alias": "相关话题",
+			"desc": "话题主键： fk t_topic (最多3个，用','分隔开)",
+			"type": "multipleChoice",
+			"choice_url": "/tQuestion/getTopicList",
+			"edit_block": "1",
+			"group": "base",
+			"hidden": "preview"
+		},
+		{
+			"prop": "userId",
+			"alias": "用户主键",
+			"desc": "用户主键",
+			"type": "string",
+			"edit_block": "1",
+			"group": "base",
+			"hidden": "table,edit,preview"
 		},
 		{
 			"prop": "content",
 			"alias": "内容描述",
 			"desc": "内容描述",
 			"type": "text",
-			"edit_block": "2",
+			"edit_block": "1",
 			"group": "base",
 			"hidden": "table"
 		},
@@ -38,11 +59,13 @@
 		},
 		{
 			"prop": "createdBy",
-			"alias": "创建人ID",
-			"desc": "创建人ID",
-			"type": "string",
+			"alias": "创建人",
+			"desc": "创建人",
+			"type": "enum",
+			"enum_url": "/tQuestion/getCreatedUser",
+			"enum_search": "1",
 			"group": "base",
-			"hidden": "table,edit,preview"
+			"hidden": "edit,preview"
 		},
 		{
 			"prop": "createdTime",
@@ -50,7 +73,7 @@
 			"desc": "创建时间",
 			"type": "string",
 			"group": "base",
-			"hidden": "table,edit,preview"
+			"hidden": "edit,preview"
 		},
 		{
 			"prop": "modifiedBy",
@@ -72,6 +95,22 @@
 			"prop": "isDeleted",
 			"alias": "是否删除：1-未删除；0-删除",
 			"desc": "是否删除：1-未删除；0-删除",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "id",
+			"alias": "操作人id",
+			"desc": "操作人id",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
+			"prop": "topicQuestionId",
+			"alias": "操作人id",
+			"desc": "操作人id",
 			"type": "string",
 			"group": "base",
 			"hidden": "table,edit,preview"

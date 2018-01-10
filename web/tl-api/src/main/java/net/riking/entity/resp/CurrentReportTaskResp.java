@@ -10,76 +10,118 @@ import net.riking.entity.BaseEntity;
  */
 public class CurrentReportTaskResp extends BaseEntity {
 	private String reportId;
+
 	private String reportCode;
-	private String reportName;//报表名称
-	private String frequency;//报表频度
-	private String reportBatch;//批次0,1,2,3,4, 其它
-	private String submitStartTime;//上报开始时间yyyyMMdd
-	private String submitEndTime;//上报结束时间yyyyMMdd
-	private String isCompleted;//是否完成：0-未完成；1-完成
-	private String remindId;//提醒记录Id
-	private String remindContent;//提醒的报表内容
+
+	private String reportName;// 报表名称
+
+	private Integer frequency;// 报表频度
+
+	private String reportBatch;// 批次0,1,2,3,4, 其它
+
+	private String submitStartTime;// 上报开始时间yyyyMMdd
+
+	private String submitEndTime;// 上报结束时间yyyyMMdd
+
+	private String isCompleted;// 是否完成：0-未完成；1-完成
+
+	private String remindId;// 提醒记录Id
+
+	private String remindContent;// 提醒的报表内容
+
+	private String userId;//用户Id
+	private String phoneDeviceId;//用户移动端设备号
 	
 	public String getReportId() {
 		return reportId;
 	}
+
 	public void setReportId(String reportId) {
 		this.reportId = reportId;
 	}
+
 	public String getReportCode() {
 		return reportCode;
 	}
+
 	public void setReportCode(String reportCode) {
 		this.reportCode = reportCode;
 	}
+
 	public String getReportName() {
 		return reportName;
 	}
+
 	public void setReportName(String reportName) {
 		this.reportName = reportName;
 	}
-	
+
 	public String getSubmitStartTime() {
 		return submitStartTime;
 	}
+
 	public void setSubmitStartTime(String submitStartTime) {
 		this.submitStartTime = submitStartTime;
 	}
+
 	public String getSubmitEndTime() {
 		return submitEndTime;
 	}
+
 	public void setSubmitEndTime(String submitEndTime) {
 		this.submitEndTime = submitEndTime;
 	}
+
 	public String getIsCompleted() {
 		return isCompleted;
 	}
+
 	public void setIsCompleted(String isCompleted) {
 		this.isCompleted = isCompleted;
 	}
+
 	public String getRemindId() {
 		return remindId;
 	}
+
 	public void setRemindId(String remindId) {
 		this.remindId = remindId;
 	}
+
 	public String getRemindContent() {
 		return remindContent;
 	}
+
 	public void setRemindContent(String remindContent) {
 		this.remindContent = remindContent;
 	}
-	public String getFrequency() {
+
+	public Integer getFrequency() {
 		return frequency;
 	}
-	public void setFrequency(String frequency) {
+
+	public void setFrequency(Integer frequency) {
 		this.frequency = frequency;
 	}
+
 	public String getReportBatch() {
 		return reportBatch;
 	}
+
 	public void setReportBatch(String reportBatch) {
 		this.reportBatch = reportBatch;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getPhoneDeviceId() {
+		return phoneDeviceId;
+	}
+	public void setPhoneDeviceId(String phoneDeviceId) {
+		this.phoneDeviceId = phoneDeviceId;
 	}
 	
 }

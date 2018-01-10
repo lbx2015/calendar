@@ -3,6 +3,7 @@ package com.riking.calendar.util;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -18,12 +19,20 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
+import com.riking.calendar.activity.AnswerActivity;
+import com.riking.calendar.activity.QuestionActivity;
+import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.activity.UserActivity;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
+import com.riking.calendar.pojo.QueryReport;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.UserParams;
@@ -33,6 +42,8 @@ import com.riking.calendar.retrofit.APIClient;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by zw.zhang on 2017/7/14.
@@ -81,6 +92,10 @@ public class ZR {
         return px / context.getResources().getDisplayMetrics().density;
     }
 
+    public static String getRegistrationId() {
+        return JPushInterface.getRegistrationID(MyApplication.APP);
+    }
+
     public static String getDeviceId() {
         TelephonyManager tManager = (TelephonyManager) MyApplication.mCurrentActivity.getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(MyApplication.mCurrentActivity, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
@@ -106,6 +121,9 @@ public class ZR {
     }
 
     public static String getNumberString(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
         String[] suffix = new String[]{"", "k", "m", "b", "t"};
         int MAX_LENGTH = 4;
         String r = new DecimalFormat("##0E0").format(number);
@@ -129,6 +147,42 @@ public class ZR {
         Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
     }
 
+    public static void setCircleUserImage(final ImageView v, final String imageUrl, final String userId) {
+        setCircleUserImage(v, imageUrl);
+//        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
+        //go to user activity on click
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setTopicName(final TextView topicTv, String name, final String topicId) {
+        topicTv.setText(name);
+        clickTopic(topicTv, topicId);
+    }
+
+    public static void clickTopic(View v, final String topicId) {
+        //go to topic activity on click
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), TopicActivity.class);
+                i.putExtra(CONST.TOPIC_ID, topicId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setCircleTopicImage(final ImageView v, final String imageUrl, final String topicId) {
+        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.profile3)).into(v);
+        clickTopic(v, topicId);
+    }
+
     public static void setCircleUserImage(ImageView v, Bitmap bitmap) {
         Glide.with(v.getContext()).load(bitmap).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
     }
@@ -137,19 +191,228 @@ public class ZR {
         GlideApp.with(v.getContext()).load(imageUrl).centerCrop().placeholder(R.drawable.banner).into(v);
     }
 
-    public static void setUserName(TextView userNameTv, String name, int grand) {
-        userNameTv.setText(name);
-        if (grand == 3) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v3, 0);
-        } else if (grand == 4) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v4, 0);
-        } else if (grand == 5) {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.com_icon_grade_v5, 0);
-        } else {
-            userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
+    public static void setImage(ImageView v, @DrawableRes int imageUrl) {
+        GlideApp.with(v.getContext()).load(imageUrl).centerCrop().into(v);
     }
 
+    public static void setUserName(final TextView userNameTv, String name, int grand, final String userId) {
+        setUserName(userNameTv, name, grand);
+        //go to user activity on click
+        userNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(userNameTv.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setUserName(final TextView userNameTv, String name, int grand) {
+        userNameTv.setText(name);
+        @DrawableRes int drawable;
+        if (grand == 1) {
+            drawable = R.drawable.com_icon_grade_v1;
+        } else if (grand == 2) {
+            drawable = R.drawable.com_icon_grade_v2;
+        } else if (grand == 3) {
+            drawable = R.drawable.com_icon_grade_v3;
+        } else if (grand == 4) {
+            drawable = R.drawable.com_icon_grade_v4;
+        } else if (grand == 5) {
+            drawable = R.drawable.com_icon_grade_v5;
+        } else {
+            drawable = 0;
+        }
+        userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+    }
+
+    public static void setReportName(final TextView reportNameTv, String name, int frequency, String reportBatch, final String reportId) {
+        reportNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Logger.d("zzw", "report userId: " + reportId);
+                QueryReport report = new QueryReport();
+                report.id = reportId;
+                APIClient.apiInterface.getReportDetail(report).enqueue(new ZCallBack<ResponseModel<String>>() {
+                    @Override
+                    public void callBack(ResponseModel<String> response) {
+                        String reportUrl = response._data;
+                        Logger.d("zzw", "report Url : " + reportUrl);
+                        if (reportUrl != null) {
+                            Intent i = new Intent(reportNameTv.getContext(), WebviewActivity.class);
+                            i.putExtra(CONST.WEB_URL, reportUrl);
+                            reportNameTv.getContext().startActivity(i);
+                        }
+                    }
+                });
+            }
+        });
+
+        reportNameTv.setText(name);
+        @DrawableRes int drawable = 0;
+        if (StringUtil.isEmpty(reportBatch)) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (reportBatch.equals("0")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month0;
+                    break;
+                }
+                //季报
+                case 4: {
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (reportBatch.equals("1")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month1;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season1;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+
+        } else if (reportBatch.equals("2")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month2;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season2;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else if (reportBatch.equals("3")) {
+            //频度：0-日；1-周；2-旬；3-月；4-季；5-半年；6-年
+            switch (frequency) {
+                case 0: {
+                    drawable = R.drawable.com_formlabel_icon_day;
+                    break;
+                }
+                case 2: {
+                    drawable = R.drawable.com_formlabel_icon_xun;
+                    break;
+                }
+                case 3: {
+                    drawable = R.drawable.com_formlabel_icon_month3;
+                    break;
+                }
+                //季报
+                case 4: {
+                    drawable = R.drawable.com_formlabel_icon_season3;
+                    break;
+                }
+                case 5: {
+                    //半年
+                    drawable = R.drawable.com_formlabel_icon_halfyear;
+                    break;
+                }
+                case 6: {
+                    //年报
+                    drawable = R.drawable.com_formlabel_icon_year;
+                    break;
+                }
+            }
+        } else {
+            drawable = R.drawable.com_formlabel_icon_monthother;
+        }
+
+        reportNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+    }
 
     public static void showPersonInviteStatus(View followButton, TextView followTv, int isInvite) {
         if (isInvite == 0) {
@@ -204,14 +467,20 @@ public class ZR {
                 APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        int status = Integer.parseInt(response._data);
-                        user.isFollow = status;
-                        if (user.isFollow == 0) {
-                            ZToast.toast("取消关注");
-                        } else {
-                            ZToast.toast("关注成功");
+                        String followStatus = response._data;
+                        MyLog.d("follow Status: " + followStatus);
+                        if (StringUtil.isEmpty(response._data)) {
+                            followStatus = "0";
                         }
-                        showPersonFollowStatus(followButton, followTv, status);
+
+                        if (user.isFollow == 0) {
+                            ZToast.toast("关注成功");
+                        } else {
+                            ZToast.toast("取消关注");
+
+                        }
+                        user.isFollow = Integer.valueOf(followStatus);
+                        showPersonFollowStatus(followButton, followTv, user.isFollow);
                     }
                 });
             }
@@ -285,6 +554,52 @@ public class ZR {
             followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             followTv.setTextColor(ZR.getColor(R.color.color_999999));
             followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
+        }
+    }
+
+    /**
+     * go to question detail activity
+     *
+     * @param v
+     * @param requestId
+     */
+    public static void setRequestClickListener(View v, final String requestId) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyApplication.mCurrentActivity, QuestionActivity.class);
+                i.putExtra(CONST.QUESTION_ID, requestId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    /**
+     * go to answer detail activity
+     *
+     * @param v
+     * @param answerId
+     */
+    public static void setAnswerClickListener(View v, final String answerId) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyApplication.mCurrentActivity, AnswerActivity.class);
+                i.putExtra(CONST.ANSWER_ID, answerId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void hide(View v) {
+        if (v != null) {
+            v.setVisibility(View.GONE);
+        }
+    }
+
+    public static void show(View v) {
+        if (v != null) {
+            v.setVisibility(View.VISIBLE);
         }
     }
 

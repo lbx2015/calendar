@@ -1,14 +1,14 @@
 package com.riking.calendar.fragment;
 
-import com.riking.calendar.adapter.MyAnswersAdapter;
+import com.riking.calendar.activity.MyStateActivity;
 import com.riking.calendar.adapter.MyQuestionsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserFollowParams;
-import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.QuestResult;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZToast;
 
 import java.util.List;
@@ -18,6 +18,15 @@ import java.util.List;
  */
 
 public class MyDynamicQuestionFragment extends ZFragment<MyQuestionsAdapter> {
+
+    MyStateActivity activity;
+
+    public static MyDynamicQuestionFragment newInstance(MyStateActivity activity) {
+        MyDynamicQuestionFragment f = new MyDynamicQuestionFragment();
+        f.activity = activity;
+        return f;
+    }
+
     @Override
     public MyQuestionsAdapter getAdapter() {
         return new MyQuestionsAdapter(getContext());
@@ -33,6 +42,9 @@ public class MyDynamicQuestionFragment extends ZFragment<MyQuestionsAdapter> {
     public void loadData(final int page) {
         UserFollowParams params = new UserFollowParams();
         params.pindex = page;
+        if (!StringUtil.isEmpty(activity.userId)) {
+            params.userId = activity.userId;
+        }
         APIClient.getUserDynamicQuestions(params, new ZCallBack<ResponseModel<List<QuestResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QuestResult>> response) {

@@ -10,10 +10,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.riking.dao.TQuestionDao;
@@ -25,7 +25,7 @@ import net.riking.entity.model.TQuestionResult;
 @Repository("tQuestionDao")
 public class TQuestionDaoImpl implements TQuestionDao {
 
-	@PersistenceContext
+	@Autowired
 	private EntityManager entityManager;
 
 	@Override

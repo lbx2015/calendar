@@ -1,8 +1,5 @@
 package net.riking.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -11,26 +8,16 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.riking.config.Const;
 import net.riking.entity.model.News;
-import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class MQProduceUtil {
 	private static final Logger logger = LogManager.getLogger("MQProduceUtil");
-
-	// 默认连接用户名
-	private static final String USERNAME = ActiveMQConnection.DEFAULT_USER;
-
-	// 默认连接密码
-	private static final String PASSWORD = ActiveMQConnection.DEFAULT_PASSWORD;
-
-	// 默认连接地址
-	private static final String BROKEURL = ActiveMQConnection.DEFAULT_BROKER_URL;
 
 	// 连接工厂
 	public static ConnectionFactory connectionFactory;
@@ -75,7 +62,7 @@ public class MQProduceUtil {
 	 * @throws Exception
 	 */
 	public static void sendTextMessage(String queueName, String msg) {
-
+		
 		MQProduceUtil.init(queueName);
 		try {
 			// 发送消息
@@ -107,12 +94,10 @@ public class MQProduceUtil {
 	}
 
 	public static void main(String[] args) {
-		List<News> list = new ArrayList<News>();
 		News news = new News();
 		news.setContent("aaaaaa");
 		news.setId("weruwoieuhhh");
-		list.add(news);
-		JSONArray jsonArray = JSONArray.fromObject(list);
-		MQProduceUtil.sendTextMessage(Const.SYS_INFO_QUEUE, jsonArray.toString());
+		JSONObject jsonArray = JSONObject.fromObject(news);
+		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());
 	}
 }

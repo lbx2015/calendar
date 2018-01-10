@@ -1,0 +1,83 @@
+{
+	"table": "T_USER_FOLLOW_COLLECT",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "serialNum",
+			"alias": "序号",
+			"desc": "序号",
+			"type": "string",
+			"group": "base",
+			"hidden":"edit,preview"
+		},
+		{
+			"prop": "userName",
+			"alias": "关注人昵称/手机号",
+			"desc": "关注人昵称/手机号",
+			"type": "string",
+			"query": "1",
+			"query_order": "1",
+			"group": "base"
+		},
+		{
+			"prop": "userId",
+			"alias": "操作人id",
+			"desc": "操作人id",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+			
+		},
+		{
+			"prop": "toUserName",
+			"alias": "被关注人昵称/手机号",
+			"desc": "被关注人昵称/手机号",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "toUserId",
+			"alias": "被操作人id",
+			"desc": "被操作人id",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+			
+		},
+		{
+			"prop": "title",
+			"alias": "被关注/收藏对象标题",
+			"desc": "被关注/收藏对象标题",
+			"type": "string",
+			"group": "base"
+		},
+		{
+			"prop": "optObject",
+			"alias": "操作对象",
+			"desc": "操作对象",
+			"type": "enum",
+			"dict_key": "T_USER_FOLLOW_COLLECT.OBJECT",
+			"group": "base"
+		},
+		{
+			"prop": "optType",
+			"alias": "操作类型",
+			"desc": "操作类型",
+			"type": "enum",
+			"dict_key": "T_USER_FOLLOW_COLLECT.OPTTYPE",
+			"group": "base"
+		},
+		{
+			"prop": "createdTime",
+			"alias": "关注时间",
+			"desc": "关注时间",
+			"type": "string",
+			"group": "base"
+		}
+	]
+}
