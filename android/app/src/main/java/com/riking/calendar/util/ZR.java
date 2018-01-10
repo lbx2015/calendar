@@ -23,6 +23,7 @@ import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.QuestionActivity;
+import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.app.GlideApp;
@@ -147,7 +148,8 @@ public class ZR {
     }
 
     public static void setCircleUserImage(final ImageView v, final String imageUrl, final String userId) {
-        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
+        setCircleUserImage(v, imageUrl);
+//        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
         //go to user activity on click
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +159,28 @@ public class ZR {
                 ZGoto.to(i);
             }
         });
+    }
+
+    public static void setTopicName(final TextView topicTv, String name, final String topicId) {
+        topicTv.setText(name);
+        clickTopic(topicTv, topicId);
+    }
+
+    public static void clickTopic(View v, final String topicId) {
+        //go to topic activity on click
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), TopicActivity.class);
+                i.putExtra(CONST.TOPIC_ID, topicId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setCircleTopicImage(final ImageView v, final String imageUrl, final String topicId) {
+        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.profile3)).into(v);
+        clickTopic(v, topicId);
     }
 
     public static void setCircleUserImage(ImageView v, Bitmap bitmap) {
