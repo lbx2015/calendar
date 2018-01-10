@@ -196,6 +196,9 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
                             if (failed) {
 
                             } else {
+                                if (response._data == null) {
+                                    return;
+                                }
                                 writeComment.setText("");
                                 if (replyListAdapter.mList == null || replyListAdapter.mList.isEmpty()) {
                                     loadData(1);
@@ -205,8 +208,8 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
                                     MyLog.d("reply list adapter mlist size after : " + replyListAdapter.mList.size());
                                     replyListAdapter.notifyItemInserted(0);
 //                                replyRecyclerView.scrollToPosition(0);
-                                    Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                                 }
+                                Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -220,6 +223,8 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
                     APIClient.qACommentPub(p, new ZCallBack<ResponseModel<QAComment>>() {
                         @Override
                         public void callBack(ResponseModel<QAComment> response) {
+                            emptyLayout.setVisibility(View.GONE);
+                            mPullToLoadView.setVisibility(View.VISIBLE);
                             writeComment.setText("");
                             mAdapter.mList.add(0, response._data);
                             mAdapter.notifyItemInserted(0);

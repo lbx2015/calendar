@@ -1,5 +1,6 @@
 package com.riking.calendar.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -15,6 +17,8 @@ import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
@@ -41,24 +45,40 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
     }
 
     @Override
-    public void onBindViewHolder(RecommendedViewHolder holder, int position) {
+    public void onBindViewHolder(final RecommendedViewHolder holder, int position) {
         switch (type) {
             //topic
             case 6: {
-                Topic topicResult = topicResults.get(position);
+                final Topic topicResult = topicResults.get(position);
                 setFollowClickListener(holder, topicResult);
+                ZR.setImage(holder.iconImage, topicResult.topicUrl);
                 holder.recommendedTv.setText(topicResult.title);
+                ZR.setTopicName(holder.recommendedTv, topicResult.title, topicResult.topicId);
+//                holder.iconImage.setOnClickListener(onClickListener);
+                ZR.setCircleTopicImage(holder.iconImage, topicResult.topicUrl, topicResult.topicId);
                 break;
             }
 
             //person
             case 7: {
-                AppUserResult user = appUserResults.get(position);
-                holder.recommendedTv.setText(user.userName);
+                final AppUserResult user = appUserResults.get(position);
+                ZR.setUserName(holder.recommendedTv, user.userName, user.grade, user.userId);
                 setFollowUserClickListener(holder, user);
+                ZR.setCircleUserImage(holder.iconImage, user.photoUrl, user.userId);
+                //go to topic on click
+                holder.recommendedTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //go to topic detail on click
+                        Intent i = new Intent(holder.recommendedTv.getContext(), UserActivity.class);
+                        i.putExtra(CONST.USER_ID, user.userId);
+                        ZGoto.to(i);
+                    }
+                });
                 break;
             }
         }
+
 
         if (position == 0) {
             //adding protection

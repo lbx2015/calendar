@@ -273,8 +273,8 @@ public class APIClient {
                 }, new Realm.Transaction.OnSuccess() {
                     @Override
                     public void onSuccess() {
-                        Reminder reminder = ZDB.Instance.getRealm().where(Reminder.class).equalTo(Reminder.REMINDER_ID, r.id).findFirst();
-                        addAlarm(reminder, reminder.reminderTime);
+//                        Reminder reminder = ZDB.Instance.getRealm().where(Reminder.class).equalTo(Reminder.REMINDER_ID, r.id).findFirst();
+//                        addAlarm(reminder, reminder.reminderTime);
                     }
                 });
             }
@@ -383,7 +383,7 @@ public class APIClient {
         //下面这两个看字面意思也知道
         reminderCalendar.set(Calendar.SECOND, 0);
         reminderCalendar.set(Calendar.MILLISECOND, 0);
-        Logger.d("zzw", "提醒时间1-->" + DateUtil.getCustonFormatTime(reminderCalendar.getTimeInMillis(), "yyyy/MM/dd/HH/mm"));
+        Logger.d("zzw", "提醒时间1-->" + DateUtil.getCustonFormatTime(reminderCalendar.getTimeInMillis(), "yyyy/MM/dd/HH/mm") + r.toString());
         if (r.isRemind == 1 && r.repeatFlag == 0) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderCalendar.getTimeInMillis(), pendingIntent);
 //                        long intervalMillis = 1000;
@@ -689,6 +689,8 @@ public class APIClient {
     }
 
     public static void getMyAnswers(UserFollowParams params, ZCallBackWithFail<ResponseModel<List<QAnswerResult>>> c) {
+        //my answer number
+        params.optType = 2;
         apiInterface.getMyAnswers(params).enqueue(c);
     }
 

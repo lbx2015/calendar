@@ -34,7 +34,6 @@ import io.realm.Realm;
 
 public class EditReminderActivity extends AppCompatActivity {
     CreateReminderFragment reminderFragment;
-    String newId = DateUtil.date2String(new Date(), CONST.YYYYMMDDHHMMSSSSS);
     private String id;
     private String reportId;
     private String submitEndTime;
@@ -109,7 +108,7 @@ public class EditReminderActivity extends AppCompatActivity {
             public void execute(Realm realm) {
                 Reminder reminder;
                 if (StringUtil.isEmpty(id)) {
-                    id = newId;
+                    id = DateUtil.date2String(new Date(), CONST.YYYYMMDDHHMMSSSSS);
                     reminder = realm.createObject(Reminder.class, id);
                 } else {
                     reminder = realm.where(Reminder.class).equalTo(Reminder.REMINDER_ID, id).findFirst();
@@ -120,6 +119,7 @@ public class EditReminderActivity extends AppCompatActivity {
                 reminder.title = reminderFragment.title;
                 reminder.reportId = reportId;
                 Date reminderDate = reminderFragment.reminderTimeCalendar.getTime();
+                reminder.reminderTime = reminderDate;
                 reminder.day = dayFormat.format(reminderDate);
                 reminder.time = timeFormat.format(reminderDate);
                 Log.d("zzw", "saved day : " + reminder.day + " saved time: " + reminder.time);
@@ -131,6 +131,7 @@ public class EditReminderActivity extends AppCompatActivity {
                 reminder.userId = ZPreference.getUserId();
                 reminder.submitEndTime = submitEndTime;
                 reminder.submitStartTime = submitStartTime;
+                APIClient.addAlarm(reminder, reminderDate);
 //                APIClient.synchronousReminds(reminder, CONST.UPDATE, null);
             }
         }, new Realm.Transaction.OnSuccess() {

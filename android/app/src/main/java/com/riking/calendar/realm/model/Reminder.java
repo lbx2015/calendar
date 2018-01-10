@@ -77,4 +77,30 @@ public class Reminder extends RealmObject {
         isRemind = m.isRemind;
         clientType = m.clientType;
     }
+
+    @Override
+    public String toString() {
+        return "Reminder{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", title='" + title + '\'' +
+                ", day='" + day + '\'' +
+                ", time='" + time + '\'' +
+                ", reminderTime=" + reminderTime +
+                ", isAllDay=" + isAllDay +
+                ", aheadTime=" + aheadTime +
+                ", endTime=" + endTime +
+                ", repeatWeek='" + repeatWeek + '\'' +
+                ", repeatFlag=" + repeatFlag +
+                ", currentWeek=" + currentWeek +
+                ", deleteState=" + deleteState +
+                ", isRemind=" + isRemind +
+                ", clientType=" + clientType +
+                ", syncStatus=" + syncStatus +
+                ", requestCode=" + requestCode +
+                ", submitStartTime='" + submitStartTime + '\'' +
+                ", submitEndTime='" + submitEndTime + '\'' +
+                ", reportId='" + reportId + '\'' +
+                '}';
+    }
 }
