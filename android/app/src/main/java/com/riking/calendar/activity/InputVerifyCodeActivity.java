@@ -134,7 +134,9 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 }
                             });
 
-                            if (ZR.jumpClass != null) {
+                            if (u.isIdentify == 0) {
+                                ZGoto.to(InputEmailActivity.class);
+                            } else if (ZR.jumpClass != null) {
                                 //delete the the jump class name
                                 Class<Activity> c = (Class<Activity>) Class.forName(ZR.jumpClass);
                                 ZGoto.to(c);
@@ -152,7 +154,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
                             //kill self in order to return back.
                             finish();
-                            Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(InputVerifyCodeActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
