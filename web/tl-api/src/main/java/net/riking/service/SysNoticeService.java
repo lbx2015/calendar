@@ -1,9 +1,9 @@
 package net.riking.service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import net.riking.entity.model.SysNotice;
 import net.riking.entity.model.SysNoticeRead;
 import net.riking.entity.model.SysNoticeResult;
 
@@ -48,6 +48,6 @@ public interface SysNoticeService {
 	 * @param haveSysInfo false-没有；true-有
 	 * @param noticeIds
 	 */
-	public void batchDelete(String userId, boolean haveSysInfo, String[] noticeIds);
+	public void batchDelete(String userId, boolean haveSysInfo, Collection<String> noticeIds);
 	
 }
