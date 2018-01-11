@@ -109,6 +109,11 @@ public class CodeDef {
 		public static final String REPORT_SHIELD_ERROR_DESC = "内容含有敏感词";
 		
 		
+		// 含有敏感字
+		public static final short REPORT_TOKEN_ERROR = -979;
+
+		public static final String REPORT_TOKEN_ERROR_DESC = "请求异常！";
+		
 		
 	}
 
