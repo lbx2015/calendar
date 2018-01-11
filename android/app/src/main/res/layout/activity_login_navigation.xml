@@ -19,7 +19,6 @@
         android:background="@android:color/transparent"
         android:orientation="vertical">
 
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,34 +27,22 @@
             app:srcCompat="@drawable/login_logo" />
 
         <FrameLayout
-            android:layout_width="match_parent"
+            android:layout_width="330dp"
             android:layout_height="49dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_gravity="center"
             android:background="@drawable/rounded_login__translucent_rectangle">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:drawableLeft="@drawable/login_icon_phone"
+                android:drawablePadding="5dp"
+                android:gravity="center"
                 android:onClick="clickLoginWithPhone"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/login_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    app:srcCompat="@drawable/login_icon_phone" />
-
-                <TextView
-                    android:id="@+id/wechat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="手机登陆"
-                    android:textColor="@android:color/white"
-                    android:textSize="17sp" />
-            </LinearLayout>
+                android:text="手机登陆"
+                android:textColor="@android:color/white"
+                android:textSize="17sp" />
         </FrameLayout>
 
         <LinearLayout
