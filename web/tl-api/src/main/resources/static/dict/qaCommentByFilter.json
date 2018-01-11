@@ -90,8 +90,8 @@
 		},
 		{
 			"prop": "createdTime",
-			"alias": "评论时间",
-			"desc": "评论时间",
+			"alias": "评论时间(一分钟以内)",
+			"desc": "评论时间(一分钟以内)",
 			"type": "datetime",
 			"group": "base",
 			"query": "1",

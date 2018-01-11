@@ -1,5 +1,7 @@
 package net.riking.web.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,6 +97,11 @@ public class NewsCommentController {
 		// Page<NewsComment> modulePage = new PageImpl<NewsComment>(list, pageable,
 		// page.getTotalElements());
 		Page<NewsComment> modulePage = newsCommentService.findAll(newsComment, pageable);
+		List<NewsComment> list = modulePage.getContent();
+		for (NewsComment newsComment2 : list) {
+			i++;
+			newsComment2.setSerialNumber(i);
+		}
 		return new Resp(modulePage, CodeDef.SUCCESS);
 	}
 
