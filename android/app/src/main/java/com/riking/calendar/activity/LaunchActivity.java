@@ -1,6 +1,5 @@
 package com.riking.calendar.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.NetStateReceiver;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 
 /**
@@ -50,13 +50,16 @@ public class LaunchActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                 }
 
-                    Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
-                    startActivity(i);
-//                if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
-//                } else {
-//                    Intent i = new Intent(LaunchActivity.this, ViewPagerActivity.class);
-//                    startActivity(i);
-//                }
+
+                if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
+                    ZGoto.to(WelcomeActivity.class);
+                } else {
+                    if (ZPreference.isLogin()) {
+                        ZGoto.to(ViewPagerActivity.class);
+                    } else {
+                        ZGoto.toLoginActivity();
+                    }
+                }
 
 //                    startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
                 finish();
