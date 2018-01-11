@@ -203,13 +203,20 @@ public class AppUserDaoImpl implements AppUserDao {
 	}
 
 	@Override
-	public List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex,
+	public List<UserFollowCollect> findByFolColByUserId(UserFollowCollect userFollowCollectByParam, Integer pindex,
 			Integer pcount) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call findByFolColByUserId(?,?,?,?)";
+		String sql = "call findByFolColByUserId(?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = null;
 		List<UserFollowCollect> list = new ArrayList<UserFollowCollect>();
+		// 获取可能要查询的数据
+		String userId = userFollowCollectByParam.getUserId();
+		String userName = userFollowCollectByParam.getUserName();
+		String title = userFollowCollectByParam.getTitle();
+		Integer optType = userFollowCollectByParam.getOptType();
+		Integer optObject = userFollowCollectByParam.getOptObject();
+
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			if (StringUtils.isBlank(userId)) {
@@ -218,19 +225,35 @@ public class AppUserDaoImpl implements AppUserDao {
 			if (StringUtils.isBlank(userName)) {
 				userName = "";
 			}
+			if (StringUtils.isBlank(title)) {
+				title = "";
+			}
+			if (optType == null) {
+				optType = new Integer(-1);
+			}
+			if (optObject == null) {
+				optObject = new Integer(-1);
+			}
 			pstmt.setString(1, userId);
 			pstmt.setString(2, userName);
-			pstmt.setInt(3, pindex);
-			pstmt.setInt(4, pcount);
+			pstmt.setString(3, title);
+			pstmt.setInt(4, optType);
+			pstmt.setInt(5, optObject);
+			pstmt.setInt(6, pindex);
+			pstmt.setInt(7, pcount);
 			ResultSet rs = pstmt.executeQuery();
 			int i = 1;
 			while (rs.next()) {
 				UserFollowCollect userFollowCollect = new UserFollowCollect();
 				userFollowCollect.setSerialNum(i);
-				userFollowCollect.setUserName(rs.getString("userName") + "/" + rs.getString("phone"));
+				// userFollowCollect.setUserName(rs.getString("userName") + "/" +
+				// rs.getString("phone"));
+				userFollowCollect.setUserName(rs.getString("userName"));
 				userFollowCollect.setUserId(rs.getString("userId"));
 				if (rs.getString("toUserName") != null && rs.getString("toUserPhone") != null) {
-					userFollowCollect.setToUserName(rs.getString("toUserName") + "/" + rs.getString("toUserPhone"));
+					// userFollowCollect.setToUserName(rs.getString("toUserName") + "/" +
+					// rs.getString("toUserPhone"));
+					userFollowCollect.setToUserName(rs.getString("toUserName"));
 				}
 				userFollowCollect.setToUserId(rs.getString("toUserId"));
 				userFollowCollect.setTitle(rs.getString("title"));
@@ -248,12 +271,19 @@ public class AppUserDaoImpl implements AppUserDao {
 	}
 
 	@Override
-	public Integer countByFolColByUserId(String userId, String userName) {
+	public Integer countByFolColByUserId(UserFollowCollect userFollowCollectByParam) {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "call countFolColByUserId(?,?)";
+		String sql = "call countFolColByUserId(?,?,?,?,?)";
 		PreparedStatement pstmt = null;
 		Integer count = null;
+		// 获取可能要查询的数据
+		String userId = userFollowCollectByParam.getUserId();
+		String userName = userFollowCollectByParam.getUserName();
+		String title = userFollowCollectByParam.getTitle();
+		Integer optType = userFollowCollectByParam.getOptType();
+		Integer optObject = userFollowCollectByParam.getOptObject();
+
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			if (StringUtils.isBlank(userId)) {
@@ -262,8 +292,20 @@ public class AppUserDaoImpl implements AppUserDao {
 			if (StringUtils.isBlank(userName)) {
 				userName = "";
 			}
+			if (StringUtils.isBlank(title)) {
+				title = "";
+			}
+			if (optType == null) {
+				optType = new Integer(-1);
+			}
+			if (optObject == null) {
+				optObject = new Integer(-1);
+			}
 			pstmt.setString(1, userId);
 			pstmt.setString(2, userName);
+			pstmt.setString(3, title);
+			pstmt.setInt(4, optType);
+			pstmt.setInt(5, optObject);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				count = rs.getInt("count");

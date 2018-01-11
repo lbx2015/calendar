@@ -50,13 +50,13 @@ public class LaunchActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                 }
 
-                if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
                     Intent i = new Intent(LaunchActivity.this, WelcomeActivity.class);
                     startActivity(i);
-                } else {
-                    Intent i = new Intent(LaunchActivity.this, ViewPagerActivity.class);
-                    startActivity(i);
-                }
+//                if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
+//                } else {
+//                    Intent i = new Intent(LaunchActivity.this, ViewPagerActivity.class);
+//                    startActivity(i);
+//                }
 
 //                    startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
                 finish();

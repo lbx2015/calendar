@@ -17,8 +17,8 @@
 		},
 		{
 			"prop": "userName",
-			"alias": "关注人昵称/手机号",
-			"desc": "关注人昵称/手机号",
+			"alias": "关注人昵称",
+			"desc": "关注人昵称",
 			"type": "string",
 			"query": "1",
 			"query_order": "1",
@@ -35,8 +35,8 @@
 		},
 		{
 			"prop": "toUserName",
-			"alias": "被关注人昵称/手机号",
-			"desc": "被关注人昵称/手机号",
+			"alias": "被关注人昵称",
+			"desc": "被关注人昵称",
 			"type": "string",
 			"group": "base"
 		},

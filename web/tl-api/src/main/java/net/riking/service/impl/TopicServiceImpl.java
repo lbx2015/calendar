@@ -117,12 +117,33 @@ public class TopicServiceImpl implements TopicService {
 		if (contentFileNames.length != 0 && contentFileNames != null) {
 			copyFile(contentFileNames);
 		}
+		String[] coverFileNames = new String[] { topic.getTopicUrl() };
+		if (coverFileNames.length != 0 && coverFileNames != null) {
+			copyFile2Cover(coverFileNames);
+		}
 		topic.setContent(topic.getContent().replace("temp", "topic"));
 	}
 
 	private void copyFile(String[] fileNames) {
 		for (int i = 1; i < fileNames.length; i++) {
 			String fileName = fileNames[i].split(">")[0].replace("\"", "");
+			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TOPIC_PHOTO_PATH + fileName;
+			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
+					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			try {
+				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
+			} catch (Exception e) {
+				logger.error("文件复制异常" + e);
+				throw new RuntimeException("文件复制异常" + e);
+			}
+			FileUtils.deleteFile(oldPhotoUrl);
+		}
+	}
+
+	private void copyFile2Cover(String[] fileNames) {
+		for (int i = 0; i < fileNames.length; i++) {
+			String fileName = fileNames[i];
 			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
 					+ Const.TL_TOPIC_PHOTO_PATH + fileName;
 			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH

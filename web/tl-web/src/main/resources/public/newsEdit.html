@@ -11,6 +11,8 @@
 </head>
 
 <body class="iframeBody">
+<div class="scrollbar">
+	<div class="content">
     <div class="formbox layui-form add-formbox">
         <div class="_tmpl" data-url="edit.html" data-attr="news.json" data-bind="editOnBind" data-param=""></div>
         <div class="layui-btn-div" id="layui-btn-fixed">
@@ -18,6 +20,8 @@
             <button class="layui-btn layui-btn-primary layui-btn-small" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name));">取消</button>
         </div>
     </div>
+   </div>
+   </div>
 </body>
 <link type="include" href="/common/depjs.html" />
 <script type="text/javascript" src="{=ctx}/js/util/ystep.js"></script>
@@ -96,7 +100,7 @@
 							  ,'face' //表情
 							  ,'image' //插入图片
 							  //,'help' //帮助
-								],height: 250});
+								],height: 500});
      	 topicContent = layedit.build('content'); //建立编辑器
      	});
     }
@@ -142,6 +146,16 @@
     			 $(".layui-input-inline img").attr("alt",coverUrl);
     		 }
     		});
+    }
+    
+    //参数说明：str表示原字符串变量，flg表示要插入的字符串，sn表示要插入的位置
+    function insert_flg(str,flg,sn){
+        var newstr="";
+        for(var i=0;i<str.length;i+=sn){
+            var tmp=str.substring(i, i+sn);
+            newstr+=tmp+flg;
+        }
+        return newstr;
     }
     
     //编辑保存

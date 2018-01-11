@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.util.CONST;
@@ -22,6 +23,12 @@ import com.riking.calendar.view.ZCenterImageView;
  */
 
 public class WelcomeActivity extends AppCompatActivity {
+    int[] mResources = {
+            R.drawable.bootpage1,
+            R.drawable.bootpage2,
+            R.drawable.bootpage3,
+            R.drawable.bootpage4,
+    };
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private ZCenterImageView progress1;
@@ -29,7 +36,8 @@ public class WelcomeActivity extends AppCompatActivity {
     private ZCenterImageView progress3;
     private ZCenterImageView progress4;
     private View enterButton;
-    private View dotsLayout;
+    private View jumpButton;
+        private View dotsLayout;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -37,47 +45,43 @@ public class WelcomeActivity extends AppCompatActivity {
         public void onPageSelected(int position) {
             switch (position) {
                 case 0: {
-                    progress1.setImageDrawable(getDrawable(R.drawable.long_welcome_progress));
-                    progress2.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress3.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress4.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    enterButton.setVisibility(View.GONE);
-                    break;
-                }
-                case 1: {
-                    progress2.setImageDrawable(getDrawable(R.drawable.long_welcome_progress));
-                    progress1.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress3.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress4.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    enterButton.setVisibility(View.GONE);
-                    break;
-                }
-                case 2: {
-                    progress3.setImageDrawable(getDrawable(R.drawable.long_welcome_progress));
-                    progress2.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress1.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress4.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
+                    progress1.setImageDrawable(getDrawable(R.drawable.current_page_dot));
+                    progress2.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress3.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress4.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    jumpButton.setVisibility(View.VISIBLE);
                     enterButton.setVisibility(View.GONE);
                     dotsLayout.setVisibility(View.VISIBLE);
                     break;
                 }
+                case 1: {
+                    progress2.setImageDrawable(getDrawable(R.drawable.current_page_dot));
+                    progress1.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress3.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress4.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    jumpButton.setVisibility(View.VISIBLE);
+                    enterButton.setVisibility(View.GONE);
+                    dotsLayout.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case 2: {
+                    progress3.setImageDrawable(getDrawable(R.drawable.current_page_dot));
+                    progress2.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress1.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress4.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    enterButton.setVisibility(View.GONE);
+                    jumpButton.setVisibility(View.VISIBLE);
+                    dotsLayout.setVisibility(View.VISIBLE);
+                    break;
+                }
                 case 3: {
-                    progress4.setImageDrawable(getDrawable(R.drawable.long_welcome_progress));
-                    progress2.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress3.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
-                    progress1.setImageDrawable(getDrawable(R.drawable.short_welcome_progress));
+                    progress4.setImageDrawable(getDrawable(R.drawable.current_page_dot));
+                    progress2.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress3.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
+                    progress1.setImageDrawable(getDrawable(R.drawable.dddddd_dot));
                     enterButton.setVisibility(View.VISIBLE);
+                    jumpButton.setVisibility(View.GONE);
                     dotsLayout.setVisibility(View.GONE);
-                    enterButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(WelcomeActivity.this, ViewPagerActivity.class);
-                            startActivity(intent);
-                            //Welcome activity only need once
-                            ZPreference.put(CONST.NEED_WELCOME_ACTIVITY, false);
-                            finish(); //This closes current activity
-                        }
-                    });
                     break;
                 }
             }
@@ -95,6 +99,14 @@ public class WelcomeActivity extends AppCompatActivity {
     };
     private int[] layouts;
 
+    public void onClickEnter(final View v) {
+        Intent intent = new Intent(WelcomeActivity.this, ViewPagerActivity.class);
+        startActivity(intent);
+        //Welcome activity only need once
+        ZPreference.put(CONST.NEED_WELCOME_ACTIVITY, false);
+        finish(); //This closes current activity
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");
@@ -106,6 +118,7 @@ public class WelcomeActivity extends AppCompatActivity {
         progress4 = (ZCenterImageView) findViewById(R.id.progress4);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         enterButton = findViewById(R.id.enter_button);
+        jumpButton = findViewById(R.id.jump_button);
         dotsLayout = findViewById(R.id.layoutDots);
 
         // layouts of all welcome sliders
@@ -133,7 +146,11 @@ public class WelcomeActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = layoutInflater.inflate(layouts[position], container, false);
+//            View view = layoutInflater.inflate(layouts[position], container, false);
+            View view = layoutInflater.inflate(R.layout.welcome_slide, container, false);
+            ImageView imageView = view.findViewById(R.id.image_view);
+            imageView.setImageResource(mResources[position]);
+
             container.addView(view);
             return view;
         }

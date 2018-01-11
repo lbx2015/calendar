@@ -44,8 +44,8 @@
 		},
 		{
 			"prop": "appUserDetail.userName",
-			"alias": "用户名称",
-			"desc": "用户名称",
+			"alias": "用户昵称",
+			"desc": "用户昵称",
 			"type": "string",
 			"group": "detail",
 			"query": "1",
