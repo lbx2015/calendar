@@ -50,7 +50,6 @@ public class LaunchActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                 }
 
-
                 if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
                     ZGoto.to(WelcomeActivity.class);
                 } else {

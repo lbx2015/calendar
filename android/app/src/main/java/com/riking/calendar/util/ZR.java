@@ -603,6 +603,18 @@ public class ZR {
         }
     }
 
+    public static boolean isValidEmailSuffix(String email) {
+        if (email == null) return false;
+        String emailSuffix = email.substring(email.indexOf("@"));
+        int size = emailSufixs.length;
+        for (int i = 0; i < size; i++) {
+            if (emailSufixs[i].equals(emailSuffix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void getDensity(Activity activity) {
         float density = activity.getResources().getDisplayMetrics().density;
         if (density > 4.0f) {
