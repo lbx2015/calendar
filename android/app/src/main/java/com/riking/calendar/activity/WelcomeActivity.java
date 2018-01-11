@@ -1,7 +1,6 @@
 package com.riking.calendar.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.view.ZCenterImageView;
 
@@ -37,7 +37,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private ZCenterImageView progress4;
     private View enterButton;
     private View jumpButton;
-        private View dotsLayout;
+    private View dotsLayout;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -100,8 +100,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private int[] layouts;
 
     public void onClickEnter(final View v) {
-        Intent intent = new Intent(WelcomeActivity.this, ViewPagerActivity.class);
-        startActivity(intent);
+        ZGoto.toLoginActivity();
         //Welcome activity only need once
         ZPreference.put(CONST.NEED_WELCOME_ACTIVITY, false);
         finish(); //This closes current activity

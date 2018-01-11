@@ -6,20 +6,21 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/search"
-            android:layout_width="264dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="7dp"
+            android:layout_weight="1"
             android:background="@drawable/rounded_rectangle"
             android:gravity="left|center_vertical"
             android:orientation="horizontal">
@@ -45,19 +46,14 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/home_nav_icon_ask" />
-
         <TextView
             android:id="@+id/raise_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:drawableLeft="@drawable/home_nav_icon_ask"
+            android:drawablePadding="5dp"
+            android:paddingLeft="12dp"
             android:text="提问"
             android:textColor="@color/color_489dfff"
             android:textSize="16sp" />
