@@ -1,6 +1,5 @@
 package com.riking.calendar.fragment;
 
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -59,18 +58,6 @@ public class TopicFragment extends ZFragment<HomeAdapter> {
             p.reqTimeStamp = lastItemTime;
         }
 
-        if (mPullToLoadView != null) {
-            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mPullToLoadView != null) {
-                        mPullToLoadView.setComplete();
-                    }
-                }
-            }, 2000);
-        }
         APIClient.findHomePageData(p, new ZCallBackWithoutProgress<ResponseModel<List<TQuestionResult>>>() {
             @Override
             public void callBack(ResponseModel<List<TQuestionResult>> response) {

@@ -40,8 +40,12 @@ import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.UUID;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -108,7 +112,22 @@ public class ZR {
             // for ActivityCompat#requestPermissions for more details.
             return tManager.getDeviceId();
         }
-        return "";
+        return UUID.randomUUID().toString();
+    }
+
+    public static String getPrivateKey(String pkParams) throws UnsupportedEncodingException {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        byte[] digest = md.digest(pkParams.getBytes("utf-8"));
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < digest.length; i++) {
+//            sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
+//        }
+        return new String(digest, "utf-8");
     }
 
     @ColorInt
