@@ -33,10 +33,10 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
 		String sql = "SELECT a.id noticeId, a.title, a.content, a.data_type dataType, ";
-		sql += "CASE WHEN EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id AND t.user_id = ? ) THEN 1 END AS isRead, ";
-		sql += "a.created_time createdTime FROM t_sys_notice a WHERE a.data_type=0 and ";
-		sql += "NOT EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id and t.is_deleted = 0 AND t.user_id = ? ) ";
-		sql += "order by a.created_time desc ";
+		sql += " CASE WHEN EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id AND t.user_id = ? ) THEN 1 END AS isRead, ";
+		sql += " a.created_time createdTime FROM t_sys_notice a WHERE a.data_type=0 and (a.notice_user_id= 'ALL' or a.notice_user_id= ?) and ";
+		sql += " NOT EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id and t.is_deleted = 0 AND t.user_id = ? ) ";
+		sql += " order by a.created_time desc ";
 		PreparedStatement pstmt = null;
 		List<SysNoticeResult> list = new ArrayList<SysNoticeResult>();
 		try {
@@ -45,7 +45,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				userId = "";
 			pstmt.setString(1, userId);
 			pstmt.setString(2, userId);
-
+			pstmt.setString(3, userId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				SysNoticeResult data = new SysNoticeResult();

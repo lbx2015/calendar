@@ -1,6 +1,7 @@
 package net.riking.entity.params;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -24,7 +25,10 @@ public class SysNoticeParams extends BaseEntity {
 	private String userId;
 
 	//多个消息id，以逗号分隔
-	private String noticeIds;
+	//private String noticeIds;
+	
+	
+	private List<String> noticeIds;
 	
 	//单个消息id
 	private String noticeId;
@@ -45,11 +49,12 @@ public class SysNoticeParams extends BaseEntity {
 		this.userId = userId;
 	}
 
-	public String getNoticeIds() {
+
+	public List<String> getNoticeIds() {
 		return noticeIds;
 	}
 
-	public void setNoticeIds(String noticeIds) {
+	public void setNoticeIds(List<String> noticeIds) {
 		this.noticeIds = noticeIds;
 	}
 

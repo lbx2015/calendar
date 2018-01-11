@@ -1,5 +1,7 @@
 package net.riking.dao.repo;
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,6 +35,6 @@ public interface SysNoticeReadRepo extends JpaRepository<SysNoticeRead, String>,
 	@Transactional
 	@Modifying
 	@Query("delete from SysNoticeRead where userId = ?1 and noticeId in ?2 ")
-	void batchDelete(String userId, String[] noticeIds);
+	void batchDelete(String userId, Collection<String> noticeIds);
 	
 }
