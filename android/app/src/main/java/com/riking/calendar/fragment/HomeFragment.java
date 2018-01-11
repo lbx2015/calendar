@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
                     for (com.riking.calendar.pojo.server.Banner banner : banners) {
                         if (!StringUtil.isEmpty(banner.bannerURL)) {
                             RemoteBanner remoteBanner = new RemoteBanner(banner.bannerURL);
-                            remoteBanner.setPlaceHolder(ZR.getDrawable(R.drawable.banner));
+                            remoteBanner.setPlaceHolder(ZR.getDrawable(R.drawable.placeholder_home_banner));
                             remoteBanners.add(remoteBanner);
                         }
                     }

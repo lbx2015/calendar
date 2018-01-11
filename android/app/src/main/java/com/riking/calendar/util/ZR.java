@@ -46,6 +46,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -127,7 +129,7 @@ public class ZR {
 //        for (int i = 0; i < digest.length; i++) {
 //            sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
 //        }
-        return new String(digest, "utf-8");
+        return android.util.Base64.encodeToString(digest, android.util.Base64.DEFAULT).replaceAll("[^a-zA-Z0-9]", "");
     }
 
     @ColorInt
@@ -632,6 +634,13 @@ public class ZR {
             }
         }
         return false;
+    }
+
+    public static boolean isValidEmailFormat(String email) {
+        if (email == null) return false;
+        Pattern pattern = Pattern.compile("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,4}");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     public void getDensity(Activity activity) {

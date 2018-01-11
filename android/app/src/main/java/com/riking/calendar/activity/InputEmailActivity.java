@@ -64,6 +64,11 @@ public class InputEmailActivity extends AppCompatActivity implements TextWatcher
                     Toast.makeText(emaileditText.getContext(), "邮箱不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                if (!ZR.isValidEmailFormat(number.toString())) {
+                    ZToast.toast("邮箱格式不正确");
+                    return;
+                }
                 if (!ZR.isValidEmailSuffix(number.toString())) {
                     ZToast.toast("邮箱后缀不对");
                     return;
