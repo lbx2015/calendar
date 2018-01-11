@@ -1,5 +1,6 @@
 package net.riking.service.impl;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -60,14 +61,14 @@ public class SysNoticeServiceImpl implements SysNoticeService {
 
 	@Override
 	@Transactional
-	public void batchDelete(String userId, boolean haveSysInfo, String[] noticeIds) {
+	public void batchDelete(String userId, boolean haveSysInfo, Collection<String> noticeIds) {
 		// TODO Auto-generated method stub
 		
 		if(haveSysInfo){
 			//删除部分有系统类型的消息
 			List<String> noticeIdList = sysNoticeRepo.findIdsBySysInfo(userId);
-			String[] arr_noticeId = new String[noticeIdList.size()];
-			noticeIdList.toArray(arr_noticeId);
+//			String[] arr_noticeId = new String[noticeIdList.size()];
+//			noticeIdList.toArray(arr_noticeId);
 			
 			for(String noticeid : noticeIdList){
 				SysNoticeRead entity = new SysNoticeRead();
@@ -76,12 +77,12 @@ public class SysNoticeServiceImpl implements SysNoticeService {
 				entity.setIsDeleted(Const.IS_DELETE);//删除
 				sysNoticeReadRepo.save(entity);
 			}
-			
+			sysNoticeRepo.batchDelete(noticeIdList);
 		}
-		
-		sysNoticeReadRepo.batchDelete(userId, noticeIds);
-		sysNoticeRepo.batchDelete(userId, noticeIds);
-		
+		if(null!=noticeIds && !noticeIds.isEmpty()){
+			sysNoticeReadRepo.batchDelete(userId, noticeIds);
+			sysNoticeRepo.batchDelete(noticeIds);
+		}
 	}
 
 	

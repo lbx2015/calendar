@@ -1,6 +1,7 @@
 package com.riking.calendar.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +9,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.QuestionListAdapter;
+import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -34,6 +40,8 @@ public class QuestionActivity extends AppCompatActivity {
     QuestionListAdapter mAdapter;
     RecyclerView recyclerView;
     TopicQuestion question;
+    //set web view
+    WebView webview;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
     private int nextPage;
@@ -58,6 +66,7 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        webview = (WebView) findViewById(R.id.web_view);
         letMeAnswerTv = findViewById(R.id.let_me_answer);
         answerNumberTv = findViewById(R.id.answer_number);
         followButton = findViewById(R.id.follow_button);
@@ -65,6 +74,74 @@ public class QuestionActivity extends AppCompatActivity {
         questionTitleTv = findViewById(R.id.question_title);
         followNumberTv = findViewById(R.id.follow_numbers);
         recyclerView = findViewById(R.id.recycler_view);
+
+        WebSettings settings = webview.getSettings();
+        webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        settings.setBuiltInZoomControls(false); // 设置支持缩放
+        settings.setAllowFileAccess(true);
+        settings.setJavaScriptEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setAllowFileAccess(true);
+        settings.setAppCacheEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setSupportZoom(false);
+        settings.setLoadsImagesAutomatically(true);
+        settings.setDatabaseEnabled(true);
+        settings.setGeolocationEnabled(true);
+        settings.setAllowContentAccess(true);
+        settings.setAllowFileAccess(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setAppCacheEnabled(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webview.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                WebView.HitTestResult hit = view.getHitTestResult();
+                Logger.d("zzw", "url string: " + url + " hit type: " + hit.getType());
+
+                //open pdf in third party browsers
+                if (hit != null && (!url.endsWith("html"))) {
+                    int hitType = hit.getType();
+                    if (hitType == WebView.HitTestResult.SRC_ANCHOR_TYPE
+                            || hitType == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {// 点击超链接
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    } else if (url.startsWith("mailto:")) {
+                        //Handle mail Urls
+                        startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
+                    } else if (url.startsWith("tel:")) {
+                        //Handle telephony Urls
+                        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(url)));
+                    } else {
+                        view.loadUrl(url);
+                    }
+                } else {
+                    view.loadUrl(url);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                final Uri uri = request.getUrl();
+                if (uri.toString().startsWith("mailto:")) {
+                    //Handle mail Urls
+                    startActivity(new Intent(Intent.ACTION_SENDTO, uri));
+                } else if (uri.toString().startsWith("tel:")) {
+                    //Handle telephony Urls
+                    startActivity(new Intent(Intent.ACTION_DIAL, uri));
+                } else {
+                    //Handle Web Urls
+                    view.loadUrl(uri.toString());
+                }
+                return true;
+            }
+        });
     }
 
     private void initEvents() {
@@ -129,6 +206,12 @@ public class QuestionActivity extends AppCompatActivity {
         answerNumberTv.setText("" + question.answerNum);
         mAdapter.addAll(question.questionAnswers);
         MyLog.d("used time: " + (System.currentTimeMillis() - startTime));
+
+        if (question.content.startsWith("http")) {
+            webview.loadUrl(question.content);
+        } else {
+            webview.loadData(question.content, "text/html; charset=utf-8", "UTF-8");
+        }
     }
 
     private void updateFollowButton() {

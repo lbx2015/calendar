@@ -106,11 +106,11 @@ function answerPublish(){
 		TmplUtils.showMsgFail('请输入内容');
 	}
 	View.get(url,param,function(resp){
-		TmplUtils.showMsgSuccess('保存成功!');
+		TmplUtils.showMsgSuccess('发布成功!');
 		tmpl.refresh();
 		return resp;
 	},function(){
-		TmplUtils.showMsgFail('保存失败!');
+		TmplUtils.showMsgFail('发布失败!');
 		return false;
 	});
 	return true;
@@ -139,7 +139,6 @@ $(function (){
 	                }); //建立编辑器
 		});
 	});
-	
     $("._box").find("input[name='file']").attr("accept", "image/*");
     $(window).resize(function() {
          $(".layui-layedit").css("height",$(window).height());

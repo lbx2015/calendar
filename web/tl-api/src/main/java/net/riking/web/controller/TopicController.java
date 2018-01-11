@@ -2,8 +2,6 @@ package net.riking.web.controller;
 
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -96,12 +94,12 @@ public class TopicController {
 		}
 		topic.setIsAduit(0);
 		// topic.setTopicUrl(topic.getContent().split("alt=")[1].split(">")[0].replace("\"", ""));
-		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
-		Matcher matcher = pattern.matcher(topic.getContent());
-		while (matcher.find()) {
-			topic.setTopicUrl(matcher.group());
-			break;
-		}
+		// Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
+		// Matcher matcher = pattern.matcher(topic.getContent());
+		// while (matcher.find()) {
+		// topic.setTopicUrl(matcher.group());
+		// break;
+		// }
 		if (StringUtils.isBlank(topic.getTopicUrl())) {
 			return new Resp(null, CodeDef.ERROR);
 		}

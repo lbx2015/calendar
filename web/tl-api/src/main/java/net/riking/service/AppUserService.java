@@ -25,13 +25,13 @@ public interface AppUserService {
 
 	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName);
 
-	//public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException;
+	// public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException;
 
 	public List<AppUserResult> findUserMightKnow(String userId, String userIds, int begin, int end);
 
 	public Integer transformExpToGrade(Integer experience);
 
-	//public String getPhotoUrlPath(String photoPath);
+	// public String getPhotoUrlPath(String photoPath);
 
 	public void updatePhoneDeviceid(String userId, String phoneDeviceid);
 
@@ -54,9 +54,9 @@ public interface AppUserService {
 	void del(String id);
 
 	/** 用户关注收藏管理 */
-	List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex, Integer pcount);
+	List<UserFollowCollect> findByFolColByUserId(UserFollowCollect userFollowCollect, Integer pindex, Integer pcount);
 
 	/** 用户关注收藏管理分页计算总数 */
-	Integer countByFolColByUserId(String userId, String userName);
+	Integer countByFolColByUserId(UserFollowCollect userFollowCollect);
 	/******************** WEB END ***********/
 }

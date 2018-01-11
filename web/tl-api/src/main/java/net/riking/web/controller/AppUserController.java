@@ -138,10 +138,13 @@ public class AppUserController {
 		if (userFollowCollect.getUserId() == null) {
 			userFollowCollect.setUserId("");
 		}
-		List<UserFollowCollect> userFollowCollects = appUserService.findByFolColByUserId(userFollowCollect.getUserId(),
-				userFollowCollect.getUserName(), query.getPindex(), query.getPcount());
+		// List<UserFollowCollect> userFollowCollects =
+		// appUserService.findByFolColByUserId(userFollowCollect.getUserId(),
+		// userFollowCollect.getUserName(), query.getPindex(), query.getPcount());
+		List<UserFollowCollect> userFollowCollects = appUserService.findByFolColByUserId(userFollowCollect,
+				query.getPindex(), query.getPcount());
 		Page<UserFollowCollect> modulePage = new PageImpl<UserFollowCollect>(userFollowCollects, pageable,
-				appUserService.countByFolColByUserId(userFollowCollect.getUserId(), userFollowCollect.getUserName()));
+				appUserService.countByFolColByUserId(userFollowCollect));
 		return new Resp(modulePage);
 	}
 	// TODO 暫時注釋

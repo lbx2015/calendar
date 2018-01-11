@@ -67,13 +67,14 @@ public class SysNoticeServer {
 		
 		if(StringUtils.isBlank(sysNoticeParams.getUserId()))
 			return new AppResp(CodeDef.EMP.PARAM_EMPTY_ERROR, "userId " + CodeDef.EMP.PARAM_EMPTY_ERROR_DESC);
-		if(StringUtils.isBlank(sysNoticeParams.getNoticeIds()))
-			return new AppResp(CodeDef.EMP.PARAM_EMPTY_ERROR, "noticeIds " + CodeDef.EMP.PARAM_EMPTY_ERROR_DESC);
-		if(sysNoticeParams.getHaveSysInfo() == null)
-			return new AppResp(CodeDef.EMP.PARAM_EMPTY_ERROR, "haveSysInfo " + CodeDef.EMP.PARAM_EMPTY_ERROR_DESC);
 		
-		String[] arr_noticeId = sysNoticeParams.getNoticeIds().split(",");
-		sysNoticeService.batchDelete(sysNoticeParams.getUserId(), sysNoticeParams.getHaveSysInfo().intValue()==1?true:false, arr_noticeId);
+		if((null==sysNoticeParams.getNoticeIds()|| sysNoticeParams.getNoticeIds().isEmpty())&& sysNoticeParams.getHaveSysInfo() != 1)
+			return new AppResp(CodeDef.EMP.PARAM_EMPTY_ERROR, "noticeIds or haveSysInfo"  + CodeDef.EMP.PARAM_EMPTY_ERROR_DESC);
+//		if(sysNoticeParams.getHaveSysInfo() == null)
+//			return new AppResp(CodeDef.EMP.PARAM_EMPTY_ERROR, "haveSysInfo " + CodeDef.EMP.PARAM_EMPTY_ERROR_DESC);
+		
+//		String[] arr_noticeId = sysNoticeParams.getNoticeIds().split(",");
+		sysNoticeService.batchDelete(sysNoticeParams.getUserId(), sysNoticeParams.getHaveSysInfo().intValue()==1?true:false, sysNoticeParams.getNoticeIds());
 		return new AppResp(CodeDef.SUCCESS);
 	}
 	

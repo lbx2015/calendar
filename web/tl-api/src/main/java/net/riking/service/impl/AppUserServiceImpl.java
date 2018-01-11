@@ -54,8 +54,8 @@ public class AppUserServiceImpl implements AppUserService {
 	@Autowired
 	SysDataService sysDataService;
 
-//	@Autowired
-//	HttpServletRequest request;
+	// @Autowired
+	// HttpServletRequest request;
 
 	@Autowired
 	AppUserDao appUserDao;
@@ -109,42 +109,21 @@ public class AppUserServiceImpl implements AppUserService {
 		return appUserDetailRepo.findOne(id);
 	}
 
-	/*@Override
-	public String savePhotoFile(MultipartFile mFile, String url) throws RuntimeException {
-		// String suffix =
-		// mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf("."));
-		String fileName = UuidUtils.random() + "." + mFile.getOriginalFilename().split("\\.")[1];
-		InputStream is = null;
-		FileOutputStream fos = null;
-		try {
-			is = mFile.getInputStream();
-			String spath = new String(this.getClass().getResource("/").getPath().getBytes("iso-8859-1"), "UTF-8");
-			String path = spath + Const.TL_STATIC_PATH + url;
-			File dir = new File(path);
-			if (!dir.exists()) {
-				dir.mkdirs();
-			}
-			String photoUrl = path + fileName;
-			fos = new FileOutputStream(photoUrl);
-			int len = 0;
-			byte[] buf = new byte[1024 * 1024];
-			while ((len = is.read(buf)) > -1) {
-				fos.write(buf, 0, len);
-			}
-		} catch (Exception e) {
-			logger.error(e);
-			throw new RuntimeException(CodeDef.EMP.GENERAL_ERR + "");
-		} finally {
-			try {
-				fos.close();
-				is.close();
-			} catch (IOException e) {
-				logger.error(e);
-				throw new RuntimeException(CodeDef.EMP.GENERAL_ERR + "");
-			}
-		}
-		return fileName;
-	}*/
+	/*
+	 * @Override public String savePhotoFile(MultipartFile mFile, String url) throws
+	 * RuntimeException { // String suffix = //
+	 * mFile.getOriginalFilename().substring(mFile.getOriginalFilename().lastIndexOf(".")); String
+	 * fileName = UuidUtils.random() + "." + mFile.getOriginalFilename().split("\\.")[1];
+	 * InputStream is = null; FileOutputStream fos = null; try { is = mFile.getInputStream(); String
+	 * spath = new String(this.getClass().getResource("/").getPath().getBytes("iso-8859-1"),
+	 * "UTF-8"); String path = spath + Const.TL_STATIC_PATH + url; File dir = new File(path); if
+	 * (!dir.exists()) { dir.mkdirs(); } String photoUrl = path + fileName; fos = new
+	 * FileOutputStream(photoUrl); int len = 0; byte[] buf = new byte[1024 * 1024]; while ((len =
+	 * is.read(buf)) > -1) { fos.write(buf, 0, len); } } catch (Exception e) { logger.error(e);
+	 * throw new RuntimeException(CodeDef.EMP.GENERAL_ERR + ""); } finally { try { fos.close();
+	 * is.close(); } catch (IOException e) { logger.error(e); throw new
+	 * RuntimeException(CodeDef.EMP.GENERAL_ERR + ""); } } return fileName; }
+	 */
 
 	@Override
 	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName) {
@@ -200,14 +179,14 @@ public class AppUserServiceImpl implements AppUserService {
 	 * 
 	 * @see net.riking.service.AppUserService#getPhotoUrlPath()
 	 */
-//	@Override
-//	public String getPhotoUrlPath(String photoPath) {
-//		// 截取资源访问路径
-//		String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
-//		String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
-//		projectPath = projectPath + "/" + projectName + photoPath;
-//		return projectPath;
-//	}
+	// @Override
+	// public String getPhotoUrlPath(String photoPath) {
+	// // 截取资源访问路径
+	// String projectPath = StringUtil.getProjectPath(request.getRequestURL().toString());
+	// String projectName = sysDataService.getDict("T_APP_USER", "PRO_NAME", "PRO_NAME").getValu();
+	// projectPath = projectPath + "/" + projectName + photoPath;
+	// return projectPath;
+	// }
 
 	@Override
 	public List<AppUserResult> userFollowUser(String userId, Integer pageBegin, Integer pageCount) {
@@ -313,16 +292,16 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-	public List<UserFollowCollect> findByFolColByUserId(String userId, String userName, Integer pindex,
+	public List<UserFollowCollect> findByFolColByUserId(UserFollowCollect userFollowCollect, Integer pindex,
 			Integer pcount) {
 
-		return appUserDao.findByFolColByUserId(userId, userName, pindex, pcount);
+		return appUserDao.findByFolColByUserId(userFollowCollect, pindex, pcount);
 	}
 
 	@Override
-	public Integer countByFolColByUserId(String userId, String userName) {
+	public Integer countByFolColByUserId(UserFollowCollect userFollowCollect) {
 
-		return appUserDao.countByFolColByUserId(userId, userName);
+		return appUserDao.countByFolColByUserId(userFollowCollect);
 
 	}
 

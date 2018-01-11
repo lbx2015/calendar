@@ -40,7 +40,6 @@
         tmpl = this;
         tmpl.onFinish(function(data) {
 			if(!id){
-				alert(1);
 				//新增的时候将图片隐藏起来
 				$(".layui-input-inline img").hide();
 			}
@@ -67,6 +66,7 @@
                     callback.call(_this, data);
                     TmplUtils.editOnLoad();
                     loadRichText();
+                    loadImage();
                 }, function() {
                     TmplUtils.showMsgFail('信息获取失败');
                 });
@@ -76,6 +76,7 @@
                 callback.call(_this, data);
                 TmplUtils.editOnLoad();
                 loadRichText();
+                loadImage();
             }
         });
     }
@@ -131,7 +132,43 @@
             TmplUtils.showMsgFail('编辑失败，请确定是否上传了图片');
         });
     }
-    
+  //上传图片
+    function loadImage(){
+    	$(".layui-input-inline img").attr("id","topicUrl").attr("style","width:10%");
+    	var htmlInfo = $(".layui-input-inline img").parent().html().replace(/;/ig,"");
+    	//加上上传按钮
+    	htmlInfo+="<button type='button'  id='loadImg' > 上传图片 </button>";
+    	//加上存储input图片地址
+    	htmlInfo+="<input type='hidden' name='topicUrl'/>";
+    	$(".layui-input-inline img").parent().html(htmlInfo);
+    	//使用layui自带的组件进行上传
+    	layui.use('upload', function(){
+    		  var upload = layui.upload;
+    		  //执行实例
+    		  var uploadInst = upload.render({
+    		    elem: '#loadImg' //绑定元素
+    		    ,url: Const.apiUrl + '/commonController/upLoad' //上传接口
+    		    ,done: function(res){
+    		      //上传完毕回调
+    		      //设置图片信息
+    		      $(".layui-input-inline img").attr("src",res.data.src);
+    		      $(".layui-input-inline img").attr("alt",res.data.title);
+    		      //设置图片名称
+    		      $("input[type='hidden']").val(res.data.title);
+    		      $(".layui-input-inline img").show();
+    		    }
+    		    ,error: function(){
+    		      //请求异常回调
+    		    	TmplUtils.showMsgFail("上传图片失败");
+    		    }
+    		  });
+    		 if(!id){
+    			 if($("input[type='hidden']").val()==""){
+    				 $(".layui-input-inline img").hide();
+    			 }
+    		 }
+    		});
+    }
 </script>
 
 </html>
