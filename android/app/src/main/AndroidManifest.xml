@@ -103,7 +103,9 @@
             android:name=".activity.OrderReportActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".activity.SearchReportActivity" />
-        <activity android:name=".activity.CreateTaskActivity" />
+        <activity
+            android:name=".activity.CreateTaskActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".activity.MomentAddActivity" />
         <activity android:name=".activity.CompleteReportHistoryActivity" />
         <activity android:name=".activity.OverdueReportActivity" />
@@ -114,8 +116,7 @@
         <activity
             android:name=".activity.InputCellPhoneNumberActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity
-            android:name=".activity.InputEmailActivity" />
+        <activity android:name=".activity.InputEmailActivity" />
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />

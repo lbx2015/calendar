@@ -105,6 +105,44 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             });
 
             holder.sml.setSwipeEnable(true);
+
+
+            holder.important.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Todo todo = new Todo(r);
+                    if (todo.isImportant == 1) {
+                        todo.isImportant = 0;
+                    } else {
+                        todo.isImportant = 1;
+                    }
+                    final ArrayList<Todo> tasks = new ArrayList<>(1);
+                    tasks.add(todo);
+                    APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
+                        @Override
+                        public void callBack(ResponseModel<String> response) throws Exception {
+                            realm.executeTransaction
+                                    (new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            if (r.isImportant == 1) {
+                                                if (getItemCount() > 2) {
+                                                    notifyItemMoved(position, getItemCount() - 2);
+                                                }
+                                                holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
+                                                realm.where(Task.class).equalTo(Task.TODO_ID, r.todoId).findFirst().isImportant = 0;
+                                            } else {
+                                                holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
+                                                realm.where(Task.class).equalTo(Task.TODO_ID, r.todoId).findFirst().isImportant = 1;
+                                                notifyItemMoved(position, 0);
+                                            }
+                                        }
+                                    });
+                        }
+                    });
+                }
+            });
             //hide the last item's divider line
           /*  if (position + 1 == tasks.size()) {
                 holder.divider.setVisibility(View.GONE);
@@ -215,38 +253,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                     }
                 });
 
-                important.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Todo todo = new Todo(task);
-                        if (todo.isImportant == 1) {
-                            todo.isImportant = 0;
-                        } else {
-                            todo.isImportant = 1;
-                        }
-                        final ArrayList<Todo> tasks = new ArrayList<>(1);
-                        tasks.add(todo);
-                        APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
-                            @Override
-                            public void callBack(ResponseModel<String> response) throws Exception {
-                                realm.executeTransaction
-                                        (new Realm.Transaction() {
-                                            @Override
-                                            public void execute(Realm realm) {
-                                                if (task.isImportant == 1) {
-                                                    important.setImageDrawable(important.getResources().getDrawable(R.drawable.not_important));
-                                                    realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 0;
-                                                } else {
-                                                    important.setImageDrawable(important.getResources().getDrawable(R.drawable.important));
-                                                    realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst().isImportant = 1;
-                                                }
-                                            }
-                                        });
-                            }
-                        });
-                    }
-                });
             }
         }
     }
