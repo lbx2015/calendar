@@ -58,13 +58,13 @@ import net.riking.util.Utils;
 public class AppUserServer {
 	@Autowired
 	AppUserRepo appUserRepo;
-	
+
 	@Autowired
 	AppUserFollowRelRepo appUserFollowRelRepo;
 
 	@Autowired
 	AppUserDetailRepo appUserDetailRepo;
-	
+
 	@Autowired
 	AppUserGradeRepo appUserGradeRepo;
 
@@ -97,18 +97,17 @@ public class AppUserServer {
 	public AppResp myGrade_(@RequestBody UserParams userParams) {
 		String userId = userParams.getUserId();
 		AppUserDetail userDetail = appUserDetailRepo.findOne(userId);
-		return new AppResp(config.getAppHtmlPath() + Const.TL_USER_HTML5_PATH +"?exp="+ userDetail.getExperience()
-				+"&url="+config.getAppApiPath(), CodeDef.SUCCESS);
+		return new AppResp(config.getAppHtmlPath() + Const.TL_USER_HTML5_PATH + "?exp=" + userDetail.getExperience()
+				+ "&url=" + config.getAppApiPath(), CodeDef.SUCCESS);
 	}
-	
+
 	@ApiOperation(value = "等级分级制度", notes = "POST")
 	@RequestMapping(value = "/getGradeList", method = RequestMethod.POST)
 	public AppResp getGradeList_() {
 		List<AppUserGrade> list = appUserGradeRepo.findByIsDeleted(Const.IS_NOT_DELETE);
-		return new AppResp(list , CodeDef.SUCCESS);
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
-	
-	
+
 	@ApiOperation(value = "获取好友的好友", notes = "POST")
 	@RequestMapping(value = "/getFOAF", method = RequestMethod.POST)
 	public AppResp getFOAF_(@RequestBody UserParams userParams) {
@@ -117,38 +116,38 @@ public class AppUserServer {
 		UserFollowRel userFollowRel = null;
 		for (int i = 0; i < list.size(); i++) {
 			userFollowRel = list.get(i);
-			if(userFollowRel.getUserId().equals(userParams.getUserId())){
+			if (userFollowRel.getUserId().equals(userParams.getUserId())) {
 				set.add(userFollowRel.getToUserId());
-			}else{
+			} else {
 				set.add(userFollowRel.getUserId());
 			}
 		}
-		if(set.isEmpty()){
+		if (set.isEmpty()) {
 			return new AppResp(null, CodeDef.SUCCESS);
 		}
 		HashSet<String> set2 = new HashSet<>();
 		List<UserFollowRel> list2 = appUserFollowRelRepo.findUserIdByUserIds(set);
 		for (int i = 0; i < list2.size(); i++) {
 			userFollowRel = list2.get(i);
-			if(!set.contains(userFollowRel.getUserId()) && !userFollowRel.getUserId().equals(userParams.getUserId())){
+			if (!set.contains(userFollowRel.getUserId()) && !userFollowRel.getUserId().equals(userParams.getUserId())) {
 				set2.add(userFollowRel.getUserId());
 			}
-			if(!set.contains(userFollowRel.getToUserId()) && !userFollowRel.getToUserId().equals(userParams.getUserId())){
+			if (!set.contains(userFollowRel.getToUserId())
+					&& !userFollowRel.getToUserId().equals(userParams.getUserId())) {
 				set2.add(userFollowRel.getToUserId());
 			}
 		}
 		List<AppUserDetail> foafs = appUserDetailRepo.findAllByIds(set2);
-		foafs.forEach(e->{
-			//e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+		foafs.forEach(e -> {
+			// e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
 			e.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
 			e.setGrade();
 		});
-		foafs.forEach(e->{
+		foafs.forEach(e -> {
 			e.setExperience(null);
 		});
 		return new AppResp(foafs, CodeDef.SUCCESS);
 	}
-	
 
 	@ApiOperation(value = "得到<单个>用户信息", notes = "POST")
 	@RequestMapping(value = "/get", method = RequestMethod.POST)
@@ -163,8 +162,10 @@ public class AppUserServer {
 		// appUserResp从appUserDetail取值
 		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUserDetail, appUserResp);
 		if (null != appUserResp.getPhotoUrl()) {
-//			appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
-			appUserResp.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
+			// appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
+			// appUserResp.getPhotoUrl());
+			appUserResp
+					.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + appUserResp.getPhotoUrl());
 		}
 		// 等级
 		if (null != appUserResp.getExperience()) {
@@ -192,8 +193,10 @@ public class AppUserServer {
 		otherUserResp.setAnswerNum(answerNum);
 		otherUserResp.setFansNum(fansNum);
 		if (null != otherUserResp.getPhotoUrl()) {
-//			otherUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
-			otherUserResp.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
+			// otherUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
+			// otherUserResp.getPhotoUrl());
+			otherUserResp
+					.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + otherUserResp.getPhotoUrl());
 		}
 		// 等级
 		if (null != otherUserResp.getExperience()) {
@@ -239,6 +242,9 @@ public class AppUserServer {
 			if (null != userParams) {
 				appUserDetail = (AppUserDetail) Utils.fromObjToObjValue(userParams, appUserDetail);
 				appUserDetail.setPositionId(positionId);
+				appUserDetail.setCheckMyCollectState(userParams.getCheckMyCollectState());
+				appUserDetail.setCheckMyDynamicState(userParams.getCheckMyDynamicState());
+				appUserDetail.setCheckMyFollowState(userParams.getCheckMyFollowState());
 			}
 			try {
 				appUserDetailRepo.save(appUserDetail);
@@ -272,11 +278,11 @@ public class AppUserServer {
 	@ApiOperation(value = "上传头像", notes = "POST")
 	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
 	public AppResp upLoad(@RequestParam MultipartFile mFile, @RequestParam("userId") String userId) {
-		//String url = request.getRequestURL().toString();
+		// String url = request.getRequestURL().toString();
 		String fileName = null;
 		String folderPath = FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH);
 		try {
-//			fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
+			// fileName = appUserService.savePhotoFile(mFile, Const.TL_PHOTO_PATH);
 			fileName = FileUtils.saveMultipartFile(mFile, folderPath);
 			fileName = appUserService.updUserPhotoUrl(mFile, userId, fileName);
 		} catch (RuntimeException e) {
@@ -357,17 +363,10 @@ public class AppUserServer {
 		return new AppResp(userOperationInfo, CodeDef.SUCCESS);
 	}
 
-/*	private <T> T merge(T dbObj, T appObj) throws Exception {
-		Field[] fields = dbObj.getClass().getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			Field field = fields[i];
-			field.setAccessible(true);
-			Object val = field.get(appObj);
-			if (val != null) {
-				field.set(dbObj, val);
-			}
-		}
-		return dbObj;
-	}
-*/
+	/*
+	 * private <T> T merge(T dbObj, T appObj) throws Exception { Field[] fields =
+	 * dbObj.getClass().getDeclaredFields(); for (int i = 0; i < fields.length; i++) { Field field =
+	 * fields[i]; field.setAccessible(true); Object val = field.get(appObj); if (val != null) {
+	 * field.set(dbObj, val); } } return dbObj; }
+	 */
 }

@@ -18,7 +18,7 @@ import net.riking.util.RedisUtil;
 @Service("shieldKeywordService")
 @Transactional
 public class ShieldKeyWordServiceImpl implements ShieldKeyWordService {
-	
+
 	@Autowired
 	private ShieldKeyWordRepo shieldKeywordRepo;
 
@@ -31,7 +31,7 @@ public class ShieldKeyWordServiceImpl implements ShieldKeyWordService {
 
 	@Override
 	public void delKeyWord(List<Long> ids) {
-		ids.forEach(e->shieldKeywordRepo.delete(e));
+		ids.forEach(e -> shieldKeywordRepo.delete(e));
 		this.initKeyWord();
 	}
 
@@ -50,7 +50,7 @@ public class ShieldKeyWordServiceImpl implements ShieldKeyWordService {
 	@Override
 	public String filterKeyWord(String target) {
 		Set<String> set = RedisUtil.getInstall().getSet(Const.SHIELD_KEY_WORD);
-		set.forEach(e->target.replace(e, "***"));
+		set.forEach(e -> target.replace(e, "***"));
 		return target;
 	}
 
@@ -59,12 +59,22 @@ public class ShieldKeyWordServiceImpl implements ShieldKeyWordService {
 	public boolean checkKeyWord(String target) {
 		Set<String> set = RedisUtil.getInstall().getSet(Const.SHIELD_KEY_WORD);
 		Iterator<String> iterator = set.iterator();
-		while(iterator.hasNext()){
-			if(target.contains(iterator.next())){
+		while (iterator.hasNext()) {
+			if (target.contains(iterator.next())) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void addMoreKeyWord(List<ShieldKeyWord> keyWords) {
+		// 清空某张表的数据
+		shieldKeywordRepo.deleteAll();
+		// 导入数据
+		shieldKeywordRepo.save(keyWords);
+		// 加载到redis中
+		this.initKeyWord();
 	}
 
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>屏蔽词</title>
+<title>屏蔽关键词</title>
 <link type="include" href="/common/depcss.html" />
 </head>
 
@@ -11,6 +11,10 @@
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
+				<button class="layui-btn layui-btn-small layui-btn-primary" id="import-data">
+						<i class="layui-icon">&#xe608;</i>
+						批量导入
+					</button>
 				<button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
 					<i class="layui-icon">&#xe608;</i>
 					添加
@@ -19,6 +23,7 @@
 					<i class="layui-icon">&#xe640;</i>
 					批量删除
 				</button>
+				
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html" data-attr="shieldKeyWord.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
@@ -37,6 +42,9 @@
 <link type="include" href="/common/depjs.html" />
 <script>
 	$(function() {
+		$("#import-data").click(function() {
+			addMore();
+		});
 		$("#add-data").click(function() {
 			var url = "shieldKeyWordEdit.html";
 			var title = "添加数据";
@@ -218,5 +226,10 @@
 
 		});
 	}
+	function addMore(){
+		var url = "shieldKeysAddMore.html";
+        var title = "批量添加";
+        View.openDialog(url, title);
+    }
 </script>
 </html>
