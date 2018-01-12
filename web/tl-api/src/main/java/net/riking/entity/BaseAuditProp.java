@@ -4,12 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import net.riking.core.annos.Comment;
 
@@ -30,19 +26,14 @@ public class BaseAuditProp extends BaseEntity {
 	@Column(name = "modified_by")
 	private String modifiedBy;
 
-	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@Comment("创建时间")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
-	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
 	@Comment("修改时间")
-	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@org.hibernate.annotations.UpdateTimestamp
 	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date modifiedTime;

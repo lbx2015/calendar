@@ -8,6 +8,7 @@ package net.riking.entity.EO;
 public class EmailSuffixEO {
 	private String emailSuffix;
 
+	// 是否启用
 	private String enabled;
 
 	private String remark;// 备注

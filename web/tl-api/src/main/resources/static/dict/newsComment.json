@@ -76,7 +76,7 @@
 			"alias": "评论内容",
 			"desc": "评论内容",
 			"type": "text",
-			"edit_block": "2",
+			"edit_block": "1",
 			"group": "base",
 			"hidden": "table"
 		},

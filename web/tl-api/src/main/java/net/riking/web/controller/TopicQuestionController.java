@@ -24,12 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
-import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.EnumCustom;
 import net.riking.core.entity.MultipleChoiceCustom;
 import net.riking.core.entity.PageQuery;
@@ -43,8 +41,6 @@ import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
-import net.riking.entity.ApiResp;
-import net.riking.entity.Data;
 import net.riking.entity.VerifyParamModel;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.QuestionAnswer;
@@ -71,7 +67,7 @@ public class TopicQuestionController {
 
 	@Autowired
 	TopicRelRepo topicRelRepo;
-	
+
 	@Autowired
 	TopicRepo topicRepo;
 
@@ -89,7 +85,7 @@ public class TopicQuestionController {
 
 	@Autowired
 	AppUserFollowRelRepo userFollowRelRepo;
-	
+
 	@Autowired
 	AppUserDetailRepo userDetailRepo;
 
@@ -98,27 +94,23 @@ public class TopicQuestionController {
 
 	@Autowired
 	AppUserService appUserService;
-	
-/*	@AuthPass
-	@ApiOperation(value = "提问/回答上传图片到临时路径", notes = "POST")
-	@RequestMapping(value = "/upLoad", method = RequestMethod.POST)
-	public ApiResp upLoad(@RequestParam("file") MultipartFile mFile) {
-		String fileName = null;
-		try {
-			fileName = appUserService.savePhotoFile(mFile, Const.TL_TEMP_PHOTO_PATH);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) {
-			}
-		}
-		// Data data = new Data(
-		// StringUtil.getProjectPath(request.getRequestURL().toString()) + Const.TL_TEMP_PHOTO_PATH
-		// + fileName,
-		// fileName);
-		Data data = new Data(appUserService.getPhotoUrlPath(Const.TL_TEMP_PHOTO_PATH) + fileName, fileName);
-		return new ApiResp(data, (short) 0);
 
-	}*/
+	/*
+	 * @AuthPass
+	 * 
+	 * @ApiOperation(value = "提问/回答上传图片到临时路径", notes = "POST")
+	 * 
+	 * @RequestMapping(value = "/upLoad", method = RequestMethod.POST) public ApiResp
+	 * upLoad(@RequestParam("file") MultipartFile mFile) { String fileName = null; try { fileName =
+	 * appUserService.savePhotoFile(mFile, Const.TL_TEMP_PHOTO_PATH); } catch (RuntimeException e) {
+	 * // TODO: handle exception if (e.getMessage().equals(CodeDef.EMP.GENERAL_ERR + "")) { } } //
+	 * Data data = new Data( // StringUtil.getProjectPath(request.getRequestURL().toString()) +
+	 * Const.TL_TEMP_PHOTO_PATH // + fileName, // fileName); Data data = new
+	 * Data(appUserService.getPhotoUrlPath(Const.TL_TEMP_PHOTO_PATH) + fileName, fileName); return
+	 * new ApiResp(data, (short) 0);
+	 * 
+	 * }
+	 */
 
 	@RequestMapping(value = "/questionSave", method = RequestMethod.GET)
 	public Resp questionSave_(@RequestParam HashMap<String, Object> params) {
@@ -147,6 +139,9 @@ public class TopicQuestionController {
 		topicQuestion.setModifiedBy(topicQuestion.getUserId());
 		topicQuestion.setIsAduit(0);
 		topicQuestion.setContent(topicQuestion.getContent().replace("temp", "question"));
+		// 新增加载内容图片时访问不到默认显示的图片
+		topicQuestion.setContent(
+				topicQuestion.getContent().replace("<img", "<img onerror=\"this.src='images/img_default.jpg'\" "));
 		topicQuestionRepo.save(topicQuestion);
 
 		return new Resp(topicQuestion, CodeDef.SUCCESS);
@@ -291,7 +286,7 @@ public class TopicQuestionController {
 		}
 
 	}
-	
+
 	@RequestMapping(value = "/getTopicList", method = RequestMethod.GET)
 	public Resp getTopicList(@RequestParam(value = "prop", required = false) String prop) throws Exception {
 		List<Topic> list = topicRepo.findAllByIsDelete();
@@ -306,18 +301,18 @@ public class TopicQuestionController {
 		}
 		return new Resp(multipleChoiceCustoms, CodeDef.SUCCESS);
 	}
-	
+
 	@RequestMapping(value = "/getCreatedUser", method = RequestMethod.GET)
 	public Resp getTopicDict(@RequestParam(value = "prop", required = false) String prop,
 			@RequestParam(value = "keyword", required = false) String keyword) {
 		List<EnumCustom> enumKeyValues = new ArrayList<EnumCustom>();
 		List<AppUserDetail> list = userDetailRepo.findAll();
 		for (AppUserDetail dict : list) {
-				EnumCustom enumCustom = new EnumCustom();
-				enumCustom.setKey(dict.getId());
-				enumCustom.setValue(dict.getUserName());
-				enumCustom.setProp(prop);
-				enumKeyValues.add(enumCustom);
+			EnumCustom enumCustom = new EnumCustom();
+			enumCustom.setKey(dict.getId());
+			enumCustom.setValue(dict.getUserName());
+			enumCustom.setProp(prop);
+			enumKeyValues.add(enumCustom);
 		}
 		return new Resp(enumKeyValues);
 	}
