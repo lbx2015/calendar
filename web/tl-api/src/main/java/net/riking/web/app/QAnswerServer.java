@@ -61,7 +61,7 @@ public class QAnswerServer {
 
 	@Autowired
 	QuestionAnswerRepo questionAnswerRepo;
-
+	
 	@Autowired
 	NewsCommentRepo newsCommentRepo;
 
@@ -255,10 +255,14 @@ public class QAnswerServer {
 	@ApiOperation(value = "问题回答评论列表", notes = "POST")
 	@RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
 	public AppResp qACommentList(@RequestBody QAnswerParams qAnswerParams) {
-		// 返回到前台的问题回答列表
-		List<QAComment> questionAnswerList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId(),
+		
+		QuestionAnswer questionAnswer = questionAnswerRepo.findOne(qAnswerParams.getQuestAnswerId());
+		
+		// 返回到前台的问题回答  品论列表
+		List<QAComment> qACommentList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId(),
 				qAnswerParams.getUserId(), new PageRequest(0, 30));
-		for (QAComment qAComment : questionAnswerList) {
+		
+		for (QAComment qAComment : qACommentList) {
 			if (null != qAComment.getPhotoUrl()) {
 //				qAComment.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + qAComment.getPhotoUrl());
 				qAComment.setPhotoUrl(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + qAComment.getPhotoUrl());
@@ -287,7 +291,7 @@ public class QAnswerServer {
 			agreeNum = qACAgreeRelRepo.agreeCount(qAComment.getId(), Const.OBJ_OPT_GREE);// 点赞
 			qAComment.setAgreeNumber(agreeNum);
 		}
-
-		return new AppResp(questionAnswerList, CodeDef.SUCCESS);
+		questionAnswer.setQaCommentList(qACommentList);
+		return new AppResp(qACommentList, CodeDef.SUCCESS);
 	}
 }
