@@ -13,6 +13,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,8 +41,14 @@ import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -97,6 +104,7 @@ public class ZR {
     }
 
     public static String getDeviceId() {
+        if (MyApplication.mCurrentActivity == null) return UUID.randomUUID().toString();
         TelephonyManager tManager = (TelephonyManager) MyApplication.mCurrentActivity.getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(MyApplication.mCurrentActivity, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -108,7 +116,22 @@ public class ZR {
             // for ActivityCompat#requestPermissions for more details.
             return tManager.getDeviceId();
         }
-        return "";
+        return UUID.randomUUID().toString();
+    }
+
+    public static String getPrivateKey(String pkParams) throws UnsupportedEncodingException {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        byte[] digest = md.digest(pkParams.getBytes("utf-8"));
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < digest.length; i++) {
+//            sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
+//        }
+        return android.util.Base64.encodeToString(digest, android.util.Base64.DEFAULT).replaceAll("[^a-zA-Z0-9]", "");
     }
 
     @ColorInt
@@ -601,6 +624,25 @@ public class ZR {
         if (v != null) {
             v.setVisibility(View.VISIBLE);
         }
+    }
+
+    public static boolean isValidEmailSuffix(String email) {
+        if (email == null) return false;
+        String emailSuffix = email.substring(email.indexOf("@"));
+        int size = emailSufixs.length;
+        for (int i = 0; i < size; i++) {
+            if (emailSufixs[i].equals(emailSuffix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isValidEmailFormat(String email) {
+        if (email == null) return false;
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     public void getDensity(Activity activity) {

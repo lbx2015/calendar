@@ -122,6 +122,8 @@ public class TopicServiceImpl implements TopicService {
 			copyFile2Cover(coverFileNames);
 		}
 		topic.setContent(topic.getContent().replace("temp", "topic"));
+		// 新增加载内容图片时访问不到默认显示的图片
+		topic.setContent(topic.getContent().replace("<img", "<img onerror=\"this.src='images/img_default.jpg'\" "));
 	}
 
 	private void copyFile(String[] fileNames) {

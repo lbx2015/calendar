@@ -29,6 +29,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
@@ -59,7 +60,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     View sexRelativeLayout;
     AppUserResp user;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    View moreUserInfoView;
 
     View introductionRelative;
 
@@ -67,6 +67,14 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
     public void clickBack(final View view) {
         onBackPressed();
+    }
+
+    protected void onRestart() {
+        super.onRestart();
+        if (!ZPreference.isLogin()) {
+            ZGoto.toLoginActivity();
+            finish();
+        }
     }
 
     @Override
@@ -127,14 +135,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
     private void initEvents() {
         userNameRelativeLayout.setOnClickListener(this);
-        moreUserInfoView = findViewById(R.id.more_user_info_relative_layout);
-        moreUserInfoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(UserInfoActivity.this, MoreUserInfoActivity.class));
-            }
-        });
-
         sexRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

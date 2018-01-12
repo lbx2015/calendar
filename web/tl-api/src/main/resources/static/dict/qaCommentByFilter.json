@@ -1,0 +1,52 @@
+{
+	"table": "t_qa_comment",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "userName",
+			"alias": "评论人",
+			"desc": "评论人",
+			"type": "string",
+			"group": "base",
+			"query": "1",
+			"query_order": "1",
+			"editable":"2"
+		},
+		{
+			"prop": "isAduit",
+			"alias": "审核状态",
+			"desc": "审核状态",
+			"type": "enum",
+			"dict_key": "T_REPORT.ISADUIT",
+			"group": "base",
+			"query": "1",
+			"query_order": "2",
+			"hidden": "edit"
+		},
+		{
+			"prop": "startTime",
+			"alias": "开始时间",
+			"desc": "评论时间",
+			"type": "datetime",
+			"group": "base",
+			"query": "1",
+			"query_order": "3",
+			"hidden": "edit,preview"
+		},
+		{
+			"prop": "endTime",
+			"alias": "结束时间",
+			"desc": "评论时间",
+			"type": "datetime",
+			"group": "base",
+			"query": "1",
+			"query_order": "3",
+			"hidden": "edit,preview"
+		}
+	]
+}

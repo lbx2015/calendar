@@ -22,7 +22,8 @@ public class ZPreference {
     }
 
     public static boolean isLogin() {
-        return ZPreference.pref.getBoolean(CONST.IS_LOGIN, false);
+        AppUserResp resp = getCurrentLoginUser();
+        return resp != null && resp.isIdentify == 1 && ZPreference.pref.getBoolean(CONST.IS_LOGIN, false);
     }
 
     public static void remove(String key) {
@@ -56,7 +57,7 @@ public class ZPreference {
         e.putString(CONST.USER_NAME, u.userName);
         e.putString(CONST.USER_EMAIL, u.email);
         e.putString(CONST.PHONE_NUMBER, u.phone);
-        e.putInt(CONST.USER_SEX,u.sex);
+        e.putInt(CONST.USER_SEX, u.sex);
         e.putString(CONST.USER_REAL_NAME, u.realName);
         e.putString(CONST.USER_IMAGE_URL, u.photoUrl);
         e.putString(CONST.USER_EMAIL, u.email);

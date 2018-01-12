@@ -20,6 +20,7 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.GlideUtil;
 import com.riking.calendar.util.ZDB;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 
 import java.io.File;
@@ -94,6 +95,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         .deleteRealmIfMigrationNeeded();
                 builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);
                 Realm.setDefaultConfiguration(builder.build());
+                ZGoto.toLoginActivity();
                 finish();
                 break;
             }

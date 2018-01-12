@@ -37,8 +37,7 @@ public class AppUserDetail extends BaseEntity {
 		super();
 	}
 
-	public AppUserDetail(String id, String userName, String descript,
-			Integer experience, String photoUrl) {
+	public AppUserDetail(String id, String userName, String descript, Integer experience, String photoUrl) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -54,11 +53,11 @@ public class AppUserDetail extends BaseEntity {
 	@Comment("pk 同用户登录表t_app_user的id一致")
 	@JsonProperty("userId")
 	private String id;
-	
+
 	@Comment("真实姓名")
 	@Column(name = "real_name", length = 32)
 	private String realName;
-	
+
 	@Comment("用户昵称")
 	@Column(name = "user_name", length = 32, nullable = false)
 	private String userName;
@@ -127,6 +126,24 @@ public class AppUserDetail extends BaseEntity {
 	@Column(name = "is_guide")
 	private Integer isGuide;
 
+	// 允许查看我的动态
+	@Comment("允许查看我的动态: 0-不可以；1-可以查看")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "check_MyDynamicState")
+	private Integer checkMyDynamicState;
+
+	// 查看我的关注
+	@Comment("允许查看我的关注: 0-不可以；1-可以查看")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "check_MyFollowState")
+	private Integer checkMyFollowState;
+
+	// 查看我的收藏
+	@Comment("允许查看我的关注: 0-不可以；1-可以查看")
+	@org.hibernate.annotations.ColumnDefault("1")
+	@Column(name = "check_MyCollectState")
+	private Integer checkMyCollectState;
+
 	@Transient
 	@Comment("我的等级")
 	private Integer grade;
@@ -154,18 +171,18 @@ public class AppUserDetail extends BaseEntity {
 	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
-	
+
 	@SuppressWarnings("static-access")
 	public void setGrade() {
 		List<AppUserGrade> list = RedisUtil.getInstall().getList(AppUserGrade.class.getName().toUpperCase());
-		list.forEach(e->{
-			if(e.getMaxExp()>=this.getExperience() && e.getMinExp()<= this.getExperience()){
+		list.forEach(e -> {
+			if (e.getMaxExp() >= this.getExperience() && e.getMinExp() <= this.getExperience()) {
 				this.setGrade(e.getGrade());
 				return;
 			}
 		});
 	}
-	
+
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -318,5 +335,29 @@ public class AppUserDetail extends BaseEntity {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
+	public Integer getCheckMyDynamicState() {
+		return checkMyDynamicState;
+	}
+
+	public void setCheckMyDynamicState(Integer checkMyDynamicState) {
+		this.checkMyDynamicState = checkMyDynamicState;
+	}
+
+	public Integer getCheckMyFollowState() {
+		return checkMyFollowState;
+	}
+
+	public void setCheckMyFollowState(Integer checkMyFollowState) {
+		this.checkMyFollowState = checkMyFollowState;
+	}
+
+	public Integer getCheckMyCollectState() {
+		return checkMyCollectState;
+	}
+
+	public void setCheckMyCollectState(Integer checkMyCollectState) {
+		this.checkMyCollectState = checkMyCollectState;
+	}
+
 }

@@ -21,6 +21,13 @@
             "verify":"required"
 		},
 		{
+			"prop": "companyName",
+			"alias": "公司名称 ",
+			"group":"base",
+			"type": "string",
+            "verify":"required"
+		},
+		{
 			"prop": "remark",
 			"alias": "备注",
 			"group":"base",

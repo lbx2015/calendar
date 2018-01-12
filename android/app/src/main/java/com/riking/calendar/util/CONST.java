@@ -82,6 +82,7 @@ public class CONST {
     public static final int VERIFY_EMAIL = 1112;
     public static final String ACTIVITY_NAME = "ACTIVITY_NAME";
     public static final String QUESTION_TITLE = "QUESTION_TITLE";
+    public static final String LOGINING = "LOGINING";
 
     //滚动事件
     public enum ScrollDirection {

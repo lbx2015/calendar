@@ -17,7 +17,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 import net.riking.config.Config;
-import net.riking.config.Const;
 import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.service.MQReceiveService;
@@ -33,11 +32,10 @@ import net.riking.util.TimerManager;
 
 @Component
 public class StartupListener implements ServletContextListener {
-	private static final Logger logger = LogManager
-			.getLogger(StartupListener.class);
+	private static final Logger logger = LogManager.getLogger(StartupListener.class);
 
-//	@Autowired
-//	WorkflowMgr workflowMgr;
+	// @Autowired
+	// WorkflowMgr workflowMgr;
 
 	@Autowired
 	Config config;
@@ -79,8 +77,7 @@ public class StartupListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 
 		logger.info("===== spring bean obejct begin loading ======== ");
-		WebApplicationContext wac = WebApplicationContextUtils
-				.getWebApplicationContext(event.getServletContext());
+		WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
 		SpringBeanUtil.getInstance().setWac(wac);
 		logger.info("===== spring bean obejct load complete ======== ");
 
@@ -93,14 +90,13 @@ public class StartupListener implements ServletContextListener {
 		shieldKeyWordService.initKeyWord();
 
 		timerManager.init();
-		mQReceiveService.init(Const.SYS_INFO_QUEUE, mqSysInfoListener);// 初始化mq接收信息系统通知队列
-		mQReceiveService.init(Const.SYS_MES_QUEUE, mqSysMesListener);// 初始化mq接收信息系统消息队列
-		mQReceiveService.init(Const.SYS_OPT_QUEUE, mqSysOptListener);// 初始化mq接收信息系统操作队列
+		// mQReceiveService.init(Const.SYS_INFO_QUEUE, mqSysInfoListener);// 初始化mq接收信息系统通知队列
+		// mQReceiveService.init(Const.SYS_MES_QUEUE, mqSysMesListener);// 初始化mq接收信息系统消息队列
+		// mQReceiveService.init(Const.SYS_OPT_QUEUE, mqSysOptListener);// 初始化mq接收信息系统操作队列
 	}
 
 	/*
-	 * private void initWorkflow(ServletContextEvent event) throws
-	 * InterruptedException {
+	 * private void initWorkflow(ServletContextEvent event) throws InterruptedException {
 	 * 
 	 * }
 	 */
@@ -108,8 +104,7 @@ public class StartupListener implements ServletContextListener {
 	/**
 	 * Shutdown servlet context (currently a no-op method).
 	 *
-	 * @param servletContextEvent
-	 *            The servlet context event
+	 * @param servletContextEvent The servlet context event
 	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
@@ -124,12 +119,9 @@ public class StartupListener implements ServletContextListener {
 	private void shutDowncleanUpThreadAndDeregisterJDBCDriver() {
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
-			logger.info(
-					"Shut-down of AbandonedConnectionCleanupThread successful");
+			logger.info("Shut-down of AbandonedConnectionCleanupThread successful");
 		} catch (Throwable t) {
-			logger.error(
-					"Exception occurred while shut-down of AbandonedConnectionCleanupThread",
-					t);
+			logger.error("Exception occurred while shut-down of AbandonedConnectionCleanupThread", t);
 		}
 
 		// This manually deregisters JDBC driver, which prevents Tomcat 7 from
@@ -141,8 +133,7 @@ public class StartupListener implements ServletContextListener {
 				java.sql.DriverManager.deregisterDriver(driver);
 				logger.info("JDBC driver de-registered successfully");
 			} catch (Throwable t) {
-				logger.error("Exception occured while deristering jdbc driver",
-						t);
+				logger.error("Exception occured while deristering jdbc driver", t);
 			}
 		}
 		try {

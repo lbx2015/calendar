@@ -12,6 +12,7 @@ import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.Email;
 import net.riking.entity.model.UserFollowCollect;
+import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.OtherUserResp;
 
 public interface AppUserService {
@@ -22,6 +23,8 @@ public interface AppUserService {
 	public AppUser register(AppUser user, AppUserDetail detail);
 
 	public AppUserDetail findDetailByOne(String id);
+	
+	public String updateEmailAndCompany(UserParams userParams);
 
 	public String updUserPhotoUrl(MultipartFile mFile, String userId, String fileName);
 

@@ -1,9 +1,13 @@
 package net.riking.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -181,9 +185,32 @@ public class QACommentServiceImpl implements QACommentService {
 				List<Predicate> predicates = new ArrayList<Predicate>();
 				// 默认查询条件
 				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
-				// 获取回答人
-				if (qaComment.getQuestionAnswerId() != null) {
-					predicates.add(cb.equal(root.<String> get("questionAnswerId"), qaComment.getQuestionAnswerId()));
+				// 添加审核状态的条件判断
+				if (qaComment.getIsAduit() != null) {
+					predicates.add(cb.equal(root.<String> get("isAduit"), qaComment.getIsAduit()));
+				}
+				// 获取评论人所有的id
+				if (qaComment.getUserName() != null) {
+					Set<String> idSet = appUserRepo.getUserIdsByUserName(qaComment.getUserName());
+					In<String> in = cb.in(root.get("userId"));
+					if (idSet.size() != 0) {
+						for (String id : idSet) {
+							in.value(id);
+						}
+					} else {
+						in.value("");
+					}
+					predicates.add(in);
+				}
+				// 获取时间查询
+				if(qaComment.getStartTime()!=null || qaComment.getEndTime()!=null){
+					if (qaComment.getEndTime() == null) {
+						predicates.add(cb.greaterThanOrEqualTo(root.get("createdTime"), qaComment.getStartTime()));
+					} else if (qaComment.getStartTime() == null) {
+						predicates.add(cb.lessThanOrEqualTo(root.get("createdTime"),qaComment.getEndTime()));
+					} else {
+						predicates.add(cb.between(root.get("createdTime"), qaComment.getStartTime(), qaComment.getEndTime()));
+					}
 				}
 				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
 			}

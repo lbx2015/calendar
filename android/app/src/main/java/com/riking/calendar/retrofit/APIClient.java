@@ -77,8 +77,10 @@ import com.riking.calendar.util.GsonStringConverterFactory;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZDB;
 import com.riking.calendar.util.ZPreference;
+import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.convert.DateTypeDeserializer;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,8 +93,11 @@ import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
@@ -114,7 +119,23 @@ public class APIClient {
             return retrofit;
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        String pkParam = System.currentTimeMillis() + ZR.getDeviceId();
+                        Request original = chain.request();
+                        Request request = original.newBuilder()
+                                .header("pkParams", pkParam)
+                                .header("token", ZR.getPrivateKey(pkParam))
+                                .method(original.method(), original.body())
+                                .build();
+                        return chain.proceed(request);
+                    }
+                })
+                .addInterceptor(interceptor).build();
+
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Date.class, new DateTypeDeserializer());
         gsonBuilder.setExclusionStrategies(new AnnotationExclusionStrategy());
@@ -773,7 +794,7 @@ public class APIClient {
         apiInterface.getMyCollectNews(params).enqueue(c);
     }
 
-    public static void sendEmailVerifyCode(UserParams params, ZCallBack<ResponseModel<String>> c) {
+    public static void sendEmailVerifyCode(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.sendEmailVerifyCode(params).enqueue(c);
     }
 

@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -90,7 +91,16 @@ public class QAComment extends BaseAuditProp {
 	// 问题回答评论的回复list
 	@Transient
 	@JsonProperty("qacReplyList")
-	List<QACReply> qacReplyList;
+	private List<QACReply> qacReplyList;
+	
+	@Transient
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date startTime;
+	
+	@Transient
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date endTime;
+	
 
 	/* web end */
 	public QAComment() {
@@ -241,4 +251,22 @@ public class QAComment extends BaseAuditProp {
 		this.isAduitNum = isAduitNum;
 	}
 
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	
+	
 }

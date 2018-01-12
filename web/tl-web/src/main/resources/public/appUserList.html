@@ -141,7 +141,8 @@
 							var url = obj.item.prefixPhotoURL+ photoName;
 							obj.html = "";
 							obj.html +=start;
-							obj.html += "<img src='"+url+"' style='width: 28px;height: 28px;' alt='"+photoName+"'/>";
+							var defaultUrl ="this.src="+"\'"+"images/user_default.jpg"+"\'";
+							obj.html += "<img onerror="+defaultUrl+" src='"+url+"' style='width: 28px;height: 28px;' alt='"+photoName+"'/>";
 							obj.html +=end;
 							
 						}

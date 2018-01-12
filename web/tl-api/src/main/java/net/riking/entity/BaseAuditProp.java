@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -32,17 +30,14 @@ public class BaseAuditProp extends BaseEntity {
 
 	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
 	@Comment("创建时间")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
-	@MyDateFormat(pattern = "yyyyMMddHHmmssSSS")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(name = "created_time", insertable = false, updatable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date createdTime;
 
-	@Comment("修改时间")
 	@JsonFormat(pattern = "yyyyMMddHHmmssSSS")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	@Comment("修改时间")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@org.hibernate.annotations.UpdateTimestamp
 	@Column(name = "modified_time", insertable = false, nullable = false, columnDefinition = "datetime default now()")
 	private Date modifiedTime;

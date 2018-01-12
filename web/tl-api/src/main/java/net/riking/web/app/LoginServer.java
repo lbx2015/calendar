@@ -210,11 +210,15 @@ public class LoginServer {
 		userResp.setPhoneDeviceid(user.getDetail().getPhoneDeviceId());
 		userResp.setIntegral(user.getDetail().getIntegral());
 		userResp.setExperience(user.getDetail().getExperience());
+		userResp.setCheckMyCollectState(detail.getCheckMyCollectState());
+		userResp.setCheckMyDynamicState(detail.getCheckMyDynamicState());
+		userResp.setCheckMyFollowState(detail.getCheckMyFollowState());
 		if (StringUtils.isNotBlank(user.getDetail().getPhotoUrl())) {
 			// 截取资源访问路径
 			if (null != user.getDetail().getPhotoUrl()) {
-//				userResp.setPhotoUrl(
-//						appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + user.getDetail().getPhotoUrl());
+				// userResp.setPhotoUrl(
+				// appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
+				// user.getDetail().getPhotoUrl());
 				userResp.setPhotoUrl(
 						FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()) + user.getDetail().getPhotoUrl());
 			}

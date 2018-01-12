@@ -25,14 +25,17 @@ import net.riking.core.utils.UuidUtils;
 import net.riking.dao.AppUserDao;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
+import net.riking.dao.repo.EmailSuffixRepo;
 import net.riking.dao.repo.UserLogRstHisRepo;
 import net.riking.entity.VO.AppUserVO;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.UserFollowCollect;
 import net.riking.entity.model.UserLogRstHis;
+import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SysDataService;
@@ -61,6 +64,9 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	UserLogRstHisRepo userLogRstHisRepo;
+	
+	@Autowired
+	EmailSuffixRepo emailSuffixRepo;
 
 	public AppUser findByPhone(String phone) {
 		return appUserRepo.findByPhone(phone);
@@ -293,6 +299,14 @@ public class AppUserServiceImpl implements AppUserService {
 
 		return appUserDao.countByFolColByUserId(userFollowCollect);
 
+	}
+
+	@Override
+	public String updateEmailAndCompany(UserParams userParams) {
+		appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
+		EmailSuffix emailSuffix = emailSuffixRepo.findOne(userParams.getEmail().split("@")[1]);
+		appUserDetailRepo.updateCompanyName(userParams.getUserId(), emailSuffix.getCompanyName());
+		return emailSuffix.getCompanyName();
 	}
 
 	/******************** WEB END ***********/
