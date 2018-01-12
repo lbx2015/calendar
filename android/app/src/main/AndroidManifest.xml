@@ -112,7 +112,9 @@
         <activity android:name=".activity.FeedBackActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"
-            android:hardwareAccelerated="true" />
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:noHistory="true" />
         <activity
             android:name=".activity.InputCellPhoneNumberActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
@@ -123,19 +125,48 @@
         <activity
             android:name=".activity.InputEmailVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity android:name=".activity.IndustrySelectActivity"></activity>
-        <activity android:name=".activity.PositionSelectActivity"></activity>
-        <activity android:name=".activity.ReportsSelectActivity"></activity>
-        <activity android:name=".activity.AddTopicActivity"></activity>
-        <activity android:name=".activity.MyRepliesActivity"></activity>
-        <activity android:name=".activity.MyFollowersActivity"></activity>
-        <activity android:name=".activity.MyFavoritesUserActivity"></activity>
-        <activity android:name=".activity.SystemNoticeActivity"></activity>
-        <activity android:name=".activity.MyStateActivity"></activity>
-        <activity android:name=".activity.UserActivity"></activity>
-        <activity android:name=".activity.MyFollowActivity"></activity>
-        <activity android:name=".activity.MyCollectActivity"></activity>
-        <activity android:name=".activity.MyRelationActivity"></activity>
+        <activity
+            android:name=".activity.IndustrySelectActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.PositionSelectActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.ReportsSelectActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.AddTopicActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyRepliesActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyFollowersActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyFavoritesUserActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.SystemNoticeActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyStateActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.UserActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyInfoActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyFollowActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyCollectActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activity.MyRelationActivity"
+            android:launchMode="singleTop"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"
