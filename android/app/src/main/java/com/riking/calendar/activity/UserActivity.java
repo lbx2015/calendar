@@ -55,6 +55,10 @@ public class UserActivity extends AppCompatActivity {
         initListener();
     }
 
+    public void clickBack(final View view) {
+        onBackPressed();
+    }
+
     private void initView() {
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);

@@ -20,11 +20,11 @@ import com.riking.calendar.activity.MyCollectActivity;
 import com.riking.calendar.activity.MyFavoritesUserActivity;
 import com.riking.calendar.activity.MyFollowActivity;
 import com.riking.calendar.activity.MyFollowersActivity;
+import com.riking.calendar.activity.MyInfoActivity;
 import com.riking.calendar.activity.MyRelationActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
 import com.riking.calendar.activity.MyStateActivity;
 import com.riking.calendar.activity.SettingActivity;
-import com.riking.calendar.activity.UserInfoActivity;
 import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
@@ -203,7 +203,8 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             @Override
             public void click(View v) {
                 if (ZPreference.isLogin()) {
-                    startActivityForResult(new Intent(getContext(), UserInfoActivity.class), CONST.UPDATE_USER_INFO_REQUES);
+//                    startActivityForResult(new Intent(getContext(), UserInfoActivity.class), CONST.UPDATE_USER_INFO_REQUES);
+                    startActivityForResult(new Intent(getContext(), MyInfoActivity.class), CONST.UPDATE_USER_INFO_REQUES);
                 } else {
                     startActivity((new Intent(getContext(), LoginNavigateActivity.class)));
 //                    startActivity(new Intent(getContext(), HyphenateLoginActivity.class));

@@ -9,6 +9,14 @@
         android:layout_height="154dp"
         android:background="@drawable/user_img_headbg">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="15dp"
+            android:onClick="clickBack"
+            android:src="@drawable/nav_icon_back_w" />
+
         <RelativeLayout
             android:id="@+id/user_info_relative_layout"
             android:layout_width="match_parent"
@@ -64,8 +72,8 @@
                 android:id="@+id/follow_button"
                 android:layout_width="68dp"
                 android:layout_height="28dp"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/white_follow_border">

@@ -98,6 +98,7 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
                                 return;
                             }
                             currentUser.isIdentify = 1;
+                            currentUser.companyName = response._data;
                             ZPreference.saveUserInfoAfterLogin(currentUser);
 
                             if (logining) {
