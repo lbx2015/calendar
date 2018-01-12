@@ -37,9 +37,8 @@
 	function editOnBind(attrs, param) {
 		tmpl = this;
 		tmpl.onFinish(function(data) {
-			var imgUrl = $(".layui-input-inline img").attr("src").replace("topic","banner").replace("photo/","");
-			$(".layui-input-inline img").attr("src",imgUrl);
-			
+			/* var imgUrl = $(".layui-input-inline img").attr("src").replace("topic","banner").replace("photo/","");
+			$(".layui-input-inline img").attr("src",imgUrl); */
 			View.resetUi();
 		});
 		tmpl.bind(function(callback) {

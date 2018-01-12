@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
+import net.riking.config.Const;
 import net.riking.dao.repo.BannerRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.Banner;
+import net.riking.util.FileUtils;
 
 @RestController
 @RequestMapping(value = "/banner")
@@ -30,6 +32,7 @@ public class BannerServer {
 	public AppResp getBanners() {
 		PageRequest pageable = new PageRequest(0, 5, new Sort(Arrays.asList(new Order(Direction.valueOf("DESC"), "modifiedTime"))));
 		List<Banner> page = bannerRepo.findByPage(pageable);
+		page.forEach(e->e.setBannerURL(FileUtils.getPhotoUrl(Const.TL_BANNER_PHOTO_PATH + e.getBannerURL() , this.getClass())));
 		return new AppResp(page, CodeDef.SUCCESS);
 	}
 	

@@ -72,6 +72,7 @@
 <script>
 	var item;
 	var tbTmpl;
+	var defaultUrl ="this.src="+"\'"+"images/img_default.jpg"+"\'";
 	function forbbit(id) {
 
 	}
@@ -123,10 +124,11 @@
 					}
 					if(obj.item){
 						if(obj.prop=="bannerURL"){
-							var htmlInfo = Const.apiUrl+"/images/banner/"+obj.html;
-							var imgHtml = "<img src='"+htmlInfo+"' style='width:40px; height:40px;' alt='"+obj.html+"'/>";
-							obj.html="";
-							obj.html+=imgHtml;
+							var htmlInfo = Const.apiUrl+ obj.html;
+							//var imgHtml = "<img  src='"+htmlInfo+"' style='width:40px; height:40px;' alt='"+obj.html+"'/>";
+							obj.html = '<img onerror="'+defaultUrl+'" src="'+htmlInfo+'"style="width:30px;height: 30px;" alt="'+obj.item.title+'封面" />';
+							//obj.html="";
+							//obj.html+=imgHtml;
 						}
 					}
 					return obj.html;
