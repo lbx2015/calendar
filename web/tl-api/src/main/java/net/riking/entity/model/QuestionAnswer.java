@@ -112,11 +112,11 @@ public class QuestionAnswer extends BaseAuditProp {
 	List<QAComment> qaCommentList;
 	
 	
-	public QuestionAnswer(String coverUrl, String content, String title) {
+	public QuestionAnswer( String title, String coverUrl, String content) {
 		super();
+		this.title = title;
 		this.coverUrl = coverUrl;
 		this.content = content;
-		this.title = title;
 	}
 
 	public QuestionAnswer(String id, Date createdTime, Date modifiedTime, String userId, String questionId,

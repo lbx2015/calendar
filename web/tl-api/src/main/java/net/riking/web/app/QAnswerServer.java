@@ -256,7 +256,7 @@ public class QAnswerServer {
 	@RequestMapping(value = "/qACommentList", method = RequestMethod.POST)
 	public AppResp qACommentList(@RequestBody QAnswerParams qAnswerParams) {
 		
-		QuestionAnswer questionAnswer = questionAnswerRepo.findOne(qAnswerParams.getQuestAnswerId());
+		QuestionAnswer questionAnswer = questionAnswerRepo.getCommentQAById(qAnswerParams.getQuestAnswerId());
 		
 		// 返回到前台的问题回答  品论列表
 		List<QAComment> qACommentList = qACommentRepo.findByQaId(qAnswerParams.getQuestAnswerId(),
@@ -292,6 +292,6 @@ public class QAnswerServer {
 			qAComment.setAgreeNumber(agreeNum);
 		}
 		questionAnswer.setQaCommentList(qACommentList);
-		return new AppResp(qACommentList, CodeDef.SUCCESS);
+		return new AppResp(questionAnswer, CodeDef.SUCCESS);
 	}
 }
