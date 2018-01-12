@@ -96,6 +96,9 @@
                 data.operationWidth =15;
 				data.tdBeforeFill = function(obj) {
 					if (obj['item']) {
+						if(obj.prop == 'grade'){
+							obj.html = "等级"+obj.item.grade;
+						}
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
 									+ "\""

@@ -198,34 +198,4 @@
         </RelativeLayout>
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/more_user_info_relative_layout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="6dp"
-        android:background="@android:color/white">
-
-        <TextView
-            android:id="@+id/more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:gravity="center"
-            android:text="@string/more"
-            android:textColor="@color/color_222222"
-            android:textSize="17sp" />
-
-        <ImageView
-            android:id="@+id/check_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/work_rm_icon_arrow_r" />
-    </RelativeLayout>
 </LinearLayout>

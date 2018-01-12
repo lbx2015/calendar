@@ -3,12 +3,14 @@ package com.riking.calendar.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -25,6 +27,7 @@ import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
+import com.riking.calendar.pojo.UploadImageModel;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserParams;
@@ -33,19 +36,32 @@ import com.riking.calendar.pojo.server.Industry;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.retrofit.APIInterface;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.GetJsonDataUtil;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
+import com.riking.calendar.util.image.ImagePicker;
 import com.riking.calendar.view.OptionsPickerView;
 
 import org.json.JSONArray;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyInfoActivity extends AppCompatActivity {
     private static final int MSG_LOAD_DATA = 0x0001;
@@ -94,6 +110,7 @@ public class MyInfoActivity extends AppCompatActivity {
     ArrayList<Industry> industries;
     ArrayList<Industry> positions;
     TextView emailValidated;
+    AppUserResp user;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
@@ -137,6 +154,7 @@ public class MyInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
+        user = ZPreference.getCurrentLoginUser();
         setContentView(R.layout.activity_my_info);
         init();
     }
@@ -162,9 +180,112 @@ public class MyInfoActivity extends AppCompatActivity {
         userComment.setText(u.descript);
 
         //load the user image
-        ZR.setUserImage(myPhoto, u.photoUrl);
+        ZR.setCircleUserImage(myPhoto, u.photoUrl);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED) {
+            //do nothing on operation cancelled
+            return;
+        }
+        // Make sure the request was successful
+        if (resultCode != RESULT_CANCELED && requestCode == CONST.VERIFY_EMAIL) {
+            currentUser.isIdentify = data.getIntExtra(CONST.EMAIL_VALIDATE, 0);
+            ZPreference.saveUserInfoAfterLogin(currentUser);
+            emailValidated.setClickable(false);
+            emailValidated.setEnabled(false);
+            emailValidated.setText("已验证");
+        } else {
+
+            Bitmap bitMap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
+            if (bitMap != null) {
+                Logger.d("zzw", "bit map is not null");
+                ZR.setCircleUserImage(myPhoto, bitMap);
+            } else {
+                Logger.d("zzw", "bitmap is null");
+                return;
+            }
+
+//        Bitmap bitMap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_1);
+
+            final File mFile2 = FileUtil.generateImageFile();
+            try {
+                mFile2.createNewFile();
+                FileOutputStream outStream;
+
+                outStream = new FileOutputStream(mFile2);
+
+                bitMap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+
+                outStream.flush();
+
+                outStream.close();
+
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            String sdPath = mFile2.getAbsolutePath().toString();
+
+            Log.d("zzw", "Your IMAGE ABSOLUTE PATH:-" + sdPath);
+
+            File temp = new File(sdPath);
+
+            if (!temp.exists()) {
+                Log.d("zzw", "no image file at location :" + sdPath);
+            }
+
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image"), mFile2);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("mFile", mFile2.getName(), reqFile);
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+
+            apiInterface.postImage(body, user.userId).enqueue(new Callback<UploadImageModel>() {
+                @Override
+                public void onResponse(Call<UploadImageModel> call, Response<UploadImageModel> response) {
+                    final UploadImageModel r = response.body();
+                    if (r != null) {
+                        AppUserResp currentUser = ZPreference.getCurrentLoginUser();
+                        currentUser.photoUrl = r._data;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+
+                        //update user image in user info fragment
+                        Intent i = new Intent();
+                        i.putExtra(CONST.USER_IMAGE_URL, r._data);
+                        setResult(CONST.REQUEST_CODE, i);
+                        ZR.setCircleUserImage(myPhoto, r._data);
+                    } else {
+                        Logger.d("zzw", "upload ok response body is null");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UploadImageModel> call, Throwable t) {
+                    Logger.d("zzw", "upload image fail: " + t.getMessage());
+                }
+            });
+
+       /* InputStream is = ImagePicker.getInputStreamFromResult(this, requestCode, resultCode, data);
+        if (is != null) {
+            try {
+                is.close();
+            } catch (IOException ex) {
+                // ignore
+            }
+        } else {
+            Logger.d("zzw", "Failed to get input stream!");
+        }*/
+        }
+    }
+
+    public void onPickImage(View view) {
+        ImagePicker.pickImage(this, "选择用户图片:");
+    }
 
     private void showPickerView() {
         if (pvOptions != null) {
@@ -810,19 +931,6 @@ public class MyInfoActivity extends AppCompatActivity {
                 MyInfoActivity.this.startActivityForResult(new Intent(MyInfoActivity.this, InputEmailVerifyCodeActivity.class), CONST.VERIFY_EMAIL);
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Make sure the request was successful
-        if (resultCode != RESULT_CANCELED && requestCode == CONST.VERIFY_EMAIL) {
-            currentUser.isIdentify = data.getIntExtra(CONST.EMAIL_VALIDATE, 0);
-            ZPreference.saveUserInfoAfterLogin(currentUser);
-            emailValidated.setClickable(false);
-            emailValidated.setEnabled(false);
-            emailValidated.setText("已验证");
-        }
     }
 
     private void loadPostions() {
