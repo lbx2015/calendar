@@ -127,46 +127,46 @@
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".activity.IndustrySelectActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.PositionSelectActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.ReportsSelectActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.AddTopicActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyRepliesActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyFollowersActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyFavoritesUserActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.SystemNoticeActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyStateActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.UserActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyInfoActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyFollowActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyCollectActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyRelationActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"

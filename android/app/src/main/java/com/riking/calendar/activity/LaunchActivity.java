@@ -81,7 +81,7 @@ public class LaunchActivity extends AppCompatActivity {
             //get reminders and tasks of user from server
 //            APIClient.synchAll();
         }
-        APIClient.getWorkDays();
+//        APIClient.getWorkDays();
 
         //register observer
         NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
