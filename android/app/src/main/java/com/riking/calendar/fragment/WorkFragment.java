@@ -476,7 +476,7 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
         initReminderAdapter();
 
         //only show the not complete tasks
-        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).notEqualTo(Task.DELETESTATE, CONST.DELETE).findAll();
+        RealmResults<Task> tasks = realm.where(Task.class).equalTo(Task.IS_COMPLETE, 0).notEqualTo(Task.DELETESTATE, CONST.DELETE).findAll().sort("isImportant", Sort.DESCENDING);
         taskRecyclerView.setItemAnimator(new DefaultItemAnimator());
         taskAdapter = new TaskAdapter(tasks, realm);
         taskRecyclerView.setAdapter(taskAdapter);

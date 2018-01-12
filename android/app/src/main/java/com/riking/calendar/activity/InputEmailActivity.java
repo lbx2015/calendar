@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserParams;
@@ -64,6 +65,11 @@ public class InputEmailActivity extends AppCompatActivity implements TextWatcher
                     Toast.makeText(emaileditText.getContext(), "邮箱不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                if (!ZR.isValidEmailFormat(number.toString())) {
+                    ZToast.toast("邮箱格式不正确");
+                    return;
+                }
                 if (!ZR.isValidEmailSuffix(number.toString())) {
                     ZToast.toast("邮箱后缀不对");
                     return;
@@ -80,7 +86,7 @@ public class InputEmailActivity extends AppCompatActivity implements TextWatcher
                         ZToast.toast("邮箱添加成功！");
                         UserParams userParams = new UserParams();
                         userParams.email = currentUser.email;
-                        APIClient.sendEmailVerifyCode(userParams, new ZCallBack<ResponseModel<String>>() {
+                        APIClient.sendEmailVerifyCode(userParams, new ZCallBackWithFail<ResponseModel<String>>() {
                             @Override
                             public void callBack(ResponseModel<String> response) {
                                 Intent i = new Intent(InputEmailActivity.this, InputEmailVerifyCodeActivity.class);

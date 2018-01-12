@@ -13,6 +13,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +47,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -101,6 +104,7 @@ public class ZR {
     }
 
     public static String getDeviceId() {
+        if (MyApplication.mCurrentActivity == null) return UUID.randomUUID().toString();
         TelephonyManager tManager = (TelephonyManager) MyApplication.mCurrentActivity.getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(MyApplication.mCurrentActivity, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -127,7 +131,7 @@ public class ZR {
 //        for (int i = 0; i < digest.length; i++) {
 //            sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
 //        }
-        return new String(digest, "utf-8");
+        return android.util.Base64.encodeToString(digest, android.util.Base64.DEFAULT).replaceAll("[^a-zA-Z0-9]", "");
     }
 
     @ColorInt
@@ -632,6 +636,13 @@ public class ZR {
             }
         }
         return false;
+    }
+
+    public static boolean isValidEmailFormat(String email) {
+        if (email == null) return false;
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     public void getDensity(Activity activity) {

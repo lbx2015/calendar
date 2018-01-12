@@ -839,7 +839,7 @@ public class MoreUserInfoActivity extends AppCompatActivity {
     public void clickInvalidateEmail(View view) {
         UserParams userParams = new UserParams();
         userParams.email = currentUser.email;
-        APIClient.sendEmailVerifyCode(userParams, new ZCallBack<ResponseModel<String>>() {
+        APIClient.sendEmailVerifyCode(userParams, new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 MoreUserInfoActivity.this.startActivityForResult(new Intent(MoreUserInfoActivity.this, InputEmailVerifyCodeActivity.class), CONST.VERIFY_EMAIL);

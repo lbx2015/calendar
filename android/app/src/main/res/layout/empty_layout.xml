@@ -1,23 +1,28 @@
-<com.riking.calendar.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/empty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:orientation="vertical">
+    android:layout_weight="1">
 
-    <com.riking.calendar.view.ZCenterImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="86dp"
-        android:src="@drawable/default_icon_nodata" />
+    <com.riking.calendar.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="17dp"
-        android:text="没有数据"
-        android:textColor="@color/color_background_b6b6b6"
-        android:textSize="12sp" />
-</com.riking.calendar.view.CustomLinearLayout>
+        <com.riking.calendar.view.ZCenterImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="86dp"
+            android:src="@drawable/default_icon_nodata" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="17dp"
+            android:text="暂没数据"
+            android:textColor="@color/color_background_b6b6b6"
+            android:textSize="12sp" />
+    </com.riking.calendar.view.CustomLinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
