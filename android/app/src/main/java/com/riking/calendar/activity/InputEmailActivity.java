@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UpdUserParams;
 import com.riking.calendar.pojo.params.UserParams;
@@ -85,7 +86,7 @@ public class InputEmailActivity extends AppCompatActivity implements TextWatcher
                         ZToast.toast("邮箱添加成功！");
                         UserParams userParams = new UserParams();
                         userParams.email = currentUser.email;
-                        APIClient.sendEmailVerifyCode(userParams, new ZCallBack<ResponseModel<String>>() {
+                        APIClient.sendEmailVerifyCode(userParams, new ZCallBackWithFail<ResponseModel<String>>() {
                             @Override
                             public void callBack(ResponseModel<String> response) {
                                 Intent i = new Intent(InputEmailActivity.this, InputEmailVerifyCodeActivity.class);

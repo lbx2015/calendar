@@ -794,7 +794,7 @@ public class APIClient {
         apiInterface.getMyCollectNews(params).enqueue(c);
     }
 
-    public static void sendEmailVerifyCode(UserParams params, ZCallBack<ResponseModel<String>> c) {
+    public static void sendEmailVerifyCode(UserParams params, ZCallBackWithFail<ResponseModel<String>> c) {
         apiInterface.sendEmailVerifyCode(params).enqueue(c);
     }
 

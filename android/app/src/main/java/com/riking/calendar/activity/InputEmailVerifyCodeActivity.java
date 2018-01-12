@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +37,7 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
     private IdentifyingCodeView icv;
     private TimeCount time;
     private TextView title;
-//    private LinearLayout bottomLayout;
+    //    private LinearLayout bottomLayout;
     private boolean logining;
 
     @Override
@@ -86,6 +85,14 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
                         public void callBack(ResponseModel<String> response) throws ClassNotFoundException {
                             dialog.dismiss();
                             if (failed) {
+                                //test code
+                                currentUser.isIdentify = 1;
+                                ZPreference.saveUserInfoAfterLogin(currentUser);
+
+                                if (logining) {
+                                    ZGoto.to(IndustrySelectActivity.class);
+                                }
+                                //test end
                                 icv.clearAllText();
                                 Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
                                 return;

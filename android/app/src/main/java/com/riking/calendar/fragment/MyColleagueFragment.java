@@ -119,7 +119,7 @@ public class MyColleagueFragment extends ZFragment<MyFollowersAdapter> {
     private void validateEmail() {
         UserParams userParams = new UserParams();
         userParams.email = currentUser.email;
-        APIClient.sendEmailVerifyCode(userParams, new ZCallBack<ResponseModel<String>>() {
+        APIClient.sendEmailVerifyCode(userParams, new ZCallBackWithFail<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
                 MyColleagueFragment.this.startActivityForResult(new Intent(getContext(), InputEmailVerifyCodeActivity.class), CONST.VERIFY_EMAIL);

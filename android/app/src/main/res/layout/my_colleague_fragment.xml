@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f2f2f2"
     android:orientation="vertical">
 
     <com.riking.calendar.view.PullToLoadViewWithoutFloatButton xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pullToLoadView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white" />
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/not_bind_email_layout"

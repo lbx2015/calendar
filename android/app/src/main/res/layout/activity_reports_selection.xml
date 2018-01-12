@@ -4,10 +4,9 @@
     android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="68dp"
         android:orientation="vertical">
 
         <TextView
@@ -52,7 +51,7 @@
             android:layout_width="330dp"
             android:layout_height="49dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="82dp"
+            android:layout_marginBottom="82dp"
             android:background="@drawable/selected__interesting_reports_background"
             android:gravity="center"
             android:onClick="onClickStart"
