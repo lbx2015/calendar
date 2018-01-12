@@ -42,6 +42,10 @@ public class EmailSuffix extends BaseEntity {
 	@Column(name = "email_suffix", length = 20)
 	@Comment("邮箱后缀")
 	private String emailSuffix;
+	
+	@Comment("公司")
+	@Column(name = "company_name", length = 32)
+	private String companyName;
 
 	@Comment("数据状态 0-禁用 1-启用")
 	@org.hibernate.annotations.ColumnDefault("1")
@@ -116,6 +120,14 @@ public class EmailSuffix extends BaseEntity {
 
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 }

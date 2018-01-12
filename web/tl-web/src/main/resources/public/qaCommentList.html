@@ -11,18 +11,6 @@
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
-				<!-- <button class="layui-btn layui-btn-small layui-btn-primary" id="add-data">
-					<i class="layui-icon">&#xe608;</i>
-					添加
-				</button> -->
-				<!-- <button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="del()">
-					<i class="layui-icon">&#xe640;</i>
-					批量删除
-				</button>
-				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="verifyMore" onclick="verifyMore()">
-					<i class="layui-icon">&#xe6b2;</i>
-					批量审核
-				</button> -->
 			</div>
 			<div class="_tmpl" data-url="filterCriteria.html" data-attr="qaCommentByFilter.json" data-bind="filterCriteriaOnBind" data-param=""></div>
 			<div class="clear"></div>
@@ -99,12 +87,17 @@
 				data.hasCheckbox = true;
 				//是否有操作列
 				data.hasOperation = true;
+				
+				data.dateChangeCall = dateChangeCall;
 				//操作按钮
 				//tr的点击事件绑定，该方法会传入item参数，不绑定改事件无预览效果
 				//表格显示列数
 				data.operationWidth = 10;
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
+				   	if(obj.prop=="createdTime"){
+						obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");
+			    	}
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							if (obj.item.isAduit == 0) { 
@@ -425,6 +418,10 @@
 		var url = "qaCommentCheckEdit.html?replyId=" + id + "&flag=" + flag+ "&id=" + id ;
 		var title = "数据处理";
 		View.openDialog(url, title);
+	}
+	
+	function dateChangeCall(){
+	    
 	}
 </script>
 </html>

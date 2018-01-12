@@ -106,9 +106,9 @@
 				    if(obj.prop=="topicUrl"){
 						obj.html = '<img onerror="'+defaultUrl+'" src="'+Const.apiUrl + obj.html+'"style="width:30px;height: 30px;" alt="'+obj.item.title+'封面" />';
 				    }
-				   /*  if(obj.prop=="createdTime"){
+				   	if(obj.prop=="createdTime"){
 						obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");
-			    	} */
+			    	}
 					if (obj['item']) {
 						if (obj.isOperColumn) {
 							obj.html += "<button class='layui-btn layui-btn-mini' onclick='view("
