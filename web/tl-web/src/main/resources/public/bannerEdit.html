@@ -39,6 +39,9 @@
 		tmpl.onFinish(function(data) {
 			/* var imgUrl = $(".layui-input-inline img").attr("src").replace("topic","banner").replace("photo/","");
 			$(".layui-input-inline img").attr("src",imgUrl); */
+			if(flag == 'edit'){
+				$(".layui-input-inline select[name='isAduit'").attr("disabled",true);
+			}
 			View.resetUi();
 		});
 		tmpl.bind(function(callback) {
