@@ -41,8 +41,6 @@ public interface AppUserService {
 	// 我的粉丝
 	public List<AppUserResult> findMyFans(String userId, Integer pageBegin, Integer pageCount);
 
-	public Email getMyEmail();
-
 	public OtherUserResp getOtherMes(String toUserId, String userId);
 
 	/********************* WEB ***************/
