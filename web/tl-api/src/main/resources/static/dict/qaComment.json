@@ -46,6 +46,8 @@
 			"desc": "评论人",
 			"type": "string",
 			"group": "base",
+			"query": "1",
+			"query_order": "1",
 			"editable":"2"
 		},
 		{
@@ -65,6 +67,8 @@
 			"type": "enum",
 			"dict_key": "T_REPORT.ISADUIT",
 			"group": "base",
+			"query": "1",
+			"query_order": "2",
 			"hidden": "edit"
 		},
 		
@@ -88,8 +92,10 @@
 			"prop": "createdTime",
 			"alias": "评论时间",
 			"desc": "评论时间",
-			"type": "string",
+			"type": "datetime",
 			"group": "base",
+			"query": "1",
+			"query_order": "3",
 			"hidden": "edit,preview"
 		},
 		{

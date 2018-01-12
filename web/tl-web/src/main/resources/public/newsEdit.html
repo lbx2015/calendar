@@ -38,6 +38,8 @@
     var id = View.getQStr('id');
     var flag= View.getQStr('flag');
 	var topicContent;
+	//默认显示的图片
+	var defaultUrl ="this.src="+"\'"+"images/img_default.jpg"+"\'";
     function editOnBind(attrs, param) {
         tmpl = this;
         tmpl.bind(function(callback) {
@@ -110,7 +112,7 @@
     	var coverUrl = $(".layui-input-inline input[name='coverUrls']").val();
     	var parent = $(".layui-input-inline input[name='coverUrls']").parent();
     	parent.html("");
-    	var htmlInfo="<img style='width:10%'/> ";
+    	var htmlInfo="<img style='width:10%' onerror="+defaultUrl+" /> ";
     	//加上上传按钮
     	htmlInfo+="<button type='button'  id='loadImg' > 上传图片 </button>";
     	//加上存储input图片地址

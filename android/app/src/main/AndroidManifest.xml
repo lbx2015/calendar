@@ -115,6 +115,8 @@
             android:name=".activity.InputCellPhoneNumberActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
+            android:name=".activity.InputEmailActivity" />
+        <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity

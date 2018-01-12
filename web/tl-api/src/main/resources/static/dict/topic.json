@@ -57,7 +57,7 @@
 			"prop": "createdTime",
 			"alias": "创建时间",
 			"desc": "创建时间",
-			"type": "string",
+			"type": "datetime",
 			"group": "base",
 			"hidden": "edit"
 		},

@@ -27,7 +27,7 @@ public class ReCommendDaoImpl implements ReCommendDao {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
-		String sql = "SELECT t.report_id,r.title,t.industry_id from t_recommend t left join t_report r on t.report_id=r.id";
+		String sql = "SELECT t.report_id,r.code,t.industry_id from t_recommend t left join t_report r on t.report_id=r.id";
 		PreparedStatement pstmt = null;
 		Set<Recommend> list = new HashSet<>();
 		try {

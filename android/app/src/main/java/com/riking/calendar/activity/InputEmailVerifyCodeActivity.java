@@ -24,6 +24,7 @@ import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 
 /**
@@ -37,11 +38,13 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
     private IdentifyingCodeView icv;
     private TimeCount time;
     private TextView title;
-    private LinearLayout bottomLayout;
+//    private LinearLayout bottomLayout;
+    private boolean logining;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logining = getIntent().getBooleanExtra(CONST.LOGINING, false);
         time = new TimeCount(60000, 1000);
         setContentView(R.layout.activity_login_input_phone_verify_code);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -57,9 +60,9 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
 
         phoneNumberTV = findViewById(R.id.cell_phone_nubmer);
         icv = (IdentifyingCodeView) findViewById(R.id.icv);
-        bottomLayout = findViewById(R.id.bottom_layout);
+//        bottomLayout = findViewById(R.id.bottom_layout);
         //hide the bottom Layout
-        bottomLayout.setVisibility(View.GONE);
+//        bottomLayout.setVisibility(View.GONE);
 
         phoneNumberTV.setText(currentUser.email);
         icv.setInputCompleteListener(new IdentifyingCodeView.InputCompleteListener() {
@@ -90,9 +93,13 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
                             currentUser.isIdentify = 1;
                             ZPreference.saveUserInfoAfterLogin(currentUser);
 
-                            Intent i = new Intent();
-                            i.putExtra(CONST.EMAIL_VALIDATE, 1);
-                            setResult(RESULT_OK, i);
+                            if (logining) {
+                                ZGoto.to(IndustrySelectActivity.class);
+                            } else {
+                                Intent i = new Intent();
+                                i.putExtra(CONST.EMAIL_VALIDATE, 1);
+                                setResult(RESULT_OK, i);
+                            }
                             //kill self in order to return back.
                             finish();
                             Toast.makeText(InputEmailVerifyCodeActivity.this, " 验证成功", Toast.LENGTH_SHORT).show();

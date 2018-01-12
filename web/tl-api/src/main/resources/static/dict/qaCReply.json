@@ -110,7 +110,7 @@
 			"prop": "createdTime",
 			"alias": "回复时间",
 			"desc": "回复时间",
-			"type": "string",
+			"type": "datetime",
 			"group": "base",
 			"hidden": "edit,preview"
 		},
