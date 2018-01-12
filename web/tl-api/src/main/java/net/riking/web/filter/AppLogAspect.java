@@ -49,11 +49,11 @@ public class AppLogAspect {
 
 		String pkParams = request.getHeader("pkParams");
 		String token = request.getHeader("token");
-		if (checkToken(pkParams, token)) {
+////		if (checkToken(pkParams, token)) {
 			return pjp.proceed();
-		}
-		return new AppResp(CodeDef.EMP.REPORT_TOKEN_ERROR,
-				CodeDef.EMP.REPORT_TOKEN_ERROR_DESC);
+//		}
+//		return new AppResp(CodeDef.EMP.REPORT_TOKEN_ERROR,
+//				CodeDef.EMP.REPORT_TOKEN_ERROR_DESC);
 	}
 
 	public static String Encoder(String str)

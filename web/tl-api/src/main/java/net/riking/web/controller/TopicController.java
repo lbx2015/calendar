@@ -57,6 +57,7 @@ public class TopicController {
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
 		Topic topic = topicRepo.findOne(id);
+		topic.setTopicUrl(Const.TL_TOPIC_PHOTO_PATH + topic.getTopicUrl());
 		return new Resp(topic, CodeDef.SUCCESS);
 	}
 
@@ -77,11 +78,11 @@ public class TopicController {
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).settId(list.get(i).getId());
 			list.get(i).setSerialNum(i + 1);
-			// list.get(i).setTopicUrl(appUserService.getPhotoUrlPath(Const.TL_TOPIC_PHOTO_PATH)+
-			// list.get(i).getTopicUrl());
+			 list.get(i).setTopicUrl(Const.TL_TOPIC_PHOTO_PATH+ list.get(i).getTopicUrl());
 			// listNew.add(list.get(i));
 		}
 		// Page<Topic> modulePage = new PageImpl<Topic>(listNew, pageable, page.getTotalElements());
+		
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 

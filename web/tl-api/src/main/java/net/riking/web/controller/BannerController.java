@@ -45,6 +45,7 @@ public class BannerController {
 	public Resp get_(@RequestParam("id") String id) {
 		Banner banner = bannerRepo.findOne(id);
 		if (null != banner) {
+			banner.setBannerURL(Const.TL_BANNER_PHOTO_PATH+ banner.getBannerURL());
 			return new Resp(banner, CodeDef.SUCCESS);
 		} else {
 			return new Resp(null, CodeDef.ERROR);
@@ -58,6 +59,7 @@ public class BannerController {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		Example<Banner> example = Example.of(banner, ExampleMatcher.matchingAll());
 		Page<Banner> page = bannerRepo.findAll(example, pageable);
+		page.getContent().forEach(e->e.setBannerURL(Const.TL_BANNER_PHOTO_PATH+ e.getBannerURL()));
 		return new Resp(page);
 	}
 
