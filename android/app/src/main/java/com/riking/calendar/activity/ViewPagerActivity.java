@@ -350,11 +350,12 @@ public class ViewPagerActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 3) {
-                    Window w = getWindow(); // in Activity's onCreate() for instance
+                    Window w = getWindow();
+                    // in Activity's onCreate() for instance
                     w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                    w.clearFlags(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
                     //set transparent background for the status bar
                     StatusBarUtil.setTransparent(ViewPagerActivity.this);
-
                 } else {
                     Window w = getWindow(); // in Activity's onCreate() for instance
                     w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);

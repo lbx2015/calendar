@@ -183,7 +183,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                android:text="个人简介 "
+                android:text="个人描述 "
                 android:textColor="@color/color_222222"
                 android:textSize="17sp" />
 
