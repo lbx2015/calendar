@@ -107,9 +107,10 @@ public class TopicQuestionServer {
 	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
 	public AppResp inquiry(@RequestBody Map<String, Object> params) {
 		TQuestionParams tQuestionParams = Utils.map2Obj(params, TQuestionParams.class);
-		if(!shieldKeyWordService.checkKeyWord(tQuestionParams.getTitle())){
-			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
-		}
+//		if(!shieldKeyWordService.checkKeyWord(tQuestionParams.getTitle())){
+//			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+//		}
+		tQuestionParams.setTitle(shieldKeyWordService.filterKeyWord(tQuestionParams.getTitle()));
 		String title = "";
 		try {
 		    if (!tQuestionParams.getTitle().endsWith("?")) {
@@ -242,9 +243,10 @@ public class TopicQuestionServer {
 		} catch (UnsupportedEncodingException e) {
 			return new AppResp(null, CodeDef.ERROR);
 		}
-		if(!shieldKeyWordService.checkKeyWord(topicQuestion.getContent())){
-			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
-		}
+//		if(!shieldKeyWordService.checkKeyWord(topicQuestion.getContent())){
+//			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+//		}
+		topicQuestion.setContent(shieldKeyWordService.filterKeyWord(topicQuestion.getContent()));
 		String[] fileNames = topicQuestion.getContent().split("alt=");
 		for (int i = 1; i < fileNames.length; i++) {
 			String fileName = fileNames[i].split(">")[0].replace("\"", "");
@@ -297,9 +299,10 @@ public class TopicQuestionServer {
 //			}
 //			FileUtils.deleteFile(oldPhotoUrl);
 //		}
-		if(!shieldKeyWordService.checkKeyWord(questionAnswer.getContent())){
-			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
-		}
+//		if(!shieldKeyWordService.checkKeyWord(questionAnswer.getContent())){
+//			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+//		}
+		questionAnswer.setContent(shieldKeyWordService.filterKeyWord(questionAnswer.getContent()));
 		Pattern pattern = Pattern.compile("(?<=alt\\=\")(.+?)(?=\")");
 		Matcher matcher = pattern.matcher(questionAnswer.getContent());
         while(matcher.find()){

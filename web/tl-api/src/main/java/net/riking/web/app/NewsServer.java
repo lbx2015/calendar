@@ -231,11 +231,11 @@ public class NewsServer {
 		int rowNum = 0;
 		String content = "";
         while(matcher.find()&&rowNum<2){
-        	content += matcher.group();
-        	if(rowNum==0){
-        		content += "\r\n";
+        	String group = matcher.group();
+        	if(!group.contains("<img")){
+            	content += group.replace("<br>", "");
+            	rowNum++;
         	}
-        	rowNum++;
         }
         news.setContent(content);
 		List<NewsComment> newsCommentInfoList = newsCommentRepo.findByNewsId(newsParams.getNewsId(),
@@ -289,10 +289,10 @@ public class NewsServer {
 	@ApiOperation(value = "资讯评论发布", notes = "POST")
 	@RequestMapping(value = "/newsCommentPub", method = RequestMethod.POST)
 	public AppResp newsCommentPub(@RequestBody NewsParams newsParams) {
-		if(!shieldKeyWordService.checkKeyWord(newsParams.getContent())){
-			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
-		}
-		
+//		if(!shieldKeyWordService.checkKeyWord(newsParams.getContent())){
+//			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+//		}
+		newsParams.setContent(shieldKeyWordService.filterKeyWord(newsParams.getContent()));
 		NewsComment newsCommentInfo = new NewsComment();
 		AppUser appUser = appUserRepo.findOne(newsParams.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());

@@ -188,9 +188,10 @@ public class QAnswerServer {
 		if (StringUtils.isBlank(qAnswerParams.getContent())) {
 			return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
 		}
-		if(!shieldKeyWordService.checkKeyWord(qAnswerParams.getContent())){
-			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
-		}
+//		if(!shieldKeyWordService.checkKeyWord(qAnswerParams.getContent())){
+//			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+//		}
+		qAnswerParams.setContent(shieldKeyWordService.filterKeyWord(qAnswerParams.getContent()));
 		qAnswerParams.setMqOptType(Const.MQ_OPT_QANSWER_COMMENT);
 		JSONObject jsonArray = JSONObject.fromObject(qAnswerParams);
 		MQProduceUtil.sendTextMessage(Const.SYS_OPT_QUEUE, jsonArray.toString());

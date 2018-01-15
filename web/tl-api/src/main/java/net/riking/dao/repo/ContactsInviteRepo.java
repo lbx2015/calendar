@@ -18,4 +18,7 @@ public interface ContactsInviteRepo
 
 	@Query(" from ContactsInvite where userId =?1 and phone = ?2")
 	ContactsInvite findByOne(String userId, String phone);
+	
+	@Query(" from ContactsInvite where userId =?1 and phone in ?2")
+	List<ContactsInvite> findByUserIdAndPhones(String userId, List<String> phone);
 }

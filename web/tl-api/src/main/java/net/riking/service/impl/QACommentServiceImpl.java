@@ -1,8 +1,6 @@
 package net.riking.service.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -203,14 +201,19 @@ public class QACommentServiceImpl implements QACommentService {
 					predicates.add(in);
 				}
 				// 获取时间查询
-				if(qaComment.getStartTime()!=null || qaComment.getEndTime()!=null){
+				if (qaComment.getStartTime() != null || qaComment.getEndTime() != null) {
 					if (qaComment.getEndTime() == null) {
 						predicates.add(cb.greaterThanOrEqualTo(root.get("createdTime"), qaComment.getStartTime()));
 					} else if (qaComment.getStartTime() == null) {
-						predicates.add(cb.lessThanOrEqualTo(root.get("createdTime"),qaComment.getEndTime()));
+						predicates.add(cb.lessThanOrEqualTo(root.get("createdTime"), qaComment.getEndTime()));
 					} else {
-						predicates.add(cb.between(root.get("createdTime"), qaComment.getStartTime(), qaComment.getEndTime()));
+						predicates.add(
+								cb.between(root.get("createdTime"), qaComment.getStartTime(), qaComment.getEndTime()));
 					}
+				}
+				// 获取问题回答的编号
+				if (qaComment.getQuestionAnswerId() != null) {
+					predicates.add(cb.equal(root.<String> get("questionAnswerId"), qaComment.getQuestionAnswerId()));
 				}
 				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
 			}

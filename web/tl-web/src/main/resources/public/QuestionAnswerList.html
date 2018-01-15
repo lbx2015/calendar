@@ -129,8 +129,13 @@
 							var num = value.split("/");
 							var cssStringStart = "<font color='red'>";
 							var cssStringend = "</font>";
-							var newValue =cssStringStart+num[0];
-							newValue+=cssStringend;
+							var newValue =num[0];
+							if(newValue!=0){
+								newValue="";
+								newValue+=cssStringStart;
+								newValue+=num[0];
+								newValue+=cssStringend;
+							}
 							newValue+="/ "+num[1];
 							newValue+="/ "+num[2];
 							obj.html="";
@@ -144,8 +149,13 @@
 							var num = value.split("/");
 							var cssStringStart = "<font color='red'>";
 							var cssStringend = "</font>";
-							var newValue =cssStringStart+num[0];
-							newValue+=cssStringend;
+							var newValue =num[0];
+							if(newValue!=0){
+								newValue="";
+								newValue+=cssStringStart;
+								newValue+=num[0];
+								newValue+=cssStringend;
+							}
 							newValue+="/ "+num[1];
 							newValue+="/ "+num[2];
 							obj.html="";
