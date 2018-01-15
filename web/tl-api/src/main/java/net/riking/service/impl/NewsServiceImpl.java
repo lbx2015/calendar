@@ -125,7 +125,7 @@ public class NewsServiceImpl implements NewsService {
 		}
 		news.setContent(news.getContent().replace("temp", "news/content/"));
 		// 新增加载内容图片时访问不到默认显示的图片
-		news.setContent(news.getContent().replace("<img", "<img onerror=\"this.src='images/img_default.jpg'\" "));
+		news.setContent(news.getContent().replace("<img", "<img onerror=\"this.src='images/img_default.png'\" "));
 		newsRepo.save(news);
 	}
 

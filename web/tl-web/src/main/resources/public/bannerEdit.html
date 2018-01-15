@@ -33,6 +33,8 @@
 	var id = View.getQStr("id");
 	var flag = View.getQStr("flag");
 	var tmpl;
+	//默认显示的图片
+	var defaultUrl ="this.src="+"\'"+"images/img_default.png"+"\'";
 	
 	function editOnBind(attrs, param) {
 		tmpl = this;
@@ -143,7 +145,7 @@
     
     //上传图片
     function loadImage(){
-    	$(".layui-input-inline img").attr("id","bannerURL");
+    	$(".layui-input-inline img").attr("id","bannerURL").attr("onerror",defaultUrl);
     	var htmlInfo = $(".layui-input-inline img").parent().html().replace(/;/ig,"");
     	//加上上传按钮
     	htmlInfo+="<button type='button'  id='loadImg' > 上传图片 </button>";

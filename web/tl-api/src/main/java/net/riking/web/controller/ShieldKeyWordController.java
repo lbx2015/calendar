@@ -3,7 +3,9 @@ package net.riking.web.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,11 +29,11 @@ import net.riking.config.CodeDef;
 import net.riking.core.annos.AuthPass;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
-import net.riking.core.utils.ExcelUtils;
 import net.riking.dao.repo.ShieldKeyWordRepo;
 import net.riking.entity.model.ShieldKeyWord;
 import net.riking.service.ShieldKeyWordService;
 import net.riking.util.ExcelToList;
+import net.riking.util.ExportExcelUtils;
 
 @RestController
 @RequestMapping(value = "/shieldKeyWord")
@@ -132,7 +134,10 @@ public class ShieldKeyWordController {
 					"attachment; filename=" + new String(name.getBytes("utf-8"), "iso8859-1") + ".xls");
 			outputStream = response.getOutputStream();
 			List<ShieldKeyWord> shieldKeyWords = shieldKeyWordRepo.findAll();
-			ExcelUtils.exportByList(shieldKeyWords, outputStream, new String[] { "keyWord" });
+			// ExcelUtils.exportByList(shieldKeyWords, outputStream, new String[] { "keyWord" });
+			Map<String, String> fields = new HashMap<>();
+			fields.put("keyWord", "关键词");
+			ExportExcelUtils.exportByList(shieldKeyWords, outputStream, fields);
 			downloadExcel = new Resp(CodeDef.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -150,9 +155,4 @@ public class ShieldKeyWordController {
 		return downloadExcel;
 	}
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public Resp test() {
-		System.out.println("打印出现问题");
-		return new Resp(CodeDef.SUCCESS);
-	}
 }
