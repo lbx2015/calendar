@@ -139,8 +139,8 @@ public class AppUserDetail extends BaseEntity {
 	private Integer checkMyFollowState;
 
 	// 查看我的收藏
-	@Comment("允许查看我的关注: 0-不可以；1-可以查看")
-	@org.hibernate.annotations.ColumnDefault("1")
+	@Comment("允许查看我的收藏: 0-不可以；1-可以查看")
+	@org.hibernate.annotations.ColumnDefault("0")
 	@Column(name = "check_MyCollectState")
 	private Integer checkMyCollectState;
 
