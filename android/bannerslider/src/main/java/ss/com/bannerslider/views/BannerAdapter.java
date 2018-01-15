@@ -28,25 +28,28 @@ public class BannerAdapter extends FragmentStatePagerAdapter {
     @LayoutRes
     private int emptyView;
 
-    public BannerAdapter(FragmentManager fm, boolean isLooping,List<Banner> banners) {
+    public BannerAdapter(FragmentManager fm, boolean isLooping, List<Banner> banners) {
         super(fm);
         this.isLooping = isLooping;
-        this.banners=banners;
+        this.banners = banners;
     }
 
-    public BannerAdapter(FragmentManager fm, boolean isLooping, int layoutDirection,List<Banner> banners) {
+    public BannerAdapter(FragmentManager fm, boolean isLooping, int layoutDirection, List<Banner> banners) {
         super(fm);
         this.isLooping = isLooping;
-        this.banners=banners;
-        if (layoutDirection==LayoutDirection.RTL){
+        this.banners = banners;
+        if (layoutDirection == LayoutDirection.RTL) {
             Collections.reverse(banners);
         }
     }
 
     @Override
     public Parcelable saveState() {
+        //todo test code need to check or deleted
         Bundle bundle = (Bundle) super.saveState();
-        bundle.putParcelableArray("states", null); // Never maintain any states from the base class, just null it out
+        if (bundle != null) {
+            bundle.putParcelableArray("states", null); // Never maintain any states from the base class, just null it out]
+        }
         return bundle;
     }
 

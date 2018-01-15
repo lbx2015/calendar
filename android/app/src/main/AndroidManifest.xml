@@ -222,6 +222,9 @@
             android:name=".activity.SettingActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
+            android:name=".activity.PrivateSettingActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
             android:name=".activity.EditReminderActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity

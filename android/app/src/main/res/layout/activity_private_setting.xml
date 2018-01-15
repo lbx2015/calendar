@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginLeft="19dp"
+            android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
         <TextView
@@ -32,73 +33,32 @@
         android:background="@color/color_e2e2e2" />
 
     <RelativeLayout
-        android:id="@+id/user_private_set_layout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="6dp"
-        android:onClick="onClick"
-        android:background="@android:color/white"
-        android:paddingLeft="15dp">
-
-        <TextView
-            android:id="@+id/user_private_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:text="隐私"
-            android:textColor="@color/color_222222"
-            android:textSize="17sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp"
-            android:src="@drawable/work_rm_icon_arrow_r" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/clear_cache_relatvie_layout"
+        android:id="@+id/check_my_dynamic_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@android:color/white"
         android:paddingLeft="15dp">
 
         <TextView
-            android:id="@+id/clear_cache"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="@string/clear_cache"
+            android:text="允许他（她）查看我的动态"
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/cache_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:layout_toLeftOf="@+id/look_clear_cache"
-            android:text="@string/no_need_to_clear"
-            android:textColor="@color/color_222222"
-            android:textSize="17sp" />
 
-        <ImageView
-            android:id="@+id/look_clear_cache"
+        <Switch
+            android:id="@+id/check_my_dynamic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:src="@drawable/work_rm_icon_arrow_r" />
+            android:checked="true" />
     </RelativeLayout>
 
     <View
@@ -107,52 +67,65 @@
         android:background="@color/color_e2e2e2" />
 
     <RelativeLayout
-        android:id="@+id/about_layout"
+        android:id="@+id/check_my_follow_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@android:color/white"
-        android:onClick="onClickAbout"
         android:paddingLeft="15dp">
 
         <TextView
-            android:id="@+id/about_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="关于我们"
+            android:text="允许他（她）查看我的关注"
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <ImageView
+        <Switch
+            android:id="@+id/check_my_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/work_rm_icon_arrow_r" />
+            android:layout_marginEnd="9dp"
+            android:checked="true" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
+
+    <RelativeLayout
+        android:id="@+id/allow_check_my_collect"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="允许他（她）查看我的收藏"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
+
+        <Switch
+            android:id="@+id/check_my_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="9dp"
+            android:checked="false" />
     </RelativeLayout>
 
 
-    <FrameLayout
-        android:id="@+id/login_out_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="12sp"
-        android:background="@android:color/white"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/login_out_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_toLeftOf="@id/look_clear_cache"
-            android:text="@string/login_out"
-            android:textColor="@color/color_ff5252"
-            android:textSize="17sp" />
-    </FrameLayout>
 </LinearLayout>

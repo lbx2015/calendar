@@ -8,7 +8,10 @@ package com.riking.calendar.pojo.params;
  * @used TODO
  */
 public class UpdUserParams extends BaseParams {
-
+    //1可以查看，0不可以
+    public int checkMyDynamicState = 1;
+    public int checkMyFollowState = 1;
+    public int checkMyCollectState = 0;
     // 用户名称
     public String userName;
 
