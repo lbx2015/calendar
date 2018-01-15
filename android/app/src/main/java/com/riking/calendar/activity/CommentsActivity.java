@@ -27,6 +27,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.NewsParams;
 import com.riking.calendar.pojo.server.NCReply;
+import com.riking.calendar.pojo.server.News;
 import com.riking.calendar.pojo.server.NewsComment;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
@@ -57,6 +58,8 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
     private String newsId;
     private TextView activityTitle;
     private int commentsNum;
+    private TextView newsTitleTv;
+    private TextView newsContentTv;
 
     @Override
     public void setLayout() {
@@ -69,6 +72,8 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
     }
 
     public void initViews() {
+        newsTitleTv = findViewById(R.id.title);
+        newsContentTv = findViewById(R.id.content);
         activityTitle = findViewById(R.id.activity_title);
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
@@ -264,19 +269,22 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
         NewsParams p = new NewsParams();
         p.newsId = newsId;
 
-        APIClient.findNewsCommentList(p, new ZCallBackWithFail<ResponseModel<List<NewsComment>>>() {
+        APIClient.findNewsCommentList(p, new ZCallBackWithFail<ResponseModel<News>>() {
             @Override
-            public void callBack(ResponseModel<List<NewsComment>> response) {
+            public void callBack(ResponseModel<News> response) {
                 if (failed) {
                     mPullToLoadView.setComplete();
                     isLoading = false;
 
                 } else {
-                    List<NewsComment> comments = response._data;
+                    News news = response._data;
+                    List<NewsComment> comments = news.newsCommentList;
                     if (comments != null) {
                         activityTitle.setText("评论" + comments.size());
                     }
 
+                    newsTitleTv.setText(news.title);
+                    newsContentTv.setText(news.content);
                     setData2Adapter(comments);
                 }
             }

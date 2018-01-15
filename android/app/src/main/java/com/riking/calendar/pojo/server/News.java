@@ -2,6 +2,8 @@ package com.riking.calendar.pojo.server;
 
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
+import java.util.List;
+
 
 /**
  * @author jc.tan 2017年11月27日
@@ -58,4 +60,5 @@ public class News extends BaseAuditProp {
     // 是否收藏（0-未收藏，1-已收藏）
 //    @Transient
     public int isCollect;
+    public List<NewsComment> newsCommentList;;
 }

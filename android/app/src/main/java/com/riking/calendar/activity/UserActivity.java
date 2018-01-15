@@ -46,6 +46,9 @@ public class UserActivity extends AppCompatActivity {
     TextView trendTv;
     TextView myFollowTv;
     TextView myFavoriteTv;
+    ImageView trendIv;
+    ImageView followIv;
+    ImageView collectIv;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -60,6 +63,9 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        trendIv = findViewById(R.id.trend_image);
+        followIv = findViewById(R.id.follow_image);
+        collectIv = findViewById(R.id.favorite_image);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
         //follow persons
@@ -164,18 +170,30 @@ public class UserActivity extends AppCompatActivity {
                 myFollowTv.setText("她的关注");
                 myFavoriteTv.setText("她的收藏");
             }
-        }
 
-        //set click listener
-        collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                Intent i = new Intent(UserActivity.this, MyCollectActivity.class);
-                i.putExtra(CONST.USER_ID, u.userId);
-                i.putExtra(CONST.USER_SEX, u.sex);
-                ZGoto.to(i);
+            if (u.checkMyDynamicState == 1) {
+                ZR.setImage(trendIv, R.drawable.user_icon_trends);
+                trendTv.setTextColor(ZR.getColor(R.color.color_222222));
+            } else {
+                ZR.setImage(trendIv, R.drawable.user_icon_trends_d);
+                trendTv.setTextColor(ZR.getColor(R.color.color_999999));
             }
-        });
+            if (u.checkMyFollowState == 1) {
+                ZR.setImage(followIv, R.drawable.user_icon_follow);
+                myFollowTv.setTextColor(ZR.getColor(R.color.color_222222));
+            } else {
+                ZR.setImage(followIv, R.drawable.user_icon_follow_d);
+                myFollowTv.setTextColor(ZR.getColor(R.color.color_999999));
+            }
+            if (u.checkMyCollectState == 1) {
+                ZR.setImage(collectIv, R.drawable.user_icon_celect_d);
+                myFavoriteTv.setTextColor(ZR.getColor(R.color.color_222222));
+            } else {
+                ZR.setImage(collectIv, R.drawable.user_icon_collect);
+                myFavoriteTv.setTextColor(ZR.getColor(R.color.color_999999));
+
+            }
+        }
 
         //set my replies click listener
         myRepliesLayout.setOnClickListener(new OnClickListener() {
@@ -210,24 +228,47 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        //set click listener
+        collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
+            @Override
+            public void click(View v) {
+                if (u.checkMyCollectState == 1) {
+                    ZToast.toast("对方设置了隐私,对他人不可见");
+                } else {
+                    Intent i = new Intent(UserActivity.this, MyCollectActivity.class);
+                    i.putExtra(CONST.USER_ID, u.userId);
+                    i.putExtra(CONST.USER_SEX, u.sex);
+                    ZGoto.to(i);
+                }
+            }
+        });
+
         //go to my trend
         trendLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                Intent i = new Intent(UserActivity.this, MyStateActivity.class);
-                i.putExtra(CONST.USER_ID, u.userId);
-                i.putExtra(CONST.USER_SEX, u.sex);
-                ZGoto.to(i);
+                if (u.checkMyDynamicState == 1) {
+                    ZToast.toast("对方设置了隐私,对他人不可见");
+                } else {
+                    Intent i = new Intent(UserActivity.this, MyStateActivity.class);
+                    i.putExtra(CONST.USER_ID, u.userId);
+                    i.putExtra(CONST.USER_SEX, u.sex);
+                    ZGoto.to(i);
+                }
             }
         });
 
         followLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                Intent i = new Intent(UserActivity.this, MyFollowActivity.class);
-                i.putExtra(CONST.USER_ID, u.userId);
-                i.putExtra(CONST.USER_SEX, u.sex);
-                ZGoto.to(i);
+                if (u.checkMyFollowState == 1) {
+                    ZToast.toast("对方设置了隐私,对他人不可见");
+                } else {
+                    Intent i = new Intent(UserActivity.this, MyFollowActivity.class);
+                    i.putExtra(CONST.USER_ID, u.userId);
+                    i.putExtra(CONST.USER_SEX, u.sex);
+                    ZGoto.to(i);
+                }
             }
         });
     }

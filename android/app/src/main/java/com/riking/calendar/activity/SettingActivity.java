@@ -136,6 +136,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 }, 2000);
 
                 break;
+
+            }
+            case R.id.user_private_set_layout: {
+                ZGoto.to(PrivateSettingActivity.class);
+                break;
             }
         }
     }
