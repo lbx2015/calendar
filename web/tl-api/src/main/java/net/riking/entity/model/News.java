@@ -1,6 +1,7 @@
 package net.riking.entity.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -90,10 +91,19 @@ public class News extends BaseAuditProp {
 	// 是否收藏（0-未收藏，1-已收藏）
 	@Transient
 	private Integer isCollect;
+	
+	@Transient
+	private List<NewsComment> newsCommentList;
 
 	public News() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public News(String title, String content) {
+		super();
+		this.title = title;
+		this.content = content;
 	}
 
 	public News(String id, Date createdTime, Date modifiedTime, String title, String seat, String coverUrls,
@@ -229,4 +239,13 @@ public class News extends BaseAuditProp {
 		this.issued = issued;
 	}
 
+	public List<NewsComment> getNewsCommentList() {
+		return newsCommentList;
+	}
+
+	public void setNewsCommentList(List<NewsComment> newsCommentList) {
+		this.newsCommentList = newsCommentList;
+	}
+
+	
 }

@@ -53,6 +53,9 @@ public interface NewsRepo extends JpaRepository<News, String>, JpaSpecificationE
 	 */
 	@Query("select new net.riking.entity.model.News(n.id,n.createdTime,n.modifiedTime,n.title,n.seat,n.coverUrls,n.content,n.issued) from News n where n.id =?1")
 	News getById(String newsId);
+	
+	@Query("select new net.riking.entity.model.News(n.title,n.content) from News n where n.id =?1")
+	News getForCommentListById(String newsId);
 
 	/**
 	 * 根据关键字模糊查询title
