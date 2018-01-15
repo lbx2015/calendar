@@ -58,7 +58,7 @@ public class OtherUserResp extends BaseEntity {
 	@Comment("允许查看我的收藏: 0-不可以；1-可以查看")
 	private Integer checkMyCollectState;
 	
-	
+	private String phone;
 
 	public OtherUserResp(String userId, String userName, Integer sex,
 			String descript, Integer experience, String photoUrl,
@@ -216,6 +216,14 @@ public class OtherUserResp extends BaseEntity {
 
 	public void setCheckMyCollectState(Integer checkMyCollectState) {
 		this.checkMyCollectState = checkMyCollectState;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	
