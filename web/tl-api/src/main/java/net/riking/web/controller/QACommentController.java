@@ -70,6 +70,7 @@ public class QACommentController {
 		for (QAComment qaComment2 : list) {
 			i++;
 			qaComment2.setSerialNumber(new Integer(i));
+			qaComment2.setCommentTime(qaComment2.getCreatedTime());
 		}
 		// Long totalElements = (long) qaCommentRepo.countGetMore(qaComment.getIsDeleted());
 		// List<QAComment> qaComments = qaCommentRepo.findAllQAC(qaComment.getIsDeleted(),

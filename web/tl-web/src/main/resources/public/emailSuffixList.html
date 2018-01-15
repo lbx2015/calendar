@@ -12,6 +12,10 @@
 	<div class="content">
 		<div class="layui-elem-field actionBar">
 			<div class="layui-btn-group absolute">
+			<button class="layui-btn layui-btn-small layui-btn-primary" id="import-data">
+						<i class="layui-icon">&#xe608;</i>
+						批量导入
+					</button>
 				<button class="layui-btn layui-btn-small layui-btn-primary ajax-all" id="deleteBtn" onclick="delData()">
 					<i class="layui-icon">&#xe640;</i>
 					删除
@@ -42,6 +46,9 @@
 <link type="include" href="/common/depjs.html" />
 <script>
     $(function() {
+    	$("#import-data").click(function() {
+			addMore();
+		});
         $("#add-data").click(function() {
             var url = "emailSuffixEdit.html?flag=add";
             var title = "添加数据";

@@ -1,13 +1,19 @@
 package net.riking.web.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -35,6 +41,7 @@ import net.riking.entity.PageQuery;
 import net.riking.entity.EO.EmailSuffixEO;
 import net.riking.entity.model.EmailSuffix;
 import net.riking.util.ExcelToList;
+import net.riking.util.ExportExcelUtils;
 
 /**
  * web端邮箱操作
@@ -111,7 +118,7 @@ public class EmailSuffixController {
 		List<EmailSuffixEO> list = null;
 		try {
 			InputStream is = mFile.getInputStream();
-			String[] fields = { "emailSuffix", "enabled", "remark" };
+			String[] fields = { "companyName", "emailSuffix", "enabled", "remark" };
 			if (suffix.equals("xlsx")) {
 				list = ExcelToList.readXlsx(is, fields, EmailSuffixEO.class);
 			} else {
@@ -126,12 +133,23 @@ public class EmailSuffixController {
 			List<EmailSuffix> emailSuffixs = new ArrayList<>();
 			for (EmailSuffixEO dict : list) {
 				EmailSuffix emailSuffix = new EmailSuffix();
-				emailSuffix.setCreatedTime(new Date());
-				emailSuffix.setEnabled(Integer.parseInt(dict.getEnabled()));
-				emailSuffix.setIsDeleted(1);
-				emailSuffix.setRemark(dict.getRemark());
-				emailSuffix.setEmailSuffix(dict.getEmailSuffix());
+				try {
+					BeanUtils.copyProperties(emailSuffix, dict);
+					emailSuffix.setCreatedTime(new Date());
+					emailSuffix.setIsDeleted(1);
+					emailSuffixs.add(emailSuffix);
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// emailSuffix.setEnabled(Integer.parseInt(dict.getEnabled()));
+				// emailSuffix.setRemark(dict.getRemark());
+				// emailSuffix.setEmailSuffix(dict.getEmailSuffix());
 			}
+			emailSuffixRepo.deleteAll();
 			List<EmailSuffix> rs = emailSuffixRepo.save(emailSuffixs);
 			if (rs.size() > 0) {
 				return new Resp(true, CodeDef.SUCCESS);
@@ -171,6 +189,78 @@ public class EmailSuffixController {
 		emailSuffix.setIsDeleted(Const.INVALID);
 		emailSuffix = emailSuffixRepo.save(emailSuffix);
 		return new Resp(emailSuffix, CodeDef.SUCCESS);
+	}
+
+	/**
+	 * 导出excel
+	 * 
+	 * @param value response
+	 * @return
+	 */
+	@AuthPass
+	@RequestMapping(value = "/exportExcel", method = RequestMethod.GET)
+	public Resp exportExcel(HttpServletResponse response) {
+		Resp downloadExcel = null;
+		OutputStream outputStream = null;
+		String name = "emailSuffix";
+		try {
+			response.reset();
+			// response.setContentType("application/octet-stream");
+			response.setContentType("application/vnd.ms-excel;charset=utf-8");
+			response.setCharacterEncoding("utf-8");
+			response.addHeader("Content-Disposition",
+					"attachment; filename=" + new String(name.getBytes("utf-8"), "iso8859-1") + ".xls");
+			outputStream = response.getOutputStream();
+			List<EmailSuffix> emailSuffixs = emailSuffixRepo.findAll();
+			// 转换成excelModel
+			List<EmailSuffixEO> emailSuffixEOs = transferExcel(emailSuffixs);
+			// ExcelUtils.exportByList(emailSuffixEOs, outputStream,
+			// new String[] { "companyName", "emailSuffix", "enabled", "remark" });
+			HashMap<String, String> fieldsInfo = new HashMap<>();
+			fieldsInfo.put("companyName", "公司名称");
+			fieldsInfo.put("emailSuffix", "邮箱后缀");
+			fieldsInfo.put("enabled", "启用状态(0:禁用1：启用)");
+			fieldsInfo.put("remark", "备注");
+			ExportExcelUtils.exportByList(emailSuffixEOs, outputStream, fieldsInfo);
+			downloadExcel = new Resp(CodeDef.SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			downloadExcel = new Resp(CodeDef.ERROR);
+		} finally {
+			if (outputStream != null) {
+				try {
+					outputStream.flush();
+					outputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return downloadExcel;
+	}
+
+	/**
+	 * 获得ExcelModelVO集合
+	 * @param emailSuffixs
+	 * @return
+	 */
+	private List<EmailSuffixEO> transferExcel(List<EmailSuffix> emailSuffixs) {
+		List<EmailSuffixEO> list = new ArrayList<>();
+		emailSuffixs.forEach(item -> {
+			EmailSuffixEO emailSuffixEO = new EmailSuffixEO();
+			try {
+				BeanUtils.copyProperties(emailSuffixEO, item);
+				list.add(emailSuffixEO);
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+
+		return list;
 	}
 
 }

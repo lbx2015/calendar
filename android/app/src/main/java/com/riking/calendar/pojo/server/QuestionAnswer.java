@@ -2,6 +2,8 @@ package com.riking.calendar.pojo.server;
 
 import com.riking.calendar.pojo.server.base.BaseAuditProp;
 
+import java.util.List;
+
 
 /**
  * @author jc.tan 2017年11月27日
@@ -83,4 +85,6 @@ public class QuestionAnswer extends BaseAuditProp {
     // 用户是否关注
 //    @Transient
     public int isFollow;
+
+    public List<QAComment> qaCommentList;
 }

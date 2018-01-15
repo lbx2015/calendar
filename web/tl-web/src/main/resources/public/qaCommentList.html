@@ -96,7 +96,7 @@
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
 				   	if(obj.prop=="createdTime"){
-						obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");
+						//obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");
 			    	}
 					if (obj['item']) {
 						if (obj.isOperColumn) {
@@ -112,6 +112,26 @@
 								+ obj.item.qACommentId
 								+ "\""
 								+ ");'>回复审核</button>";
+						}
+					}
+					if(obj.item){
+						if(obj.prop == 'isAduitNum'){
+							//获取原来的值
+							var value = obj.html;
+							var num = value.split("/");
+							var cssStringStart = "<font color='red'>";
+							var cssStringend = "</font>";
+							var newValue =num[0];
+							if(num[0] != 0){
+								newValue = "";
+								newValue =cssStringStart+num[0];
+								newValue+=cssStringend;
+							}
+							
+							newValue+="/ "+num[1];
+							newValue+="/ "+num[2];
+							obj.html="";
+							obj.html+=newValue;
 						}
 					}
 					return obj.html;

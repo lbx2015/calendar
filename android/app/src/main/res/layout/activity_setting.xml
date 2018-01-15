@@ -32,6 +32,36 @@
         android:background="@color/color_e2e2e2" />
 
     <RelativeLayout
+        android:id="@+id/user_private_set_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="6dp"
+        android:onClick="onClick"
+        android:background="@android:color/white"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:id="@+id/user_private_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="隐私"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="9dp"
+            android:src="@drawable/work_rm_icon_arrow_r" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/clear_cache_relatvie_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -63,8 +93,8 @@
 
         <ImageView
             android:id="@+id/look_clear_cache"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"

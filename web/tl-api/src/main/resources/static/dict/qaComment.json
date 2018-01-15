@@ -89,10 +89,10 @@
 			"hidden": "table,edit,preview"
 		},
 		{
-			"prop": "createdTime",
+			"prop": "commentTime",
 			"alias": "评论时间",
 			"desc": "评论时间",
-			"type": "string",
+			"type": "datetime",
 			"group": "base",
 			"query": "1",
 			"query_order": "3",

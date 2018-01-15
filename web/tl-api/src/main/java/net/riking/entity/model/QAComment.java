@@ -92,15 +92,18 @@ public class QAComment extends BaseAuditProp {
 	@Transient
 	@JsonProperty("qacReplyList")
 	private List<QACReply> qacReplyList;
-	
+
 	@Transient
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date startTime;
-	
+
 	@Transient
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date endTime;
-	
+
+	@Transient
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date commentTime;
 
 	/* web end */
 	public QAComment() {
@@ -267,6 +270,12 @@ public class QAComment extends BaseAuditProp {
 		this.endTime = endTime;
 	}
 
-	
-	
+	public Date getCommentTime() {
+		return commentTime;
+	}
+
+	public void setCommentTime(Date commentTime) {
+		this.commentTime = commentTime;
+	}
+
 }
