@@ -32,7 +32,6 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
-import net.riking.entity.model.Email;
 import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.UserFollowCollect;
 import net.riking.entity.model.UserLogRstHis;
@@ -204,15 +203,6 @@ public class AppUserServiceImpl implements AppUserService {
 		return appUserDao.findMyFans(userId, pageBegin, pageCount);
 	}
 
-	@Override
-	public Email getMyEmail() {
-		String mySmtpHost = sysDataService.getDict("T_EMAIL", "EMAIL", "MYSMTPHOST").getValu().trim();
-		String myPassWord = sysDataService.getDict("T_EMAIL", "EMAIL", "MYPASSWORD").getValu().trim();
-		String myAccount = sysDataService.getDict("T_EMAIL", "EMAIL", "MYACCOUNT").getValu().trim();
-		String sender = sysDataService.getDict("T_EMAIL", "EMAIL", "SENDER").getValu().trim();
-		Email email = new Email(myAccount, myPassWord, mySmtpHost, sender);
-		return email;
-	}
 
 	@Override
 	public OtherUserResp getOtherMes(String toUserId, String userId) {

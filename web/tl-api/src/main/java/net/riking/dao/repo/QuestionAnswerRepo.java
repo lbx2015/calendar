@@ -45,6 +45,15 @@ public interface QuestionAnswerRepo
 	 */
 	@Query("select new QuestionAnswer(q.id,q.createdTime,q.modifiedTime,q.userId,q.questionId,q.content,(select a.userName from AppUser a where q.createdBy = a.id and a.isDeleted=1),(select ap.photoUrl from AppUserDetail ap where q.createdBy = ap.id),(select app.experience from AppUserDetail app where q.createdBy = app.id),(select tq.title from TopicQuestion tq where tq.id = q.questionId)) from QuestionAnswer q where q.id = ?1 and q.isDeleted=1 and q.isAduit <> 2")
 	QuestionAnswer getById(String questAnswerId);
+	
+	
+	/**
+	 * 评论页面回答的详情
+	 * @param questAnswerId
+	 * @return
+	 */
+	@Query("select new QuestionAnswer((select tq.title from TopicQuestion tq where tq.id = q.questionId), q.coverUrl,q.content) from QuestionAnswer q where q.id = ?1 and q.isDeleted=1 and q.isAduit <> 2")
+	QuestionAnswer getCommentQAById(String questAnswerId);
 
 	/**
 	 * 统计用户回答问题的回答数

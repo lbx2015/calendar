@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +67,7 @@ public class SysDataServiceImpl implements SysDataService {
 
 		// initCtryHdayCrcy();
 	}
+	
 
 	@SuppressWarnings("static-access")
 	private void initEmailSuffix() {
@@ -247,6 +252,25 @@ public class SysDataServiceImpl implements SysDataService {
 		List<EmailSuffix> emailSuffixs = RedisUtil.getInstall().getList(EmailSuffix.class.getName().toUpperCase());
 		return emailSuffixs;
 	}
+	
+	@SuppressWarnings("static-access")
+	@Override
+	public Email getEmail(String theme) throws EmailException {
+		Email email = new SimpleEmail();
+		String mySmtpHost = getDict("T_EMAIL", "EMAIL", "MYSMTPHOST").getValu().trim();
+		String myAccount = getDict("T_EMAIL", "EMAIL", "MYACCOUNT").getValu().trim();
+		String myPassWord = getDict("T_EMAIL", "EMAIL", "MYPASSWORD").getValu().trim();
+		String myPort = getDict("T_EMAIL", "EMAIL", "MYPORT").getValu().trim();
+		String sender = getDict("T_EMAIL", "EMAIL", "SENDER").getValu().trim();
+		email.setHostName(mySmtpHost);
+		email.setSmtpPort(Integer.parseInt(myPort));
+		email.setAuthenticator(new DefaultAuthenticator(myAccount, myPassWord));
+		email.setFrom(myAccount, theme);
+		email.setSubject(sender);
+		email.setSSLOnConnect(true);
+		return email;
+	}
+	
 	// @SuppressWarnings("static-access")
 	// private void initCtryHdayCrcy(){
 	// CtryHdayCrcy ctryHdayCrcy = new CtryHdayCrcy();

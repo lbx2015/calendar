@@ -82,6 +82,16 @@ public class UpdUserParams extends BaseEntity {
 	@Comment("用户邮箱是否已认证： 0-未认证 1-已认证")
 	private Integer isIdentified;
 
+	// 1可以查看，0不可以
+	// 允许查看我的动态
+	private Integer checkMyDynamicState;
+
+	// 查看我的关注
+	private Integer checkMyFollowState;
+
+	// 查看我的收藏
+	private Integer checkMyCollectState;
+
 	public UpdUserParams() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -261,6 +271,30 @@ public class UpdUserParams extends BaseEntity {
 
 	public void setIsGuide(Integer isGuide) {
 		this.isGuide = isGuide;
+	}
+
+	public Integer getCheckMyDynamicState() {
+		return checkMyDynamicState;
+	}
+
+	public void setCheckMyDynamicState(Integer checkMyDynamicState) {
+		this.checkMyDynamicState = checkMyDynamicState;
+	}
+
+	public Integer getCheckMyFollowState() {
+		return checkMyFollowState;
+	}
+
+	public void setCheckMyFollowState(Integer checkMyFollowState) {
+		this.checkMyFollowState = checkMyFollowState;
+	}
+
+	public Integer getCheckMyCollectState() {
+		return checkMyCollectState;
+	}
+
+	public void setCheckMyCollectState(Integer checkMyCollectState) {
+		this.checkMyCollectState = checkMyCollectState;
 	}
 
 }

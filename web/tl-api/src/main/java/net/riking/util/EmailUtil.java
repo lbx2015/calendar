@@ -30,13 +30,13 @@ public class EmailUtil {
 	 * @throws Exception
 	 */
 	public static void sendEmail(Email email) throws Exception {
-
 		// 1. 创建参数配置, 用于连接邮件服务器的参数配置
 		Properties props = new Properties(); // 参数配置
 		props.setProperty("mail.transport.protocol", "smtp"); // 使用的协议（JavaMail规范要求）
 		props.setProperty("mail.smtp.host", email.getMySMTPHost()); // 发件人的邮箱的 SMTP 服务器地址
 		props.setProperty("mail.smtp.auth", "true"); // 需要请求认证
-
+		//props.setProperty("mail.smtp.ssl.enable", "true");
+		
 		// PS: 某些邮箱服务器要求 SMTP 连接需要使用 SSL 安全认证 (为了提高安全性, 邮箱支持SSL连接, 也可以自己开启),
 		// 如果无法连接邮件服务器, 仔细查看控制台打印的 log, 如果有有类似 “连接失败, 要求 SSL 安全连接” 等错误,
 		// 打开下面 /* ... */ 之间的注释代码, 开启 SSL 安全连接。
@@ -73,7 +73,7 @@ public class EmailUtil {
 		// (5) 如果以上几点都确定无误, 到邮件服务器网站查找帮助。
 		//
 		// PS_03: 仔细看log, 认真看log, 看懂log, 错误原因都在log已说明。
-		transport.connect(email.getMyAccount(), email.getMyPassword());
+		transport.connect(email.getMySMTPHost(), email.getMyAccount(), email.getMyPassword());
 
 		// 6. 发送邮件, 发到所有的收件地址, message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人
 		transport.sendMessage(message, message.getAllRecipients());
@@ -117,5 +117,5 @@ public class EmailUtil {
 
 		return message;
 	}
-
+	
 }

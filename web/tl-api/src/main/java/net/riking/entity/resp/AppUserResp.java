@@ -84,6 +84,16 @@ public class AppUserResp extends BaseEntity {
 	// 微信名
 	private String wechatNickName;
 
+	// 1可以查看，0不可以
+	// 允许查看我的动态
+	private Integer checkMyDynamicState;
+
+	// 查看我的关注
+	private Integer checkMyFollowState;
+
+	// 查看我的收藏
+	private Integer checkMyCollectState;
+
 	public AppUserResp(String userId, String userName, String openId, String email, String phone, String realName,
 			String companyName, Integer sex, String birthday, String address, String descript, String phoneDeviceid,
 			Integer integral, Integer experience, String photoUrl, String remindTime, Integer isSubscribe,
@@ -314,6 +324,30 @@ public class AppUserResp extends BaseEntity {
 
 	public void setIsGuide(Integer isGuide) {
 		this.isGuide = isGuide;
+	}
+
+	public Integer getCheckMyDynamicState() {
+		return checkMyDynamicState;
+	}
+
+	public void setCheckMyDynamicState(Integer checkMyDynamicState) {
+		this.checkMyDynamicState = checkMyDynamicState;
+	}
+
+	public Integer getCheckMyFollowState() {
+		return checkMyFollowState;
+	}
+
+	public void setCheckMyFollowState(Integer checkMyFollowState) {
+		this.checkMyFollowState = checkMyFollowState;
+	}
+
+	public Integer getCheckMyCollectState() {
+		return checkMyCollectState;
+	}
+
+	public void setCheckMyCollectState(Integer checkMyCollectState) {
+		this.checkMyCollectState = checkMyCollectState;
 	}
 
 }

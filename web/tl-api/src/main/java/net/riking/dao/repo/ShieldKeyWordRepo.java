@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import net.riking.entity.model.ShieldKeyWord;
 
 @Repository
-public interface ShieldKeyWordRepo extends JpaRepository<ShieldKeyWord, Long>, JpaSpecificationExecutor<ShieldKeyWord>{
-	
-	@Query("select keyWord from ShieldKeyWord")
+public interface ShieldKeyWordRepo extends JpaRepository<ShieldKeyWord, Long>, JpaSpecificationExecutor<ShieldKeyWord> {
+
+	@Query("select keyWord from ShieldKeyWord where enabled=1")
 	Set<String> findAllKeyWord();
 
 }
