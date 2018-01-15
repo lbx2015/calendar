@@ -130,26 +130,16 @@ public class TQuestionServiceImpl implements TQuestionService {
 				break;
 			// 用户关注
 			case Const.OBJ_TYPE_3:
-				UserFollowRel userFollowRel = new UserFollowRel();
 				if (Const.EFFECTIVE == tQuestionParams.getEnabled()) {
 					// 先根据toUserId 去数据库查一次记录，如果有一条点赞记录就新增一条关注记录并关注状态改为：2-互相关注
 					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
-							tQuestionParams.getUserId());// 对方的点赞记录
+							tQuestionParams.getUserId());
 					if (toUserFollowRel != null) {
-						UserFollowRel rels = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getUserId(),
-								tQuestionParams.getAttentObjId());
-						if (null == rels) {
-							// 更新对方关注表，互相关注
-							userFollowRelRepo.updFollowStatus(toUserFollowRel.getUserId(),
-									toUserFollowRel.getToUserId(), 2);// 2-互相关注
-							// 如果传过来的参数是关注，保存新的一条关注记录
-							userFollowRel.setUserId(tQuestionParams.getUserId());
-							userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
-							userFollowRel.setFollowStatus(2);// 互相关注
-							userFollowRelRepo.save(userFollowRel);
-							return true;
-						}
+						toUserFollowRel.setFollowStatus(2);// 互相关注
+						userFollowRelRepo.save(toUserFollowRel);
+						return true;
 					} else {
+						UserFollowRel userFollowRel = new UserFollowRel();
 						// 如果传过来的参数是关注，保存新的一条关注记录
 						userFollowRel.setUserId(tQuestionParams.getUserId());
 						userFollowRel.setToUserId(tQuestionParams.getAttentObjId());
@@ -159,19 +149,27 @@ public class TQuestionServiceImpl implements TQuestionService {
 					}
 				} else if (Const.INVALID == tQuestionParams.getEnabled()) {
 					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
-							tQuestionParams.getUserId());// 对方的点赞记录
+							tQuestionParams.getUserId());
 					if (null != toUserFollowRel) {
-						userFollowRelRepo.updFollowStatus(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId(),
-								1);// 0-非互相关注
-					}
-					// 如果传过来是取消关注，把之前一条记录物理删除
-					userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
+						// 如果传过来是取消关注，且userId 和 ToUserId 顺序一致， 则删除该条记录。
+						if(toUserFollowRel.getUserId().equals(tQuestionParams.getUserId())){
+							userFollowRelRepo.deleteByUIdAndToId(tQuestionParams.getUserId(), tQuestionParams.getAttentObjId());
+							//若是互相关注， 则在建一条userId 和 ToUserId 顺序相反的 新记录
+							if(toUserFollowRel.getFollowStatus()==2){
+								UserFollowRel followRel = new UserFollowRel();
+								followRel.setFollowStatus(1);
+								followRel.setUserId(tQuestionParams.getAttentObjId());
+								followRel.setToUserId(tQuestionParams.getUserId());
+								userFollowRelRepo.save(followRel);
+							}
+						}else if(toUserFollowRel.getToUserId().equals(tQuestionParams.getUserId()))
+							userFollowRelRepo.updFollowStatus(tQuestionParams.getAttentObjId(), tQuestionParams.getUserId(), 1);
+						}
 					return false;
 				} else {
 					logger.error("参数异常：enabled=" + tQuestionParams.getEnabled());
 					throw new RuntimeException("参数异常：enabled=" + tQuestionParams.getEnabled());
 				}
-				break;
 			default:
 				logger.error("参数异常：objType=" + tQuestionParams.getObjType());
 				throw new RuntimeException("参数异常：objType=" + tQuestionParams.getObjType());

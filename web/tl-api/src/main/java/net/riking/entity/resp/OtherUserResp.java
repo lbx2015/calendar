@@ -2,6 +2,7 @@ package net.riking.entity.resp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
 
 /**
@@ -45,6 +46,42 @@ public class OtherUserResp extends BaseEntity {
 
 	// 是否已关注
 	private Integer isFollow;
+	
+	@Comment("允许查看我的动态: 0-不可以；1-可以查看")
+	private Integer checkMyDynamicState;
+
+	// 查看我的关注
+	@Comment("允许查看我的关注: 0-不可以；1-可以查看")
+	private Integer checkMyFollowState;
+
+	// 查看我的收藏
+	@Comment("允许查看我的收藏: 0-不可以；1-可以查看")
+	private Integer checkMyCollectState;
+	
+	
+
+	public OtherUserResp(String userId, String userName, Integer sex,
+			String descript, Integer experience, String photoUrl,
+			Integer followStatus, Integer checkMyDynamicState,
+			Integer checkMyFollowState, Integer checkMyCollectState) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.sex = sex;
+		this.descript = descript;
+		this.experience = experience;
+		this.photoUrl = photoUrl;
+		if (followStatus == null || followStatus == 0) {
+			this.isFollow = 0;
+		} else if (followStatus == 1) {
+			this.isFollow = 1;
+		} else if (followStatus == 2) {
+			this.isFollow = 2;
+		}
+		this.checkMyDynamicState = checkMyDynamicState;
+		this.checkMyFollowState = checkMyFollowState;
+		this.checkMyCollectState = checkMyCollectState;
+	}
 
 	public OtherUserResp(String userId, String userName, Integer sex, String descript, Integer experience,
 			String photoUrl, Integer followStatus) {
@@ -157,4 +194,30 @@ public class OtherUserResp extends BaseEntity {
 		this.isFollow = isFollow;
 	}
 
+	public Integer getCheckMyDynamicState() {
+		return checkMyDynamicState;
+	}
+
+	public void setCheckMyDynamicState(Integer checkMyDynamicState) {
+		this.checkMyDynamicState = checkMyDynamicState;
+	}
+
+	public Integer getCheckMyFollowState() {
+		return checkMyFollowState;
+	}
+
+	public void setCheckMyFollowState(Integer checkMyFollowState) {
+		this.checkMyFollowState = checkMyFollowState;
+	}
+
+	public Integer getCheckMyCollectState() {
+		return checkMyCollectState;
+	}
+
+	public void setCheckMyCollectState(Integer checkMyCollectState) {
+		this.checkMyCollectState = checkMyCollectState;
+	}
+
+	
+	
 }

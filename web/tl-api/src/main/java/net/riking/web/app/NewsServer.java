@@ -231,11 +231,11 @@ public class NewsServer {
 		int rowNum = 0;
 		String content = "";
         while(matcher.find()&&rowNum<2){
-        	content += matcher.group();
-        	if(rowNum==0){
-        		content += "\r\n";
+        	String group = matcher.group();
+        	if(!group.contains("<img")){
+            	content += group.replace("<br>", "");
+            	rowNum++;
         	}
-        	rowNum++;
         }
         news.setContent(content);
 		List<NewsComment> newsCommentInfoList = newsCommentRepo.findByNewsId(newsParams.getNewsId(),

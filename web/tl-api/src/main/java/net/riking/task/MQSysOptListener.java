@@ -34,7 +34,6 @@ import net.riking.service.QAInviteService;
 import net.riking.service.QAnswerService;
 import net.riking.service.TQuestionService;
 import net.riking.service.TopicService;
-import net.riking.spring.SpringBeanUtil;
 import net.riking.util.JdpushUtil;
 import net.sf.json.JSONObject;
 

@@ -53,7 +53,7 @@ public interface AppUserFollowRelRepo
 	 * @param toUserId
 	 * @return
 	 */
-	@Query(" from UserFollowRel where userId = ?1 and toUserId = ?2")
+	@Query(" from UserFollowRel where (userId = ?1 and toUserId = ?2) or  (userId = ?2 and toUserId = ?1)")
 	UserFollowRel getByUIdAndToId(String userId, String toUserId);
 
 	
