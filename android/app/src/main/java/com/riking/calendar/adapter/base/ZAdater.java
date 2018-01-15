@@ -29,7 +29,7 @@ public abstract class ZAdater<VH extends RecyclerView.ViewHolder, ItemBean> exte
     }
 
     public void setData(List<ItemBean> mList) {
-        if (mList == null || mList.isEmpty()) return;
+        if (mList == null) return;
         MyLog.d("set data size: " + mList.size());
 //        this.mList.clear();
         this.mList = mList;

@@ -52,7 +52,6 @@
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="user_name"
                         android:textColor="@android:color/white"
                         android:textSize="17sp" />
 
@@ -60,7 +59,6 @@
                         android:id="@+id/user_comment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="user_comment"
                         android:textColor="@android:color/white"
                         android:textSize="12sp" />
 
@@ -84,6 +82,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:drawableLeft="@drawable/com_btn_icon_plus_w"
+                    android:drawablePadding="5dp"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
@@ -119,7 +119,7 @@
                     android:id="@+id/my_follow_person_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="126"
+                    android:text="0"
                     android:textColor="@color/color_222222"
                     android:textSize="18sp" />
 
@@ -152,7 +152,7 @@
                     android:id="@+id/following_me_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="126"
+                    android:text="0"
                     android:textColor="@color/color_222222"
                     android:textSize="18sp" />
 
@@ -185,7 +185,7 @@
                     android:id="@+id/my_answer_num_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="126"
+                    android:text="0"
                     android:textColor="@color/color_222222"
                     android:textSize="18sp" />
 
