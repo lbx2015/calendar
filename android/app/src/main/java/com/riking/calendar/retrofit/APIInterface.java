@@ -243,7 +243,7 @@ public interface APIInterface {
      * @return
      */
     @POST("qAnswer/qACommentList")
-    Call<ResponseModel<List<QAComment>>> qACommentList(@Body QAnswerParams params);
+    Call<ResponseModel<QuestionAnswer>> qACommentList(@Body QAnswerParams params);
 
     /**
      * 问题回答的评论

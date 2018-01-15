@@ -29,6 +29,7 @@ import com.riking.calendar.pojo.params.CommentParams;
 import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.NCReply;
 import com.riking.calendar.pojo.server.QAComment;
+import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZPreference;
@@ -58,6 +59,8 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
     private String answerId;
     private int answerCommentsNum;
     private TextView activityTitle;
+    private TextView questionTitleTv;
+    private TextView answerContentTv;
 
     //override this method if u need change the layout
     public void setLayout() {
@@ -81,6 +84,8 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);
+        questionTitleTv = findViewById(R.id.title);
+        answerContentTv = findViewById(R.id.content);
     }
 
     public void setListenerToRootView() {
@@ -262,15 +267,18 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
     private void loadAnswerComments(final int page) {
         QAnswerParams params = new QAnswerParams();
         params.questAnswerId = answerId;
-        APIClient.qACommentList(params, new ZCallBackWithFail<ResponseModel<List<QAComment>>>() {
+        APIClient.qACommentList(params, new ZCallBackWithFail<ResponseModel<QuestionAnswer>>() {
             @Override
-            public void callBack(ResponseModel<List<QAComment>> response) {
+            public void callBack(ResponseModel<QuestionAnswer> response) {
                 if (failed) {
                     mPullToLoadView.setComplete();
                     isLoading = false;
 
                 } else {
-                    List<QAComment> comments = response._data;
+                    QuestionAnswer answer = response._data;
+                    List<QAComment> comments = answer.qaCommentList;
+                    questionTitleTv.setText(answer.title);
+                    answerContentTv.setText(answer.content);
 //                isLoading = false;
 //                if (comments.size() == 0) {
 //                    ZToast.toast("没有更多数据了");

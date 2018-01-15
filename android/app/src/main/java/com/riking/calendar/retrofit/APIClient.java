@@ -665,7 +665,7 @@ public class APIClient {
         apiInterface.qAnswerAgree(params).enqueue(c);
     }
 
-    public static void qACommentList(QAnswerParams params, ZCallBackWithFail<ResponseModel<List<QAComment>>> c) {
+    public static void qACommentList(QAnswerParams params, ZCallBackWithFail<ResponseModel<QuestionAnswer>> c) {
         apiInterface.qACommentList(params).enqueue(c);
     }
 
