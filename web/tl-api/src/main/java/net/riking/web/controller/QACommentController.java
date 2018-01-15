@@ -53,6 +53,8 @@ public class QACommentController {
 	public Resp get_(@RequestParam("id") String id) {
 		QAComment qaComment = qaCommentRepo.findOne(id);
 		qaComment.setUserName(appUserRepo.findOne(qaComment.getUserId()).getUserName());
+		// 设置评论时间
+		qaComment.setCommentTime(qaComment.getCreatedTime());
 		return new Resp(qaComment, CodeDef.SUCCESS);
 	}
 

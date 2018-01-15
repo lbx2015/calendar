@@ -85,6 +85,10 @@ public class QACReply extends BaseAuditProp {
 	// @JsonIgnore
 	private String toUserName;
 
+	// 回复时间
+	@Transient
+	private Date commentTime;
+
 	public QACReply() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -191,6 +195,14 @@ public class QACReply extends BaseAuditProp {
 
 	public void setToUserId(String toUserId) {
 		this.toUserId = toUserId;
+	}
+
+	public Date getCommentTime() {
+		return commentTime;
+	}
+
+	public void setCommentTime(Date commentTime) {
+		this.commentTime = commentTime;
 	}
 
 }

@@ -68,6 +68,16 @@
     
     //编辑保存
     function edit() {
+    	//判断至少选中一个属于的相关话题并且不能查过三个
+    	var selectedNum = $("input[type='checkbox']:checked").length;
+    	if(selectedNum ==0 ){
+    		TmplUtils.showMsgFail('至少选中一个属于的相关话题');
+    		return;
+    	}
+    	if(selectedNum >3){
+    		TmplUtils.showMsgFail('选中话题不能超过三个');
+    		return;
+    	}
         var reportList = Utils.formToObj("edit");
         var url = Const.apiUrl + "/questionKeyWord/save";
         View.post(url, reportList, function(resp) {

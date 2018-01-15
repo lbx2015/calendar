@@ -13,7 +13,8 @@
 			"group": "base",
 			"query": "1",
 			"query_order": "1",
-			"type": "string"
+			"type": "string",
+			"verify":"required"
 		},
 		{
 			"prop": "topicIds",
@@ -21,7 +22,8 @@
 			"group": "base",
 			"edit_block": "1",
 			"type": "multipleChoice",
-			"choice_url": "/tQuestion/getTopicList"
+			"choice_url": "/tQuestion/getTopicList",
+			"verify":"required"
 		}
 	]
 }
