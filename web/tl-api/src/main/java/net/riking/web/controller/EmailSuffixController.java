@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -217,7 +216,7 @@ public class EmailSuffixController {
 			List<EmailSuffixEO> emailSuffixEOs = transferExcel(emailSuffixs);
 			// ExcelUtils.exportByList(emailSuffixEOs, outputStream,
 			// new String[] { "companyName", "emailSuffix", "enabled", "remark" });
-			HashMap<String, String> fieldsInfo = new LinkedHashMap<>();
+			LinkedHashMap<String, String> fieldsInfo = new LinkedHashMap<>();
 			fieldsInfo.put("companyName", "公司名称");
 			fieldsInfo.put("emailSuffix", "邮箱后缀");
 			fieldsInfo.put("enabled", "启用状态(0:禁用1：启用)");
