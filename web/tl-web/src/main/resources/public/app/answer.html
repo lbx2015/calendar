@@ -139,6 +139,8 @@ $(function (){
 	                }); //建立编辑器
 		});
 	});
+	var _$style = $($("iframe[name^='LAY_layedit']").contents()[0].getElementsByTagName('style')[0]);
+        _$style.html(_$style.html()+ "img {height: 150px;width: auto;display: block;}");
     $("._box").find("input[name='file']").attr("accept", "image/*");
     $(window).resize(function() {
          $(".layui-layedit").css("height",$(window).height());
