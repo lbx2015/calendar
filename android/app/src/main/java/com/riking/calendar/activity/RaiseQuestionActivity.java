@@ -20,13 +20,9 @@ import com.google.gson.reflect.TypeToken;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.RelatedQuestionAdapter;
-import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
-import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.QuestResult;
-import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
@@ -88,21 +84,9 @@ public class RaiseQuestionActivity extends AppCompatActivity {
                 }
                 //raise the question if no existed
                 if (!existed) {
-                    TQuestionParams params = new TQuestionParams();
-                    params.title = searchCondition;
-                    APIClient.getTopicByQuestion(params, new ZCallBackWithFail<ResponseModel<List<Topic>>>() {
-                        @Override
-                        public void callBack(ResponseModel<List<Topic>> response) {
-                            swipeRefreshLayout.setRefreshing(false);
-                            if (!failed && response._data != null) {
-                                goToEditQuestionContentActivity(response._data);
-                            } else {
-                                Intent i = new Intent(RaiseQuestionActivity.this, AddTopicActivity.class);
-                                i.putExtra(CONST.SEARCH_CONDITION, searchCondition);
-                                ZGoto.to(i);
-                            }
-                        }
-                    });
+                    Intent i = new Intent(RaiseQuestionActivity.this, AddTopicActivity.class);
+                    i.putExtra(CONST.SEARCH_CONDITION, searchCondition);
+                    ZGoto.to(i);
                 }
             }
         });
@@ -131,42 +115,6 @@ public class RaiseQuestionActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 search(searchCondition);
-            }
-        });
-    }
-
-    /**
-     * jump the topic select activity
-     *
-     * @param topics
-     */
-    public void goToEditQuestionContentActivity(List<Topic> topics) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 3 && i < topics.size(); i++) {
-            Topic t = topics.get(i);
-            String s = t.topicId;
-            if (t.title.equals(s)) {
-                sb.append(t.topicId);
-                if (i < topics.size() - 1) {
-                    sb.append(",");
-                }
-                break;
-            }
-        }
-
-        TQuestionParams params = new TQuestionParams();
-        //append "?" in case user not adding ?
-        if (!searchCondition.endsWith("?")) {
-            searchCondition = searchCondition + "?";
-        }
-        params.title = searchCondition;
-        params.topicId = sb.toString();
-        APIClient.getEditHtmlUrl(params, new ZCallBack<ResponseModel<String>>() {
-            @Override
-            public void callBack(ResponseModel<String> response) {
-                Intent i = new Intent(RaiseQuestionActivity.this, SubmitQuestionActivity.class);
-                i.putExtra(CONST.WEB_URL, response._data);
-                startActivity(i);
             }
         });
     }
@@ -200,7 +148,6 @@ public class RaiseQuestionActivity extends AppCompatActivity {
 
                     //do nothing when the data is empty.
                     if (TextUtils.isEmpty(_data.trim())) {
-                        mAdapter.clear();
                         return;
                     }
 
