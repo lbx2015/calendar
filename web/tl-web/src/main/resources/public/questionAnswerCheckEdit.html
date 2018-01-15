@@ -74,7 +74,7 @@
 					View.resetUi();
 				});
 				if (id) {
-					var url = Const.apiUrl + "/newsComment/get";
+					var url = Const.apiUrl + "/questionAnswer/get";
 					var _this = this;
 					View.get(url, "id=" + id,
 					function(resp) {
@@ -108,13 +108,13 @@
 		}
 		//编辑保存
 		function edit() {
-			var newsComment = Utils.formToObj("edit");
+			var questionAnswer = Utils.formToObj("edit");
 			if(id){
-				newsComment.id = id;
+				questionAnswer.id = id;
 			}
 			/*   newsComment.email = newsComment.email.split(",")[0] + "@" + newsComment.email.split(",")[1]; */
-			var url = Const.apiUrl + "/newsComment/addOrUpdate";
-			View.post(url, newsComment,
+			var url = Const.apiUrl + "/questionAnswer/addOrUpdate";
+			View.post(url, questionAnswer,
 			function(resp) {
 				TmplUtils.showMsgSuccess('编辑成功');
 				parent.tbTmpl.refresh("pindex=" + (parent.TmplUtils.currPage - 1) + "&pcount=" + parent.TmplUtils.pageSize + parent.TmplUtils.searchParam);
@@ -311,6 +311,26 @@
 								+ obj.item.qACommentId
 								+ "\""
 								+ ");'>回复审核</button>";
+						}
+					}
+					if(obj.item){
+						if(obj.prop == 'isAduitNum'){
+							//获取原来的值
+							var value = obj.html;
+							var num = value.split("/");
+							var cssStringStart = "<font color='red'>";
+							var cssStringend = "</font>";
+							var newValue =num[0];
+							if(newValue!=0){
+								newValue="";
+								newValue+=cssStringStart;
+								newValue+=num[0];
+								newValue+=cssStringend;
+							}
+							newValue+="/ "+num[1];
+							newValue+="/ "+num[2];
+							obj.html="";
+							obj.html+=newValue;
 						}
 					}
 					return obj.html;
