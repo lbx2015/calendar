@@ -30,11 +30,16 @@ public interface AppUserDetailRepo
 	@Modifying
 	@Query("update AppUserDetail set integral = ?1 where id=?2")
 	int updIntegral(Integer integral, String userId);
-
+	
 	@Transactional
 	@Modifying
 	@Query("update AppUserDetail set photoUrl = ?2 where id = ?1")
 	int updatePhoto(String userId, String photo);
+	
+	@Transactional
+	@Modifying
+	@Query("update AppUserDetail set companyName = ?2 where id = ?1")
+	int updateCompanyName(String userId, String companyName);
 	
 	@Transactional
 	@Modifying

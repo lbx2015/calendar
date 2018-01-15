@@ -103,38 +103,70 @@
             android:name=".activity.OrderReportActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".activity.SearchReportActivity" />
-        <activity android:name=".activity.CreateTaskActivity" />
+        <activity
+            android:name=".activity.CreateTaskActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".activity.MomentAddActivity" />
         <activity android:name=".activity.CompleteReportHistoryActivity" />
         <activity android:name=".activity.OverdueReportActivity" />
         <activity android:name=".activity.FeedBackActivity" />
         <activity
             android:name=".activity.LoginNavigateActivity"
-            android:hardwareAccelerated="true" />
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:noHistory="true" />
         <activity
             android:name=".activity.InputCellPhoneNumberActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity
-            android:name=".activity.InputEmailActivity" />
+        <activity android:name=".activity.InputEmailActivity" />
         <activity
             android:name=".activity.InputVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".activity.InputEmailVerifyCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity android:name=".activity.IndustrySelectActivity"></activity>
-        <activity android:name=".activity.PositionSelectActivity"></activity>
-        <activity android:name=".activity.ReportsSelectActivity"></activity>
-        <activity android:name=".activity.AddTopicActivity"></activity>
-        <activity android:name=".activity.MyRepliesActivity"></activity>
-        <activity android:name=".activity.MyFollowersActivity"></activity>
-        <activity android:name=".activity.MyFavoritesUserActivity"></activity>
-        <activity android:name=".activity.SystemNoticeActivity"></activity>
-        <activity android:name=".activity.MyStateActivity"></activity>
-        <activity android:name=".activity.UserActivity"></activity>
-        <activity android:name=".activity.MyFollowActivity"></activity>
-        <activity android:name=".activity.MyCollectActivity"></activity>
-        <activity android:name=".activity.MyRelationActivity"></activity>
+        <activity
+            android:name=".activity.IndustrySelectActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.PositionSelectActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.ReportsSelectActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.AddTopicActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyRepliesActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyFollowersActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyFavoritesUserActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.SystemNoticeActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyStateActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.UserActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyInfoActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyFollowActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyCollectActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".activity.MyRelationActivity"
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.TopicActivity"
             android:theme="@style/AppThemeNoActionBar"

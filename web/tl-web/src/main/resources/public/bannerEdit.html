@@ -37,9 +37,12 @@
 	function editOnBind(attrs, param) {
 		tmpl = this;
 		tmpl.onFinish(function(data) {
-			var imgUrl = $(".layui-input-inline img").attr("src").replace("topic","banner").replace("photo/","");
-			$(".layui-input-inline img").attr("src",imgUrl);
-			
+			/* var imgUrl = $(".layui-input-inline img").attr("src").replace("topic","banner").replace("photo/","");
+			$(".layui-input-inline img").attr("src",imgUrl); */
+			//修改时，不能修改审核状态
+			if(flag == 'edit'){
+				$(".layui-input-inline select[name='isAduit'").attr("disabled",true);
+			}
 			View.resetUi();
 		});
 		tmpl.bind(function(callback) {

@@ -22,6 +22,8 @@ public class ZGoto {
 
     public static void toLoginActivity() {
         Intent i = new Intent(MyApplication.mCurrentActivity, LoginNavigateActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         MyApplication.mCurrentActivity.startActivity(i);
     }
 

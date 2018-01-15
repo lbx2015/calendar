@@ -2,6 +2,7 @@ package net.riking.service.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -202,14 +203,14 @@ public class QACommentServiceImpl implements QACommentService {
 					predicates.add(in);
 				}
 				// 获取时间查询
-				if (qaComment.getCreatedTime() != null) {
-					Calendar calendarStart = Calendar.getInstance();
-					calendarStart.setTime(qaComment.getCreatedTime());
-					Calendar calendarEnd = Calendar.getInstance();
-					calendarEnd.setTime(calendarStart.getTime());
-					calendarEnd.add(Calendar.MINUTE, 1);
-					// 时间搜索条件精度到分钟
-					predicates.add(cb.between(root.get("createdTime"), calendarStart.getTime(), calendarEnd.getTime()));
+				if(qaComment.getStartTime()!=null || qaComment.getEndTime()!=null){
+					if (qaComment.getEndTime() == null) {
+						predicates.add(cb.greaterThanOrEqualTo(root.get("createdTime"), qaComment.getStartTime()));
+					} else if (qaComment.getStartTime() == null) {
+						predicates.add(cb.lessThanOrEqualTo(root.get("createdTime"),qaComment.getEndTime()));
+					} else {
+						predicates.add(cb.between(root.get("createdTime"), qaComment.getStartTime(), qaComment.getEndTime()));
+					}
 				}
 				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
 			}

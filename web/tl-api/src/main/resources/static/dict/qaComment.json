@@ -92,7 +92,7 @@
 			"prop": "createdTime",
 			"alias": "评论时间",
 			"desc": "评论时间",
-			"type": "datetime",
+			"type": "string",
 			"group": "base",
 			"query": "1",
 			"query_order": "3",

@@ -13,7 +13,16 @@
 			"group": "base",
 			"query": "1",
 			"query_order": "1",
-			"type": "string"
+			"type": "string",
+			"editable":2 
+		},
+		{
+			"prop": "enabled",
+			"alias": "是否启用",
+			"desc": "是否启用",
+			"type": "enum",
+			"dict_key": "T_QUEST_KEYWORD.ENABLED",
+			"group": "base"
 		}
 	]
 }

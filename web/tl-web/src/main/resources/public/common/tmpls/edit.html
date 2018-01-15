@@ -413,7 +413,7 @@ if(rowItemNum == 2){
     </div>
 {{# }else if(attr.type == "imgUrl"){ }}
         <div class="layui-input-inline">
-			<img src="{{= Const.apiUrl +"/images/topic/"+propValue}}" style="width:10%;" alt="{{=propValue}}封面" />
+			<img onerror="this.src='images/img_default.jpg'" src="{{= Const.apiUrl + propValue}}" style="width:10%;" alt="封面" />
         </div>
     </div>
 {{# }else{ }}

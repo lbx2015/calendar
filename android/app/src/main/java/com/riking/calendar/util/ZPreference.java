@@ -23,7 +23,7 @@ public class ZPreference {
 
     public static boolean isLogin() {
         AppUserResp resp = getCurrentLoginUser();
-        return resp.isIdentify == 1 && ZPreference.pref.getBoolean(CONST.IS_LOGIN, false);
+        return resp != null && resp.isIdentify == 1 && ZPreference.pref.getBoolean(CONST.IS_LOGIN, false);
     }
 
     public static void remove(String key) {

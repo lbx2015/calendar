@@ -23,6 +23,10 @@ import com.riking.calendar.util.ZGoto;
  */
 
 public class LoginNavigateActivity extends AppCompatActivity {
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

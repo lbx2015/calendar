@@ -1,5 +1,7 @@
 package ss.com.bannerslider.views;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +41,13 @@ public class BannerAdapter extends FragmentStatePagerAdapter {
         if (layoutDirection==LayoutDirection.RTL){
             Collections.reverse(banners);
         }
+    }
+
+    @Override
+    public Parcelable saveState() {
+        Bundle bundle = (Bundle) super.saveState();
+        bundle.putParcelableArray("states", null); // Never maintain any states from the base class, just null it out
+        return bundle;
     }
 
     @Override

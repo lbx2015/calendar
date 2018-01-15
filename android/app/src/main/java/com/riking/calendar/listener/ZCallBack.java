@@ -38,11 +38,17 @@ public abstract class ZCallBack<T extends ResponseModel> implements Callback<T> 
                     mProgressDialog.dismiss();
                     mProgressDialog = null;
                 }
+
+
                 mProgressDialog = new ProgressDialog(MyApplication.mCurrentActivity);
                 mProgressDialog.setOwnerActivity(MyApplication.mCurrentActivity);
                 mProgressDialog.setMessage("正在加载中");
                 mProgressDialog.setCanceledOnTouchOutside(false);
+                Activity activity = mProgressDialog.getOwnerActivity();
+                if (activity != null && !activity.isFinishing()) {
                 mProgressDialog.show();
+                }
+
             }
         }, 1000);
     }

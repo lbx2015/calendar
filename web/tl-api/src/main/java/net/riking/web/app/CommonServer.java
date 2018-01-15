@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.mail.Email;
 import org.apache.http.util.TextUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.annos.AuthPass;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.AppVersionRepo;
@@ -33,7 +35,6 @@ import net.riking.dao.repo.TopicRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppVersion;
-import net.riking.entity.model.Email;
 import net.riking.entity.model.EmailSuffix;
 import net.riking.entity.model.Industry;
 import net.riking.entity.model.Recommend;
@@ -69,7 +70,7 @@ public class CommonServer {
 	SysDateServiceImpl sysDateService;
 
 	@Autowired
-	SysDataService sysDataservice;
+	SysDataService sysDataService;
 
 	@Autowired
 	IndustryRepo industryRepo;
@@ -94,6 +95,9 @@ public class CommonServer {
 
 	@Autowired
 	AppUserService appUserService;
+	
+	@Autowired
+	AppUserDetailRepo AppUserDetailRepo;
 
 	@Autowired
 	ReCommendService appUserReCommendServie;
@@ -132,10 +136,13 @@ public class CommonServer {
 			for (int i = 0; i < 6; i++) {
 				verifyCode += (int) (Math.random() * 9);
 			}
-			SendSmsResponse sendSmsResponse = smsUtil.sendSms(phone, verifyCode);
-			if (!sendSmsResponse.getCode().equals("OK")) {
-				return new AppResp(CodeDef.EMP.SMS_SEND_ERROR, sendSmsResponse.getMessage());
-			}
+			//发送验证码  调试时注释
+//			SendSmsResponse sendSmsResponse = smsUtil.sendSms(phone, verifyCode);
+//			if (!sendSmsResponse.getCode().equals("OK")) {
+//				return new AppResp(CodeDef.EMP.SMS_SEND_ERROR, sendSmsResponse.getMessage());
+//			}
+			
+			
 			logger.info("手机{}获取验证码成功", verifyCode);
 			RedisUtil.getInstall().setObject(Const.VALID_ + phone.trim(), Const.VALID_CODE_TIME, verifyCode);
 			Map<String, Object> result = new HashMap<String, Object>();
@@ -147,7 +154,7 @@ public class CommonServer {
 	@ApiOperation(value = "得到<所有>邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/getAllEmailSuffix", method = RequestMethod.POST)
 	public AppResp getAllEmailSuffix_() {
-		List<EmailSuffix> list = sysDataservice.getEmailSuffix(EmailSuffix.class.getName().toUpperCase());
+		List<EmailSuffix> list = sysDataService.getEmailSuffix(EmailSuffix.class.getName().toUpperCase());
 		List<String> emailSuffixs = new ArrayList<String>();
 		for (EmailSuffix emailSuffix : list) {
 			emailSuffixs.add("@" + emailSuffix.getEmailSuffix());
@@ -174,7 +181,6 @@ public class CommonServer {
 		appUser = appUserRepo.findOne(userParams.getUserId());
 		appUser.setEmail(userParams.getEmail());
 
-		Email email = appUserService.getMyEmail();
 		if (StringUtils.isNotBlank(appUser.getEmail())) {
 			String verifyCode = "";
 			for (int i = 0; i < 6; i++) {
@@ -183,17 +189,16 @@ public class CommonServer {
 			logger.info("邮箱认证{}获取验证码成功", verifyCode);
 			RedisUtil.getInstall().setObject(Const.VALID_ + appUser.getEmail().trim(), Const.VALID_CODE_TIME,
 					verifyCode);
-			email.setReceiveMail(appUser.getEmail());
-			email.setReceiver(appUser.getUserName());
-			email.setTheme("邮箱认证");
-			email.setContent("验证码：" + verifyCode);
-
-			logger.info("邮箱信息：" + email.toString());
-			Map<String, Object> result = new HashMap<String, Object>();
-			result.put("verifyCode", verifyCode);
-			// 发送邮箱
 			try {
-				EmailUtil.sendEmail(email);
+				Email email = sysDataService.getEmail("【悦历】邮箱认证");
+				String msg = "您的邮箱认证验证码是" + verifyCode + "，在5分钟内有效。如非本人操作请忽略此验证码。";
+				email.setMsg(msg);
+				email.addTo(appUser.getEmail());
+				// 发送邮箱
+				email.send();
+				logger.info("收件人：{}，内容：{}", appUser.getEmail(), msg);
+				Map<String, Object> result = new HashMap<String, Object>();
+				result.put("verifyCode", verifyCode);
 			} catch (Exception e) {
 				logger.error("邮件发送失败" + e);
 				return new AppResp(CodeDef.EMP.EMAIL_ERROR, CodeDef.EMP.EMAIL_ERROR_DESC);
@@ -227,8 +232,9 @@ public class CommonServer {
 			if (!isRn) {
 				return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
 			} else {
-				appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
-				return new AppResp(Const.EMPTY, CodeDef.SUCCESS);
+				//appUserRepo.updEmailIndentify(userParams.getUserId(), userParams.getEmail());
+				String companyName = appUserService.updateEmailAndCompany(userParams);
+				return new AppResp(companyName, CodeDef.SUCCESS);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
