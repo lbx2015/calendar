@@ -37,5 +37,9 @@ public class OtherUserResp {
 
     // 是否已关注
     public int isFollow;
+    //1可以查看，0不可以
+    public int checkMyDynamicState = 1;
+    public int checkMyFollowState = 1;
+    public int checkMyCollectState = 0;
 
 }

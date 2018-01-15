@@ -204,7 +204,7 @@ public interface APIInterface {
     Call<ResponseModel<News>> getNewsDetail(@Body NewsParams params);
 
     @POST("news/findNewsCommentList")
-    Call<ResponseModel<List<NewsComment>>> findNewsCommentList(@Body NewsParams params);
+    Call<ResponseModel<News>> findNewsCommentList(@Body NewsParams params);
 
     @POST("news/newsCommentPub")
     Call<ResponseModel<NewsComment>> newsCommentPub(@Body NewsParams params);

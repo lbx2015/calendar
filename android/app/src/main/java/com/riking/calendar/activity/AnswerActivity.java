@@ -95,7 +95,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
         if (!isNetworkAvailable()) { // loading offline
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
-        webView.loadUrl("file:///android_asset/example.html");
+//        webView.loadUrl("file:///android_asset/example.html");
 //        webView.loadUrl("http://image.baidu.com/search/index?ct=201326592&cl=2&st=-1&lm=-1&nc=1&ie=utf-8&tn=baiduimage&ipn=r&rps=1&pv=&fm=rs1&word=%E7%BE%8E%E5%A5%B3%E5%9B%BE%E7%89%87&oriquery=%E5%9B%BE%E7%89%87&ofr=%E5%9B%BE%E7%89%87&sensitive=0");
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new WebViewClient() {
@@ -222,7 +222,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             public void callBack(ResponseModel<QuestionAnswer> response) {
                 answer = response._data;
                 //set the user name of the answer
-                ZR.setUserName(authoName, answer.userName, answer.grade,answer.userId);
+                ZR.setUserName(authoName, answer.userName, answer.grade, answer.userId);
 
                 answerCreateTime.setText(DateUtil.date2String(answer.modifiedTime, CONST.yyyy_mm_dd_hh_mm));
                 commentsTv.setText(ZR.getNumberString(answer.commentNum));
@@ -245,8 +245,15 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
                     collectTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_toolbar_icon_collect_n, 0, 0);
                     collectTv.setTextColor(ZR.getColor(R.color.color_999999));
                 }
+
                 //update the follow button
                 showInvited();
+
+                if (answer.content.startsWith("http")) {
+                    webView.loadUrl(answer.content);
+                } else {
+                    webView.loadData(answer.content, "text/html; charset=utf-8", "UTF-8");
+                }
             }
         });
     }
