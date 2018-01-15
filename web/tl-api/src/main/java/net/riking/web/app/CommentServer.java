@@ -109,9 +109,10 @@ public class CommentServer {
 	@ApiOperation(value = "评论的回复和回复的回复", notes = "POST")
 	@RequestMapping(value = "/commentReply", method = RequestMethod.POST)
 	public AppResp commentReply_(@RequestBody CommentParams commentParams) {
-		if(!shieldKeyWordService.checkKeyWord(commentParams.getContent())){
-			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
-		}
+//		if(!shieldKeyWordService.checkKeyWord(commentParams.getContent())){
+//			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+//		}
+		commentParams.setContent(shieldKeyWordService.filterKeyWord(commentParams.getContent()));
 		AppUser appUser = appUserRepo.findOne(commentParams.getUserId());
 		commentParams.setMqOptType(Const.MQ_OPT_COMMENT_REPLY);
 		JSONObject jsonArray = JSONObject.fromObject(commentParams);
