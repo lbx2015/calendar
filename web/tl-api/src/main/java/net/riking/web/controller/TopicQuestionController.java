@@ -138,7 +138,8 @@ public class TopicQuestionController {
 		topicQuestion.setCreatedBy(topicQuestion.getUserId());
 		topicQuestion.setModifiedBy(topicQuestion.getUserId());
 		topicQuestion.setIsAduit(0);
-		topicQuestion.setContent(topicQuestion.getContent().replace("temp", "question"));
+		topicQuestion.setContent(
+				topicQuestion.getContent().replace("temp", "question"));
 		// 新增加载内容图片时访问不到默认显示的图片
 		topicQuestion.setContent(
 				topicQuestion.getContent().replace("<img", "<img onerror=\"this.src='images/img_default.png'\" "));
