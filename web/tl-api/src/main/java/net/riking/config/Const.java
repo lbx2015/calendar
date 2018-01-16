@@ -262,6 +262,15 @@ public class Const {
 	/* -------------------队列类型 begin-------------------------- */
 	/* 系统通知 */
 	public static final int MQ_SYS_INFO = 0;
+	
+		/* 系统通知类型 */
+		//文本信息
+		public static final int MQ_SYS_INFO_TEXT = 0;
+		// html信息
+		public static final int MQ_SYS_INFO_HTML = 1;
+		//异地登录提醒信息
+		public static final int MQ_SYS_INFO_SSO = 2;
+		/* 系统通知类型 */
 
 	/** 邀请回答的邀请 */
 	public static final int MQ_OPT_ANSWERINVITE = 1;
@@ -295,6 +304,9 @@ public class Const {
 
 	/** 问题回答 */
 	public static final int MQ_OPT_QUESTION_ANWSER = 11;
+	
+	/** 报表类（当天核销任务） */
+	public static final int MQ_OPT_REPORT_TASK = 12;
 
 	/* --------------------队列类型 end-------------------------- */
 

@@ -124,8 +124,6 @@ public class MQSysOptListener implements MessageListener {
 					sysNotice.setNoticeUserId(optCommon.getAttentObjId());
 					sysNotice.setDataType(Const.NOTICE_OPT_ANSWERINVITE);
 					sysNoticeRepo.save(sysNotice);
-//					extrasParam.setDataType(sysNotice.getDataType());
-//					extrasParam.setobjId(sysNotice.getObjId());
 					extrasMap.put("dataType", sysNotice.getDataType()+"");
 					extrasMap.put("objId", sysNotice.getObjId());
 					isSendJdPush = true;
@@ -142,8 +140,6 @@ public class MQSysOptListener implements MessageListener {
 					sysNotice.setNoticeUserId(topicQuestion.getUserId());
 					sysNotice.setDataType(Const.NOTICE_OPT_QUESTION_ANSWER);
 					sysNotice.setObjId(questionAnswer.getId());
-//					extrasParam.setDataType(sysNotice.getDataType());
-//					extrasParam.setobjId(sysNotice.getObjId());
 					extrasMap.put("dataType", sysNotice.getDataType()+"");
 					extrasMap.put("objId", sysNotice.getObjId());
 					isSendJdPush = true;
@@ -172,8 +168,6 @@ public class MQSysOptListener implements MessageListener {
 						sysNotice.setNoticeUserId(topicQuestion.getUserId());
 						sysNotice.setDataType(dataType);
 						sysNoticeRepo.save(sysNotice);
-//						extrasParam.setDataType(sysNotice.getDataType());
-//						extrasParam.setobjId(sysNotice.getObjId());
 						extrasMap.put("dataType", sysNotice.getDataType()+"");
 						extrasMap.put("objId", sysNotice.getObjId());
 						isSendJdPush = true;
@@ -227,8 +221,6 @@ public class MQSysOptListener implements MessageListener {
 						}
 						sysNotice.setDataType(dataType);
 						sysNoticeRepo.save(sysNotice);
-//						extrasParam.setDataType(sysNotice.getDataType());
-//						extrasParam.setobjId(sysNotice.getObjId());
 						extrasMap.put("dataType", sysNotice.getDataType()+"");
 						extrasMap.put("objId", sysNotice.getObjId());
 						isSendJdPush = true;
@@ -265,8 +257,6 @@ public class MQSysOptListener implements MessageListener {
 					sysNotice.setNoticeUserId(questionAnswer.getUserId());
 					sysNotice.setDataType(Const.NOTICE_OPT_QANSWER_COMMENT);
 					sysNoticeRepo.save(sysNotice);
-//					extrasParam.setDataType(sysNotice.getDataType());
-//					extrasParam.setobjId(sysNotice.getObjId());
 					extrasMap.put("dataType", sysNotice.getDataType()+"");
 					extrasMap.put("objId", sysNotice.getObjId());
 					isSendJdPush = true;
@@ -302,8 +292,6 @@ public class MQSysOptListener implements MessageListener {
 						sysNotice.setContent(content);
 //						sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_AGREE);
 						sysNoticeRepo.save(sysNotice);
-//						extrasParam.setDataType(sysNotice.getDataType());
-//						extrasParam.setobjId(objId);
 						extrasMap.put("dataType", sysNotice.getDataType()+"");
 						extrasMap.put("objId", sysNotice.getObjId());
 						isSendJdPush = true;
@@ -343,8 +331,6 @@ public class MQSysOptListener implements MessageListener {
 					sysNotice.setNoticeUserId(toUserId);
 //					sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_REPLY);
 					sysNoticeRepo.save(sysNotice);
-//					extrasParam.setDataType(sysNotice.getDataType());
-//					extrasParam.setobjId(objId);
 					extrasMap.put("dataType", sysNotice.getDataType()+"");
 					extrasMap.put("objId", sysNotice.getObjId());
 					isSendJdPush = true;
@@ -358,7 +344,6 @@ public class MQSysOptListener implements MessageListener {
 				jdpush.setNotificationTitle(title);
 				jdpush.setMsgTitle(title);
 				jdpush.setMsgContent(content);
-				jdpush.setExtrasparam("");
 				jdpush.setExtrasMap(extrasMap);
 				if(sysNotice != null){
 					AppUserDetail noticeUserDetail = appUserDetailRepo.findOne(sysNotice.getNoticeUserId());

@@ -1,6 +1,9 @@
 package net.riking.entity.model;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import net.riking.core.entity.BaseEntity;
 
@@ -71,6 +74,9 @@ public class Jdpush extends BaseEntity {
 	}
 
 	public String getExtrasparam() {
+		if(StringUtils.isBlank(extrasparam)){
+			return "";
+		}
 		return extrasparam;
 	}
 
@@ -79,6 +85,9 @@ public class Jdpush extends BaseEntity {
 	}
 
 	public Map<String, String> getExtrasMap() {
+		if(extrasMap ==null){
+			return  new HashMap<String,String>();
+		}
 		return extrasMap;
 	}
 

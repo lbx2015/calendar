@@ -112,13 +112,13 @@ public class JdpushUtil {
 		return PushPayload.newBuilder().setPlatform(Platform.android_ios()).setAudience(Audience.all())
 				.setNotification(Notification.newBuilder().setAlert(jdpush.getNotificationTitle())
 						.addPlatformNotification(AndroidNotification.newBuilder()
-								.setAlert(jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length())).setTitle(jdpush.getNotificationTitle())
+								.setAlert(jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):"")).setTitle(jdpush.getNotificationTitle())
 								// 此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
 								.addExtras(jdpush.getExtrasMap())
 								.addExtra("androidNotification extras key", jdpush.getExtrasparam()).build())
 						.addPlatformNotification(IosNotification.newBuilder()
 								// 传一个IosAlert对象，指定apns title、title、subtitle等
-								.setAlert(jdpush.getMsgTitle()+ (StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):""))
+								.setAlert(jdpush.getMsgTitle()+ (StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):""):""))
 								// 直接传alert
 								// 此项是指定此推送的badge自动加1
 								.incrBadge(1)
@@ -164,7 +164,7 @@ public class JdpushUtil {
 						// 指定当前推送的android通知
 						.addPlatformNotification(AndroidNotification.newBuilder()
 
-								.setAlert(jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length())).setTitle(jdpush.getNotificationTitle())
+								.setAlert(jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):"")).setTitle(jdpush.getNotificationTitle())
 								// 此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
 								.addExtras(jdpush.getExtrasMap())
 								.addExtra("androidNotification extras key", jdpush.getExtrasparam())
@@ -173,7 +173,7 @@ public class JdpushUtil {
 						// 指定当前推送的iOS通知
 						.addPlatformNotification(IosNotification.newBuilder()
 								// 传一个IosAlert对象，指定apns title、title、subtitle等
-								.setAlert(jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):""))
+								.setAlert(jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):""):""))
 								// 直接传alert
 								// 此项是指定此推送的badge自动加1
 								.incrBadge(1)
@@ -229,7 +229,7 @@ public class JdpushUtil {
 				.setNotification(Notification.newBuilder()
 						// 指定当前推送的android通知
 						.addPlatformNotification(AndroidNotification.newBuilder()
-								.setAlert(jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length())).setTitle(jdpush.getNotificationTitle())
+								.setAlert(jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):"")).setTitle(jdpush.getNotificationTitle())
 								// 此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
 								.addExtras(jdpush.getExtrasMap())
 								.addExtra("androidNotification extras key", jdpush.getExtrasparam()).build())
@@ -263,7 +263,7 @@ public class JdpushUtil {
 						// 指定当前推送的android通知
 						.addPlatformNotification(IosNotification.newBuilder()
 								// 传一个IosAlert对象，指定apns title、title、subtitle等
-								.setAlert(jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):""))
+								.setAlert(jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgTitle()+(StringUtils.isNotBlank(jdpush.getMsgContent())? "\n"+jdpush.getMsgContent().substring(0, jdpush.getMsgContent().length()>=50?50:jdpush.getMsgContent().length()):""):""))
 								// 直接传alert
 								// 此项是指定此推送的badge自动加1
 								.incrBadge(1)
