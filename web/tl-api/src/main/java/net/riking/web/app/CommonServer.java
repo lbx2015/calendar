@@ -326,7 +326,7 @@ public class CommonServer {
 //						userFollowRel.setFollowStatus(1);// 非互相关注
 //					}
 					//查到表示有互相关注
-					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdOrToId(tQuestionParams.getAttentObjId(),
+					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
 							tQuestionParams.getUserId());
 					if(null ==toUserFollowRel){
 						userFollowRel.setFollowStatus(1);// 非互相关注

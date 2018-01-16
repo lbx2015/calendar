@@ -1,5 +1,7 @@
 package net.riking.entity.model;
 
+import java.util.Map;
+
 import net.riking.core.entity.BaseEntity;
 
 /**
@@ -20,6 +22,8 @@ public class Jdpush extends BaseEntity {
 	private String regisrationId;// 设备标识
 
 	private String extrasparam;// 扩展字段
+	
+	private Map<String, String> extrasMap;
 
 	public Jdpush() {
 
@@ -73,5 +77,15 @@ public class Jdpush extends BaseEntity {
 	public void setExtrasparam(String extrasparam) {
 		this.extrasparam = extrasparam;
 	}
+
+	public Map<String, String> getExtrasMap() {
+		return extrasMap;
+	}
+
+	public void setExtrasMap(Map<String, String> extrasMap) {
+		this.extrasMap = extrasMap;
+	}
+	
+	
 
 }
