@@ -5,12 +5,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.riking.calendar.jiguang.Logger;
-import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.NetStateReceiver;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 
@@ -23,9 +19,28 @@ public class LaunchActivity extends AppCompatActivity {
     Handler handler = new Handler();
 
     private void checkLoginState() {
-
-        new Thread(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
             public void run() {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                }
+
+                if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
+                    ZGoto.to(WelcomeActivity.class);
+                } else {
+                    if (ZPreference.isLogin()) {
+                        ZGoto.to(ViewPagerActivity.class);
+                    } else {
+                        ZGoto.toLoginActivity();
+                    }
+                }
+                finish();
+            }
+        }, sleepTime);
+//        new Thread(new Runnable() {
+//            public void run() {
 
             /*    if (DemoHelper.getInstance().isLoggedIn()) {
                     // auto login mode, make sure all group and conversation is loaed before enter the main screen
@@ -45,11 +60,11 @@ public class LaunchActivity extends AppCompatActivity {
                     startActivity(new Intent(LaunchActivity.this, ViewPagerActivity.class));
                     finish();
                 } else {*/
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                }
-
+//                try {
+//                    Thread.sleep(sleepTime);
+//                } catch (InterruptedException e) {
+//                }
+/*
                 if (ZPreference.pref.getBoolean(CONST.NEED_WELCOME_ACTIVITY, true)) {
                     ZGoto.to(WelcomeActivity.class);
                 } else {
@@ -58,13 +73,13 @@ public class LaunchActivity extends AppCompatActivity {
                     } else {
                         ZGoto.toLoginActivity();
                     }
-                }
+                }*/
 
 //                    startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
-                finish();
+//                finish();
 //                }
-            }
-        }).start();
+//            }
+//        }).start();
 
     }
 
@@ -75,16 +90,16 @@ public class LaunchActivity extends AppCompatActivity {
         checkLoginState();
 
         //if the user is not login
-        if (!ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
-            APIClient.getAllReports();
-        } else {
-            //get reminders and tasks of user from server
+//        if (!ZPreference.pref.getBoolean(CONST.IS_LOGIN, false)) {
+//            APIClient.getAllReports();
+//        } else {
+        //get reminders and tasks of user from server
 //            APIClient.synchAll();
-        }
+//        }
 //        APIClient.getWorkDays();
 
         //register observer
-        NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
+     /*   NetStateReceiver.registerObserver(new NetStateReceiver.NetChangeObserver() {
             @Override
             public void onNetConnected() {
                 Toast.makeText(getApplicationContext(), "connected", Toast.LENGTH_SHORT).show();
@@ -96,12 +111,12 @@ public class LaunchActivity extends AppCompatActivity {
             public void onNetDisConnect() {
                 Toast.makeText(getApplicationContext(), "disconnected.", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
-    @Override
-    protected void onDestroy() {
+//    @Override
+ /*   protected void onDestroy() {
 //        NetStateReceiver.unRegisterNetworkStateReceiver(this);
         super.onDestroy();
-    }
+    }*/
 }

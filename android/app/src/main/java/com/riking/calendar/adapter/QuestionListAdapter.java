@@ -48,6 +48,9 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
         //set author name
         ZR.setUserName(h.answerAuthorName, questionAnswer.userName, questionAnswer.grade,questionAnswer.userId);
 
+        h.answerContent.setText(questionAnswer.content);
+        ZR.setAnswerClickListener(h.answerContent,questionAnswer.questionAnswerId);
+
         h.agreeTv.setText(ZR.getNumberString(questionAnswer.agreeNum));
         h.commentTV.setText(ZR.getNumberString(questionAnswer.commentNum));
         h.commentTV.setOnClickListener(new View.OnClickListener() {
