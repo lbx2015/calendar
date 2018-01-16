@@ -1,6 +1,7 @@
 package net.riking.web.app;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -137,15 +138,20 @@ public class AppUserServer {
 				set2.add(userFollowRel.getToUserId());
 			}
 		}
-		List<AppUserDetail> foafs = appUserDetailRepo.findAllByIds(set2);
-		foafs.forEach(e -> {
-			// e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
-			e.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
-			e.setGrade();
-		});
-		foafs.forEach(e -> {
-			e.setExperience(null);
-		});
+		List<AppUserDetail> foafs = null;
+		if(!set2.isEmpty()){
+			foafs = appUserDetailRepo.findAllByIds(set2);
+			foafs.forEach(e -> {
+				// e.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+				e.setPhotoUrl(FileUtils.getAbsolutePathByProject(Const.TL_PHOTO_PATH) + e.getPhotoUrl());
+				e.setGrade();
+			});
+			foafs.forEach(e -> {
+				e.setExperience(null);
+			});
+		}else{
+			foafs = new ArrayList<>();
+		}
 		return new AppResp(foafs, CodeDef.SUCCESS);
 	}
 
