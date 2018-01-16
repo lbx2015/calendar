@@ -1,10 +1,15 @@
 package com.riking.calendar.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
+import com.riking.calendar.activity.AnswerActivity;
 import com.riking.calendar.activity.AnswerCommentsActivity;
+import com.riking.calendar.activity.CommentsActivity;
 import com.riking.calendar.activity.LoginNavigateActivity;
+import com.riking.calendar.activity.QuestionActivity;
+import com.riking.calendar.activity.UserActivity;
 import com.riking.calendar.app.MyApplication;
 
 /**
@@ -12,6 +17,29 @@ import com.riking.calendar.app.MyApplication;
  */
 
 public class ZGoto {
+    public static void toNewsComments(String newsId) {
+        Intent i = new Intent(MyApplication.mCurrentActivity, CommentsActivity.class);
+        i.putExtra(CONST.NEWS_ID, newsId);
+        ZGoto.to(i);
+    }
+
+    public static void toAnswerActivty(String answerId) {
+        Intent i = new Intent(MyApplication.mCurrentActivity, AnswerActivity.class);
+        i.putExtra(CONST.ANSWER_ID, answerId);
+        ZGoto.to(i);
+    }
+
+    public static void toQuestion(String requestId) {
+        Intent i = new Intent(MyApplication.mCurrentActivity, QuestionActivity.class);
+        i.putExtra(CONST.QUESTION_ID, requestId);
+        ZGoto.to(i);
+    }
+
+    public static void toUser(String userId) {
+        Intent i = new Intent(MyApplication.mCurrentActivity, UserActivity.class);
+        i.putExtra(CONST.USER_ID, userId);
+        ZGoto.to(i);
+    }
 
     public static void goToAnswerComments(String questionAnswerId) {
         Intent i = new Intent(MyApplication.mCurrentActivity, AnswerCommentsActivity.class);

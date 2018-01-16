@@ -93,11 +93,11 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
             h.title.setEllipsize(TextUtils.TruncateAt.END);
             h.title.setText(Html.fromHtml("<html><body><font color=#666666>" + result.title + " </font> <font color=#333333>" + (result.dataType == 5 ? "" : result.content) + " </font> </body><html>"));
             ZR.setCircleUserImage(h.userImage, result.userPhotoUrl, result.userId);
-            if (result.dataType == 2 || result.dataType == 3) {
+            if (result.dataType == 2 || result.dataType == 3 || result.dataType == 4) {
                 ZR.setAnswerClickListener(h.title, result.objId);
-            } else if (result.dataType == 1 || result.dataType == 4) {
+            } else if (result.dataType == 1 || result.dataType == 5) {
                 ZR.setRequestClickListener(h.title, result.objId);
-            } else if (result.dataType == 5) {
+            } else if (result.dataType == 6) {
                 h.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -106,7 +106,7 @@ public class MyNewsAdapter extends ZAdater<MyNewsAdapter.MyViewHolder, SysNotice
                         ZGoto.to(i);
                     }
                 });
-            } else if (result.dataType == 6 || result.dataType == 7 || result.dataType == 8) {
+            } else if (result.dataType == 7 || result.dataType == 8 || result.dataType == 9 || result.dataType == 10 || result.dataType == 11) {
                 h.title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
