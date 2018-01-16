@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +35,7 @@ import com.riking.calendar.viewholder.RecommendedViewHolder;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
+public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
 
     public static final int REMMEND_TYPE = 2;
     private Context context;
@@ -83,7 +79,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
             }
             //followed user agree answer
             else if (r.pushType == 2) {
-                h.itemCator.setText(r.userName + "攒了回答");
+                h.itemCator.setText(r.userName + "赞了回答");
                 setAnswerAgreeAndComment(h, r);
             }
             //followed user follow question
@@ -96,7 +92,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
                 h.itemCator.setText(r.userName + "回答了问题");
                 setAnswerAgreeAndComment(h, r);
             } else if (r.pushType == 5) {
-                h.itemCator.setText(r.userName + "收藏了问题");
+                h.itemCator.setText(r.userName + "收藏的回答");
                 setAnswerAgreeAndComment(h, r);
             }
 
@@ -255,7 +251,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
             public void onClick(View v) {
                 Intent i = new Intent(h.secondTextIcon.getContext(), WriteAnswerActivity.class);
                 i.putExtra(CONST.ANSWER_ID, r.qaId);
-                i.putExtra(CONST.QUESTION_TITLE,r.tqTitle);
+                i.putExtra(CONST.QUESTION_TITLE, r.tqTitle);
                 ZGoto.to(i);
             }
         });

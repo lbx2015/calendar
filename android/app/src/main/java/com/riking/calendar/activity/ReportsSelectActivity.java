@@ -159,7 +159,6 @@ public class ReportsSelectActivity extends AppCompatActivity {
             }
         });
 //                swipeRefreshLayout.setRefreshing(false);
-
     }
 }
 
