@@ -6,6 +6,10 @@ package net.riking.entity.EO;
  *
  */
 public class EmailSuffixEO {
+
+	// 公司地址
+	private String companyName;
+
 	private String emailSuffix;
 
 	// 是否启用
@@ -35,6 +39,14 @@ public class EmailSuffixEO {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 }

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:enabled="false"
-            android:text="发布"
+            android:text="下一步"
             android:textColor="@color/color_cccccc"
             android:textSize="17sp" />
     </FrameLayout>

@@ -46,13 +46,14 @@
             android:layout_marginTop="10dp"
             android:lineSpacingMultiplier="1.2"
             android:textColor="@color/color_222222"
-            android:textSize="18sp"
+            android:textSize="17sp"
             app:layout_scrollFlags="scroll|enterAlways" />
 
         <WebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             app:layout_scrollFlags="scroll|enterAlways"></WebView>
 
         <!--        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -127,7 +128,7 @@
                 android:onClick="clickInvitePerson"
                 android:text="邀请回答"
                 android:textColor="@color/color_489dfff"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/vertical_divider"
@@ -149,7 +150,7 @@
                 android:drawablePadding="5dp"
                 android:text="我来回答"
                 android:textColor="@color/color_489dfff"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/vertical_divider"
                 app:layout_constraintRight_toRightOf="parent"

@@ -52,6 +52,8 @@ public class QACReplyController {
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
 		QACReply qacReply = qacReplyRepo.findOne(id);
+		// 设置回复时间
+		qacReply.setCommentTime(qacReply.getCreatedTime());
 		return new Resp(qacReply, CodeDef.SUCCESS);
 	}
 
@@ -71,6 +73,8 @@ public class QACReplyController {
 			// 设置序列
 			i++;
 			qacReply2.setSerialNumber(new Integer(i));
+			// 设置回复时间
+			qacReply2.setCommentTime(qacReply2.getCreatedTime());
 			// 设置用回复户名
 			AppUser fromUser = appUserRepo.findOne(qacReply2.getFromUserId());
 			if (fromUser == null) {

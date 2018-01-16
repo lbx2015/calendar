@@ -180,8 +180,9 @@ public class AppUserDaoImpl implements AppUserDao {
 		Connection connection = session.connection();
 		String sql = "SELECT ";
 		sql += "a.id,a.user_name,ap.sex,ap.descript,ap.experience,ap.photo_Url,";
-		sql += "(select t.follow_status from t_user_follow_rel t where t.user_id = '" + userId
-				+ "' and t.to_user_Id = a.id ) followStatus ";
+		sql += "(select t.follow_status from t_user_follow_rel t where (t.user_id = '" + userId
+				+ "' and t.to_user_Id = a.id)  or  (t.to_user_Id = '" + userId
+				+ "' and t.user_Id = a.id and t.follow_status = 2)) followStatus, ap.check_MyDynamicState, ap.check_MyFollowState, ap.check_MyCollectState ";
 		sql += "FROM t_app_user a ";
 		sql += "LEFT JOIN t_appuser_detail ap on a.id=ap.id ";
 		sql += "WHERE a.id = '" + toUserId + "' and a.enabled = 1 and a.is_deleted = 1";
@@ -193,7 +194,7 @@ public class AppUserDaoImpl implements AppUserDao {
 			while (rs.next()) {
 				otherUserResp = new OtherUserResp(rs.getString("id"), rs.getString("user_name"), rs.getInt("sex"),
 						rs.getString("descript"), rs.getInt("experience"), rs.getString("photo_Url"),
-						rs.getInt("followStatus"));
+						rs.getInt("followStatus"),rs.getInt("check_MyDynamicState"),rs.getInt("check_MyFollowState"),rs.getInt("check_MyCollectState"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

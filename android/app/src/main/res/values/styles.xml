@@ -53,7 +53,7 @@
     </style>
 
     <style name="AppTheme.LaunchActivity" parent="AppTheme.FullScreen">
-        <item name="android:background">@drawable/start_page</item>
+        <item name="android:background">@drawable/start_page1080_1920</item>
     </style>
 
     <style name="TransparentStatusBarTheme" parent="AppTheme.FullScreen">

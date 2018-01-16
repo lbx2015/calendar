@@ -176,6 +176,8 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
         APIClient.getSystemMessage(params, new ZCallBackWithFail<ResponseModel<List<SysNoticeResult>>>() {
             @Override
             public void callBack(ResponseModel<List<SysNoticeResult>> response) {
+                isLoading = false;
+                mPullToLoadView.setComplete();
                 if (failed) {
 
                 } else {
@@ -205,8 +207,7 @@ public class MyNewsFragment extends ZFragment<MyNewsAdapter> {
                     userMessages = response._data;
                     if (userMessages.size() > 0) {
                         reqTimeStamp = DateUtil.date2String(userMessages.get(userMessages.size() - 1).createdTime, CONST.YYYYMMDDHHMMSSSSS);
-                        nextPage = page + 1;
-                        mAdapter.addAllAtEnd(userMessages);
+                        setData2Adapter(page, userMessages);
                     }
                 }
             }

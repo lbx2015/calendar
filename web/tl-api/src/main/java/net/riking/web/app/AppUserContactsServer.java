@@ -1,5 +1,6 @@
 package net.riking.web.app;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,15 +19,19 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.ContactsInviteRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SignInRepo;
-import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
+import net.riking.entity.model.ContactsInvite;
+import net.riking.entity.model.UserFollowRel;
 import net.riking.entity.params.UserParams;
+import net.riking.entity.resp.OtherUserResp;
 import net.riking.service.AppUserService;
 import net.riking.service.SignInService;
 import net.riking.service.SysDataService;
@@ -148,8 +153,54 @@ public class AppUserContactsServer {
 		// }
 		// list.add(map);
 		// }
-		List<String> contactsPhones = contactsInviteRepo.findByUserId(userParams.getUserId());
-		return new AppResp(contactsPhones, CodeDef.SUCCESS);
+		ArrayList<OtherUserResp> list = new ArrayList<>();
+		List<String> phones = userParams.getPhones();
+		//已注册
+		if(!phones.isEmpty()){
+			List<AppUser> users = appUserRepo.findByPhones(phones);
+			users.forEach(e->{
+				if(!e.getId().equals(userParams.getUserId())){
+					OtherUserResp userResp = new OtherUserResp();
+					AppUserDetail userDetail = appUserDetailRepo.findOne(e.getId());
+					UserFollowRel followRel = userFollowRelRepo.getByUIdOrToId(userParams.getUserId(), e.getId());
+					userResp.setUserId(e.getId());//id
+					userResp.setUserName(userDetail.getUserName());//name
+					userResp.setPhone(e.getPhone());//phone
+					Integer follow = followRel ==null? 0 : followRel.getFollowStatus();
+					if(2==follow){//follow
+						userResp.setIsFollow(2);
+					}else if(1 == follow && followRel.getUserId().equals(userParams.getUserId())){
+						userResp.setIsFollow(1);
+					}else{
+						userResp.setIsFollow(0);
+					}
+					list.add(userResp);
+				}
+				phones.remove(e.getPhone());
+			});
+		}
+		//已邀请
+		if(!phones.isEmpty()){
+			List<ContactsInvite> invites = contactsInviteRepo.findByUserIdAndPhones(userParams.getUserId(), phones);
+			invites.forEach(e->{
+				OtherUserResp userResp = new OtherUserResp();
+				userResp.setPhone(e.getPhone());//phone
+				userResp.setIsFollow(-1);//follow
+				list.add(userResp);
+				phones.remove(e.getPhone());
+			});
+		}
+		
+		//未邀请
+		if(!phones.isEmpty()){
+			phones.forEach(e->{
+				OtherUserResp userResp = new OtherUserResp();
+				userResp.setPhone(e);//phone
+				userResp.setIsFollow(-2);//follow
+				list.add(userResp);
+			});
+		}
+		return new AppResp(list, CodeDef.SUCCESS);
 
 	}
 

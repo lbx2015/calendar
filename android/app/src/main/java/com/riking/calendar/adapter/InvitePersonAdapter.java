@@ -42,7 +42,7 @@ public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         h.userName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
         h.summary.setText(user.answerNum + "个回答，" + user.agreeNum + "赞");
         //set user name
-        ZR.setUserName(h.userName, user.userName, user.grade,user.userId);
+        ZR.setUserName(h.userName, user.userName, user.grade, user.userId);
 
         //set user image
         ZR.setUserImage(h.userImage, user.photoUrl);
@@ -71,7 +71,7 @@ public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         APIClient.answerInvite(params, new ZCallBack<ResponseModel<String>>() {
             @Override
             public void callBack(ResponseModel<String> response) {
-                user.isInvited = params.enabled;
+                user.isInvited = 1;
                 if (user.isInvited == 1) {
                     ZToast.toast("邀请成功");
                 }

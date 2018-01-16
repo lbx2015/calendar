@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserGrade;
 import net.riking.entity.model.AppUserResult;
@@ -23,6 +22,9 @@ public interface AppUserRepo extends JpaRepository<AppUser, String>, JpaSpecific
 
 	@Query(" from AppUser where isDeleted = 1 and phone = ?1 ")
 	AppUser findByPhone(String phone);
+	
+	@Query("from AppUser where isDeleted = 1 and phone in ?1 ")
+	List<AppUser> findByPhones(List<String> phones);
 
 	@Query(" from AppUser where isDeleted = 1 and openId = ?1 ")
 	AppUser findByOpenId(String openId);

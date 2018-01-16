@@ -30,7 +30,8 @@
             android:layout_width="330dp"
             android:layout_height="49dp"
             android:layout_gravity="center"
-            android:background="@drawable/rounded_login__translucent_rectangle">
+            android:background="@drawable/rounded_login__translucent_rectangle"
+            android:onClick="clickLoginWithPhone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,7 +40,6 @@
                 android:drawableLeft="@drawable/login_icon_phone"
                 android:drawablePadding="5dp"
                 android:gravity="center"
-                android:onClick="clickLoginWithPhone"
                 android:text="手机登陆"
                 android:textColor="@android:color/white"
                 android:textSize="17sp" />

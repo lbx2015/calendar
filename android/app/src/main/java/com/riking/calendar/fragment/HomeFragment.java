@@ -165,9 +165,9 @@ public class HomeFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "话题动态";
+                    return "动态";
                 case 1:
-                    return "行业资讯";
+                    return "资讯";
             }
 
             return null;

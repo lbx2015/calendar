@@ -53,6 +53,8 @@ public class QACommentController {
 	public Resp get_(@RequestParam("id") String id) {
 		QAComment qaComment = qaCommentRepo.findOne(id);
 		qaComment.setUserName(appUserRepo.findOne(qaComment.getUserId()).getUserName());
+		// 设置评论时间
+		qaComment.setCommentTime(qaComment.getCreatedTime());
 		return new Resp(qaComment, CodeDef.SUCCESS);
 	}
 
@@ -70,6 +72,7 @@ public class QACommentController {
 		for (QAComment qaComment2 : list) {
 			i++;
 			qaComment2.setSerialNumber(new Integer(i));
+			qaComment2.setCommentTime(qaComment2.getCreatedTime());
 		}
 		// Long totalElements = (long) qaCommentRepo.countGetMore(qaComment.getIsDeleted());
 		// List<QAComment> qaComments = qaCommentRepo.findAllQAC(qaComment.getIsDeleted(),

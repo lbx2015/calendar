@@ -16,12 +16,14 @@ import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.entity.model.ModelPropDict;
 import net.riking.dao.repo.IndustryRepo;
+import net.riking.dao.repo.SysNoticeRepo;
 import net.riking.dao.repo.UserLogRstHisRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
 import net.riking.entity.model.MQOptCommon;
+import net.riking.entity.model.SysNotice;
 import net.riking.entity.model.UserLogRstHis;
 import net.riking.entity.params.LoginParams;
 import net.riking.entity.resp.AppUserResp;
@@ -64,6 +66,9 @@ public class LoginServer {
 
 	@Autowired
 	UserLogRstHisRepo userLogRstHisRepo;
+	
+	@Autowired
+	private SysNoticeRepo sysNoticeRepo;
 	/*
 	 * @Autowired ReportListRepo reportListRepo;
 	 * 
@@ -121,7 +126,6 @@ public class LoginServer {
 					}
 
 				}
-
 				user = appUserService.findByOpenId(loginParams.getOpenId());
 				break;
 			default:
@@ -145,16 +149,24 @@ public class LoginServer {
 						&& !detail.getPhoneDeviceId().trim().equals(loginParams.getPhoneDeviceId().trim())) {
 					// 换设备号登录，极光推送
 					Jdpush jdpush = new Jdpush();
-					jdpush = new Jdpush();
 					jdpush.setNotificationTitle(Const.SYS_NAME_FLAG + "账号异地登录");
 					jdpush.setMsgTitle("");
 					// 你的帐号于2018-01-06 14:30在iPhone/Android/其它设备上通过验证码登录。
 					String msgContent = "你的帐号于" + DateUtils.getDate("yyyy-MM-dd HH:mm") + "在"
 							+ loginParams.getClientTypeName() + "设备上通过验证码登录。";
 					jdpush.setMsgContent(msgContent);
-					jdpush.setExtrasparam("");
+					jdpush.getExtrasMap().put("dataType", Const.MQ_SYS_INFO+"");
+					jdpush.getExtrasMap().put("sysInfoType", Const.MQ_SYS_INFO_SSO+"");
 					jdpush.setRegisrationId(detail.getPhoneDeviceId().trim());
 					JdpushUtil.sendToRegistrationId(jdpush);
+					//提醒信息保存
+					SysNotice notice = new SysNotice();
+					notice.setTitle(jdpush.getNotificationTitle());
+					notice.setContent(jdpush.getMsgContent());
+					notice.setDataType(Const.MQ_SYS_INFO);
+					notice.setFromUserId(Const.SYS_NOTICE_FROME_SYS);
+					notice.setNoticeUserId(detail.getId());
+					sysNoticeRepo.save(notice);
 				}
 				// 更新设备号
 				appUserService.updatePhoneDeviceid(user.getId(), loginParams.getPhoneDeviceId().trim());

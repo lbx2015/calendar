@@ -17,6 +17,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 import net.riking.config.Config;
+import net.riking.config.Const;
 import net.riking.config.RedisConfig;
 import net.riking.core.service.DataDictService;
 import net.riking.service.MQReceiveService;
@@ -90,9 +91,9 @@ public class StartupListener implements ServletContextListener {
 		shieldKeyWordService.initKeyWord();
 
 		timerManager.init();
-		// mQReceiveService.init(Const.SYS_INFO_QUEUE, mqSysInfoListener);// 初始化mq接收信息系统通知队列
-		// mQReceiveService.init(Const.SYS_MES_QUEUE, mqSysMesListener);// 初始化mq接收信息系统消息队列
-		// mQReceiveService.init(Const.SYS_OPT_QUEUE, mqSysOptListener);// 初始化mq接收信息系统操作队列
+		 mQReceiveService.init(Const.SYS_INFO_QUEUE, mqSysInfoListener);// 初始化mq接收信息系统通知队列
+		 mQReceiveService.init(Const.SYS_MES_QUEUE, mqSysMesListener);// 初始化mq接收信息系统消息队列
+		 mQReceiveService.init(Const.SYS_OPT_QUEUE, mqSysOptListener);// 初始化mq接收信息系统操作队列
 	}
 
 	/*

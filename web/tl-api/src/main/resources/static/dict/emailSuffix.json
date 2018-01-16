@@ -6,6 +6,13 @@
 	}],
 	"attrs":[
 		{
+			"prop": "companyName",
+			"alias": "公司名称 ",
+			"group":"base",
+			"type": "string",
+            "verify":"required"
+		},
+		{
 			"prop": "emailSuffix",
 			"alias": "邮箱后缀",
 			"group":"base",
@@ -20,13 +27,7 @@
             "dict_key": "T_EMAIL_SUFFIX.ENABLED",
             "verify":"required"
 		},
-		{
-			"prop": "companyName",
-			"alias": "公司名称 ",
-			"group":"base",
-			"type": "string",
-            "verify":"required"
-		},
+		
 		{
 			"prop": "remark",
 			"alias": "备注",

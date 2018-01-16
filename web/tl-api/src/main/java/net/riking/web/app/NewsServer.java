@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -223,6 +225,19 @@ public class NewsServer {
 	@RequestMapping(value = "/findNewsCommentList", method = RequestMethod.POST)
 	public AppResp findNewsCommentList(@RequestBody NewsParams newsParams) {
 		// 根据NewsId查出资讯详情评论列表（30条）
+		News news = newsRepo.getForCommentListById(newsParams.getNewsId());
+		Pattern pattern = Pattern.compile("(?<=\\<p\\>)(.+?)(?=\\<\\/p\\>)");
+		Matcher matcher = pattern.matcher(news.getContent());
+		int rowNum = 0;
+		String content = "";
+        while(matcher.find()&&rowNum<2){
+        	String group = matcher.group();
+        	if(!group.contains("<img")){
+            	content += group.replace("<br>", "");
+            	rowNum++;
+        	}
+        }
+        news.setContent(content);
 		List<NewsComment> newsCommentInfoList = newsCommentRepo.findByNewsId(newsParams.getNewsId(),
 				newsParams.getUserId(), new PageRequest(0, 30));
 
@@ -262,7 +277,8 @@ public class NewsServer {
 			agree = nCAgreeRelRepo.agreeCount(newsCommentInfoNew.getId(), 1);// 1-点赞
 			newsCommentInfoNew.setAgreeNumber(agree);
 		}
-		return new AppResp(newsCommentInfoList, CodeDef.SUCCESS);
+		news.setNewsCommentList(newsCommentInfoList);
+		return new AppResp(news, CodeDef.SUCCESS);
 	}
 
 	/**
@@ -273,10 +289,10 @@ public class NewsServer {
 	@ApiOperation(value = "资讯评论发布", notes = "POST")
 	@RequestMapping(value = "/newsCommentPub", method = RequestMethod.POST)
 	public AppResp newsCommentPub(@RequestBody NewsParams newsParams) {
-		if(!shieldKeyWordService.checkKeyWord(newsParams.getContent())){
-			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
-		}
-		
+//		if(!shieldKeyWordService.checkKeyWord(newsParams.getContent())){
+//			return new AppResp(CodeDef.EMP.REPORT_SHIELD_ERROR, CodeDef.EMP.REPORT_SHIELD_ERROR_DESC);
+//		}
+		newsParams.setContent(shieldKeyWordService.filterKeyWord(newsParams.getContent()));
 		NewsComment newsCommentInfo = new NewsComment();
 		AppUser appUser = appUserRepo.findOne(newsParams.getUserId());
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsParams.getUserId());

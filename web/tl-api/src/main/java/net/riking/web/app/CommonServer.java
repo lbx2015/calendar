@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 
 import io.swagger.annotations.ApiOperation;
@@ -48,7 +47,6 @@ import net.riking.service.AppUserService;
 import net.riking.service.ReCommendService;
 import net.riking.service.SysDataService;
 import net.riking.service.impl.SysDateServiceImpl;
-import net.riking.util.EmailUtil;
 import net.riking.util.MQProduceUtil;
 import net.riking.util.RedisUtil;
 import net.riking.util.SmsUtil;
@@ -328,7 +326,7 @@ public class CommonServer {
 //						userFollowRel.setFollowStatus(1);// 非互相关注
 //					}
 					//查到表示有互相关注
-					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdOrToId(tQuestionParams.getAttentObjId(),
+					UserFollowRel toUserFollowRel = userFollowRelRepo.getByUIdAndToId(tQuestionParams.getAttentObjId(),
 							tQuestionParams.getUserId());
 					if(null ==toUserFollowRel){
 						userFollowRel.setFollowStatus(1);// 非互相关注
