@@ -304,27 +304,37 @@ public class Const {
 
 	/** 被邀请回答的邀请 */
 	public static final int NOTICE_OPT_ANSWERINVITE = 1;
+	
+	/** 问题回答 */
+	public static final int NOTICE_OPT_QUESTION_ANSWER = 2;
 
 	/** 问题回答被点赞 */
-	public static final int NOTICE_OPT_QA_AGREEOR = 2;
+	public static final int NOTICE_OPT_QA_AGREEOR = 3;
 
 	/** 问题回答被收藏 */
-	public static final int NOTICE_OPT_QA_COLLECT = 3;
+	public static final int NOTICE_OPT_QA_COLLECT = 4;
 
 	/** 问题被关注 */
-	public static final int NOTICE_OPT_QUESTION_FOLLOW = 4;
+	public static final int NOTICE_OPT_QUESTION_FOLLOW = 5;
 
 	/** 被关注的用户 */
-	public static final int NOTICE_OPT_USER_FOLLOW = 5;
-
-	/** 评论被点赞 */
-	public static final int NOTICE_OPT_COMMENT_AGREE = 6;
+	public static final int NOTICE_OPT_USER_FOLLOW = 6;
 
 	/** 问题回答的被评论 */
 	public static final int NOTICE_OPT_QANSWER_COMMENT = 7;
+	
+	/**回答类   评论被点赞 */
+	public static final int NOTICE_OPT_ANSWER_COMMENT_AGREE = 8;
 
-	/** 评论的回复和回复的被回复 */
-	public static final int NOTICE_OPT_COMMENT_REPLY = 8;
+	/**资讯类   评论被点赞 */
+	public static final int NOTICE_OPT_NEWS_COMMENT_AGREE = 9;
+	
+	/**回答类   评论的回复和回复的被回复 */
+	public static final int NOTICE_OPT_ANSWER_COMMENT_REPLY = 10;
+	
+	/**资讯类  评论的回复和回复的被回复 */
+	public static final int NOTICE_OPT_NEWS_COMMENT_REPLY = 11;
+	
 
 	/* --------------------消息通知类型 end-------------------------- */
 

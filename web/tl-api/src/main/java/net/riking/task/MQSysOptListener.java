@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
@@ -18,7 +20,7 @@ import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.SysNoticeRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
-import net.riking.entity.model.AppUser;
+import net.riking.entity.ExtrasParam;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
 import net.riking.entity.model.MQOptCommon;
@@ -93,7 +95,9 @@ public class MQSysOptListener implements MessageListener {
 			String title = "";
 			String content = "";
 			String toUserId = "";
-			AppUser appUser = null;
+			ExtrasParam extrasParam = new ExtrasParam();
+			String targetId = "";
+//			AppUser appUser = null;
 			AppUserDetail appUserDetail = null;
 			boolean isRn = false;
 			Integer dataType = null;
@@ -121,7 +125,24 @@ public class MQSysOptListener implements MessageListener {
 					sysNotice.setNoticeUserId(optCommon.getAttentObjId());
 					sysNotice.setDataType(Const.NOTICE_OPT_ANSWERINVITE);
 					sysNoticeRepo.save(sysNotice);
-					
+					extrasParam.setDataType(sysNotice.getDataType());
+					extrasParam.setTargetId(sysNotice.getObjId());
+					isSendJdPush = true;
+					break;
+				case Const.MQ_OPT_QUESTION_ANWSER : //问题回答
+					questionAnswer = questionAnswerRepo.findOne(optCommon.getQuestAnswerId());
+					topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
+					appUserDetail = appUserDetailRepo.findOne(questionAnswer.getUserId());
+					title = appUserDetail.getUserName() + " 回答了你的问题";
+					content = topicQuestion.getTitle();
+					sysNotice = new SysNotice();
+					sysNotice.setTitle(title);
+					sysNotice.setContent(content);
+					sysNotice.setNoticeUserId(topicQuestion.getUserId());
+					sysNotice.setDataType(Const.NOTICE_OPT_QUESTION_ANSWER);
+					sysNotice.setObjId(questionAnswer.getId());
+					extrasParam.setDataType(sysNotice.getDataType());
+					extrasParam.setTargetId(sysNotice.getObjId());
 					isSendJdPush = true;
 					break;
 				case Const.MQ_OPT_QA_AGREEOR_COLLECT://问题回答点赞或收藏 
@@ -148,7 +169,8 @@ public class MQSysOptListener implements MessageListener {
 						sysNotice.setNoticeUserId(topicQuestion.getUserId());
 						sysNotice.setDataType(dataType);
 						sysNoticeRepo.save(sysNotice);
-						
+						extrasParam.setDataType(sysNotice.getDataType());
+						extrasParam.setTargetId(sysNotice.getObjId());
 						isSendJdPush = true;
 					}
 					break;
@@ -200,42 +222,8 @@ public class MQSysOptListener implements MessageListener {
 						}
 						sysNotice.setDataType(dataType);
 						sysNoticeRepo.save(sysNotice);
-						
-						isSendJdPush = true;
-					}
-					break;
-				case Const.MQ_OPT_COMMENT_AGREE:// 评论点赞
-//					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
-//					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
-					isRn = qaCommentService.commentAgree(optCommon);
-					
-					if(isRn){
-						appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
-						sysNotice = new SysNotice();
-						if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_ANSWER){//回答类
-							qaComment = qaCommentRepo.findOne(optCommon.getCommentId());
-							title = appUserDetail.getUserName() + " 赞了你的回答评论";
-							//content = appUser.getUserName() + " 赞了你的回答评论 " + qaComment.getContent();
-							content = qaComment.getContent();
-							//回答类评论id
-							sysNotice.setObjId(qaComment.getId());
-							sysNotice.setNoticeUserId(qaComment.getUserId());
-							
-						}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_NEWS){//资讯类
-							newsComment = newsCommentRepo.findOne(optCommon.getCommentId());
-							title = appUserDetail.getUserName() + " 赞了你的资讯评论";
-							//content = appUser.getUserName() + " 赞了你的资讯评论 " + qaComment.getContent();
-							content = newsComment.getContent();
-							//资讯类评论id
-							sysNotice.setObjId(newsComment.getId());
-							sysNotice.setNoticeUserId(newsComment.getUserId());
-						}
-						
-						sysNotice.setTitle(title);
-						sysNotice.setContent(content);
-						sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_AGREE);
-						sysNoticeRepo.save(sysNotice);
-						
+						extrasParam.setDataType(sysNotice.getDataType());
+						extrasParam.setTargetId(sysNotice.getObjId());
 						isSendJdPush = true;
 					}
 					break;
@@ -244,7 +232,10 @@ public class MQSysOptListener implements MessageListener {
 					contactsInviteService.contactsInvite(optCommon);
 					//需要发短信
 //					SmsUtil smsUtil = new SmsUtil();
-					
+					break;
+				case Const.MQ_OPT_NEWS_COMMENT:// 资讯评论发布
+//					newsService = (NewsService) SpringBeanUtil.getInstance().getBean("newsService");
+					newsService.newsCommentPub(optCommon);
 					break;
 				case Const.MQ_OPT_QANSWER_COMMENT:// 问题回答的评论
 //					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
@@ -262,19 +253,54 @@ public class MQSysOptListener implements MessageListener {
 					content = optCommon.getContent();
 					//问题回答的id
 					sysNotice.setObjId(questionAnswer.getId());
-					
 					sysNotice.setTitle(title);
 					sysNotice.setContent(content);
 					sysNotice.setNoticeUserId(questionAnswer.getUserId());
 					sysNotice.setDataType(Const.NOTICE_OPT_QANSWER_COMMENT);
 					sysNoticeRepo.save(sysNotice);
-					
+					extrasParam.setDataType(sysNotice.getDataType());
+					extrasParam.setTargetId(sysNotice.getObjId());
 					isSendJdPush = true;
 					
 					break;
-				case Const.MQ_OPT_NEWS_COMMENT:// 资讯评论发布
-//					newsService = (NewsService) SpringBeanUtil.getInstance().getBean("newsService");
-					newsService.newsCommentPub(optCommon);
+				case Const.MQ_OPT_COMMENT_AGREE:// 评论点赞
+//					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
+//					newsCommentRepo = (NewsCommentRepo) SpringBeanUtil.getInstance().getBean("newsCommentRepo");
+					isRn = qaCommentService.commentAgree(optCommon);
+					if(isRn){
+						appUserDetail = appUserDetailRepo.findOne(optCommon.getUserId());
+						sysNotice = new SysNotice();
+						if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_ANSWER){//回答类
+							qaComment = qaCommentRepo.findOne(optCommon.getCommentId());
+							title = appUserDetail.getUserName() + " 赞了你的回答评论";
+							//content = appUser.getUserName() + " 赞了你的回答评论 " + qaComment.getContent();
+							content = qaComment.getContent();
+							//回答类评论id
+							sysNotice.setObjId(qaComment.getId());
+							sysNotice.setNoticeUserId(qaComment.getUserId());
+							sysNotice.setDataType(Const.NOTICE_OPT_ANSWER_COMMENT_AGREE);
+							targetId = qaComment.getQuestionAnswerId();
+						}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_NEWS){//资讯类
+							newsComment = newsCommentRepo.findOne(optCommon.getCommentId());
+							title = appUserDetail.getUserName() + " 赞了你的资讯评论";
+							//content = appUser.getUserName() + " 赞了你的资讯评论 " + qaComment.getContent();
+							content = newsComment.getContent();
+							//资讯类评论id
+							sysNotice.setObjId(newsComment.getId());
+							sysNotice.setNoticeUserId(newsComment.getUserId());
+							sysNotice.setDataType(Const.NOTICE_OPT_NEWS_COMMENT_AGREE);
+							targetId = newsComment.getNewsId();
+						}
+						
+						sysNotice.setTitle(title);
+						sysNotice.setContent(content);
+//						sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_AGREE);
+						sysNoticeRepo.save(sysNotice);
+						extrasParam.setDataType(sysNotice.getDataType());
+						extrasParam.setTargetId(targetId);
+						isSendJdPush = true;
+					}
+					break;
 				case Const.MQ_OPT_COMMENT_REPLY:// 评论的回复和回复的回复
 //					qAnswerService = (QAnswerService) SpringBeanUtil.getInstance().getBean("qAnswerService");
 //					qaCommentRepo = (QACommentRepo) SpringBeanUtil.getInstance().getBean("qaCommentRepo");
@@ -291,6 +317,8 @@ public class MQSysOptListener implements MessageListener {
 						toUserId =StringUtils.isBlank(optCommon.getToUserId())?qaComment.getUserId():optCommon.getToUserId();
 						//回答类评论id
 						sysNotice.setObjId(qaComment.getId());
+						sysNotice.setDataType(Const.NOTICE_OPT_ANSWER_COMMENT_REPLY);
+						targetId = qaComment.getQuestionAnswerId();
 					}else if(optCommon.getObjType().intValue() == Const.OBJ_TYPE_NEWS){//资讯类
 						newsComment = newsCommentRepo.findOne(optCommon.getCommentId());
 						title = appUserDetail.getUserName() + " 回复了你";
@@ -299,41 +327,31 @@ public class MQSysOptListener implements MessageListener {
 						toUserId =StringUtils.isBlank(optCommon.getToUserId())?newsComment.getUserId():optCommon.getToUserId();
 						//资讯类评论id
 						sysNotice.setObjId(newsComment.getId());
+						sysNotice.setDataType(Const.NOTICE_OPT_NEWS_COMMENT_REPLY);
+						targetId = newsComment.getNewsId();
 					}
 					
 					
 					sysNotice.setTitle(title);
 					sysNotice.setContent(content);
 					sysNotice.setNoticeUserId(toUserId);
-					sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_REPLY);
+//					sysNotice.setDataType(Const.NOTICE_OPT_COMMENT_REPLY);
 					sysNoticeRepo.save(sysNotice);
-					
-					isSendJdPush = true;
-					break;
-				case Const.MQ_OPT_QUESTION_ANWSER :
-					questionAnswer = questionAnswerRepo.findOne(optCommon.getQuestAnswerId());
-					topicQuestion = topicQuestionRepo.findOne(questionAnswer.getQuestionId());
-					appUserDetail = appUserDetailRepo.findOne(questionAnswer.getUserId());
-					title = appUserDetail.getUserName() + " 回答了你的问题";
-					content = topicQuestion.getTitle();
-					sysNotice = new SysNotice();
-					sysNotice.setTitle(title);
-					sysNotice.setContent(content);
-					sysNotice.setNoticeUserId(topicQuestion.getUserId());
-					sysNotice.setObjId(questionAnswer.getId());
+					extrasParam.setDataType(sysNotice.getDataType());
+					extrasParam.setTargetId(targetId);
 					isSendJdPush = true;
 					break;
 				default:
 					break;
 			}
-			
 			if(isSendJdPush){
 				
 				jdpush = new Jdpush();
 				jdpush.setNotificationTitle(title);
 				jdpush.setMsgTitle(title);
 				jdpush.setMsgContent(content);
-				jdpush.setExtrasparam("");
+				ObjectMapper objectMapper = new ObjectMapper();
+				jdpush.setExtrasparam(objectMapper.writeValueAsString(extrasParam));
 				if(sysNotice != null){
 					AppUserDetail noticeUserDetail = appUserDetailRepo.findOne(sysNotice.getNoticeUserId());
 					if(StringUtils.isNotBlank(noticeUserDetail.getPhoneDeviceId())){
