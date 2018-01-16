@@ -44,7 +44,7 @@ public class LoginNavigateActivity extends AppCompatActivity {
 
     public void clickLoginWithPhone(View v) {
         ZGoto.to(InputCellPhoneNumberActivity.class);
-        finish();
+//        finish();
     }
 
     public void clickPolicy(View v) {

@@ -418,7 +418,7 @@ public interface APIInterface {
     Call<ResponseModel<List<AppUserResult>>> getColleagues(@Body UserParams params);
 
     @POST("userContacts/contacts")
-    Call<ResponseModel<List<String>>> getContacts(@Body UserParams params);
+    Call<ResponseModel<List<OtherUserResp>>> getContacts(@Body UserParams params);
 
     @POST("userContacts/contactsInvite")
     Call<ResponseModel<String>> contactsInvite(@Body UserParams params);

@@ -7,8 +7,13 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
-import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.pojo.base.ResponseModel;
+import com.riking.calendar.pojo.params.UserParams;
+import com.riking.calendar.pojo.server.OtherUserResp;
+import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZR;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
@@ -16,13 +21,45 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //answer comment adapter
-public class MyContactsAdapter extends ZAdater<MyContactsAdapter.MyViewHolder, AppUserResult> {
+public class MyContactsAdapter extends ZAdater<MyContactsAdapter.MyViewHolder, OtherUserResp> {
     @Override
-    public void onBindVH(MyViewHolder h, int i) {
-        AppUserResult appUser = mList.get(i);
-        ZR.showPersonInviteStatus(h.followButton, h.followTv, appUser.isInvited);
-        ZR.setInviteClickListener(appUser, h.followButton, h.followTv);
-        ZR.setUserName(h.userName, appUser.userName, appUser.grade,appUser.userId);
+    public void onBindVH(final MyViewHolder h, int i) {
+        final OtherUserResp appUser = mList.get(i);
+//        未邀请
+        if (appUser.isFollow == -2) {
+            ZR.showPersonInviteStatus(h.followButton, h.followTv, 0);
+        } else if (appUser.isFollow == -1) {
+            ZR.showPersonInviteStatus(h.followButton, h.followTv, 1);
+        } else {
+            ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
+        }
+//        ZR.setInviteClickListener(appUser, h.followButton, h.followTv);
+
+        h.followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //未注册
+                if (appUser.isFollow < 0) {
+                    final UserParams params = new UserParams();
+                    //follow user
+                    params.phone = appUser.phone;
+
+                    APIClient.inviteContact(params, new ZCallBack<ResponseModel<String>>() {
+                        @Override
+                        public void callBack(ResponseModel<String> response) {
+                            appUser.isFollow = -1;
+                            ZToast.toast("邀请成功");
+                            ZR.showPersonInviteStatus(h.followButton, h.followTv, 1);
+                        }
+                    });
+                }
+                //已注册
+                else {
+                    ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);
+                }
+            }
+        });
+        ZR.setUserName(h.userName, appUser.userName, appUser.grade, appUser.userId);
         h.summary.setVisibility(View.GONE);
 //        h.summary.setText(appUser.phone);
     }

@@ -1,10 +1,8 @@
 package com.riking.calendar.pojo.server;
 
-public class AppUserResult {
+import com.riking.calendar.pojo.server.base.BaseUser;
 
-    //    @Comment("物理主键")
-//    @JsonProperty("userId")
-    public String userId;
+public class AppUserResult extends BaseUser{
 
     //    @Comment("姓名")
     public String userName;
@@ -29,9 +27,6 @@ public class AppUserResult {
 
     //    @Comment("点赞数")
     public int agreeNum;
-
-    //    @Comment("是否已关注 0-未关注，1-已关注")
-    public int isFollow;
 
     // @Comment("是否已邀请 0-未邀请，1-已邀请 2 互相关注")
     public int isInvited;
