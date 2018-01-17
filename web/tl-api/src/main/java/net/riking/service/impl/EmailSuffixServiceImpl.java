@@ -59,11 +59,11 @@ public class EmailSuffixServiceImpl implements EmailSuffixService {
 				}
 				// 添加邮箱后缀的查询条件
 				if (emailSuffix.getEmailSuffix() != null) {
-					predicates.add(cb.like(root.<String> get("emailSuffix"), emailSuffix.getEmailSuffix()));
+					predicates.add(cb.like(root.<String> get("emailSuffix"), "%" + emailSuffix.getEmailSuffix() + "%"));
 				}
 				// 添加公司名称查询条件
-				if (emailSuffix.getEmailSuffix() != null) {
-					predicates.add(cb.like(root.<String> get("companyName"), emailSuffix.getCompanyName()));
+				if (emailSuffix.getCompanyName() != null) {
+					predicates.add(cb.like(root.<String> get("companyName"), "%" + emailSuffix.getCompanyName() + "%"));
 				}
 				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
 			}
