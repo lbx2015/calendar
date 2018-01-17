@@ -68,12 +68,12 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
                 APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
-                        user.isFollow = params.enabled;
-                        if (user.isFollow == 1) {
-                            ZToast.toast("关注成功");
-                        } else {
-                            ZToast.toast("取消关注");
+                        String state = response._data;
+                        if (state == null) {
+                            return;
                         }
+
+                        user.isFollow = Integer.valueOf(state);
                         showInvited(h.followButton, h.followTv, user.isFollow);
                     }
                 });

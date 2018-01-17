@@ -214,14 +214,6 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
 
     public void clickShare(final View v) {
         ShareBottomDialog dialog = new ShareBottomDialog(v.getContext());
-        dialog.shieldButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-
-            }
-        });
-        dialog.shieldDivider.setVisibility(View.GONE);
-        dialog.shieldButton.setVisibility(View.GONE);
         dialog.show();
     }
 

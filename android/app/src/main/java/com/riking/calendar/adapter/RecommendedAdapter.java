@@ -63,7 +63,8 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
             case 7: {
                 final AppUserResult user = appUserResults.get(position);
                 ZR.setUserName(holder.recommendedTv, user.userName, user.grade, user.userId);
-                setFollowUserClickListener(holder, user);
+                ZR.setFollowPersonClickListner(user, holder.followButton, holder.followTv);
+                ZR.showPersonFollowStatus(holder.followButton, holder.followTv, user.isFollow);
                 ZR.setCircleUserImage(holder.iconImage, user.photoUrl, user.userId);
                 //go to topic on click
                 holder.recommendedTv.setOnClickListener(new View.OnClickListener() {
@@ -129,41 +130,6 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                             ZToast.toast("取消关注");
                         }
                         updateFollowButton(h, topic.isFollow);
-                    }
-                });
-            }
-        });
-    }
-
-    private void setFollowUserClickListener(final RecommendedViewHolder h, final AppUserResult user) {
-        h.followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                //adding null protection
-                if (user == null) {
-                    return;
-                }
-                final TQuestionParams params = new TQuestionParams();
-                params.attentObjId = user.userId;
-                //user
-                params.objType = 3;
-                //followed
-                if (user.isFollow == 1) {
-                    params.enabled = 0;
-                } else {
-                    params.enabled = 1;
-                }
-
-                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
-                    @Override
-                    public void callBack(ResponseModel<String> response) {
-                        user.isFollow = params.enabled;
-                        if (user.isFollow == 1) {
-                            ZToast.toast("关注成功");
-                        } else {
-                            ZToast.toast("取消关注");
-                        }
-                        updateFollowButton(h, user.isFollow);
                     }
                 });
             }
