@@ -3,6 +3,7 @@ package com.riking.calendar.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -22,9 +23,9 @@ import com.riking.calendar.util.ZToast;
  */
 
 public class PrivateSettingActivity extends AppCompatActivity {
-    Switch checkDynamicSwitch;
-    Switch checkFollowSwitch;
-    Switch checkCollectSwitch;
+    SwitchCompat checkDynamicSwitch;
+    SwitchCompat checkFollowSwitch;
+    SwitchCompat checkCollectSwitch;
     AppUserResp user = ZPreference.getCurrentLoginUser();
 
     @Override

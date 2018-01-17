@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import net.riking.config.Const;
 import net.riking.dao.repo.AppUserDetailRepo;
-import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.SysNoticeRepo;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.Jdpush;
@@ -64,11 +63,11 @@ public class MQSysInfoListener implements MessageListener {
 			if(isSendJdPush){
 				
 				jdpush = new Jdpush();
-				jdpush = new Jdpush();
 				jdpush.setNotificationTitle(title);
 				jdpush.setMsgTitle(title);
 				jdpush.setMsgContent(content);
-				jdpush.setExtrasparam("");
+				jdpush.getExtrasMap().put("dataType", Const.MQ_SYS_INFO+"");
+				jdpush.getExtrasMap().put("sysInfoType", Const.MQ_SYS_INFO_TEXT+"");
 				if(sysNotice != null){
 					AppUserDetail noticeUserDetail = appUserDetailRepo.findOne(sysNotice.getNoticeUserId());
 					if(StringUtils.isNotBlank(noticeUserDetail.getPhoneDeviceId())){

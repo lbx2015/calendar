@@ -31,7 +31,8 @@ public class HotAnswerOfTopicFragment extends ZFragment<HotAnswerOfTopicAdapter>
         return new HotAnswerOfTopicAdapter();
     }
 
-    public void initEvents() {    }
+    public void initEvents() {
+    }
 
     public void initViews() {
     }
@@ -51,7 +52,7 @@ public class HotAnswerOfTopicFragment extends ZFragment<HotAnswerOfTopicAdapter>
 
                 List<QAnswerResult> list = response._data;
                 MyLog.d("list size: " + list.size());
-                if (list.size() < params.pcount) {
+                if (list != null && list.size() < params.pcount) {
                     isHasLoadedAll = true;
                     if (list.size() == 0) {
                         ZToast.toastEmpty();

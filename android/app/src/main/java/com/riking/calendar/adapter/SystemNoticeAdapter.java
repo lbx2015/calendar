@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.SysNoticeResult;
@@ -20,6 +21,7 @@ public class SystemNoticeAdapter extends ZAdater<SystemNoticeAdapter.MyViewHolde
     public void onBindVH(MyViewHolder h, int i) {
         SysNoticeResult r = mList.get(i);
         h.contentTv.setText(r.content);
+        MyLog.d("onBindVH time : " + DateUtil.showTime(r.createdTime));
         h.timeTv.setText(DateUtil.showTime(r.createdTime));
 //        ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
 //        ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);

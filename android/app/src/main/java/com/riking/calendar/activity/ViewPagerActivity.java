@@ -23,15 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.hyphenate.EMClientListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chatuidemo.Constant;
-import com.hyphenate.chatuidemo.db.InviteMessgeDao;
-import com.hyphenate.chatuidemo.ui.ContactListFragment;
-import com.hyphenate.chatuidemo.ui.ConversationListFragment;
-import com.hyphenate.chatuidemo.ui.GroupsActivity;
-import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
@@ -73,190 +64,19 @@ public class ViewPagerActivity extends AppCompatActivity {
     ViewPager pager;
     // textview for unread message count
     private TextView unreadLabel;
-    EMClientListener clientListener = new EMClientListener() {
-        @Override
-        public void onMigrate2x(boolean success) {
-            Toast.makeText(ViewPagerActivity.this, "onUpgradeFrom 2.x to 3.x " + (success ? "success" : "fail"), Toast.LENGTH_LONG).show();
-            if (success) {
-                refreshUIWithMessage();
-            }
-        }
-    };
-    /*EMMessageListener messageListener = new EMMessageListener() {
 
-        @Override
-        public void onMessageReceived(List<EMMessage> messages) {
-            // notify new message
-            for (EMMessage message : messages) {
-                DemoHelper.getInstance().getNotifier().onNewMsg(message);
-            }
-            refreshUIWithMessage();
-        }
-
-        @Override
-        public void onCmdMessageReceived(List<EMMessage> messages) {
-            refreshUIWithMessage();
-        }
-
-        @Override
-        public void onMessageRead(List<EMMessage> messages) {
-        }
-
-        @Override
-        public void onMessageDelivered(List<EMMessage> message) {
-        }
-
-        @Override
-        public void onMessageRecalled(List<EMMessage> messages) {
-            refreshUIWithMessage();
-        }
-
-        @Override
-        public void onMessageChanged(EMMessage message, Object change) {
-        }
-    };*/
     // textview for unread event message
-    private TextView unreadAddressLable;
-    private Button[] mTabs;
-    private ContactListFragment contactListFragment;
-    private Fragment[] fragments;
-    private int index;
     private int currentTabIndex;
     // user account was removed
     private boolean isCurrentAccountRemoved = false;
-    private InviteMessgeDao inviteMessgeDao;
     private String[] mTitles;
     private AlertDialog.Builder mDialog;
     private android.app.AlertDialog.Builder exceptionBuilder;
     private boolean isExceptionDialogShow = false;
     private BroadcastReceiver internalDebugReceiver;
-    private ConversationListFragment conversationListFragment;
     private BroadcastReceiver broadcastReceiver;
     private LocalBroadcastManager broadcastManager;
 
-    /**
-     * update the total unread count
-     */
-    public void updateUnreadAddressLable() {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                int count = getUnreadAddressCountTotal();
-                if (count > 0) {
-                    unreadAddressLable.setVisibility(View.VISIBLE);
-                } else {
-                    unreadAddressLable.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-    }
-
-    /**
-     * get unread event notification count, including application, accepted, etc
-     *
-     * @return
-     */
-    public int getUnreadAddressCountTotal() {
-        int unreadAddressCountTotal = 0;
-        unreadAddressCountTotal = inviteMessgeDao.getUnreadMessagesCount();
-        return unreadAddressCountTotal;
-    }
-
-    /**
-     * get unread message count
-     *
-     * @return
-     */
-    public int getUnreadMsgCountTotal() {
-        return EMClient.getInstance().chatManager().getUnreadMsgsCount();
-    }
-
- /*   @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (!isConflict && !isCurrentAccountRemoved) {
-            //not show the unread message count for the moment
-//            updateUnreadLabel();
-//            updateUnreadAddressLable();
-        }
-
-        // unregister this event listener when this activity enters the
-        // background
-        DemoHelper sdkHelper = DemoHelper.getInstance();
-        sdkHelper.pushActivity(this);
-
-        EMClient.getInstance().chatManager().addMessageListener(messageListener);
-    }*/
-
-    /**
-     * update unread message count
-     */
-    public void updateUnreadLabel() {
-        int count = getUnreadMsgCountTotal();
-        if (unreadLabel != null) {
-            if (count > 0) {
-                unreadLabel.setText(String.valueOf(count));
-                unreadLabel.setVisibility(View.VISIBLE);
-            } else {
-                unreadLabel.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    private void refreshUIWithMessage() {
-        MyLog.d("refreshUIwithMessage");
-        new Exception().printStackTrace();
-        runOnUiThread(new Runnable() {
-            public void run() {
-                // refresh unread count
-                updateUnreadLabel();
-                Fragment f = TAB_FRAGMENTS[3];
-                if (f instanceof ConversationListFragment) {
-                    ((ConversationListFragment) f).refresh();
-                }
-//                if (currentTabIndex == 0) {
-                // refresh conversation list
-//                    if (conversationListFragment != null) {
-//                        conversationListFragment.refresh();
-//                    }
-//                }
-            }
-        });
-    }
-
-    private void registerBroadcastReceiver() {
-        broadcastManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constant.ACTION_CONTACT_CHANAGED);
-        intentFilter.addAction(Constant.ACTION_GROUP_CHANAGED);
-        broadcastReceiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                updateUnreadLabel();
-                updateUnreadAddressLable();
-                if (currentTabIndex == 0) {
-                    // refresh conversation list
-                    if (conversationListFragment != null) {
-                        conversationListFragment.refresh();
-                    }
-                } else if (currentTabIndex == 1) {
-                    if (contactListFragment != null) {
-                        contactListFragment.refresh();
-                    }
-                }
-                String action = intent.getAction();
-                if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
-                    if (EaseCommonUtils.getTopActivity(ViewPagerActivity.this).equals(GroupsActivity.class.getName())) {
-                        GroupsActivity.instance.onResume();
-                    }
-                }
-
-            }
-        };
-        broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
-    }
 
     @Override
     public void onBackPressed() {

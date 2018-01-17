@@ -39,6 +39,7 @@ import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Topic;
+import com.riking.calendar.pojo.server.base.BaseUser;
 import com.riking.calendar.retrofit.APIClient;
 
 import java.io.UnsupportedEncodingException;
@@ -100,6 +101,7 @@ public class ZR {
     }
 
     public static String getRegistrationId() {
+        MyLog.d("registrationId: " + JPushInterface.getRegistrationID(MyApplication.APP));
         return JPushInterface.getRegistrationID(MyApplication.APP);
     }
 
@@ -472,7 +474,7 @@ public class ZR {
         }
     }
 
-    public static void setFollowPersonClickListner(final AppUserResult user, final View followButton, final TextView followTv) {
+    public static void setFollowPersonClickListner(final BaseUser user, final View followButton, final TextView followTv) {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

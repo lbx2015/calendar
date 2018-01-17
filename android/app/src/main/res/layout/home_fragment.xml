@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:hint="搜索报表/话题/人脉/咨询"
+                android:hint="搜索报表/话题/人脉/资讯"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/color_999999"
@@ -76,7 +76,7 @@
             <ss.com.bannerslider.views.BannerSlider
                 android:id="@+id/banner_slider1"
                 android:layout_width="match_parent"
-                android:layout_height="165dp"
+                android:layout_height="130dp"
                 android:layout_gravity="center_vertical"
                 app:animateIndicators="true"
                 app:defaultIndicators="circle"

@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
@@ -30,16 +28,12 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
+public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
 
     public static final int REMMEND_TYPE = 2;
     private Context context;
@@ -83,7 +77,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
             }
             //followed user agree answer
             else if (r.pushType == 2) {
-                h.itemCator.setText(r.userName + "攒了回答");
+                h.itemCator.setText(r.userName + "赞了回答");
                 setAnswerAgreeAndComment(h, r);
             }
             //followed user follow question
@@ -96,7 +90,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
                 h.itemCator.setText(r.userName + "回答了问题");
                 setAnswerAgreeAndComment(h, r);
             } else if (r.pushType == 5) {
-                h.itemCator.setText(r.userName + "收藏了问题");
+                h.itemCator.setText(r.userName + "收藏的回答");
                 setAnswerAgreeAndComment(h, r);
             }
 
@@ -239,8 +233,10 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
 
         //follow icon
         if (r.status == 1) {
+            h.firstTextIcon.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_p, 0, 0, 0);
         } else {
+            h.firstTextIcon.setTextColor(ZR.getColor(R.color.color_999999));
             h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_n, 0, 0, 0);
         }
 
@@ -255,7 +251,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
             public void onClick(View v) {
                 Intent i = new Intent(h.secondTextIcon.getContext(), WriteAnswerActivity.class);
                 i.putExtra(CONST.ANSWER_ID, r.qaId);
-                i.putExtra(CONST.QUESTION_TITLE,r.tqTitle);
+                i.putExtra(CONST.QUESTION_TITLE, r.tqTitle);
                 ZGoto.to(i);
             }
         });
@@ -268,11 +264,14 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
         h.secondTextIcon.setText(ZR.getNumberString(r.qaAgreeNum));
 
         if (r.status == 1) {
+            h.secondTextIcon.setTextColor(ZR.getColor(R.color.color_489dfff));
             h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
         } else {
+            h.secondTextIcon.setTextColor(ZR.getColor(R.color.color_999999));
             h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
+        h.firstTextIcon.setTextColor(ZR.getColor(R.color.color_999999));
         h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_comment, 0, 0, 0);
 
         //set agree listener
@@ -291,29 +290,34 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
     }
 
     private void setFollowQuestionClick(final TextView followTv, final TQuestionResult r) {
-        final TQuestionParams params = new TQuestionParams();
-        params.attentObjId = r.tqId;
-        //question
-        params.objType = 1;
-        //followed
-        if (r.status == 1) {
-            params.enabled = 0;
-        } else {
-            params.enabled = 1;
-        }
+        followTv.setText(ZR.getNumberString(r.qfollowNum));
         followTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
+                final TQuestionParams params = new TQuestionParams();
+                params.attentObjId = r.tqId;
+                //question
+                params.objType = 1;
+                //followed
+                if (r.status == 1) {
+                    params.enabled = 0;
+                } else {
+                    params.enabled = 1;
+                }
                 APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         r.status = params.enabled;
                         if (r.status == 1) {
+                            r.qfollowNum = r.qfollowNum + 1;
+                            followTv.setText(ZR.getNumberString(r.qfollowNum));
                             followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_p, 0, 0, 0);
-                            ZToast.toast("关注成功");
+                            followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
                         } else {
+                            r.qfollowNum = r.qfollowNum - 1;
+                            followTv.setText(ZR.getNumberString(r.qfollowNum));
                             followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_follow_n, 0, 0, 0);
-                            ZToast.toast("取消关注");
+                            followTv.setTextColor(ZR.getColor(R.color.color_999999));
                         }
                     }
                 });
@@ -341,13 +345,13 @@ public class HomeAdapter extends ZAdater<ZViewHolder,TQuestionResult> {
                             r.status = 1;
                             r.qaAgreeNum = r.qaAgreeNum + 1;
                             agreeTv.setText(ZR.getNumberString(r.qaAgreeNum));
+                            agreeTv.setTextColor(ZR.getColor(R.color.color_489dfff));
                             agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
-                            Toast.makeText(agreeTv.getContext(), "点赞成功", Toast.LENGTH_SHORT).show();
                         } else {
                             r.status = 0;
                             r.qaAgreeNum = r.qaAgreeNum - 1;
+                            agreeTv.setTextColor(ZR.getColor(R.color.color_999999));
                             agreeTv.setText(ZR.getNumberString(r.qaAgreeNum));
-                            ZToast.toast("取消点赞");
                             agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
                         }
                     }
