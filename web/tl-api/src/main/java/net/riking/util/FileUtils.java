@@ -20,7 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
 import net.riking.core.utils.UuidUtils;
-
+/**
+ * 文件操作工具
+ * @author you.fei
+ * @version crateTime：2018年1月17日 上午11:44:46
+ * @used TODO
+ */
 public class FileUtils extends org.apache.commons.lang3.time.DateUtils {
 	private static final Logger logger = LogManager.getLogger("FileUtils");
 

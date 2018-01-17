@@ -60,7 +60,21 @@ public class Jdpush extends BaseEntity {
 	public String getMsgContent() {
 		return msgContent;
 	}
-
+	
+	public String getJpushContent() {
+		if(StringUtils.isBlank(msgContent)){
+			return this.getMsgTitle();
+		}
+		return msgContent;
+	}
+	
+	public String getJpushTitle() {
+		if(StringUtils.isBlank(msgContent)){
+			return "";
+		}
+		return msgTitle;
+	}
+	
 	public void setMsgContent(String msgContent) {
 		this.msgContent = msgContent;
 	}
@@ -94,7 +108,5 @@ public class Jdpush extends BaseEntity {
 	public void setExtrasMap(Map<String, String> extrasMap) {
 		this.extrasMap = extrasMap;
 	}
-	
-	
 
 }
