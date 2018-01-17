@@ -20,6 +20,7 @@ import net.riking.entity.model.Jdpush;
 @Component("jdpushUtil")
 public class JdpushUtil {
 	protected static final Logger LOG = LoggerFactory.getLogger(JdpushUtil.class);
+	
 	private static JPushClient jPushClient = new JPushClient("ae4b5cb2379495f2303019ff", "f7ac0692d540d2a7e15613bb");;
 	/**
 	 * 推送给指定用户
@@ -130,7 +131,8 @@ public class JdpushUtil {
                 		.addPlatformNotification(AndroidNotification.newBuilder()
                 				.setTitle(jdpush.getJpushTitle())
                 				.addExtra("msgContent", jdpush.getJpushContent())
-                				.addExtras(jdpush.getExtrasMap()).build())
+                				.addExtras(jdpush.getExtrasMap())
+                				.build())
                 		//ios
                 		.addPlatformNotification(IosNotification.newBuilder()
                 				.setAlert(IosAlert.newBuilder()
@@ -139,7 +141,8 @@ public class JdpushUtil {
                 				.setSound("sound.caf")
                 				.incrBadge(1)
                 				.addExtra("msgContent", jdpush.getJpushContent())
-                				.addExtras(jdpush.getExtrasMap()).build())
+                				.addExtras(jdpush.getExtrasMap())
+                				.build())
                 		.build())
 				.setOptions(Options.newBuilder()
 						// 此字段的值是用来指定本推送要推送的apns环境，false表示开发，true表示生产；对android和自定义消息无意义
@@ -168,7 +171,8 @@ public class JdpushUtil {
                 		.addPlatformNotification(AndroidNotification.newBuilder()
                 				.setTitle(jdpush.getJpushTitle())
                 				.addExtra("msgContent", jdpush.getJpushContent())
-                				.addExtras(jdpush.getExtrasMap()).build())
+                				.addExtras(jdpush.getExtrasMap())
+                				.build())
                 		.build())
 				.setOptions(Options.newBuilder()
 						// 此字段的值是用来指定本推送要推送的apns环境，false表示开发，true表示生产；对android和自定义消息无意义
@@ -201,7 +205,8 @@ public class JdpushUtil {
                 				.setSound("sound.caf")
                 				.incrBadge(1)
                 				.addExtra("msgContent", jdpush.getJpushContent())
-                				.addExtras(jdpush.getExtrasMap()).build())
+                				.addExtras(jdpush.getExtrasMap())
+                				.build())
                 		.build())
 				.setOptions(Options.newBuilder()
 						// 此字段的值是用来指定本推送要推送的apns环境，false表示开发，true表示生产；对android和自定义消息无意义
