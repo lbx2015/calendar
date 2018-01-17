@@ -133,21 +133,21 @@ public class UserActivity extends AppCompatActivity {
                     //follow person
                     params.objType = 3;
                     //followed
-                    if (u.isFollow == 1) {
-                        params.enabled = 0;
-                    } else {
+                    if (u.isFollow == 0) {
                         params.enabled = 1;
+                    } else {
+                        params.enabled = 0;
                     }
 
                     APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
                         @Override
                         public void callBack(ResponseModel<String> response) {
-                            u.isFollow = params.enabled;
-                            if (u.isFollow == 1) {
-                                ZToast.toast("关注成功");
-                            } else {
-                                ZToast.toast("取消关注");
+                            String state = response._data;
+                            if (state == null) {
+                                return;
                             }
+
+                            u.isFollow = Integer.valueOf(state);
                             showInvited(followTv, u.isFollow);
                         }
                     });
