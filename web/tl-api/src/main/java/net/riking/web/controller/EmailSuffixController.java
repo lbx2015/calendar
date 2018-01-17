@@ -40,6 +40,7 @@ import net.riking.dao.repo.EmailSuffixRepo;
 import net.riking.entity.PageQuery;
 import net.riking.entity.EO.EmailSuffixEO;
 import net.riking.entity.model.EmailSuffix;
+import net.riking.service.EmailSuffixService;
 import net.riking.util.ExcelToList;
 import net.riking.util.ExportExcelUtils;
 
@@ -58,6 +59,9 @@ public class EmailSuffixController {
 	@Autowired
 	EmailSuffixRepo emailSuffixRepo;
 
+	@Autowired
+	EmailSuffixService emailSuffixService;
+
 	@ApiOperation(value = "得到<单个>邮箱后缀", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
@@ -70,8 +74,9 @@ public class EmailSuffixController {
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute EmailSuffix emailSuffix) {
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount(), query.getSortObj());
 		emailSuffix.setIsDeleted(Const.EFFECTIVE);
-		Example<EmailSuffix> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
-		Page<EmailSuffix> page = emailSuffixRepo.findAll(example, pageable);
+		Page<EmailSuffix> page = emailSuffixService.findAll(emailSuffix, pageable);
+		// Example<EmailSuffix> example = Example.of(emailSuffix, ExampleMatcher.matchingAll());
+		// Page<EmailSuffix> page = emailSuffixRepo.findAll(example, pageable);
 		return new Resp(page, CodeDef.SUCCESS);
 	}
 

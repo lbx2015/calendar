@@ -10,6 +10,8 @@
 			"alias": "公司名称 ",
 			"group":"base",
 			"type": "string",
+			"query": "1",      
+            "query_order": "1",  
             "verify":"required"
 		},
 		{
@@ -17,6 +19,8 @@
 			"alias": "邮箱后缀",
 			"group":"base",
 			"type": "string",
+			"query": "1",      
+            "query_order": "2", 
 			"verify":"required"
 		},
 		{
@@ -25,6 +29,8 @@
 			"group":"base",
 			"type": "enum",
             "dict_key": "T_EMAIL_SUFFIX.ENABLED",
+            "query": "1",      
+            "query_order": "3", 
             "verify":"required"
 		},
 		

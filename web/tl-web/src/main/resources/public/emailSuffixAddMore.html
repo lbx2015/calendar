@@ -19,10 +19,11 @@
                     <div class="layui-input-inline">
                         <input type="text" name="upfile" id="upfile" readonly="true " autocomplete="off" class="layui-input" />
                     </div>
-                    <div class="layui-box layui-upload-button">
+                    <div class="layui-box layui-upload-button" style="float:left;">
                         <input type="file" name="fileName" id="fileName" lay-type="file" class="layui-upload-file" onchange="upfile.value=this.value" />
                         <span class="layui-upload-icon"><i class="layui-icon"></i>上传文件</span>
                     </div>
+                    <div style="color:red; float:left; margin-left:10px; margin-top:5px;"> (导入前需要下载指定数据模板，在模板中追加数据,上传时需要将编辑好的模板进行上传,否则上传数据有误,导入数据多时需要一定时间起请耐心等耐)</div>
                 </div>
                 <div class="layui-form-item" style="margin-top:15px;">
                     <label class="layui-form-label"></label>

@@ -12,7 +12,7 @@
 <body class="iframeBody">
 <div class="scrollbar">
 	<div class="formbox layui-form add-formbox">
-		<div class="_tmpl" data-url="edit.html" data-attr="feedback.json"
+		<div class="_tmpl" data-url="edit.html" data-attr="feedbackByEdit.json"
 			data-bind="editOnBind" data-param=""></div>
 		<div class="layui-btn-div">
 			<!-- <a class="layui-btn bgc1 layui-btn-small" lay-submit
@@ -26,6 +26,7 @@
 		</div>
 	</div>
 </div>
+<img alt="" style="display:none" id="displayimg" src="" />
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
@@ -33,17 +34,25 @@
 	var id = View.getQStr("id");
 	var flag = View.getQStr("flag");
 	var tmpl;
-
+	//默认显示的图片
+	var defaultUrl ="this.src="+"\'"+"images/img_default.png"+"\'";
 	function editOnBind(attrs, param) {
 		tmpl = this;
 		tmpl.onFinish(function(data) {
-			if(!id){
-				$("#edit_base input[name='versionNo']").val('V');
+			//获取图片信息
+			var imgUrls = $(".layui-input-inline input[name='imgs']").val();
+			//移除textarea
+			var parentByImgUrls = $(".layui-input-inline input[name='imgs']").parent();
+			parentByImgUrls.html("");
+			var htmlInfo="";
+			//创建多个图片
+			var imgArray = imgUrls.split(",");
+			for(var i=0;i<imgArray.length;i++){
+				var url = Const.apiUrl+"/images/feedBack/"+imgArray[i];
+				var imgLabel = "<img id='"+imgArray[i]+"' onerror = "+defaultUrl+" src='"+url+"' alt='"+imgArray[i]+"' style='width:30%'  onclick='scanImg("+"\""+imgArray[i]+"\""+","+"\""+url+"\""+")'/> ";
+				htmlInfo+=imgLabel;
 			}
-			
-			if(flag == "edit"){
-				$("#edit_base input[name='versionNo']").attr("disabled",true);
-			}
+			parentByImgUrls.html(htmlInfo);
 			View.resetUi();
 		});
 		tmpl.bind(function(callback) {
@@ -82,56 +91,6 @@
 			return '描述至少得5个字符啊';
 		}
 	}
-
-
-	//编辑保存
-	function edit() {
-		 if (TmplUtils.check('edit')) {
-			if(!checkVersion()){
-				return false;
-			}
-			var appVersion = Utils.formToObj("edit");
-			appVersion.opt = flag;
-			var url = Const.apiUrl + "/appVersion/save";
-				View.post(url, appVersion, function(resp) {
-					TmplUtils.showMsgSuccess('编辑成功');
-					var index = parent.layer.getFrameIndex(window.name);
-					parent.tbTmpl.refresh("pindex="
-							+ (parent.TmplUtils.currPage - 1) + "&pcount="
-							+ parent.TmplUtils.pageSize
-							+ parent.TmplUtils.searchParam);
-					parent.layer.close(index);
-				}, function(code,data) {
-					//showError(data.data);
-					if(data.data == "-1"){
-						TmplUtils.showMsgFail("该版本号已经存在");
-					}else{
-						TmplUtils.showMsgFail(data.data);
-					}
-					
-				});
-         }
-		
-	}
-
-	//保存并提交
-	function commit() {
-		var appVersion = Utils.formToObj("edit");
-		var url = Const.apiUrl + "/appVersion/addOrUpdate";
-		View.post(url, appVersion, function(resp) {
-			TmplUtils.showMsgSuccess('提交成功');
-			var index = parent.layer.getFrameIndex(window.name);
-			parent.tbTmpl.refresh("pindex="
-					+ (parent.TmplUtils.currPage - 1) + "&pcount="
-					+ parent.TmplUtils.pageSize
-					+ parent.TmplUtils.searchParam);
-			parent.layer.close(index);
-		},function(code,data) {
-			TmplUtils.showMsgFail(data.data);
-			//showError(data.data);
-		});
-	}
-	
 	 //自定义前段校验规则，可以多个
     TmplUtils.verify.desc = function(value) {
         if (value.length < 5) {
@@ -140,26 +99,6 @@
     }
 	
 	 function check(){}
-	//校验版本号
-    function checkVersion() {
-    	//获取版本编号
-		var versionNo = $("#edit_base input[name='versionNo']").val();
-		if(versionNo){
-			var s = versionNo.substring(0,1);
-			//判断当前版本编号首字母是否大写的V并且//V后的格式是否x.x.x的格式
-			if(s=="V"){
-				var reg=/^[V](\d+)\.(\d+)\.(\d+)$/g; //匹配IP地址的正则表达式    
-		        if(reg.test(versionNo)){
-		        	return true;
-		        }
-			}else{
-				TmplUtils.showMsgFail("版本号首字必须是V");
-				return false;
-			}
-		}
-		TmplUtils.showMsgFail("对不起，输入版本格式不正确!");
-		return false;
-    }
     
     function back() {
         parent.View.fireEvent("TB_DATA_CHANGE", {
