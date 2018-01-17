@@ -82,44 +82,15 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public List<ReportResult> getReportResultByParam(String reportName, String userId) {
-		return reportDao.getAllReportByParams(reportName, userId);
+	public List<ReportResult> getReportResultByParam(String reportName, String userId, Integer upperLimit) {
+		return reportDao.getAllReportByParams(reportName, userId, upperLimit);
 	}
 
-	/*
-	 * @Override public List<ReportListResult> getReportByParam(String reportName, String userId) {
-	 * // TODO Auto-generated method stub
-	 * 
-	 * List<ReportResult> list = reportDao.getAllReportByParams(reportName, userId);
-	 * 
-	 * List<ReportTypeListResult> typeListResults = new ArrayList<ReportTypeListResult>();
-	 * 
-	 * List<ReportListResult> reportListResults = new ArrayList<ReportListResult>();
-	 * 
-	 * for (int i = 0; i < list.size(); i++) { // 塞ReportTypeListResult第二层数据 if
-	 * (typeListResults.size() == 0) { setReportTypeListResult(list, i, typeListResults); } for (int
-	 * j = 0; j < typeListResults.size(); j++) { // 把报表类型相等并且报表所属模块相等的归一类 if
-	 * (list.get(i).getReportType().toUpperCase().equals(typeListResults.get(j).getAgenceCode()) &&
-	 * list.get(i).getModuleType().equals(typeListResults.get(j).getModuleType())) { if
-	 * (!typeListResults.get(j).getList().contains(list.get(i)))
-	 * typeListResults.get(j).getList().add(list.get(i)); } else { if (j == typeListResults.size() -
-	 * 1) { setReportTypeListResult(list, i, typeListResults); } } //
-	 * 塞ReportListResult第三层数据,在第二层数据塞完才执行 if (list.size() - 1 == i) { if (reportListResults.size()
-	 * == 0) { setReportListResult(typeListResults, j, reportListResults); } for (int k = 0; k <
-	 * reportListResults.size(); k++) { if (reportListResults.get(k).getAgenceCode().toUpperCase()
-	 * .equals(typeListResults.get(j).getAgenceCode())) {
-	 * reportListResults.get(k).getList().add(typeListResults.get(j)); } else { if (k ==
-	 * reportListResults.size() - 1) { setReportListResult(typeListResults, j, reportListResults); }
-	 * } } } } }
-	 * 
-	 * return reportListResults; }
-	 */
-
 	@Override
-	public List<ReportListResult> getReportByParam(String reportName, String userId) {
+	public List<ReportListResult> getReportByParam(String reportName, String userId, Integer upperLimit) {
 		// TODO Auto-generated method stub
 		// 获取查询相关报表集合
-		List<ReportResult> list = reportDao.getAllReportByParams(reportName, userId);
+		List<ReportResult> list = reportDao.getAllReportByParams(reportName, userId, upperLimit);
 
 		// 存储不同机构的报表结果集
 		Map<String, List<ReportMoudleTypeResult>> agenceMap = new HashMap<String, List<ReportMoudleTypeResult>>();

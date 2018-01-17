@@ -46,7 +46,7 @@ public class ReportDaoImpl implements ReportDao {
 	}
 
 	@Override
-	public List<ReportResult> getAllReportByParams(String param, String userId) {
+	public List<ReportResult> getAllReportByParams(String param, String userId, Integer upperLimit) {
 		// TODO Auto-generated method stub
 		SessionImplementor session = entityManager.unwrap(SessionImplementor.class);
 		Connection connection = session.connection();
@@ -67,6 +67,9 @@ public class ReportDaoImpl implements ReportDao {
 			sql += "and (a.`code` like '%" + param + "%' or a.title like '%" + param + "%') ";
 		}
 		sql += "order by a.report_type, a.module_type, a.`code` ";
+		if(upperLimit != null){
+			sql +=(" limit 0," + upperLimit);
+		}
 		PreparedStatement pstmt = null;
 		List<ReportResult> list = new ArrayList<ReportResult>();
 		try {

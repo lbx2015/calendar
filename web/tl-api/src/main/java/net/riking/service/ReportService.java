@@ -24,9 +24,9 @@ public interface ReportService {
 	 * @param reportName
 	 * @return
 	 */
-	List<ReportListResult> getReportByParam(String reportName, String userId);
+	List<ReportListResult> getReportByParam(String reportName, String userId, Integer upperLimit);
 
-	List<ReportResult> getReportResultByParam(String reportName, String userId);
+	List<ReportResult> getReportResultByParam(String reportName, String userId, Integer upperLimit);
 
 	List<ReportFrequency> findAppUserReportById(String userId);
 
