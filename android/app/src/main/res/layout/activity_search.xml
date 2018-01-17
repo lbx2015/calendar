@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_f2f2f2"
     android:orientation="vertical">
 
@@ -169,20 +168,7 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/top_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="6dp"
-        android:background="@android:color/white"
-        app:layout_anchor="@+id/appbar"
-        app:layout_anchorGravity="bottom"
-        app:tabIndicatorColor="@color/color_489dfff"
-        app:tabIndicatorHeight="2dp"
-        app:tabSelectedTextColor="@color/color_489dfff"
-        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-        app:tabTextColor="@color/color_666666"></android.support.design.widget.TabLayout>
+    <include layout="@layout/view_pager_tab_layout" />
     <!--<android.support.design.widget.TabLayout
         android:id="@+id/top_tab_layout"
         android:layout_width="match_parent"
