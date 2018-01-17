@@ -129,10 +129,8 @@ public class TopicServiceImpl implements TopicService {
 	private void copyFile(String[] fileNames) {
 		for (int i = 1; i < fileNames.length; i++) {
 			String fileName = fileNames[i].split(">")[0].replace("\"", "");
-			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TOPIC_PHOTO_PATH + fileName;
-			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			String newPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TOPIC_PHOTO_PATH) + fileName;
+			String oldPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TEMP_PHOTO_PATH) + fileName;
 			try {
 				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
 			} catch (Exception e) {
@@ -146,10 +144,8 @@ public class TopicServiceImpl implements TopicService {
 	private void copyFile2Cover(String[] fileNames) {
 		for (int i = 0; i < fileNames.length; i++) {
 			String fileName = fileNames[i];
-			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TOPIC_PHOTO_PATH + fileName;
-			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			String newPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TOPIC_PHOTO_PATH) + fileName;
+			String oldPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TEMP_PHOTO_PATH) + fileName;
 			try {
 				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
 			} catch (Exception e) {

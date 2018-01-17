@@ -1,0 +1,22 @@
+{
+	"table": "T_APP_BANNER",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "grade",
+			"alias": "等级",
+			"desc": "等级",
+			"type": "enum",
+			"enum_url": "/appUserGrade/getUserGradeEnum", 
+			"group": "base",
+			"query": "1",
+			"query_order": "1",
+			"verify":"required"
+		}
+	]
+}

@@ -37,6 +37,7 @@
 			<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 		</div>
 	</div>
+	<img alt="" style="display:none" id="displayimg" src="" />
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
@@ -72,7 +73,6 @@
 <script>
 	var item;
 	var tbTmpl;
-	var defaultUrl ="this.src="+"\'"+"images/img_default.png"+"\'";
 	function forbbit(id) {
 
 	}
@@ -126,7 +126,7 @@
 						if(obj.prop=="bannerURL"){
 							var htmlInfo = Const.apiUrl+ obj.html;
 							//var imgHtml = "<img  src='"+htmlInfo+"' style='width:40px; height:40px;' alt='"+obj.html+"'/>";
-							obj.html = '<img onerror="'+defaultUrl+'" src="'+htmlInfo+'"style="width:30px;height: 30px;" alt="'+obj.item.title+'封面" />';
+							obj.html = '<img id="'+obj.html+'" onerror="'+defaultUrl+'" src="'+htmlInfo+'"style="width:30px;height: 30px;" alt="'+obj.item.title+'封面" onclick="scanImg('+'\''+obj.html+'\''+','+'\''+htmlInfo+'\''+')"/>';
 							//obj.html="";
 							//obj.html+=imgHtml;
 						}

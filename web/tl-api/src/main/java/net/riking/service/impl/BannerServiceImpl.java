@@ -25,14 +25,16 @@ public class BannerServiceImpl implements BannerService {
 		}
 	}
 
+	/**
+	 * 复制图片
+	 * @param fileNames
+	 */
 	private void copyFile(String[] fileNames) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < fileNames.length; i++) {
 			String fileName = fileNames[i].split(">")[0].replace("\"", "");
-			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_BANNER_PHOTO_PATH + fileName;
-			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			String oldPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TEMP_PHOTO_PATH) + fileName;
+			String newPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TEMP_PHOTO_PATH) + fileName;
 			try {
 				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
 			} catch (Exception e) {

@@ -26,7 +26,6 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.UserFollowCollect;
 import net.riking.service.AppUserService;
-import net.riking.util.FileUtils;
 
 /**
  * web端app用户操作
@@ -56,6 +55,7 @@ public class AppUserController {
 			appUserVO.setAppUser(appUser);
 			AppUserDetail appUserDetail = appUserDetailRepo.findOne(id);
 			if (null != appUserDetail) {
+				appUserDetail.setPhotoUrl(Const.TL_PHOTO_PATH + appUserDetail.getPhotoUrl());
 				appUserVO.setAppUserDetail(appUserDetail);
 			}
 			return new Resp(appUserVO, CodeDef.SUCCESS);
@@ -81,8 +81,12 @@ public class AppUserController {
 		for (AppUserVO appUserVO2 : appUserVOs) {
 			i++;
 			// 获取前缀
-			appUserVO2.setPrefixPhotoURL(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH, this.getClass()));
+			// appUserVO2.setPrefixPhotoURL(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH,
+			// this.getClass()));
 			// appUserVO2.setPrefixPhotoURL("http://localhost:8281/images/user/photo/");
+			// 设置图片位置
+			appUserVO2.getAppUserDetail()
+					.setPhotoUrl(Const.TL_PHOTO_PATH + appUserVO2.getAppUserDetail().getPhotoUrl());
 			appUserVO2.getAppUser().setSerialNumber(new Integer(i));
 		}
 		return new Resp(page);

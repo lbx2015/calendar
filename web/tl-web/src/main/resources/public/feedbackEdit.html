@@ -12,7 +12,7 @@
 <body class="iframeBody">
 <div class="scrollbar">
 	<div class="formbox layui-form add-formbox">
-		<div class="_tmpl" data-url="edit.html" data-attr="feedbackByEdit.json"
+		<div class="_tmpl" data-url="edit.html" data-attr="feedback.json"
 			data-bind="editOnBind" data-param=""></div>
 		<div class="layui-btn-div">
 			<!-- <a class="layui-btn bgc1 layui-btn-small" lay-submit
@@ -26,7 +26,7 @@
 		</div>
 	</div>
 </div>
-<img alt="" style="display:none" id="displayimg" src="" />
+<img alt='' style='display:none' id='displayimg' src='' />
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
@@ -34,25 +34,29 @@
 	var id = View.getQStr("id");
 	var flag = View.getQStr("flag");
 	var tmpl;
-	//默认显示的图片
-	var defaultUrl ="this.src="+"\'"+"images/img_default.png"+"\'";
 	function editOnBind(attrs, param) {
 		tmpl = this;
 		tmpl.onFinish(function(data) {
 			//获取图片信息
 			var imgUrls = $(".layui-input-inline input[name='imgs']").val();
-			//移除textarea
-			var parentByImgUrls = $(".layui-input-inline input[name='imgs']").parent();
-			parentByImgUrls.html("");
-			var htmlInfo="";
-			//创建多个图片
-			var imgArray = imgUrls.split(",");
-			for(var i=0;i<imgArray.length;i++){
-				var url = Const.apiUrl+"/images/feedBack/"+imgArray[i];
-				var imgLabel = "<img id='"+imgArray[i]+"' onerror = "+defaultUrl+" src='"+url+"' alt='"+imgArray[i]+"' style='width:30%'  onclick='scanImg("+"\""+imgArray[i]+"\""+","+"\""+url+"\""+")'/> ";
-				htmlInfo+=imgLabel;
+			if(imgUrls!=""){
+				//移除textarea
+				var parentByImgUrls = $(".layui-input-inline input[name='imgs']").parent();
+				parentByImgUrls.html("");
+				var htmlInfo="";
+				//创建多个图片
+				var imgArray = imgUrls.split(",");
+				for(var i=0;i<imgArray.length;i++){
+					var url = Const.apiUrl+"/images/feedBack/"+imgArray[i];
+					var imgLabel = "<img id='"+imgArray[i]+"' onerror = "+defaultUrl+" src='"+url+"' alt='"+imgArray[i]+"' style='width:30%'  onclick='scanImg("+"\""+imgArray[i]+"\""+","+"\""+url+"\""+")'/> ";
+					htmlInfo+=imgLabel;
+				}
+				parentByImgUrls.html(htmlInfo);
+			}else{
+				//移除textarea
+				var parentByImgUrls = $(".layui-input-inline input[name='imgs']").parent();
+				parentByImgUrls.html("");
 			}
-			parentByImgUrls.html(htmlInfo);
 			View.resetUi();
 		});
 		tmpl.bind(function(callback) {

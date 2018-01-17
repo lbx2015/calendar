@@ -1,3 +1,7 @@
+//默认显示的图片路径
+var defaultUrl ="this.src="+"\'"+"images/img_default.png"+"\'";
+//默认加载的用户默认图片
+var defaultUrlForUser ="this.src="+"\'"+"images/user_default.jpg"+"\'";
 //获得img标签加载的图片点击需要显示的宽高(标签的id)
 function getImgHeightAndWidth(id){
 	var myimage = document.getElementById(id);
@@ -48,7 +52,8 @@ function adjustImgInfo(maxWidth,maxHeight,imgInfo){
 
 //点击放大图片(需要在页面中加一个id为:displayimg的img标签,点击的img标签(只能是img标签)需要设置id属性并且将id值作为该方法的第一个属性)
 function scanImg(name, url) {
-    $("#displayimg").attr("src", '/images/img_default.png');
+    $("#displayimg").attr("src", url);
+    $("#displayimg").attr("onerror", defaultUrl);
     var imgInfo = getImgHeightAndWidth(name);
     var height = imgInfo.height;
     var width =  imgInfo.width;

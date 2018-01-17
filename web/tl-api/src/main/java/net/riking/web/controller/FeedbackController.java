@@ -19,9 +19,11 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.FeedBackRepo;
 import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.FeedBack;
 
 /**
@@ -40,11 +42,25 @@ public class FeedbackController {
 	@Autowired
 	AppUserRepo appUserRepo;
 
+	@Autowired
+	AppUserDetailRepo appUserDetailRepo;
+
 	@ApiOperation(value = "得到<单个>反馈信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
 		FeedBack feedback = feedBackRepo.findOne(id);
 		if (null != feedback) {
+			String userId = feedback.getCreatedBy();
+			if (userId != null) {
+				AppUserDetail appUserDetail = appUserDetailRepo.findOne(userId);
+				AppUser appUser = appUserRepo.findOne(userId);
+				if (appUserDetail != null) {
+					feedback.setUserName(appUserDetail.getUserName());
+				}
+				if (appUser != null) {
+					feedback.setUserPhone(appUser.getPhone());
+				}
+			}
 			return new Resp(feedback, CodeDef.SUCCESS);
 		} else {
 			return new Resp(null, CodeDef.ERROR);
@@ -61,9 +77,13 @@ public class FeedbackController {
 		for (FeedBack feedBack2 : feedBacks) {
 			String userId = feedBack2.getCreatedBy();
 			if (userId != null) {
+				AppUserDetail appUserDetail = appUserDetailRepo.findOne(userId);
 				AppUser appUser = appUserRepo.findOne(userId);
+				if (appUserDetail != null) {
+					feedBack2.setUserName(appUserDetail.getUserName());
+				}
 				if (appUser != null) {
-					feedBack2.setUserName(appUser.getUserName());
+					feedBack2.setUserPhone(appUser.getPhone());
 				}
 			}
 		}

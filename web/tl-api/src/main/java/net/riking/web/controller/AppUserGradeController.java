@@ -1,5 +1,7 @@
 package net.riking.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.core.entity.MultipleChoiceCustom;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserGradeRepo;
@@ -108,4 +111,18 @@ public class AppUserGradeController {
 		return new Resp(null, CodeDef.ERROR);
 	}
 
+	@RequestMapping(value = "/getUserGradeEnum", method = RequestMethod.GET)
+	public Resp getUserGradeEnum(@RequestParam(value = "prop", required = false) String prop) throws Exception {
+		List<AppUserGrade> list = appUserGradeRepo.findByIsDeleted(new Integer(1));
+		MultipleChoiceCustom choice;
+		List<MultipleChoiceCustom> multipleChoiceCustoms = new ArrayList<MultipleChoiceCustom>();
+		for (AppUserGrade appUserGrade : list) {
+			choice = new MultipleChoiceCustom();
+			choice.setKey(appUserGrade.getGrade().toString());
+			choice.setValue("等级" + appUserGrade.getGrade());
+			choice.setProp(prop);
+			multipleChoiceCustoms.add(choice);
+		}
+		return new Resp(multipleChoiceCustoms, CodeDef.SUCCESS);
+	}
 }
