@@ -100,7 +100,7 @@ public class Jdpush extends BaseEntity {
 
 	public Map<String, String> getExtrasMap() {
 		if(extrasMap ==null){
-			return  new HashMap<String,String>();
+			extrasMap = new HashMap<String,String>();
 		}
 		return extrasMap;
 	}
