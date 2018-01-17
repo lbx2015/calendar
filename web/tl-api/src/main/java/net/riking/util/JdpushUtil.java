@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -128,6 +129,7 @@ public class JdpushUtil {
                 		//android
                 		.addPlatformNotification(AndroidNotification.newBuilder()
                 				.setTitle(jdpush.getJpushTitle())
+                				.addExtra("msgContent", jdpush.getJpushContent())
                 				.addExtras(jdpush.getExtrasMap()).build())
                 		//ios
                 		.addPlatformNotification(IosNotification.newBuilder()
@@ -136,8 +138,17 @@ public class JdpushUtil {
                 						.build())
                 				.setSound("sound.caf")
                 				.incrBadge(1)
+                				.addExtra("msgContent", jdpush.getJpushContent())
                 				.addExtras(jdpush.getExtrasMap()).build())
                 		.build())
+				.setOptions(Options.newBuilder()
+						// 此字段的值是用来指定本推送要推送的apns环境，false表示开发，true表示生产；对android和自定义消息无意义
+						.setApnsProduction(false)
+						// 此字段是给开发者自己给推送编号，方便推送者分辨推送记录
+						//.setSendno(1)
+						// 此字段的值是用来指定本推送的离线保存时长，如果不传此字段则默认保存一天，最多指定保留十天，单位为秒
+						//.setTimeToLive(86400)
+						.build())
                 .build();
     }
     
@@ -149,23 +160,24 @@ public class JdpushUtil {
 	 */
     public static PushPayload buildPushObject_android_all_alertWithTitle(Jdpush jdpush) {
         return PushPayload.newBuilder()
-                .setPlatform(Platform.android_ios())
+                .setPlatform(Platform.android())
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
                 		.setAlert(jdpush.getJpushContent())
                 		//android
                 		.addPlatformNotification(AndroidNotification.newBuilder()
                 				.setTitle(jdpush.getJpushTitle())
-                				.addExtras(jdpush.getExtrasMap()).build())
-                		//ios
-                		.addPlatformNotification(IosNotification.newBuilder()
-                				.setAlert(IosAlert.newBuilder()
-                						.setTitleAndBody(jdpush.getJpushTitle(), "",jdpush.getJpushContent())
-                						.build())
-                				.setSound("sound.caf")
-                				.incrBadge(1)
+                				.addExtra("msgContent", jdpush.getJpushContent())
                 				.addExtras(jdpush.getExtrasMap()).build())
                 		.build())
+				.setOptions(Options.newBuilder()
+						// 此字段的值是用来指定本推送要推送的apns环境，false表示开发，true表示生产；对android和自定义消息无意义
+						.setApnsProduction(false)
+						// 此字段是给开发者自己给推送编号，方便推送者分辨推送记录
+						//.setSendno(1)
+						// 此字段的值是用来指定本推送的离线保存时长，如果不传此字段则默认保存一天，最多指定保留十天，单位为秒
+						//.setTimeToLive(86400)
+						.build())
                 .build();
     }
     
@@ -177,14 +189,10 @@ public class JdpushUtil {
 	 */
     public static PushPayload buildPushObject_ios_all_alertWithTitle(Jdpush jdpush) {
         return PushPayload.newBuilder()
-                .setPlatform(Platform.android_ios())
+                .setPlatform(Platform.ios())
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
                 		.setAlert(jdpush.getJpushContent())
-                		//android
-                		.addPlatformNotification(AndroidNotification.newBuilder()
-                				.setTitle(jdpush.getJpushTitle())
-                				.addExtras(jdpush.getExtrasMap()).build())
                 		//ios
                 		.addPlatformNotification(IosNotification.newBuilder()
                 				.setAlert(IosAlert.newBuilder()
@@ -192,8 +200,17 @@ public class JdpushUtil {
                 						.build())
                 				.setSound("sound.caf")
                 				.incrBadge(1)
+                				.addExtra("msgContent", jdpush.getJpushContent())
                 				.addExtras(jdpush.getExtrasMap()).build())
                 		.build())
+				.setOptions(Options.newBuilder()
+						// 此字段的值是用来指定本推送要推送的apns环境，false表示开发，true表示生产；对android和自定义消息无意义
+						.setApnsProduction(false)
+						// 此字段是给开发者自己给推送编号，方便推送者分辨推送记录
+						//.setSendno(1)
+						// 此字段的值是用来指定本推送的离线保存时长，如果不传此字段则默认保存一天，最多指定保留十天，单位为秒
+						//.setTimeToLive(86400)
+						.build())
                 .build();
     }
 
