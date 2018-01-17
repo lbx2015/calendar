@@ -285,17 +285,20 @@ public class SearchListServer {
 				params.getUserId(), 3);
 		map.put("reports", reportResultList);
 		//话题
+		params.setShowOptType(Const.OPT_TYPE_FOLLOW_STATUS);
 		List<TopicResult> topicResults = findTopicByKeyWord(params);
 		if(topicResults.size()>=3){
 			topicResults = topicResults.subList(0, 3);
 		}
 		map.put("topics", topicResults);
 		//人脉
+		params.setShowOptType(Const.OPT_TYPE_FOLLOW_STATUS);
 		List<AppUserResult> appUserResults = findUserByKeyWord(params);
 		if(appUserResults.size()>=3){
 			appUserResults = appUserResults.subList(0, 3);
 		}
 		map.put("users", appUserResults);
+		
 		//资讯
 		List<NewsResult> newsResults = findNewsByKeyWord(params);
 		if(newsResults.size()>=3){
