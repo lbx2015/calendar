@@ -17,7 +17,7 @@
             android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -65,7 +65,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/topic_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                     app:layout_constraintStart_toEndOf="@id/icon_image"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/follow_number_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/follow_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
                 android:layout_marginRight="15dp"
                 app:layout_scrollFlags="scroll|enterAlways">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@id/id_source_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                     android:textColor="@color/color_666666"
                     android:textSize="14sp" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@id/id_expand_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

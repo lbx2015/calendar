@@ -20,7 +20,7 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="0dp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

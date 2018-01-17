@@ -33,7 +33,7 @@
             android:background="@drawable/rounded_login__translucent_rectangle"
             android:onClick="clickLoginWithPhone">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -52,7 +52,7 @@
             android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -77,7 +77,7 @@
         android:onClick="clickPolicy"
         android:orientation="horizontal">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -86,7 +86,7 @@
             android:textColor="@color/color_80ffffff"
             android:textSize="14sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/user_contract"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

@@ -28,7 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/message_icon_default_mess" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/message_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:textColor="@color/color_b3b3b3"
                 android:textSize="17sp" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/button_message_tv"
                 android:layout_width="160dp"
                 android:layout_height="44dp"

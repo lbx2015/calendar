@@ -61,7 +61,7 @@
                 android:visibility="gone" />
         </RelativeLayout>
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"

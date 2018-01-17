@@ -17,7 +17,7 @@
             android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/activity_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_height="@dimen/divider_height"
         android:background="@color/color_d2d2d2" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:textColor="@color/color_222222"
         android:textSize="17sp" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/public_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

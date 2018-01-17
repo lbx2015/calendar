@@ -41,7 +41,7 @@
                 android:hint="国家/币种/节假日" />
         </LinearLayout>
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

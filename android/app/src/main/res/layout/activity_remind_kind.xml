@@ -19,7 +19,7 @@
             android:layout_marginLeft="15dp"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/remind_on_intergral_clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -151,7 +151,7 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/ahead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
             android:padding="20dp"
             app:wheel_item_space="@dimen/normal_font_size_18" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/minute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

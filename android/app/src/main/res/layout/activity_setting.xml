@@ -17,7 +17,7 @@
             android:layout_marginLeft="19dp"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -40,7 +40,7 @@
         android:background="@android:color/white"
         android:paddingLeft="15dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/user_private_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
         android:background="@android:color/white"
         android:paddingLeft="15dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/clear_cache"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/cache_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
         android:onClick="onClickAbout"
         android:paddingLeft="15dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/about_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
         android:background="@android:color/white"
         android:visibility="gone">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/login_out_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

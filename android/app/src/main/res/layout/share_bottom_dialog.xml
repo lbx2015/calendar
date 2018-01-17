@@ -26,7 +26,7 @@
                 android:background="@drawable/white_circle"
                 android:src="@drawable/com_share_icon_friend" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -50,7 +50,7 @@
                 android:background="@drawable/white_circle"
                 android:src="@drawable/com_share_icon_weixin" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -94,7 +94,7 @@
                 android:background="@drawable/white_circle"
                 android:src="@drawable/com_share_icon_shield" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -119,7 +119,7 @@
                 android:src="@drawable/com_share_icon_shield"
                 android:visibility="invisible" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -146,7 +146,7 @@
         android:layout_height="44dp"
         android:background="@color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

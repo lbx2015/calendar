@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:textColor="@color/hintColor"
         android:textSize="17sp" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

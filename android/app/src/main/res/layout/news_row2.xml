@@ -7,7 +7,7 @@
     android:paddingRight="15dp"
     android:orientation="vertical">
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/news_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

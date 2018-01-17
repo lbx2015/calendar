@@ -21,7 +21,7 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/work_rm_icon_time" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -32,7 +32,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/select_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/work_rm_icon_wholeday" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -113,7 +113,7 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/work_rm_icon_mode" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -155,7 +155,7 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/work_rm_icon_repeat" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

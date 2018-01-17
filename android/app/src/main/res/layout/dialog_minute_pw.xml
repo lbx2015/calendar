@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/ahead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             app:wheel_item_index="10"
             app:wheel_item_space="@dimen/normal_font_size_18" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/minute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

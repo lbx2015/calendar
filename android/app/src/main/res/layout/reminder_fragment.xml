@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/check_remind_history"
         android:layout_width="109dp"
         android:layout_height="18dp"
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/today_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/white">
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:id="@+id/today_date"
                             android:layout_width="wrap_content"
                             android:layout_height="29dp"
@@ -80,7 +80,7 @@
                     </RelativeLayout>
 
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/tomorrow_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/white">
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:id="@+id/tomorrow_date"
                             android:layout_width="wrap_content"
                             android:layout_height="29dp"
@@ -120,7 +120,7 @@
                             android:textSize="12sp" />
                     </RelativeLayout>
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/future_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -11,7 +11,7 @@
         android:clickable="true"
         android:focusable="true" >
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/umeng_common_icon_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             android:orientation="vertical"
             android:paddingTop="10dp" >
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/umeng_common_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/umeng_common_progress_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

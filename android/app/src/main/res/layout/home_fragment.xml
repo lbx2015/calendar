@@ -34,7 +34,7 @@
                 android:layout_marginRight="5dp"
                 android:src="@drawable/com_icon_search_s" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/search_edit_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/raise_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
