@@ -17,7 +17,7 @@
             android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:background="@color/color_d2d2d2" />
 
     <!--phone number-->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/cell_phone_nubmer_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/add_cell_phone_nubmer_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
         android:paddingLeft="15dp"
         android:src="@color/color_e2e2e2" />
     <!--email-->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/email_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/add_email_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
             android:textColor="@color/color_489dfff"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/email_validated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
         android:paddingLeft="15dp"
         android:src="@color/color_e2e2e2" />
     <!--wechat-->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -177,7 +177,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/wechat_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/add_wechat_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -212,7 +212,7 @@
     </RelativeLayout>
 
     <!--company name-->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -229,7 +229,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/company_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -242,7 +242,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/add_company_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -270,7 +270,7 @@
         android:paddingLeft="15dp"
         android:src="@color/color_e2e2e2" />
     <!--industry-->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -286,7 +286,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/industry_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -299,7 +299,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/add_industry_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -327,7 +327,7 @@
         android:paddingLeft="15dp"
         android:src="@color/color_e2e2e2" />
     <!--position-->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -343,7 +343,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/position_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -356,7 +356,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/add_position_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -384,7 +384,7 @@
         android:paddingLeft="15dp"
         android:src="@color/color_e2e2e2" />
     <!--job location-->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -400,7 +400,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/location_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -413,7 +413,7 @@
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/add_location_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

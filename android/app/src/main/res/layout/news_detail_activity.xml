@@ -37,7 +37,7 @@
                     android:onClick="clickBack"
                     android:src="@drawable/nav_icon_back" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -84,7 +84,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 andruserIdd:iduserId@+id/suggestions_for_you"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 andruserIdd:iduserId@+id/reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -207,7 +207,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/com_icon_comment" />
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/comment_number_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/com_toolbar_icon_collect_n" />
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/collect_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -263,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/com_toolbar_icon_share" />
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="分享" />

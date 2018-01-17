@@ -11,7 +11,7 @@
         android:background="@color/colorPrimary"
         android:padding="10dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/normal_font_size_18" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

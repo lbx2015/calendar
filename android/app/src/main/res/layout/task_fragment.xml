@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/check_task_history"
                 android:layout_width="109dp"
                 android:layout_height="18dp"
@@ -50,7 +50,7 @@
                 android:background="@color/color_d2d2d2"
                 android:paddingTop="4dp" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/quick_add_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

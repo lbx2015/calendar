@@ -13,7 +13,7 @@
         android:src="@drawable/user_icon_head_notlogin"
         app:bga_iv_circle="true"/>
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/tv_item_moment_username"
         style="@style/MatchWrap"
         android:layout_toRightOf="@id/iv_item_moment_avatar"
@@ -23,7 +23,7 @@
         android:textColor="#707EA3"
         android:textSize="14sp"/>
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/tv_item_moment_content"
         style="@style/MatchWrap"
         android:layout_below="@id/tv_item_moment_username"

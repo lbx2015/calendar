@@ -32,7 +32,7 @@
             app:buttonTextSize="24sp"
             app:button_color="@color/color_fffde7" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/sign_in_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:textSize="17sp" />
 
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/current_experience"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_check_in_rectangle">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/i_konw_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

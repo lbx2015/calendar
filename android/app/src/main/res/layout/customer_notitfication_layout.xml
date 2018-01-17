@@ -17,14 +17,14 @@
         android:layout_marginLeft="10dip"
         android:orientation="vertical">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#286CA6"
             android:textSize="16sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

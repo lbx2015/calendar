@@ -25,7 +25,7 @@
             android:paddingRight="10dp"
             android:src="@drawable/not_done" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:background="@color/color_d2d2d2" />
     </RelativeLayout>
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@id/smMenuViewLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -60,7 +60,7 @@
         android:layout_width="140dp"
         android:layout_height="match_parent">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/tv_text"
             android:layout_width="70dp"
             android:layout_height="match_parent"

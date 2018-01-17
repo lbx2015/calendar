@@ -17,7 +17,7 @@
             android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -51,7 +51,7 @@
             app:elevation="0dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/question_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/answer_create_time"
                     app:layout_constraintStart_toEndOf="@+id/user_icon" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/answer_create_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/follow_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 andruserIdd:iduserId@+id/suggestions_for_you"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -215,7 +215,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 andruserIdd:iduserId@+id/reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -273,7 +273,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/comments_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -292,7 +292,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/agree_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -311,7 +311,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/collect_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -330,7 +330,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/share_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

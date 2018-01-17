@@ -17,7 +17,7 @@
             android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:layout_height="50dp"
             android:background="@android:color/white">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/my_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:layout_height="50dp"
             android:background="@android:color/white">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/name_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                 android:textColor="@color/color_222222"
                 android:textSize="17sp" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
             android:layout_height="50dp"
             android:background="@android:color/white">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -144,7 +144,7 @@
                 android:textColor="@color/color_222222"
                 android:textSize="17sp" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
             android:layout_height="50dp"
             android:background="@android:color/white">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/user_introduction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -22,7 +22,7 @@
             android:padding="10dip"
             >
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="设置接收push时间"
@@ -43,7 +43,7 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal" >
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Quiet Week Enabled"
@@ -72,7 +72,7 @@
                             android:layout_height="wrap_content"
                              />
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Monday"
@@ -90,7 +90,7 @@
                             android:layout_height="wrap_content"
                              />
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tuesday"
@@ -109,7 +109,7 @@
                             
                              />
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Wednesday"
@@ -127,7 +127,7 @@
                             android:layout_height="wrap_content"
                               />
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Thursday"
@@ -151,7 +151,7 @@
                             android:layout_height="wrap_content"
                             />
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Friday"
@@ -169,7 +169,7 @@
                             android:layout_height="wrap_content"
                             />
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Saturday"
@@ -187,7 +187,7 @@
                             android:layout_height="wrap_content"
                             />
 
-                        <TextView
+                        <com.riking.calendar.view.ZTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Sunday"
@@ -201,14 +201,14 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal" >
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Quiet Time Enabled"
                     android:textSize="16dip" />
             </LinearLayout>
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start Time"
@@ -219,7 +219,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="End Time"

@@ -9,7 +9,7 @@
         android:layout_marginTop="68dp"
         android:orientation="vertical">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"></com.riking.calendar.view.ZFlowLayout>
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/start_button"
             android:layout_width="330dp"
             android:layout_height="49dp"

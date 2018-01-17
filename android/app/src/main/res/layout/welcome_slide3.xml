@@ -19,7 +19,7 @@
             android:layout_marginBottom="49dp"
             android:src="@drawable/bootpage3" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/page_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

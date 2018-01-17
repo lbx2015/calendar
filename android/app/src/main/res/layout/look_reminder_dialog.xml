@@ -28,7 +28,7 @@
         android:layout_height="48dp"
         android:layout_marginLeft="19dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/look_remind_time" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/remind_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:textColor="@color/color_929292"
             android:textSize="14sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/look_remind_way" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/remind_way"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
             android:layout_marginLeft="19dp"
             android:src="@drawable/look_remind_repeat" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/remind_repeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
