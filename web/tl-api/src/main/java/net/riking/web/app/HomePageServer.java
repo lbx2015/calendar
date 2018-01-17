@@ -227,6 +227,9 @@ public class HomePageServer {
 					topic.setIsFollow(1);// 1-已关注
 				}
 			}
+			//话题的关注数 后面从redis里面取
+			Integer followNum = topicRelRepo.followCount(topic.getId(), 0);
+			topic.setFollowNum(followNum);
 		}
 		if (topics.size() != 0)
 
@@ -241,7 +244,7 @@ public class HomePageServer {
 		}
 
 		// 可能感兴趣的人
-		// 除去用户已关注的话题
+		// 除去用户已关注的人
 		List<UserFollowRel> userFollowRels = userFollowRelRepo.findByUser(homeParams.getUserId());
 		String userIds = "";
 		{
@@ -276,6 +279,8 @@ public class HomePageServer {
 					userResult.setIsFollow(2);// 互相关注
 				}
 			}
+			Integer fansNum = userFollowRelRepo.fansNumByUser(userResult.getId());
+			userResult.setFansNum(fansNum);
 		}
 		if (userResults.size() != 0)
 

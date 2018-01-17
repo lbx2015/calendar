@@ -74,16 +74,16 @@ public interface AppUserFollowRelRepo
 	 * @param newsId
 	 * @return
 	 */
-	@Query("select count(*) from UserFollowRel where toUserId = ?1 ")
-	Integer countByToUser(String userId);
+	@Query("select count(*) from UserFollowRel where (userId = ?1 and followStatus = 2) or toUserId = ?1  ")
+	Integer fansNumByUser(String userId);
 
 	/**
-	 * 查询用户粉丝数
+	 * 查询用户关注数
 	 * @param newsId
 	 * @return
 	 */
-	@Query("select count(*) from UserFollowRel where userId = ?1 ")
-	Integer countByUser(String userId);
+	@Query("select count(*) from UserFollowRel where (userId = ?1 and followStatus = 1) or (toUserId = ?1 and followStatus = 2)")
+	Integer followNumByUser(String userId);
 	
 	
 	@Query(" from UserFollowRel where ( userId = ?1 and followStatus != 0 ) or ( toUserId = ?1 and followStatus= 2 ) ")

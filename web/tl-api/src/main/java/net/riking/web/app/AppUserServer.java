@@ -192,9 +192,9 @@ public class AppUserServer {
 		}
 		OtherUserResp otherUserResp = appUserService.getOtherMes(userParams.getToUserId(), userParams.getUserId());
 		// TODO 暂时从数据库中获取，后面优化从redis中取
-		Integer followNum = userFollowRelRepo.countByUser(userParams.getToUserId());
+		Integer followNum = userFollowRelRepo.followNumByUser(userParams.getToUserId());
 		Integer answerNum = questionAnswerRepo.answerCountByUserId(userParams.getToUserId());
-		Integer fansNum = userFollowRelRepo.countByToUser(userParams.getToUserId());
+		Integer fansNum = userFollowRelRepo.fansNumByUser(userParams.getToUserId());
 		otherUserResp.setFollowNum(followNum);
 		otherUserResp.setAnswerNum(answerNum);
 		otherUserResp.setFansNum(fansNum);
@@ -348,9 +348,9 @@ public class AppUserServer {
 			return new AppResp(CodeDef.EMP.PARAMS_ERROR, CodeDef.EMP.PARAMS_ERROR_DESC);
 		}
 		// TODO 暂时从数据库中获取，后面优化从redis中取
-		Integer followNum = userFollowRelRepo.countByUser(userParams.getUserId());
+		Integer followNum = userFollowRelRepo.followNumByUser(userParams.getUserId());
 		Integer answerNum = questionAnswerRepo.answerCountByUserId(userParams.getUserId());
-		Integer fansNum = userFollowRelRepo.countByToUser(userParams.getUserId());
+		Integer fansNum = userFollowRelRepo.fansNumByUser(userParams.getUserId());
 		UserOperationInfo userOperationInfo = new UserOperationInfo();
 		userOperationInfo.setFollowNum(followNum);
 		userOperationInfo.setAnswerNum(answerNum);
