@@ -63,12 +63,12 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 			logger.error(e);
 		} finally {
 			try {
-				if (pstmt != null || !pstmt.isClosed()) {
+				if (pstmt != null) {
 					pstmt.close();
 					pstmt = null;
 				}
 
-				if (connection != null || !connection.isClosed()) {
+				if (connection != null) {
 					connection.close();
 					connection = null;
 				}
@@ -129,12 +129,12 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 			logger.error(e);
 		} finally {
 			try {
-				if (pstmt != null || !pstmt.isClosed()) {
+				if (pstmt != null) {
 					pstmt.close();
 					pstmt = null;
 				}
 
-				if (connection != null || !connection.isClosed()) {
+				if (connection != null) {
 					connection.close();
 					connection = null;
 				}

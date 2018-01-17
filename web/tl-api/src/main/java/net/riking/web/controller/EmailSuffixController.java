@@ -169,7 +169,6 @@ public class EmailSuffixController {
 	@ApiOperation(value = "批量删除邮箱后缀", notes = "POST")
 	@RequestMapping(value = "/delMore", method = RequestMethod.POST)
 	public Resp delMore(@RequestBody Set<String> ids) {
-		int rs = 0;
 		List<EmailSuffix> liSuffixs = null;
 		if (ids.size() > 0) {
 			liSuffixs = emailSuffixRepo.findByIds(ids);

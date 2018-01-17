@@ -118,16 +118,16 @@ public class NewsCommentController {
 	 * 获取回复评论审核数
 	 * @return
 	 */
-	private String getIsAduitNum(String commentId) {
-		// 获取未审核
-		Integer num0 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(0));
-		Integer num1 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(1));
-		Integer num2 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(2));
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(num0 + " / ");
-		stringBuilder.append(num2 + " / ");
-		stringBuilder.append(num1);
-		return stringBuilder.toString();
-	}
+//	private String getIsAduitNum(String commentId) {
+//		// 获取未审核
+//		Integer num0 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(0));
+//		Integer num1 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(1));
+//		Integer num2 = ncReplyRepo.commentCountByNewsIdAndIsAduit(commentId, new Integer(2));
+//		StringBuilder stringBuilder = new StringBuilder();
+//		stringBuilder.append(num0 + " / ");
+//		stringBuilder.append(num2 + " / ");
+//		stringBuilder.append(num1);
+//		return stringBuilder.toString();
+//	}
 
 }

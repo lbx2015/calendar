@@ -13,6 +13,11 @@ import net.riking.core.entity.BaseEntity;
  */
 public class SynResult extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7471152928983630716L;
+
 	private List<Remind> remind;
 
 	private List<Todo> todo;

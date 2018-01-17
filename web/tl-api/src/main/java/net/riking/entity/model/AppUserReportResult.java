@@ -11,6 +11,11 @@ import net.riking.core.entity.BaseEntity;
  * @used TODO
  */
 public class AppUserReportResult extends BaseEntity {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4169953942427476136L;
 
 	private String userId;
 

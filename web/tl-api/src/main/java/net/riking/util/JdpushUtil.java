@@ -19,94 +19,78 @@ import net.riking.entity.model.Jdpush;
 
 @Component("jdpushUtil")
 public class JdpushUtil {
-	protected static final Logger LOG = LoggerFactory.getLogger(JdpushUtil.class);
+	protected static final Logger logger = LoggerFactory.getLogger(JdpushUtil.class);
 	
 	private static JPushClient jPushClient = new JPushClient("ae4b5cb2379495f2303019ff", "f7ac0692d540d2a7e15613bb");;
 	/**
 	 * 推送给指定用户
 	 */
-	public static int sendToRegistrationId(Jdpush jdpush) {
-		int result = 0;
+	public static PushResult sendToRegistrationId(Jdpush jdpush) {
+		PushResult pushResult = null;
 		try {
 			if(StringUtils.isBlank(jdpush.getRegisrationId())){
 				throw new Exception("发送给指定用户 时，Jdpush的regisrationId 值不能为空");
 			}
 			PushPayload pushPayload = JdpushUtil.buildPushObject_android_and_ios(jdpush);
-			System.err.println(pushPayload);
-			PushResult pushResult = jPushClient.sendPush(pushPayload);
-			System.err.println(pushResult);
-			if (pushResult.getResponseCode() == 200) {
-				result = 1;
-			}
-			
+			logger.info("pushPayload:{}", pushPayload);
+			pushResult = jPushClient.sendPush(pushPayload);
+			logger.info("pushResult:{}", pushResult);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return pushResult;
 	}
 
 	/**
 	 * 发送给所有安卓用户*/
-	public static  int sendToAllAndroid(Jdpush jdpush) {
-		int result = 0;
+	public static  PushResult sendToAllAndroid(Jdpush jdpush) {
+		PushResult pushResult = null;
 		try {
 			PushPayload pushPayload = JdpushUtil.buildPushObject_android_all_alertWithTitle(jdpush);
-			System.out.println(pushPayload);
-			PushResult pushResult = jPushClient.sendPush(pushPayload);
-			System.out.println(pushResult);
-			if (pushResult.getResponseCode() == 200) {
-				result = 1;
-			}
+			logger.info("pushPayload:{}", pushPayload);
+			pushResult = jPushClient.sendPush(pushPayload);
+			logger.info("pushResult:{}", pushResult);
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
-		return result;
+		return pushResult;
 	}
 
 	/**
 	 * 发送给所有IOS用户
 	 */
-	public static  int sendToAllIos(Jdpush jdpush) {
-		int result = 0;
+	public static PushResult sendToAllIos(Jdpush jdpush) {
+		PushResult pushResult = null;
 		try {
 			PushPayload pushPayload = JdpushUtil.buildPushObject_ios_all_alertWithTitle(jdpush);
-			System.out.println(pushPayload);
-			PushResult pushResult = jPushClient.sendPush(pushPayload);
-			System.out.println(pushResult);
-			if (pushResult.getResponseCode() == 200) {
-				result = 1;
-			}
+			logger.info("pushPayload:{}", pushPayload);
+			pushResult = jPushClient.sendPush(pushPayload);
+			logger.info("pushResult:{}", pushResult);
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
 
-		return result;
+		return pushResult;
 	}
 
 	/**
 	 * 发送给所有用户
 	 */
-	public static int sendToAll(Jdpush jdpush) {
-		int result = 0;
+	public static PushResult sendToAll(Jdpush jdpush) {
+		PushResult pushResult = null;
 		try {
 			if(StringUtils.isNotBlank(jdpush.getRegisrationId())){
 				throw new Exception("发送给所有用户 时，Jdpush不能指定regisrationId");
 			}
 			PushPayload pushPayload = JdpushUtil.buildPushObject_android_and_ios(jdpush);
-			System.out.println(pushPayload);
-			PushResult pushResult = jPushClient.sendPush(pushPayload);
-			System.out.println(pushResult);
-			if (pushResult.getResponseCode() == 200) {
-				result = 1;
-			}
+			logger.info("pushPayload:{}", pushPayload);
+			pushResult = jPushClient.sendPush(pushPayload);
+			logger.info("pushResult:{}", pushResult);
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
-
-		return result;
+		return pushResult;
 	}
 	
 	/**

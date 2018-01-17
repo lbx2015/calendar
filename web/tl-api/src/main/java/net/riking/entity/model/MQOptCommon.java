@@ -13,6 +13,11 @@ import net.riking.entity.BaseEntity;
  */
 public class MQOptCommon extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 105689576666018784L;
+
 	@Comment("操作人主键  ")
 	private String userId;
 	

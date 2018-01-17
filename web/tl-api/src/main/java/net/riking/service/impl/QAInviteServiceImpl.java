@@ -1,7 +1,5 @@
 package net.riking.service.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +14,6 @@ import net.riking.util.Utils;
 @Service("qaInviteService")
 @Transactional
 public class QAInviteServiceImpl implements QAInviteService {
-	private static final Logger logger = LogManager.getLogger(QAInviteService.class);
 
 	@Autowired
 	QAInviteRepo qAInviteRepo;

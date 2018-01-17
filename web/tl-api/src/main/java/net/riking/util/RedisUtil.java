@@ -1,7 +1,6 @@
 package net.riking.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 import redis.clients.jedis.SortingParams;
+
 
 public class RedisUtil {
 	private static Logger logger = LoggerFactory.getLogger(RedisUtil.class);
@@ -94,6 +94,7 @@ public class RedisUtil {
 		shardedJedisPool = new ShardedJedisPool(config, shards);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void show() {
 		KeyOperate();
 		StringOperate();
@@ -144,6 +145,7 @@ public class RedisUtil {
 	 * 
 	 * @param jedis
 	 */
+	@SuppressWarnings("deprecation")
 	public static void returnResource(final Jedis jedis) {
 		if (jedis != null && jedisPool != null) {
 			jedisPool.returnResource(jedis);
@@ -166,7 +168,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public synchronized static void setString(String key, String value) {
+	public synchronized void setString(String key, String value) {
 		Jedis jedis = getJedis();
 		try {
 			value = StringUtils.isNotEmpty(value) ? "" : value;
@@ -186,7 +188,7 @@ public class RedisUtil {
 	 *            以秒为单位
 	 * @param value
 	 */
-	public static void setString(String key, int seconds, String value) {
+	public void setString(String key, int seconds, String value) {
 		Jedis jedis = getJedis();
 		try {
 			value = StringUtils.isNotEmpty(value) ? "" : value;
@@ -204,7 +206,7 @@ public class RedisUtil {
 	 * @param key
 	 * @return value
 	 */
-	public static String getString(String key) {
+	public String getString(String key) {
 		String bKey = buildKey(key);
 		Jedis jedis = getJedis();
 		if (null == jedis || !jedis.exists(bKey)) {
@@ -222,7 +224,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static <T> void setList(String key, List<T> list) {
+	public <T> void setList(String key, List<T> list) {
 		Jedis jedis = getJedis();
 		try {
 //			getJedis().set(key.getBytes(), ObjectTranscoder.serialize(list));
@@ -242,8 +244,9 @@ public class RedisUtil {
 	 * @param key
 	 * @return list
 	 */
-	public static <T> List<T> getList(String key) {
-		String bKey = buildKey(key);
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getList(String key) {
+		//String bKey = buildKey(key);
 		Jedis jedis = getJedis();
 		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return null;
@@ -262,10 +265,9 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static <T> void setSet(String key, Set<T> set) {
+	public <T> void setSet(String key, Set<T> set) {
 		Jedis jedis = getJedis();
 		try {
-//			getJedis().set(key.getBytes(), ObjectTranscoder.serialize(list));
 			jedis.set(key.getBytes(), SerializeUtil.serialize(set));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -282,8 +284,9 @@ public class RedisUtil {
 	 * @param key
 	 * @return list
 	 */
-	public static <T> Set<T> getSet(String key) {
-		String bKey = buildKey(key);
+	@SuppressWarnings("unchecked")
+	public <T> Set<T> getSet(String key) {
+		//String bKey = buildKey(key);
 		Jedis jedis = getJedis();
 		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return null;
@@ -301,7 +304,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public synchronized static <T> void setMap(String key, Map<String, T> map) {
+	public synchronized <T> void setMap(String key, Map<String, T> map) {
 		Jedis jedis = getJedis();
 		try {
 			jedis.set(key.getBytes(), SerializeUtil.serialize(map));
@@ -319,8 +322,9 @@ public class RedisUtil {
 	 * @param key
 	 * @return list
 	 */
-	public static <T> Map<String, T> getMap(String key) {
-		String bKey = buildKey(key);
+	@SuppressWarnings("unchecked")
+	public <T> Map<String, T> getMap(String key) {
+		//String bKey = buildKey(key);
 		Jedis jedis = getJedis();
 		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return null;
@@ -338,7 +342,7 @@ public class RedisUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static <T> void setObject(String key, T t) {
+	public <T> void setObject(String key, T t) {
 		Jedis jedis = getJedis();
 		try {
 			jedis.set(key.getBytes(), SerializeUtil.serialize(t));
@@ -350,7 +354,7 @@ public class RedisUtil {
 	}
 	
 	
-	public static <T> void setObject(String key, int seconds,T t) {
+	public <T> void setObject(String key, int seconds,T t) {
 		Jedis jedis = getJedis();
 		try {
 			jedis.set(key.getBytes(), SerializeUtil.serialize(t));
@@ -368,8 +372,8 @@ public class RedisUtil {
 	 * @param key
 	 * @return Object
 	 */
-	public static Object getObject(String key) {
-		String bKey = buildKey(key);
+	public Object getObject(String key) {
+		//String bKey = buildKey(key);
 		Jedis jedis = getJedis();
 		if (null == jedis || !jedis.exists(key.getBytes())) {
 			return null;
@@ -381,7 +385,7 @@ public class RedisUtil {
 	}
 	
 	
-	public  static void del(String key){
+	public void del(String key){
 		String bKey = buildKey(key);
 		Jedis jedis = getJedis();
 		if (null == jedis || !jedis.exists(key.getBytes())) {
@@ -611,29 +615,6 @@ public class RedisUtil {
 		System.out.println("sets1和sets2并集：" + jedis.sunion("sets1", "sets2"));
 		System.out.println("sets1和sets2差集：" + jedis.sdiff("sets1", "sets2"));// 差集：set1中有，set2中没有的元素
 
-	}
-
-	private void MapOperate() {
-		System.out.println("======================Map==========================");
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("name", "fujianchao");
-		map.put("password", "123");
-		map.put("age", "12");
-		// 存入一个map
-		String aa = jedis.hmset("user", map);
-		// map key的个数
-		System.out.println("map的key的个数" + jedis.hlen("user"));
-		// map key
-		System.out.println("map的key" + jedis.hkeys("user"));
-		// map value
-		System.out.println("map的value" + jedis.hvals("user"));
-		// (String key, String... fields)返回值是一个list
-		List<String> list = jedis.hmget("user", "age", "name");
-		System.out.println("redis中key的各个 fields值：" + jedis.hmget("user", "age", "name") + list.size());
-		// 删除map中的某一个键 的值 password
-		// 当然 (key, fields) 也可以是多个fields
-		jedis.hdel("user", "age");
-		System.out.println("删除后map的key" + jedis.hkeys("user"));
 	}
 
 	private void SortedSetOperate() {

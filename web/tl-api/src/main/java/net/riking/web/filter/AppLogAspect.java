@@ -17,21 +17,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.riking.config.CodeDef;
-import net.riking.entity.AppResp;
-
 @Aspect
 @Component
 public class AppLogAspect {
 	Logger logger = LogManager.getLogger("AppLogAspect");
 
 	ObjectMapper mapper = new ObjectMapper();
-
-	// @Autowired
-	// OperLogService operLogService;
-
-	// @Autowired
-	// AppLogInfoRepo appLogInfoRepo;
 
 	@Pointcut("execution(* net.riking..appInterface.*.*(..))")
 	public void pointCutLogin() {
@@ -47,8 +38,8 @@ public class AppLogAspect {
 	public Object doAroundForCheckValiCode_(ProceedingJoinPoint pjp)
 			throws Throwable {
 
-		String pkParams = request.getHeader("pkParams");
-		String token = request.getHeader("token");
+//		String pkParams = request.getHeader("pkParams");
+//		String token = request.getHeader("token");
 ////		if (checkToken(pkParams, token)) {
 			return pjp.proceed();
 //		}

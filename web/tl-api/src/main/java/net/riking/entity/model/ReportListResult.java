@@ -12,6 +12,11 @@ import net.riking.core.entity.BaseEntity;
  * @used TODO
  */
 public class ReportListResult extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6408008685756951266L;
+
 	@Comment("机构编号")
 	private String agenceCode;
 

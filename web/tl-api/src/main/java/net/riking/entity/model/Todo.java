@@ -20,6 +20,11 @@ import net.riking.entity.PageQuery;
 @Table(name = "t_todo")
 public class Todo extends PageQuery {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3770418651487043533L;
+
 	@Id
 	@Comment("pk 手机端时间戳：yyyyMMddHHmmssSSS")
 	@Column(name = "todo_id", length = 17)

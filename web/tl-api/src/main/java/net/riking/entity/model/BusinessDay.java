@@ -16,6 +16,10 @@ import net.riking.core.entity.BaseEntity;
 @Table(name = "v_businessDay")
 public class BusinessDay extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5761845453911201779L;
 	@Id
 	@Column(name = "Businessday")
 	private String businessDay;

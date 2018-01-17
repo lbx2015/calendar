@@ -13,6 +13,11 @@ import net.riking.entity.BaseEntity;
  * @since 1.0
  */
 public class OtherUserResp extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7188718924564599904L;
+
 	// 其他用户ID
 	private String userId;
 

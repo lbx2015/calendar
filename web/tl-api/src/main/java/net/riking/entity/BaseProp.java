@@ -16,6 +16,11 @@ import net.riking.core.annos.Comment;
 @MappedSuperclass
 public class BaseProp extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7227764180855186225L;
+
 	@Comment("创建人ID")
 	@Column(name = "created_by", updatable = false)
 	private String createdBy;

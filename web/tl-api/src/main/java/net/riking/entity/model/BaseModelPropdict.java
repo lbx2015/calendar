@@ -6,6 +6,11 @@ import net.riking.core.entity.BaseEntity;
 
 public class BaseModelPropdict extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6464919536350140511L;
+
 	private String id;
 
 	private String ke;

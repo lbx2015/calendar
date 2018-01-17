@@ -9,8 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import net.riking.dao.repo.SysNoticeRepo;
-import net.riking.spring.SpringBeanUtil;
 import net.riking.task.BirthdayTimerTask;
 import net.riking.task.DeleteTempTimerTask;
 import net.riking.task.RemindTask;

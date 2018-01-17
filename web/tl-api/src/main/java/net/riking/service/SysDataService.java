@@ -27,7 +27,7 @@ public interface SysDataService {
 
 	public void setAppUser(AppUser user);
 
-	public void delAppUser(AppUser user);
+//	public void delAppUser(AppUser user);
 
 	public List<AppUserGrade> getGrade(String key);
 

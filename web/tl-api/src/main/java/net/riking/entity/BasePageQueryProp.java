@@ -22,6 +22,11 @@ import net.riking.core.annos.Comment;
 @MappedSuperclass
 public class BasePageQueryProp extends PageQuery {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8495148802285901698L;
+
 	@Comment("创建人ID")
 	@Column(name = "created_by", updatable = false)
 	private String createdBy;

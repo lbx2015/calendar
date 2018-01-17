@@ -3,6 +3,12 @@ package net.riking.entity.model;
 import net.riking.core.entity.BaseEntity;
 
 public class DictParam extends BaseEntity {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8771083814844261763L;
+
 	private String tableName;
 
 	private String field;

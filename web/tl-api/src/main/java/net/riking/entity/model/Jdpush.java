@@ -16,6 +16,11 @@ import net.riking.core.entity.BaseEntity;
  */
 public class Jdpush extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6726937100644005106L;
+
 	private String notificationTitle;// 通知内容标题
 
 	private String msgTitle;// 消息内容标题

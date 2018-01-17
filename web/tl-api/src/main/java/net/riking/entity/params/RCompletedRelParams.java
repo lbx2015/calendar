@@ -13,6 +13,10 @@ import net.riking.entity.BaseEntity;
  */
 public class RCompletedRelParams extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5084882146720986855L;
 	// 用户Id
 	private String userId;
 	// 报表id

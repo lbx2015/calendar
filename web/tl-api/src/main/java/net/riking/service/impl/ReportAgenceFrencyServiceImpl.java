@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import net.riking.dao.ReportAgenceFrencyDao;
 import net.riking.entity.model.BaseModelPropdict;
 import net.riking.entity.model.ReportFrequency;
-import net.riking.entity.model.Report;
 import net.riking.service.ReportAgenceFrencyService;
 
 @Service("reportAgenceFrencyService")

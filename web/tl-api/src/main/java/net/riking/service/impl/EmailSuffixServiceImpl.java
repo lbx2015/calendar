@@ -8,8 +8,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import net.riking.dao.repo.EmailSuffixRepo;
 import net.riking.entity.model.EmailSuffix;
 import net.riking.service.EmailSuffixService;
-import net.riking.service.TQuestionService;
 
 @Service("emailSuffixService")
 @Transactional
@@ -29,8 +26,6 @@ public class EmailSuffixServiceImpl implements EmailSuffixService {
 
 	@Autowired
 	private EmailSuffixRepo emailSuffixRepo;
-
-	private static final Logger logger = LogManager.getLogger(TQuestionService.class);
 
 	@Override
 	public Page<EmailSuffix> findAll(EmailSuffix emailSuffix, PageRequest pageRequest) {

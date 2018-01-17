@@ -10,6 +10,11 @@ import net.riking.core.entity.BaseEntity;
  */
 public class SubscribeReportParam extends BaseEntity{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3434930658252217188L;
+
 	private String userId;
 
 	// 订阅的reportIds

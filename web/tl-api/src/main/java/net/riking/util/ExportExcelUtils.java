@@ -7,12 +7,9 @@ import java.io.OutputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 
 public class ExportExcelUtils {
 	@SuppressWarnings("unchecked")
@@ -53,61 +50,4 @@ public class ExportExcelUtils {
 		hssfWorkbook.write(output);
 	}
 
-	private static Object getValue(XSSFCell xssfRow, Class<?> clazz) {
-		String stringValue = getXStringValue(xssfRow);
-		if (clazz.getSimpleName().equals("Double")) {
-			return Double.valueOf(stringValue);
-		} else if (clazz.getSimpleName().equals("Long")) {
-			return Long.valueOf(stringValue);
-		} else if (clazz.getSimpleName().equals("Integer")) {
-			return Integer.valueOf(stringValue);
-		} else {
-			return stringValue;
-		}
-	}
-
-	private static Object getValue(HSSFCell hssfCell, Class<?> clazz) {
-		String stringValue = getHStringValue(hssfCell);
-		if (clazz.getSimpleName().equals("Double")) {
-			return Double.valueOf(stringValue);
-		} else if (clazz.getSimpleName().equals("Long")) {
-			return Long.valueOf(stringValue);
-		} else if (clazz.getSimpleName().equals("Integer")) {
-			return Integer.valueOf(stringValue);
-		} else {
-			return stringValue;
-		}
-	}
-
-	private static String getHStringValue(HSSFCell xssfRow) {
-		if (xssfRow.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
-			return String.valueOf(xssfRow.getBooleanCellValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-			return String.valueOf(xssfRow.getNumericCellValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_STRING) {
-			return String.valueOf(xssfRow.getStringCellValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_BLANK) {
-			return String.valueOf(xssfRow.getStringCellValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_FORMULA) {
-			return String.valueOf(xssfRow.getNumericCellValue());
-		} else {
-			return String.valueOf(xssfRow.getStringCellValue());
-		}
-	}
-
-	private static String getXStringValue(XSSFCell xssfRow) {
-		if (xssfRow.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
-			return String.valueOf(xssfRow.getBooleanCellValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-			return String.valueOf(Double.valueOf(xssfRow.getNumericCellValue()).intValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_STRING) {
-			return String.valueOf(xssfRow.getStringCellValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_BLANK) {
-			return String.valueOf(xssfRow.getStringCellValue());
-		} else if (xssfRow.getCellType() == Cell.CELL_TYPE_FORMULA) {
-			return String.valueOf(xssfRow.getNumericCellValue());
-		} else {
-			return String.valueOf(xssfRow.getStringCellValue());
-		}
-	}
 }

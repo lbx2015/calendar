@@ -10,6 +10,11 @@ import net.riking.core.entity.PageQuery;
  */
 public class ReportCompletedRelParam extends PageQuery{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4792743477807916643L;
+
 	private String userId;// 用户Id
 	
 	private String currentMonth;//当前月份yyyyMM

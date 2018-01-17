@@ -9,10 +9,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Transaction;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +34,6 @@ public class ReportDaoImpl implements ReportDao {
 		List<ReportFrequency> list = new ArrayList<ReportFrequency>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
-			pstmt.setString(1, userId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportFrequency reportFrequency = new ReportFrequency(rs.getString(1), rs.getString(2), "", "", "");

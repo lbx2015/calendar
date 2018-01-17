@@ -9,6 +9,11 @@ import net.riking.entity.BaseEntity;
  * @used TODO
  */
 public class AppUserResp extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2962901985710345598L;
+
 	// 用户ID
 	private String userId;
 

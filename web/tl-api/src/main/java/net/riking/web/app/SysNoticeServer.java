@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +29,6 @@ import net.riking.util.Utils;
 @RestController
 @RequestMapping(value = "/notice")
 public class SysNoticeServer {
-	private static final Logger logger = LogManager.getLogger("SysNoticeServer");
 
 	@Autowired
 	SysNoticeService sysNoticeService;

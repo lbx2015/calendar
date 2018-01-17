@@ -11,8 +11,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -34,12 +32,10 @@ import net.riking.entity.model.AppUser;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
 import net.riking.service.NewsCommentService;
-import net.riking.service.TQuestionService;
 
 @Service("newsCommentService")
 @Transactional
 public class NewsCommentServiceImpl implements NewsCommentService {
-	private static final Logger logger = LogManager.getLogger(TQuestionService.class);
 
 	@Autowired
 	QACommentDao qaCommentDao;
@@ -91,7 +87,7 @@ public class NewsCommentServiceImpl implements NewsCommentService {
 	private void getVos(List<NewsComment> newsComments) {
 		// TODO Auto-generated method stub
 		for (NewsComment newsComment : newsComments) {
-			String id = newsComment.getId();
+//			String id = newsComment.getId();
 			// 设置咨询标题
 			News news = newsRepo.findOne(newsComment.getNewsId());
 			if (news != null) {

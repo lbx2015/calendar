@@ -7,14 +7,11 @@ import javax.jms.MessageConsumer;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.config.Const;
 import net.riking.service.MQReceiveService;
-import net.riking.service.TQuestionService;
 import net.riking.task.MQSysInfoListener;
 import net.riking.task.MQSysMesListener;
 import net.riking.task.MQSysOptListener;
@@ -22,7 +19,6 @@ import net.riking.task.MQSysOptListener;
 @Service("mqReceiveService")
 @Transactional
 public class MQReceiveServiceImpl implements MQReceiveService {
-	private static final Logger logger = LogManager.getLogger(TQuestionService.class);
 
 	ConnectionFactory connectionFactory;// 连接工厂
 

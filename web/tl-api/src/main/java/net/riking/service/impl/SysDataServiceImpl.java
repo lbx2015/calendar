@@ -69,19 +69,16 @@ public class SysDataServiceImpl implements SysDataService {
 	}
 	
 
-	@SuppressWarnings("static-access")
 	private void initEmailSuffix() {
 		List<EmailSuffix> emailSuffixs = appUserRepo.findEmailSuffix();
 		RedisUtil.getInstall().setList(EmailSuffix.class.getName().toUpperCase(), emailSuffixs);
 	}
 
-	@SuppressWarnings("static-access")
 	private void initAppGrade() {
 		List<AppUserGrade> appUserGrades = appUserRepo.findGrade();
 		RedisUtil.getInstall().setList(AppUserGrade.class.getName().toUpperCase(), appUserGrades);
 	}
 
-	@SuppressWarnings("static-access")
 	private void initDict() {
 		Map<String, Map<String, List<ModelPropDict>>> map = findAllSysDict();
 		/* tableName和field组合 */
@@ -102,7 +99,6 @@ public class SysDataServiceImpl implements SysDataService {
 	}
 
 	
-	  @SuppressWarnings("static-access") 
 	  private void initSysDays() { 
 		  List<SysDays> list = sysDaysRepo.findAll(); 
 		  for(SysDays day : list){
@@ -118,7 +114,6 @@ public class SysDataServiceImpl implements SysDataService {
 	 * @version crateTime：2017年8月9日 下午5:18:28
 	 * @used TODO
 	 */
-	@SuppressWarnings("static-access")
 	@Override
 	public List<ModelPropDict> getDicts(String tableName, String field) {
 		if (StringUtils.isBlank(tableName) || StringUtils.isBlank(field)) {
@@ -134,7 +129,6 @@ public class SysDataServiceImpl implements SysDataService {
 	 * @version crateTime：2017年8月9日 下午5:18:28
 	 * @used TODO
 	 */
-	@SuppressWarnings("static-access")
 	@Override
 	public ModelPropDict getDict(String tableName, String field, String key) {
 		if (StringUtils.isBlank(tableName) || StringUtils.isBlank(field) || StringUtils.isBlank(key)) {
@@ -205,31 +199,27 @@ public class SysDataServiceImpl implements SysDataService {
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public AppUser getAppUser(AppUser user) {
 		AppUser appUser = (AppUser) RedisUtil.getInstall().getObject(user.getPhone());
 		return appUser;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void setAppUser(AppUser user) {
 		RedisUtil.getInstall().setObject(user.getPhone(), Const.VALID_CODE_TIME, user);
 	}
 
-	@SuppressWarnings("static-access")
-	@Override
-	public void delAppUser(AppUser user) {
-		// TODO Auto-generated method stub
-		// RedisUtil.getInstall().del(user.getPhoneDeviceid() + ":" + user.getPhone());
-	}
+//	@Override
+//	public void delAppUser(AppUser user) {
+//		// TODO Auto-generated method stub
+//		// RedisUtil.getInstall().del(user.getPhoneDeviceid() + ":" + user.getPhone());
+//	}
 
 	/**
 	 * 取等级相关信息
 	 * @see net.riking.service.SysDataService#getGrade(java.lang.String)
 	 */
-	@SuppressWarnings("static-access")
 	@Override
 	public List<AppUserGrade> getGrade(String key) {
 		if (StringUtils.isBlank(key)) {
@@ -243,7 +233,6 @@ public class SysDataServiceImpl implements SysDataService {
 	 * 取邮箱后缀
 	 * @see net.riking.service.SysDataService#getGrade(java.lang.String)
 	 */
-	@SuppressWarnings("static-access")
 	@Override
 	public List<EmailSuffix> getEmailSuffix(String key) {
 		if (StringUtils.isBlank(key)) {
@@ -253,7 +242,6 @@ public class SysDataServiceImpl implements SysDataService {
 		return emailSuffixs;
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public Email getEmail(String theme) throws EmailException {
 		Email email = new SimpleEmail();

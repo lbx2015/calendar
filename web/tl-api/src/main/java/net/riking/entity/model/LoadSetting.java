@@ -10,6 +10,11 @@ import net.riking.core.entity.BaseEntity;
  */
 public class LoadSetting extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6863664300341857826L;
+
 	private Long id;
 
 	private String moduleName;// 模块名称
