@@ -161,4 +161,16 @@
         <item name="android:textStyle">normal</item>
         <item name="android:itemBackground">@drawable/popup_divider</item>
     </style>
+
+    //switch custom
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/color_489dfff</item>
+
+        <!--&lt;!&ndash; inactive thumb color &ndash;&gt;-->
+        <!--<item name="colorSwitchThumbNormal">#f1f1f1</item>-->
+
+        <!--&lt;!&ndash; inactive track color (30% transparency) &ndash;&gt;-->
+        <!--<item name="android:colorForeground">#42221f1f</item>-->
+    </style>
 </resources>
