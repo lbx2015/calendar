@@ -35,6 +35,8 @@ public class HomeViewHolder extends ZViewHolder {
     public TextView firstTextIcon;
     @BindView(R.id.agree_number)
     public TextView secondTextIcon;
+    @BindView(R.id.share_text)
+    public TextView shareTextView;
 
     public HomeViewHolder(View itemView) {
         super(itemView);

@@ -32,6 +32,7 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
 import com.riking.calendar.viewholder.base.ZViewHolder;
+import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
 
@@ -97,6 +98,13 @@ public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
             //set the answer data
             setAnswerData(h, r);
 
+            h.shareTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShareBottomDialog dialog = new ShareBottomDialog(v.getContext());
+                    dialog.show();
+                }
+            });
 
             h.moreAction.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -262,29 +270,29 @@ public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
 
     private void setAnswerAgreeAndComment(final HomeViewHolder h, final TQuestionResult r) {
         //set the answer comment number
-        h.firstTextIcon.setText(ZR.getNumberString(r.qaCommentNum));
+        h.secondTextIcon.setText(ZR.getNumberString(r.qaCommentNum));
         //set the answer agree number
-        h.secondTextIcon.setText(ZR.getNumberString(r.qaAgreeNum));
+        h.firstTextIcon.setText(ZR.getNumberString(r.qaAgreeNum));
 
         if (r.status == 1) {
-            h.secondTextIcon.setTextColor(ZR.getColor(R.color.color_489dfff));
-            h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
+            h.firstTextIcon.setTextColor(ZR.getColor(R.color.color_489dfff));
+            h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_p, 0, 0, 0);
         } else {
-            h.secondTextIcon.setTextColor(ZR.getColor(R.color.color_999999));
-            h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
+            h.firstTextIcon.setTextColor(ZR.getColor(R.color.color_999999));
+            h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
-        h.firstTextIcon.setTextColor(ZR.getColor(R.color.color_999999));
-        h.firstTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_comment, 0, 0, 0);
+        h.secondTextIcon.setTextColor(ZR.getColor(R.color.color_999999));
+        h.secondTextIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_comment, 0, 0, 0);
 
         //set agree listener
-        setAgreeClick(h.secondTextIcon, r);
+        setAgreeClick(h.firstTextIcon, r);
 
         //go to comment list activity on cick
-        h.firstTextIcon.setOnClickListener(new View.OnClickListener() {
+        h.secondTextIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(h.firstTextIcon.getContext(), AnswerCommentsActivity.class);
+                Intent i = new Intent(h.secondTextIcon.getContext(), AnswerCommentsActivity.class);
                 i.putExtra(CONST.ANSWER_ID, r.qaId);
                 i.putExtra(CONST.ANSWER_COMMENT_NUM, r.qaCommentNum);
                 ZGoto.to(i);
