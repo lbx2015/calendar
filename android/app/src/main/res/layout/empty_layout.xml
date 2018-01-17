@@ -5,7 +5,7 @@
     android:layout_weight="1"
     android:background="@color/color_f2f2f2">
 
-    <com.riking.calendar.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -13,17 +13,19 @@
         <com.riking.calendar.view.ZCenterImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/empty_tv"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="86dp"
             android:src="@drawable/default_icon_nodata" />
 
         <TextView
+            android:id="@+id/empty_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_marginTop="17dp"
             android:text="暂没数据"
             android:textColor="@color/color_background_b6b6b6"
             android:textSize="12sp" />
-    </com.riking.calendar.view.CustomLinearLayout>
+    </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

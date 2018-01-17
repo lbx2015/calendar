@@ -14,10 +14,14 @@ import com.riking.calendar.R;
 
 public class ShareBottomDialog extends BottomSheetDialog {
     public LinearLayout shieldButton;
+    public LinearLayout shieldLayout;
+    public View shieldDivider;
     public ShareBottomDialog(@NonNull Context context) {
         super(context);
         setContentView(R.layout.share_bottom_dialog);
         shieldButton = findViewById(R.id.shield_button);
+        shieldLayout = findViewById(R.id.shield_layout);
+        shieldDivider = findViewById(R.id.shield_divider);
         findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
