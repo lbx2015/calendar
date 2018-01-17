@@ -23,8 +23,10 @@
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="新建待办"
             android:textColor="@color/gray_text_color"
+            android:textSize="15sp"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 </FrameLayout>

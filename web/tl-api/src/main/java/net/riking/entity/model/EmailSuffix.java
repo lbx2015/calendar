@@ -39,12 +39,12 @@ public class EmailSuffix extends BaseEntity {
 	@Id
 	@GeneratedValue(generator = "idGenerator")
 	@GenericGenerator(name = "idGenerator", strategy = "assigned")
-	@Column(name = "email_suffix", length = 20)
+	@Column(name = "email_suffix", length = 200)
 	@Comment("邮箱后缀")
 	private String emailSuffix;
-	
+
 	@Comment("公司")
-	@Column(name = "company_name", length = 32)
+	@Column(name = "company_name", length = 200)
 	private String companyName;
 
 	@Comment("数据状态 0-禁用 1-启用")

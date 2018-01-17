@@ -1,5 +1,7 @@
 package com.riking.calendar.pojo.server;
 
+import com.riking.calendar.pojo.server.base.BaseUser;
+
 /**
  * 其他用户信息
  *
@@ -7,9 +9,7 @@ package com.riking.calendar.pojo.server;
  * @see
  * @since 1.0
  */
-public class OtherUserResp {
-    // 其他用户ID
-    public String userId;
+public class OtherUserResp extends BaseUser{
 
     // 用户名称
     public String userName;
@@ -35,11 +35,10 @@ public class OtherUserResp {
     // 粉丝
     public int fansNum;
 
-    // 是否已关注
-    public int isFollow;
     //1可以查看，0不可以
     public int checkMyDynamicState = 1;
     public int checkMyFollowState = 1;
     public int checkMyCollectState = 0;
+    public String phone;
 
 }

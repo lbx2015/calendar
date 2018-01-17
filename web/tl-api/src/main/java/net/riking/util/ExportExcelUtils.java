@@ -4,8 +4,8 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -16,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 
 public class ExportExcelUtils {
 	@SuppressWarnings("unchecked")
-	public static <T> void exportByList(List<T> list, OutputStream output, Map<String, String> fields)
+	public static <T> void exportByList(List<T> list, OutputStream output, LinkedHashMap<String, String> fields)
 			throws Exception {
 		HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
 		HSSFSheet sheet = hssfWorkbook.createSheet("sheet0");

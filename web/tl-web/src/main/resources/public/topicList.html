@@ -37,6 +37,7 @@
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 	</div>
 	</div>
+	<img alt="" style="display:none" id="displayimg" src="" />
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
@@ -104,7 +105,9 @@
 				//如果要修改表格内容 ，无需修改的忽略此项
 				data.tdBeforeFill = function(obj) {
 				    if(obj.prop=="topicUrl"){
-						obj.html = '<img onerror="'+defaultUrl+'" src="'+Const.apiUrl + obj.html+'"style="width:30px;height: 30px;" alt="'+obj.item.title+'封面" />';
+						var url = Const.apiUrl + obj.html;
+				    	obj.html = "<img id = '"+ obj.html+"'onerror="+defaultUrl+" src='"+url+"'style='width:30px;height: 30px;' alt='"+obj.item.title+"封面' onclick='scanImg("+"\""+obj.html+"\""+","+"\""+url+"\""+")'/>";
+				    
 				    }
 				   	if(obj.prop=="createdTime"){
 						obj.html=obj.html.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})$/,"$1-$2-$3 $4:$5:$6");

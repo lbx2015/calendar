@@ -345,12 +345,12 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
                     public void callBack(ResponseModel<String> response) {
                         answer.isCollect = p.enabled;
                         if (p.enabled == 1) {
+                            collectTv.setText("已收藏");
                             collectTv.setTextColor(ZR.getColor(R.color.color_489dfff));
                             collectTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_toolbar_icon_collect_p, 0, 0);
-                            Toast.makeText(agreeTv.getContext(), "收藏成功", Toast.LENGTH_SHORT).show();
                         } else {
+                            collectTv.setText("收藏");
                             collectTv.setTextColor(ZR.getColor(R.color.color_999999));
-                            ZToast.toast("取消收藏");
                             collectTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.com_toolbar_icon_collect_n, 0, 0);
                         }
                     }

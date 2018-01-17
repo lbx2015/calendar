@@ -3,9 +3,8 @@ package net.riking.web.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -135,7 +134,7 @@ public class ShieldKeyWordController {
 			outputStream = response.getOutputStream();
 			List<ShieldKeyWord> shieldKeyWords = shieldKeyWordRepo.findAll();
 			// ExcelUtils.exportByList(shieldKeyWords, outputStream, new String[] { "keyWord" });
-			Map<String, String> fields = new HashMap<>();
+			LinkedHashMap<String, String> fields = new LinkedHashMap<>();
 			fields.put("keyWord", "关键词");
 			ExportExcelUtils.exportByList(shieldKeyWords, outputStream, fields);
 			downloadExcel = new Resp(CodeDef.SUCCESS);

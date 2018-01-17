@@ -93,6 +93,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/com_icon_zan_n"
             android:drawablePadding="5dp"
+            android:textColor="@color/color_999999"
             android:text="0" />
     </LinearLayout>
 </LinearLayout>

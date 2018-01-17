@@ -96,8 +96,11 @@ public class UserActivity extends AppCompatActivity {
             followTv.setText("关注");
             followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus_w, 0, 0, 0);
             followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
-        } else {
+        } else if (isFollow == 1) {
             followTv.setText("已关注");
+            followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        } else if (isFollow == 2) {
+            followTv.setText("互相关注");
             followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
     }
@@ -186,10 +189,10 @@ public class UserActivity extends AppCompatActivity {
                 myFollowTv.setTextColor(ZR.getColor(R.color.color_999999));
             }
             if (u.checkMyCollectState == 1) {
-                ZR.setImage(collectIv, R.drawable.user_icon_celect_d);
+                ZR.setImage(collectIv, R.drawable.user_icon_collect);
                 myFavoriteTv.setTextColor(ZR.getColor(R.color.color_222222));
             } else {
-                ZR.setImage(collectIv, R.drawable.user_icon_collect);
+                ZR.setImage(collectIv, R.drawable.user_icon_celect_d);
                 myFavoriteTv.setTextColor(ZR.getColor(R.color.color_999999));
 
             }
@@ -232,7 +235,7 @@ public class UserActivity extends AppCompatActivity {
         collecLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                if (u.checkMyCollectState == 1) {
+                if (u.checkMyCollectState == 0) {
                     ZToast.toast("对方设置了隐私,对他人不可见");
                 } else {
                     Intent i = new Intent(UserActivity.this, MyCollectActivity.class);
@@ -247,7 +250,7 @@ public class UserActivity extends AppCompatActivity {
         trendLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                if (u.checkMyDynamicState == 1) {
+                if (u.checkMyDynamicState == 0) {
                     ZToast.toast("对方设置了隐私,对他人不可见");
                 } else {
                     Intent i = new Intent(UserActivity.this, MyStateActivity.class);
@@ -261,7 +264,7 @@ public class UserActivity extends AppCompatActivity {
         followLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                if (u.checkMyFollowState == 1) {
+                if (u.checkMyFollowState == 0) {
                     ZToast.toast("对方设置了隐私,对他人不可见");
                 } else {
                     Intent i = new Intent(UserActivity.this, MyFollowActivity.class);

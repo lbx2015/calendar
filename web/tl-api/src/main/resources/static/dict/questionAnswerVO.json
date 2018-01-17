@@ -84,8 +84,9 @@
 			"prop": "content",
 			"alias": "回答内容",
 			"desc": "回答内容",
-			"type": "string",
+			"type": "text",
 			"group": "base",
+			"edit_block": "1",
 			"hidden": "priview"
 		}
 	]
