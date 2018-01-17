@@ -361,7 +361,8 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     public void clickShare(final View v) {
-        new ShareBottomDialog(v.getContext()).show();
+        ShareBottomDialog d = new ShareBottomDialog(v.getContext());
+        d.show();
     }
 
     class WebAppInterface {

@@ -3,6 +3,7 @@ package com.riking.calendar.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,6 @@ import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.HomeViewHolder;
 import com.riking.calendar.viewholder.RecommendedViewHolder;
 import com.riking.calendar.viewholder.base.ZViewHolder;
-import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
 
@@ -102,11 +102,14 @@ public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
                 @Override
                 @SuppressLint("RestrictedApi")
                 public void onClick(View v) {
-                    final ShareBottomDialog shareBottomDialog = new ShareBottomDialog(h.moreAction.getContext());
-                    shareBottomDialog.shieldButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(h.moreAction.getContext());
+                    View root = LayoutInflater.from(h.moreAction.getContext()).inflate(R.layout.shield_dialog, null, false);
+                    builder.setView(root);
+                    final AlertDialog dialog = builder.show();
+                    root.setOnClickListener(new ZClickListenerWithLoginCheck() {
                         @Override
                         public void click(View v) {
-                            shareBottomDialog.dismiss();
+                            dialog.dismiss();
                             HomeParams p = new HomeParams();
                             p.enabled = 0;//屏蔽
                             p.objId = r.qaId;
@@ -120,7 +123,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
                             });
                         }
                     });
-                    shareBottomDialog.show();
+
           /*          //Creating the instance of PopupMenu
                     final PopupMenu popup = new PopupMenu(context, h.moreAction, Gravity.RIGHT);
                     //Inflating the Popup using xml file
