@@ -119,7 +119,7 @@
 
                     <View
                         android:id="@+id/first_group_divider"
-                        android:layout_width="60dp"
+                        android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:layout_gravity="bottom|center_horizontal"
                         android:background="@color/color_489dfff" />
@@ -141,7 +141,7 @@
 
                     <View
                         android:id="@+id/second_group_divider"
-                        android:layout_width="60dp"
+                        android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:layout_gravity="bottom|center_horizontal"
                         android:background="@color/color_489dfff"

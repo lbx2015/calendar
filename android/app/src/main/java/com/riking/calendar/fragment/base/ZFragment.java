@@ -3,6 +3,7 @@ package com.riking.calendar.fragment.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
     public RecyclerView mRecyclerView;
     public T mAdapter;
     public View v;
-    public View emptyLayout;
+    public SwipeRefreshLayout emptyLayout;
 
     @Nullable
     @Override
@@ -59,7 +60,24 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
     public void getViews() {
         emptyLayout = v.findViewById(R.id.empty);
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) v.findViewById(R.id.pullToLoadView);
+
+        if (emptyLayout != null) {
+            setColorSchemeResources(android.R.color.holo_blue_bright,
+                    android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light,
+                    android.R.color.holo_red_light);
+            emptyLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    mPullToLoadView.initLoad();
+                }
+            });
+        }
         initViews();
+    }
+
+    public void setColorSchemeResources(int... colorResIds) {
+        emptyLayout.setColorSchemeResources(colorResIds);
     }
 
     private void updateEmpty(int currentPage, List<?> list) {

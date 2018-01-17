@@ -14,13 +14,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/empty_tv"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/default_icon_nodata" />
 
         <com.riking.calendar.view.ZTextView
             android:id="@+id/empty_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="17dp"
