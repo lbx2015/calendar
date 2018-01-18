@@ -20,6 +20,7 @@ import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.UserFollowCollect;
 import net.riking.entity.resp.OtherUserResp;
+import net.riking.util.DBUtil;
 
 @Repository("appUserDao")
 public class AppUserDaoImpl implements AppUserDao {
@@ -38,11 +39,12 @@ public class AppUserDaoImpl implements AppUserDao {
 		sql += "WHERE a.is_deleted = 1 and a.enabled = 1 and substring(b.birthday, 5, 4) = ? ";
 		sql += "and b.phone_device_id <> '' ";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<AppUserDetail> list = new ArrayList<AppUserDetail>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			pstmt.setString(1, brithDay);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AppUserDetail data = new AppUserDetail();
 				data.setUserName(rs.getString("userName"));
@@ -51,6 +53,8 @@ public class AppUserDaoImpl implements AppUserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -61,6 +65,7 @@ public class AppUserDaoImpl implements AppUserDao {
 		Connection connection = session.connection();
 		String sql = "call findUserMightKnow(?,?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<AppUserResult> list = new ArrayList<AppUserResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -70,7 +75,7 @@ public class AppUserDaoImpl implements AppUserDao {
 			pstmt.setString(2, userIds);
 			pstmt.setInt(3, begin);
 			pstmt.setInt(4, end);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AppUserResult appUserResult = new AppUserResult();
 				appUserResult.setId(rs.getString("userId"));
@@ -81,6 +86,8 @@ public class AppUserDaoImpl implements AppUserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -92,6 +99,7 @@ public class AppUserDaoImpl implements AppUserDao {
 		Connection connection = session.connection();
 		String sql = "call userFollowUser(?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<AppUserResult> list = new ArrayList<AppUserResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -100,7 +108,7 @@ public class AppUserDaoImpl implements AppUserDao {
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, pageBegin);
 			pstmt.setInt(3, pageCount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AppUserResult appUserResult = new AppUserResult();
 				appUserResult.setId(rs.getString("userId"));
@@ -125,6 +133,8 @@ public class AppUserDaoImpl implements AppUserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -136,6 +146,7 @@ public class AppUserDaoImpl implements AppUserDao {
 		Connection connection = session.connection();
 		String sql = "call findMyFans(?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<AppUserResult> list = new ArrayList<AppUserResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -144,7 +155,7 @@ public class AppUserDaoImpl implements AppUserDao {
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, pageBegin);
 			pstmt.setInt(3, pageCount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AppUserResult appUserResult = new AppUserResult();
 				appUserResult.setId(rs.getString("userId"));
@@ -169,6 +180,8 @@ public class AppUserDaoImpl implements AppUserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -188,9 +201,10 @@ public class AppUserDaoImpl implements AppUserDao {
 		sql += "WHERE a.id = '" + toUserId + "' and a.enabled = 1 and a.is_deleted = 1";
 		PreparedStatement pstmt = null;
 		OtherUserResp otherUserResp = null;
+		ResultSet rs = null;
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				otherUserResp = new OtherUserResp(rs.getString("id"), rs.getString("user_name"), rs.getInt("sex"),
 						rs.getString("descript"), rs.getInt("experience"), rs.getString("photo_Url"),
@@ -198,6 +212,8 @@ public class AppUserDaoImpl implements AppUserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return otherUserResp;
 
@@ -210,6 +226,7 @@ public class AppUserDaoImpl implements AppUserDao {
 		Connection connection = session.connection();
 		String sql = "call findByFolColByUserId(?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<UserFollowCollect> list = new ArrayList<UserFollowCollect>();
 		// 获取可能要查询的数据
 		String userId = userFollowCollectByParam.getUserId();
@@ -242,7 +259,7 @@ public class AppUserDaoImpl implements AppUserDao {
 			pstmt.setInt(5, optObject);
 			pstmt.setInt(6, pindex);
 			pstmt.setInt(7, pcount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			int i = 1;
 			while (rs.next()) {
 				UserFollowCollect userFollowCollect = new UserFollowCollect();
@@ -266,6 +283,8 @@ public class AppUserDaoImpl implements AppUserDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -284,7 +303,7 @@ public class AppUserDaoImpl implements AppUserDao {
 		String title = userFollowCollectByParam.getTitle();
 		Integer optType = userFollowCollectByParam.getOptType();
 		Integer optObject = userFollowCollectByParam.getOptObject();
-
+		ResultSet rs = null;
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			if (StringUtils.isBlank(userId)) {
@@ -307,12 +326,14 @@ public class AppUserDaoImpl implements AppUserDao {
 			pstmt.setString(3, title);
 			pstmt.setInt(4, optType);
 			pstmt.setInt(5, optObject);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				count = rs.getInt("count");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return count;
 

@@ -16,7 +16,7 @@ public class QAnswerResult extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -8418351387803616527L;
 
-	@Comment("回答id")
+	@Comment("问题id")
 	private String tqId;
 
 	@Comment("问题回答id")

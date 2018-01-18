@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import net.riking.dao.ReportDao;
 import net.riking.entity.model.ReportFrequency;
 import net.riking.entity.model.ReportResult;
+import net.riking.util.DBUtil;
 
 @Repository("reportDao")
 public class ReportDaoImpl implements ReportDao {
@@ -31,16 +32,19 @@ public class ReportDaoImpl implements ReportDao {
 		Connection connection = session.connection();
 		String sql = "SELECT t.report_id,r.report_name FROM t_appuser_report_rel t LEFT JOIN t_report_list r ON t.report_id=r.Id WHERE t.appUser_id=?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<ReportFrequency> list = new ArrayList<ReportFrequency>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportFrequency reportFrequency = new ReportFrequency(rs.getString(1), rs.getString(2), "", "", "");
 				list.add(reportFrequency);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -71,11 +75,12 @@ public class ReportDaoImpl implements ReportDao {
 			sql +=(" limit 0," + upperLimit);
 		}
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<ReportResult> list = new ArrayList<ReportResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			pstmt.setString(1, userId);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportResult report = new ReportResult();
 				// report.setAgenceCode(rs.getString("agenceCode"));
@@ -100,6 +105,8 @@ public class ReportDaoImpl implements ReportDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 

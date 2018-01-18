@@ -53,4 +53,5 @@ public interface TQuestionDao {
 	 * @return
 	 */
 	public List<QuestResult> userFollowQuest(String userId, int start, int end);
+	
 }

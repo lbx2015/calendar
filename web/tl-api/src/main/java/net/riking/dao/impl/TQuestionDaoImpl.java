@@ -21,6 +21,7 @@ import net.riking.entity.model.QAExcellentResp;
 import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.TQuestionResult;
+import net.riking.util.DBUtil;
 
 @Repository("tQuestionDao")
 public class TQuestionDaoImpl implements TQuestionDao {
@@ -34,6 +35,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 		Connection connection = session.connection();
 		String sql = "call findTopicHomeUp(?,?,?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<TQuestionResult> list = new ArrayList<TQuestionResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -45,7 +47,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			pstmt.setTimestamp(3, timestamp);
 			pstmt.setInt(4, start);
 			pstmt.setInt(5, end);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TQuestionResult tQuestionResult = new TQuestionResult();
 				tQuestionResult.setTopicId(rs.getString("topicId"));
@@ -70,6 +72,8 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -81,6 +85,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 		Connection connection = session.connection();
 		String sql = "call findTopicHomeDown(?,?,?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<TQuestionResult> list = new ArrayList<TQuestionResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -92,7 +97,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			pstmt.setTimestamp(3, timestamp);
 			pstmt.setInt(4, start);
 			pstmt.setInt(5, end);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TQuestionResult tQuestionResult = new TQuestionResult();
 				tQuestionResult.setTopicId(rs.getString("topicId"));
@@ -117,6 +122,8 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -128,6 +135,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 		Connection connection = session.connection();
 		String sql = "call findEssenceByTid(?,?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<QAnswerResult> list = new ArrayList<QAnswerResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -137,7 +145,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			pstmt.setString(2, userId);
 			pstmt.setInt(3, start);
 			pstmt.setInt(4, pageCount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QAnswerResult qAnswerResult = new QAnswerResult();
 				qAnswerResult.setTqId(rs.getString("tqId"));
@@ -158,6 +166,8 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -169,6 +179,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 		Connection connection = session.connection();
 		String sql = "call findExcellentResp(?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<QAExcellentResp> list = new ArrayList<QAExcellentResp>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -177,7 +188,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			pstmt.setString(1, topicId);
 			pstmt.setInt(2, start);
 			pstmt.setInt(3, pageCount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QAExcellentResp qaExcellentResp = new QAExcellentResp();
 				qaExcellentResp.setUserId(rs.getString("userId"));
@@ -190,6 +201,8 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -201,6 +214,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 		Connection connection = session.connection();
 		String sql = "call userFollowQuest(?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<QuestResult> list = new ArrayList<QuestResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -209,7 +223,7 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, start);
 			pstmt.setInt(3, pageCount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QuestResult questResult = new QuestResult();
 				questResult.setTitle(rs.getString("title"));
@@ -220,8 +234,11 @@ public class TQuestionDaoImpl implements TQuestionDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
 	}
+
 }

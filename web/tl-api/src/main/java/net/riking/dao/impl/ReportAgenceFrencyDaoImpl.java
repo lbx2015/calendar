@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import net.riking.dao.ReportAgenceFrencyDao;
 import net.riking.entity.model.BaseModelPropdict;
 import net.riking.entity.model.ReportFrequency;
+import net.riking.util.DBUtil;
 
 @Repository("reportAgenceFrencyDao")
 public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
@@ -32,15 +33,18 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 		Connection connection = session.connection();
 		String sql = "SELECT substring_index(t.VALU, '-',  1) agenceName FROM t_base_modelpropdict t WHERE t.TABLENAME='T_REPORT' AND t.FIELD = 'MODLE_TYPE' GROUP BY agenceName";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		Set<String> list = new HashSet<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				list.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -53,11 +57,12 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 		String sql = "SELECT t.ID,t.KE,SUBSTRING_INDEX(t.VALU,'-',-2) as VALU FROM t_base_modelpropdict t WHERE t.VALU LIKE '%"
 				+ value + "%'";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<BaseModelPropdict> list = new ArrayList<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			// pstmt.setString(1, value);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				BaseModelPropdict baseModelPropdict = new BaseModelPropdict(rs.getString(1), rs.getString(2),
 						rs.getString(3));
@@ -65,6 +70,8 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -76,11 +83,12 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 		Connection connection = session.connection();
 		String sql = "SELECT t.id,t.code,t.title,r.is_complete,group_concat(c.frequency ORDER BY c.frequency ASC ) AS strFrequency FROM t_report t LEFT JOIN t_base_modelpropdict m ON t.module_type = m.ke LEFT JOIN t_report_submit_caliber c ON t.id = c.report_id LEFT JOIN t_report_subscribe_rel r ON r.report_id=t.id WHERE t.module_type=? GROUP BY t.id";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<ReportFrequency> list = new ArrayList<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, moduleType);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportFrequency reportFrequency = new ReportFrequency(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getString(5));
@@ -88,6 +96,8 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -100,11 +110,12 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 		String sql = "SELECT t.Id,t.report_name,t.report_title,group_concat(c.frequency ORDER BY c.frequency ASC) AS strFrequency FROM t_report t LEFT JOIN t_report_submit_caliber c ON t.Id = c.report_id WHERE (t.report_name LIKE CONCAT('%','"
 				+ reportName + "','%') OR t.report_title LIKE CONCAT('%','" + reportName + "','%')) GROUP BY t.id";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<ReportFrequency> list = new ArrayList<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			// pstmt.setString(1, reportList.getReportName());
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportFrequency report = new ReportFrequency(rs.getString(1), rs.getString(2), rs.getString(3), "",
 						rs.getString(4));
@@ -112,6 +123,8 @@ public class ReportAgenceFrencyDaoImpl implements ReportAgenceFrencyDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.dao.TopicDao;
 import net.riking.entity.model.TopicResult;
+import net.riking.util.DBUtil;
 
 @Repository("topicDao")
 public class TopicDaoImpl implements TopicDao {
@@ -29,6 +30,7 @@ public class TopicDaoImpl implements TopicDao {
 		Connection connection = session.connection();
 		String sql = "call findTopicOfInterest(?,?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<TopicResult> list = new ArrayList<TopicResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -38,7 +40,7 @@ public class TopicDaoImpl implements TopicDao {
 			pstmt.setString(2, topicIds);
 			pstmt.setInt(3, begin);
 			pstmt.setInt(4, end);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TopicResult topicResult = new TopicResult();
 				topicResult.setId(rs.getString("id"));
@@ -48,6 +50,8 @@ public class TopicDaoImpl implements TopicDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -59,6 +63,7 @@ public class TopicDaoImpl implements TopicDao {
 		Connection connection = session.connection();
 		String sql = "call userFollowTopic(?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<TopicResult> list = new ArrayList<TopicResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -67,7 +72,7 @@ public class TopicDaoImpl implements TopicDao {
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, begin);
 			pstmt.setInt(3, pageCount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				TopicResult topicResult = new TopicResult();
 				topicResult.setId("topicId");
@@ -79,6 +84,8 @@ public class TopicDaoImpl implements TopicDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
