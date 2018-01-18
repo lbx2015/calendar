@@ -242,18 +242,28 @@ public class TopServer {
 
 	}
 	
+	/**
+	 * 话题下优秀回答者   回答数[topicId,userId]
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "话题下优秀回答者   回答的问题列表", notes = "POST")
+	@RequestMapping(value = "/getQAnswerSize", method = RequestMethod.POST)
+	public AppResp getQAnswerSize(@RequestBody TopicParams topicParams) {
+		Long count= qAnswerService.findQACountByTopicIdAndUserId(topicParams.getTopicId(), topicParams.getUserId());
+		return new AppResp(count, CodeDef.SUCCESS);
+	}
 	
 	/**
 	 * 话题下优秀回答者   回答的问题列表[topicId,userId]
 	 * @param params
 	 * @return
 	 */
-	@ApiOperation(value = "话题的详情", notes = "POST")
-	@RequestMapping(value = "/getQuestions", method = RequestMethod.POST)
-	public AppResp getQuestion_(@RequestBody TopicParams topicParams) {
-		Topic topic = topicRepo.getById(topicParams.getTopicId());
-		
-		return new AppResp(topic, CodeDef.SUCCESS);
+	@ApiOperation(value = "话题下优秀回答者   回答的问题列表", notes = "POST")
+	@RequestMapping(value = "/getQAnswerResults", method = RequestMethod.POST)
+	public AppResp getQAnswerResults(@RequestBody TopicParams topicParams) {
+		List<QAnswerResult> list = qAnswerService.findQAByTopicIdAndUserId(topicParams.getTopicId(), topicParams.getUserId(), topicParams.getPindex(), topicParams.getPcount());
+		return new AppResp(list, CodeDef.SUCCESS);
 	}
 	
 

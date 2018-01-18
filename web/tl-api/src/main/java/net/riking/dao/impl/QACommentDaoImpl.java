@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.dao.QACommentDao;
 import net.riking.entity.model.QACommentResult;
+import net.riking.util.DBUtil;
 
 @Repository("qaCommentDao")
 public class QACommentDaoImpl implements QACommentDao {
@@ -36,13 +37,14 @@ public class QACommentDaoImpl implements QACommentDao {
 		sql += "from t_qa_comment q ";
 		sql += "where q.user_id = ? and q.is_aduit <> 2 and q.is_deleted=1 ORDER BY q.created_time desc limit ?,?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<QACommentResult> list = new ArrayList<QACommentResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, pageBegin);
 			pstmt.setInt(3, pageCount);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QACommentResult qaCommentResult = new QACommentResult();
 				qaCommentResult.setId(rs.getString("id"));
@@ -62,6 +64,8 @@ public class QACommentDaoImpl implements QACommentDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}

@@ -34,11 +34,13 @@ import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.HotSearch;
 import net.riking.entity.model.NewsResult;
+import net.riking.entity.model.QAnswerResult;
 import net.riking.entity.model.QuestResult;
 import net.riking.entity.model.ReportResult;
 import net.riking.entity.model.TopicResult;
 import net.riking.entity.params.SearchParams;
 import net.riking.service.AppUserService;
+import net.riking.service.QAnswerService;
 import net.riking.service.ReportService;
 import net.riking.util.FileUtils;
 
@@ -94,6 +96,9 @@ public class SearchListServer {
 
 	@Autowired
 	TQuestionRelRepo tQuestionRelRepo;
+	
+	@Autowired
+	QAnswerService qAnswerService;
 
 	/**
 	 * 显示热门资讯（6条）
@@ -266,6 +271,7 @@ public class SearchListServer {
 		for (QuestResult questResult : questResults) {
 			Integer tqFollowNum = tQuestionRelRepo.followCount(questResult.getId(), Const.OBJ_OPT_GREE);
 			Integer qanswerNum = questionAnswerRepo.answerCount(questResult.getId());
+			
 			// // TODO 后面从redis中取
 			questResult.setTqFollowNum(tqFollowNum);
 			questResult.setQanswerNum(qanswerNum);
@@ -306,8 +312,8 @@ public class SearchListServer {
 		}
 		map.put("news", newsResults);
 		//内容
-		List<QuestResult> questResults = findQuestByKeyWord(params);
-		map.put("qusetions", questResults);
+		List<QAnswerResult> QAnswerResults = qAnswerService.findQAResultByKeyWord(params.getKeyWord());
+		map.put("qusetions", QAnswerResults);
 		
 		return new AppResp(map, CodeDef.SUCCESS);
 	}

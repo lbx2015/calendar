@@ -16,6 +16,7 @@ public interface TopicService {
 	 * @return
 	 */
 	public List<TopicResult> findTopicOfInterest(String userId, String topicIds, int begin, int end);
+	
 
 	/**
 	 * 关注的话题

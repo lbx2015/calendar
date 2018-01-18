@@ -14,5 +14,11 @@ public interface QAnswerDao {
 	public QuestionAnswer getAContentByOne(String questionId);
 
 	public List<QAnswerResult> findCollectQAnswer(String userId, int start, int pageCount);
+	
+	public List<QAnswerResult> findQAByTopicIdAndUserId(String topicId, String userId, int start, int pageCount);
+	
+	public List<QAnswerResult> findQAResultByKeyWord(String keyWord);
+	
+	public Long findQACountByTopicIdAndUserId(String topicId, String userId);
 
 }

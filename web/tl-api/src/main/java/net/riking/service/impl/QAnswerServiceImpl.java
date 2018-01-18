@@ -14,6 +14,7 @@ import net.riking.dao.repo.NCReplyRepo;
 import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QAnswerRelRepo;
+import net.riking.dao.repo.TopicRepo;
 import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.NCReply;
 import net.riking.entity.model.QACReply;
@@ -45,6 +46,9 @@ public class QAnswerServiceImpl implements QAnswerService {
 
 	@Autowired
 	NCReplyRepo nCReplyRepo;
+	
+	@Autowired
+	TopicRepo topicRepo;
 
 	/**
 	 * 根据问题的id根据评论数，点赞数排序查询第一条回答
@@ -171,5 +175,23 @@ public class QAnswerServiceImpl implements QAnswerService {
 			default:
 				throw new RuntimeException("objType参数异常:" + commentParams.getObjType());
 		}
+	}
+
+	@Override
+	public List<QAnswerResult> findQAByTopicIdAndUserId(String topicId,
+			String userId, int start, int pageCount) {
+		List<QAnswerResult> list = qAnswerDao.findQAByTopicIdAndUserId(topicId, userId, start, pageCount);
+		return list;
+	}
+	
+	@Override
+	public Long findQACountByTopicIdAndUserId(String topicId, String userId) {
+		Long count = qAnswerDao.findQACountByTopicIdAndUserId(topicId, userId);
+		return count;
+	}
+
+	@Override
+	public List<QAnswerResult> findQAResultByKeyWord(String keyWord) {
+		return qAnswerDao.findQAResultByKeyWord(keyWord);
 	}
 }
