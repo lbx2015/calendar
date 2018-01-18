@@ -67,6 +67,16 @@ public class FeedBack extends BaseProp {
 		this.setModifiedBy(createBy);
 	}
 
+	public FeedBack(String id, String content, String imgs, Integer accept, String userName, String userPhone) {
+		super();
+		this.id = id;
+		this.content = content;
+		this.imgs = imgs;
+		this.accept = accept;
+		this.userName = userName;
+		this.userPhone = userPhone;
+	}
+
 	public FeedBack() {
 		super();
 	}

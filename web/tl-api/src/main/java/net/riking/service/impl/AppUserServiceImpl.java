@@ -2,8 +2,10 @@ package net.riking.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -43,8 +45,8 @@ import net.riking.util.FileUtils;
 @Service("appUserSerice")
 @Transactional
 public class AppUserServiceImpl implements AppUserService {
-	
-//	private static final Logger logger = LogManager.getLogger("AppUserService");
+
+	// private static final Logger logger = LogManager.getLogger("AppUserService");
 
 	@Autowired
 	AppUserRepo appUserRepo;
@@ -63,7 +65,7 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	UserLogRstHisRepo userLogRstHisRepo;
-	
+
 	@Autowired
 	EmailSuffixRepo emailSuffixRepo;
 
@@ -202,7 +204,6 @@ public class AppUserServiceImpl implements AppUserService {
 		return appUserDao.findMyFans(userId, pageBegin, pageCount);
 	}
 
-
 	@Override
 	public OtherUserResp getOtherMes(String toUserId, String userId) {
 		return appUserDao.getOtherMes(toUserId, userId);
@@ -246,14 +247,25 @@ public class AppUserServiceImpl implements AppUserService {
 				List<Predicate> predicates = new ArrayList<Predicate>();
 				// 默认查询条件
 				predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
-
 				if (null != appUserVO.getAppUser()) {
-					if (StringUtils.isNotBlank(appUserVO.getAppUser().getId())) {
-						predicates.add(cb.equal(root.<String> get("id"), appUserVO.getAppUser().getId()));
-					}
-					if (StringUtils.isNotBlank(appUserVO.getAppUser().getUserName())) {
-						predicates.add(cb.like(root.<String> get("userName"),
-								"%" + appUserVO.getAppUser().getUserName() + "%"));
+					// if (StringUtils.isNotBlank(appUserVO.getAppUser().getId())) {
+					// predicates.add(cb.equal(root.<String> get("id"),
+					// appUserVO.getAppUser().getId()));
+					// }
+					if (appUserVO.getAppUserDetail() != null) {
+						Set<String> idSet = appUserRepo
+								.getUserIdsByUserName(appUserVO.getAppUserDetail().getUserName());
+						In<String> in = cb.in(root.get("id"));
+						if (idSet.size() != 0) {
+							for (String id : idSet) {
+								in.value(id);
+							}
+						} else {
+							in.value("");
+						}
+						predicates.add(in);
+						// predicates.add(cb.like(root.<String> get("userName"),
+						// "%" + appUserVO.getAppUserDetail().getUserName() + "%"));
 					}
 					if (StringUtils.isNotBlank(appUserVO.getAppUser().getEmail())) {
 						predicates.add(
