@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
@@ -83,7 +84,8 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
         Intent i = getIntent();
         newsId = i.getStringExtra(CONST.NEWS_ID);
         commentsNum = i.getIntExtra(CONST.COMMENT_NUM, 0);
-        activityTitle.setText("评论" + ZR.getNumberString(commentsNum));
+//        activityTitle.setText("评论" + ZR.getNumberString(commentsNum));
+        activityTitle.setText(Html.fromHtml("<html><body><font color=#666666>" + "评论" + " </font> <font color=#999999>" + (commentsNum) + " </font> </body><html>"));
     }
 
     public void setListenerToRootView() {
@@ -280,7 +282,8 @@ public class CommentsActivity extends ZActivity<CommentListAdapter> { //Fragment
                     News news = response._data;
                     List<NewsComment> comments = news.newsCommentList;
                     if (comments != null) {
-                        activityTitle.setText("评论" + comments.size());
+//                        activityTitle.setText("评论" + comments.size());
+                        activityTitle.setText(Html.fromHtml("<html><body><font color=#666666>" + "评论" + " </font> <font color=#999999>" + (comments.size()) + " </font> </body><html>"));
                     }
 
                     newsTitleTv.setText(news.title);

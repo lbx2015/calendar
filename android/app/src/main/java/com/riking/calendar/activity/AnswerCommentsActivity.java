@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
@@ -79,8 +80,7 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
         answerCommentsNum = i.getIntExtra(CONST.ANSWER_COMMENT_NUM, 0);
 
         activityTitle = findViewById(R.id.activity_title);
-        activityTitle.setText("评论" + answerCommentsNum);
-
+        activityTitle.setText(Html.fromHtml("<html><body><font color=#666666>" + "评论" + " </font> <font color=#999999>" + (answerCommentsNum) + " </font> </body><html>"));
         answerIcon = findViewById(R.id.icon_answer);
         publicButton = findViewById(R.id.public_button);
         writeComment = findViewById(R.id.write_comment);
@@ -234,7 +234,8 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
                             mAdapter.mList.add(0, response._data);
                             mAdapter.notifyItemInserted(0);
                             mRecyclerView.scrollToPosition(0);
-                            activityTitle.setText("评论" + mAdapter.getItemCount());
+//                            activityTitle.setText("评论" + mAdapter.getItemCount());
+                            activityTitle.setText(Html.fromHtml("<html><body><font color=#666666>" + "评论" + " </font> <font color=#999999>" + (mAdapter.getItemCount()) + " </font> </body><html>"));
                             Toast.makeText(AnswerCommentsActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -285,7 +286,8 @@ public class AnswerCommentsActivity extends ZActivity<AnswerCommentListAdapter> 
 //                    return;
 //                }
                     if (comments != null) {
-                        activityTitle.setText("评论" + comments.size());
+//                        activityTitle.setText("评论" + comments.size());
+                        activityTitle.setText(Html.fromHtml("<html><body><font color=#666666>" + "评论" + " </font> <font color=#999999>" + (comments.size()) + " </font> </body><html>"));
                     }
 //                mAdapter.addAll(comments);
 //                nextPage = page + 1;

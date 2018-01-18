@@ -18,11 +18,13 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.QAComment;
 import net.riking.service.QACommentService;
 
@@ -48,11 +50,19 @@ public class QACommentController {
 	@Autowired
 	QACommentService qaCommentService;
 
+	@Autowired
+	AppUserDetailRepo appUserDetailRepo;
+
 	@ApiOperation(value = "得到单个信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
 		QAComment qaComment = qaCommentRepo.findOne(id);
-		qaComment.setUserName(appUserRepo.findOne(qaComment.getUserId()).getUserName());
+		if (qaComment != null) {
+			AppUserDetail appUserDetail = appUserDetailRepo.findOne(qaComment.getUserId());
+			if (appUserDetail != null) {
+				qaComment.setUserName(appUserDetail.getUserName());
+			}
+		}
 		// 设置评论时间
 		qaComment.setCommentTime(qaComment.getCreatedTime());
 		return new Resp(qaComment, CodeDef.SUCCESS);
@@ -61,7 +71,6 @@ public class QACommentController {
 	@ApiOperation(value = "得到信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute QAComment qaComment) {
-
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount());
 		if (null == qaComment.getIsDeleted()) {
 			qaComment.setIsDeleted(1);
@@ -74,11 +83,6 @@ public class QACommentController {
 			qaComment2.setSerialNumber(new Integer(i));
 			qaComment2.setCommentTime(qaComment2.getCreatedTime());
 		}
-		// Long totalElements = (long) qaCommentRepo.countGetMore(qaComment.getIsDeleted());
-		// List<QAComment> qaComments = qaCommentRepo.findAllQAC(qaComment.getIsDeleted(),
-		// pageable);// 未删除数据
-		// Page<QAComment> modulePage = new PageImpl<QAComment>(qaComments, pageable,
-		// totalElements);
 		return new Resp(modulePage, CodeDef.SUCCESS);
 	}
 

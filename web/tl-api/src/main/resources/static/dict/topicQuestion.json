@@ -19,6 +19,16 @@
 			"query_order": "1"
 		},
 		{
+			"prop": "createdBy",
+			"alias": "创建人",
+			"desc": "创建人",
+			"type": "enum",
+			"enum_url": "/tQuestion/getCreatedUser",
+			"enum_search": "1",
+			"group": "base",
+			"hidden": "preview"
+		},
+		{
 			"prop": "topicId",
 			"alias": "相关话题",
 			"desc": "话题主键： fk t_topic (最多3个，用','分隔开)",
@@ -57,16 +67,7 @@
 			"group": "base",
 			"hidden": "edit"
 		},
-		{
-			"prop": "createdBy",
-			"alias": "创建人",
-			"desc": "创建人",
-			"type": "enum",
-			"enum_url": "/tQuestion/getCreatedUser",
-			"enum_search": "1",
-			"group": "base",
-			"hidden": "edit,preview"
-		},
+		
 		{
 			"prop": "createdTime",
 			"alias": "创建时间",

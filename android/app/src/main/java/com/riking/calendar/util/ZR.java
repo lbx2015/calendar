@@ -30,6 +30,7 @@ import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.app.GlideApp;
 import com.riking.calendar.app.MyApplication;
 import com.riking.calendar.jiguang.Logger;
+import com.riking.calendar.listener.FollowCallBack;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.listener.ZCallBackWithoutProgress;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
@@ -474,7 +475,7 @@ public class ZR {
         }
     }
 
-    public static void setFollowPersonClickListner(final BaseUser user, final View followButton, final TextView followTv) {
+    public static void setFollowPersonClickListner(final BaseUser user, final View followButton, final TextView followTv, final FollowCallBack callBack) {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -497,19 +498,21 @@ public class ZR {
                         if (StringUtil.isEmpty(response._data)) {
                             followStatus = "0";
                         }
-
-                        if (user.isFollow == 0) {
-                            ZToast.toast("关注成功");
-                        } else {
-                            ZToast.toast("取消关注");
-
-                        }
                         user.isFollow = Integer.valueOf(followStatus);
+
+                        if (callBack != null) {
+                            callBack.updateSuccess(user.isFollow);
+                        }
+
                         showPersonFollowStatus(followButton, followTv, user.isFollow);
                     }
                 });
             }
         });
+    }
+
+    public static void setFollowPersonClickListner(final BaseUser user, final View followButton, final TextView followTv) {
+        setFollowPersonClickListner(user, followButton, followTv, null);
     }
 
     public static void setInviteClickListener(final AppUserResult user, final View followButton, final TextView followTv) {
@@ -532,7 +535,7 @@ public class ZR {
         });
     }
 
-    public static void setTopicFollowClickListener(final Topic topic, final View followButton, final TextView followTv) {
+    public static void setTopicFollowClickListener(final Topic topic, final View followButton, final TextView followTv, final FollowCallBack callBack) {
         followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
@@ -555,16 +558,19 @@ public class ZR {
                     @Override
                     public void callBack(ResponseModel<String> response) {
                         topic.isFollow = params.enabled;
-                        if (topic.isFollow == 1) {
-                            ZToast.toast("关注成功");
-                        } else {
-                            ZToast.toast("取消关注");
+                        if (callBack != null) {
+                            callBack.updateSuccess(topic.isFollow);
                         }
                         showTopicFollowStatus(followButton, followTv, params.enabled);
                     }
                 });
             }
         });
+
+    }
+
+    public static void setTopicFollowClickListener(final Topic topic, final View followButton, final TextView followTv) {
+        setTopicFollowClickListener(topic, followButton, followTv, null);
     }
 
     public static void showTopicFollowStatus(View followButton, TextView followTv, int isFollow) {

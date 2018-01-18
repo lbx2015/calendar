@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
-    android:layout_width="139dp"
-    android:layout_height="170dp"
+    android:layout_width="135dp"
+    android:layout_height="wrap_content"
     android:layout_marginRight="6dp"
     android:background="@drawable/follow_bg"
     android:orientation="vertical">
@@ -12,31 +12,45 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="6dp"
-        android:src="@drawable/profile2" />
+        android:layout_marginTop="15dp" />
 
     <com.riking.calendar.view.ZTextView
         android:id="@+id/recommend_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/icon_image"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
-        android:text="人民银行数据集大集中"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/color_222222"
-        android:textSize="15sp" />
+        android:textSize="16sp" />
+
+    <com.riking.calendar.view.ZTextView
+        android:id="@+id/follow_number_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recommend_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/color_999999"
+        android:textSize="12sp" />
 
     <FrameLayout
         android:id="@+id/follow_button"
         android:layout_width="105dp"
         android:layout_height="28dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/follow_number_tv"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/follow_border">
 
         <com.riking.calendar.view.ZTextView

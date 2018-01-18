@@ -1,0 +1,21 @@
+{
+	"table": "T_SYS_DAYS",
+	"groups": [
+		{
+			"prop": "base",
+			"alias": "基础信息"
+		}
+	],
+	"attrs": [
+		{
+			"prop": "dateByQuery",
+			"alias": "日期",
+			"desc": "日期",
+			"type": "date",
+			"query": "1",
+			"query_order": "1",
+			"verify":"required",
+			"group": "base"
+		}
+	]
+}

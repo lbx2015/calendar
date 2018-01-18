@@ -75,7 +75,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
                 android:background="@drawable/white_follow_border">
 
                 <com.riking.calendar.view.ZTextView
@@ -230,7 +229,7 @@
                 android:layout_toEndOf="@+id/trend_image"
                 android:text="我的动态"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
@@ -272,7 +271,7 @@
                 android:layout_toEndOf="@+id/follow_image"
                 android:text="我的关注"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
@@ -314,7 +313,7 @@
                 android:layout_toEndOf="@+id/favorite_image"
                 android:text="我的收藏"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
