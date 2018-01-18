@@ -30,4 +30,6 @@ public class AppUserResult extends BaseUser{
 
     // @Comment("是否已邀请 0-未邀请，1-已邀请 2 互相关注")
     public int isInvited;
+
+    public int fansNum;
 }

@@ -10,17 +10,12 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.UserActivity;
-import com.riking.calendar.listener.ZCallBack;
-import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
-import com.riking.calendar.pojo.base.ResponseModel;
-import com.riking.calendar.pojo.params.TQuestionParams;
+import com.riking.calendar.listener.FollowCallBack;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Topic;
-import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.CircleImageView;
 
 import java.util.List;
@@ -50,12 +45,24 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
             //topic
             case 6: {
                 final Topic topicResult = topicResults.get(position);
-                setFollowClickListener(holder, topicResult);
-                ZR.setImage(holder.iconImage, topicResult.topicUrl);
+                ZR.setTopicFollowClickListener(topicResult, holder.followButton, holder.followTv, new FollowCallBack() {
+                    @Override
+                    public void updateSuccess(int status) {
+                        if (status == 0) {
+                            topicResult.followNum = topicResult.followNum - 1;
+                            holder.followNumberTv.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
+                        } else {
+                            topicResult.followNum = topicResult.followNum + 1;
+                            holder.followNumberTv.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
+                        }
+                    }
+                });
                 holder.recommendedTv.setText(topicResult.title);
+                holder.followNumberTv.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
                 ZR.setTopicName(holder.recommendedTv, topicResult.title, topicResult.topicId);
 //                holder.iconImage.setOnClickListener(onClickListener);
                 ZR.setCircleTopicImage(holder.iconImage, topicResult.topicUrl, topicResult.topicId);
+                ZR.showTopicFollowStatus(holder.followButton, holder.followTv, topicResult.isFollow);
                 break;
             }
 
@@ -63,7 +70,19 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
             case 7: {
                 final AppUserResult user = appUserResults.get(position);
                 ZR.setUserName(holder.recommendedTv, user.userName, user.grade, user.userId);
-                ZR.setFollowPersonClickListner(user, holder.followButton, holder.followTv);
+                holder.followNumberTv.setText(ZR.getNumberString(user.fansNum) + "人关注");
+                ZR.setFollowPersonClickListner(user, holder.followButton, holder.followTv, new FollowCallBack() {
+                    @Override
+                    public void updateSuccess(int status) {
+                        if (status == 0) {
+                            user.fansNum = user.fansNum - 1;
+                            holder.followNumberTv.setText(ZR.getNumberString(user.fansNum) + "人关注");
+                        } else {
+                            user.fansNum = user.fansNum + 1;
+                            holder.followNumberTv.setText(ZR.getNumberString(user.fansNum) + "人关注");
+                        }
+                    }
+                });
                 ZR.showPersonFollowStatus(holder.followButton, holder.followTv, user.isFollow);
                 ZR.setCircleUserImage(holder.iconImage, user.photoUrl, user.userId);
                 //go to topic on click
@@ -101,57 +120,6 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         }
     }
 
-    private void setFollowClickListener(final RecommendedViewHolder h, final Topic topic) {
-        h.followButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-                //adding null protection
-                if (topic == null) {
-                    return;
-                }
-                final TQuestionParams params = new TQuestionParams();
-                params.attentObjId = topic.topicId;
-                //topic
-                params.objType = 2;
-                //followed
-                if (topic.isFollow == 1) {
-                    params.enabled = 0;
-                } else {
-                    params.enabled = 1;
-                }
-
-                APIClient.follow(params, new ZCallBack<ResponseModel<String>>() {
-                    @Override
-                    public void callBack(ResponseModel<String> response) {
-                        topic.isFollow = params.enabled;
-                        if (topic.isFollow == 1) {
-                            ZToast.toast("关注成功");
-                        } else {
-                            ZToast.toast("取消关注");
-                        }
-                        updateFollowButton(h, topic.isFollow);
-                    }
-                });
-            }
-        });
-    }
-
-    private void updateFollowButton(final RecommendedViewHolder h, final int isFollow) {
-        //followed
-        if (isFollow == 1) {
-            h.followTv.setText("已关注");
-            h.followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            h.followTv.setTextColor(ZR.getColor(R.color.color_999999));
-            h.followButton.setBackground(ZR.getDrawable(R.drawable.follow_border_gray));
-        } else {
-            h.followTv.setText("关注");
-            h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
-            h.followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
-            h.followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
-            h.followButton.setBackground(ZR.getDrawable(R.drawable.follow_border));
-        }
-    }
-
     @Override
     public int getItemCount() {
 
@@ -173,6 +141,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         RelativeLayout root;
         CircleImageView iconImage;
         TextView recommendedTv;
+        TextView followNumberTv;
 
         public RecommendedViewHolder(View itemView) {
             super(itemView);
@@ -181,6 +150,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
             recommendedTv = itemView.findViewById(R.id.recommend_title);
             followButton = itemView.findViewById(R.id.follow_button);
             followTv = itemView.findViewById(R.id.follow_text);
+            followNumberTv = itemView.findViewById(R.id.follow_number_tv);
         }
     }
 }
