@@ -116,10 +116,10 @@ public class CreateTaskActivity extends AppCompatActivity {
 
     private void updateImportantImage() {
         if (isImportant == 0) {
-            importantImage.setImageDrawable(getDrawable(R.drawable.work_icon_star_s));
+            importantImage.setImageDrawable(getDrawable(R.drawable.work_icon_impor_n));
             importantTextView.setTextColor(ZR.getColor(R.color.color_222222));
         } else {
-            importantImage.setImageDrawable(getDrawable(R.drawable.word_rm_icon_imp_n));
+            importantImage.setImageDrawable(getDrawable(R.drawable.work_icon_impor_p));
             importantTextView.setTextColor(ZR.getColor(R.color.color_999999));
         }
     }

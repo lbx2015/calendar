@@ -65,10 +65,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         if (getItemViewType(position) == NORMAL_TYPE) {
             final Task r = tasks.get(position);
             holder.title.setText(r.content);
+
             if (r.isImportant == 1) {
-                holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
+                holder.important.setVisibility(View.VISIBLE);
             } else {
-                holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
+                holder.important.setVisibility(View.GONE);
             }
 
             if (r.isComplete == 1) {
@@ -92,7 +93,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 }
             });
 
-            holder.editButton.setOnClickListener(new View.OnClickListener() {
+            holder.title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(v.getContext(), CreateTaskActivity.class);
@@ -105,9 +106,58 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             });
 
             holder.sml.setSwipeEnable(true);
+            final Handler handler = new Handler();
+            holder.done.setOnClickListener(new View.OnClickListener() {
+                Runnable callBack = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (holder.completed) {
+                            final ArrayList<Todo> tasks = new ArrayList<>(1);
+                            Todo todo = new Todo(r);
+                            todo.isCompleted = 1;
+                            tasks.add(todo);
 
+                            APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
+                                @Override
+                                public void callBack(ResponseModel<String> response) throws Exception {
+                                    realm.executeTransaction
+                                            (new Realm.Transaction() {
+                                                @Override
+                                                public void execute(Realm realm) {
+                                                    if (failed) {
+                                                    } else {
+                                                        Task t;
+                                                        t = realm.where(Task.class).equalTo(Task.TODO_ID, r.todoId).findFirst();
+                                                        t.isComplete = 1;
+                                                        t.completeDate = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(new Date());
+                                                    }
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    }
+                };
 
-            holder.important.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (holder.completed) {
+                        holder.completed = false;
+                        holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_n));
+                        holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        //cancel the pending runnable to complete the task
+                        handler.removeCallbacks(callBack);
+                    } else {
+                        holder.completed = true;
+                        holder.done.setImageDrawable(holder.done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
+                        holder.title.setPaintFlags(holder.title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        //complete the task after 5 seconds delay
+                        handler.postDelayed(callBack, 5000);
+                    }
+                }
+            });
+
+            holder.editButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -130,10 +180,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                                                 if (getItemCount() > 2) {
                                                     notifyItemMoved(position, getItemCount() - 2);
                                                 }
-                                                holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.not_important));
+                                                holder.important.setVisibility(View.GONE);
                                                 realm.where(Task.class).equalTo(Task.TODO_ID, r.todoId).findFirst().isImportant = 0;
                                             } else {
-                                                holder.important.setImageDrawable(holder.important.getResources().getDrawable(R.drawable.important));
+                                                holder.important.setVisibility(View.VISIBLE);
                                                 realm.where(Task.class).equalTo(Task.TODO_ID, r.todoId).findFirst().isImportant = 1;
                                                 notifyItemMoved(position, 0);
                                             }
@@ -202,57 +252,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 editButton = view.findViewById(R.id.tv_edit);
                 sml = (SwipeHorizontalMenuLayout) itemView.findViewById(R.id.sml);
 //                divider = view.findViewById(R.userId.divider);
-                final Handler handler = new Handler();
-                done.setOnClickListener(new View.OnClickListener() {
-                    Runnable callBack = new Runnable() {
-                        @Override
-                        public void run() {
-                            if (completed) {
-                                final ArrayList<Todo> tasks = new ArrayList<>(1);
-                                Todo todo = new Todo(task);
-                                todo.isCompleted = 1;
-                                tasks.add(todo);
-
-                                APIClient.saveTodo(tasks, new ZCallBackWithFail<ResponseModel<String>>() {
-                                    @Override
-                                    public void callBack(ResponseModel<String> response) throws Exception {
-                                        realm.executeTransaction
-                                                (new Realm.Transaction() {
-                                                    @Override
-                                                    public void execute(Realm realm) {
-                                                        if (failed) {
-                                                        } else {
-                                                            Task t;
-                                                            t = realm.where(Task.class).equalTo(Task.TODO_ID, task.todoId).findFirst();
-                                                            t.isComplete = 1;
-                                                            t.completeDate = new SimpleDateFormat(CONST.yyyyMMddHHmm).format(new Date());
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                });
-                            }
-                        }
-                    };
-
-                    @Override
-                    public void onClick(View v) {
-                        if (completed) {
-                            completed = false;
-                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.work_icon_checkbox_n));
-                            title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                            //cancel the pending runnable to complete the task
-                            handler.removeCallbacks(callBack);
-                        } else {
-                            completed = true;
-                            done.setImageDrawable(done.getResources().getDrawable(R.drawable.work_icon_checkbox_s));
-                            title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                            //complete the task after 5 seconds delay
-                            handler.postDelayed(callBack, 5000);
-                        }
-                    }
-                });
-
             }
         }
     }
