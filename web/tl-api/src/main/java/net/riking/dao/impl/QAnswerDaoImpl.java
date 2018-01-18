@@ -110,7 +110,7 @@ public class QAnswerDaoImpl implements QAnswerDao {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, topicId);
 			pstmt.setString(2, userId);
-			pstmt.setInt(3, start);
+			pstmt.setInt(3, (start-1)*pageCount);//分页计算
 			pstmt.setInt(4, pageCount);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -166,7 +166,7 @@ public class QAnswerDaoImpl implements QAnswerDao {
 				+" qa.id qaId, qa.created_time createdTime, qa.cover_url coverUrl, qa.content content"
 				+" from t_question_answer qa "
 				+" LEFT JOIN t_topic_question t on qa.question_Id = t.id and t.title LIKE ?"
-				+" where qa.created_time in("
+				+" where qa.created_time in ("
 						+" select max(qa2.created_time) maxTime"
 						+" from t_question_answer qa2"
 						+" LEFT JOIN t_topic_question t2 on qa2.question_Id = t2.id and t2.title LIKE ?" 

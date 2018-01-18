@@ -247,7 +247,7 @@ public class TopServer {
 	 * @param params
 	 * @return
 	 */
-	@ApiOperation(value = "话题下优秀回答者   回答的问题列表", notes = "POST")
+	@ApiOperation(value = "话题下优秀回答者   回答的问题列表数", notes = "POST")
 	@RequestMapping(value = "/getQAnswerSize", method = RequestMethod.POST)
 	public AppResp getQAnswerSize(@RequestBody TopicParams topicParams) {
 		Long count= qAnswerService.findQACountByTopicIdAndUserId(topicParams.getTopicId(), topicParams.getUserId());
