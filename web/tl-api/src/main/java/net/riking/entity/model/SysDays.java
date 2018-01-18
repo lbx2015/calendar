@@ -1,9 +1,14 @@
 package net.riking.entity.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import net.riking.core.annos.Comment;
 import net.riking.core.entity.BaseEntity;
@@ -49,6 +54,11 @@ public class SysDays extends BaseEntity {
 	@Comment("节日名称备注")
 	@Column(name = "remark")
 	private String remark;
+
+	@Comment("时间查询条件")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Transient
+	private Date dateByQuery;
 
 	public SysDays() {
 
@@ -100,6 +110,14 @@ public class SysDays extends BaseEntity {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Date getDateByQuery() {
+		return dateByQuery;
+	}
+
+	public void setDateByQuery(Date dateByQuery) {
+		this.dateByQuery = dateByQuery;
 	}
 
 }

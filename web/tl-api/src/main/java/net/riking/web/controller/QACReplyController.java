@@ -17,12 +17,13 @@ import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.core.entity.PageQuery;
 import net.riking.core.entity.Resp;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
-import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.QACReply;
 import net.riking.service.QACommentService;
 
@@ -48,6 +49,9 @@ public class QACReplyController {
 	@Autowired
 	QACommentService qaCommentService;
 
+	@Autowired
+	AppUserDetailRepo appUserDetailRepo;
+
 	@ApiOperation(value = "得到单个信息", notes = "GET")
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public Resp get_(@RequestParam("id") String id) {
@@ -60,7 +64,6 @@ public class QACReplyController {
 	@ApiOperation(value = "得到信息", notes = "GET")
 	@RequestMapping(value = "/getMore", method = RequestMethod.GET)
 	public Resp getMore_(@ModelAttribute PageQuery query, @ModelAttribute QACReply qacReply) {
-
 		PageRequest pageable = new PageRequest(query.getPindex(), query.getPcount());
 		if (null == qacReply.getIsDeleted()) {
 			qacReply.setIsDeleted(1);
@@ -76,18 +79,18 @@ public class QACReplyController {
 			// 设置回复时间
 			qacReply2.setCommentTime(qacReply2.getCreatedTime());
 			// 设置用回复户名
-			AppUser fromUser = appUserRepo.findOne(qacReply2.getFromUserId());
-			if (fromUser == null) {
+			AppUserDetail fromUserDetail = appUserDetailRepo.findOne(qacReply2.getFromUserId());
+			if (fromUserDetail == null) {
 				continue;
 			}
 			if (qacReply2.getToUserId() != null) {
 				// 设置评论用户名
-				AppUser toUser = appUserRepo.findOne(qacReply2.getToUserId());
-				if (toUser != null) {
-					qacReply2.setToUserName(toUser.getUserName());
+				AppUserDetail toUserDetail = appUserDetailRepo.findOne(qacReply2.getToUserId());
+				if (toUserDetail != null) {
+					qacReply2.setToUserName(toUserDetail.getUserName());
 				}
 			}
-			qacReply2.setFromUserName(fromUser.getUserName());
+			qacReply2.setFromUserName(fromUserDetail.getUserName());
 		}
 		return new Resp(modulePage, CodeDef.SUCCESS);
 	}

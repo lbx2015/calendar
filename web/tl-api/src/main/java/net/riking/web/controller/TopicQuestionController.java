@@ -123,10 +123,8 @@ public class TopicQuestionController {
 		String[] fileNames = topicQuestion.getContent().split("alt=");
 		for (int i = 1; i < fileNames.length; i++) {
 			String fileName = fileNames[i].split(">")[0].replace("\"", "");
-			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_QUESTION_PHOTO_PATH + fileName;
-			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			String newPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_QUESTION_PHOTO_PATH) + fileName;
+			String oldPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TEMP_PHOTO_PATH) + fileName;
 			try {
 				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
 			} catch (Exception e) {
@@ -138,8 +136,7 @@ public class TopicQuestionController {
 		topicQuestion.setCreatedBy(topicQuestion.getUserId());
 		topicQuestion.setModifiedBy(topicQuestion.getUserId());
 		topicQuestion.setIsAduit(0);
-		topicQuestion.setContent(
-				topicQuestion.getContent().replace("temp", "question"));
+		topicQuestion.setContent(topicQuestion.getContent().replace("temp", "question"));
 		// 新增加载内容图片时访问不到默认显示的图片
 		topicQuestion.setContent(
 				topicQuestion.getContent().replace("<img", "<img onerror=\"this.src='images/img_default.png'\" "));
@@ -154,10 +151,8 @@ public class TopicQuestionController {
 		String[] fileNames = questionAnswer.getContent().split("alt=");
 		for (int i = 1; i < fileNames.length; i++) {
 			String fileName = fileNames[i].split(">")[0].replace("\"", "");
-			String newPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_ANSWER_PHOTO_PATH + fileName;
-			String oldPhotoUrl = this.getClass().getResource("/").getPath() + Const.TL_STATIC_PATH
-					+ Const.TL_TEMP_PHOTO_PATH + fileName;
+			String newPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_ANSWER_PHOTO_PATH) + fileName;
+			String oldPhotoUrl = FileUtils.getAbsolutePathByProject(Const.TL_TEMP_PHOTO_PATH) + fileName;
 			try {
 				FileUtils.copyFile(oldPhotoUrl, newPhotoUrl);
 			} catch (Exception e) {

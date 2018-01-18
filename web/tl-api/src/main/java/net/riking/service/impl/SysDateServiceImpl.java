@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +26,7 @@ import net.riking.dao.repo.SysDaysTempRepo;
 import net.riking.entity.model.Period;
 import net.riking.entity.model.SysDays;
 import net.riking.service.SysDateService;
+import net.riking.util.DateUtils;
 
 @Service("sysDateService")
 public class SysDateServiceImpl implements SysDateService {
@@ -199,8 +199,9 @@ public class SysDateServiceImpl implements SysDateService {
 				// 默认查询条件
 				// predicates.add(cb.equal(root.<String> get("isDeleted"), 1));
 				if (null != sysDays) {
-					if (StringUtils.isNotBlank(sysDays.getDates())) {
-						predicates.add(cb.like(root.<String> get("dates"), "%" + sysDays.getDates() + "%"));
+					if (sysDays.getDateByQuery() != null) {
+						String queryDate = DateUtils.DateFormatMS(sysDays.getDateByQuery(), "yyyyMMdd");
+						predicates.add(cb.like(root.<String> get("dates"), "%" + queryDate + "%"));
 					}
 				}
 				return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();

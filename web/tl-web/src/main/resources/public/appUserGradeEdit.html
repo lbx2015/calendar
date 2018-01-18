@@ -43,7 +43,10 @@
 				$("#edit_base select[name='isAduit']").attr("disabled",true);
 				$("#edit_base select[name='enabled']").attr("disabled",true);
 			}
-			
+			//添加只能输入数字限制
+			$(".layui-input-inline input[name='grade']").attr("onkeypress","return event.keyCode>=48&&event.keyCode<=57").attr("ng-pattern","/[^a-zA-Z]/").attr("placeholder","输入数字");
+			$(".layui-input-inline input[name='minExp']").attr("onkeypress","return event.keyCode>=48&&event.keyCode<=57").attr("ng-pattern","/[^a-zA-Z]/").attr("placeholder","输入数字");
+			$(".layui-input-inline input[name='maxExp']").attr("onkeypress","return event.keyCode>=48&&event.keyCode<=57").attr("ng-pattern","/[^a-zA-Z]/").attr("placeholder","输入数字");
 			View.resetUi();
 		});
 		tmpl.bind(function(callback) {
