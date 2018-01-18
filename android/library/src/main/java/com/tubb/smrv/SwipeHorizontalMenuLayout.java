@@ -3,6 +3,7 @@ package com.tubb.smrv;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -18,6 +19,8 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
     protected int mPreScrollX;
     protected float mPreLeftMenuFraction = -1;
     protected float mPreRightMenuFraction = -1;
+    //riking adding the isMenuOpen
+    boolean isMenuOpen;
 
     public SwipeHorizontalMenuLayout(Context context) {
         super(context);
@@ -50,7 +53,7 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
                 isIntercepted = false;
                 // menu view opened and click on content view,
                 // we just close the menu view and intercept the up event
-                if (mCurrentSwiper != null && isMenuOpen()
+                if (isMenuOpen && mCurrentSwiper != null && isMenuOpen()
                         && mCurrentSwiper.isClickOnContentView(this, ev.getX())) {
                     smoothCloseMenu();
                     isIntercepted = true;
@@ -62,6 +65,7 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
                     mScroller.forceFinished(false);
                 break;
         }
+        Log.d("zzw", "isIntercepted" + isIntercepted);
         return isIntercepted;
     }
 
@@ -267,11 +271,13 @@ public class SwipeHorizontalMenuLayout extends SwipeMenuLayout {
     }
 
     public void smoothOpenMenu(int duration) {
+        isMenuOpen = true;
         mCurrentSwiper.autoOpenMenu(mScroller, getScrollX(), duration);
         invalidate();
     }
 
     public void smoothCloseMenu(int duration) {
+        isMenuOpen = false;
         if (mCurrentSwiper != null) {
             mCurrentSwiper.autoCloseMenu(mScroller, getScrollX(), duration);
         }

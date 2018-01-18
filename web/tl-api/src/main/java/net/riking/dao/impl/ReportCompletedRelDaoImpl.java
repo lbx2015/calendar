@@ -18,6 +18,7 @@ import net.riking.core.entity.PageQuery;
 import net.riking.dao.ReportCompletedRelDao;
 import net.riking.entity.resp.CurrentReportTaskResp;
 import net.riking.entity.resp.ReportCompletedRelResult;
+import net.riking.util.DBUtil;
 
 @Repository("reportCompletedRelDaoImpl")
 public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
@@ -40,13 +41,14 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		sql += "order by submit_end_time desc ";
 		sql += "LIMIT ? , ?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<ReportCompletedRelResult> list = new ArrayList<ReportCompletedRelResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, (pageQuery.getPindex() - 1) * pageQuery.getPcount());
 			pstmt.setInt(3, pageQuery.getPcount());
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportCompletedRelResult rel = new ReportCompletedRelResult();
 				rel.setReportCode(rs.getString("reportCode"));
@@ -58,6 +60,8 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -77,13 +81,14 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		sql += "order by completed_date desc ";
 		sql += "LIMIT ? , ?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<ReportCompletedRelResult> list = new ArrayList<ReportCompletedRelResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
 			pstmt.setString(1, userId);
 			pstmt.setInt(2, (pageQuery.getPindex() - 1) * pageQuery.getPcount());
 			pstmt.setInt(3, pageQuery.getPcount());
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ReportCompletedRelResult rel = new ReportCompletedRelResult();
 				rel.setReportCode(rs.getString("reportCode"));
@@ -95,6 +100,8 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -119,12 +126,13 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		sql += "where a.user_id= ? and ? BETWEEN SUBSTRING(a.submit_start_time, 1,8) and SUBSTRING(a.submit_end_time, 1, 8) ";
 		sql += "order by a.is_completed, a.submit_end_time, c.frequency ";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<CurrentReportTaskResp> list = new ArrayList<CurrentReportTaskResp>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, userId);
 			pstmt.setString(2, currentDate);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				CurrentReportTaskResp data = new CurrentReportTaskResp();
 				data.setReportId(rs.getString("reportId"));
@@ -141,6 +149,8 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -158,11 +168,12 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 		sql += "where b.is_deleted=1 and b.enabled=1 and c.phone_device_id <> '' and ? BETWEEN SUBSTRING(a.submit_start_time, 1, 8) ";
 		sql += "and SUBSTRING(a.submit_end_time, 1, 8) and a.is_completed=0 group by a.user_id ";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<CurrentReportTaskResp> list = new ArrayList<CurrentReportTaskResp>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
 			pstmt.setString(1, currentDate);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				CurrentReportTaskResp data = new CurrentReportTaskResp();
 				data.setReportId(rs.getString("reportId"));
@@ -174,6 +185,8 @@ public class ReportCompletedRelDaoImpl implements ReportCompletedRelDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}

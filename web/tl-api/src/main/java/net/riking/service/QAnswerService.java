@@ -22,6 +22,34 @@ public interface QAnswerService {
 	 * @return
 	 */
 	public List<QAnswerResult> findCollectQAnswer(String userId, int start, int pageCount);
+	
+	/**
+	 * 话题下  优秀回答者回答列表
+	 * @used TODO
+	 * @param topicId
+	 * @param userId
+	 * @param start
+	 * @param pageCount
+	 * @return
+	 */
+	public List<QAnswerResult> findQAByTopicIdAndUserId(String topicId, String userId, int start, int pageCount);
+	
+	/**
+	 * 话题下  优秀回答者回答数
+	 * @used TODO
+	 * @param topicId
+	 * @param userId
+	 * @return
+	 */
+	public Long findQACountByTopicIdAndUserId(String topicId, String userId);
+	
+	/**
+	 * 问题title关键字找到该问题下最新回答 
+	 * @used TODO
+	 * @param keyWord
+	 * @return
+	 */
+	public List<QAnswerResult> findQAResultByKeyWord(String keyWord);
 
 	/***
 	 * 问题回答点赞或收藏

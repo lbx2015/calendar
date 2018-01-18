@@ -79,5 +79,5 @@ public interface QuestionAnswerRepo
 	 */
 	@Query("select new net.riking.entity.model.QAnswerResult(qa.id,(select tq.id from TopicQuestion tq where tq.id = qa.questionId),(select tq.title from TopicQuestion tq where tq.id = qa.questionId),qa.content,qa.createdTime) from QuestionAnswer qa where qa.userId = ?1 and qa.isAduit <>2 and qa.isDeleted =1")
 	List<QAnswerResult> findQAnswerByUserId(String userId, Pageable Pageable);
-
+	
 }

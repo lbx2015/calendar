@@ -80,10 +80,6 @@ public class AppUserController {
 		int i = query.getPindex() * query.getPcount();
 		for (AppUserVO appUserVO2 : appUserVOs) {
 			i++;
-			// 获取前缀
-			// appUserVO2.setPrefixPhotoURL(FileUtils.getPhotoUrl(Const.TL_PHOTO_PATH,
-			// this.getClass()));
-			// appUserVO2.setPrefixPhotoURL("http://localhost:8281/images/user/photo/");
 			// 设置图片位置
 			appUserVO2.getAppUserDetail()
 					.setPhotoUrl(Const.TL_PHOTO_PATH + appUserVO2.getAppUserDetail().getPhotoUrl());

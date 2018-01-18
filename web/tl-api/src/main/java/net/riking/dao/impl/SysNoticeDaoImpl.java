@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.dao.SysNoticeDao;
 import net.riking.entity.model.SysNoticeResult;
+import net.riking.util.DBUtil;
 
 @Repository("sysNoticeDao")
 public class SysNoticeDaoImpl implements SysNoticeDao {
@@ -38,6 +39,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 		sql += " NOT EXISTS ( SELECT t.user_id FROM t_sys_notice_read t WHERE t.notice_id = a.id and t.is_deleted = 0 AND t.user_id = ? ) ";
 		sql += " order by a.created_time desc ";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<SysNoticeResult> list = new ArrayList<SysNoticeResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -46,7 +48,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 			pstmt.setString(1, userId);
 			pstmt.setString(2, userId);
 			pstmt.setString(3, userId);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				SysNoticeResult data = new SysNoticeResult();
 				data.setNoticeId(rs.getString("noticeId"));
@@ -62,22 +64,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 			e.printStackTrace();
 			logger.error(e);
 		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-					pstmt = null;
-				}
-
-				if (connection != null) {
-					connection.close();
-					connection = null;
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				logger.error(e);
-			}
-
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 
@@ -100,6 +87,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 		}
 		sql += "order by a.created_time desc limit 0, 30";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<SysNoticeResult> list = new ArrayList<SysNoticeResult>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -107,7 +95,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 				userId = "";
 			pstmt.setString(1, userId);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				SysNoticeResult data = new SysNoticeResult();
 				data.setNoticeId(rs.getString("noticeId"));
@@ -128,22 +116,7 @@ public class SysNoticeDaoImpl implements SysNoticeDao {
 			e.printStackTrace();
 			logger.error(e);
 		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-					pstmt = null;
-				}
-
-				if (connection != null) {
-					connection.close();
-					connection = null;
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				logger.error(e);
-			}
-
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 

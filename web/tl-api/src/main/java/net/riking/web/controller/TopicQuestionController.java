@@ -141,7 +141,6 @@ public class TopicQuestionController {
 		topicQuestion.setContent(
 				topicQuestion.getContent().replace("<img", "<img onerror=\"this.src='images/img_default.png'\" "));
 		topicQuestionRepo.save(topicQuestion);
-
 		return new Resp(topicQuestion, CodeDef.SUCCESS);
 	}
 

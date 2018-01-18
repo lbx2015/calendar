@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.dao.NewsDao;
 import net.riking.entity.model.News;
+import net.riking.util.DBUtil;
 
 @Repository("newsDao")
 public class NewsDaoImpl implements NewsDao {
@@ -29,6 +30,7 @@ public class NewsDaoImpl implements NewsDao {
 		Connection connection = session.connection();
 		String sql = "call findCollectNews(?,?,?)";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		List<News> list = new ArrayList<News>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareCall(sql);
@@ -38,7 +40,7 @@ public class NewsDaoImpl implements NewsDao {
 			pstmt.setInt(2, begin);
 			pstmt.setInt(3, pageCount);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				News news = new News();
 				news.setId(rs.getString("id"));
@@ -56,6 +58,8 @@ public class NewsDaoImpl implements NewsDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 

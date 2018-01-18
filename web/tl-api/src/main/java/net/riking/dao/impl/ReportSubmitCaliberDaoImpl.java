@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import net.riking.dao.ReportSubmitCaliberDao;
 import net.riking.entity.model.QueryReport;
+import net.riking.util.DBUtil;
 
 @Repository("reportSubmitCaliberDao")
 public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
@@ -30,6 +31,7 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 		Connection connection = session.connection();
 		String sql = "SELECT c.Id, c.report_name,c.report_code,c.module_type,b.caliber_type,b.frequency from t_appuser_report_rel a LEFT JOIN t_report_submit_caliber b ON a.report_id = b.report_id LEFT JOIN t_report_list c ON a.report_id = c.Id WHERE a.appUser_id=? AND ((b.frequency='1') or (b.frequency='2' and b.delay_dates>=?) or (b.frequency='3' and  b.delay_dates>=?) or (b.frequency='4' and b.delay_dates>=?) or(b.frequency='5' and b.delay_dates>=?) or (b.frequency='6' and b.delay_dates>=?) or (b.frequency='7' and b.delay_dates>=?)) and b.is_work_day=? and b.enabled = 1 and c.delete_state = '1' order by b.frequency";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		Set<QueryReport> list = new HashSet<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
@@ -41,7 +43,7 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			pstmt.setInt(6, halfYear);
 			pstmt.setInt(7, Year);
 			pstmt.setInt(8, isWorkDay);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QueryReport queryReport = new QueryReport(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getString(5), rs.getString(6));
@@ -49,6 +51,8 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -59,10 +63,11 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 		Connection connection = session.connection();
 		String sql = "SELECT c.Id, c.report_name,c.report_code,c.module_type,b.caliber_type,b.frequency from  t_report_submit_caliber b  LEFT JOIN t_report_list c ON b.report_id = c.Id WHERE b.enabled = 1 AND c.delete_state = '1' ORDER BY b.frequency";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		Set<QueryReport> list = new HashSet<>();
 		try {
 			pstmt = (PreparedStatement) connection.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				QueryReport queryReport = new QueryReport(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getString(5), rs.getString(6));
@@ -70,6 +75,8 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, rs);
 		}
 		return list;
 	}
@@ -92,6 +99,8 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			rs = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, null);
 		}
 		return rs;
 	}
@@ -115,6 +124,8 @@ public class ReportSubmitCaliberDaoImpl implements ReportSubmitCaliberDao {
 			rs = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DBUtil.closeResource(connection, pstmt, null);
 		}
 		return rs;
 	}

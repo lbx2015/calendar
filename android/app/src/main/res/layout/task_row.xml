@@ -17,12 +17,12 @@
 
         <ImageView
             android:id="@+id/done"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="10dp" />
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp" />
 
         <com.riking.calendar.view.ZTextView
             android:id="@+id/title"
@@ -43,7 +43,8 @@
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp" />
+            android:layout_marginRight="15dp"
+            android:src="@drawable/work_icon_impor_p" />
 
         <!--      <View
                   andruserIdd:iduserId@+id/divider"
@@ -72,7 +73,7 @@
             android:background="@color/color_ffab40"
             android:gravity="center"
             android:scaleType="center"
-            android:src="@drawable/work_icon_star_n" />
+            android:src="@drawable/work_icon_impor_b" />
 
         <ImageView
             android:id="@+id/tv_text"

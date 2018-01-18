@@ -129,8 +129,8 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
         if (topic.isFollow == 1) {
             followTv.setText("已关注");
             followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            followTv.setTextColor(ZR.getColor(R.color.color_999999));
-            followButton.setBackground(ZR.getDrawable(R.drawable.follow_border_gray));
+            followTv.setTextColor(ZR.getColor(R.color.color_bbbbbb));
+            followButton.setBackground(ZR.getDrawable(R.drawable.follow_button_gray));
         } else {
             followTv.setText("关注");
             followTv.setTextColor(ZR.getColor(R.color.white));
