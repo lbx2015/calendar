@@ -19,6 +19,11 @@ import net.riking.core.entity.BaseEntity;
 @Table(name = "t_sys_days_temp")
 public class SysDaysTemp extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8647163573188357551L;
+
 	@Comment("日期（yyyyMMdd）")
 	@Id
 	@Column(name = "dates", length = 8)

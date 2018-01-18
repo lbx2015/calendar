@@ -113,7 +113,7 @@ public class AppReportServer {
 			reportParams.setReportName("");
 		}
 		List<ReportListResult> reportListResult = reportService.getReportByParam(reportParams.getReportName(),
-				reportParams.getUserId());
+				reportParams.getUserId(), null);
 
 		return new AppResp(reportListResult, CodeDef.SUCCESS);
 	}

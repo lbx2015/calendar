@@ -1,6 +1,8 @@
 package net.riking.web.app;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import net.riking.config.CodeDef;
 import net.riking.config.Const;
+import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.HotSearchRepo;
 import net.riking.dao.repo.NewsRepo;
@@ -27,7 +30,6 @@ import net.riking.dao.repo.TQuestionRelRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.dao.repo.TopicRelRepo;
 import net.riking.dao.repo.TopicRepo;
-import net.riking.dao.repo.AppUserFollowRelRepo;
 import net.riking.entity.AppResp;
 import net.riking.entity.model.AppUserResult;
 import net.riking.entity.model.HotSearch;
@@ -163,7 +165,7 @@ public class SearchListServer {
 	private List<ReportResult> findReportByKeyWord(SearchParams searchParams) {
 
 		List<ReportResult> reportResultList = reportService.getReportResultByParam(searchParams.getKeyWord(),
-				searchParams.getUserId());
+				searchParams.getUserId(), null);
 
 		return reportResultList;
 	}
@@ -176,13 +178,11 @@ public class SearchListServer {
 	 */
 	private List<TopicResult> findTopicByKeyWord(SearchParams searchParams) {
 		List<TopicResult> topicResults = topicRepo.getTopicByParam(searchParams.getKeyWord(), searchParams.getUserId());
-
 		for (int i = 0; i < topicResults.size(); i++) {
 			TopicResult topicResult = topicResults.get(i);
 			// TODO 话题的关注数 后面从redis里面取
 			Integer followNum = topicRelRepo.followCount(topicResult.getId(), 0);
 			topicResult.setFollowNum(followNum);
-//			topicResult.setTopicUrl(appUserService.getPhotoUrlPath("/topic")+topicResult.getTopicUrl());
 			topicResult.setTopicUrl(FileUtils.getPhotoUrl("/topic/", this.getClass()) +topicResult.getTopicUrl());
 			// 不显示状态
 			if (Const.OPT_TYPE_BLANK_STATUS == searchParams.getShowOptType()) {
@@ -252,7 +252,6 @@ public class SearchListServer {
 	 */
 	private List<NewsResult> findNewsByKeyWord(SearchParams searchParams) {
 		List<NewsResult> newsResults = newsRepo.getNewsByParam(searchParams.getKeyWord());
-
 		return newsResults;
 	}
 
@@ -272,5 +271,44 @@ public class SearchListServer {
 			questResult.setQanswerNum(qanswerNum);
 		}
 		return questResults;
+	}
+	
+	@ApiOperation(value = "综合搜索", notes = "POST")
+	@RequestMapping(value = "/colligateSearch", method = RequestMethod.POST)
+	public AppResp colligateSearch(@RequestBody SearchParams params) {
+		if(StringUtils.isBlank(params.getUserId()) || StringUtils.isBlank(params.getKeyWord())){
+			return new AppResp(CodeDef.EMP.PARAMS_ERROR,CodeDef.EMP.PARAMS_ERROR_DESC);
+		}
+		Map<String, Object> map = new HashMap<>();
+		//报表
+		List<ReportResult> reportResultList = reportService.getReportResultByParam(params.getKeyWord(),
+				params.getUserId(), 3);
+		map.put("reports", reportResultList);
+		//话题
+		params.setShowOptType(Const.OPT_TYPE_FOLLOW_STATUS);
+		List<TopicResult> topicResults = findTopicByKeyWord(params);
+		if(topicResults.size()>=3){
+			topicResults = topicResults.subList(0, 3);
+		}
+		map.put("topics", topicResults);
+		//人脉
+		params.setShowOptType(Const.OPT_TYPE_FOLLOW_STATUS);
+		List<AppUserResult> appUserResults = findUserByKeyWord(params);
+		if(appUserResults.size()>=3){
+			appUserResults = appUserResults.subList(0, 3);
+		}
+		map.put("users", appUserResults);
+		
+		//资讯
+		List<NewsResult> newsResults = findNewsByKeyWord(params);
+		if(newsResults.size()>=3){
+			newsResults = newsResults.subList(0, 3);
+		}
+		map.put("news", newsResults);
+		//内容
+		List<QuestResult> questResults = findQuestByKeyWord(params);
+		map.put("qusetions", questResults);
+		
+		return new AppResp(map, CodeDef.SUCCESS);
 	}
 }

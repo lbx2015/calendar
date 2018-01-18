@@ -138,11 +138,10 @@
 							}
 							var start  = "<div  align='center' style='width: 28px;height: 28px;border-radius: 50%; overflow:hidden;'>";
 							var end = "</div>"
-							var url = obj.item.prefixPhotoURL+ photoName;
+							var url = Const.apiUrl+ photoName;
 							obj.html = "";
 							obj.html +=start;
-							var defaultUrl ="this.src="+"\'"+"images/user_default.jpg"+"\'";
-							obj.html += "<img onerror="+defaultUrl+" src='"+url+"' style='width: 28px;height: 28px;' alt='"+photoName+"'/>";
+							obj.html += "<img onerror="+defaultUrlForUser+" src='"+url+"' style='width: 28px;height: 28px;' alt='"+photoName+"'/>";
 							obj.html +=end;
 							
 						}

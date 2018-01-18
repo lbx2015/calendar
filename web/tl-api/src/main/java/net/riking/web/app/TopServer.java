@@ -241,5 +241,20 @@ public class TopServer {
 		}
 
 	}
+	
+	
+	/**
+	 * 话题下优秀回答者   回答的问题列表[topicId,userId]
+	 * @param params
+	 * @return
+	 */
+	@ApiOperation(value = "话题的详情", notes = "POST")
+	@RequestMapping(value = "/getQuestions", method = RequestMethod.POST)
+	public AppResp getQuestion_(@RequestBody TopicParams topicParams) {
+		Topic topic = topicRepo.getById(topicParams.getTopicId());
+		
+		return new AppResp(topic, CodeDef.SUCCESS);
+	}
+	
 
 }

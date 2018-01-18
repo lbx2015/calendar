@@ -14,7 +14,7 @@
         android:onClick="clickBackNav"
         android:src="@drawable/nav_icon_back" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -34,7 +34,7 @@
         android:background="@drawable/rounded_corner_about"
         android:orientation="horizontal">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
@@ -44,7 +44,7 @@
             android:textSize="17sp" />
 
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="1dp"
             android:layout_height="24dp"
             android:layout_marginLeft="4dp"
@@ -78,7 +78,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/new_get_verify_code_back_ground">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="发送验证码"

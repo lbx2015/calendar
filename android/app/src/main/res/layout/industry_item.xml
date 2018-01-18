@@ -8,7 +8,7 @@
     android:background="?android:attr/selectableItemBackground"
     tools:layout_editor_absoluteY="25dp">
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

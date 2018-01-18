@@ -9,6 +9,11 @@ import net.riking.entity.BaseEntity;
  * @used TODO
  */
 public class CurrentReportTaskResp extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -489614243561179887L;
+
 	private String reportId;
 
 	private String reportCode;

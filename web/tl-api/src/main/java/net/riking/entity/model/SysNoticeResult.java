@@ -9,6 +9,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import net.riking.core.entity.BaseEntity;
 
 public class SysNoticeResult extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1720404054761461148L;
+
 	// 消息通知id
 	private String noticeId;
 

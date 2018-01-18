@@ -4,6 +4,11 @@ import net.riking.core.entity.BaseEntity;
 
 public class Period extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7106267452823097226L;
+
 	private Integer week;
 
 	private Integer ten;

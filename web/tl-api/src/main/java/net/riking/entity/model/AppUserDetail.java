@@ -172,7 +172,6 @@ public class AppUserDetail extends BaseEntity {
 		this.grade = grade;
 	}
 
-	@SuppressWarnings("static-access")
 	public void setGrade() {
 		List<AppUserGrade> list = RedisUtil.getInstall().getList(AppUserGrade.class.getName().toUpperCase());
 		list.forEach(e -> {

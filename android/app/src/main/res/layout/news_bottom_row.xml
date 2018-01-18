@@ -5,25 +5,25 @@
     android:layout_marginBottom="15dp"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/news_sources"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="10dp"
         android:text="RIKING"
         android:textColor="@color/color_999999"
         android:textSize="12sp" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/news_comments_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="10dp"
         android:text="23评论"
         android:textColor="@color/color_999999"
         android:textSize="12sp" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/news_publish_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

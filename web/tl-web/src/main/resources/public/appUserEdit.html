@@ -57,8 +57,8 @@
 					}
 					var imgVal = $(".layui-input-inline input[name='appUserDetail.photoUrl']").val();
 					var imgUrl = Const.apiUrl+"/images/user/"+imgVal;
-					var defaultUrl ="this.src="+"\'"+"images/user_default.jpg"+"\'";
-					var img = "<img onerror="+defaultUrl+" src='"+imgUrl+"' alt='"+imgVal+"' style='width: 28px;height: 28px;'/>";
+					
+					var img = "<img onerror="+defaultUrlForUser+" src='"+imgUrl+"' alt='"+imgVal+"' style='width: 28px;height: 28px;'/>";
 					var photoElement = $(".layui-input-inline input[name='appUserDetail.photoUrl']").parent();
 					//保存头像名称
 					var saveImg = "<input type='hidden' name='appUserDetail.photoUrl' value='"+imgVal+"'/>";

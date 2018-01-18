@@ -27,7 +27,7 @@
                 android:contentDescription="@string/UMGprsCondition"
                 android:src="@drawable/umeng_update_wifi_disable" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/umeng_update_content"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

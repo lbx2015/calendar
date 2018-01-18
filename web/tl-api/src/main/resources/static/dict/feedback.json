@@ -24,20 +24,23 @@
 			"group": "base"
 		},
 		{
-			"prop": "content",
-			"alias": "反馈内容",
-			"desc": "反馈内容",
+			"prop": "userPhone",
+			"alias": "用户电话",
+			"desc": "用户电话",
 			"type": "string",
-			"query": "1",
-			"query_order": "1",
 			"verify":"required",
 			"group": "base"
 		},
+		
 		{
-			"prop": "imgs",
-			"alias": "多个图片名称",
-			"desc": "多个图片名称",
-			"type": "string",
+			"prop": "content",
+			"alias": "反馈内容",
+			"desc": "反馈内容",
+			"type": "text",
+			"query": "1",
+			"query_order": "1",
+			"edit_block":"1",
+			"verify":"required",
 			"group": "base"
 		},
 		{
@@ -48,6 +51,14 @@
 			"dict_key": "T_FEEDBACK.ACCEPT",
 			"verify":"required",
 			"group": "base"
+		},
+		{
+			"prop": "imgs",
+			"alias": "多个图片名称",
+			"desc": "多个图片名称",
+			"type": "string",
+			"group": "base",
+			"edit_block":"1"
 		}
 	]
 }

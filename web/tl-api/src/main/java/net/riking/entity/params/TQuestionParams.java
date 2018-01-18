@@ -13,6 +13,11 @@ import net.riking.entity.BaseEntity;
  */
 public class TQuestionParams extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5777980903995131370L;
+
 	// 用户Id
 	private String userId;
 

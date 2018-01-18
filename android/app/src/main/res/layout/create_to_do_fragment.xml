@@ -32,7 +32,7 @@
             android:paddingRight="10dp"
             android:src="@drawable/work_rm_icon_mode" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -76,7 +76,7 @@
             android:paddingRight="10dp"
             android:src="@drawable/work_rm_icon_time" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -99,7 +99,7 @@
         android:background="@color/color_d2d2d2"
         android:padding="10dp" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/remind_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

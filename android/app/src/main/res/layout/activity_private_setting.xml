@@ -18,11 +18,11 @@
             android:onClick="clickBack"
             android:src="@drawable/nav_icon_back" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="系统设置"
+            android:text="隐私"
             android:textColor="@color/color_222222"
             android:textSize="17sp" />
     </FrameLayout>
@@ -39,26 +39,27 @@
         android:background="@android:color/white"
         android:paddingLeft="15dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="允许他（她）查看我的动态"
+            android:text="允许他人查看我的动态"
             android:textColor="@color/color_222222"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/check_my_dynamic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:checked="true" />
+            android:checked="true"
+            android:theme="@style/SCBSwitch" />
     </RelativeLayout>
 
     <View
@@ -73,25 +74,26 @@
         android:background="@android:color/white"
         android:paddingLeft="15dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="允许他（她）查看我的关注"
+            android:text="允许他人查看我的关注"
             android:textColor="@color/color_222222"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/check_my_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:checked="true" />
+            android:checked="true"
+            android:theme="@style/SCBSwitch" />
     </RelativeLayout>
 
     <View
@@ -106,26 +108,25 @@
         android:background="@android:color/white"
         android:paddingLeft="15dp">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="允许他（她）查看我的收藏"
+            android:text="允许他人查看我的收藏"
             android:textColor="@color/color_222222"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/check_my_collect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="9dp"
-            android:checked="false" />
+            android:checked="false"
+            android:theme="@style/SCBSwitch" />
     </RelativeLayout>
-
-
 </LinearLayout>

@@ -9,8 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import net.sf.json.JSONObject;
-
 /**
  * 私信监听
  * @author jc.tan 2017年12月23日
@@ -24,9 +22,8 @@ public class MQSysMesListener implements MessageListener {
 	@Override
 	public void onMessage(Message message) {
 		TextMessage txtMessage = (TextMessage) message;
-
 		try {
-			JSONObject jsonobject = JSONObject.fromObject(txtMessage.getText());
+//			JSONObject jsonobject = JSONObject.fromObject(txtMessage.getText());
 			logger.info("get message " + txtMessage.getText());
 		} catch (JMSException e) {
 			e.printStackTrace();

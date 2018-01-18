@@ -36,6 +36,7 @@
     var id = View.getQStr('id');
     var flag= View.getQStr('flag');
 	var tQuestionContent;
+	
     function editOnBind(attrs, param) {
         tmpl = this;
         tmpl.bind(function(callback) {
@@ -94,7 +95,7 @@
 							  ,'face' //表情
 							  ,'image' //插入图片
 							  //,'help' //帮助
-								],height: 500});
+								],height: 400});
      	 tQuestionContent = layedit.build('content'); //建立编辑器
      	});
     }
@@ -103,10 +104,10 @@
 		var regex = new RegExp(",", 'g');    
         var result = topicStr.match(regex);
         var count = !result ? 0 : result.length;
-        if(count>2){
+       /*  if(count>2){
             return false;
-        }
-        return true;
+        } */
+        return count;
     }
     
     //编辑保存
@@ -116,10 +117,16 @@
      	  	$("#content").val(layedit.getContent(tQuestionContent));
      	});
         var reportList = Utils.formToObj("edit");
-        if(!checkTopicCount(reportList.topicId)){
+        if(!reportList.topicId){
+           	TmplUtils.showMsgFail('至少选择1个相关话题');
+            return ;
+        }
+        var nums = checkTopicCount(reportList.topicId);
+        if(nums>=3){
             TmplUtils.showMsgFail('相关话题个数不能超过3个');
             return ;
         }
+        
         if(id){
 			reportList.topicQuestionId=id;
 		}

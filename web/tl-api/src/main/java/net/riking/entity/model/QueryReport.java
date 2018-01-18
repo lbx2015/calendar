@@ -3,6 +3,11 @@ package net.riking.entity.model;
 import net.riking.core.entity.BaseEntity;
 
 public class QueryReport extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6220140506047677889L;
+
 	private String id;
 
 	private String reportName;

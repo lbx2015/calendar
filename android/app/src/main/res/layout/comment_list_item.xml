@@ -20,7 +20,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center_vertical" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/answer_author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:textColor="@color/color_333333"
             android:textSize="17sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/answer_update_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             android:textColor="@color/color_999999"
             android:textSize="12sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/agree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:textColor="@color/color_999999"
             android:textSize="12sp" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/answer_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

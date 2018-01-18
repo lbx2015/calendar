@@ -10,8 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.riking.entity.model.SysDays;
-
 public class DateTest {
 	public static void main(String[] args) {
 		String driver = "com.mysql.jdbc.Driver";
@@ -72,7 +70,7 @@ public class DateTest {
 				}
 			}
 
-			List<SysDays> holidays = new ArrayList<SysDays>();
+//			List<SysDays> holidays = new ArrayList<SysDays>();
 			// holidays.add(new Days(0, "20170101"));
 			// holidays.add(new Days(0, "20170102"));
 			//

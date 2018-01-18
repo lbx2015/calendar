@@ -12,6 +12,11 @@ import net.riking.core.entity.BaseEntity;
  * @used TODO
  */
 public class ReportMoudleTypeResult extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3856272624984825893L;
+
 	@Comment("报表所属模块")
 	private String moduleType;
 

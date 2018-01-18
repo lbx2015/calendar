@@ -21,6 +21,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SubscribeReportParam;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.StatusBarUtil;
+import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.InterestingReportLinearLayout;
 import com.riking.calendar.view.ZFlowLayout;
 
@@ -85,6 +86,8 @@ public class ReportsSelectActivity extends AppCompatActivity {
                     }
                 }
             });
+        }else {
+            ZToast.toast("至少选一个感兴趣的报表");
         }
     }
 

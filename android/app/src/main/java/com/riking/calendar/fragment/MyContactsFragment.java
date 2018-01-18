@@ -12,10 +12,11 @@ import android.widget.Toast;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.adapter.MyContactsAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
-import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.server.AppUserResult;
+import com.riking.calendar.pojo.server.OtherUserResp;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.StringUtil;
 
@@ -171,26 +172,29 @@ public class MyContactsFragment extends ZFragment<MyContactsAdapter> {
 
         final UserParams params = new UserParams();
         params.phones = sb;
-        APIClient.getContacts(params, new ZCallBack<ResponseModel<List<String>>>() {
+        APIClient.getContacts(params, new ZCallBackWithFail<ResponseModel<List<OtherUserResp>>>() {
             @Override
-            public void callBack(ResponseModel<List<String>> response) {
+            public void callBack(ResponseModel<List<OtherUserResp>> response) {
                 mPullToLoadView.setComplete();
-
-                List<String> phones = response._data;
-                MyLog.d("list size: " + phones.size());
-                if (phones.size() < params.pcount) {
-                    isHasLoadedAll = true;
-                }
-
-                for (AppUserResult u : contacts) {
-                    if (phones.contains(u.phone)) {
-                        //invited
-                        u.isInvited = 1;
+                if (failed) {
+                } else {
+                    List<OtherUserResp> phones = response._data;
+                    MyLog.d("list size: " + phones.size());
+                    if (phones.size() < params.pcount) {
+                        isHasLoadedAll = true;
                     }
+
+                    for (AppUserResult u : contacts) {
+                        for (OtherUserResp phone : phones) {
+                            if (u.phone.equals(phone.phone)) {
+                                phone.userName = u.userName;
+                            }
+                        }
+                    }
+                    isLoading = false;
+                    nextPage = page + 1;
+                    mAdapter.setData(phones);
                 }
-                isLoading = false;
-                nextPage = page + 1;
-                mAdapter.setData(contacts);
             }
         });
     }

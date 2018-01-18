@@ -5,7 +5,7 @@
     android:layout_height="match_parent" >
 
     <!-- Tab title -->
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/tab_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

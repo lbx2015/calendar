@@ -7,14 +7,14 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/news_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="15dp"
         android:textColor="@color/color_222222"
-        android:textSize="18sp" />
+        android:textSize="17sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

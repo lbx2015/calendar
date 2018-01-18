@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 
 import io.swagger.annotations.ApiOperation;
@@ -135,10 +136,10 @@ public class CommonServer {
 				verifyCode += (int) (Math.random() * 9);
 			}
 			//发送验证码  调试时注释
-//			SendSmsResponse sendSmsResponse = smsUtil.sendSms(phone, verifyCode);
-//			if (!sendSmsResponse.getCode().equals("OK")) {
-//				return new AppResp(CodeDef.EMP.SMS_SEND_ERROR, sendSmsResponse.getMessage());
-//			}
+			SendSmsResponse sendSmsResponse = smsUtil.sendSms(phone, verifyCode);
+			if (!sendSmsResponse.getCode().equals("OK")) {
+				return new AppResp(CodeDef.EMP.SMS_SEND_ERROR, sendSmsResponse.getMessage());
+			}
 			
 			
 			logger.info("手机{}获取验证码成功", verifyCode);
@@ -341,5 +342,5 @@ public class CommonServer {
 		}
 
 	}
-
+	
 }

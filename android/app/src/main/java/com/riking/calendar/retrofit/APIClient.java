@@ -806,7 +806,7 @@ public class APIClient {
         apiInterface.getColleagues(params).enqueue(c);
     }
 
-    public static void getContacts(UserParams params, ZCallBack<ResponseModel<List<String>>> c) {
+    public static void getContacts(UserParams params, ZCallBackWithFail<ResponseModel<List<OtherUserResp>>> c) {
         apiInterface.getContacts(params).enqueue(c);
     }
 

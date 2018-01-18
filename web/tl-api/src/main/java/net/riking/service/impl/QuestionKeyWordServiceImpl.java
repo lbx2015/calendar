@@ -36,7 +36,6 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 	@Autowired
 	TopicRepo topicRepo;
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void initKeyWord() {
 		List<QuestionKeyWord> list = questionKeyWordRepo.findAll();
@@ -60,7 +59,6 @@ public class QuestionKeyWordServiceImpl implements QuestionKeyWordService {
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Set<String> getTopicIdByQuestion(String questionTitle) {
 		Set<String> set = RedisUtil.getInstall().getSet(Const.QUESTION_KEY_WORD);

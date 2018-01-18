@@ -38,6 +38,9 @@ public class AppUserResult extends BaseEntity {
 
 	@Comment("点赞数")
 	private Integer agreeNum;
+	
+	@Comment("粉丝数")
+	private Integer fansNum;
 
 	@Comment("是否已关注 0-未关注，1-已关注")
 	private Integer isFollow;
@@ -154,4 +157,12 @@ public class AppUserResult extends BaseEntity {
 		this.isFollow = isFollow;
 	}
 
+	public Integer getFansNum() {
+		return fansNum;
+	}
+
+	public void setFansNum(Integer fansNum) {
+		this.fansNum = fansNum;
+	}
+	
 }

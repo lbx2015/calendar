@@ -11,8 +11,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.dao.QACommentDao;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.NCReplyRepo;
@@ -30,16 +29,14 @@ import net.riking.dao.repo.NewsRepo;
 import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
-import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.News;
 import net.riking.entity.model.NewsComment;
 import net.riking.service.NewsCommentService;
-import net.riking.service.TQuestionService;
 
 @Service("newsCommentService")
 @Transactional
 public class NewsCommentServiceImpl implements NewsCommentService {
-	private static final Logger logger = LogManager.getLogger(TQuestionService.class);
 
 	@Autowired
 	QACommentDao qaCommentDao;
@@ -68,6 +65,9 @@ public class NewsCommentServiceImpl implements NewsCommentService {
 	@Autowired
 	NCReplyRepo ncReplyRepo;
 
+	@Autowired
+	AppUserDetailRepo appUserDetailRepo;
+
 	@Override
 	public Page<NewsComment> findAll(NewsComment newsComment, PageRequest pageRequest) {
 		Specification<NewsComment> bCondi = whereCondition(newsComment);
@@ -91,15 +91,15 @@ public class NewsCommentServiceImpl implements NewsCommentService {
 	private void getVos(List<NewsComment> newsComments) {
 		// TODO Auto-generated method stub
 		for (NewsComment newsComment : newsComments) {
-			String id = newsComment.getId();
+			// String id = newsComment.getId();
 			// 设置咨询标题
 			News news = newsRepo.findOne(newsComment.getNewsId());
 			if (news != null) {
 				newsComment.setTitle(news.getTitle());
 			}
-			AppUser appUser = appUserRepo.findOne(newsComment.getUserId());
-			if (appUser != null) {
-				newsComment.setCommentUserName(appUser.getUserName());
+			AppUserDetail appUserDetail = appUserDetailRepo.findOne(newsComment.getUserId());
+			if (appUserDetail != null) {
+				newsComment.setCommentUserName(appUserDetail.getUserName());
 			}
 			// 设置回复审核数
 			String isAduitNum = getIsAduitNum(newsComment.getId());

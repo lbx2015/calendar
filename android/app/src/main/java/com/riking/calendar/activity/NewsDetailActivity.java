@@ -32,7 +32,6 @@ import com.riking.calendar.util.FileUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.util.ZToast;
 import com.riking.calendar.widget.dialog.ShareBottomDialog;
 
 import java.io.File;
@@ -52,6 +51,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     private WebView webView;
     private LinearLayout bottomBar;
     private AppBarLayout appBarLayout;
+    private TextView collectTv;
     private ImageView favoriteIv;
 
     @Override
@@ -92,6 +92,7 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
     }
 
     void init() {
+        collectTv = findViewById(R.id.collect_tv);
         favoriteIv = findViewById(R.id.favorite_iv);
         commentNumberTv = findViewById(R.id.comment_number_tv);
         appBarLayout = findViewById(R.id.appbar);
@@ -200,12 +201,12 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
             public void callBack(ResponseModel<String> response) {
                 if (params.enabled == 1) {
                     news.isCollect = 1;
+                    collectTv.setText("已收藏");
                     favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_p));
-                    ZToast.toast("收藏成功");
                 } else {
+                    collectTv.setText("收藏");
                     news.isCollect = 0;
                     favoriteIv.setImageDrawable(ZR.getDrawable(R.drawable.com_toolbar_icon_collect_n));
-                    ZToast.toast("取消收藏");
                 }
             }
         });
@@ -213,13 +214,6 @@ public class NewsDetailActivity extends AppCompatActivity { //Fragment 数组
 
     public void clickShare(final View v) {
         ShareBottomDialog dialog = new ShareBottomDialog(v.getContext());
-        dialog.shieldButton.setOnClickListener(new ZClickListenerWithLoginCheck() {
-            @Override
-            public void click(View v) {
-
-            }
-        });
-
         dialog.show();
     }
 

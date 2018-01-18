@@ -17,7 +17,7 @@
             android:orientation="vertical"
             android:padding="10dip" >
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="设置Tag和Alias "
@@ -38,7 +38,7 @@
                 android:background="@android:color/transparent"
                 android:orientation="horizontal" >
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
@@ -115,7 +115,7 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal" >
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
@@ -170,7 +170,7 @@
             android:orientation="vertical"
             android:padding="10dip" >
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="定制通知栏样式"
@@ -211,7 +211,7 @@
             android:orientation="vertical"
             android:padding="10dip"
             >
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="设置"

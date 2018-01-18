@@ -28,7 +28,7 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/user_box_icon_signfail" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/sign_in_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_check_in_rectangle">
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/i_konw_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

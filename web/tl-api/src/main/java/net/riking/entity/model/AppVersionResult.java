@@ -4,6 +4,11 @@ import net.riking.core.entity.BaseEntity;
 
 public class AppVersionResult extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7643061712970590212L;
+
 	private String type;
 
 	private String msg;

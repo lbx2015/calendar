@@ -22,7 +22,6 @@ public class ShieldKeyWordServiceImpl implements ShieldKeyWordService {
 	@Autowired
 	private ShieldKeyWordRepo shieldKeywordRepo;
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void initKeyWord() {
 		Set<String> set = shieldKeywordRepo.findAllKeyWord();
@@ -46,7 +45,6 @@ public class ShieldKeyWordServiceImpl implements ShieldKeyWordService {
 		this.initKeyWord();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public String filterKeyWord(String target) {
 		Set<String> set = RedisUtil.getInstall().getSet(Const.SHIELD_KEY_WORD);
@@ -54,7 +52,6 @@ public class ShieldKeyWordServiceImpl implements ShieldKeyWordService {
 		return target;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public boolean checkKeyWord(String target) {
 		Set<String> set = RedisUtil.getInstall().getSet(Const.SHIELD_KEY_WORD);

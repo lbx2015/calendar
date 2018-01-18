@@ -11,6 +11,11 @@ import net.riking.core.entity.BaseEntity;
  */
 public class ReportCodeCount extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2891919872968945646L;
+
 	@Comment("报表代码")
 	private String code;
 

@@ -9,8 +9,8 @@
 	"attrs": [
 		{
 			"prop": "dates",
-			"alias": "日期(yyyyMMdd)",
-			"desc": "日期(yyyyMMdd)",
+			"alias": "日期",
+			"desc": "日期",
 			"type": "string",
 			"query": "1",
 			"query_order": "1",

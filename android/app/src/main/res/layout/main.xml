@@ -10,37 +10,37 @@
         android:orientation="vertical"
         android:padding="8dip">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/tv_regId"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/tv_appkey"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/tv_package"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/tv_imei"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/tv_device_id"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/tv_version"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

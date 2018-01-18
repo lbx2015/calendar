@@ -14,10 +14,8 @@
 		<div class="clear"></div>
 		 <div class="viewBox">
 			<div id="tu1" class="FL panel"></div>
-			<div id="tu11" style="display:none" class="FL panel"></div>
 			<div id="tu2" class="FR panel"></div>
 			<div id="tu3" class="FL panel"></div>
-			<div id="tu31" style="display:none" class="FL panel"></div>
 		</div> 
 	</div>
 </div>
@@ -26,6 +24,9 @@
 <script type="text/javascript" src="{=ctx}/echarts/echarts.min.js"></script>
 <script type="text/javascript" src="{=ctx}/echarts/world.js"></script>
 <script>
+	//默认搜索当前年份的数据
+	var dateInfo=new Date;
+	var year=dateInfo.getFullYear(); 
     $(function () {
     	tu1Bind('');
     	tu2Bind();
@@ -59,31 +60,12 @@
 	function userActivityCount(resp) {
 		// 基于准备好的dom，初始化echarts实例
          var myChartBarGraph = echarts.init(document.getElementById('tu1')); 
-          var myChartBroLine = echarts.init(document.getElementById('tu11'));  
-
-         var optionBarGraph = loadBarGraph(resp,'用户活跃数'); 
-         var optionBroLine = loadBarBroLine(resp,'用户活跃数'); 
+         var optionBarGraph = loadBarGraphByTu1(resp,'用户活跃数'); 
         // 指定图表的配置项和数据
-
         // 使用刚指定的配置项和数据显示图表。
         myChartBarGraph.setOption(optionBarGraph);
-        myChartBarGraph.on("click", eConsoleActivityCountBarGraph); 
-        myChartBroLine.setOption(optionBroLine);
-        myChartBroLine.on("click", eConsoleActivityCountBroLine); 
 	}
-	function eConsoleActivityCountBarGraph(params){
-		$("#tu1").hide()
-		$("#tu11").show()
-		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
-		console.log(TmplUtils.searchParam)
-		tu1Bind(TmplUtils.searchParam);
-	}
-	function eConsoleActivityCountBroLine(params){
-		$("#tu11").hide()
-		$("#tu1").show()
-		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
-		tu1Bind(TmplUtils.searchParam);
-	}
+	
 	  function userDateArr(resp){
 	    	var arr = [];
 	    	for(obj in resp){
@@ -177,6 +159,11 @@
 		}else{
 			frequency =(searchParam.split('=')[2] ==undefined || searchParam.split('=')[2] =='')?'0':searchParam.split('=')[2];
 			date =searchParam.split('=')[1].split('&')[0];
+			if(date==""){
+				year = dateInfo.getFullYear();
+			}else{
+				year = date.substring(0,4);
+			}
 		} 
 		params = {
 				"frequency":frequency,
@@ -191,38 +178,32 @@
 	function userRegistCount(resp) {
 		// 基于准备好的dom，初始化echarts实例
         var myChartBroLine = echarts.init(document.getElementById('tu3'));
-        var myChartBarGraph = echarts.init(document.getElementById('tu31')); 
         // 用户注册数统计
-         var optionBroLine = loadBarBroLine(resp,'用户注册数'); 
-        var optionBarGraph = loadBarGraph(resp,'用户注册数'); 
+        var optionBroLine = loadBarBroLineByTu2(resp,'用户注册数'); 
         // 指定图表的配置项和数据
-
         // 使用刚指定的配置项和数据显示图表。
         myChartBroLine.setOption(optionBroLine);
-        myChartBroLine.on("click", eConsoleUserRegistCountBroLine);
-        myChartBarGraph.setOption(optionBarGraph);
-        myChartBarGraph.on("click", eConsoleUserRegistCountBarGraph); 
 	}
-	function eConsoleUserRegistCountBroLine(params){
-		$("#tu3").hide()
-		$("#tu31").show()
-		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
-		tu3Bind(TmplUtils.searchParam);
-	}
-	function eConsoleUserRegistCountBarGraph(params){
-		$("#tu31").hide()
-		$("#tu3").show()
-		TmplUtils.searchParam = Utils.formToStr("filterCriteria");
-		tu3Bind(TmplUtils.searchParam);
-	}
-	function loadBarGraph(resp,title){
+	//加载柱状图根据图一
+	function loadBarGraphByTu1(resp,title){
         var option = {
                 title: {
-                    text: title+'统计',
+                    text: title+'统计('+year+')',
                  },
                 tooltip: {},
                 xAxis: {
                     data: userDateArr(resp)
+                },
+                legend: {
+                    data:[title]
+                }, 
+                toolbox: {
+                    feature: {
+                         magicType: {//动态类型切换
+                             type: ['bar', 'line']
+                         }
+                    },
+                    right:20
                 },
                 yAxis: {},
                 series: [{
@@ -233,10 +214,11 @@
             };
         return option;
 	}
- 	function loadBarBroLine(resp,title){
+	//加载折线图根据图二
+ 	function loadBarBroLineByTu2(resp,title){
         var option = {
          		title: {
-                     text: title+'统计',
+                     text: title+'统计('+year+')',
                 },
                 tooltip: {},
                	legend: {
@@ -246,6 +228,14 @@
                 	 type: 'category',
                      boundaryGap: false,
                     data: userDateArr(resp)
+                },
+                toolbox: {
+                    feature: {
+                         magicType: {//动态类型切换
+                             type: ['bar', 'line']
+                         }
+                    },
+                right:20
                 },
                 yAxis: {},
                 series: [

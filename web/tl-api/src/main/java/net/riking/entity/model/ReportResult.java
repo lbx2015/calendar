@@ -7,6 +7,11 @@ import net.riking.core.entity.BaseEntity;
 
 public class ReportResult extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5020827124632479669L;
+
 	@Comment("报表Id")
 	private String reportId;
 

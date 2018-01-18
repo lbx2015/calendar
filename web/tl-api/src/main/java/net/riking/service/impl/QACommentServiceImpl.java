@@ -22,12 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.riking.config.Const;
 import net.riking.dao.QACommentDao;
+import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.NCAgreeRelRepo;
 import net.riking.dao.repo.QACAgreeRelRepo;
 import net.riking.dao.repo.QACReplyRepo;
 import net.riking.dao.repo.QACommentRepo;
-import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.MQOptCommon;
 import net.riking.entity.model.NCAgreeRel;
 import net.riking.entity.model.QACAgreeRel;
@@ -60,6 +61,9 @@ public class QACommentServiceImpl implements QACommentService {
 
 	@Autowired
 	QACReplyRepo qACReplyRepo;
+
+	@Autowired
+	AppUserDetailRepo appUserDetailRepo;
 
 	@Override
 	public List<QACommentResult> findByUserId(String userId, Integer pageBegin, Integer pageCount) {
@@ -154,11 +158,11 @@ public class QACommentServiceImpl implements QACommentService {
 		for (QAComment qaComment : qaComments) {
 			String id = qaComment.getId();
 			// 获取用户信息
-			AppUser appUser = appUserRepo.findOne(qaComment.getUserId());
-			if (appUser == null) {
+			AppUserDetail appUserDetail = appUserDetailRepo.findOne(qaComment.getUserId());
+			if (appUserDetail == null) {
 				continue;
 			}
-			qaComment.setUserName(appUser.getUserName());
+			qaComment.setUserName(appUserDetail.getUserName());
 			// 获取回复审核数
 			String isAduitNum = getIsAduitNum(id);
 			qaComment.setIsAduitNum(isAduitNum);

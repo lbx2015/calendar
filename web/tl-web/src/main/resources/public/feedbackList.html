@@ -33,6 +33,7 @@
 		<div class="_tmpl" data-url="pages.html" data-depend="table" data-attr="" data-bind="TmplUtils.pagesOnBind" data-param=""></div>
 	</div>
 	</div>
+	<img alt="" style="display:none" id="displayimg" src="" />
 </body>
 <link type="include" href="/common/depjs.html" />
 <script>
@@ -65,7 +66,7 @@
 <script>
 	var item;
 	var tbTmpl;
-
+	//默认显示的图片
 	function forbbit(id) {
 
 	}
@@ -115,7 +116,7 @@
 								var imgsHtml="";
 								for(var i = 0;i<imgArray.length;i++){
 									var url = Const.apiUrl+"/images/feedBack/photo/"+imgArray[i];
-									var imgHtml = "<img src='"+url+"' style='width: 28px;height: 28px;'/>";
+									var imgHtml = "<img id='"+imgArray[i]+"' onerror="+defaultUrl+" src='"+url+"' style='width: 28px;height: 28px;' onclick='scanImg("+"\""+imgArray[i]+"\""+","+"\""+url+"\""+")' /> ";
 									imgsHtml +=imgHtml;
 								}
 								obj.html = imgsHtml;
@@ -225,15 +226,11 @@
 		View.openDialog(url, title);
 	}
 
-
 	function report(id) {
 		var url = "userReportList.html?id=" + id;
 		var title = "所属报表";
 		View.openDialog(url, title);
 	}
-
-
-
 
 </script>
 

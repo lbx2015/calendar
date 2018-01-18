@@ -4,19 +4,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:text="你可能感兴趣的话题"
-        android:layout_marginLeft="15dp"
-        android:textColor="@color/color_222222"
-        android:textSize="15sp" />
+        android:textColor="@color/color_666666"
+        android:textSize="14sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp" />
 </LinearLayout>

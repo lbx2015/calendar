@@ -67,13 +67,15 @@ public class EditReminderActivity extends AppCompatActivity {
     public void loadRemindFromDB() {
         if (!StringUtil.isEmpty(id)) {
             Reminder reminder = ZDB.Instance.getRealm().where(Reminder.class).equalTo(Reminder.REMINDER_ID, id).findFirst();
-            reminderFragment.title = reminder.title;
-            reminderFragment.isRemind = reminder.isRemind;
-            reminderFragment.isAllDay = reminder.isAllDay;
-            reminderFragment.aheadTime = reminder.aheadTime;
-            reminderFragment.repeatFlag = reminder.repeatFlag;
-            reminderFragment.repeatWeek = reminder.repeatWeek;
-            reminderFragment.remiderTime = DateUtil.getReminderTimeShowString(reminder.day, reminder.time);
+            if (reminder != null) {
+                reminderFragment.title = reminder.title;
+                reminderFragment.isRemind = reminder.isRemind;
+                reminderFragment.isAllDay = reminder.isAllDay;
+                reminderFragment.aheadTime = reminder.aheadTime;
+                reminderFragment.repeatFlag = reminder.repeatFlag;
+                reminderFragment.repeatWeek = reminder.repeatWeek;
+                reminderFragment.remiderTime = DateUtil.getReminderTimeShowString(reminder.day, reminder.time);
+            }
         }
     }
 

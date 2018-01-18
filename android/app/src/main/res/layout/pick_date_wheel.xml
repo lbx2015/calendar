@@ -73,7 +73,7 @@
             android:layout_marginRight="4dp"
             android:src="@drawable/not_checked_whole_month" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/whole_month"

@@ -4,6 +4,11 @@ import net.riking.core.entity.BaseEntity;
 
 public class ReportFrequency extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2812750869729775945L;
+
 	private String reportId;
 
 	private String reportCode;

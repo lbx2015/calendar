@@ -21,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/user_icon_head_notlogin" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/item_cator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,18 +30,9 @@
             android:layout_marginStart="5dp"
             android:layout_toRightOf="@id/from_image"
             android:textColor="@color/color_999999" />
-
-        <ImageView
-            android:id="@+id/more_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="right"
-            android:src="@drawable/com_icon_more_s" />
     </RelativeLayout>
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/answer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +49,7 @@
         android:scaleType="fitXY"
         app:srcCompat="@drawable/banner" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/answer_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,30 +60,63 @@
         android:textSize="14sp" />
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="left"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/review_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
             android:drawableLeft="@drawable/com_icon_comment"
-            android:drawablePadding="5dp"
-            android:text="0" />
+            android:drawablePadding="2dp"
+            android:gravity="center_vertical"
+            android:text="0"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/agree_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:drawableLeft="@drawable/com_icon_zan_n"
+            android:drawablePadding="2dp"
+            android:gravity="center_vertical"
+            android:text="0"
+            android:textColor="@color/color_999999"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/review_number"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <com.riking.calendar.view.ZTextView
+            android:id="@+id/share_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:drawableLeft="@drawable/com_toolbar_icon_share"
             android:drawablePadding="5dp"
-            android:text="0" />
-    </LinearLayout>
+            android:textColor="@color/color_999999"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/agree_number"
+            app:layout_constraintTop_toTopOf="@+id/agree_number" />
+
+        <ImageView
+            android:id="@+id/more_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/com_icon_more_s"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 </LinearLayout>

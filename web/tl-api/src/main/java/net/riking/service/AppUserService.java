@@ -10,7 +10,6 @@ import net.riking.entity.VO.AppUserVO;
 import net.riking.entity.model.AppUser;
 import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.AppUserResult;
-import net.riking.entity.model.Email;
 import net.riking.entity.model.UserFollowCollect;
 import net.riking.entity.params.UserParams;
 import net.riking.entity.resp.OtherUserResp;

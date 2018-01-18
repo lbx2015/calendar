@@ -36,8 +36,7 @@
     var id = View.getQStr('id');
     var flag= View.getQStr('flag');
 	var topicContent;
-	//默认显示的图片
-	var defaultUrl ="this.src="+"\'"+"images/img_default.png"+"\'";
+	
     function editOnBind(attrs, param) {
         tmpl = this;
         tmpl.onFinish(function(data) {
@@ -136,7 +135,8 @@
     }
   //上传图片
     function loadImage(){
-    	$(".layui-input-inline img").attr("id","topicUrl").attr("style","width:10%").attr("onerror",defaultUrl);
+	  var imgName = $(".layui-input-inline img").attr("src");
+    	$(".layui-input-inline img").attr("id","topicUrl").attr("style","width:10%").attr("onerror",defaultUrl).attr("src",Const.apiUrl+imgName);
     	var htmlInfo = $(".layui-input-inline img").parent().html().replace(/;/ig,"");
     	//加上上传按钮
     	htmlInfo+="<button type='button'  id='loadImg' > 上传图片 </button>";

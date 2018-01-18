@@ -5,6 +5,11 @@ import java.util.List;
 import net.riking.core.entity.BaseEntity;
 
 public class ReportAgence extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2471557977887643801L;
+
 	private String agenceName;
 
 	private List<BaseModelPropdict> list;

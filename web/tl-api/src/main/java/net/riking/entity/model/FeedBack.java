@@ -53,7 +53,11 @@ public class FeedBack extends BaseProp {
 
 	@Comment("反馈用户名")
 	@Transient
-	private String userName;;
+	private String userName;
+
+	@Comment("反馈用户电话")
+	@Transient
+	private String userPhone;
 
 	public FeedBack(String content, String imgs, String createBy) {
 		super();
@@ -105,6 +109,14 @@ public class FeedBack extends BaseProp {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
 	}
 
 }

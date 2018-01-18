@@ -32,7 +32,7 @@
                     android:layout_marginRight="10dp"
                     android:src="@drawable/user_icon_head_notlogin" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/not_login_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:layout_gravity="center_vertical"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="17sp" />
 
-                    <TextView
+                    <com.riking.calendar.view.ZTextView
                         android:id="@+id/user_comment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
 
         </RelativeLayout>
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/check_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/my_follow_person_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                     android:textColor="@color/color_222222"
                     android:textSize="18sp" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我关注的人"
@@ -150,7 +150,7 @@
                 android:onClick="clickAgree"
                 android:orientation="vertical">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/following_me_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
                     android:textColor="@color/color_222222"
                     android:textSize="18sp" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的粉丝"
@@ -182,7 +182,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:id="@+id/my_answer_num_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
                     android:textColor="@color/color_222222"
                     android:textSize="18sp" />
 
-                <TextView
+                <com.riking.calendar.view.ZTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的回答"
@@ -221,7 +221,7 @@
                 android:layout_marginRight="19dp"
                 android:src="@drawable/user_icon_trends" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/my_trend_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -229,7 +229,7 @@
                 android:layout_toEndOf="@+id/trend_image"
                 android:text="我的动态"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
@@ -244,7 +244,7 @@
                 android:layout_height="@dimen/divider_height"
                 android:layout_alignLeft="@+id/my_trend_tv"
                 android:layout_alignParentBottom="true"
-                android:background="@color/color_d2d2d2" />
+                android:background="@color/color_e2e2e2" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -263,7 +263,7 @@
                 android:layout_marginRight="19dp"
                 android:src="@drawable/user_icon_follow" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/my_follow_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
                 android:layout_toEndOf="@+id/follow_image"
                 android:text="我的关注"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
@@ -286,7 +286,7 @@
                 android:layout_height="@dimen/divider_height"
                 android:layout_alignLeft="@+id/my_follow_tv"
                 android:layout_alignParentBottom="true"
-                android:background="@color/color_d2d2d2" />
+                android:background="@color/color_e2e2e2" />
         </RelativeLayout>
 
 
@@ -306,7 +306,7 @@
                 android:layout_marginRight="19dp"
                 android:src="@drawable/user_icon_collect" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/my_favorite_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -314,7 +314,7 @@
                 android:layout_toEndOf="@+id/favorite_image"
                 android:text="我的收藏"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
@@ -329,7 +329,7 @@
                 android:layout_height="@dimen/divider_height"
                 android:layout_alignLeft="@+id/my_favorite_tv"
                 android:layout_alignParentBottom="true"
-                android:background="@color/color_d2d2d2" />
+                android:background="@color/color_e2e2e2" />
         </RelativeLayout>
 
 
@@ -350,14 +350,14 @@
                 android:layout_marginRight="19dp"
                 android:src="@drawable/user_icon_connection" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/relation_image"
                 android:text="我的人脉"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
@@ -386,15 +386,15 @@
                 android:layout_marginRight="19dp"
                 android:src="@drawable/user_icon_set" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:id="@+id/setting_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/set_image"
-                android:text="系统设置"
+                android:text="设置"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"
@@ -409,7 +409,7 @@
                 android:layout_height="@dimen/divider_height"
                 android:layout_alignLeft="@+id/setting_tv"
                 android:layout_alignParentBottom="true"
-                android:background="@color/color_d2d2d2" />
+                android:background="@color/color_e2e2e2" />
         </RelativeLayout>
 
 
@@ -429,14 +429,14 @@
                 android:layout_marginRight="19dp"
                 android:src="@drawable/user_icon_suggestion" />
 
-            <TextView
+            <com.riking.calendar.view.ZTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/suggestion_image"
                 android:text="意见反馈"
                 android:textColor="@color/color_222222"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <com.riking.calendar.view.ZCenterImageView
                 android:layout_width="wrap_content"

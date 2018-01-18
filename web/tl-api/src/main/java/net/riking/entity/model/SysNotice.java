@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +29,11 @@ import net.riking.entity.MyDateFormat;
 @Entity
 @Table(name = "t_sys_notice")
 public class SysNotice extends BaseEntity {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4523950779896146571L;
 
 	@Comment("物理主键")
 	@Id

@@ -13,6 +13,11 @@ import net.riking.entity.BaseEntity;
  * @since 1.0
  */
 public class OtherUserResp extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7188718924564599904L;
+
 	// 其他用户ID
 	private String userId;
 
@@ -44,7 +49,7 @@ public class OtherUserResp extends BaseEntity {
 	// 粉丝
 	private Integer fansNum;
 
-	// 是否已关注
+	// 是否已关注   未注册： -2-未邀请 ， -1 - 已邀请  ， 已注册 ： 0-未关注  ，1 -已关注 ， 2- 互相关注
 	private Integer isFollow;
 	
 	@Comment("允许查看我的动态: 0-不可以；1-可以查看")

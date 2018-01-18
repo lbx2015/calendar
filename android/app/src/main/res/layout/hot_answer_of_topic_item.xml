@@ -21,7 +21,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center_vertical" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/answer_author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:layout_toRightOf="@id/answer_author_icon"
             android:text="关注人昵称" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/answer_update_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:textSize="12sp" />
     </RelativeLayout>
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/answer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         android:scaleType="fitXY"
         app:srcCompat="@drawable/img_user_head" />
 
-    <TextView
+    <com.riking.calendar.view.ZTextView
         android:id="@+id/answer_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/review_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
             android:drawablePadding="5dp"
             android:text="0" />
 
-        <TextView
+        <com.riking.calendar.view.ZTextView
             android:id="@+id/agree_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

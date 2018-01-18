@@ -1,6 +1,5 @@
 package net.riking.util;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
 
 import org.apache.logging.log4j.LogManager;

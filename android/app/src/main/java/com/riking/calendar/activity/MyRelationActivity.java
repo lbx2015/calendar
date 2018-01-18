@@ -2,7 +2,6 @@ package com.riking.calendar.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -27,6 +26,7 @@ public class MyRelationActivity extends AppCompatActivity { //Fragment 数组
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
     private TextView activityTitle;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("zzw", this + "on create");

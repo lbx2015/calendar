@@ -10,6 +10,11 @@ import net.riking.entity.BaseEntity;
  * @used TODO
  */
 public class UpdUserParams extends BaseEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2692488477843933931L;
+
 	// 用户ID
 	private String userId;
 

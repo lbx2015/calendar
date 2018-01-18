@@ -16,6 +16,11 @@ import net.riking.core.entity.BaseEntity;
  */
 public class Jdpush extends BaseEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6726937100644005106L;
+
 	private String notificationTitle;// 通知内容标题
 
 	private String msgTitle;// 消息内容标题
@@ -60,7 +65,21 @@ public class Jdpush extends BaseEntity {
 	public String getMsgContent() {
 		return msgContent;
 	}
-
+	
+	public String getJpushContent() {
+		if(StringUtils.isBlank(msgContent)){
+			return this.getMsgTitle();
+		}
+		return msgContent;
+	}
+	
+	public String getJpushTitle() {
+		if(StringUtils.isBlank(msgContent)){
+			return "";
+		}
+		return msgTitle;
+	}
+	
 	public void setMsgContent(String msgContent) {
 		this.msgContent = msgContent;
 	}
@@ -86,7 +105,7 @@ public class Jdpush extends BaseEntity {
 
 	public Map<String, String> getExtrasMap() {
 		if(extrasMap ==null){
-			return  new HashMap<String,String>();
+			extrasMap = new HashMap<String,String>();
 		}
 		return extrasMap;
 	}
@@ -94,7 +113,5 @@ public class Jdpush extends BaseEntity {
 	public void setExtrasMap(Map<String, String> extrasMap) {
 		this.extrasMap = extrasMap;
 	}
-	
-	
 
 }
