@@ -18,11 +18,10 @@
             android:src="@drawable/nav_icon_back" />
 
         <com.riking.calendar.view.ZTextView
-            android:id="@+id/activity_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="评论12"
+            android:text="评论"
             android:textColor="@color/color_222222"
             android:textSize="@dimen/action_bar_text_size" />
 
@@ -60,6 +59,20 @@
         android:layout_width="match_parent"
         android:layout_height="6dp"
         android:background="@color/color_f2f2f2" />
+
+    <com.riking.calendar.view.ZTextView
+        android:id="@+id/activity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/color_e2e2e2" />
 
     <com.riking.calendar.view.PullToLoadViewWithoutFloatButton xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pullToLoadView"
@@ -118,12 +131,12 @@
                 android:layout_marginBottom="6dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="6dp"
-                android:textCursorDrawable="@drawable/edit_text_cursor"
                 android:background="@android:color/transparent"
                 android:hint="写评论"
                 android:maxLines="3"
                 android:textColor="@color/color_222222"
                 android:textColorHint="@color/color_999999"
+                android:textCursorDrawable="@drawable/edit_text_cursor"
                 android:textSize="15sp" />
         </LinearLayout>
 

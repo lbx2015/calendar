@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
-    android:layout_width="154dp"
+    android:layout_width="135dp"
     android:layout_height="wrap_content"
-    android:layout_marginRight="12dp"
+    android:layout_marginRight="6dp"
     android:background="@drawable/follow_bg"
     android:orientation="vertical">
 
@@ -20,8 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/icon_image"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:gravity="center"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/color_222222"
         android:textSize="16sp" />
@@ -45,6 +48,8 @@
         android:layout_below="@+id/follow_number_tv"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/follow_border">
 

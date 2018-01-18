@@ -33,7 +33,7 @@
                 android:layout_marginTop="10dp"
                 android:text="分享到朋友圈"
                 android:textColor="@color/color_666666"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -57,7 +57,7 @@
                 android:layout_marginTop="10dp"
                 android:text="微信好友"
                 android:textColor="@color/color_666666"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
         </LinearLayout>
 
 

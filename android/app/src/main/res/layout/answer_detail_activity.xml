@@ -275,7 +275,7 @@
 
                 <com.riking.calendar.view.ZTextView
                     android:id="@+id/comments_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
@@ -294,7 +294,7 @@
 
                 <com.riking.calendar.view.ZTextView
                     android:id="@+id/agree_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
@@ -313,7 +313,7 @@
 
                 <com.riking.calendar.view.ZTextView
                     android:id="@+id/collect_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
@@ -332,7 +332,7 @@
 
                 <com.riking.calendar.view.ZTextView
                     android:id="@+id/share_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="1dp"
