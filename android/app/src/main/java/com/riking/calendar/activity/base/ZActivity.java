@@ -55,7 +55,7 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
         init();
     }
 
-    public void init() {
+    final void init() {
         getViews();
         setEvents();
     }

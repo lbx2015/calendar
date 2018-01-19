@@ -43,6 +43,7 @@ import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Banner;
+import com.riking.calendar.pojo.server.ColligateSearchResult;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
@@ -879,5 +880,9 @@ public class APIClient {
 
     public static void getAnswerEditHtml(TQuestionParams params, ZCallBack<ResponseModel<String>> c) {
         apiInterface.getAnswerEditHtml(params).enqueue(c);
+    }
+
+    public static void colligateSearch(SearchParams params, ZCallBackWithFail<ResponseModel<ColligateSearchResult>> c) {
+        apiInterface.colligateSearch(params).enqueue(c);
     }
 }

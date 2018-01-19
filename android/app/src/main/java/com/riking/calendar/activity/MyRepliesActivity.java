@@ -33,7 +33,6 @@ public class MyRepliesActivity extends ZActivity<MyRepliesAdapter> { //Fragment 
 
     public void initEvents() {
         userId = getIntent().getStringExtra(CONST.USER_ID);
-        init();
         if (ZPreference.getUserId().equals(userId)) {
             activityTitle.setText("我的回答");
         } else {
