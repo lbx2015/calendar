@@ -8,7 +8,7 @@
     <!--android:color="@android:color/darker_gray"></stroke>-->
     <!-- view background color -->
     <solid android:color="@color/color_e2e2e2"></solid>
-    <size android:height="1dp"></size>
+    <size android:height="@dimen/divider_height"></size>
     <!-- If you want to add some padding -->
     <!--    <padding
             android:bottom="12dp"

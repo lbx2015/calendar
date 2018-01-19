@@ -13,22 +13,23 @@ import com.riking.calendar.R;
  * Created by zw.zhang on 2017/11/23.
  */
 
-public class SimpleDividerDecorationWithoutLast extends RecyclerView.ItemDecoration {
+public class SimpleDividerDecorationWithLastFillWidth extends RecyclerView.ItemDecoration {
     private final Rect bounds = new Rect();
     private Drawable divider;
 
-    public SimpleDividerDecorationWithoutLast(Context context) {
+    public SimpleDividerDecorationWithLastFillWidth(Context context) {
         divider = context.getResources().getDrawable(R.drawable.recycler_view_divider);
     }
 
-    public SimpleDividerDecorationWithoutLast(Drawable divider) {
+    public SimpleDividerDecorationWithLastFillWidth(Drawable divider) {
         this.divider = divider;
     }
 
     @Override
     public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
-        final int left = 0;
-        final int right = parent.getWidth();
+        //riking remove the padding
+        final int left = 0 + parent.getPaddingLeft();
+        final int right = parent.getWidth() - parent.getPaddingRight();
         final int childCount = parent.getChildCount() - 1;
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
@@ -38,14 +39,26 @@ public class SimpleDividerDecorationWithoutLast extends RecyclerView.ItemDecorat
             divider.setBounds(left, top, right, bottom);
             divider.draw(canvas);
         }
+
+        //draw last item to fill the width
+        final int leftOfLast = 0;
+        final int rightOfLast = parent.getWidth();
+
+        final View child = parent.getChildAt(childCount);
+        parent.getDecoratedBoundsWithMargins(child, bounds);
+        final int bottom = bounds.bottom + Math.round(child.getTranslationY());
+        final int top = bottom - divider.getIntrinsicHeight();
+        divider.setBounds(leftOfLast, top, rightOfLast, bottom);
+        divider.draw(canvas);
+
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         final int position = parent.getChildAdapterPosition(view);
-        final int lastPosition = parent.getAdapter().getItemCount() - 1;
-        if (position < lastPosition) {
-            outRect.set(0, 0, 0, divider.getIntrinsicHeight());
-        }
+//        final int lastPosition = parent.getAdapter().getItemCount() - 1;
+//        if (position < lastPosition) {
+        outRect.set(0, 0, 0, divider.getIntrinsicHeight());
+//        }
     }
 }

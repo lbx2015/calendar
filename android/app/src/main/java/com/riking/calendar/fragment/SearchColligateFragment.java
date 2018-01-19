@@ -12,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.necer.ncalendar.view.SimpleDividerDecorationWithoutLast;
+import com.necer.ncalendar.view.SimpleDividerDecorationWithLastFillWidth;
+import com.necer.ncalendar.view.SimpleDividerDecorationWithOnlyLastFillWidth;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.SearchActivity;
 import com.riking.calendar.adapter.HotAnswerOfTopicAdapter;
@@ -126,7 +127,7 @@ public class SearchColligateFragment extends Fragment implements SubscribeReport
         reportObserver.onChanged();
 
         //topic
-        setRecyclerView(topicRecyclerView);
+        setRecyclerViewWithLastDivider(topicRecyclerView);
         searchTopicAdapter = new SearchTopicAdapter();
         RecyclerView.AdapterDataObserver topicObserver = new RecyclerView.AdapterDataObserver() {
             @Override
@@ -149,7 +150,7 @@ public class SearchColligateFragment extends Fragment implements SubscribeReport
         topicObserver.onChanged();
 
         //relation
-        setRecyclerView(relationRecyclerView);
+        setRecyclerViewWithLastDivider(relationRecyclerView);
         searchPersonAdapter = new SearchPersonAdapter(getContext());
 
         RecyclerView.AdapterDataObserver personObserver = new RecyclerView.AdapterDataObserver() {
@@ -252,7 +253,17 @@ public class SearchColligateFragment extends Fragment implements SubscribeReport
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setHasFixedSize(true);
         //adding dividers.
-        mRecyclerView.addItemDecoration(new SimpleDividerDecorationWithoutLast(ZR.getDrawable(R.drawable.recycler_view_divider)));
+        mRecyclerView.addItemDecoration(new SimpleDividerDecorationWithLastFillWidth(ZR.getDrawable(R.drawable.recycler_view_divider)));
+    }
+
+    private void setRecyclerViewWithLastDivider(RecyclerView mRecyclerView) {
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setHasFixedSize(true);
+        //adding dividers.
+        mRecyclerView.addItemDecoration(new SimpleDividerDecorationWithOnlyLastFillWidth(ZR.getDrawable(R.drawable.recycler_view_divider)));
+
     }
 
     private void loadData(final int page) {

@@ -440,15 +440,15 @@ public class ZR {
         reportNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
     }
 
-    public static void showPersonInviteStatus(View followButton, TextView followTv, int isInvite) {
+    public static void showPersonInviteStatus(View followButton, TextView followTv, int isInvite, String invitedMessage) {
         if (isInvite == 0) {
-            followTv.setText("邀请");
+            followTv.setText(invitedMessage);
             followTv.setTextColor(ZR.getColor(R.color.color_489dfff));
             followTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_btn_icon_plus, 0, 0, 0);
             followTv.setCompoundDrawablePadding((int) ZR.convertDpToPx(5));
             followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border));
         } else if (isInvite == 1) {
-            followTv.setText("已邀请");
+            followTv.setText(invitedMessage);
             followTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             followTv.setTextColor(ZR.getColor(R.color.color_999999));
             followButton.setBackground(followButton.getResources().getDrawable(R.drawable.follow_border_gray));
@@ -528,7 +528,7 @@ public class ZR {
                     public void callBack(ResponseModel<String> response) {
                         user.isInvited = 1;
                         ZToast.toast("邀请成功成功");
-                        showPersonInviteStatus(followButton, followTv, 1);
+                        showPersonInviteStatus(followButton, followTv, 1, "已邀请");
                     }
                 });
             }
