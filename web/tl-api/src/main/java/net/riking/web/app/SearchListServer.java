@@ -313,7 +313,7 @@ public class SearchListServer {
 		map.put("news", newsResults);
 		//内容
 		List<QAnswerResult> QAnswerResults = qAnswerService.findQAResultByKeyWord(params.getKeyWord());
-		map.put("qusetions", QAnswerResults);
+		map.put("questions", QAnswerResults);
 		
 		return new AppResp(map, CodeDef.SUCCESS);
 	}
