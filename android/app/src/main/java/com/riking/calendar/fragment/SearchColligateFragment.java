@@ -16,9 +16,9 @@ import com.necer.ncalendar.view.SimpleDividerDecorationWithLastFillWidth;
 import com.necer.ncalendar.view.SimpleDividerDecorationWithOnlyLastFillWidth;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.SearchActivity;
-import com.riking.calendar.adapter.HotAnswerOfTopicAdapter;
 import com.riking.calendar.adapter.SearchNewsAdapter;
 import com.riking.calendar.adapter.SearchPersonAdapter;
+import com.riking.calendar.adapter.SearchQuestionAdapter;
 import com.riking.calendar.adapter.SearchReportsAdapter;
 import com.riking.calendar.adapter.SearchTopicAdapter;
 import com.riking.calendar.interfeet.PerformInputSearch;
@@ -43,7 +43,7 @@ public class SearchColligateFragment extends Fragment implements SubscribeReport
     SearchTopicAdapter searchTopicAdapter;
     SearchPersonAdapter searchPersonAdapter;
     SearchNewsAdapter searchNewsAdapter;
-    HotAnswerOfTopicAdapter searchQuestionAdater;
+    SearchQuestionAdapter searchQuestionAdater;
     String searchCondition;
     RecyclerView reportRecyclerView;
     RecyclerView topicRecyclerView;
@@ -199,8 +199,13 @@ public class SearchColligateFragment extends Fragment implements SubscribeReport
 
 
         //questions
-        setRecyclerView(questionRecyclerView);
-        searchQuestionAdater = new HotAnswerOfTopicAdapter();
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false);
+        questionRecyclerView.setLayoutManager(manager);
+        questionRecyclerView.setHasFixedSize(true);
+        //adding dividers.
+        questionRecyclerView.addItemDecoration(new SimpleDividerDecorationWithLastFillWidth(ZR.getDrawable(R.drawable.recycler_view_divider), (int) ZR.convertDpToPx(15)));
+        searchQuestionAdater = new SearchQuestionAdapter();
         RecyclerView.AdapterDataObserver questionObserver = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -353,15 +358,34 @@ public class SearchColligateFragment extends Fragment implements SubscribeReport
 
                 } else {
                     ColligateSearchResult result = response._data;
-                    if (result.reports.size() > 3) {
+                    if (result.reports.size() > 2) {
                         moreReport.setVisibility(View.VISIBLE);
                     } else {
                         moreReport.setVisibility(View.GONE);
                     }
-                    searchReportAdapter.setData(result.reports);
-                    searchTopicAdapter.setData(result.topics);
-                    searchPersonAdapter.setData(result.users);
-                    searchNewsAdapter.setData(result.news);
+                    searchReportAdapter.setData(result.reports.subList(0, 2));
+
+                    if (result.topics.size() > 2) {
+                        moreTopic.setVisibility(View.VISIBLE);
+                    } else {
+                        moreTopic.setVisibility(View.GONE);
+                    }
+                    searchTopicAdapter.setData(result.topics.subList(0, 2));
+
+                    if (result.users.size() > 2) {
+                        moreRelation.setVisibility(View.VISIBLE);
+                    } else {
+                        moreRelation.setVisibility(View.GONE);
+                    }
+                    searchPersonAdapter.setData(result.users.subList(0, 2));
+
+                    if (result.news.size() > 2) {
+                        moreNews.setVisibility(View.VISIBLE);
+                    } else {
+                        moreNews.setVisibility(View.GONE);
+                    }
+                    searchNewsAdapter.setData(result.news.subList(0, 2));
+
                     searchQuestionAdater.setData(result.questions);
                 }
             }

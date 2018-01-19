@@ -16,23 +16,19 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.util.DateUtil;
-import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.HotAnswerOfTopicViewHolder;
 
 
-public class HotAnswerOfTopicAdapter extends ZAdater<HotAnswerOfTopicViewHolder, QAnswerResult> {
+public class SearchQuestionAdapter extends ZAdater<HotAnswerOfTopicViewHolder, QAnswerResult> {
 
     @Override
     public void onBindVH(final HotAnswerOfTopicViewHolder h, int i) {
         final QAnswerResult qAnswerResult = mList.get(i);
         h.answerTitle.setText(qAnswerResult.title);
         h.answerContent.setText(qAnswerResult.content);
-        h.updateTimeTv.setText(DateUtil.showTime(qAnswerResult.createdTime));
-        ZR.setUserName(h.answerAuthorName, qAnswerResult.userName, qAnswerResult.grade, qAnswerResult.userId);
         h.agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
@@ -82,22 +78,12 @@ public class HotAnswerOfTopicAdapter extends ZAdater<HotAnswerOfTopicViewHolder,
                 ZGoto.to(i);
             }
         });
-
-        if (StringUtil.isEmpty(qAnswerResult.coverUrl) || !StringUtil.isHttpUrl(qAnswerResult.coverUrl)) {
-            h.answerImage.setVisibility(View.GONE);
-        } else {
-            h.answerImage.setVisibility(View.VISIBLE);
-            ZR.setImage(h.answerImage, qAnswerResult.coverUrl);
-        }
-
-        //set user image
-        ZR.setUserImage(h.authorImage, qAnswerResult.photoUrl);
     }
 
     @Override
     public HotAnswerOfTopicViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.hot_answer_of_topic_item, viewGroup, false);
+                R.layout.search_question_item, viewGroup, false);
         return new HotAnswerOfTopicViewHolder(view);
     }
 

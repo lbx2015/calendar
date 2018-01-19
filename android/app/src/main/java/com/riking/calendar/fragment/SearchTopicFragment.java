@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -68,6 +69,9 @@ public class SearchTopicFragment extends Fragment implements PerformInputSearch 
     }
 
     private void initEvents() {
+        LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) mPullToLoadView.getLayoutParams();
+        p.setMargins(0, 0, 0, 0);
+        mPullToLoadView.setPadding(0, 0, 0, 0);
         RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);

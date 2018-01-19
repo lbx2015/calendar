@@ -15,6 +15,7 @@ import com.riking.calendar.R;
 
 public class SimpleDividerDecorationWithLastFillWidth extends RecyclerView.ItemDecoration {
     private final Rect bounds = new Rect();
+    int spaceToBorder;
     private Drawable divider;
 
     public SimpleDividerDecorationWithLastFillWidth(Context context) {
@@ -25,11 +26,16 @@ public class SimpleDividerDecorationWithLastFillWidth extends RecyclerView.ItemD
         this.divider = divider;
     }
 
+    public SimpleDividerDecorationWithLastFillWidth(Drawable divider, int spaceToBorder) {
+        this.divider = divider;
+        this.spaceToBorder = spaceToBorder;
+    }
+
     @Override
     public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
         //riking remove the padding
-        final int left = 0 + parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
+        final int left = 0 + parent.getPaddingLeft() + spaceToBorder;
+        final int right = parent.getWidth() - parent.getPaddingRight() - spaceToBorder;
         final int childCount = parent.getChildCount() - 1;
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);

@@ -60,7 +60,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:gravity="center_vertical">
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/tv_moment_add_choice_photo"

@@ -10,7 +10,7 @@
         android:layout_height="44dp"
         android:layout_marginLeft="15dp"
         android:fitsSystemWindows="true"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -63,7 +63,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="15dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:onClick="clickCancel"
             android:singleLine="true"
             android:text="取消"
