@@ -13,7 +13,9 @@
 			"desc": "资讯标题",
 			"type": "string",
 			"verify":"required",
-			"group": "base"
+			"group": "base",
+			"query": "1",     
+            "query_order": "1" 
 		},
 		{
 			"prop": "coverUrls",
@@ -39,7 +41,9 @@
 			"desc": "发布单位",
 			"verify":"required",
 			"type": "string",
-			"group": "base"
+			"group": "base",
+			"query": "1",     
+            "query_order": "2" 
 		},
 		{
 			"prop": "content",

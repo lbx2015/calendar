@@ -27,7 +27,7 @@
 			"query_order": "1"
 		},
 		{
-			"prop": "appUser.userName",
+			"prop": "appUserDetail.userName",
 			"alias": "回答人",
 			"desc": "回答人",
 			"type": "string",
@@ -78,7 +78,7 @@
 			"desc": "回复审核数(未审核/不通过/已通过)",
 			"type": "string",
 			"group": "base",
-			"hidden": "edit,priview"
+			"hidden": "table,edit,priview"
 		},
 		{
 			"prop": "content",

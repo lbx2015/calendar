@@ -63,13 +63,8 @@
 				tmpl.onFinish(function(data) {
 					if (flag == "view") {
 						$("#submit").hide();
-						$("div.layui-colla-item:eq(0) :input").attr("disabled", true);
-						$("div.layui-colla-item:eq(1) :input").attr("disabled", true);
-					}
-					if(flag == "edit"){
-						$("#edit_base input[name='topicQuestion.title']").attr("disabled",true);
-						$("#edit_base input[name='appUser.userName']").attr("disabled",true);
-						$("#edit_base input[name='replyTime']").attr("disabled",true);
+						$("input").attr("disabled",true);
+						$("textarea").attr("disabled",true);
 					}
 					View.resetUi();
 				});

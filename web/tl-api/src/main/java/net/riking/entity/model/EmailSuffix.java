@@ -15,6 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.riking.core.annos.Comment;
 import net.riking.entity.BaseEntity;
@@ -36,9 +37,14 @@ public class EmailSuffix extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 3940163346158751094L;
 
+	@Comment("物理主键")
 	@Id
-	@GeneratedValue(generator = "idGenerator")
-	@GenericGenerator(name = "idGenerator", strategy = "assigned")
+	@Column(name = "id", length = 32)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
+	@JsonProperty("id")
+	private String id;
+
 	@Column(name = "email_suffix", length = 200)
 	@Comment("邮箱后缀")
 	private String emailSuffix;

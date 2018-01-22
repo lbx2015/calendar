@@ -13,7 +13,6 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -76,9 +75,9 @@ public class NewsCommentServiceImpl implements NewsCommentService {
 			// 2.得到AppUser对象集合
 			List<NewsComment> newsComments = pageB.getContent();
 			getVos(newsComments);
-			Page<NewsComment> modulePage = new PageImpl<NewsComment>(newsComments, pageRequest,
-					pageB.getTotalElements());
-			return modulePage;
+			// Page<NewsComment> modulePage = new PageImpl<NewsComment>(newsComments, pageRequest,
+			// pageB.getTotalElements());
+			return pageB;
 		}
 		return null;
 	}

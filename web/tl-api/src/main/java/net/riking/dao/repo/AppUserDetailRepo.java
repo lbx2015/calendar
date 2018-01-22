@@ -2,6 +2,7 @@ package net.riking.dao.repo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -22,25 +23,28 @@ public interface AppUserDetailRepo
 
 	@Query("select integral from AppUserDetail where id = ?1 ")
 	Integer getIntegral(String userId);
-	
+
 	@Query("select new net.riking.entity.model.AppUserDetail(u.id, u.userName, u.descript, u.experience, u.photoUrl) from AppUserDetail u where u.id in ?1 ")
 	List<AppUserDetail> findAllByIds(Collection<String> ids);
+
+	@Query("select aud.userName as userName,(select phone from AppUser au where au.id = aud.id) as phone from AppUserDetail aud where aud.id=?1")
+	Map<String, String> findUserNameAndPhoneByUserId(String userId);
 
 	@Transactional
 	@Modifying
 	@Query("update AppUserDetail set integral = ?1 where id=?2")
 	int updIntegral(Integer integral, String userId);
-	
+
 	@Transactional
 	@Modifying
 	@Query("update AppUserDetail set photoUrl = ?2 where id = ?1")
 	int updatePhoto(String userId, String photo);
-	
+
 	@Transactional
 	@Modifying
 	@Query("update AppUserDetail set companyName = ?2 where id = ?1")
 	int updateCompanyName(String userId, String companyName);
-	
+
 	@Transactional
 	@Modifying
 	@Query("update AppUserDetail set phoneDeviceId = ?2 where id = ?1")

@@ -150,9 +150,6 @@ public class EmailSuffixController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				// emailSuffix.setEnabled(Integer.parseInt(dict.getEnabled()));
-				// emailSuffix.setRemark(dict.getRemark());
-				// emailSuffix.setEmailSuffix(dict.getEmailSuffix());
 			}
 			emailSuffixRepo.deleteAll();
 			List<EmailSuffix> rs = emailSuffixRepo.save(emailSuffixs);

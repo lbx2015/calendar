@@ -6,6 +6,14 @@
 	}],
 	"attrs":[
 		{
+			"prop": "id",
+			"alias": "pk",
+			"desc": "pk",
+			"type": "string",
+			"group": "base",
+			"hidden": "table,edit,preview"
+		},
+		{
 			"prop": "companyName",
 			"alias": "公司名称 ",
 			"group":"base",

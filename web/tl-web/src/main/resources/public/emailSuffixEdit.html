@@ -35,9 +35,9 @@
     function editOnBind(attrs, param) {
         tmpl = this;
         tmpl.onFinish(function(data) {
-			if(flag == "edit"){
+			/* if(flag == "edit"){
 				$("#edit_base input[name='emailSuffix']").attr("disabled",true);
-			}
+			} */
 			View.resetUi();
 		});
         tmpl.bind(function(callback) {
