@@ -1,10 +1,7 @@
 package com.riking.calendar.activity;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -19,10 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
@@ -77,6 +74,13 @@ public class ViewPagerActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private LocalBroadcastManager broadcastManager;
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current state
+        // Check carefully what you're adding into the savedInstanceState before saving it
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.clear();
+    }
 
     @Override
     public void onBackPressed() {
