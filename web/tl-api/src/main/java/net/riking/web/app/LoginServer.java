@@ -91,10 +91,10 @@ public class LoginServer {
 				}
 
 				try {
-//					boolean isRn = smsUtil.checkValidCode(loginParams.getPhone(), loginParams.getVerifyCode());
-//					if (!isRn) {
-//						return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
-//					}
+					boolean isRn = smsUtil.checkValidCode(loginParams.getPhone(), loginParams.getVerifyCode());
+					if (!isRn) {
+						return new AppResp(CodeDef.EMP.CHECK_CODE_ERR, CodeDef.EMP.CHECK_CODE_ERR_DESC);
+					}
 				} catch (Exception e) {
 					// TODO: handle exception
 					if (e.getMessage().equals(CodeDef.EMP.CHECK_CODE_TIME_OUT + "")) {

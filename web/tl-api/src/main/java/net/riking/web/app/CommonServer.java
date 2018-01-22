@@ -140,8 +140,6 @@ public class CommonServer {
 			if (!sendSmsResponse.getCode().equals("OK")) {
 				return new AppResp(CodeDef.EMP.SMS_SEND_ERROR, sendSmsResponse.getMessage());
 			}
-			
-			
 			logger.info("手机{}获取验证码成功", verifyCode);
 			RedisUtil.getInstall().setObject(Const.VALID_ + phone.trim(), Const.VALID_CODE_TIME, verifyCode);
 			Map<String, Object> result = new HashMap<String, Object>();

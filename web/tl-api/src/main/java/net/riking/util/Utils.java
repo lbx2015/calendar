@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Id;
+
+import javassist.Modifier;
 import net.riking.config.Const;
 import net.riking.entity.MyDateFormat;
 import net.riking.entity.model.SysDays;
@@ -229,6 +232,41 @@ public class Utils {
 			}
 		}
 		return toObj;
+	}
+	
+	public static <T> T merge(T destObj, T srcObj)  {
+		try {
+			Map<String, Object> map = getFieldsValue(srcObj);
+			Field[] fields = destObj.getClass().getDeclaredFields();
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				field.setAccessible(true);
+				if(!Modifier.isFinal(field.getModifiers()) 
+						&& field.getAnnotation(Id.class)==null){
+					if (map.get(field.getName())!=null) {
+						field.set(destObj, map.get(field.getName()));
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return destObj;
+	}
+	
+	private static <T> Map<String, Object> getFieldsValue(T srcObj){
+		Map<String,Object> map = new HashMap<>();
+		try {
+			Field[] fields= srcObj.getClass().getDeclaredFields();
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				field.setAccessible(true);
+				map.put(field.getName(), field.get(srcObj));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 
 	public static String getWorkday(String afterDates) {

@@ -163,10 +163,12 @@ public class AppUserServer {
 		AppUserResp appUserResp = new AppUserResp();
 		appUserResp.setUserId(appUser.getId());
 		// appUserResp从appUser取值
-		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUser, appUserResp);
+		//appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUser, appUserResp);
+		Utils.merge(appUserResp, appUser);
 		AppUserDetail appUserDetail = appUserDetailRepo.findOne(appUser.getId());
 		// appUserResp从appUserDetail取值
-		appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUserDetail, appUserResp);
+		//appUserResp = (AppUserResp) Utils.fromObjToObjValue(appUserDetail, appUserResp);
+		Utils.merge(appUserResp, appUserDetail);
 		if (null != appUserResp.getPhotoUrl()) {
 			// appUserResp.setPhotoUrl(appUserService.getPhotoUrlPath(Const.TL_PHOTO_PATH) +
 			// appUserResp.getPhotoUrl());
@@ -227,7 +229,8 @@ public class AppUserServer {
 			userParams.setIsIdentified(0);// 邮箱未认证
 		}
 		if (null != userParams) {
-			appUser = (AppUser) Utils.fromObjToObjValue(userParams, appUser);
+			//appUser = (AppUser) Utils.fromObjToObjValue(userParams, appUser);
+			Utils.merge(appUser, userParams);
 		}
 		try {
 			appUserRepo.save(appUser);
@@ -246,7 +249,8 @@ public class AppUserServer {
 		}
 		if (null != appUserDetail) {
 			if (null != userParams) {
-				appUserDetail = (AppUserDetail) Utils.fromObjToObjValue(userParams, appUserDetail);
+				//appUserDetail = (AppUserDetail) Utils.fromObjToObjValue(userParams, appUserDetail);
+				Utils.merge(appUserDetail, userParams);
 				appUserDetail.setPositionId(positionId);
 				appUserDetail.setCheckMyCollectState(userParams.getCheckMyCollectState());
 				appUserDetail.setCheckMyDynamicState(userParams.getCheckMyDynamicState());
