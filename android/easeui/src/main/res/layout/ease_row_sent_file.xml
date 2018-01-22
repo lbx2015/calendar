@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="7dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="vertical" >
 
                 <TextView

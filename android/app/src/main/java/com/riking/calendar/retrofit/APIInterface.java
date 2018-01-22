@@ -38,6 +38,7 @@ import com.riking.calendar.pojo.params.UserParams;
 import com.riking.calendar.pojo.resp.AppUserResp;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.pojo.server.Banner;
+import com.riking.calendar.pojo.server.ColligateSearchResult;
 import com.riking.calendar.pojo.server.CurrentReportTaskResp;
 import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.pojo.server.Industry;
@@ -75,7 +76,6 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -491,4 +491,7 @@ public interface APIInterface {
 
     @POST("topicQuestion/answerHtml")
     Call<ResponseModel<String>> getAnswerEditHtml(@Body TQuestionParams params);
+
+    @POST("searchList/colligateSearch")
+    Call<ResponseModel<ColligateSearchResult>> colligateSearch(@Body SearchParams params);
 }

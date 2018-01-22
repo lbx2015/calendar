@@ -13,6 +13,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     public View followButton;
     public TextView followTv;
+    public FrameLayout userIconLayout;
     String answerId;
     QuestionAnswer answer;
     //    RecyclerView suggestionQuestionsRecyclerView;
@@ -77,6 +79,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     void init() {
+        userIconLayout = findViewById(R.id.user_icon_layout);
         answerCreateTime = findViewById(R.id.answer_create_time);
         authoName = findViewById(R.id.user_name);
         questionTitle = findViewById(R.id.question_title);
@@ -222,8 +225,8 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             public void callBack(ResponseModel<QuestionAnswer> response) {
                 answer = response._data;
                 //set the user name of the answer
-                ZR.setUserName(authoName, answer.userName, answer.grade, answer.userId);
-
+                ZR.setUserName(authoName, answer.userName, answer.userId);
+                ZR.setCircleUserImage(userIconLayout, answer.photoUrl, answer.userId, answer.grade);
                 answerCreateTime.setText(DateUtil.date2String(answer.modifiedTime, CONST.yyyy_mm_dd_hh_mm));
                 commentsTv.setText(ZR.getNumberString(answer.commentNum));
                 agreeTv.setText(ZR.getNumberString(answer.agreeNum));

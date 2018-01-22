@@ -19,7 +19,7 @@ import com.riking.calendar.activity.LoginNavigateActivity;
 import com.riking.calendar.activity.MyCollectActivity;
 import com.riking.calendar.activity.MyFavoritesUserActivity;
 import com.riking.calendar.activity.MyFollowActivity;
-import com.riking.calendar.activity.MyFollowersActivity;
+import com.riking.calendar.activity.MyFansActivity;
 import com.riking.calendar.activity.MyInfoActivity;
 import com.riking.calendar.activity.MyRelationActivity;
 import com.riking.calendar.activity.MyRepliesActivity;
@@ -253,7 +253,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
         followMeLayout.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override
             public void click(View v) {
-                Intent i = new Intent(getContext(), MyFollowersActivity.class);
+                Intent i = new Intent(getContext(), MyFansActivity.class);
                 i.putExtra(CONST.USER_ID, currentUser.userId);
                 ZGoto.to(i);
             }

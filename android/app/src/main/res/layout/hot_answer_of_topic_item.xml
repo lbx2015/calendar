@@ -51,11 +51,11 @@
         android:id="@+id/answer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:text="G01报表话题相关标题G01报表话题相关标题G01报表话题相关标题"
         android:textColor="@color/color_222222"
-        android:textSize="18sp" />
+        android:textSize="17sp" />
 
     <ImageView
         android:id="@+id/answer_image"
@@ -80,8 +80,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <com.riking.calendar.view.ZTextView
@@ -90,15 +90,21 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:drawableLeft="@drawable/com_icon_comment"
-            android:drawablePadding="5dp"
-            android:text="0" />
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_999999"
+            android:textSize="11sp" />
 
         <com.riking.calendar.view.ZTextView
             android:id="@+id/agree_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/com_icon_zan_n"
-            android:drawablePadding="5dp"
-            android:text="0" />
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_999999"
+            android:textSize="11sp" />
     </LinearLayout>
 </LinearLayout>

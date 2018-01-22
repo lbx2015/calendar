@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:layout_marginLeft="19dp"
-        android:gravity="center_vertical">
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/remind_time_image"
@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:layout_marginLeft="19dp"
-        android:gravity="center_vertical">
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/remind_way_image"

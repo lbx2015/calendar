@@ -29,11 +29,9 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 import java.util.List;
 
 /**
- * Created by zw.zhang on 2017/7/24.
- * answer comments page
+ * my fans
  */
-
-public class MyFollowersActivity extends AppCompatActivity { //Fragment 数组
+public class MyFansActivity extends AppCompatActivity {
     protected SwipeRefreshLayout swipeRefreshLayout;
     MyFollowersAdapter mAdapter;
     RecyclerView recyclerView;

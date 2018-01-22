@@ -25,6 +25,7 @@ import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.LocalSearchConditionAdapter;
 import com.riking.calendar.adapter.RecommededSearchConditionsAdapter;
+import com.riking.calendar.fragment.SearchColligateFragment;
 import com.riking.calendar.fragment.SearchNewsFragment;
 import com.riking.calendar.fragment.SearchPersonFragment;
 import com.riking.calendar.fragment.SearchReportsFragment;
@@ -52,7 +53,7 @@ import io.realm.Sort;
 
 public class SearchActivity extends AppCompatActivity {
     //viewpager
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{new SearchReportsFragment(), new SearchTopicFragment(), new SearchPersonFragment(), new SearchNewsFragment()};
+    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{SearchColligateFragment.instance(this), new SearchReportsFragment(), new SearchTopicFragment(), new SearchPersonFragment(), new SearchNewsFragment()};
     public String inputSearchCondition;
     public Fragment currentSelectedFragment = TAB_FRAGMENTS[0];
     View localSearchTitle;
@@ -64,7 +65,7 @@ public class SearchActivity extends AppCompatActivity {
     LinearLayout localLinearLayout;
     View tabDivider;
     TabLayout tabLayout;
-    private ViewPager mViewPager;
+    public ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
 
     @Override
@@ -315,15 +316,16 @@ public class SearchActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "报表";
+                    return "综合";
                 case 1:
-                    return "话题";
+                    return "报表";
                 case 2:
-                    return "人脉";
+                    return "话题";
                 case 3:
+                    return "人脉";
+                case 4:
                     return "资讯";
             }
-
             return null;
         }
     }

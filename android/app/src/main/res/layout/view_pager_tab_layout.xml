@@ -4,7 +4,6 @@
         android:id="@+id/top_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="6dp"
         android:background="@android:color/white"
         app:layout_anchor="@+id/appbar"
         app:layout_anchorGravity="bottom"

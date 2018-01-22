@@ -1,6 +1,5 @@
 package com.riking.calendar.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +16,12 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.HotAnswerOfTopicViewHolder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class HotAnswerOfTopicAdapter extends ZAdater<HotAnswerOfTopicViewHolder, QAnswerResult> {
@@ -34,6 +31,7 @@ public class HotAnswerOfTopicAdapter extends ZAdater<HotAnswerOfTopicViewHolder,
         final QAnswerResult qAnswerResult = mList.get(i);
         h.answerTitle.setText(qAnswerResult.title);
         h.answerContent.setText(qAnswerResult.content);
+        h.updateTimeTv.setText(DateUtil.showTime(qAnswerResult.createdTime));
         ZR.setUserName(h.answerAuthorName, qAnswerResult.userName, qAnswerResult.grade, qAnswerResult.userId);
         h.agreeTv.setOnClickListener(new ZClickListenerWithLoginCheck() {
             @Override

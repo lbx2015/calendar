@@ -27,9 +27,9 @@ public class MyContactsAdapter extends ZAdater<MyContactsAdapter.MyViewHolder, O
         final OtherUserResp appUser = mList.get(i);
 //        未邀请
         if (appUser.isFollow == -2) {
-            ZR.showPersonInviteStatus(h.followButton, h.followTv, 0);
+            ZR.showPersonInviteStatus(h.followButton, h.followTv, 0, "邀请");
         } else if (appUser.isFollow == -1) {
-            ZR.showPersonInviteStatus(h.followButton, h.followTv, 1);
+            ZR.showPersonInviteStatus(h.followButton, h.followTv, 1, "再次邀请");
         } else {
             ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
         }
@@ -40,6 +40,10 @@ public class MyContactsAdapter extends ZAdater<MyContactsAdapter.MyViewHolder, O
             public void onClick(View v) {
                 //未注册
                 if (appUser.isFollow < 0) {
+                    if (h.invited) {
+                        ZToast.toast("已经邀请过了");
+                        return;
+                    }
                     final UserParams params = new UserParams();
                     //follow user
                     params.phone = appUser.phone;
@@ -48,8 +52,8 @@ public class MyContactsAdapter extends ZAdater<MyContactsAdapter.MyViewHolder, O
                         @Override
                         public void callBack(ResponseModel<String> response) {
                             appUser.isFollow = -1;
-                            ZToast.toast("邀请成功");
-                            ZR.showPersonInviteStatus(h.followButton, h.followTv, 1);
+                            h.invited = true;
+                            ZR.showPersonInviteStatus(h.followButton, h.followTv, 1, "已邀请");
                         }
                     });
                 }

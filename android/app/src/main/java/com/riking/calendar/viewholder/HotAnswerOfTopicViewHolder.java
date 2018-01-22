@@ -1,6 +1,5 @@
 package com.riking.calendar.viewholder;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,13 +17,10 @@ import butterknife.ButterKnife;
  */
 public class HotAnswerOfTopicViewHolder extends ZViewHolder {
 
-    @BindView(R.id.answer_image)
     public ImageView answerImage;
-    @BindView(R.id.answer_author_name)
     public TextView answerAuthorName;
     @BindView(R.id.answer_title)
     public TextView answerTitle;
-    @BindView(R.id.answer_author_icon)
     public CircleImageView authorImage;
     @BindView(R.id.answer_content)
     public TextView answerContent;
@@ -32,14 +28,15 @@ public class HotAnswerOfTopicViewHolder extends ZViewHolder {
     public TextView reviewTv;
     @BindView(R.id.agree_number)
     public TextView agreeTv;
+    public TextView updateTimeTv;
 
     public HotAnswerOfTopicViewHolder(View itemView) {
         super(itemView);
+        answerImage = itemView.findViewById(R.id.answer_image);
+        updateTimeTv = itemView.findViewById(R.id.answer_update_time);
+        answerAuthorName = itemView.findViewById(R.id.answer_author_name);
+        authorImage = itemView.findViewById(R.id.answer_author_icon);
         ButterKnife.bind(this, itemView);
         itemView.setTag(this);
-    }
-
-    private void resetView() {
-
     }
 }

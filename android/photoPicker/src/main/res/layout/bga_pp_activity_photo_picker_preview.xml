@@ -27,7 +27,7 @@
             android:clickable="true"
             android:drawableLeft="@mipmap/bga_pp_ic_cb_normal"
             android:drawablePadding="@dimen/bga_pp_textSize_level1"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:paddingLeft="@dimen/bga_pp_size_level2"
             android:paddingRight="@dimen/bga_pp_size_level2"
             android:text="@string/bga_pp_choose"

@@ -54,7 +54,7 @@
                 android:minHeight="40dp"
                 android:textSize="15sp"
                 android:layout_centerVertical="true"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:textColor="#ff000000" />
         </RelativeLayout>
 

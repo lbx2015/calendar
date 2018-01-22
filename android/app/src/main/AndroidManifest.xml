@@ -137,7 +137,7 @@
             android:name=".activity.MyRepliesActivity"
             android:launchMode="singleInstance"></activity>
         <activity
-            android:name=".activity.MyFollowersActivity"
+            android:name=".activity.MyFansActivity"
             android:launchMode="singleInstance"></activity>
         <activity
             android:name=".activity.MyFavoritesUserActivity"

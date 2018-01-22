@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <com.riking.calendar.view.ZTextView
+        android:id="@+id/answer_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="G01报表话题相关标题G01报表话题相关标题G01报表话题相关标题"
+        android:textColor="@color/color_222222"
+        android:textSize="17sp" />
+
+    <com.riking.calendar.view.ZTextView
+        android:id="@+id/answer_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="报表名称:资产负债项目统计表 2. G01《资产负债项目统计表》填报说明第一部分:引言 本表反映填报机构在报告日的财务状况, 应当按照资产、负债和所有者权益..."
+        android:textColor="@color/color_666666"
+        android:textSize="14sp" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.riking.calendar.view.ZTextView
+            android:id="@+id/agree_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/com_icon_zan_n"
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_999999"
+            android:textSize="11sp" />
+
+        <com.riking.calendar.view.ZTextView
+            android:id="@+id/review_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:drawableLeft="@drawable/com_icon_comment"
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/color_999999"
+            android:textSize="11sp" />
+    </LinearLayout>
+</LinearLayout>
