@@ -885,4 +885,8 @@ public class APIClient {
     public static void colligateSearch(SearchParams params, ZCallBackWithFail<ResponseModel<ColligateSearchResult>> c) {
         apiInterface.colligateSearch(params).enqueue(c);
     }
+
+    public static void getUserAnswerResult(TopicParams params, ZCallBackWithFail<ResponseModel<List<QAnswerResult>>> c) {
+        apiInterface.getUserAnswerResult(params).enqueue(c);
+    }
 }

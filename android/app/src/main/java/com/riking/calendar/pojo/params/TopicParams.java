@@ -5,7 +5,7 @@ package com.riking.calendar.pojo.params;
  */
 public class TopicParams extends BaseParams {
     public int pindex = 1;
-    public int pcount;
+    public int pcount=30;
     // 话题详情
     public String topicId;
 

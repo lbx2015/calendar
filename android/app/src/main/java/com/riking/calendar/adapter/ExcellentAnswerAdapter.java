@@ -1,6 +1,6 @@
 package com.riking.calendar.adapter;
 
-import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
+import com.riking.calendar.activity.ExcellentPersonActivity;
+import com.riking.calendar.activity.TopicActivity;
+import com.riking.calendar.fragment.ExcellentAnswererFragment;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.server.QAExcellentResp;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
-import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
 
 import java.util.ArrayList;
@@ -22,11 +26,11 @@ import java.util.List;
 
 
 public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
-    private Context context;
+    private ExcellentAnswererFragment fragment;
     private List<QAExcellentResp> mList;
 
-    public ExcellentAnswerAdapter(Context context) {
-        this.context = context;
+    public ExcellentAnswerAdapter(ExcellentAnswererFragment fragment) {
+        this.fragment = fragment;
         mList = new ArrayList<>();
     }
 
@@ -41,13 +45,22 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
     public void onBindViewHolder(final ExcellentViewHolderViewHolder h, int i) {
         final QAExcellentResp user = mList.get(i);
         h.summary.setText("此话题下" + user.qanswerNum + "个回答，" + user.qaAgreeNum + "赞");
+        h.summary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(h.summary.getContext(), ExcellentPersonActivity.class);
+                i.putExtra(CONST.TOPIC_ID, fragment.activity.topicId);
+                i.putExtra(CONST.USER_ID,user.userId);
+                ZGoto.to(i);
+            }
+        });
 
         //hide divider for the last item
         if (i == mList.size() - 1) {
             h.divider.setVisibility(View.GONE);
         }
 
-         ZR.setUserName(h.userName,user.userName,user.grade,user.userId);
+        ZR.setUserName(h.userName, user.userName, user.grade, user.userId);
 
         ZR.setUserImage(h.userImage, user.photoUrl);
 

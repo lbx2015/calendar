@@ -494,4 +494,7 @@ public interface APIInterface {
 
     @POST("searchList/colligateSearch")
     Call<ResponseModel<ColligateSearchResult>> colligateSearch(@Body SearchParams params);
+
+    @POST("topic/getQAnswerResults")
+    Call<ResponseModel<List<QAnswerResult>>> getUserAnswerResult(@Body TopicParams params);
 }

@@ -24,18 +24,12 @@ import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZPreference;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
-import com.riking.calendar.view.CircleImageView;
 import com.riking.calendar.viewholder.base.ZViewHolder;
 
 import java.util.List;
 
 //news comment adapter
-public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder, NewsComment> {
-    private CommentsActivity a;
-
-    public CommentListAdapter(CommentsActivity context) {
-        this.a = context;
-    }
+public class ExcellentPersonAnswerAdapter extends ZAdater<ExcellentPersonAnswerAdapter.MyViewHolder, NewsComment> {
 
     @Override
     public void onBindVH(final MyViewHolder h, int i) {
@@ -93,13 +87,6 @@ public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder,
         ZR.setCircleUserImage(h.userIconLayout,c.photoUrl,c.userId,c.grade);
 
         setRecyclerView(h.recyclerView, h, i);
-        CommentsActivity commentsActivity = (CommentsActivity) a;
-        h.answerContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((CommentsActivity) a).clickWriteComment(c, h.replyListAdapter, h.recyclerView);
-            }
-        });
 
     }
 
@@ -107,14 +94,13 @@ public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder,
     public MyViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.comment_list_item, viewGroup, false);
-        return new CommentListAdapter.MyViewHolder(view);
+        return new ExcellentPersonAnswerAdapter.MyViewHolder(view);
     }
 
-    private void setRecyclerView(final RecyclerView recyclerView, final CommentListAdapter.MyViewHolder h, final int position) {
+    private void setRecyclerView(final RecyclerView recyclerView, final ExcellentPersonAnswerAdapter.MyViewHolder h, final int position) {
         LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
-        h.replyListAdapter = new ReplyListAdapter(a, recyclerView);
         List<NCReply> replies = mList.get(position).ncReplyList;
         if (replies == null || replies.size() == 0) {
             recyclerView.setVisibility(View.GONE);

@@ -105,9 +105,13 @@ public abstract class ZActivity<T extends ZAdater> extends AppCompatActivity {
         setData2Adapter(1, list);
     }
 
-    public void setData2Adapter(int currentPage, List<?> list) {
+    public void loadComplete() {
         isLoading = false;
         mPullToLoadView.setComplete();
+    }
+
+    public void setData2Adapter(int currentPage, List<?> list) {
+        loadComplete();
         if (list != null && list.size() == 0) {
             ZToast.toast("没有更多数据了");
             emptyLayout.setVisibility(View.VISIBLE);

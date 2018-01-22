@@ -168,6 +168,7 @@
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.QuestionActivity" />
+        <activity android:name=".activity.ExcellentPersonActivity" />
         <activity android:name=".activity.InvitePersonActivity" />
         <activity android:name=".activity.WriteAnswerActivity" />
         <activity android:name=".activity.CommentsActivity" />
