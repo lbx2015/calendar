@@ -22,7 +22,8 @@ public class QAInviteServiceImpl implements QAInviteService {
 	public void saveQaInvite(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		// 保存新的一条邀请记录
 		TQuestionParams tQuestionParams = new TQuestionParams();
-		tQuestionParams = (TQuestionParams) Utils.fromObjToObjValue(optCommon, tQuestionParams);
+		//tQuestionParams = (TQuestionParams) Utils.fromObjToObjValue(optCommon, tQuestionParams);
+		Utils.merge(tQuestionParams, optCommon);
 		QAInvite qaInvite = new QAInvite();
 		qaInvite.setUserId(tQuestionParams.getUserId());
 		qaInvite.setToUserId(tQuestionParams.getAttentObjId());

@@ -77,7 +77,8 @@ public class TQuestionServiceImpl implements TQuestionService {
 	@Override
 	public boolean follow(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		TQuestionParams tQuestionParams = new TQuestionParams();
-		tQuestionParams = (TQuestionParams) Utils.fromObjToObjValue(optCommon, tQuestionParams);
+		//tQuestionParams = (TQuestionParams) Utils.fromObjToObjValue(optCommon, tQuestionParams);
+		Utils.merge(tQuestionParams, optCommon);
 		switch (tQuestionParams.getObjType()) {
 			// 问题关注
 			case Const.OBJ_TYPE_1:

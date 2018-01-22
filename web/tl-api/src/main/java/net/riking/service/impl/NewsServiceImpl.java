@@ -72,7 +72,8 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public void newsCollect(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException {
 		NewsParams newsParams = new NewsParams();
-		newsParams = (NewsParams) Utils.fromObjToObjValue(common, newsParams);
+		//newsParams = (NewsParams) Utils.fromObjToObjValue(common, newsParams);
+		Utils.merge(newsParams, common);
 		switch (newsParams.getEnabled()) {
 			case Const.EFFECTIVE:
 				NewsRel rels = newsRelRepo.findByOne(newsParams.getUserId(), newsParams.getNewsId(),
@@ -99,7 +100,8 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public void newsCommentPub(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		NewsParams newsParams = new NewsParams();
-		newsParams = (NewsParams) Utils.fromObjToObjValue(optCommon, newsParams);
+		//newsParams = (NewsParams) Utils.fromObjToObjValue(optCommon, newsParams);
+		Utils.merge(newsParams, optCommon);
 		NewsComment newsCommentInfo = new NewsComment();
 		newsCommentInfo.setUserId(newsParams.getUserId());
 		newsCommentInfo.setNewsId(newsParams.getNewsId());

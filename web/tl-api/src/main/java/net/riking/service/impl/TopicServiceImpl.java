@@ -54,7 +54,8 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public void shield(MQOptCommon common) throws IllegalArgumentException, IllegalAccessException {
 		HomeParams homeParams = new HomeParams();
-		homeParams = (HomeParams) Utils.fromObjToObjValue(common, homeParams);
+		//homeParams = (HomeParams) Utils.fromObjToObjValue(common, homeParams);
+		Utils.merge(homeParams, common);
 		switch (homeParams.getObjType()) {
 			// 问题
 			case Const.OBJ_TYPE_1:

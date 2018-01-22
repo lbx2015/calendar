@@ -70,7 +70,8 @@ public class QAnswerServiceImpl implements QAnswerService {
 	@Override
 	public boolean qaAgreeCollect(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		QAnswerParams qAnswerParams = new QAnswerParams();
-		qAnswerParams = (QAnswerParams) Utils.fromObjToObjValue(optCommon, qAnswerParams);
+		//qAnswerParams = (QAnswerParams) Utils.fromObjToObjValue(optCommon, qAnswerParams);
+		Utils.merge(qAnswerParams, optCommon);
 		switch (qAnswerParams.getOptType()) {
 			// 1-点赞
 			case Const.OBJ_OPT_GREE:
@@ -130,7 +131,8 @@ public class QAnswerServiceImpl implements QAnswerService {
 	@Override
 	public void qACommentPub(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		QAnswerParams qAnswerParams = new QAnswerParams();
-		qAnswerParams = (QAnswerParams) Utils.fromObjToObjValue(optCommon, qAnswerParams);
+		//qAnswerParams = (QAnswerParams) Utils.fromObjToObjValue(optCommon, qAnswerParams);
+		Utils.merge(qAnswerParams, optCommon);
 		QAComment qaComment = new QAComment();
 		qaComment.setUserId(qAnswerParams.getUserId());
 		qaComment.setQuestionAnswerId(qAnswerParams.getQuestAnswerId());
@@ -144,7 +146,8 @@ public class QAnswerServiceImpl implements QAnswerService {
 	@Override
 	public void commentReply(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		CommentParams commentParams = new CommentParams();
-		commentParams = (CommentParams) Utils.fromObjToObjValue(optCommon, commentParams);
+		//commentParams = (CommentParams) Utils.fromObjToObjValue(optCommon, commentParams);
+		Utils.merge(commentParams, optCommon);
 		switch (commentParams.getObjType()) {
 			// 回答类
 			case Const.OBJ_TYPE_ANSWER:

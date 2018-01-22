@@ -73,7 +73,8 @@ public class QACommentServiceImpl implements QACommentService {
 	@Override
 	public boolean commentAgree(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		CommentParams commentParams = new CommentParams();
-		commentParams = (CommentParams) Utils.fromObjToObjValue(optCommon, commentParams);
+		//commentParams = (CommentParams) Utils.fromObjToObjValue(optCommon, commentParams);
+		Utils.merge(commentParams, optCommon);
 		switch (commentParams.getObjType()) {
 			// 回答类
 			case Const.OBJ_TYPE_ANSWER:

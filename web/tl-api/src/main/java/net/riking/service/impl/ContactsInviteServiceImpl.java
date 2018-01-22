@@ -21,7 +21,8 @@ public class ContactsInviteServiceImpl implements ContactsInviteService {
 	@Override
 	public void contactsInvite(MQOptCommon optCommon) throws IllegalArgumentException, IllegalAccessException {
 		UserParams userParams = new UserParams();
-		userParams = (UserParams) Utils.fromObjToObjValue(optCommon, userParams);
+		//userParams = (UserParams) Utils.fromObjToObjValue(optCommon, userParams);
+		Utils.merge(userParams, optCommon);
 		ContactsInvite contactsInvite = contactsInviteRepo.findByOne(userParams.getUserId(), userParams.getPhone());
 		if (contactsInvite == null) {
 			contactsInvite = new ContactsInvite();
