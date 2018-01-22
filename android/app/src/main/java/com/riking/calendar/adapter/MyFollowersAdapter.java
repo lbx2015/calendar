@@ -3,6 +3,8 @@ package com.riking.calendar.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -22,7 +24,8 @@ public class MyFollowersAdapter extends ZAdater<MyFollowersAdapter.MyViewHolder,
         AppUserResult appUser = mList.get(i);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, appUser.isFollow);
         ZR.setFollowPersonClickListner(appUser, h.followButton, h.followTv);
-        ZR.setUserName(h.userName, appUser.userName, appUser.grade,appUser.userId);
+        ZR.setUserName(h.userName, appUser.userName, appUser.userId);
+        ZR.setCircleUserImage(h.userIconLayout, appUser.photoUrl, appUser.userId, appUser.grade);
         h.summary.setText(appUser.descript);
     }
 
@@ -38,8 +41,8 @@ public class MyFollowersAdapter extends ZAdater<MyFollowersAdapter.MyViewHolder,
         public TextView summary;
         @BindView(R.id.user_name)
         public TextView userName;
-        @BindView(R.id.user_icon)
-        public CircleImageView userImage;
+        @BindView(R.id.user_icon_layout)
+        public FrameLayout userIconLayout;
 
         @BindView(R.id.follow_text)
         public TextView followTv;

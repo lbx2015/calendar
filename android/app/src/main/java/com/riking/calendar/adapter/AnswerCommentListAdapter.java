@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,10 +105,8 @@ public class AnswerCommentListAdapter extends ZAdater<AnswerCommentListAdapter.M
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
-        RequestOptions options = new RequestOptions();
-        Glide.with(h.authorImage.getContext()).load(R.drawable.img_user_head)
-                .apply(options.fitCenter())
-                .into(h.authorImage);
+        ZR.setCircleUserImage(h.userIconLayout,c.photoUrl,c.userId,c.grade);
+
         setRecyclerView(h.recyclerView, h, i);
         if (a instanceof AnswerCommentsActivity) {
             final AnswerCommentsActivity answerCommentsActivity = (AnswerCommentsActivity) a;
@@ -175,18 +175,18 @@ public class AnswerCommentListAdapter extends ZAdater<AnswerCommentListAdapter.M
 //    }
 
     class MyViewHolder extends ZViewHolder {
-        public CircleImageView authorImage;
         public AnswerReplyListAdapter replyListAdapter;
         public RecyclerView recyclerView;
         public TextView createTimeTv;
         public TextView answerContent;
         public TextView authorName;
         public TextView agreeTv;
+        public FrameLayout userIconLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            userIconLayout = itemView.findViewById(R.id.user_icon_layout);
             createTimeTv = itemView.findViewById(R.id.answer_update_time);
-            authorImage = itemView.findViewById(R.id.answer_author_icon);
             recyclerView = itemView.findViewById(R.id.recycler_view);
             answerContent = itemView.findViewById(R.id.answer_content);
             authorName = itemView.findViewById(R.id.answer_author_name);

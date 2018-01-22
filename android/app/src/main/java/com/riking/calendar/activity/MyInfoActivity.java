@@ -176,7 +176,7 @@ public class MyInfoActivity extends AppCompatActivity {
 
     private void setUserData() {
         userName.setText(u.userName);
-        ZR.setUserName(userName, u.userName, u.grade);
+        userName.setText(u.userName);
         userComment.setText(u.descript);
 
         //load the user image

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_icon_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.riking.calendar.view.CircleImageView
+        android:id="@+id/user_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/user_icon_head_notlogin" />
+
+    <ImageView
+        android:id="@+id/user_grade_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end|right" />
+</FrameLayout>

@@ -110,7 +110,6 @@ public class UserActivity extends AppCompatActivity {
         followingMeNumbTv.setText(ZR.getNumberString(u.fansNum));
         myAnswerNumbTv.setText(ZR.getNumberString(u.answerNum));
         userName.setText(u.userName);
-        ZR.setUserName(userName, u.userName, u.grade);
         userComment.setText(u.descript);
 
         //load the user image
@@ -213,7 +212,7 @@ public class UserActivity extends AppCompatActivity {
         followMeLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserActivity.this, MyFollowersActivity.class);
+                Intent i = new Intent(UserActivity.this, MyFansActivity.class);
                 i.putExtra(CONST.USER_ID, u.userId);
                 i.putExtra(CONST.USER_SEX, u.sex);
                 ZGoto.to(i);

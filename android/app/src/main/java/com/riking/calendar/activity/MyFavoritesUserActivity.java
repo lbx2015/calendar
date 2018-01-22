@@ -28,8 +28,7 @@ import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
 import java.util.List;
 
 /**
- * Created by zw.zhang on 2017/7/24.
- * answer comments page
+ * 我关注的人
  */
 
 public class MyFavoritesUserActivity extends AppCompatActivity { //Fragment 数组

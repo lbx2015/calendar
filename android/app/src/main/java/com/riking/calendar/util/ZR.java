@@ -15,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -175,6 +176,35 @@ public class ZR {
 
     public static void setCircleUserImage(final ImageView v, final String imageUrl, final String userId) {
         setCircleUserImage(v, imageUrl);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setCircleUserImage(FrameLayout userIconLayout, final String imageUrl, final String userId, final int grand) {
+        ImageView v = userIconLayout.findViewById(R.id.user_icon);
+        final ImageView grandIv = userIconLayout.findViewById(R.id.user_grade_image_view);
+        setCircleUserImage(v, imageUrl);
+        @DrawableRes int drawable;
+        if (grand == 1) {
+            drawable = R.drawable.com_icon_grade_v1;
+        } else if (grand == 2) {
+            drawable = R.drawable.com_icon_grade_v2;
+        } else if (grand == 3) {
+            drawable = R.drawable.com_icon_grade_v3;
+        } else if (grand == 4) {
+            drawable = R.drawable.com_icon_grade_v4;
+        } else if (grand == 5) {
+            drawable = R.drawable.com_icon_grade_v5;
+        } else {
+            drawable = 0;
+        }
+        grandIv.setImageDrawable(ZR.getDrawable(drawable));
 //        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
         //go to user activity on click
         v.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +252,7 @@ public class ZR {
     }
 
     public static void setUserName(final TextView userNameTv, String name, int grand, final String userId) {
-        setUserName(userNameTv, name, grand);
+        userNameTv.setText(name);
         //go to user activity on click
         userNameTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,23 +264,17 @@ public class ZR {
         });
     }
 
-    public static void setUserName(final TextView userNameTv, String name, int grand) {
+    public static void setUserName(final TextView userNameTv, String name, final String userId) {
         userNameTv.setText(name);
-        @DrawableRes int drawable;
-        if (grand == 1) {
-            drawable = R.drawable.com_icon_grade_v1;
-        } else if (grand == 2) {
-            drawable = R.drawable.com_icon_grade_v2;
-        } else if (grand == 3) {
-            drawable = R.drawable.com_icon_grade_v3;
-        } else if (grand == 4) {
-            drawable = R.drawable.com_icon_grade_v4;
-        } else if (grand == 5) {
-            drawable = R.drawable.com_icon_grade_v5;
-        } else {
-            drawable = 0;
-        }
-        userNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+        //go to user activity on click
+        userNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(userNameTv.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
     }
 
     public static void setReportName(final TextView reportNameTv, String name, int frequency, String reportBatch, final String reportId) {
