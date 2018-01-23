@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.necer.ncalendar.utils.MyLog;
+import com.necer.ncalendar.view.SimpleDividerDecorationWithoutLastItem;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.base.ZActivity;
 import com.riking.calendar.adapter.ExcellentPersonAnswerAdapter;
@@ -33,16 +34,20 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
     public TextView followTv;
     public Topic topic;
     public String topicId;
+    public String userName;
     public String answerUserId;
+    public TextView answerNumberTv;
     private TextView topicTitle;
     private TextView followNumberTv;
     private TextView topicContent;
     private TextView expandButtonTv;
+    private TextView activityTitle;
 
     @Override
     public void setLayout() {
         setContentView(R.layout.excellent_answer_activity);
         topicId = getIntent().getStringExtra(TOPIC_ID);
+        userName = getIntent().getStringExtra(CONST.USER_NAME);
         answerUserId = getIntent().getStringExtra(CONST.USER_ID);
     }
 
@@ -55,6 +60,7 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
     public void loadData(int page) {
         loadTopicById();
         loadAnswers(page);
+        loadAnswersNumber();
     }
 
     private void setFollowClickListener() {
@@ -91,6 +97,23 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
             }
         });
 
+    }
+
+    private void loadAnswersNumber() {
+        TopicParams params = new TopicParams();
+        params.topicId = topicId;
+        params.userId = answerUserId;
+        APIClient.getQAnswerSize(params, new ZCallBackWithFail<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) throws Exception {
+                loadComplete();
+                if (failed) {
+
+                } else {
+                    answerNumberTv.setText(userName + "在此话题下有" + response._data + "个回答");
+                }
+            }
+        });
     }
 
     private void loadAnswers(final int page) {
@@ -155,6 +178,8 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
     }
 
     public void initViews() {
+        activityTitle = findViewById(R.id.activity_title);
+        answerNumberTv = findViewById(R.id.answer_number_tv);
         expandButtonTv = findViewById(R.id.id_expand_textview);
         topicContent = findViewById(R.id.id_source_textview);
         followNumberTv = findViewById(R.id.follow_number_tv);
@@ -164,7 +189,9 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
     }
 
     public void initEvents() {
+        activityTitle.setText(userName + "的回答");
         setFollowClickListener();
+        mRecyclerView.addItemDecoration(new SimpleDividerDecorationWithoutLastItem(ZR.getDrawable(R.drawable.recycler_view_divider), (int) ZR.convertDpToPx(15)));
     }
 
     public void clickBack(final View view) {

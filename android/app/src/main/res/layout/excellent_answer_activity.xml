@@ -24,7 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="我的粉丝"
             android:textColor="@color/color_222222"
             android:textSize="@dimen/action_bar_text_size" />
 
@@ -33,9 +32,9 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
         <com.riking.calendar.view.CircleImageView
             android:id="@+id/icon_image"
@@ -53,7 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:text="人民银行数据大集中"
             android:textColor="@color/color_222222"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@id/icon_image"
@@ -65,8 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text="120人关注"
+            android:layout_marginTop="2dp"
             android:textColor="@color/color_999999"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@+id/icon_image"
@@ -100,9 +97,11 @@
         android:id="@+id/expandable_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        app:layout_scrollFlags="scroll|enterAlways">
+        android:background="@color/white"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp">
 
         <com.riking.calendar.view.ZTextView
             android:id="@id/id_source_textview"
@@ -124,10 +123,16 @@
             android:textColor="@color/color_999999" />
     </com.necer.ncalendar.view.ExpandableTextView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
-        android:background="@color/color_d2d2d2" />
+    <TextView
+        android:id="@+id/answer_number_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="周云丽在此话题下200个回答"
+        android:textColor="@color/color_999999"
+        android:textSize="14sp" />
 
     <com.riking.calendar.view.PullToLoadViewWithoutFloatButton xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pullToLoadView"

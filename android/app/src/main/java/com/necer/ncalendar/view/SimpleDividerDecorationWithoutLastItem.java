@@ -13,20 +13,20 @@ import com.riking.calendar.R;
  * Created by zw.zhang on 2017/11/23.
  */
 
-public class SimpleDividerDecorationWithLastFillWidth extends RecyclerView.ItemDecoration {
+public class SimpleDividerDecorationWithoutLastItem extends RecyclerView.ItemDecoration {
     private final Rect bounds = new Rect();
     int spaceToBorder;
     private Drawable divider;
 
-    public SimpleDividerDecorationWithLastFillWidth(Context context) {
+    public SimpleDividerDecorationWithoutLastItem(Context context) {
         divider = context.getResources().getDrawable(R.drawable.recycler_view_divider);
     }
 
-    public SimpleDividerDecorationWithLastFillWidth(Drawable divider) {
+    public SimpleDividerDecorationWithoutLastItem(Drawable divider) {
         this.divider = divider;
     }
 
-    public SimpleDividerDecorationWithLastFillWidth(Drawable divider, int spaceToBorder) {
+    public SimpleDividerDecorationWithoutLastItem(Drawable divider, int spaceToBorder) {
         this.divider = divider;
         this.spaceToBorder = spaceToBorder;
     }
@@ -45,26 +45,14 @@ public class SimpleDividerDecorationWithLastFillWidth extends RecyclerView.ItemD
             divider.setBounds(left, top, right, bottom);
             divider.draw(canvas);
         }
-
-        //draw last item to fill the width
-        final int leftOfLast = 0;
-        final int rightOfLast = parent.getWidth();
-
-        final View child = parent.getChildAt(childCount);
-        parent.getDecoratedBoundsWithMargins(child, bounds);
-        final int bottom = bounds.bottom + Math.round(child.getTranslationY());
-        final int top = bottom - divider.getIntrinsicHeight();
-        divider.setBounds(leftOfLast, top, rightOfLast, bottom);
-        divider.draw(canvas);
-
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         final int position = parent.getChildAdapterPosition(view);
-//        final int lastPosition = parent.getAdapter().getItemCount() - 1;
-//        if (position < lastPosition) {
+        final int lastPosition = parent.getAdapter().getItemCount() - 1;
+        if (position < lastPosition) {
         outRect.set(0, 0, 0, divider.getIntrinsicHeight());
-//        }
+        }
     }
 }

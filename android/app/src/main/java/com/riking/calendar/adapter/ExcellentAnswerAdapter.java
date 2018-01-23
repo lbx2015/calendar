@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.riking.calendar.R;
 import com.riking.calendar.activity.ExcellentPersonActivity;
-import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.fragment.ExcellentAnswererFragment;
 import com.riking.calendar.listener.ZCallBack;
 import com.riking.calendar.pojo.base.ResponseModel;
@@ -50,7 +49,8 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
             public void onClick(View v) {
                 Intent i = new Intent(h.summary.getContext(), ExcellentPersonActivity.class);
                 i.putExtra(CONST.TOPIC_ID, fragment.activity.topicId);
-                i.putExtra(CONST.USER_ID,user.userId);
+                i.putExtra(CONST.USER_ID, user.userId);
+                i.putExtra(CONST.USER_NAME, user.userName);
                 ZGoto.to(i);
             }
         });

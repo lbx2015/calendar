@@ -497,4 +497,7 @@ public interface APIInterface {
 
     @POST("topic/getQAnswerResults")
     Call<ResponseModel<List<QAnswerResult>>> getUserAnswerResult(@Body TopicParams params);
+
+    @POST("topic/getQAnswerSize")
+    Call<ResponseModel<String>> getQAnswerSize(@Body TopicParams params);
 }
