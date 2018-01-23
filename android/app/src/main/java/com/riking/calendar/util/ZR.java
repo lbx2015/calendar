@@ -17,6 +17,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +49,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -162,14 +164,6 @@ public class ZR {
         return r;
     }
 
-    public static void setUserImage(ImageView v, String imageUrl) {
-        RequestOptions options = new RequestOptions();
-        //if fail user the default user icon
-        Glide.with(v.getContext()).load(imageUrl)
-                .apply(options.fitCenter().placeholder(R.drawable.user_icon_head_notlogin))
-                .into(v);
-    }
-
     public static void setCircleUserImage(ImageView v, String imageUrl) {
         Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
     }
@@ -177,6 +171,41 @@ public class ZR {
     public static void setCircleUserImage(final ImageView v, final String imageUrl, final String userId) {
         setCircleUserImage(v, imageUrl);
         v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), UserActivity.class);
+                i.putExtra(CONST.USER_ID, userId);
+                ZGoto.to(i);
+            }
+        });
+    }
+
+    public static void setUserInfo(final RelativeLayout userIconLayout, final String imageUrl, final String userName, final String subTitle, final String userId, final int grand) {
+        final TextView userNameTv = userIconLayout.findViewById(R.id.user_name);
+        final TextView updateTimeTv = userIconLayout.findViewById(R.id.sub_title_tv);
+        userNameTv.setText(userName);
+        updateTimeTv.setText(subTitle);
+        ImageView v = userIconLayout.findViewById(R.id.user_icon);
+        final ImageView grandIv = userIconLayout.findViewById(R.id.user_grade_image_view);
+        setCircleUserImage(v, imageUrl);
+        @DrawableRes int drawable = 0;
+        if (grand == 1) {
+            drawable = R.drawable.com_icon_grade_v1;
+        } else if (grand == 2) {
+            drawable = R.drawable.com_icon_grade_v2;
+        } else if (grand == 3) {
+            drawable = R.drawable.com_icon_grade_v3;
+        } else if (grand == 4) {
+            drawable = R.drawable.com_icon_grade_v4;
+        } else if (grand == 5) {
+            drawable = R.drawable.com_icon_grade_v5;
+        } else {
+            drawable = R.drawable.com_icon_grade_v1;
+        }
+        grandIv.setImageDrawable(ZR.getDrawable(drawable));
+//        Glide.with(v.getContext()).load(imageUrl).apply(new RequestOptions().circleCrop().placeholder(R.drawable.user_icon_head_notlogin)).into(v);
+        //go to user activity on click
+        userIconLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), UserActivity.class);

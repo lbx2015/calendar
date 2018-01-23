@@ -32,7 +32,7 @@ public class SearchPersonAdapter extends ZAdater<ExcellentViewHolderViewHolder,A
         //set user name
         ZR.setUserName(h.userName, user.userName, user.grade,user.userId);
 
-        ZR.setUserImage(h.userImage, user.photoUrl);
+        ZR.setCircleUserImage(h.userImage, user.photoUrl,user.userId);
 
         ZR.setFollowPersonClickListner(user, h.followButton, h.followTv);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, user.isFollow);

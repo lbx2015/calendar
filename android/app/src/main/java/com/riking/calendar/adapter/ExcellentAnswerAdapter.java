@@ -62,7 +62,7 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
 
         ZR.setUserName(h.userName, user.userName, user.grade, user.userId);
 
-        ZR.setUserImage(h.userImage, user.photoUrl);
+        ZR.setCircleUserImage(h.userImage, user.photoUrl,user.userId);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override

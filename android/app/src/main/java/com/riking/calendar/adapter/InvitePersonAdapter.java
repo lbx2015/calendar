@@ -45,7 +45,7 @@ public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         ZR.setUserName(h.userName, user.userName, user.grade, user.userId);
 
         //set user image
-        ZR.setUserImage(h.userImage, user.photoUrl);
+        ZR.setCircleUserImage(h.userImage, user.photoUrl,user.userId);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,6 +17,7 @@ import com.riking.calendar.pojo.params.QAnswerParams;
 import com.riking.calendar.pojo.server.QuestionAnswer;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
+import com.riking.calendar.util.DateUtil;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
@@ -46,8 +47,6 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
     public void onBindViewHolder(final AnswerListViewHolder h, int i) {
         final QuestionAnswer questionAnswer = mList.get(i);
         //set author name
-        ZR.setUserName(h.answerAuthorName, questionAnswer.userName, questionAnswer.userId);
-
         h.answerContent.setText(questionAnswer.content);
         ZR.setAnswerClickListener(h.answerContent, questionAnswer.questionAnswerId);
 
@@ -102,9 +101,8 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
         });
 
         //set user image
-        ZR.setCircleUserImage(h.userIconLayout, questionAnswer.photoUrl, questionAnswer.userId, questionAnswer.grade);
+        ZR.setUserInfo(h.userIconLayout, questionAnswer.photoUrl, questionAnswer.userName, DateUtil.showTime(questionAnswer.createdTime), questionAnswer.userId, questionAnswer.grade);
     }
-
 
     @Override
     public int getItemCount() {

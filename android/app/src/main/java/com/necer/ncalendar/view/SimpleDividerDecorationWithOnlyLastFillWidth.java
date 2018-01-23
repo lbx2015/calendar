@@ -27,6 +27,7 @@ public class SimpleDividerDecorationWithOnlyLastFillWidth extends RecyclerView.I
 
     @Override
     public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+        if (parent.getAdapter().getItemCount() == 1) return;
         //riking remove the padding
 //        final int left = 0 + parent.getPaddingLeft();
 //        final int right = parent.getWidth() - parent.getPaddingRight();
@@ -55,6 +56,7 @@ public class SimpleDividerDecorationWithOnlyLastFillWidth extends RecyclerView.I
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        if (parent.getAdapter().getItemCount() == 1) return;
         final int position = parent.getChildAdapterPosition(view);
         final int lastPosition = parent.getAdapter().getItemCount() - 1;
         if (position == lastPosition) {

@@ -100,7 +100,7 @@ public class MyDynamicAnswerCommentListAdapter extends ZAdater<MyDynamicAnswerCo
             h.agreeTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_icon_zan_n, 0, 0, 0);
         }
 
-        ZR.setUserImage(h.authorImage, c.photoUrl);
+        ZR.setCircleUserImage(h.authorImage, c.photoUrl,c.userId);
     }
 
 /*

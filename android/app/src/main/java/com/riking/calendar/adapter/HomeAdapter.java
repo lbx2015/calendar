@@ -209,7 +209,7 @@ public class HomeAdapter extends ZAdater<ZViewHolder, TQuestionResult> {
         }
 
         //set from image
-        ZR.setUserImage(h.fromImage, r.fromImgUrl);
+        ZR.setCircleUserImage(h.fromImage, r.fromImgUrl,r.userId);
 
         //go to topic on click
         h.itemCator.setOnClickListener(new View.OnClickListener() {

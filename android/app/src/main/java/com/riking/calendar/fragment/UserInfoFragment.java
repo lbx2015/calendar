@@ -119,7 +119,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             });
 
             //load the user image
-            ZR.setUserImage(myPhoto, currentUser.photoUrl);
+            ZR.setCircleUserImage(myPhoto, currentUser.photoUrl,currentUser.userId);
         } else {
             toUserInfoIm.setVisibility(View.GONE);
             notLoginTv.setVisibility(View.VISIBLE);
@@ -369,7 +369,7 @@ public class UserInfoFragment extends Fragment implements OnClickListener {
             }
             //update user image
             if (!StringUtil.isEmpty(b.getString(CONST.USER_IMAGE_URL))) {
-                ZR.setUserImage(myPhoto, b.getString(CONST.USER_IMAGE_URL));
+                ZR.setCircleUserImage(myPhoto, b.getString(CONST.USER_IMAGE_URL),currentUser.userId);
             }
 
             //update user description

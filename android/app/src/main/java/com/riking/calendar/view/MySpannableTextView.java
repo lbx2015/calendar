@@ -23,6 +23,7 @@ import com.riking.calendar.util.ZR;
 
 /**
  * 缩放展开的动画简单Textview
+ *
  * @author igeek2014@hotmail.com
  */
 public class MySpannableTextView extends AppCompatTextView {
@@ -56,14 +57,14 @@ public class MySpannableTextView extends AppCompatTextView {
         StaticLayout staticLayout = new StaticLayout(content, textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
 
         if (staticLayout.getLineCount() > maxLine) {
-            int i = staticLayout.getLineStart(maxLine-1) - 1;
-            int end = staticLayout.getLineEnd(maxLine-1) - 1;
+            int i = staticLayout.getLineStart(maxLine - 1) - 1;
+            int end = staticLayout.getLineEnd(maxLine - 1) - 1;
             String s = content.substring(i, end);
-            StaticLayout staticLayout2 = new StaticLayout(s + "...显示更多", textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
+            StaticLayout staticLayout2 = new StaticLayout(s + "...展开", textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
             while (staticLayout2.getLineCount() > 1) {
                 end = end - 1;
                 s = content.substring(i, end);
-                staticLayout2 = new StaticLayout(s + "...显示更多", textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
+                staticLayout2 = new StaticLayout(s + "...展开", textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
             }
             return end;//exceed
         } else return -1;//not exceed the max line
@@ -117,7 +118,7 @@ public class MySpannableTextView extends AppCompatTextView {
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
-                ds.setColor(textView.getResources().getColor(R.color.colorPrimary));
+                ds.setColor(textView.getResources().getColor(R.color.color_999999));
                 ds.setAntiAlias(true);
                 ds.setUnderlineText(false);
             }

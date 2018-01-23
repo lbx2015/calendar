@@ -32,7 +32,7 @@ public class SearchTopicAdapter extends ZAdater<SearchTopicViewHolder, Topic> {
        });
         h.summary.setText(ZR.getNumberString(topicResult.followNum) + "人关注");
 
-        ZR.setImage(h.topicImage, topicResult.topicUrl);
+        ZR.setCircleTopicImage(h.topicImage, topicResult.topicUrl,topicResult.topicId);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
