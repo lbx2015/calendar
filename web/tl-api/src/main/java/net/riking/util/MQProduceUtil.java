@@ -18,6 +18,12 @@ import net.sf.json.JSONObject;
 
 public class MQProduceUtil {
 	private static final Logger logger = LogManager.getLogger("MQProduceUtil");
+	
+	public static String mqUserName;
+	
+	public static String mqPassWord;
+	
+	public static String mqBrokeUrl;
 
 	// 连接工厂
 	public static ConnectionFactory connectionFactory;
@@ -36,7 +42,9 @@ public class MQProduceUtil {
 
 	public static void init(String queueName) {
 		// 创建一个链接工厂
-		connectionFactory = new ActiveMQConnectionFactory(Const.MQ_USER_NAME, Const.MQ_PASSWORD, Const.MQ_BROKE_URL);
+//		connectionFactory = new ActiveMQConnectionFactory(Const.MQ_USER_NAME, Const.MQ_PASSWORD, Const.MQ_BROKE_URL);
+		connectionFactory = new ActiveMQConnectionFactory(mqUserName, mqPassWord,
+				mqBrokeUrl);
 		try {
 			// 从工厂中创建一个链接
 			connection = connectionFactory.createConnection();

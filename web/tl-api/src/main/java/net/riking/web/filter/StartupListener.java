@@ -16,6 +16,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
+import net.riking.config.ActiveMqConfig;
 import net.riking.config.Config;
 import net.riking.config.Const;
 import net.riking.config.RedisConfig;
@@ -28,6 +29,7 @@ import net.riking.spring.SpringBeanUtil;
 import net.riking.task.MQSysInfoListener;
 import net.riking.task.MQSysMesListener;
 import net.riking.task.MQSysOptListener;
+import net.riking.util.MQProduceUtil;
 import net.riking.util.RedisUtil;
 import net.riking.util.TimerManager;
 
@@ -70,6 +72,9 @@ public class StartupListener implements ServletContextListener {
 
 	@Autowired
 	MQSysMesListener mqSysMesListener;
+	
+	@Autowired
+	ActiveMqConfig mqConfig;
 
 	/**
 	 * {@inheritDoc}
@@ -91,6 +96,9 @@ public class StartupListener implements ServletContextListener {
 		shieldKeyWordService.initKeyWord();
 
 		timerManager.init();
+		MQProduceUtil.mqUserName = mqConfig.getUserName();
+		MQProduceUtil.mqPassWord = mqConfig.getPassWord();
+		MQProduceUtil.mqBrokeUrl = mqConfig.getUrl();
 		 mQReceiveService.init(Const.SYS_INFO_QUEUE, mqSysInfoListener);// 初始化mq接收信息系统通知队列
 		 mQReceiveService.init(Const.SYS_MES_QUEUE, mqSysMesListener);// 初始化mq接收信息系统消息队列
 		 mQReceiveService.init(Const.SYS_OPT_QUEUE, mqSysOptListener);// 初始化mq接收信息系统操作队列
