@@ -15,12 +15,13 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
+import com.riking.calendar.viewholder.base.ZUserBaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
+public class InvitePersonAdapter extends RecyclerView.Adapter<ZUserBaseViewHolder> {
     InvitePersonActivity a;
     private List<AppUserResult> mList;
 
@@ -30,23 +31,16 @@ public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
     }
 
     @Override
-    public ExcellentViewHolderViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ZUserBaseViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.excellent_answerer_item, viewGroup, false);
-        return new ExcellentViewHolderViewHolder(view);
+        return new ZUserBaseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ExcellentViewHolderViewHolder h, int i) {
+    public void onBindViewHolder(final ZUserBaseViewHolder h, int i) {
         final AppUserResult user = mList.get(i);
-        h.userName.setCompoundDrawablePadding((int) ZR.convertDpToPx(3));
-        h.summary.setText(user.answerNum + "个回答，" + user.agreeNum + "赞");
-        //set user name
-        ZR.setUserName(h.userName, user.userName, user.grade, user.userId);
-
-        //set user image
-        ZR.setCircleUserImage(h.userImage, user.photoUrl,user.userId);
-
+        ZR.setUserInfo(h.userIconLayout,user.photoUrl,user.userName,user.answerNum + "个回答，" + user.agreeNum + "赞",user.userId,user.grade);
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +57,7 @@ public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         showInvited(h);
     }
 
-    private void sendInviteRequest(final AppUserResult user, final ExcellentViewHolderViewHolder h) {
+    private void sendInviteRequest(final AppUserResult user, final ZUserBaseViewHolder h) {
         final TQuestionParams params = new TQuestionParams();
         params.tqId = a.questionId;
         params.attentObjId = user.userId;
@@ -80,7 +74,7 @@ public class InvitePersonAdapter extends RecyclerView.Adapter<ExcellentViewHolde
         });
     }
 
-    private void showInvited(ExcellentViewHolderViewHolder h) {
+    private void showInvited(ZUserBaseViewHolder h) {
         if (!h.invited) {
             h.followTv.setText("邀请");
             h.followTv.setTextColor(ZR.getColor(R.color.color_489dfff));

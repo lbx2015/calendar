@@ -11,12 +11,13 @@ import com.riking.calendar.adapter.base.ZAdater;
 import com.riking.calendar.pojo.server.AppUserResult;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
+import com.riking.calendar.viewholder.base.ZUserBaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SearchPersonAdapter extends ZAdater<ExcellentViewHolderViewHolder,AppUserResult> {
+public class SearchPersonAdapter extends ZAdater<ZUserBaseViewHolder,AppUserResult> {
     private Context context;
 
     public SearchPersonAdapter(Context context) {
@@ -24,24 +25,17 @@ public class SearchPersonAdapter extends ZAdater<ExcellentViewHolderViewHolder,A
     }
 
     @Override
-    public void onBindVH(ExcellentViewHolderViewHolder h, int i) {
+    public void onBindVH(ZUserBaseViewHolder h, int i) {
         final AppUserResult user = mList.get(i);
-
-        h.userName.setText(user.userName);
-        h.summary.setText(user.answerNum + "个回答，" + user.agreeNum + "赞");
-        //set user name
-        ZR.setUserName(h.userName, user.userName, user.grade,user.userId);
-
-        ZR.setCircleUserImage(h.userImage, user.photoUrl,user.userId);
-
+        ZR.setUserInfo(h.userIconLayout,user.photoUrl,user.userName,user.answerNum + "个回答，" + user.agreeNum + "赞",user.userId,user.grade);
         ZR.setFollowPersonClickListner(user, h.followButton, h.followTv);
         ZR.showPersonFollowStatus(h.followButton, h.followTv, user.isFollow);
     }
 
     @Override
-    public ExcellentViewHolderViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
+    public ZUserBaseViewHolder onCreateVH(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.excellent_answerer_item, viewGroup, false);
-        return new ExcellentViewHolderViewHolder(view);
+        return new ZUserBaseViewHolder(view);
     }
 }
