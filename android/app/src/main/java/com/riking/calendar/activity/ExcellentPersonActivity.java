@@ -20,6 +20,7 @@ import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
+import com.riking.calendar.view.MySpannableTextView;
 
 import java.util.List;
 
@@ -39,8 +40,7 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
     public TextView answerNumberTv;
     private TextView topicTitle;
     private TextView followNumberTv;
-    private TextView topicContent;
-    private TextView expandButtonTv;
+    private MySpannableTextView topicContent;
     private TextView activityTitle;
 
     @Override
@@ -151,11 +151,8 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
                 //set topic title
                 topicTitle.setText(topic.title);
                 //set topic content
-                topicContent.setText(topic.content);
-                if (topicContent.getLineCount() <= 3) {
-                    MyLog.d("expand button set gone");
-                    expandButtonTv.setVisibility(View.GONE);
-                }
+                topicContent.limitTextViewString(topic.content
+                        , 200, topicContent, null);
             }
         });
     }
@@ -180,7 +177,6 @@ public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdap
     public void initViews() {
         activityTitle = findViewById(R.id.activity_title);
         answerNumberTv = findViewById(R.id.answer_number_tv);
-        expandButtonTv = findViewById(R.id.id_expand_textview);
         topicContent = findViewById(R.id.id_source_textview);
         followNumberTv = findViewById(R.id.follow_number_tv);
         topicTitle = findViewById(R.id.topic_title);

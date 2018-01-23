@@ -114,34 +114,14 @@
                 </FrameLayout>
             </android.support.constraint.ConstraintLayout>
 
-            <com.necer.ncalendar.view.ExpandableTextView
-                android:id="@+id/expandable_text"
+            <com.riking.calendar.view.MySpannableTextView
+                android:id="@+id/id_source_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:paddingBottom="15dp"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <com.riking.calendar.view.ZTextView
-                    android:id="@id/id_source_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:text="为了适应我国经济，金融改革和发展的需求，准确、及时、完整、高效的做好金融统计工作，根据信息发布和数据共享等工作内容将发生较大变化.
-为了适应我国经济，金融改革和发展的需求，准确、及时、完整、高效的做好金融统计工作，根据信息发布和数据共享等工作内容将发生较大变化."
-                    android:textColor="@color/color_666666"
-                    android:textSize="14sp" />
-
-                <com.riking.calendar.view.ZTextView
-                    android:id="@id/id_expand_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="14dp"
-                    android:text="展开"
-                    android:textColor="@color/color_999999" />
-            </com.necer.ncalendar.view.ExpandableTextView>
+                app:layout_scrollFlags="scroll|enterAlways" />
 
             <View
                 android:layout_width="match_parent"

@@ -27,6 +27,7 @@ import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
+import com.riking.calendar.view.MySpannableTextView;
 
 import static com.riking.calendar.util.CONST.TOPIC_ID;
 
@@ -44,8 +45,7 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
     private TextView topicTitle;
     private MyPagerAdapter mAdapter;
     private TextView followNumberTv;
-    private TextView topicContent;
-    private TextView expandButtonTv;
+    private MySpannableTextView topicContent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,11 +114,8 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
                 //set topic title
                 topicTitle.setText(topic.title);
                 //set topic content
-                topicContent.setText(topic.content);
-                if (topicContent.getLineCount() <= 3) {
-                    MyLog.d("expand button set gone");
-                    expandButtonTv.setVisibility(View.GONE);
-                }
+                topicContent.limitTextViewString(topic.content
+                        , 1000, topicContent, null);
             }
         });
     }
@@ -141,7 +138,6 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
     }
 
     private void initViews() {
-        expandButtonTv = findViewById(R.id.id_expand_textview);
         topicContent = findViewById(R.id.id_source_textview);
         followNumberTv = findViewById(R.id.follow_number_tv);
         topicTitle = findViewById(R.id.topic_title);
