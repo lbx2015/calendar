@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/user_icon_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical" />
+
+        <com.riking.calendar.view.ZTextView
+            android:id="@+id/answer_author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/answer_author_icon"
+            android:drawablePadding="2dp"
+            android:drawableRight="@drawable/com_icon_grade_v3"
+            android:gravity="center"
+            android:text="周云丽"
+            android:textColor="@color/color_333333"
+            android:textSize="17sp" />
+
+        <com.riking.calendar.view.ZTextView
+            android:id="@+id/answer_update_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/answer_author_name"
+            android:layout_below="@+id/answer_author_name"
+            android:layout_centerVertical="true"
+            android:text="1分钟前"
+            android:textColor="@color/color_999999"
+            android:textSize="12sp" />
+
+        <com.riking.calendar.view.ZTextView
+            android:id="@+id/agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:drawableLeft="@drawable/com_icon_zan_n"
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="1957"
+            android:textColor="@color/color_999999"
+            android:textSize="12sp" />
+
+        <com.riking.calendar.view.ZTextView
+            android:id="@+id/answer_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/answer_update_time"
+            android:layout_below="@+id/answer_update_time"
+            android:layout_marginTop="10dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="定向资产管理业务面向单一客户，接受单一客户委托，通过该客户的账户为客户提供资产管理服务。"
+            android:textColor="@color/color_222222"
+            android:textSize="17sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/answer_content"
+            android:layout_below="@+id/answer_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/reply_back_ground" />
+    </RelativeLayout>
+</LinearLayout>
