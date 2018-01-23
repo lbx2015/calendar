@@ -10,9 +10,9 @@
     <solid android:color="@color/color_f6f6f6"></solid>
     <!-- If you want to add some padding -->
     <padding
-        android:bottom="15dp"
-        android:left="15dp"
-        android:right="15dp"
-        android:top="15dp"></padding>
+        android:bottom="10dp"
+        android:left="10dp"
+        android:right="10dp"
+        android:top="10dp"></padding>
     <corners android:radius="2dp" />
 </shape>

@@ -13,8 +13,8 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +47,6 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     public View followButton;
     public TextView followTv;
-    public FrameLayout userIconLayout;
     String answerId;
     QuestionAnswer answer;
     //    RecyclerView suggestionQuestionsRecyclerView;
@@ -60,8 +59,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     private TextView agreeTv;
     private TextView commentsTv;
     private TextView questionTitle;
-    private TextView authoName;
-    private TextView answerCreateTime;
+    private RelativeLayout userIconLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,9 +77,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
     }
 
     void init() {
-        userIconLayout = findViewById(R.id.user_icon_layout);
-        answerCreateTime = findViewById(R.id.answer_create_time);
-        authoName = findViewById(R.id.user_name);
+        userIconLayout = findViewById(R.id.user_info_layout);
         questionTitle = findViewById(R.id.question_title);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
@@ -224,10 +220,7 @@ public class AnswerActivity extends AppCompatActivity { //Fragment 数组
             @Override
             public void callBack(ResponseModel<QuestionAnswer> response) {
                 answer = response._data;
-                //set the user name of the answer
-                ZR.setUserName(authoName, answer.userName, answer.userId);
-                ZR.setCircleUserImage(userIconLayout, answer.photoUrl, answer.userId, answer.grade);
-                answerCreateTime.setText(DateUtil.date2String(answer.modifiedTime, CONST.yyyy_mm_dd_hh_mm));
+                ZR.setUserInfo(userIconLayout, answer.photoUrl, answer.userName, DateUtil.date2String(answer.modifiedTime, CONST.yyyy_mm_dd_hh_mm), answer.userId, answer.grade);
                 commentsTv.setText(ZR.getNumberString(answer.commentNum));
                 agreeTv.setText(ZR.getNumberString(answer.agreeNum));
                 //set question title of the answer
