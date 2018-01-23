@@ -53,6 +53,13 @@ public interface QACReplyRepo extends JpaRepository<QACReply, String>, JpaSpecif
 	int countGetMore(Integer isDeleted);
 
 	/**
+	 * 获取所有有效的评论
+	 * @return
+	 */
+	@Query("from QACReply where isDeleted = 1")
+	List<QACReply> GetMore();
+
+	/**
 	 * getMore统计数
 	 * 
 	 * @param newsId

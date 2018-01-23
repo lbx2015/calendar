@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class UserActivity extends AppCompatActivity {
     TextView userName;
     LinearLayout loginLinearLayout;
     TextView userComment;
-    ImageView myPhoto;
+    FrameLayout userIconLayout;
     LinearLayout myRepliesLayout;
     LinearLayout followMeLayout;
     LinearLayout myFollowLayout;
@@ -85,7 +86,7 @@ public class UserActivity extends AppCompatActivity {
         userName = findViewById(R.id.user_name);
         loginLinearLayout = findViewById(R.id.login_linear_layout);
         userComment = findViewById(R.id.user_comment);
-        myPhoto = findViewById(R.id.user_icon);
+        userIconLayout = findViewById(R.id.user_icon_layout);
         myFollowNumbTv = findViewById(R.id.my_follow_person_num);
         followingMeNumbTv = findViewById(R.id.following_me_num);
         myAnswerNumbTv = findViewById(R.id.my_answer_num_tv);
@@ -113,7 +114,7 @@ public class UserActivity extends AppCompatActivity {
         userComment.setText(u.descript);
 
         //load the user image
-        ZR.setUserImage(myPhoto, u.photoUrl);
+        ZR.setCircleUserImage(userIconLayout, u.photoUrl, u.userId, u.grade);
 
         if (u.userId.equals(ZPreference.getUserId())) {
             followPersonTv.setText("我关注的人");

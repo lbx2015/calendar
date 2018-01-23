@@ -10,7 +10,6 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -33,10 +32,10 @@ public class EmailSuffixServiceImpl implements EmailSuffixService {
 		Page<EmailSuffix> pageB = emailSuffixRepo.findAll(bCondi, pageRequest);
 		if (null != pageB) {
 			// 2.得到AppUser对象集合
-			List<EmailSuffix> emailSuffixs = pageB.getContent();
-			Page<EmailSuffix> modulePage = new PageImpl<EmailSuffix>(emailSuffixs, pageRequest,
-					pageB.getTotalElements());
-			return modulePage;
+			// List<EmailSuffix> emailSuffixs = pageB.getContent();
+			// Page<EmailSuffix> modulePage = new PageImpl<EmailSuffix>(emailSuffixs, pageRequest,
+			// pageB.getTotalElements());
+			return pageB;
 		}
 		return null;
 	}

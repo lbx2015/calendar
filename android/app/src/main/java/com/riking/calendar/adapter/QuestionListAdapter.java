@@ -46,10 +46,10 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
     public void onBindViewHolder(final AnswerListViewHolder h, int i) {
         final QuestionAnswer questionAnswer = mList.get(i);
         //set author name
-        ZR.setUserName(h.answerAuthorName, questionAnswer.userName, questionAnswer.grade,questionAnswer.userId);
+        ZR.setUserName(h.answerAuthorName, questionAnswer.userName, questionAnswer.userId);
 
         h.answerContent.setText(questionAnswer.content);
-        ZR.setAnswerClickListener(h.answerContent,questionAnswer.questionAnswerId);
+        ZR.setAnswerClickListener(h.answerContent, questionAnswer.questionAnswerId);
 
         h.agreeTv.setText(ZR.getNumberString(questionAnswer.agreeNum));
         h.commentTV.setText(ZR.getNumberString(questionAnswer.commentNum));
@@ -102,7 +102,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<AnswerListViewHold
         });
 
         //set user image
-        ZR.setUserImage(h.authorImage, questionAnswer.photoUrl);
+        ZR.setCircleUserImage(h.userIconLayout, questionAnswer.photoUrl, questionAnswer.userId, questionAnswer.grade);
     }
 
 

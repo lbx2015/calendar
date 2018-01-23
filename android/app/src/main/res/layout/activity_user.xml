@@ -34,12 +34,24 @@
                 android:layout_alignParentLeft="true"
                 android:orientation="horizontal">
 
-                <com.riking.calendar.view.CircleImageView
-                    android:id="@+id/user_icon"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/user_icon_head_notlogin" />
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/user_icon_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp">
+
+                    <com.riking.calendar.view.CircleImageView
+                        android:id="@+id/user_icon"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:src="@drawable/user_icon_head_notlogin" />
+
+                    <ImageView
+                        android:id="@+id/user_grade_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end|right" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:id="@+id/login_linear_layout"

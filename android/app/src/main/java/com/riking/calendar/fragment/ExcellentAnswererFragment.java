@@ -34,7 +34,7 @@ public class ExcellentAnswererFragment extends Fragment {
     protected SwipeRefreshLayout swipeRefreshLayout;
     View v;
     ExcellentAnswerAdapter mAdapter;
-    TopicActivity activity;
+    public TopicActivity activity;
     private PullToLoadViewWithoutFloatButton mPullToLoadView;
     private boolean isLoading = false;
     private boolean isHasLoadedAll = false;
@@ -69,7 +69,7 @@ public class ExcellentAnswererFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new ExcellentAnswerAdapter(getContext());
+        mAdapter = new ExcellentAnswerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mPullToLoadView.isLoadMoreEnabled(true);
         mPullToLoadView.setPullCallback(new PullCallback() {

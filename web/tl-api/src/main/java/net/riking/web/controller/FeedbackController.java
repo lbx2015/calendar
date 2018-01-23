@@ -22,8 +22,6 @@ import net.riking.core.entity.Resp;
 import net.riking.dao.repo.AppUserDetailRepo;
 import net.riking.dao.repo.AppUserRepo;
 import net.riking.dao.repo.FeedBackRepo;
-import net.riking.entity.model.AppUser;
-import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.FeedBack;
 
 /**
@@ -52,14 +50,10 @@ public class FeedbackController {
 		if (null != feedback) {
 			String userId = feedback.getCreatedBy();
 			if (userId != null) {
-				AppUserDetail appUserDetail = appUserDetailRepo.findOne(userId);
-				AppUser appUser = appUserRepo.findOne(userId);
-				if (appUserDetail != null) {
-					feedback.setUserName(appUserDetail.getUserName());
-				}
-				if (appUser != null) {
-					feedback.setUserPhone(appUser.getPhone());
-				}
+				// 获取用户名和电话
+				Map<String, String> userInfo = appUserDetailRepo.findUserNameAndPhoneByUserId(userId);
+				feedback.setUserName(userInfo.get("userName"));
+				feedback.setUserPhone(userInfo.get("phone"));
 			}
 			return new Resp(feedback, CodeDef.SUCCESS);
 		} else {
@@ -77,14 +71,10 @@ public class FeedbackController {
 		for (FeedBack feedBack2 : feedBacks) {
 			String userId = feedBack2.getCreatedBy();
 			if (userId != null) {
-				AppUserDetail appUserDetail = appUserDetailRepo.findOne(userId);
-				AppUser appUser = appUserRepo.findOne(userId);
-				if (appUserDetail != null) {
-					feedBack2.setUserName(appUserDetail.getUserName());
-				}
-				if (appUser != null) {
-					feedBack2.setUserPhone(appUser.getPhone());
-				}
+				// 获取用户名和电话
+				Map<String, String> userInfo = appUserDetailRepo.findUserNameAndPhoneByUserId(userId);
+				feedBack2.setUserName(userInfo.get("userName"));
+				feedBack2.setUserPhone(userInfo.get("phone"));
 			}
 		}
 		return new Resp(page);

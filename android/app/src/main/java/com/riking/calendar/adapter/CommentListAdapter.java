@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder,
     @Override
     public void onBindVH(final MyViewHolder h, int i) {
         final NewsComment c = mList.get(i);
-        ZR.setUserName(h.authorName, c.userName, c.grade, c.userId);
+        ZR.setUserName(h.authorName, c.userName, c.userId);
         //show time.
         if (c.createdTime != null) {
             h.createTimeTv.setText(DateUtil.showTime(c.createdTime, CONST.yyyy_mm_dd_hh_mm));
@@ -89,7 +90,7 @@ public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder,
         }
 
         //set the user image icon
-        ZR.setUserImage(h.authorImage, c.photoUrl);
+        ZR.setCircleUserImage(h.userIconLayout,c.photoUrl,c.userId,c.grade);
 
         setRecyclerView(h.recyclerView, h, i);
         CommentsActivity commentsActivity = (CommentsActivity) a;
@@ -125,7 +126,7 @@ public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder,
     }
 
     class MyViewHolder extends ZViewHolder {
-        public CircleImageView authorImage;
+        public FrameLayout userIconLayout;
         public ReplyListAdapter replyListAdapter;
         public RecyclerView recyclerView;
         public TextView createTimeTv;
@@ -136,7 +137,7 @@ public class CommentListAdapter extends ZAdater<CommentListAdapter.MyViewHolder,
         public MyViewHolder(View itemView) {
             super(itemView);
             createTimeTv = itemView.findViewById(R.id.answer_update_time);
-            authorImage = itemView.findViewById(R.id.answer_author_icon);
+            userIconLayout = itemView.findViewById(R.id.user_icon_layout);
             recyclerView = itemView.findViewById(R.id.recycler_view);
             answerContent = itemView.findViewById(R.id.answer_content);
             authorName = itemView.findViewById(R.id.answer_author_name);

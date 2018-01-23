@@ -22,7 +22,7 @@ import net.riking.dao.repo.QACommentRepo;
 import net.riking.dao.repo.QuestionAnswerRepo;
 import net.riking.dao.repo.TopicQuestionRepo;
 import net.riking.entity.VO.QuestionAnswerVO;
-import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.QuestionAnswer;
 import net.riking.entity.model.TopicQuestion;
 import net.riking.service.AppUserService;
@@ -68,11 +68,13 @@ public class QuestionAnswerController {
 		QuestionAnswer questionAnswer = questionAnswerRepo.findOne(id);
 		if (null != questionAnswer) {
 			// 组装
-
 			QuestionAnswerVO questionAnswerVO = new QuestionAnswerVO();
-			AppUser appUser = appUserRepo.findOne(questionAnswer.getUserId());
-			String userId = appUser.getId();
-			questionAnswerVO.setAppUser(appUser);
+			AppUserDetail appUserDetail = appUserDetailRepo.findOne(questionAnswer.getUserId());
+			String userId = null;
+			if (appUserDetail != null) {
+				userId = appUserDetail.getId();
+				questionAnswerVO.setAppUserDetail(appUserDetail);
+			}
 			String questionAnswerId = questionAnswer.getId();
 			if (userId != null && questionAnswerId != null) {
 				questionAnswerVO
@@ -143,7 +145,5 @@ public class QuestionAnswerController {
 			return new Resp(null, CodeDef.ERROR);
 		}
 	}
-
-
 
 }

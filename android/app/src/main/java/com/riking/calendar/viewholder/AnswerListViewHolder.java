@@ -2,6 +2,7 @@ package com.riking.calendar.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.riking.calendar.R;
@@ -15,7 +16,7 @@ public class AnswerListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.answer_author_name)
     public TextView answerAuthorName;
     @BindView(R.id.answer_author_icon)
-    public CircleImageView authorImage;
+    public FrameLayout userIconLayout;
     @BindView(R.id.answer_content)
     public TextView answerContent;
     @BindView(R.id.review_number)

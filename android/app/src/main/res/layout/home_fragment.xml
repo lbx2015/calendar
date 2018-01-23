@@ -52,7 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:drawableLeft="@drawable/home_nav_icon_ask"
-            android:drawablePadding="2dp" android:gravity="center"
+            android:drawablePadding="2dp"
+            android:gravity="center"
             android:paddingLeft="12dp"
             android:text="提问"
             android:textColor="@color/color_489dfff"
@@ -80,11 +81,11 @@
                 android:layout_gravity="center_vertical"
                 app:animateIndicators="true"
                 app:defaultIndicators="circle"
-                app:interval="10000"
+                app:interval="1000"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:loopSlides="true" />
 
-            <include layout="@layout/view_pager_tab_layout"/>
+            <include layout="@layout/view_pager_tab_layout" />
 
             <View
                 android:layout_width="match_parent"

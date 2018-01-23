@@ -1,33 +1,28 @@
 package com.riking.calendar.activity;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.necer.ncalendar.utils.MyLog;
+import com.necer.ncalendar.view.SimpleDividerDecorationWithoutLastItem;
 import com.riking.calendar.R;
-import com.riking.calendar.fragment.ExcellentAnswererFragment;
-import com.riking.calendar.fragment.HotAnswerOfTopicFragment;
-import com.riking.calendar.fragment.QuestionsFragment;
+import com.riking.calendar.activity.base.ZActivity;
+import com.riking.calendar.adapter.ExcellentPersonAnswerAdapter;
 import com.riking.calendar.listener.ZCallBack;
+import com.riking.calendar.listener.ZCallBackWithFail;
 import com.riking.calendar.listener.ZClickListenerWithLoginCheck;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.TQuestionParams;
 import com.riking.calendar.pojo.params.TopicParams;
+import com.riking.calendar.pojo.server.QAnswerResult;
 import com.riking.calendar.pojo.server.Topic;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.util.ZToast;
 import com.riking.calendar.view.MySpannableTextView;
+
+import java.util.List;
 
 import static com.riking.calendar.util.CONST.TOPIC_ID;
 
@@ -35,33 +30,37 @@ import static com.riking.calendar.util.CONST.TOPIC_ID;
  * Created by zw.zhang on 2017/7/24.
  */
 
-public class TopicActivity extends AppCompatActivity { //Fragment 数组
-    private final Fragment[] TAB_FRAGMENTS = new Fragment[]{HotAnswerOfTopicFragment.newInstance(this), QuestionsFragment.newInstance(this), ExcellentAnswererFragment.newInstance(this)};
+public class ExcellentPersonActivity extends ZActivity<ExcellentPersonAnswerAdapter> { //Fragment 数组
     public View followButton;
     public TextView followTv;
     public Topic topic;
     public String topicId;
-    private ViewPager mViewPager;
+    public String userName;
+    public String answerUserId;
+    public TextView answerNumberTv;
     private TextView topicTitle;
-    private MyPagerAdapter mAdapter;
     private TextView followNumberTv;
     private MySpannableTextView topicContent;
+    private TextView activityTitle;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("zzw", this + "on create");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.topic_activity);
+    public void setLayout() {
+        setContentView(R.layout.excellent_answer_activity);
         topicId = getIntent().getStringExtra(TOPIC_ID);
-        init();
+        userName = getIntent().getStringExtra(CONST.USER_NAME);
+        answerUserId = getIntent().getStringExtra(CONST.USER_ID);
     }
 
-    private void init() {
-        initViews();
-        initEvents();
-        loadTopicById();
-        setFollowClickListener();
+    @Override
+    public ExcellentPersonAnswerAdapter getAdapter() {
+        return new ExcellentPersonAnswerAdapter();
+    }
 
+    @Override
+    public void loadData(int page) {
+        loadTopicById();
+        loadAnswers(page);
+        loadAnswersNumber();
     }
 
     private void setFollowClickListener() {
@@ -100,6 +99,44 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
 
     }
 
+    private void loadAnswersNumber() {
+        TopicParams params = new TopicParams();
+        params.topicId = topicId;
+        params.userId = answerUserId;
+        APIClient.getQAnswerSize(params, new ZCallBackWithFail<ResponseModel<String>>() {
+            @Override
+            public void callBack(ResponseModel<String> response) throws Exception {
+                loadComplete();
+                if (failed) {
+
+                } else {
+                    answerNumberTv.setText(userName + "在此话题下有" + response._data + "个回答");
+                }
+            }
+        });
+    }
+
+    private void loadAnswers(final int page) {
+        TopicParams params = new TopicParams();
+        params.topicId = topicId;
+        params.userId = answerUserId;
+        params.pindex = page;
+        APIClient.getUserAnswerResult(params, new ZCallBackWithFail<ResponseModel<List<QAnswerResult>>>() {
+            @Override
+            public void callBack(ResponseModel<List<QAnswerResult>> response) throws Exception {
+                loadComplete();
+                if (failed) {
+
+                } else {
+                    List<QAnswerResult> results = response._data;
+                    setData2Adapter(page, results);
+                }
+
+            }
+        });
+
+    }
+
     private void loadTopicById() {
         TopicParams params = new TopicParams();
         params.topicId = topicId;
@@ -115,7 +152,7 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
                 topicTitle.setText(topic.title);
                 //set topic content
                 topicContent.limitTextViewString(topic.content
-                        , 1000, topicContent, null);
+                        , 200, topicContent, null);
             }
         });
     }
@@ -137,66 +174,24 @@ public class TopicActivity extends AppCompatActivity { //Fragment 数组
         }
     }
 
-    private void initViews() {
+    public void initViews() {
+        activityTitle = findViewById(R.id.activity_title);
+        answerNumberTv = findViewById(R.id.answer_number_tv);
         topicContent = findViewById(R.id.id_source_textview);
         followNumberTv = findViewById(R.id.follow_number_tv);
         topicTitle = findViewById(R.id.topic_title);
         followButton = findViewById(R.id.follow_button);
         followTv = findViewById(R.id.follow_text);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
     }
 
-    private void initEvents() {
-        mAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mAdapter);//给ViewPager设置适配器
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.top_tab_layout);
-        tabLayout.setupWithViewPager(mViewPager);
+    public void initEvents() {
+        activityTitle.setText(userName + "的回答");
+        setFollowClickListener();
+        mRecyclerView.addItemDecoration(new SimpleDividerDecorationWithoutLastItem(ZR.getDrawable(R.drawable.recycler_view_divider), (int) ZR.convertDpToPx(15)));
     }
-
 
     public void clickBack(final View view) {
         onBackPressed();
-    }
-
-    //ViewPager适配器
-    class MyPagerAdapter extends FragmentPagerAdapter {
-
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return TAB_FRAGMENTS.length;//页卡数
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Log.d("zzw", "getItem: " + position);
-            return TAB_FRAGMENTS[position];
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Log.d("zzw", "instantiateItem: " + position);
-
-            return super.instantiateItem(container, position);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "精华";
-                case 1:
-                    return "问题";
-                case 2:
-                    return "优秀回答者";
-            }
-
-            return null;
-        }
-
     }
 
 }

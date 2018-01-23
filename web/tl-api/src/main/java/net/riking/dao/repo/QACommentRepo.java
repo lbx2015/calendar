@@ -84,8 +84,8 @@ public interface QACommentRepo extends JpaRepository<QAComment, String>, JpaSpec
 	@Query("select count(*) from QAComment where questionAnswerId = ?1  and isDeleted = 1")
 	public Integer getQACommentByQuestionAnswerId(String questionAnswerId);
 
-	@Query("select count(*) from QAComment where questionAnswerId = ?1 and isAduit = ?2  and isDeleted = 1")
-	public Integer getQACommentNumByQuestionAnswerIdAndIsAduit(String questionAnswerId, Integer isAduit);
+	@Query("from QAComment where questionAnswerId = ?1 and isDeleted = 1")
+	public List<QAComment> getQACommentNumByQuestionAnswerId(String questionAnswerId);
 
 	@Query("from QAComment where questionAnswerId = ?1 and isDeleted = 1")
 	public List<QAComment> getAllByQuestionAnswerId(String questionAnswerId);

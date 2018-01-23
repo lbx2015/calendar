@@ -5,7 +5,7 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import net.riking.entity.CustomJsonDateTimeDeserializer;
-import net.riking.entity.model.AppUser;
+import net.riking.entity.model.AppUserDetail;
 import net.riking.entity.model.TopicQuestion;
 
 /**
@@ -23,8 +23,8 @@ public class QuestionAnswerVO {
 	// 问题对象
 	private TopicQuestion topicQuestion;
 
-	// 回答人
-	private AppUser appUser;
+	// 回答人信息
+	private AppUserDetail appUserDetail;
 
 	// 回答时间
 	@JsonDeserialize(using = CustomJsonDateTimeDeserializer.class)
@@ -53,12 +53,12 @@ public class QuestionAnswerVO {
 		this.topicQuestion = topicQuestion;
 	}
 
-	public AppUser getAppUser() {
-		return appUser;
+	public AppUserDetail getAppUserDetail() {
+		return appUserDetail;
 	}
 
-	public void setAppUser(AppUser appUser) {
-		this.appUser = appUser;
+	public void setAppUserDetail(AppUserDetail appUserDetail) {
+		this.appUserDetail = appUserDetail;
 	}
 
 	public Date getReplyTime() {

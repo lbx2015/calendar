@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +36,7 @@ import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.server.HotSearch;
 import com.riking.calendar.realm.model.SearchConditions;
 import com.riking.calendar.retrofit.APIClient;
+import com.riking.calendar.util.StringUtil;
 import com.riking.calendar.util.ZDB;
 
 import java.util.Date;
@@ -56,6 +56,7 @@ public class SearchActivity extends AppCompatActivity {
     private final Fragment[] TAB_FRAGMENTS = new Fragment[]{SearchColligateFragment.instance(this), new SearchReportsFragment(), new SearchTopicFragment(), new SearchPersonFragment(), new SearchNewsFragment()};
     public String inputSearchCondition;
     public Fragment currentSelectedFragment = TAB_FRAGMENTS[0];
+    public ViewPager mViewPager;
     View localSearchTitle;
     LocalSearchConditionAdapter localSearchConditionAdapter;
     EditText editText;
@@ -65,7 +66,6 @@ public class SearchActivity extends AppCompatActivity {
     LinearLayout localLinearLayout;
     View tabDivider;
     TabLayout tabLayout;
-    public ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
 
     @Override
@@ -227,7 +227,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void performSearch() {
-        if (TextUtils.isEmpty(inputSearchCondition.trim())) {
+        if (StringUtil.isEmpty(inputSearchCondition)) {
             //do nothing when the input search condition is empty
             return;
         }
