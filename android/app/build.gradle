@@ -31,6 +31,7 @@ android {
         signingConfig signingConfigs.rikingconfig
 
         ndk {
+            moduleName "jniLibs"
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64', 'mips', 'mips64'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
@@ -113,6 +114,8 @@ dependencies {
     compile 'com.parse:parse-android:1.13.1'
 
     compile project(':photoPicker')
+
+    compile 'com.aliyun.ams:alicloud-android-man:1.+'
 }
 repositories {
     mavenCentral()
