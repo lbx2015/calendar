@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.man.MANPageHitBuilder;
+import com.alibaba.sdk.android.man.MANService;
+import com.alibaba.sdk.android.man.MANServiceProvider;
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
@@ -35,6 +38,9 @@ import com.riking.calendar.util.AppInnerDownLoder;
 import com.riking.calendar.util.DownLoadApk;
 import com.riking.calendar.util.StatusBarUtil;
 import com.riking.calendar.util.ZR;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zw.zhang on 2017/7/11.
@@ -59,9 +65,11 @@ public class ViewPagerActivity extends AppCompatActivity {
     public MyPagerAdapter adapter;
     boolean doubleBackToExitPressedOnce = false;
     ViewPager pager;
+    // 传入参数为页面名称
+    MANPageHitBuilder pageHitBuilder = new MANPageHitBuilder("ViewPagerActivity");
+    long start;
     // textview for unread message count
     private TextView unreadLabel;
-
     // textview for unread event message
     private int currentTabIndex;
     // user account was removed
@@ -80,6 +88,30 @@ public class ViewPagerActivity extends AppCompatActivity {
         // Check carefully what you're adding into the savedInstanceState before saving it
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.clear();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        start = System.currentTimeMillis();
+//        4.2.2 给Activity页面增加属性统计
+//        场景例子：
+//        //我们要开发一个购物app，在购物的app的宝贝展示页面，我们可能想要知道，此页面都展示了哪些商品？可以简单理解为，我们可以对采集的页面（GoodsDetails 页面）记录上增加一个宝贝属性就可以，如item_id=xxxxxx。
+        // 这句话要在一个页面的onPause 之前任何位置调用都可以
+        Map<String, String> lMap = new HashMap<String, String>();
+        lMap.put("item_id", "xxxxxx");
+        MANService manService = MANServiceProvider.getService();
+        manService.getMANPageHitHelper().updatePageProperties(lMap);
+        manService.getMANPageHitHelper().pageAppear(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pageHitBuilder.setDurationOnPage(System.currentTimeMillis() - start);
+        pageHitBuilder.build();
+        MANService manService = MANServiceProvider.getService();
+        manService.getMANPageHitHelper().pageDisAppear(this);
     }
 
     @Override

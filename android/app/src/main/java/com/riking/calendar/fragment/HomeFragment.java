@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.man.MANHitBuilders;
+import com.alibaba.sdk.android.man.MANService;
+import com.alibaba.sdk.android.man.MANServiceProvider;
 import com.riking.calendar.R;
 import com.riking.calendar.activity.RaiseQuestionActivity;
 import com.riking.calendar.activity.SearchActivity;
@@ -132,6 +135,19 @@ public class HomeFragment extends Fragment {
     }
 
     public void onClickSearchButton(final View v) {
+        MANHitBuilders.MANCustomHitBuilder hitBuilder =
+                new MANHitBuilders.MANCustomHitBuilder("click_search");
+        // 可使用如下接口设置时长：3分钟
+        hitBuilder.setDurationOnEvent(3 * 60 * 1000);
+// 设置关联的页面名称：聆听
+        hitBuilder.setEventPage("click_search");
+// 设置属性：类型摇滚
+        hitBuilder.setProperty("type", "click_search");
+// 设置属性：歌曲标题
+        hitBuilder.setProperty("title", "click_search");
+// 发送自定义事件打点
+        MANService manService = MANServiceProvider.getService();
+        manService.getMANAnalytics().getDefaultTracker().send(hitBuilder.build());
         ZGoto.to(SearchActivity.class);
     }
 

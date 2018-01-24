@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.man.MANService;
+import com.alibaba.sdk.android.man.MANServiceProvider;
 import com.riking.calendar.BuildConfig;
 import com.riking.calendar.R;
 import com.riking.calendar.listener.ZCallBack;
@@ -96,6 +98,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 builder.name(CONST.DEFAUT_REALM_DATABASE_NAME);
                 Realm.setDefaultConfiguration(builder.build());
                 ZGoto.toLoginActivity();
+                // 用户注销埋点
+                MANService manService = MANServiceProvider.getService();
+                manService.getMANAnalytics().updateUserAccount("", "");
                 finish();
                 break;
             }

@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.man.MANService;
+import com.alibaba.sdk.android.man.MANServiceProvider;
 import com.google.gson.JsonObject;
 import com.necer.ncalendar.view.IdentifyingCodeView;
 import com.riking.calendar.R;
@@ -133,7 +135,9 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                     });
                                 }
                             });
-
+                            MANService manService = MANServiceProvider.getService();
+// 用户登录埋点
+                            manService.getMANAnalytics().updateUserAccount(u.userName, u.userId);
                             if (u.isIdentify == 0) {
                                 ZGoto.to(InputEmailActivity.class);
                             } else if (ZR.jumpClass != null) {
@@ -230,7 +234,6 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
             start();
         }
-
     }
 }
 

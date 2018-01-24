@@ -8,12 +8,11 @@ import android.os.Bundle;
 
 import com.alibaba.sdk.android.man.MANService;
 import com.alibaba.sdk.android.man.MANServiceProvider;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechUtility;
 import com.lzy.ninegrid.NineGridView;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.NetStateReceiver;
+import com.riking.calendar.util.ZPreference;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
@@ -41,7 +40,7 @@ public class MyApplication extends Application {
 
         // 将“12345678”替换成您申请的APPID，申请地址：http://www.xfyun.cn
 // 请勿在“=”与appid之间添加任何空字符或者转义符
-        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=59bf75be");
+//        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=59bf75be");
 
         // 以下语句用于设置日志开关（默认开启），设置成false时关闭语音云SDK日志打印
         // Setting.setShowLog(false);
@@ -118,7 +117,8 @@ public class MyApplication extends Application {
             public void run() {
                 NineGridView.setImageLoader(new GlidImageLoader());
             }
-        }).start();;
+        }).start();
+        ;
 
         /**
          * 初始化Mobile Analytics服务
@@ -150,7 +150,9 @@ public class MyApplication extends Application {
         // 若AndroidManifest.xml 中的 android:versionName 不能满足需求，可在此指定；
         // 若既没有设置AndroidManifest.xml 中的 android:versionName，也没有调用setAppVersion，appVersion则为null
 //        manService.getMANAnalytics().setAppVersion("3.1.1");
-    }
 
+        // 用户登录埋点
+        manService.getMANAnalytics().updateUserAccount(ZPreference.getCurrentLoginUser().userName, ZPreference.getUserId());
+    }
 
 }
