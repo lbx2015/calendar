@@ -3,16 +3,11 @@ package com.riking.calendar.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,14 +15,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.riking.calendar.R;
 import com.riking.calendar.adapter.SearchNewsAdapter;
+import com.riking.calendar.fragment.base.ZFragment;
 import com.riking.calendar.interfeet.PerformInputSearch;
-import com.riking.calendar.listener.PullCallback;
 import com.riking.calendar.pojo.base.ResponseModel;
 import com.riking.calendar.pojo.params.SearchParams;
 import com.riking.calendar.pojo.server.NewsResult;
 import com.riking.calendar.retrofit.APIClient;
 import com.riking.calendar.util.CONST;
-import com.riking.calendar.view.PullToLoadViewWithoutFloatButton;
+import com.riking.calendar.util.ZR;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,71 +36,30 @@ import retrofit2.Response;
  * Created by zw.zhang on 2017/7/17.
  */
 
-public class SearchNewsFragment extends Fragment implements PerformInputSearch {
-    protected SwipeRefreshLayout swipeRefreshLayout;
-    View v;
-    SearchNewsAdapter mAdapter;
+public class SearchNewsFragment extends ZFragment<SearchNewsAdapter> implements PerformInputSearch {
     String searchCondition;
-    private PullToLoadViewWithoutFloatButton mPullToLoadView;
-    private boolean isLoading = false;
-    private boolean isHasLoadedAll = false;
-    private int nextPage;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (v != null) return v;
-        v = inflater.inflate(R.layout.search_fragment, container, false);
-        init();
-        return v;
+    public SearchNewsAdapter getAdapter() {
+        return new SearchNewsAdapter(getContext());
     }
 
-    private void init() {
-        initViews();
-        initEvents();
+    public void initViews() {
     }
 
-    private void initViews() {
-        mPullToLoadView = (PullToLoadViewWithoutFloatButton) v.findViewById(R.id.pullToLoadView);
+    @Override
+    public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.search_fragment, container, false);
     }
 
-    private void initEvents() {
-        RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
+    public void initEvents() {
+        ZR.setImage(emptyIv, R.drawable.default_icon_nosearch);
+        emptyTv.setText("无搜索结果");
         //adding dividers.
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(manager);
-        mAdapter = new SearchNewsAdapter(getContext());
-        mRecyclerView.setAdapter(mAdapter);
-        mPullToLoadView.isLoadMoreEnabled(false);
-        mPullToLoadView.setPullCallback(new PullCallback() {
-            @Override
-            public void onLoadMore() {
-                loadData(nextPage);
-            }
-
-            @Override
-            public void onRefresh() {
-                isHasLoadedAll = false;
-                loadData(1);
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-
-            @Override
-            public boolean hasLoadedAllItems() {
-                return isHasLoadedAll;
-            }
-        });
-
-        mPullToLoadView.initLoad();
     }
 
-    private void loadData(final int page) {
+    public void loadData(final int page) {
         isLoading = true;
         search(searchCondition);
         /*new Handler().postDelayed(new Runnable() {
@@ -135,6 +89,7 @@ public class SearchNewsFragment extends Fragment implements PerformInputSearch {
         }
 
         if (TextUtils.isEmpty(searchCondition)) {
+            setComplete();
             return;
         }
         //keep the the search condition in order to refresh the page
@@ -156,14 +111,12 @@ public class SearchNewsFragment extends Fragment implements PerformInputSearch {
         APIClient.findSearchList(params, new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (mPullToLoadView != null) {
-                    mPullToLoadView.setComplete();
-                }
+                setComplete();
 
                 ResponseBody r = response.body();
                 try {
                     String sourceString = r.source().readUtf8();
-                    Gson s =  new GsonBuilder().setDateFormat(CONST.YYYYMMDDHHMMSSSSS).create();;
+                    Gson s = new GsonBuilder().setDateFormat(CONST.YYYYMMDDHHMMSSSSS).create();
 
                     JsonObject jsonObject = s.fromJson(sourceString, JsonObject.class);
                     String _data = jsonObject.get("_data").toString();
@@ -177,21 +130,10 @@ public class SearchNewsFragment extends Fragment implements PerformInputSearch {
                     };
 
                     ResponseModel<List<NewsResult>> responseModel = s.fromJson(sourceString, token.getType());
-                    if (mPullToLoadView != null) {
-                        mPullToLoadView.setComplete();
-                    }
 
                     List<NewsResult> list = responseModel._data;
+                    setData2Adapter(1, list);
 
-                    if (list.isEmpty()) {
-                        Toast.makeText(getContext(), "没有更多数据了",
-                                Toast.LENGTH_SHORT).show();
-                        isHasLoadedAll = true;
-                        return;
-                    }
-
-                    mAdapter.setData(list);
-                    isLoading = false;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -200,7 +142,7 @@ public class SearchNewsFragment extends Fragment implements PerformInputSearch {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                setComplete();
             }
         });
 

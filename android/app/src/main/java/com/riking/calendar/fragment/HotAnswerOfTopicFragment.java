@@ -52,7 +52,7 @@ public class HotAnswerOfTopicFragment extends ZFragment<HotAnswerOfTopicAdapter>
         APIClient.getEssenceAnswer(params, new ZCallBackWithoutProgress<ResponseModel<List<QAnswerResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QAnswerResult>> response) {
-                mPullToLoadView.setComplete();
+                setComplete();
 
                 List<QAnswerResult> list = response._data;
                 MyLog.d("list size: " + list.size());

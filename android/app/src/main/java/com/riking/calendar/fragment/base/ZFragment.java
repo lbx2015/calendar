@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.necer.ncalendar.utils.MyLog;
 import com.riking.calendar.R;
@@ -34,6 +36,8 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
     public T mAdapter;
     public View v;
     public SwipeRefreshLayout emptyLayout;
+    public ImageView emptyIv;
+    public TextView emptyTv;
 
     @Nullable
     @Override
@@ -58,6 +62,8 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
     }
 
     public void getViews() {
+        emptyTv = v.findViewById(R.id.empty_tv);
+        emptyIv = v.findViewById(R.id.empty_iv);
         emptyLayout = v.findViewById(R.id.empty);
         mPullToLoadView = (PullToLoadViewWithoutFloatButton) v.findViewById(R.id.pullToLoadView);
 
@@ -78,6 +84,11 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
 
     public void setColorSchemeResources(int... colorResIds) {
         emptyLayout.setColorSchemeResources(colorResIds);
+    }
+
+    public void setComplete(){
+        mPullToLoadView.setComplete();
+        emptyLayout.setRefreshing(false);
     }
 
     private void updateEmpty(int currentPage, List<?> list) {
