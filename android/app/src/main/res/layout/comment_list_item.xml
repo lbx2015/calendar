@@ -12,13 +12,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include
-            layout="@layout/user_icon_layout"
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/user_icon_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical">
+
+            <com.riking.calendar.view.CircleImageView
+                android:id="@+id/user_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/user_icon_head_notlogin" />
+
+            <ImageView
+                android:id="@+id/user_grade_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end|right" />
+        </FrameLayout>
 
         <com.riking.calendar.view.ZTextView
             android:id="@+id/answer_author_name"
@@ -28,11 +41,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:layout_toRightOf="@id/answer_author_icon"
-            android:drawablePadding="2dp"
-            android:drawableRight="@drawable/com_icon_grade_v3"
+            android:layout_toRightOf="@id/user_icon_layout"
             android:gravity="center"
-            android:text="周云丽"
             android:textColor="@color/color_333333"
             android:textSize="17sp" />
 
@@ -78,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/answer_content"
             android:layout_below="@+id/answer_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/reply_back_ground" />
     </RelativeLayout>
 </LinearLayout>

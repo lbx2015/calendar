@@ -28,7 +28,7 @@ public abstract class ZAdater<VH extends RecyclerView.ViewHolder, ItemBean> exte
         mList = r;
     }
 
-    public void setData(List<ItemBean> mList) {
+    public final void setData(List<ItemBean> mList) {
         if (mList == null) return;
         MyLog.d("set data size: " + mList.size());
 //        this.mList.clear();
@@ -61,12 +61,12 @@ public abstract class ZAdater<VH extends RecyclerView.ViewHolder, ItemBean> exte
     }
 
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public final VH onCreateViewHolder(ViewGroup parent, int viewType) {
         return onCreateVH(parent, viewType);
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public final void onBindViewHolder(VH holder, int position) {
         if (holder instanceof ZViewHolder) {
             ZViewHolder h = (ZViewHolder) holder;
             if (h.divider != null) {

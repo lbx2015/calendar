@@ -19,12 +19,13 @@ import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.ZGoto;
 import com.riking.calendar.util.ZR;
 import com.riking.calendar.viewholder.ExcellentViewHolderViewHolder;
+import com.riking.calendar.viewholder.base.ZUserBaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHolderViewHolder> {
+public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ZUserBaseViewHolder> {
     private ExcellentAnswererFragment fragment;
     private List<QAExcellentResp> mList;
 
@@ -41,13 +42,13 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ExcellentViewHolderViewHolder h, int i) {
+    public void onBindViewHolder(final ZUserBaseViewHolder h, int i) {
         final QAExcellentResp user = mList.get(i);
-        h.summary.setText("此话题下" + user.qanswerNum + "个回答，" + user.qaAgreeNum + "赞");
-        h.summary.setOnClickListener(new View.OnClickListener() {
+        h.subTitleTv.setText("此话题下" + user.qanswerNum + "个回答，" + user.qaAgreeNum + "赞");
+        h.subTitleTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(h.summary.getContext(), ExcellentPersonActivity.class);
+                Intent i = new Intent(h.subTitleTv.getContext(), ExcellentPersonActivity.class);
                 i.putExtra(CONST.TOPIC_ID, fragment.activity.topicId);
                 i.putExtra(CONST.USER_ID, user.userId);
                 i.putExtra(CONST.USER_NAME, user.userName);
@@ -60,9 +61,8 @@ public class ExcellentAnswerAdapter extends RecyclerView.Adapter<ExcellentViewHo
             h.divider.setVisibility(View.GONE);
         }
 
-        ZR.setUserName(h.userName, user.userName, user.grade, user.userId);
-
-        ZR.setUserImage(h.userImage, user.photoUrl);
+        ZR.setUserName(h.userNameTv, user.userName, user.grade, user.userId);
+        ZR.setCircleUserImage(h.userIconIv, user.photoUrl, user.userId);
 
         h.followButton.setOnClickListener(new View.OnClickListener() {
             @Override

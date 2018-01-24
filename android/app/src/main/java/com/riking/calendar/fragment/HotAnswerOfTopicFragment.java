@@ -1,6 +1,8 @@
 package com.riking.calendar.fragment;
 
 import com.necer.ncalendar.utils.MyLog;
+import com.necer.ncalendar.view.SimpleDividerDecorationWithoutLastItem;
+import com.riking.calendar.R;
 import com.riking.calendar.activity.TopicActivity;
 import com.riking.calendar.adapter.HotAnswerOfTopicAdapter;
 import com.riking.calendar.fragment.base.ZFragment;
@@ -32,6 +34,8 @@ public class HotAnswerOfTopicFragment extends ZFragment<HotAnswerOfTopicAdapter>
     }
 
     public void initEvents() {
+        //adding custom divider
+        mRecyclerView.addItemDecoration(new SimpleDividerDecorationWithoutLastItem(getResources().getDrawable(R.drawable.divider)));
     }
 
     public void initViews() {
@@ -48,7 +52,7 @@ public class HotAnswerOfTopicFragment extends ZFragment<HotAnswerOfTopicAdapter>
         APIClient.getEssenceAnswer(params, new ZCallBackWithoutProgress<ResponseModel<List<QAnswerResult>>>() {
             @Override
             public void callBack(ResponseModel<List<QAnswerResult>> response) {
-                mPullToLoadView.setComplete();
+                setComplete();
 
                 List<QAnswerResult> list = response._data;
                 MyLog.d("list size: " + list.size());

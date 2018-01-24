@@ -359,32 +359,39 @@ public class SearchColligateFragment extends Fragment implements SubscribeReport
                 } else {
                     ColligateSearchResult result = response._data;
                     if (result.reports.size() > 2) {
+                        searchReportAdapter.setData(result.reports.subList(0, 2));
                         moreReport.setVisibility(View.VISIBLE);
                     } else {
+                        searchReportAdapter.setData(result.reports);
                         moreReport.setVisibility(View.GONE);
                     }
-                    searchReportAdapter.setData(result.reports.subList(0, 2));
 
                     if (result.topics.size() > 2) {
+                        searchTopicAdapter.setData(result.topics.subList(0, 2));
                         moreTopic.setVisibility(View.VISIBLE);
                     } else {
+                        searchTopicAdapter.setData(result.topics);
                         moreTopic.setVisibility(View.GONE);
                     }
-                    searchTopicAdapter.setData(result.topics.subList(0, 2));
+
 
                     if (result.users.size() > 2) {
+                        searchPersonAdapter.setData(result.users.subList(0, 2));
                         moreRelation.setVisibility(View.VISIBLE);
                     } else {
+                        searchPersonAdapter.setData(result.users);
                         moreRelation.setVisibility(View.GONE);
                     }
-                    searchPersonAdapter.setData(result.users.subList(0, 2));
+
 
                     if (result.news.size() > 2) {
+                        searchNewsAdapter.setData(result.news.subList(0, 2));
                         moreNews.setVisibility(View.VISIBLE);
                     } else {
+                        searchNewsAdapter.setData(result.news);
                         moreNews.setVisibility(View.GONE);
                     }
-                    searchNewsAdapter.setData(result.news.subList(0, 2));
+
 
                     searchQuestionAdater.setData(result.questions);
                 }

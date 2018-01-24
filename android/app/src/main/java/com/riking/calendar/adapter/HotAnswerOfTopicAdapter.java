@@ -91,7 +91,7 @@ public class HotAnswerOfTopicAdapter extends ZAdater<HotAnswerOfTopicViewHolder,
         }
 
         //set user image
-        ZR.setUserImage(h.authorImage, qAnswerResult.photoUrl);
+        ZR.setCircleUserImage(h.authorImage, qAnswerResult.photoUrl,qAnswerResult.userId);
     }
 
     @Override

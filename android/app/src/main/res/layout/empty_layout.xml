@@ -10,7 +10,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.riking.calendar.view.ZCenterImageView
+        <ImageView
+            android:id="@+id/empty_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/empty_tv"

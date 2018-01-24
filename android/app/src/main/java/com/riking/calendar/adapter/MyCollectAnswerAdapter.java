@@ -34,7 +34,7 @@ public class MyCollectAnswerAdapter extends ZAdater<MyCollectAnswerAdapter.MyVie
     public void onBindVH(MyViewHolder h, int i) {
         QAnswerResult answer = mList.get(i);
         ZR.setUserName(h.itemCator, answer.userName, answer.grade,answer.userId);
-        ZR.setUserImage(h.fromImage, answer.photoUrl);
+        ZR.setCircleUserImage(h.fromImage, answer.photoUrl,answer.userId);
         h.questionTitle.setText(answer.title);
         h.answerContent.setText(answer.content);
         h.timeTv.setText(DateUtil.showTime(answer.createdTime));

@@ -7,46 +7,11 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <include
+        layout="@layout/user_icon_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
-
-        <include
-            layout="@layout/user_icon_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical" />
-
-        <com.riking.calendar.view.ZTextView
-            android:id="@+id/answer_author_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_toRightOf="@id/answer_author_icon"
-            android:drawablePadding="2dp"
-            android:drawableRight="@drawable/com_icon_grade_v3"
-            android:gravity="center"
-            android:textColor="@color/color_333333"
-            android:textSize="16sp" />
-
-        <com.riking.calendar.view.ZTextView
-            android:id="@+id/answer_update_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/answer_author_name"
-            android:layout_below="@+id/answer_author_name"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/answer_author_icon"
-            android:text="1分钟前"
-            android:textColor="@color/color_999999"
-            android:textSize="12sp" />
-    </RelativeLayout>
+        android:layout_marginTop="15dp" />
 
     <com.riking.calendar.view.ZTextView
         android:id="@+id/answer_content"

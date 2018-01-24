@@ -88,28 +88,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.riking.calendar.view.ZTextView
-                    android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="周云丽"
-                    android:textColor="@color/color_333333"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toTopOf="@+id/answer_create_time"
-                    app:layout_constraintStart_toEndOf="@+id/user_icon_layout" />
-
-                <com.riking.calendar.view.ZTextView
-                    android:id="@+id/answer_create_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="2017-11-17 14:28"
-                    android:textColor="@color/color_999999"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/user_name" />
-
                 <FrameLayout
                     android:id="@+id/follow_button"
                     android:layout_width="72dp"
