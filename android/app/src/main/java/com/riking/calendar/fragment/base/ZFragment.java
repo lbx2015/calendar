@@ -56,7 +56,7 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
         return null;
     }
 
-    public void init() {
+    public final void init() {
         getViews();
         setEvents();
     }
@@ -86,7 +86,7 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
         emptyLayout.setColorSchemeResources(colorResIds);
     }
 
-    public void setComplete(){
+    public void setComplete() {
         mPullToLoadView.setComplete();
         emptyLayout.setRefreshing(false);
     }

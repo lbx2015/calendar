@@ -39,6 +39,12 @@ import retrofit2.Response;
 public class SearchNewsFragment extends ZFragment<SearchNewsAdapter> implements PerformInputSearch {
     String searchCondition;
 
+    @Nullable
+    @Override
+    public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.search_fragment, container, false);
+    }
+
     @Override
     public SearchNewsAdapter getAdapter() {
         return new SearchNewsAdapter(getContext());
@@ -47,10 +53,6 @@ public class SearchNewsFragment extends ZFragment<SearchNewsAdapter> implements 
     public void initViews() {
     }
 
-    @Override
-    public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.search_fragment, container, false);
-    }
 
     public void initEvents() {
         ZR.setImage(emptyIv, R.drawable.default_icon_nosearch);
@@ -84,9 +86,6 @@ public class SearchNewsFragment extends ZFragment<SearchNewsAdapter> implements 
 
     @Override
     public void search(String searchCondition) {
-        if (mPullToLoadView != null) {
-            mPullToLoadView.mSwipeRefreshLayout.setRefreshing(true);
-        }
 
         if (TextUtils.isEmpty(searchCondition)) {
             setComplete();

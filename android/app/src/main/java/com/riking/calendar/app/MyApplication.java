@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.alibaba.sdk.android.man.MANPageHitBuilder;
 import com.alibaba.sdk.android.man.MANService;
 import com.alibaba.sdk.android.man.MANServiceProvider;
 import com.lzy.ninegrid.NineGridView;
@@ -47,6 +48,9 @@ public class MyApplication extends Application {
 
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
 
+            long start;
+            MANPageHitBuilder pageHitBuilder;
+
             @Override
             public void onActivityStopped(Activity activity) {
                 Logger.v(activity, "onActivityStopped");
@@ -65,12 +69,19 @@ public class MyApplication extends Application {
 
             @Override
             public void onActivityResumed(Activity activity) {
+                // 传入参数为页面名称
+                pageHitBuilder = new MANPageHitBuilder(activity.getClass().getSimpleName());
                 Logger.v(activity, "onActivityResumed");
                 mCurrentActivity = activity;
+                start = System.currentTimeMillis();
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
+                pageHitBuilder.setDurationOnPage(System.currentTimeMillis() - start);
+                pageHitBuilder.build();
+                MANService manService = MANServiceProvider.getService();
+                manService.getMANPageHitHelper().pageDisAppear(activity);
                 Logger.v(activity, "onActivityPaused");
             }
 

@@ -65,8 +65,6 @@ public class ViewPagerActivity extends AppCompatActivity {
     public MyPagerAdapter adapter;
     boolean doubleBackToExitPressedOnce = false;
     ViewPager pager;
-    // 传入参数为页面名称
-    MANPageHitBuilder pageHitBuilder = new MANPageHitBuilder("ViewPagerActivity");
     long start;
     // textview for unread message count
     private TextView unreadLabel;
@@ -108,10 +106,6 @@ public class ViewPagerActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        pageHitBuilder.setDurationOnPage(System.currentTimeMillis() - start);
-        pageHitBuilder.build();
-        MANService manService = MANServiceProvider.getService();
-        manService.getMANPageHitHelper().pageDisAppear(this);
     }
 
     @Override
