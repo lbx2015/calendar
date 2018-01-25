@@ -13,7 +13,8 @@ import com.lzy.ninegrid.NineGridView;
 import com.riking.calendar.jiguang.Logger;
 import com.riking.calendar.util.CONST;
 import com.riking.calendar.util.NetStateReceiver;
-import com.riking.calendar.util.ZPreference;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import cn.jpush.android.api.JPushInterface;
 import io.realm.Realm;
@@ -24,9 +25,10 @@ import io.realm.RealmConfiguration;
  */
 
 public class MyApplication extends Application {
-    public static Context APP;
+    public static MyApplication APP;
     public static SharedPreferences preferences;
     public static Activity mCurrentActivity = null;
+    public IWXAPI mWxApi;
 
     @Override
     public void onCreate() {
@@ -163,6 +165,13 @@ public class MyApplication extends Application {
         // 若AndroidManifest.xml 中的 android:versionName 不能满足需求，可在此指定；
         // 若既没有设置AndroidManifest.xml 中的 android:versionName，也没有调用setAppVersion，appVersion则为null
 //        manService.getMANAnalytics().setAppVersion("3.1.1");
+        registToWX();
     }
 
+    private void registToWX() {
+        //AppConst.WEIXIN.APP_ID是指你应用在微信开放平台上的AppID，记得替换。
+        mWxApi = WXAPIFactory.createWXAPI(this, CONST.WECHAT_ID, false);
+        // 将该app注册到微信
+        mWxApi.registerApp(CONST.WECHAT_ID);
+    }
 }

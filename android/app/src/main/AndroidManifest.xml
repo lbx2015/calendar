@@ -279,6 +279,11 @@
                 <category android:name="com.riking.calendar" />
             </intent-filter>
         </activity>
+
+        //微信
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true" />
         <!--<activity android:name="com.hyphenate.chatuidemo.ui.HyphenateLoginActivity" />-->
         <!--<activity android:name="com.hyphenate.chatuidemo.ui.HyphenateMainActivity" />-->
         <!-- 注册 -->
@@ -705,8 +710,12 @@
             </intent-filter>
         </receiver>-->
 
-        <meta-data android:name="com.alibaba.app.appkey" android:value="24781275"></meta-data>
-        <meta-data android:name="com.alibaba.app.appsecret" android:value="fce19684369e411705b2f6d7fca07f28"></meta-data>
+        <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="24781275"></meta-data>
+        <meta-data
+            android:name="com.alibaba.app.appsecret"
+            android:value="fce19684369e411705b2f6d7fca07f28"></meta-data>
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ public class CONST {
     public static final byte REPEAT_FLAG_WORK_DAY = 1;
     public static final byte REPEAT_FLAG_HOLIDAY = 2;
     public static final byte NOT_REPEAT_FLAG_WEEK = 0;
-//    public static final String TL_API_TEST = "http://172.16.64.177:8281/";
+    //    public static final String TL_API_TEST = "http://172.16.64.177:8281/";
 //        public static final String TL_API_TEST = "http://172.16.64.96:8281/";
     //    public static final String TL_API_TEST = "http://172.16.64.199:8281/";
 //        public static final String TL_API_TEST = "http://172.16.64.177:6061/tl-api-test/";
@@ -17,6 +17,7 @@ public class CONST {
     //        public static final String TL_API_TEST = "http://172.16.64.96:8281/";
     public static final String TL_API_DEV = "http://172.16.64.190:8281/";
     public static final String URL_BASE = "http://172.16.64.190:8281/";
+    public static final String URL_WE_CHAT = "https://api.weixin.qq.com/";
     //    public static final String URL_BASE = "http://172.16.32.14:6061/tl-api/";
     public static final String DEFAUT_REALM_DATABASE_NAME = "rkdb";
     public static final byte DELETE = 1;
@@ -85,38 +86,66 @@ public class CONST {
     public static final String LOGINING = "LOGINING";
 
 
-    /** 被邀请回答的邀请 */
+    /**
+     * 被邀请回答的邀请
+     */
     public static final int NOTICE_OPT_ANSWERINVITE = 1;
 
-    /** 问题回答 */
+    /**
+     * 问题回答
+     */
     public static final int NOTICE_OPT_QUESTION_ANSWER = 2;
 
-    /** 问题回答被点赞 */
+    /**
+     * 问题回答被点赞
+     */
     public static final int NOTICE_OPT_QA_AGREEOR = 3;
 
-    /** 问题回答被收藏 */
+    /**
+     * 问题回答被收藏
+     */
     public static final int NOTICE_OPT_QA_COLLECT = 4;
 
-    /** 问题被关注 */
+    /**
+     * 问题被关注
+     */
     public static final int NOTICE_OPT_QUESTION_FOLLOW = 5;
 
-    /** 被关注的用户 */
+    /**
+     * 被关注的用户
+     */
     public static final int NOTICE_OPT_USER_FOLLOW = 6;
 
-    /** 问题回答的被评论 */
+    /**
+     * 问题回答的被评论
+     */
     public static final int NOTICE_OPT_QANSWER_COMMENT = 7;
 
-    /**回答类   评论被点赞 */
+    /**
+     * 回答类   评论被点赞
+     */
     public static final int NOTICE_OPT_ANSWER_COMMENT_AGREE = 8;
 
-    /**资讯类   评论被点赞 */
+    /**
+     * 资讯类   评论被点赞
+     */
     public static final int NOTICE_OPT_NEWS_COMMENT_AGREE = 9;
 
-    /**回答类   评论的回复和回复的被回复 */
+    /**
+     * 回答类   评论的回复和回复的被回复
+     */
     public static final int NOTICE_OPT_ANSWER_COMMENT_REPLY = 10;
 
-    /**资讯类  评论的回复和回复的被回复 */
+    /**
+     * 资讯类  评论的回复和回复的被回复
+     */
     public static final int NOTICE_OPT_NEWS_COMMENT_REPLY = 11;
+
+    public static final String WECHAT_ID = "wx34f3da18a9b31eea";
+    public static final String WECHAT_SECRET = "efaa32e703db825947b48e7819ab8d98";
+    public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
+    public static final String OPEN_ID = "OPEN_ID";
+    public static final String REFRESH_TOKEN = "REFRESH_TOKEN";
 
     //滚动事件
     public enum ScrollDirection {

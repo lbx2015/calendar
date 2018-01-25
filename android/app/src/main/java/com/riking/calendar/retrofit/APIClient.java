@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.alibaba.sdk.android.man.network.MANNetworkPerformanceHitBuilder;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.necer.ncalendar.utils.MyLog;
@@ -115,6 +114,7 @@ public class APIClient {
 
     private static Retrofit retrofit = null;
     public static APIInterface apiInterface = getClient().create(APIInterface.class);
+    private static Retrofit retrofit4Wechat = null;
 
     public static Retrofit getClient() {
         if (retrofit != null)
@@ -153,6 +153,44 @@ public class APIClient {
                 .client(client)
                 .build();
         return retrofit;
+    }
+
+
+    public static Retrofit getClient4Wechat() {
+        if (retrofit4Wechat != null)
+            return retrofit4Wechat;
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor).build();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Date.class, new DateTypeDeserializer());
+        gsonBuilder.setExclusionStrategies(new AnnotationExclusionStrategy());
+        retrofit = new Retrofit.Builder()
+                .baseUrl(CONST.URL_WE_CHAT)
+                .addConverterFactory(new GsonStringConverterFactory())
+                .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
+                .client(client)
+                .build();
+        return retrofit;
+    }
+
+    public static void getAccessToken(String code, Callback<ResponseBody> c) {
+        getClient4Wechat().create(WechatAPIInterface.class).getAccessToken(CONST.WECHAT_ID, CONST.WECHAT_SECRET, code, "authorization_code").enqueue(c);
+    }
+
+    public static void getWechatInfo(String accessToken, String openId, Callback<ResponseBody> c) {
+        getClient4Wechat().create(WechatAPIInterface.class).getUserInfo(accessToken, openId).enqueue(c);
+    }
+
+    public static void isWeChatAccessTokenValid(String accessToken, String openId, Callback<ResponseBody> c) {
+        getClient4Wechat().create(WechatAPIInterface.class).isAccesstokenValid(accessToken, openId).enqueue(c);
+
+    }
+
+    public static void refreshWechatToken(String refreshToken, Callback<ResponseBody> c) {
+        getClient4Wechat().create(WechatAPIInterface.class).refreshToken(CONST.WECHAT_ID, "refresh_token", refreshToken).enqueue(c);
     }
 
     public static void checkVarificationCode(@Body LoginParams user, final ZCallBackWithFail<ResponseModel<AppUserResp>> callBack) {
