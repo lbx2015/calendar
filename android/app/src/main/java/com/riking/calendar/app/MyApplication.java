@@ -74,11 +74,13 @@ public class MyApplication extends Application {
                 Logger.v(activity, "onActivityResumed");
                 mCurrentActivity = activity;
                 start = System.currentTimeMillis();
+                MANService manService = MANServiceProvider.getService();
+                manService.getMANPageHitHelper().pageAppear(activity);
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-                pageHitBuilder.setDurationOnPage(System.currentTimeMillis() - start);
+                pageHitBuilder.setDurationOnPage(((System.currentTimeMillis() - start)) / 1000);
                 pageHitBuilder.build();
                 MANService manService = MANServiceProvider.getService();
                 manService.getMANPageHitHelper().pageDisAppear(activity);
@@ -161,9 +163,6 @@ public class MyApplication extends Application {
         // 若AndroidManifest.xml 中的 android:versionName 不能满足需求，可在此指定；
         // 若既没有设置AndroidManifest.xml 中的 android:versionName，也没有调用setAppVersion，appVersion则为null
 //        manService.getMANAnalytics().setAppVersion("3.1.1");
-
-        // 用户登录埋点
-        manService.getMANAnalytics().updateUserAccount(ZPreference.getCurrentLoginUser().userName, ZPreference.getUserId());
     }
 
 }

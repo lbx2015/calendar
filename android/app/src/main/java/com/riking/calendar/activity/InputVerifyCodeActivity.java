@@ -136,7 +136,7 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
                                 }
                             });
                             MANService manService = MANServiceProvider.getService();
-// 用户登录埋点
+// 用户登录埋点   // 用户登录埋点
                             manService.getMANAnalytics().updateUserAccount(u.userName, u.userId);
                             if (u.isIdentify == 0) {
                                 ZGoto.to(InputEmailActivity.class);

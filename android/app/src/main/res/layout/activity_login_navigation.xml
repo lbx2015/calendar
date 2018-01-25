@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
+            android:onClick="clickWeChat"
             android:orientation="horizontal">
 
             <com.riking.calendar.view.ZTextView
