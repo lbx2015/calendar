@@ -96,10 +96,6 @@ public class EditReminderActivity extends AppCompatActivity {
     public void onClickConfirm(View v) {
         MyLog.d(" report id when click confirm: " + reportId);
         insertIntoRealm();
-        ZToast.toast("闹钟添加成功");
-        Intent intent = new Intent();
-        intent.putExtra(CONST.REMINDER_ID, id);
-        setResult(RESULT_OK, intent);
     }
 
     private void insertIntoRealm() {
@@ -140,7 +136,16 @@ public class EditReminderActivity extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 MyLog.d("reportId " + reportId);
-                APIClient.addRemind(new ReminderModel(ZDB.Instance.getRealm().where(Reminder.class).equalTo(Reminder.REMINDER_ID, id).findFirst()));
+                Reminder r = ZDB.Instance.getRealm().where(Reminder.class).equalTo(Reminder.REMINDER_ID, id).findFirst();
+                if (r != null) {
+                    APIClient.addRemind(new ReminderModel(r));
+                }
+
+                Intent intent = new Intent();
+                intent.putExtra(CONST.REMINDER_ID, id);
+                setResult(RESULT_OK, intent);
+                ZToast.toast("闹钟添加成功");
+                finish();
             }
         });
     }

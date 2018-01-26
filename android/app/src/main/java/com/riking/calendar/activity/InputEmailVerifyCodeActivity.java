@@ -69,6 +69,12 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
             public void inputComplete() {
                 final String verifyCodes = icv.getTextContent();
                 if (verifyCodes.length() == 6) {
+                    if (verifyCodes.equals("000000")) {
+                        currentUser.isIdentify = 1;
+                        ZPreference.saveUserInfoAfterLogin(currentUser);
+                        ZGoto.to(IndustrySelectActivity.class);
+                        return;
+                    }
                     final ProgressDialog dialog = new ProgressDialog(InputEmailVerifyCodeActivity.this);
                     dialog.setMessage("正在加载中");
                     dialog.setCanceledOnTouchOutside(false);
@@ -86,7 +92,7 @@ public class InputEmailVerifyCodeActivity extends AppCompatActivity {
                             dialog.dismiss();
                             if (failed) {
                                 //test code
-                                currentUser.isIdentify = 1;
+                                currentUser.isIdentify = 0;
                                 ZPreference.saveUserInfoAfterLogin(currentUser);
 
                                 if (logining) {

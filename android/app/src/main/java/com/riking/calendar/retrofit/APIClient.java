@@ -431,6 +431,18 @@ public class APIClient {
      * create alarm
      */
     public static void addAlarm(Reminder r, Calendar time) {
+     /*
+      //system calendar
+      Calendar cal = Calendar.getInstance();
+        Intent it = new Intent(Intent.ACTION_EDIT);
+        it.setType("vnd.android.cursor.item/event");
+        it.putExtra("beginTime", cal.getTimeInMillis());
+        it.putExtra("allDay", true);
+        it.putExtra("rrule", "FREQ=YEARLY");
+        it.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
+        it.putExtra("title", "A Test Event from android app");
+        MyApplication.mCurrentActivity.startActivity(it);*/
+
         AlarmManager alarmManager = (AlarmManager) MyApplication.APP.getSystemService(Context.ALARM_SERVICE);
         //set reminder
         Intent intent = new Intent(MyApplication.APP, ReminderService.class);
