@@ -200,7 +200,6 @@ public class AddTopicActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override

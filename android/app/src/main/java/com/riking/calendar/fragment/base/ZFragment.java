@@ -96,12 +96,15 @@ public abstract class ZFragment<T extends ZAdater> extends Fragment {
         mPullToLoadView.setComplete();
         if (list.size() == 0) {
             ZToast.toast("没有更多数据了");
-            emptyLayout.setVisibility(View.VISIBLE);
+            if (emptyLayout != null) {
+                emptyLayout.setVisibility(View.VISIBLE);
+            }
             mPullToLoadView.setVisibility(View.GONE);
             return;
         }
-
-        emptyLayout.setVisibility(View.GONE);
+        if (emptyLayout != null) {
+            emptyLayout.setVisibility(View.GONE);
+        }
         mPullToLoadView.setVisibility(View.VISIBLE);
         nextPage = currentPage + 1;
     }
