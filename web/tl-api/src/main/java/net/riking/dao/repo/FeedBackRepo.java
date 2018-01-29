@@ -17,4 +17,8 @@ import net.riking.entity.model.FeedBack;
 @Repository
 public interface FeedBackRepo extends JpaRepository<FeedBack, String>, JpaSpecificationExecutor<FeedBack> {
 
+	// @Query("select new FeedBack(fb.id,fb.content,fb.imgs,fb.accept,(select userName from
+	// AppUserDetail aud where aud.id=fb.createdBy),(select phone from AppUser aud where
+	// au.id=fb.createdBy) from FeedBack fb")
+	// Page<FeedBack> findAllTo(PageRequest pageRequest);
 }
