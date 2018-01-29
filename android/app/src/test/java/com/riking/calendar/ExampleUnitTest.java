@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -372,5 +373,15 @@ public class ExampleUnitTest {
         Date date = simpleDateFormat.parse(time);
         String s = DateUtil.showTime(date);
         System.out.println(s);
+    }
+
+    @Test
+    public void testCalendar() {
+        java.util.Calendar myCal = new GregorianCalendar(2018, 0, 26);
+        // Get the number of days in that month
+        int daysInMonth = myCal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH); // 28
+        myCal.set(java.util.Calendar.DAY_OF_MONTH, 1);
+        int dayOfWeek = myCal.get(java.util.Calendar.DAY_OF_WEEK);
+        System.out.println("daysInMonth: " + daysInMonth + " dayOfWeek: " + dayOfWeek);
     }
 }

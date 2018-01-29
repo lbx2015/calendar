@@ -40,6 +40,7 @@ import com.riking.calendar.activity.OrderReportActivity;
 import com.riking.calendar.activity.OverdueReportActivity;
 import com.riking.calendar.activity.TaskHistoryActivity;
 import com.riking.calendar.activity.ViewPagerActivity;
+import com.riking.calendar.activity.WebviewActivity;
 import com.riking.calendar.adapter.NotDoneReportTaskItemAdapter;
 import com.riking.calendar.adapter.ReminderAdapter;
 import com.riking.calendar.adapter.ReportAdapter;
@@ -215,6 +216,11 @@ public class WorkFragment extends Fragment implements OnCalendarChangedListener,
                                         //open the task history page
                                         startActivity(new Intent(getContext(), TaskHistoryActivity.class));
                                         break;
+                                    }
+                                    case R.id.weather: {
+                                        Intent i = new Intent(getContext(), WebviewActivity.class);
+                                        i.putExtra(CONST.WEB_URL, "http://m.weather.com.cn/mweather/101010100.shtml");
+                                        getContext().startActivity(i);
                                     }
                                 }
                                 return true;
